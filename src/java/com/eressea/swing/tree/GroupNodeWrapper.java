@@ -8,10 +8,9 @@
 
 package com.eressea.swing.tree;
 
-import java.util.List;
-import java.util.Iterator;
-
 import java.awt.Image;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.UIManager;

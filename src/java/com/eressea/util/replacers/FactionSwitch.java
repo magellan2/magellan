@@ -7,11 +7,10 @@
 package com.eressea.util.replacers;
 
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.StringTokenizer;
 
-import java.util.Map;
 import com.eressea.util.CollectionFactory;
-
 import com.eressea.util.filters.UnitFactionFilter;
 import com.eressea.util.logging.Logger;
 /**

@@ -15,7 +15,6 @@ import java.util.Map;
 
 import com.eressea.ID;
 import com.eressea.Item;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ROCollection;
 import com.eressea.util.ROIterator;
@@ -36,7 +35,7 @@ public class BuildingType extends UnitContainerType {
 		if (rawMaterials == null) {
 			rawMaterials = CollectionFactory.createHashtable();
 		}
-		rawMaterials.put(i.getType().getID(), i);
+		rawMaterials.put(i.getItemType().getID(), i);
 	}
 
 	public ROIterator getRawMaterials() {
@@ -59,7 +58,7 @@ public class BuildingType extends UnitContainerType {
 		if (maintenance == null) {
 			maintenance = CollectionFactory.createHashtable();
 		}
-		maintenance.put(i.getType().getID(), i);
+		maintenance.put(i.getItemType().getID(), i);
 	}
 
 	public Iterator getMaintenanceItems() {

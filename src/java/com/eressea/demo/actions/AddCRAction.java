@@ -11,10 +11,8 @@ package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Properties;
-
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 
@@ -22,6 +20,7 @@ import com.eressea.GameData;
 import com.eressea.demo.Client;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.swing.HistoryAccessory;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.ReportMerger;
 
 /**

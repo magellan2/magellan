@@ -54,12 +54,11 @@ import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.rules.RegionType;
-import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
+import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
-
 import com.eressea.util.logging.Logger;
 
 /** This renderer draws plain one-color hex fields. It supports three modes - the

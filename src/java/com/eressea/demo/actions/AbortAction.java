@@ -9,9 +9,9 @@
 package com.eressea.demo.actions;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.demo.Client;
+import com.eressea.util.CollectionFactory;
 
 public class AbortAction extends MenuAction {
 

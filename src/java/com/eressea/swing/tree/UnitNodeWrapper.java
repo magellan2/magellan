@@ -291,7 +291,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 					while(it.hasNext()) {
 						Item item = (Item)it.next();
 						try {
-							String cat = item.getType().getCategory().getID().toString();
+							String cat = item.getItemType().getCategory().getID().toString();
 
 							int j = -1;
 							for(int i=0;i<7;i++) {
@@ -325,9 +325,9 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 
 							if (count > 0) {
 								if (isShowingIconText())
-									ge=new GraphicsElement(new Integer(count),null,null,"items/" + item.getType().getIconName());
+									ge=new GraphicsElement(new Integer(count),null,null,"items/" + item.getItemType().getIconName());
 								else
-									ge=new GraphicsElement(null,null,"items/" + item.getType().getIconName());
+									ge=new GraphicsElement(null,null,"items/" + item.getItemType().getIconName());
 								ge.setTooltip(buffer.toString());
 								ge.setType(GraphicsElement.ADDITIONAL);
 								Tag2Element.apply(ge);
@@ -351,8 +351,8 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 				}
 				ge=null;
 				if (isShowingIconText()) {
-					ge=new GraphicsElement(null, null, null,"items/" + s.getType().getIconName());
-					Item oldItem = u.getItem(s.getType());
+					ge=new GraphicsElement(null, null, null,"items/" + s.getItemType().getIconName());
+					Item oldItem = u.getItem(s.getItemType());
 					int oldAmount = 0;
 					if (oldItem != null) {
 						oldAmount = oldItem.getAmount();
@@ -371,7 +371,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 						ge.setObject(new Integer(oldAmount));
 					}
 				}	else {
-					ge=new GraphicsElement(null,null,"items/" + s.getType().getIconName());
+					ge=new GraphicsElement(null,null,"items/" + s.getItemType().getIconName());
 				}
 				ge.setTooltip(s.getName());
 				ge.setType(GraphicsElement.ADDITIONAL);

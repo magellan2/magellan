@@ -9,10 +9,10 @@
 package com.eressea.demo.actions;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.demo.Client;
 import com.eressea.demo.SetOrigin;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

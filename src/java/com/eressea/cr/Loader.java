@@ -9,7 +9,11 @@
 package com.eressea.cr;
 
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,11 +38,11 @@ import com.eressea.Unit;
 import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.rules.Eressea;
 import com.eressea.rules.ItemType;
-import com.eressea.util.file.CopyFile;
-import com.eressea.util.file.FileType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.SortIndexComparator;
+import com.eressea.util.file.CopyFile;
+import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 public class Loader {

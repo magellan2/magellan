@@ -11,8 +11,8 @@ package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.Properties;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 

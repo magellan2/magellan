@@ -500,11 +500,11 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 							
 							it3 = u.getItems().iterator();
 							while(it3.hasNext()) {
-								trans.remove(((com.eressea.Item)it3.next()).getType().getID().toString());
+								trans.remove(((com.eressea.Item)it3.next()).getItemType().getID().toString());
 							}
 							it3 = u.getSkills().iterator();
 							while(it3.hasNext()) {
-								trans.remove(((com.eressea.Skill)it3.next()).getType().getID().toString());
+								trans.remove(((com.eressea.Skill)it3.next()).getSkillType().getID().toString());
 							}
 						}
 					}
@@ -525,7 +525,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 						trans.remove(sp.getID().toString());
 						it2 = sp.ingredients().iterator();
 						while(it2.hasNext()) {
-							trans.remove(((com.eressea.Item)it2.next()).getType().getID().toString());
+							trans.remove(((com.eressea.Item)it2.next()).getItemType().getID().toString());
 						}
 					}
 				}

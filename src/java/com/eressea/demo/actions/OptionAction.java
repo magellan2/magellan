@@ -10,19 +10,17 @@ package com.eressea.demo.actions;
 
 
 import java.awt.event.ActionEvent;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.eressea.util.CollectionFactory;
-
 import com.eressea.demo.Client;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesDialog;
 import com.eressea.swing.preferences.PreferencesFactory;
+import com.eressea.util.CollectionFactory;
 
 /**
  *
@@ -67,16 +65,7 @@ public class OptionAction extends MenuAction {
 
 	private void buildDialog() {
 		if(dialog != null) return;
-		PreferencesDialog pd = new PreferencesDialog(client, true, client.getSettings());
-		// TODO: Move this stuff into PreferencesDialog!
-		for (Iterator iter = adapters.iterator(); iter.hasNext(); ) {
-			Object obj = iter.next();
-			if (obj instanceof PreferencesAdapter) { // old style, direct adapter
-				pd.addTab((PreferencesAdapter)obj);
-			} else if (obj instanceof PreferencesFactory) { // new style, create an adapter
-				pd.addTab(((PreferencesFactory)obj).createPreferencesAdapter());
-			}
-		}
+		PreferencesDialog pd = new PreferencesDialog(client, true, client.getSettings(),adapters);
 		if(dialog==null) {
 			dialog = pd;
 		}

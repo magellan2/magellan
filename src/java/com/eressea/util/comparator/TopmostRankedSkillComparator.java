@@ -8,7 +8,11 @@
 
 package com.eressea.util.comparator;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import com.eressea.Skill;
 import com.eressea.util.CollectionFactory;

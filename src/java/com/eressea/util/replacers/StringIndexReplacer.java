@@ -7,6 +7,7 @@
 package com.eressea.util.replacers;
 
 import java.util.Map;
+
 import com.eressea.util.CollectionFactory;
 /**
  * A Switch that compares the following to elements by their String replacement.

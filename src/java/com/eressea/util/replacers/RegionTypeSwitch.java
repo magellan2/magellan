@@ -7,10 +7,11 @@
 package com.eressea.util.replacers;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+
 import com.eressea.Region;
 import com.eressea.StringID;
 import com.eressea.rules.RegionType;
+import com.eressea.util.CollectionFactory;
 
 /**
  * A switch that reacts if the given region is of a certain type.

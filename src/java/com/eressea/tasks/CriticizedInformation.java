@@ -1,7 +1,7 @@
 
 package com.eressea.tasks;
 
-import com.eressea.*;
+import com.eressea.HasRegion;
 
 public class CriticizedInformation extends AbstractProblem implements Problem {
 	/** 

@@ -13,17 +13,16 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.eressea.cr.Loader;
-
 import com.eressea.gamebinding.GameSpecificStuff;
 import com.eressea.gamebinding.eressea.EresseaSpecificStuff;
+import com.eressea.rules.Date;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.MessageType;
-import com.eressea.rules.Date;
-import com.eressea.util.file.FileType;
-import com.eressea.util.logging.Logger;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Regions;
+import com.eressea.util.file.FileType;
+import com.eressea.util.logging.Logger;
 
 /**
  * This is the central class for collecting all the data representing

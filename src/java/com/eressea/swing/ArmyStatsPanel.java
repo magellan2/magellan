@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -44,8 +44,6 @@ import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.comparator.NameComparator;
-import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -656,7 +654,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 							Item item = (Item)itemIt.next();
 							int amount = Math.min(persons, item.getAmount());
 							persons -= amount;
-							addArmoured(unit, amount, maxSkill.getLevel(), army, line, item.getType(), null, armour, false, true);
+							addArmoured(unit, amount, maxSkill.getLevel(), army, line, item.getItemType(), null, armour, false, true);
 						}
 					} else {
 						Iterator itemIt = nonSkillWeapons.iterator();
@@ -669,7 +667,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 								amount = persons;
 							}
 							persons -= amount;
-							addArmoured(unit, amount, maxSkillLevel-2, army, line, item!=null?item.getType():null, null, armour, false, false);
+							addArmoured(unit, amount, maxSkillLevel-2, army, line, item!=null?item.getItemType():null, null, armour, false, false);
 						}
 					}
 				}
@@ -719,7 +717,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 			while(it.hasNext()) {
 				Item item = (Item)it.next();
 				if (item != null) {
-					if (item.getType().getCategory()!=null && item.getType().getCategory().isDescendant(back)) {
+					if (item.getItemType().getCategory()!=null && item.getItemType().getCategory().isDescendant(back)) {
 						guess = 2; // now guess back
 					}
 				}
@@ -743,43 +741,43 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		while(amount>0 && aIt.hasNext()) {
 			Item aItem = (Item)aIt.next();
 			if (shield) {
-				if (aItem.getType().getCategory().isDescendant(shieldType)) {
+				if (aItem.getItemType().getCategory().isDescendant(shieldType)) {
 					int aAmount = aItem.getAmount();
 					if (aAmount>amount) {
 						aItem.setAmount(aAmount-amount);
-						addPartUnit(unit, amount, skill, army, line, weapon, armour, aItem.getType(), hasSkill, true);
+						addPartUnit(unit, amount, skill, army, line, weapon, armour, aItem.getItemType(), hasSkill, true);
 						amount = 0;
 					} else if (aAmount == amount) {
 						aIt.remove();
-						addPartUnit(unit, amount, skill, army, line, weapon, armour, aItem.getType(), hasSkill, true);
+						addPartUnit(unit, amount, skill, army, line, weapon, armour, aItem.getItemType(), hasSkill, true);
 						amount = 0;
 						ret = true;
 					} else {
-						addPartUnit(unit, aAmount, skill, army, line, weapon, armour, aItem.getType(), hasSkill, true);
+						addPartUnit(unit, aAmount, skill, army, line, weapon, armour, aItem.getItemType(), hasSkill, true);
 						aIt.remove();
 						amount -= aAmount;
 						ret = true;
 					}
 				}
 			} else {
-				if (!aItem.getType().getCategory().isDescendant(shieldType)) {
+				if (!aItem.getItemType().getCategory().isDescendant(shieldType)) {
 					int aAmount = aItem.getAmount();
 					if (aAmount>amount) {
 						aItem.setAmount(aAmount-amount);
-						if (addArmoured(unit, amount, skill, army, line, weapon, aItem.getType(), armourCol, true, hasSkill)) {
+						if (addArmoured(unit, amount, skill, army, line, weapon, aItem.getItemType(), armourCol, true, hasSkill)) {
 							aIt = armourCol.iterator();
 						}
 						amount = 0;
 					} else if (aAmount == amount) {
 						aIt.remove();
-						if (addArmoured(unit, amount, skill, army, line, weapon, aItem.getType(), armourCol, true, hasSkill)) {
+						if (addArmoured(unit, amount, skill, army, line, weapon, aItem.getItemType(), armourCol, true, hasSkill)) {
 							aIt = armourCol.iterator();
 						}
 						amount = 0;
 					} else {
 						aIt.remove();
 						amount -= aAmount;
-						if (addArmoured(unit, aAmount, skill, army, line, weapon, aItem.getType(), armourCol, true, hasSkill)) {
+						if (addArmoured(unit, aAmount, skill, army, line, weapon, aItem.getItemType(), armourCol, true, hasSkill)) {
 							aIt = armourCol.iterator();
 						}
 					}
@@ -820,18 +818,18 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		Iterator it = unit.getItems().iterator();
 		while(it.hasNext()) {
 			Item item = (Item)it.next();
-			if (item.getType().getCategory()!= null && item.getType().getCategory().isDescendant(weapon)) {
+			if (item.getItemType().getCategory()!= null && item.getItemType().getCategory().isDescendant(weapon)) {
 				col.add(item);
 			}
 		}
 		if (used != null) {
 			it = used.iterator();
 			while(col.size()>0 && it.hasNext()) {
-				SkillType st = ((Skill)it.next()).getType();
+				SkillType st = ((Skill)it.next()).getSkillType();
 				Iterator it2 = col.iterator();
 				while(it2.hasNext()) {
 					Item item = (Item)it2.next();
-					if (item.getType().getUseSkill()!=null && st.equals(item.getType().getUseSkill().getType())) {
+					if (item.getItemType().getUseSkill()!=null && st.equals(item.getItemType().getUseSkill().getSkillType())) {
 						it2.remove();
 					}
 				}
@@ -853,8 +851,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		Iterator it = unit.getItems().iterator();
 		while(it.hasNext()) {
 			Item item = (Item)it.next();
-			if (item.getType().getCategory()!= null && item.getType().getCategory().isDescendant(armourType)) {
-				col.add(new Item(item.getType(), item.getAmount()));
+			if (item.getItemType().getCategory()!= null && item.getItemType().getCategory().isDescendant(armourType)) {
+				col.add(new Item(item.getItemType(), item.getAmount()));
 			}
 		}
 		return col;

@@ -101,6 +101,18 @@ public class PreferencesDialog extends InternationalizedDialog {
 		setLocation(x, y);
 	}
 
+	public PreferencesDialog(Frame owner, boolean modal, Properties settings, Collection prefAdapters) {
+		this(owner, modal,settings);
+		for (Iterator iter = prefAdapters.iterator(); iter.hasNext(); ) {
+			Object obj = iter.next();
+			if (obj instanceof PreferencesAdapter) { // old style, direct adapter
+				this.addTab((PreferencesAdapter)obj);
+			} else if (obj instanceof PreferencesFactory) { // new style, create an adapter
+				this.addTab(((PreferencesFactory)obj).createPreferencesAdapter());
+			}
+		}
+		
+	}
 	public void updateLaF() {
 		if(dialogtree != null) {
 			dialogtree.updateUI();

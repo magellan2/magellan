@@ -33,11 +33,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
-
 import com.eressea.completion.AutoCompletion;
-import com.eressea.util.JVMUtilities;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Completion;
+import com.eressea.util.JVMUtilities;
 import com.eressea.util.logging.Logger;
 
 /**

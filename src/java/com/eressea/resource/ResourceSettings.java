@@ -27,10 +27,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
-import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.InternationalizedPanel;
+import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PathPreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 
 public class ResourceSettings extends InternationalizedPanel implements ExtendedPreferencesAdapter {

@@ -38,7 +38,7 @@ public class HighlightImageCellRenderer extends ImageCellRenderer {
 		}
 	}
 	private void renderIt(Region r, String imgName) {
-		Coordinate c = (Coordinate)r.getID();
+		Coordinate c = r.getCoordinate();
 		
 		Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 		rect.translate(-offset.x, -offset.y);

@@ -19,7 +19,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -69,7 +68,7 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 	
 
 	private void drawAndPossiblyFillPolygon(Region r, Color col) {
-		Coordinate c = (Coordinate)r.getID();
+		Coordinate c = r.getCoordinate();
 		
 		Rectangle rect = cellGeo.getCellRect(c.x, c.y);
 		rect.translate(-offset.x, -offset.y);

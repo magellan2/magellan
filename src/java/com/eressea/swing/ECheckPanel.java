@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Writer;
 import java.util.Collection;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -59,7 +59,6 @@ import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-import com.eressea.rules.Race;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.JECheck;
@@ -542,8 +541,8 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 	 */
 	private String getDefaultOptions(Faction f) {
 		String options = "";
-		if (f.getType() != null && ((Race)f.getType()).getRecruitmentCosts() > 0) {
-			options += " -r" + ((Race)f.getType()).getRecruitmentCosts();
+		if (f.getType() != null && f.getRace().getRecruitmentCosts() > 0) {
+			options += " -r" + f.getRace().getRecruitmentCosts();
 		}
 		if (f.options != null && f.options.isActive(StringID.create(EresseaOrderConstants.O_SILVERPOOL))) {
 			options += " -l";

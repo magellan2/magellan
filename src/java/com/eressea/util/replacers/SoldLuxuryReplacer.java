@@ -8,11 +8,11 @@ package com.eressea.util.replacers;
 
 import java.util.Iterator;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.LuxuryPrice;
 import com.eressea.Region;
 import com.eressea.StringID;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

@@ -320,7 +320,7 @@ public class NrWriter
 			Region r = (Region)rit.next();
 			if (r.getName() != null && r.units().size() > 0) {
 				line = new StringBuffer("REGION ");
-				line.append(((Coordinate)r.getID()).toString(","));
+				line.append(r.getCoordinate().toString(","));
 				line.append(" ; ");
 				line.append(r.getName());
 				out.println(line);

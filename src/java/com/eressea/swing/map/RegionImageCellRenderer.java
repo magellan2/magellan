@@ -42,10 +42,9 @@ import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.RegionType;
 import com.eressea.rules.UnitContainerType;
-import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
-import com.eressea.util.Cache;
+import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.EresseaSkillConstants;
 import com.eressea.util.Regions;
@@ -84,7 +83,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 	public void render(Object obj, boolean active, boolean selected) {
 		if (obj instanceof Region) {
 			Region r = (Region)obj;
-			Coordinate c = (Coordinate)r.getID();
+			Coordinate c = r.getCoordinate();
 
 			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);
@@ -147,7 +146,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 							}
 							int maxRadius = (int)Math.min((Math.log(b.getSize())/Math.log(10)) + 1, perceptionSkillLevel / 3);
 							if (maxRadius > 0) {
-								Map regions = Regions.getAllNeighbours(data.regions(), (Coordinate)b.getRegion().getID(), maxRadius, null);
+								Map regions = Regions.getAllNeighbours(data.regions(), b.getRegion().getCoordinate(), maxRadius, null);
 								for (Iterator regionIter = regions.values().iterator(); regionIter.hasNext();) {
 									Region r = (Region)regionIter.next();
 									if (oceanType == null || oceanType.equals(r.getType())) {

@@ -80,4 +80,22 @@ public class PropertiesHelper {
 		return new Boolean()
 	}
 	*/
+	
+	public static boolean getboolean(Properties p, String key, boolean def) {
+		String val = p.getProperty(key);
+		if(val != null) {
+			return Boolean.valueOf(val).booleanValue();
+		}
+		return def;
+	}
+
+	public static float getfloat(Properties p, String key, float def) {
+		String val = p.getProperty(key);
+		if(val != null) {
+			try {
+				return Float.valueOf(val).floatValue();
+			} catch(NumberFormatException nfe) {}
+		}
+		return def;
+	}
 }

@@ -342,12 +342,12 @@ public class ReportMerger extends java.lang.Object {
 			Region region = (Region)iter.next();
 
 			if ((region.getName() != null) && (region.getName().length() > 0)) {
-				Coordinate coord = (Coordinate)region.getID();
+				Coordinate coord = region.getCoordinate();
 
 				if (coord.z == 0) {
 					Region foundRegion = (Region)report.regionMap.get( region.getName() );
 					if (foundRegion != null) {
-						Coordinate foundCoord = (Coordinate)foundRegion.getID();
+						Coordinate foundCoord = foundRegion.getCoordinate();
 
 						Coordinate translation = new Coordinate(
 							foundCoord.x - coord.x, foundCoord.y - coord.y );
@@ -386,7 +386,7 @@ public class ReportMerger extends java.lang.Object {
 				if (r.getType() == null) {
 					continue;
 				}
-				Coordinate c = (Coordinate)r.getID();
+				Coordinate c = r.getCoordinate();
 
 				/* do the translation and find the corresponding
 				   region in the report data */

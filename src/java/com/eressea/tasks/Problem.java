@@ -1,7 +1,7 @@
 
 package com.eressea.tasks;
 
-import com.eressea.*;
+import com.eressea.HasRegion;
 
 public interface Problem {
 	public final static int INFORMATION = 0;

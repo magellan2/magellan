@@ -6,6 +6,7 @@
 
 package com.eressea.util.replacers;
 import java.util.Map;
+
 import com.eressea.util.CollectionFactory;
 
 /**

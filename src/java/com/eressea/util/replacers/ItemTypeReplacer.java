@@ -9,12 +9,12 @@ package com.eressea.util.replacers;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.Item;
 import com.eressea.Region;
 import com.eressea.Unit;
 import com.eressea.rules.ItemType;
+import com.eressea.util.CollectionFactory;
 
 /**
  * Replaces a item name string with the number of that item in the given region.
@@ -45,7 +45,7 @@ public class ItemTypeReplacer extends AbstractParameterReplacer implements Envir
 				Iterator it2=u.getItems().iterator();
 				while(it2.hasNext()) {
 					Item i=(Item)it2.next();
-					ItemType ity=i.getType();
+					ItemType ity=i.getItemType();
 					if (ity.getName().equalsIgnoreCase(items) || ity.getID().toString().equalsIgnoreCase(items)) {
 						count+=i.getAmount();
 						break;

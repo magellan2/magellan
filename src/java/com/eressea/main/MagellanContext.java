@@ -3,9 +3,11 @@ package com.eressea.main;
 import java.util.Properties;
 
 import com.eressea.event.EventDispatcher;
-
-import com.eressea.resource.*;
-import com.eressea.util.*;
+import com.eressea.resource.ResourcePathClassLoader;
+import com.eressea.util.IDBaseConverter;
+import com.eressea.util.Locales;
+import com.eressea.util.NameGenerator;
+import com.eressea.util.Translations;
 
 
 /** 

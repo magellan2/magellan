@@ -52,11 +52,11 @@ import com.eressea.rules.MessageType;
 import com.eressea.rules.Options;
 import com.eressea.rules.Race;
 import com.eressea.rules.UnitContainerType;
-import com.eressea.util.file.FileType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Umlaut;
-import com.eressea.util.comparator.SortIndexComparator;
 import com.eressea.util.comparator.IDComparator;
+import com.eressea.util.comparator.SortIndexComparator;
+import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 
@@ -230,8 +230,8 @@ public class CRWriter extends BufferedWriter {
 
 		write("MESSAGE " + msg.getID());
 		newLine();
-		if (msg.getType() != null) {
-			write(msg.getType().getID() + ";type");
+		if (msg.getMessageType() != null) {
+			write(msg.getMessageType().getID() + ";type");
 			newLine();
 		}
 		if (msg.getText() != null) {
@@ -487,7 +487,7 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 			for (Iterator iter = ingredients.iterator(); iter.hasNext(); ) {
 				Item i = (Item)iter.next();
-				writeQuotedString(i.getType().getID().toString());
+				writeQuotedString(i.getItemType().getID().toString());
 			}
 		}
 	}
@@ -704,7 +704,7 @@ public class CRWriter extends BufferedWriter {
 			write(faction.averageScore + ";Punktedurchschnitt");
 			newLine();
 		}
-		Race race = (Race)faction.getType();
+		Race race = faction.getRace();
 		if (race != null) {
 			if (race.toString() != null) {
 				writeQuotedTag(race.getID().toString(), "Typ");
@@ -925,9 +925,9 @@ public class CRWriter extends BufferedWriter {
 	 */
 	public void writeSkill(Skill skill, int persons) throws IOException {
 		if (getServerConformance() || !skill.isLevelChanged()) {
-			write(skill.getPoints() + " " + skill.getLevel() + ";" + skill.getType().getID().toString());
+			write(skill.getPoints() + " " + skill.getLevel() + ";" + skill.getSkillType().getID());
 		} else {
-			write(skill.getPoints() + " " + skill.getLevel() + " " + skill.getChangeLevel() + ";" + skill.getType().getID().toString());
+			write(skill.getPoints() + " " + skill.getLevel() + " " + skill.getChangeLevel() + ";" + skill.getSkillType().getID());
 		}
 		newLine();
 	}
@@ -1049,7 +1049,7 @@ public class CRWriter extends BufferedWriter {
 	 * the underlying stream.
 	 */
 	public void write(Item item) throws IOException {
-		write(item.getAmount() + ";" + item.getType().getID().toString());
+		write(item.getAmount() + ";" + item.getItemType().getID());
 		newLine();
 	}
 

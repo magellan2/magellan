@@ -12,8 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import com.eressea.util.logging.Logger;
 import com.eressea.util.StringFactory;
+import com.eressea.util.logging.Logger;
 
 public class Scanner {
 	private final static Logger log = Logger.getInstance(Scanner.class);

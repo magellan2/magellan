@@ -14,8 +14,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import com.eressea.main.MagellanContext;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

@@ -19,9 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-
-import com.eressea.event.*;
-import com.eressea.gamebinding.RelationFactory;
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
@@ -30,34 +27,26 @@ import com.eressea.relation.LeaveRelation;
 import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
-import com.eressea.relation.TeachRelation;
-import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
 import com.eressea.relation.UnitContainerRelation;
 import com.eressea.relation.UnitRelation;
-import com.eressea.rules.Eressea;
-import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
 import com.eressea.rules.SkillType;
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.Direction;
 import com.eressea.util.EresseaOrderConstants;
-import com.eressea.util.EresseaRaceConstants;
-import com.eressea.util.comparator.LinearUnitTempUnitComparator;
 import com.eressea.util.Locales;
-import com.eressea.util.OrderParser;
 import com.eressea.util.OrderToken;
 import com.eressea.util.OrderTokenizer;
 import com.eressea.util.OrderWriter;
 import com.eressea.util.ROCollection;
-import com.eressea.util.ROIterator;
-import com.eressea.util.Translations;
-import com.eressea.util.comparator.SortIndexComparator;
 import com.eressea.util.Sorted;
 import com.eressea.util.TagMap;
 import com.eressea.util.Taggable;
+import com.eressea.util.Translations;
+import com.eressea.util.comparator.LinearUnitTempUnitComparator;
+import com.eressea.util.comparator.SortIndexComparator;
 import com.eressea.util.logging.Logger;
 
 
@@ -381,7 +370,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		if (items == null) {
 			items = CollectionFactory.createOrderedHashtable();
 		}
-		items.put(i.getType().getID(), i);
+		items.put(i.getItemType().getID(), i);
 		invalidateCache();
 		return i;
 	}
@@ -972,7 +961,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				clone.isStarving = u.isStarving;
 				for (Iterator skillIter = u.getSkills().iterator(); skillIter.hasNext(); ) {
 					Skill s = (Skill)skillIter.next();
-					clone.addSkill(new Skill(s.getType(), s.getPoints(), s.getLevel(), clone.persons, s.noSkillPoints()));
+					clone.addSkill(new Skill(s.getSkillType(), s.getPoints(), s.getLevel(), clone.persons, s.noSkillPoints()));
 				}
 			} catch (CloneNotSupportedException e) {
 				// won't fail
@@ -1008,7 +997,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				 target clone */
 				for (Iterator skills = targetClone.getSkills().iterator(); skills.hasNext(); ) {
 					Skill targetSkill = (Skill)skills.next();
-					Skill srcSkill = srcClone.getSkill(targetSkill.getType());
+					Skill srcSkill = srcClone.getSkill(targetSkill.getSkillType());
 					int skillModifier = targetSkill.getModifier(targetClone);
 					if (srcSkill == null) {
 						/* skill exists only in the target clone, this
@@ -1017,7 +1006,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 						 confusion about level modifiers in case of
 						 noSkillPoints. If skill points are relevant
 						 this value is ignored anyway. */
-						srcSkill = new Skill(targetSkill.getType(), 0, lostSkillLevel, srcClone.getPersons(), targetSkill.noSkillPoints());
+						srcSkill = new Skill(targetSkill.getSkillType(), 0, lostSkillLevel, srcClone.getPersons(), targetSkill.noSkillPoints());
 					}
 					if (targetSkill.noSkillPoints()) {
 						/* Math.max(0, ...) guarantees that the true
@@ -1043,7 +1032,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				 clone */
 				for (Iterator skills = srcClone.getSkills().iterator(); skills.hasNext(); ) {
 					Skill srcSkill = (Skill)skills.next();
-					Skill targetSkill = (Skill)targetClone.getSkill(srcSkill.getType());
+					Skill targetSkill = (Skill)targetClone.getSkill(srcSkill.getSkillType());
 					if (targetSkill == null) {
 						/* skill exists only in the source clone, this
 						 is equivalent to a source skill at 0.
@@ -1051,7 +1040,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 						 confusion about level modifiers in case of
 						 noSkillPoints. If skill points are relevant
 						 this value is ignored anyway. */
-						targetSkill = new Skill(srcSkill.getType(), 0, lostSkillLevel, targetClone.getPersons(), srcSkill.noSkillPoints());
+						targetSkill = new Skill(srcSkill.getSkillType(), 0, lostSkillLevel, targetClone.getPersons(), srcSkill.noSkillPoints());
 						targetClone.addSkill(targetSkill);
 						if (srcSkill.noSkillPoints()) {
 							/* Math.max(0, ...) guarantees that the true
@@ -1112,7 +1101,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				/* inject clone skills into real unit (no extra loop for
 				 this */
 				if (skill.getPoints() > 0 || skill.getLevel() > 0) {
-					this.cache.modifiedSkills.put(skill.getType().getID(), skill);
+					this.cache.modifiedSkills.put(skill.getSkillType().getID(), skill);
 				}
 			}
 		}
@@ -1158,7 +1147,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		if (skills == null) {
 			skills = CollectionFactory.createOrderedHashtable();
 		}
-		skills.put(s.getType().getID(), s);
+		skills.put(s.getSkillType().getID(), s);
 		return s;
 	}
 
@@ -1202,7 +1191,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				if (sortOut && sk.isLostSkill()) {
 					continue;
 				}
-				Skill newSkill = new Skill(sk.getType(), sk.getPoints(), sk.getLevel(), v.persons, sk.noSkillPoints());
+				Skill newSkill = new Skill(sk.getSkillType(), sk.getPoints(), sk.getLevel(), v.persons, sk.noSkillPoints());
 				v.addSkill(newSkill);
 			}
 		}
@@ -1256,7 +1245,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		for(Iterator iter = getRelations(ItemTransferRelation.class).iterator(); iter.hasNext();) {
 			ItemTransferRelation rel = (ItemTransferRelation) iter.next();
-			if(rel.itemType.equals(item.getType())) {
+			if(rel.itemType.equals(item.getItemType())) {
 				ret.add(rel);
 			}
 		}
@@ -1269,7 +1258,12 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @returns a collection of PersonTransferRelation objects.
 	 */
 	public List getPersonTransferRelations() {
-		return (List) getRelations(PersonTransferRelation.class);
+		List ret = (List) getRelations(PersonTransferRelation.class);
+		if(log.isDebugEnabled()) {
+			log.debug("Unit.getPersonTransferRelations for "+this);
+			log.debug(ret);
+		}
+		return ret;
 		/*
 		List ret = CollectionFactory.createArrayList(getRelations().size());
 		for(Iterator iter = getRelations().iterator(); iter.hasNext();) {
@@ -1319,7 +1313,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		// 2. clone items
 		for(Iterator iter = getItems().iterator(); iter.hasNext(); ) {
 			Item i = (Item)iter.next();
-			cache.modifiedItems.put(i.getType().getID(), new Item(i.getType(), i.getAmount()));
+			cache.modifiedItems.put(i.getItemType().getID(), new Item(i.getItemType(), i.getAmount()));
 		}
 
 		// 3. now check relations for possible modifications
@@ -1403,7 +1397,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			Item item = (Item)items.next();
 			// pavkovic 2003.09.10: only take care about (possibly) modified items with positive amount
 			if(item.getAmount() > 0) {
-				weight += item.getAmount() * (int)(item.getType().getWeight() * 100);
+				weight += item.getAmount() * (int)(item.getItemType().getWeight() * 100);
 			}
 		}
 		weight += (persons * (int)(personWeight * 100));
@@ -1438,41 +1432,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * sufficiently skilled in horse riding to travel on horseback.
 	 */
 	public int getPayloadOnHorse() {
-		int capacity = 0;
-		int horses = 0;
-		Item i = getModifiedItem(new ItemType(StringID.create("Pferd")));
-		if (i != null) {
-			horses = i.getAmount();
-		}
-		if (horses <= 0) {
-			return CAP_NO_HORSES;
-		}
-
-		int skillLevel = 0;
-		Skill s = getModifiedSkill(new SkillType(StringID.create("Reiten")));
-		if (s != null) {
-			skillLevel = s.getLevel();
-		}
-		if (horses > skillLevel * getModifiedPersons() * 2) {
-			return CAP_UNSKILLED;
-		}
-
-		int carts = 0;
-		i = getModifiedItem(new ItemType(StringID.create("Wagen")));
-		if (i != null) {
-			carts = i.getAmount();
-		}
-
-		int horsesWithoutCarts = horses - carts * 2;
-		if (horsesWithoutCarts >= 0) {
-			capacity = (carts * 140 + horsesWithoutCarts * 20) * 100 - ((int)((this.realRace != null ? this.realRace.getWeight() : this.race.getWeight()) * 100)) * getModifiedPersons();
-		} else {
-			int cartsWithoutHorses = carts - horses / 2;
-			horsesWithoutCarts = horses % 2;
-			capacity = ((carts - cartsWithoutHorses) * 140 + horsesWithoutCarts * 20 - cartsWithoutHorses * 40) * 100 - ((int)((this.realRace != null ? this.realRace.getWeight() : this.race.getWeight()) * 100)) * getModifiedPersons();
-		}
-
-		return capacity;
+		return getRegion().getData().getGameSpecificStuff().getMovementEvaluator().getPayloadOnHorse(this);
 	}
 
 	/**
@@ -1490,68 +1450,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * not sufficiently skilled in horse riding to travel on horseback.
 	 */
 	public int getPayloadOnFoot() {
-		int capacity = 0;
-		int horses = 0;
-		Item i = getModifiedItem(new ItemType(StringID.create("Pferd")));
-
-		if (i != null) {
-			horses = i.getAmount();
-		}
-		if (horses < 0) {
-			horses = 0;
-		}
-
-		int skillLevel = 0;
-		Skill s = getModifiedSkill(new SkillType(StringID.create("Reiten")));
-		if (s != null) {
-			skillLevel = s.getLevel();
-		}
-		if (horses > (skillLevel * getModifiedPersons() * 4) + getModifiedPersons()) {
-			// too many horses
-			return CAP_UNSKILLED;
-		}
-
-		int carts = 0;
-		i = getModifiedItem(new ItemType(StringID.create("Wagen")));
-		if (i != null) {
-			carts = i.getAmount();
-		}
-		if (carts < 0) {
-			carts = 0;
-		}
-
-		int horsesWithoutCarts = 0;
-		int cartsWithoutHorses = 0;
-		if (skillLevel == 0) {
-			// can't use carts!!!
-			horsesWithoutCarts = horses;
-			cartsWithoutHorses = carts;
-		} else if (carts > horses / 2) {
-			// too many carts
-			cartsWithoutHorses = carts - (horses / 2);
-		} else {
-			// too many horses (or exactly right number)
-			horsesWithoutCarts = horses - (carts * 2);
-		}
-		Race race = this.race;
-		if (this.realRace != null) {
-			race = this.realRace;
-		}
-		if (race == null || race.getID().equals(EresseaRaceConstants.R_TROLLE) == false) {
-			capacity = ((carts - cartsWithoutHorses) * 140 + horsesWithoutCarts * 20 - cartsWithoutHorses * 40) * 100 + ((int)(race.getCapacity() * 100)) * getModifiedPersons();
-		} else {
-			int horsesMasteredPerPerson = (skillLevel * 4) + 1;
-			int trollsMasteringHorses = horses / horsesMasteredPerPerson;
-			if (horses % horsesMasteredPerPerson != 0) {
-				trollsMasteringHorses++;
-			}
-			int cartsTowedByTrolls = Math.min((this.getModifiedPersons() - trollsMasteringHorses) / 4, cartsWithoutHorses);
-			int trollsTowingCarts = cartsTowedByTrolls * 4;
-			int untowedCarts = cartsWithoutHorses - cartsTowedByTrolls;
-			capacity = ((carts - untowedCarts) * 140 + horsesWithoutCarts * 20 - untowedCarts * 40) * 100 + ((int)(race.getCapacity() * 100)) * (getModifiedPersons() - trollsTowingCarts);
-		}
-
-		return capacity;
+		return getRegion().getData().getGameSpecificStuff().getMovementEvaluator().getPayloadOnFoot(this);
 	}
 
 	/**
@@ -1564,10 +1463,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		ItemType cart = new ItemType(StringID.create("Wagen"));
 		for (Iterator iter = getItems().iterator(); iter.hasNext(); ) {
 			Item i = (Item)iter.next();
-			if (!i.getType().equals(horse) && !i.getType().equals(cart)) {
+			if (!i.getItemType().equals(horse) && !i.getItemType().equals(cart)) {
 				// pavkovic 2003.09.10: only take care about (possibly) modified items with positive amount
 				if(i.getAmount() > 0) {
-					load += ((int)(i.getType().getWeight() * 100)) * i.getAmount();
+					load += ((int)(i.getItemType().getWeight() * 100)) * i.getAmount();
 				}
 			}
 		}
@@ -1586,8 +1485,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			Item i = (Item)iter.next();
 			// pavkovic 2003.09.10: only take care about modified items with positive amount
 			if(i.getAmount() > 0) {
-				if (!i.getType().equals(horse) && !i.getType().equals(cart)) {
-					load += ((int)(i.getType().getWeight() * 100)) * i.getAmount();
+				if (!i.getItemType().equals(horse) && !i.getItemType().equals(cart)) {
+					load += ((int)(i.getItemType().getWeight() * 100)) * i.getAmount();
 				}
 			}
 		}
@@ -1761,10 +1660,11 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			this.addRelation(r);
 			if(r.source != this) {
 				r.source.addRelation(r);
+				continue;
 			}
 			if(r instanceof InterUnitRelation) {
 				InterUnitRelation iur = (InterUnitRelation) r;
-				if(iur.target != null) {
+				if(iur.target != null && iur.target != this) {
 					iur.target.addRelation(r);
 				}
 				continue;
@@ -2056,8 +1956,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				}
 				for (Iterator iter = curUnit.items.values().iterator(); iter.hasNext(); ) {
 					Item curItem = (Item)iter.next();
-					Item newItem = new Item(newGD.rules.getItemType(curItem.getType().getID(), true), curItem.getAmount());
-					newUnit.items.put(newItem.getType().getID(), newItem);
+					Item newItem = new Item(newGD.rules.getItemType(curItem.getItemType().getID(), true), curItem.getAmount());
+					newUnit.items.put(newItem.getItemType().getID(), newItem);
 				}
 			}
 		}
@@ -2103,7 +2003,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		if (curUnit.skills != null && curUnit.skills.size() > 0) {
 			for (Iterator iter = curUnit.skills.values().iterator(); iter.hasNext(); ) {
 				Skill curSkill = (Skill)iter.next();
-				Skill newSkill = new Skill(newGD.rules.getSkillType(curSkill.getType().getID(), true), curSkill.getPoints(), curSkill.getLevel(), newUnit.getPersons(), curSkill.noSkillPoints());
+				Skill newSkill = new Skill(newGD.rules.getSkillType(curSkill.getSkillType().getID(), true), curSkill.getPoints(), curSkill.getLevel(), newUnit.getPersons(), curSkill.noSkillPoints());
 				if (curSkill.isLevelChanged()) {
 					newSkill.setLevelChanged(true);
 					newSkill.setChangeLevel(curSkill.getChangeLevel());
@@ -2113,7 +2013,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				}
 				// NOTE: Maybe some decision about change-level computation in reports of
 				//       same date here
-				Skill oldSkill = (Skill)newUnit.skills.put(newSkill.getType().getID(), newSkill);
+				Skill oldSkill = (Skill)newUnit.skills.put(newSkill.getSkillType().getID(), newSkill);
 				if (newUnit.skillsCopied) {
 					int dec = 0;
 					if (oldSkill != null ) {

@@ -12,8 +12,8 @@ package com.eressea.demo.actions;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -22,9 +22,9 @@ import com.eressea.cr.CRWriter;
 import com.eressea.demo.Client;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.Translations;
 import com.eressea.util.file.FileBackup;
 import com.eressea.util.file.FileType;
-import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**

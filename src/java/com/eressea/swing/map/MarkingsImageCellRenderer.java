@@ -36,7 +36,7 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 		if (obj instanceof Region && ((Region)obj).hasTags()) {
 			
 			Region r = (Region)obj;
-			Coordinate c = (Coordinate)r.getID();
+			Coordinate c = r.getCoordinate();
 				
 			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);

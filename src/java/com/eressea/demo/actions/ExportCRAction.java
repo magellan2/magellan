@@ -8,13 +8,12 @@
 
 package com.eressea.demo.actions;
 
-import java.util.Map;
-import com.eressea.util.CollectionFactory;
-
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 import com.eressea.demo.Client;
 import com.eressea.swing.CRWriterDialog;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

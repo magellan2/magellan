@@ -65,8 +65,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.undo.UndoManager;
 
 import com.eressea.Alliance;
-import com.eressea.Building;
 import com.eressea.Border;
+import com.eressea.Building;
 import com.eressea.CombatSpell;
 import com.eressea.Described;
 import com.eressea.DescribedObject;
@@ -100,26 +100,18 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-import com.eressea.relation.AttackRelation;
 import com.eressea.relation.ItemTransferRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.UnitRelation;
-import com.eressea.rules.BuildingType;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
-import com.eressea.rules.Race;
-import com.eressea.rules.RegionType;
-import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.BasicRegionPanel;
-import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MenuProvider;
-import com.eressea.swing.preferences.PreferencesAdapter;
-import com.eressea.swing.preferences.PreferencesFactory;
 import com.eressea.swing.completion.CompletionGUI;
 import com.eressea.swing.completion.ListCompletionGUI;
 import com.eressea.swing.completion.MarkedTextCompletionGUI;
@@ -127,28 +119,28 @@ import com.eressea.swing.completion.MultiEditorOrderEditorList;
 import com.eressea.swing.completion.NoneCompletionGUI;
 import com.eressea.swing.context.ContextFactory;
 import com.eressea.swing.context.UnitContextMenu;
-import com.eressea.swing.layout.GridBagHelper;
+import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
+import com.eressea.swing.preferences.PreferencesAdapter;
+import com.eressea.swing.preferences.PreferencesFactory;
 import com.eressea.swing.tree.CellObject;
 import com.eressea.swing.tree.ContextManager;
 import com.eressea.swing.tree.CopyTree;
-import com.eressea.swing.tree.NodeWrapperFactory;
+import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperDrawPolicy;
+import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.PotionNodeWrapper;
 import com.eressea.swing.tree.RegionNodeWrapper;
 import com.eressea.swing.tree.SimpleNodeWrapper;
-import com.eressea.swing.tree.SupportsClipboard;
 import com.eressea.swing.tree.TreeUpdate;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
-import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.swing.tree.UnitListNodeWrapper;
-import com.eressea.swing.tree.ItemCategoryNodeWrapper;
+import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.EresseaRaceConstants;
 import com.eressea.util.EresseaSkillConstants;
 import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.Taggable;
-import com.eressea.util.Translations;
 import com.eressea.util.Umlaut;
 import com.eressea.util.Units;
 import com.eressea.util.comparator.AllianceFactionComparator;
@@ -264,7 +256,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 							isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
 							// the following code only changes the name
 							// right now it is not necessary to refresh the relations; are we sure??
-							data.getGameSpecificStuff().addNamingOrder(u, name.getText());
+							data.getGameSpecificStuff().getOrderChanger().addNamingOrder(u, name.getText());
 							dispatcher.fire(new UnitOrdersEvent(this, u));
 							//if (u.cache != null && u.cache.orderEditor != null) {
 							//	u.cache.orderEditor.reloadOrders();
@@ -281,7 +273,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 						if (isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
 							if (uc.getName() == null && name.getText().equals("") == false || uc.getName() != null && name.getText().equals(uc.getName()) == false) {
-								data.getGameSpecificStuff().addNamingOrder(modUnit, uc, name.getText());
+								data.getGameSpecificStuff().getOrderChanger().addNamingOrder(modUnit, uc, name.getText());
 								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -318,9 +310,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						if ((u.getDescription() == null && description.getText().equals("") == false || u.getDescription() != null && description.getText().equals(u.getDescription()) == false) && isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
 							String descr = getDescriptionPart(description.getText());
 							String privat = getPrivatePart(description.getText());
-							data.getGameSpecificStuff().addDescribeUnitOrder(u, descr);
+							data.getGameSpecificStuff().getOrderChanger().addDescribeUnitOrder(u, descr);
 							if ((u.privDesc == null && privat.length()>0) || (u.privDesc != null && !privat.equals(u.privDesc))) {
-								data.getGameSpecificStuff().addDescribeUnitOrder(u, privat);
+								data.getGameSpecificStuff().getOrderChanger().addDescribeUnitPrivateOrder(u, privat);
 								u.privDesc = privat;
 							}
 							dispatcher.fire(new UnitOrdersEvent(this, u));
@@ -339,7 +331,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 						if (isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
 							if (uc.getDescription() == null && description.getText().equals("") == false || uc.getDescription() != null && description.getText().equals(uc.getDescription()) == false) {
-								data.getGameSpecificStuff().addDescribeUnitContainerOrder(modUnit,uc, normalizeDescription(description.getText()));
+								data.getGameSpecificStuff().getOrderChanger().addDescribeUnitContainerOrder(modUnit,uc, normalizeDescription(description.getText()));
 								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -724,7 +716,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 			String icon=null;
 			try{
-				icon=r.herb.getMakeSkill().getType().getID().toString();
+				icon=r.herb.getMakeSkill().getSkillType().getID().toString();
 			} catch(Exception exc) {
 				icon="kraeuterkunde";
 			}
@@ -1128,15 +1120,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					SkillStatItem item = (SkillStatItem)iter.next();
 //					int bonus = 0;
 //					if (f.getType() != null) {
-//						bonus = ((Race)f.getType()).getSkillBonus(item.skill.getType());
+//						bonus = f.getRace().getSkillBonus(item.skill.getType());
 //						if (lastRegion != null) {
-//							bonus += ((Race)f.getType()).getSkillBonus(item.skill.getType(), lastRegion.getRegionType());
+//							bonus += f.getRace().getSkillBonus(item.skill.getType(), lastRegion.getRegionType());
 //						}
 //					}
-					DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getType().getID().toString());
+					DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getSkillType().getID().toString());
 					skillsNode.add(skillNode);
 					Comparator idCmp = new IDComparator();
-					Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(item.skill.getType(), new SkillComparator(), null), idCmp);
+					Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(item.skill.getSkillType(), new SkillComparator(), null), idCmp);
 					Collections.sort(item.units, unitCmp);
 					for (Iterator uIter = item.units.iterator(); uIter.hasNext(); ) {
 						Unit u = (Unit)uIter.next();
@@ -1243,9 +1235,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					int bonus = 0;
 					Faction f = null;
 					if ((f = g.getFaction()) != null && f.getType() != null) {
-						bonus = ((Race)f.getType()).getSkillBonus(item.skill.getType());
+						bonus = f.getRace().getSkillBonus(item.skill.getSkillType());
 						if (lastRegion != null) {
-							bonus += ((Race)f.getType()).getSkillBonus(item.skill.getType(), lastRegion.getRegionType());
+							bonus += f.getRace().getSkillBonus(item.skill.getSkillType(), lastRegion.getRegionType());
 						}
 					}
 					DefaultMutableTreeNode m = new DefaultMutableTreeNode(new SimpleNodeWrapper(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getType().getID().toString()));
@@ -1763,7 +1755,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		ItemType silver = data.rules.getItemType(StringID.create("Silber"));
 		for (Iterator iter = u.getRegion().items().iterator(); iter.hasNext(); ) {
 			Item item = (Item)iter.next();
-			ItemType type = item.getType();
+			ItemType type = item.getItemType();
 			if (type.getWeight() > 0.0 && !type.equals(horses) && !type.equals(carts) && !type.equals(silver)) {
 				int weight = (int)(type.getWeight() * 100);
 				parent.add(createSimpleNode("Max. " + type.getName() + ": " + (freeCapacity / weight),"items/"+type.getIconName()));
@@ -1779,13 +1771,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		int max = Integer.MAX_VALUE;
 		for (Iterator iter = potion.ingredients().iterator(); iter.hasNext(); ) {
 			Item ingredient = (Item)iter.next();
-			if (ingredient.getType() != null) {
+			if (ingredient.getItemType() != null) {
 				// units can not own peasants!
 				int amount = 0;
-				if (ingredient.getType().equals(data.rules.getItemType(StringID.create("Bauer")))) {
+				if (ingredient.getItemType().equals(data.rules.getItemType(StringID.create("Bauer")))) {
 					amount = region.peasants;
 				} else {
-					Item item = region.getItem(ingredient.getType());
+					Item item = region.getItem(ingredient.getItemType());
 					if (item != null) {
 						amount = item.getAmount();
 					}
@@ -1889,9 +1881,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			if (text.endsWith(" pro Größenpunkt")) {
 				int amount = b.getSize() * i.getAmount();
 				String newText = text.substring(0, text.indexOf(" pro Größenpunkt"));
-				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(amount + " " + newText, "items/"+i.getType().getID().toString()));
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(amount + " " + newText, "items/"+i.getItemType().getID().toString()));
 			} else {
-				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() + " " + text, "items/"+i.getType().getID().toString()));
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() + " " + text, "items/"+i.getItemType().getID().toString()));
 			}
 			n.add(m);
 		}
@@ -1906,7 +1898,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		while (iter.hasNext()) {
 			Item i = (Item)iter.next();
 			String text = i.getName();
-			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() + " " + text, "items/"+i.getType().getID().toString()));
+			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() + " " + text, "items/"+i.getItemType().getID().toString()));
 			n.add(m);
 		}
 
@@ -2230,7 +2222,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(ingredientsNode);
 			for(Iterator iter = p.ingredients().iterator(); iter.hasNext(); ) {
 				Item ingredient = (Item)iter.next();
-				ingredientsNode.add(createSimpleNode(ingredient.getType(), "items/"+ingredient.getType().getIconName()));
+				ingredientsNode.add(createSimpleNode(ingredient.getItemType(), "items/"+ingredient.getItemType().getIconName()));
 			}
 		}
 	}
@@ -2931,7 +2923,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					unit.stealth = newStealth;
 					
 					EMapDetailsPanel.this.show(unit, false);
-					data.getGameSpecificStuff().addHideOrder(unit, e.getActionCommand().toString());
+					data.getGameSpecificStuff().getOrderChanger().addHideOrder(unit, e.getActionCommand().toString());
 					/* Note: Of course it would be better to inform all that a game data object
 					 *       has changed but I think it's not necessary and consumes too much time
 					 *                  Andreas
@@ -2979,7 +2971,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					unit.combatStatus = newState;
 
 					EMapDetailsPanel.this.show(unit, false);
-					data.getGameSpecificStuff().addCombatOrder(unit,newState);
+					data.getGameSpecificStuff().getOrderChanger().addCombatOrder(unit,newState);
 					// Note: Same as in StealthContextMenu
 					//dispatcher.fire(new GameDataEvent(EMapDetailsPanel.this, data));
 					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));

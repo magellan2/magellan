@@ -34,7 +34,6 @@ import javax.swing.ToolTipManager;
 
 import com.eressea.Building;
 import com.eressea.Coordinate;
-import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Unit;
@@ -47,8 +46,8 @@ import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
 import com.eressea.rules.ItemType;
 import com.eressea.swing.InternationalizedDataPanel;
-import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.context.MapContextMenu;
+import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 import com.eressea.util.replacers.ReplacerFactory;
@@ -273,7 +272,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 							break;
 					}
 					if (translationCoord != null) {
-						Coordinate c = new Coordinate((Coordinate)activeRegion.getID());
+						Coordinate c = new Coordinate(activeRegion.getCoordinate());
 						activeRegion = data.getRegion(c.translate(translationCoord));
 						dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null, activeRegion, SelectionEvent.ST_REGIONS));
 						repaint();
@@ -466,7 +465,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			
 			if (newRegion != null) {
 				activeRegion = newRegion;
-				Coordinate c = (Coordinate)activeRegion.getID();
+				Coordinate c = activeRegion.getCoordinate();
 				if (c.z != showLevel) {
 					setLevel(c.z);
 				}
@@ -842,7 +841,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		if (data != null) {
 			Iterator iter = data.regions().values().iterator();
 			while (iter.hasNext()) {
-				Coordinate c = (Coordinate)((Region)iter.next()).getID();
+				Coordinate c = ((Region)iter.next()).getCoordinate();
 				Integer i = new Integer(c.z);
 				if (levels.contains(i) == false) {
 					levels.add(i);
@@ -1037,7 +1036,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		
 		Iterator iter = data.regions().values().iterator();
 		while (iter.hasNext()) {
-			Coordinate c = (Coordinate)((Region)iter.next()).getID();
+			Coordinate c = ((Region)iter.next()).getCoordinate();
 			if (c.z == showLevel) {
 				int x = cellGeometry.getCellPositionX(c.x, c.y);
 				int y = cellGeometry.getCellPositionY(c.x, c.y);

@@ -137,6 +137,7 @@ import com.eressea.util.Locales;
 import com.eressea.util.Log;
 import com.eressea.util.MagellanFinder;
 import com.eressea.util.NameGenerator;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.RendererLoader;
 import com.eressea.util.SelectionHistory;
 import com.eressea.util.TrustLevels;
@@ -288,7 +289,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		}
 
 
-		showStatus = settings.getProperty("Client.ShowOrderStatus", "false").equals("true");
+		showStatus = PropertiesHelper.getboolean(settings,"Client.ShowOrderStatus",false);
 	}
 	
 	public static Image getApplicationIcon() {
@@ -324,17 +325,19 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		
 		/* setup font size */
 		try {
-			float fScale = Float.valueOf( settings.getProperty(
-			"Client.FontScale", "1.0" )).floatValue();
-			UIDefaults table = UIManager.getDefaults();
-			Enumeration eKeys = table.keys();
-			while (eKeys.hasMoreElements()) {
-				Object obj = eKeys.nextElement();
-				Font font = UIManager.getFont( obj );
-				if (font != null) {
-					font = new javax.swing.plaf.FontUIResource(
-					font.deriveFont(font.getSize2D() * fScale));
-					UIManager.put(obj, font);
+			float fScale = PropertiesHelper.getfloat(settings,"Client.FontScale", 1.0f);
+			if(fScale != 1.0f) {
+				// TODO(pavkovic): the following route bloates the fonts in an undesired way, perhaps
+				// we remove this configuration option?
+				UIDefaults table = UIManager.getDefaults();
+				Enumeration eKeys = table.keys();
+				while (eKeys.hasMoreElements()) {
+					Object obj = eKeys.nextElement();
+					Font font = UIManager.getFont( obj );
+					if (font != null) {
+						font = new javax.swing.plaf.FontUIResource(font.deriveFont(font.getSize2D() * fScale));
+						UIManager.put(obj, font);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -374,7 +377,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		// init mapper
 		mapPanel = new MapperPanel(dispatcher, settings, cR, geo);
 		mapPanel.setMinimumSize(new Dimension(100, 10));
-		mapPanel.setScaleFactor(Float.parseFloat(settings.getProperty("Map.scaleFactor", "1.0")));
+		mapPanel.setScaleFactor(PropertiesHelper.getfloat(settings,"Map.scaleFactor", 1.0f));
 		panels.add(mapPanel);
 		components.put("MAP", mapPanel);
 		components.put("MINIMAP", mapPanel.getMinimap());
@@ -1024,7 +1027,9 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 					for (Iterator iter = f.messages.iterator(); iter.hasNext(); ) {
 						Message m = (Message)iter.next();
 						// check message id (new and old)
-						if (m.getType() != null && (((IntegerID)m.getType().getID()).intValue() == 1784377885 || ((IntegerID)m.getType().getID()).intValue() == 19735)) {
+						if (m.getMessageType() != null && 
+							(((IntegerID)m.getMessageType().getID()).intValue() == 1784377885 || 
+							 ((IntegerID)m.getMessageType().getID()).intValue() == 19735)) {
 							// this message indicates that the password has been changed
 							if (m.attributes != null) {
 								String value = (String) m.attributes.get("value");
@@ -1051,7 +1056,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 					}
 				}
 			}
-			// recalculate default-trustlevels after CR-Load:
+			// recalculate default-trustlevels after CR-Load
 			TrustLevels.recalculateTrustLevels(loadedData);
 			if (privFacsWoPwd) { // no password set for any faction
 				JOptionPane.showMessageDialog(getRootPane(), getString("msg.postprocessloadedcr.missingpassword.text"));
@@ -1090,7 +1095,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			}
 			if (units > 0) {
 				BigDecimal percent = (new BigDecimal(((float)done*100)/((float)units))).setScale(2,BigDecimal.ROUND_DOWN);
-				// TODO: round percent
 				title += " (" + units + " " + getString("title.unit")+", " + done + " " +
 				getString("title.done") + ", " + getString("title.thatare")+" " +
 				percent + " "+ getString("title.percent")+")";

@@ -9,10 +9,8 @@
 package com.eressea.demo.desktop;
 
 import java.beans.PropertyChangeListener;
-
-import java.math.BigDecimal;
-
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 import javax.swing.JSplitPane;
 

@@ -201,9 +201,9 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 		if (icon == null) {
 			icon = CollectionFactory.createArrayList(1);
 			if (skill != null) {
-				icon.add(skill.getType().getID().toString());
+				icon.add(skill.getSkillType().getID().toString());
 			} else if (modSkill != null) {
-				icon.add(modSkill.getType().getID().toString());
+				icon.add(modSkill.getSkillType().getID().toString());
 			} else {
 				icon = null;
 			}

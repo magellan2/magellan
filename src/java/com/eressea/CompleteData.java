@@ -8,10 +8,10 @@
 
 package com.eressea;
 
-import com.eressea.util.CollectionFactory;
-
 import java.util.Locale;
 import java.util.Map;
+
+import com.eressea.util.CollectionFactory;
 
 
 

@@ -1,6 +1,7 @@
 package com.eressea.swing.layout;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class GridBagHelper {
 

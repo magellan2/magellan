@@ -12,11 +12,9 @@ package com.eressea.util;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import com.eressea.Coordinate;
 import com.eressea.Faction;
@@ -28,7 +26,6 @@ import com.eressea.StringID;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
-import com.eressea.rules.Race;
 import com.eressea.util.logging.Logger;
 
 
@@ -77,7 +74,7 @@ public class OrderWriter {
 			echeckOptions = echeckOpts;
 		}
 		if (f.getType() != null) {
-			echeckOptions += " -r" + ((Race)faction.getType()).getRecruitmentCosts();
+			echeckOptions += " -r" + faction.getRace().getRecruitmentCosts();
 		}
 	}
 
@@ -155,7 +152,7 @@ public class OrderWriter {
 				name = "Ozean";
 			}
 			stream.write(Translations.getOrderTranslation(EresseaOrderConstants.O_REGION));
-			Coordinate c = (Coordinate)r.getID();
+			Coordinate c = r.getCoordinate();
 			if (c.z == 0) {
 				stream.write(" " + c.x + "," + c.y);
 			} else {

@@ -14,13 +14,13 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
 
 import com.eressea.Border;
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.util.CollectionFactory;
 
 public class BorderCellRenderer extends ImageCellRenderer {
 	
@@ -48,7 +48,7 @@ public class BorderCellRenderer extends ImageCellRenderer {
 						if (img == null) {img = getImage("Strasse" + b.direction);}
 						if (img != null) {
 							if (c == null) {
-								c = (Coordinate)r.getID();
+								c = r.getCoordinate();
 								pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 								pos.translate(-offset.x, -offset.y);
 								size = cellGeo.getImageSize();

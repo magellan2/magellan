@@ -9,11 +9,11 @@
 
 package com.eressea.swing.map;
 
-import java.util.Properties;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
 
 import com.eressea.event.EventDispatcher;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

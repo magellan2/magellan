@@ -6,10 +6,10 @@
 
 package com.eressea.resource;
 
+import java.util.Properties;
+
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
-import java.util.Properties;
 
 /**
  *

@@ -1,6 +1,10 @@
 package com.eressea.swing.layout;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Insets;
 
 /** 
  * This enhancement enables a GridLayout to emulate a GridBagLayout.

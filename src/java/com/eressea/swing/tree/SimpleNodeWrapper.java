@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.swing.context.ContextFactory;
-
 import com.eressea.util.CollectionFactory;
 
 public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changeable, SupportsEmphasizing {

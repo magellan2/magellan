@@ -27,11 +27,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.List;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -48,6 +47,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
 /**

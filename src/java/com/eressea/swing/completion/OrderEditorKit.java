@@ -9,9 +9,9 @@
 package com.eressea.swing.completion;
 
 
+import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.awt.Toolkit;
 
 import javax.swing.Action;
 import javax.swing.text.BadLocationException;

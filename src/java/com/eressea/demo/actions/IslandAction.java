@@ -11,10 +11,10 @@ package com.eressea.demo.actions;
 
 import java.awt.Cursor;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.GameData;
 import com.eressea.demo.Client;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.Islands;
 
 /**

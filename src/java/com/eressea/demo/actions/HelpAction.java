@@ -13,11 +13,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 

@@ -76,7 +76,7 @@ public class Potion extends DescribedObject {
 		if (this.ingredients == null) {
 			this.ingredients = new com.eressea.util.OrderedHashtable();
 		}
-		this.ingredients.put(i.getType().getID(), i);
+		this.ingredients.put(i.getItemType().getID(), i);
 		return i;
 	}
 	
@@ -142,7 +142,7 @@ public class Potion extends DescribedObject {
 			newPotion.clearIngredients();
 			for (Iterator iter = curPotion.ingredients().iterator(); iter.hasNext();) {
 				Item i = (Item)iter.next();
-				com.eressea.rules.ItemType it = newGD.rules.getItemType(i.getType().getID(), true);
+				com.eressea.rules.ItemType it = newGD.rules.getItemType(i.getItemType().getID(), true);
 				newPotion.addIngredient(new Item(it, i.getAmount()));
 			}
 		}

@@ -59,7 +59,7 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	// pavkovic 2003.10.01: prevent multiple Lists to be generated for nearly static code
 	private static Map iconNamesLists = CollectionFactory.createHashtable();
 	public List getIconNames() {
-		Object key = modItem.getType().getIconName();
+		Object key = modItem.getItemType().getIconName();
 		List iconNames = (List) iconNamesLists.get(key);
 		if (iconNames == null) {
 			iconNames=CollectionFactory.singletonList(StringFactory.getFactory().intern("items/"+key));
@@ -80,22 +80,22 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 				showRegion=false;
 			Item item=null;
 			if (unit!=null) {
-				item=unit.getItem(modItem.getType());
+				item=unit.getItem(modItem.getItemType());
 				if (item==null)
-					item=new Item(modItem.getType(),0);
+					item=new Item(modItem.getItemType(),0);
 			}
 			StringBuffer nodeText = new StringBuffer();
 			if (item==null) {
 				nodeText.append(modItem.getAmount()).append(' ');
 				if (showRegion) {
-					Item ri = unit.getRegion().getItem(modItem.getType());
+					Item ri = unit.getRegion().getItem(modItem.getItemType());
 					if (ri != null) {
 						nodeText.append(getString("node.of")).append(' ').append(ri.getAmount()).append(' ');
 					}
 				}
 				nodeText.append(modItem.getName());
-				if (modItem.getType().getWeight() > 0) {
-					float weight = (((int)(modItem.getType().getWeight() * 100)) * modItem.getAmount()) / 100.0f;
+				if (modItem.getItemType().getWeight() > 0) {
+					float weight = (((int)(modItem.getItemType().getWeight() * 100)) * modItem.getAmount()) / 100.0f;
 					nodeText.append(": ").append(weightNumberFormat.format(new Float(weight)));
 					nodeText.append(" " + getString("node.weightunits"));
 				}
@@ -105,18 +105,18 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 					nodeText.append("(").append(modItem.getAmount()).append(") ");
 				}
 				if (showRegion) {
-					Item ri = unit.getRegion().getItem(modItem.getType());
+					Item ri = unit.getRegion().getItem(modItem.getItemType());
 					if (ri != null) {
 						nodeText.append(getString("node.of")).append(' ').append(ri.getAmount()).append(' ');
 					}
 				}
 				nodeText.append(modItem.getName());
-				if (modItem.getType().getWeight() > 0) {
-					if (item.getType().getWeight() > 0) {
-						float weight = (((int)(item.getType().getWeight() * 100)) * item.getAmount()) / 100.0f;
+				if (modItem.getItemType().getWeight() > 0) {
+					if (item.getItemType().getWeight() > 0) {
+						float weight = (((int)(item.getItemType().getWeight() * 100)) * item.getAmount()) / 100.0f;
 						nodeText.append(": ").append(weightNumberFormat.format(new Float(weight)));
 						if (modItem.getAmount() != item.getAmount()) {
-							float modWeight = (((int)(modItem.getType().getWeight() * 100)) * modItem.getAmount()) / 100.0f;
+							float modWeight = (((int)(modItem.getItemType().getWeight() * 100)) * modItem.getAmount()) / 100.0f;
 							nodeText.append(" (").append(weightNumberFormat.format(new Float(modWeight))).append(")");
 						}
 						nodeText.append(" " + getString("node.weightunits"));

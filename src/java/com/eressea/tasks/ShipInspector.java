@@ -1,13 +1,17 @@
 
 package com.eressea.tasks;
 
-import com.eressea.*;
-import com.eressea.rules.*;
-import com.eressea.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-import com.eressea.tasks.*;
-
-import java.util.*;
+import com.eressea.Coordinate;
+import com.eressea.Region;
+import com.eressea.Ship;
+import com.eressea.StringID;
+import com.eressea.util.CollectionFactory;
+import com.eressea.util.Direction;
+import com.eressea.util.Regions;
 
 /** 
  * A Inspector inspects the given resource (TODO: Unit, region or whole gamedata?) 

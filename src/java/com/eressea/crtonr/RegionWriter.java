@@ -203,7 +203,7 @@ public class RegionWriter
 			line = new StringBuffer("Ozean (");
 		else
 			line = new StringBuffer(region.getName()).append(" (");
-		Coordinate coord = (Coordinate)region.getID();
+		Coordinate coord = region.getCoordinate();
 		line.append(coord.toString(",",false)).append("), ");
 		line.append(region.getType());
 		if (region.trees > 0) {
@@ -421,10 +421,6 @@ public class RegionWriter
 			line.append(u.getName()).append(" (");
 			line.append(u.getID().toString()).append(")");
 			Faction f = u.getFaction();
-			// TODO: implementation for these variables missing (id, tttt, iiii)
-			// int id = ((IntegerID)f.getID()).intValue();
-			// String tttt = u.getName();
-			// String iiii = u.getID().toString();
 			if (u.hideFaction)
 				line.append(", anonym");
 			else 
@@ -562,7 +558,7 @@ public class RegionWriter
 			line.append(r.getName());
 		}
 		line.append(" (");
-		line.append(((Coordinate)r.getID()).toString(","));
+		line.append(r.getCoordinate().toString(","));
 		line.append(")");
 	}
 	
@@ -612,7 +608,7 @@ public class RegionWriter
 		else
 			line.append(region.getName());
 		line.append(" (");
-		line.append(((Coordinate)region.getID()).toString(",")).append("):");
+		line.append(region.getCoordinate().toString(",")).append("):");
 		out.println();
 		out.println(line);
 		out.println();
@@ -772,7 +768,7 @@ public class RegionWriter
 	
 	protected Region findRegion(Region r, int offsetX, int offsetY)
 	{
-		Coordinate coord = (Coordinate)r.getID();
+		Coordinate coord = r.getCoordinate();
 		int x = coord.x + offsetX;
 		int y = coord.y + offsetY;
 		coord = new Coordinate(x,y);

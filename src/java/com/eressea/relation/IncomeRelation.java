@@ -1,11 +1,11 @@
 package com.eressea.relation;
 
-import com.eressea.Unit;
 import com.eressea.Region;
+import com.eressea.Unit;
 
 /** 
  * A relation indicating earning money from a unit container (region)
- * based on O_WORK, (O_STEAL) (O_BUY) O_TAX, O_ENTERTAIN (O_SELL)
+ * based on WORK, (STEAL) (BUY) TAX, ENTERTAIN (SELL)
  */
 public class IncomeRelation extends UnitContainerRelation implements LongOrderRelation {
 	public final int amount;
