@@ -295,6 +295,13 @@
         <!-- pavkovic 2003.11.12: ignore jfreechart for now -->
         <exclude name="**/lib/jfreechart*.*"/>
         <exclude name="build/**"/>
+        <!-- pavkovic 2003.11.13: ignore buildlib for now -->
+        <exclude name="buildlib/**"/>
+        <exclude name="build.sh"/>
+        <exclude name="ant.bat"/>
+        <exclude name="build.bat"/>
+        <!-- pavkovic 2003.11.13: ignore tools for now -->
+        <exclude name="tools/**"/>
       </fileset>
     </copy>
     <mkdir dir="${BUILD}/release.src/magellan-help"/>
@@ -331,7 +338,7 @@
   </target>
 
   <target name="tagVersion" depends="distribution">
-    <cvs command='tag -R "v${VERSION}"'/>
+    <cvs command='tag -r "v${VERSION}"'/>
   </target>
 
   <target name="test" depends="compile.magellan">
