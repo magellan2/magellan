@@ -11,7 +11,6 @@ package com.eressea.cr;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.io.Reader;
 import java.util.List;
 import java.util.Locale;
@@ -27,11 +26,9 @@ import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
-import com.eressea.util.file.*;
 import com.eressea.HotSpot;
 import com.eressea.ID;
 import com.eressea.IntegerID;
-import com.eressea.io.RulesIO;
 import com.eressea.Island;
 import com.eressea.Item;
 import com.eressea.LongID;
@@ -48,6 +45,8 @@ import com.eressea.Spell;
 import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.UnitID;
+import com.eressea.io.RulesIO;
+import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
 import com.eressea.rules.EresseaDate;
@@ -56,7 +55,6 @@ import com.eressea.rules.Herb;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.MessageType;
-import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.OptionCategory;
 import com.eressea.rules.Options;
 import com.eressea.rules.Race;
@@ -66,6 +64,7 @@ import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -840,7 +839,6 @@ public class CRParser implements RulesIO {
 		if (sc.argv[0].startsWith("ITEM ")) {
 			itemType = rules.getItemType(StringID.create(id),true);
 		} else if (sc.argv[0].startsWith("HERB ")) {
-			// TODO: REWORK !!! ! ! !!! !FIXME(pavkovic)!!!!
 			itemType = rules.getHerb(StringID.create(id),true);
 		}
 		itemType.setName(id);
@@ -2305,7 +2303,7 @@ public class CRParser implements RulesIO {
 					region.mallorn = false;
 				sc.getNextToken();
 			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("herb")) {
-				ItemType type = world.rules.getItemType(StringID.create(sc.argv[0]), true);
+				ItemType type = world.rules.getHerb(StringID.create(sc.argv[0]), true);
 				region.herb = type;
 				sc.getNextToken();
 			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("herbamount")) {

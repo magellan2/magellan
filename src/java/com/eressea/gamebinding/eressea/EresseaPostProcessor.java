@@ -42,54 +42,6 @@ public class EresseaPostProcessor {
 	}
 
 	public void postProcess(GameData data) {
-		// initialize fog-of-war cache (FIXME(pavkovic): Do it always?)
-		{
-			// intialize the fog-of-war cache for all regions that are covered by lighthouses
-			if (data.buildings() != null) {
-				BuildingType type = data.rules.getBuildingType(StringID.create("Leuchtturm"));
-				RegionType oceanType = data.rules.getRegionType(StringID.create("Ozean"));
-				Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
-				if (type != null) {
-					for (Iterator iter = data.buildings().values().iterator(); iter.hasNext();) {
-						Building b = (Building)iter.next();
-						if (type.equals(b.getType()) && b.getSize() >= 10) {
-							int personCounter = 0;
-							int perceptionSkillLevel = 0;
-							List sortedInmates = CollectionFactory.createLinkedList(b.units());
-							Collections.sort(sortedInmates, sortIndexComparator);
-							for (Iterator inmates = sortedInmates.iterator(); inmates.hasNext() && personCounter < 4; personCounter++) {
-								Unit inmate = (Unit)inmates.next();
-								Skill perceptionSkill = inmate.getSkill(data.rules.getSkillType(EresseaConstants.S_WAHRNEHMUNG, true));
-								if (perceptionSkill != null) {
-									perceptionSkillLevel = Math.max(perceptionSkill.getLevel(), perceptionSkillLevel);
-								}
-							}
-							int maxRadius = (int)Math.min((Math.log(b.getSize())/Math.log(10)) + 1, perceptionSkillLevel / 3);
-							if (maxRadius > 0) {
-								Map regions = Regions.getAllNeighbours(data.regions(), b.getRegion().getCoordinate(), maxRadius, null);
-								for (Iterator regionIter = regions.values().iterator(); regionIter.hasNext();) {
-									Region r = (Region)regionIter.next();
-									if (oceanType == null || oceanType.equals(r.getType())) {
-										r.setFogOfWar(0);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			// intialize the fog-of-war cache for all regions where units or ships traveled through
-			for (Iterator iterator = data.regions().values().iterator(); iterator.hasNext(); ) {
-				Region r = (Region)iterator.next();
-				if (r.travelThru!=null) {
-					initTravelThru(data, r, r.travelThru);
-				}
-				if (r.travelThruShips!=null) {
-					initTravelThru(data, r, r.travelThruShips);
-				}
-			}
-		}
-
 		/* scan the messages for additional information */
 		if (data != null && data.factions() != null) {
 			for (Iterator factions = data.factions().values().iterator(); factions.hasNext(); ) {
@@ -267,7 +219,55 @@ public class EresseaPostProcessor {
 				}
 			}
 		}
-		data.resetToUnchanged();
+	}
+
+	public void postProcessAfterTrustlevelChange(GameData data) {
+		// initialize fog-of-war cache (FIXME(pavkovic): Do it always?)
+		
+		// intialize the fog-of-war cache for all regions that are covered by lighthouses
+		if (data.buildings() != null) {
+			BuildingType type = data.rules.getBuildingType(StringID.create("Leuchtturm"));
+			RegionType oceanType = data.rules.getRegionType(StringID.create("Ozean"));
+			Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
+			if (type != null) {
+				for (Iterator iter = data.buildings().values().iterator(); iter.hasNext();) {
+					Building b = (Building)iter.next();
+					if (type.equals(b.getType()) && b.getSize() >= 10) {
+						int personCounter = 0;
+						int perceptionSkillLevel = 0;
+						List sortedInmates = CollectionFactory.createLinkedList(b.units());
+						Collections.sort(sortedInmates, sortIndexComparator);
+						for (Iterator inmates = sortedInmates.iterator(); inmates.hasNext() && personCounter < 4; personCounter++) {
+							Unit inmate = (Unit)inmates.next();
+							Skill perceptionSkill = inmate.getSkill(data.rules.getSkillType(EresseaConstants.S_WAHRNEHMUNG, true));
+							if (perceptionSkill != null) {
+								perceptionSkillLevel = Math.max(perceptionSkill.getLevel(), perceptionSkillLevel);
+							}
+						}
+						int maxRadius = (int)Math.min((Math.log(b.getSize())/Math.log(10)) + 1, perceptionSkillLevel / 3);
+						if (maxRadius > 0) {
+							Map regions = Regions.getAllNeighbours(data.regions(), b.getRegion().getCoordinate(), maxRadius, null);
+							for (Iterator regionIter = regions.values().iterator(); regionIter.hasNext();) {
+								Region r = (Region)regionIter.next();
+								if (oceanType == null || oceanType.equals(r.getType())) {
+									r.setFogOfWar(0);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		// intialize the fog-of-war cache for all regions where units or ships traveled through
+		for (Iterator iterator = data.regions().values().iterator(); iterator.hasNext(); ) {
+			Region r = (Region)iterator.next();
+			if (r.travelThru!=null) {
+				initTravelThru(data, r, r.travelThru);
+			}
+			if (r.travelThruShips!=null) {
+				initTravelThru(data, r, r.travelThruShips);
+			}
+		}
 	}
 
 	private void initTravelThru(GameData data, Region region, Collection travelThru) {

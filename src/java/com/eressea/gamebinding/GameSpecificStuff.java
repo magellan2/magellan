@@ -22,7 +22,7 @@ public interface GameSpecificStuff {
 	 * @param data the GameData object to process.
 	 */
 	public void postProcess(GameData data);
-
+	public void postProcessAfterTrustlevelChange(GameData data);
 
 	// for Unit
 	/** 

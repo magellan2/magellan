@@ -16,6 +16,10 @@ public class EresseaSpecificStuff implements GameSpecificStuff {
 		EresseaPostProcessor.getSingleton().postProcess(data);
 	}
 
+	public void postProcessAfterTrustlevelChange(GameData data) {
+		EresseaPostProcessor.getSingleton().postProcessAfterTrustlevelChange(data);
+	}
+
 	public OrderChanger getOrderChanger() {
 		return EresseaOrderChanger.getSingleton();
 	}

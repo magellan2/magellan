@@ -1,12 +1,8 @@
 package com.eressea.io.xml;
 
-import java.io.*;
-
-
-// standard java imports
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public class XMLIOException extends IOException {
 	private Exception exception;

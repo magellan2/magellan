@@ -1,6 +1,142 @@
 VERSION 41
 RULES "$Id$"
 
+OPTIONCATEGORY "REPORT"
+"REPORT";name
+"true";order
+0;bitmask
+
+OPTIONCATEGORY "COMPUTER"
+"COMPUTER";name
+"true";order
+1;bitmask
+
+OPTIONCATEGORY "ZUGVORLAGE"
+"ZUGVORLAGE";name
+"true";order
+2;bitmask
+
+OPTIONCATEGORY "SILBERPOOL"
+"SILBERPOOL";name
+"true";order
+3;bitmask
+
+OPTIONCATEGORY "STATISTIK"
+"STATISTIK";name
+"true";order
+4;bitmask
+
+OPTIONCATEGORY "DEBUG"
+"DEBUG";name
+"false";order
+5;bitmask
+
+OPTIONCATEGORY "ZIPPED"
+"ZIPPED";name
+"true";order
+6;bitmask
+
+OPTIONCATEGORY "ZEITUNG"
+"ZEITUNG";name
+"false";order
+7;bitmask
+
+OPTIONCATEGORY "MATERIALPOOL"
+"MATERIALPOOL";name
+"true";order
+8;bitmask
+
+OPTIONCATEGORY "ADRESSEN"
+"ADRESSEN";name
+"true";order
+9;bitmask
+
+OPTIONCATEGORY "BZIP2"
+"BZIP2";name
+"true";order
+10;bitmask
+
+OPTIONCATEGORY "PUNKTE"
+"PUNKTE";name
+"false";order
+11;bitmask
+
+ALLIANCECATEGORY "SILBER"
+"SILVER";name
+1;bitmask
+
+ALLIANCECATEGORY "KÄMPFE"
+"COMBAT";name
+2;bitmask
+
+ALLIANCECATEGORY "GIB"
+"GIVE";name
+8;bitmask
+
+ALLIANCECATEGORY "BEWACHEN"
+"GUARD";name
+16;bitmask
+
+ALLIANCECATEGORY "PARTEITARNUNG"
+"FACTIONSTEALTH";name
+32;bitmask
+
+ALLIANCECATEGORY "WHATEVER"
+"WHATEVER";name
+64;bitmask
+
+ALLIANCECATEGORY "ALLES"
+"ALL";name
+123;bitmask
+
+ITEMCATEGORY "weapons"
+"Waffen";name
+0;naturalorder
+
+ITEMCATEGORY "front weapons"
+"Front-Waffen";name
+0;naturalorder
+"weapons";parent
+
+ITEMCATEGORY "distance weapons"
+"Distanz-Waffen";name
+1;naturalorder
+"weapons";parent
+
+ITEMCATEGORY "ammunition"
+"Munition";name
+2;naturalorder
+"weapons";parent
+
+ITEMCATEGORY "armour"
+"Rüstungen";name
+1;naturalorder
+
+ITEMCATEGORY "shield"
+"Schilde";name
+0;naturalorder
+"armour";parent
+
+ITEMCATEGORY "resources"
+"Ressourcen";name
+2;naturalorder
+
+ITEMCATEGORY "luxuries"
+"Luxusgüter";name
+3;naturalorder
+
+ITEMCATEGORY "herbs"
+"Kräuter";name
+4;naturalorder
+
+ITEMCATEGORY "potions"
+"Tränke";name
+5;naturalorder
+
+ITEMCATEGORY "misc"
+"Sonstiges";name
+6;naturalorder
+
 SKILLCATEGORY "war"
 "Kampf";name
 0;naturalorder
@@ -33,6 +169,134 @@ SKILLCATEGORY "trade"
 SKILLCATEGORY "misc"
 "Sonstiges";name
 6;naturalorder
+
+HERB "Flachwurz"
+"Flachwurz";name
+"Ebene";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Würziger Wagemut"
+"Würziger Wagemut";name
+"Ebene";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Eulenauge"
+"Eulenauge";name
+"Ebene";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Grüner Spinnerich"
+"Grüner Spinnerich";name
+"Wald";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Blauer Baumringel"
+"Blauer Baumringel";name
+"Wald";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Elfenlieb"
+"Elfenlieb";name
+"Wald";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Gurgelkraut"
+"Gurgelkraut";name
+"Sumpf";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Knotiger Saugwurz"
+"Knotiger Saugwurz";name
+"Sumpf";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Blasenmorchel"
+"Blasenmorchel";name
+"Sumpf";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Wasserfinder"
+"Wasserfinder";name
+"Wüste";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Kakteenschwitz"
+"Kakteenschwitz";name
+"Wüste";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Sandfäule"
+"Sandfäule";name
+"Wüste";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Windbeutel"
+"Windbeutel";name
+"Hochland";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Fjordwuchs"
+"Fjordwuchs";name
+"Hochland";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Alraune"
+"Alraune";name
+"Hochland";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Steinbeißer"
+"Steinbeißer";name
+"Gebirge";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Spaltwachs"
+"Spaltwachs";name
+"Gebirge";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Höhlenglimm"
+"Höhlenglimm";name
+"Gebirge";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Eisblume"
+"Eisblume";name
+"Gletscher";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Weißer Wüterich"
+"Weißer Wüterich";name
+"Gletscher";region
+"herbs";category
+"kraeuter";iconname
+
+HERB "Schneekristall"
+"Schneekristall";name
+"Gletscher";region
+"herbs";category
+"kraeuter";iconname
+
+
 
 SKILL "Alchemie"
 "Alchemie";name
@@ -407,53 +671,6 @@ RACE "Untote"
 "Untote";name
 10;weight
 
-ITEMCATEGORY "weapons"
-"Waffen";name
-0;naturalorder
-
-ITEMCATEGORY "front weapons"
-"Front-Waffen";name
-0;naturalorder
-"weapons";parent
-
-ITEMCATEGORY "distance weapons"
-"Distanz-Waffen";name
-1;naturalorder
-"weapons";parent
-
-ITEMCATEGORY "ammunition"
-"Munition";name
-2;naturalorder
-"weapons";parent
-
-ITEMCATEGORY "armour"
-"Rüstungen";name
-1;naturalorder
-
-ITEMCATEGORY "shield"
-"Schilde";name
-0;naturalorder
-"armour";parent
-
-ITEMCATEGORY "resources"
-"Ressourcen";name
-2;naturalorder
-
-ITEMCATEGORY "luxuries"
-"Luxusgüter";name
-3;naturalorder
-
-ITEMCATEGORY "herbs"
-"Kräuter";name
-4;naturalorder
-
-ITEMCATEGORY "potions"
-"Tränke";name
-5;naturalorder
-
-ITEMCATEGORY "misc"
-"Sonstiges";name
-6;naturalorder
 
 ITEM "Silber"
 "Silber";name
@@ -996,131 +1213,6 @@ ITEM "Trollhorn"
 "misc";category
 1;weight
 
-HERB "Flachwurz"
-"Flachwurz";name
-"Ebene";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Würziger Wagemut"
-"Würziger Wagemut";name
-"Ebene";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Eulenauge"
-"Eulenauge";name
-"Ebene";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Grüner Spinnerich"
-"Grüner Spinnerich";name
-"Wald";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Blauer Baumringel"
-"Blauer Baumringel";name
-"Wald";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Elfenlieb"
-"Elfenlieb";name
-"Wald";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Gurgelkraut"
-"Gurgelkraut";name
-"Sumpf";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Knotiger Saugwurz"
-"Knotiger Saugwurz";name
-"Sumpf";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Blasenmorchel"
-"Blasenmorchel";name
-"Sumpf";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Wasserfinder"
-"Wasserfinder";name
-"Wüste";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Kakteenschwitz"
-"Kakteenschwitz";name
-"Wüste";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Sandfäule"
-"Sandfäule";name
-"Wüste";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Windbeutel"
-"Windbeutel";name
-"Hochland";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Fjordwuchs"
-"Fjordwuchs";name
-"Hochland";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Alraune"
-"Alraune";name
-"Hochland";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Steinbeißer"
-"Steinbeißer";name
-"Gebirge";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Spaltwachs"
-"Spaltwachs";name
-"Gebirge";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Höhlenglimm"
-"Höhlenglimm";name
-"Gebirge";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Eisblume"
-"Eisblume";name
-"Gletscher";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Weißer Wüterich"
-"Weißer Wüterich";name
-"Gletscher";region
-"herbs";category
-"kraeuter";iconname
-
-HERB "Schneekristall"
-"Schneekristall";name
-"Gletscher";region
-"herbs";category
-"kraeuter";iconname
 
 SHIPTYPE "Boot"
 "Boot";name
@@ -1542,94 +1634,10 @@ REGIONTYPE "Wald"
 
 REGIONTYPE "Ozean"
 "Ozean";name
+0;maxworkers
 
 REGIONTYPE "Feuerwand"
 "Feuerwand";name
+0;maxworkers
 
-OPTIONCATEGORY "REPORT"
-"REPORT";name
-"true";order
-0;bitmask
 
-OPTIONCATEGORY "COMPUTER"
-"COMPUTER";name
-"true";order
-1;bitmask
-
-OPTIONCATEGORY "ZUGVORLAGE"
-"ZUGVORLAGE";name
-"true";order
-2;bitmask
-
-OPTIONCATEGORY "SILBERPOOL"
-"SILBERPOOL";name
-"true";order
-3;bitmask
-
-OPTIONCATEGORY "STATISTIK"
-"STATISTIK";name
-"true";order
-4;bitmask
-
-OPTIONCATEGORY "DEBUG"
-"DEBUG";name
-"false";order
-5;bitmask
-
-OPTIONCATEGORY "ZIPPED"
-"ZIPPED";name
-"true";order
-6;bitmask
-
-OPTIONCATEGORY "ZEITUNG"
-"ZEITUNG";name
-"false";order
-7;bitmask
-
-OPTIONCATEGORY "MATERIALPOOL"
-"MATERIALPOOL";name
-"true";order
-8;bitmask
-
-OPTIONCATEGORY "ADRESSEN"
-"ADRESSEN";name
-"true";order
-9;bitmask
-
-OPTIONCATEGORY "BZIP2"
-"BZIP2";name
-"true";order
-10;bitmask
-
-OPTIONCATEGORY "PUNKTE"
-"PUNKTE";name
-"false";order
-11;bitmask
-
-ALLIANCECATEGORY "SILBER"
-"SILVER";name
-1;bitmask
-
-ALLIANCECATEGORY "KÄMPFE"
-"COMBAT";name
-2;bitmask
-
-ALLIANCECATEGORY "GIB"
-"GIVE";name
-8;bitmask
-
-ALLIANCECATEGORY "BEWACHEN"
-"GUARD";name
-16;bitmask
-
-ALLIANCECATEGORY "PARTEITARNUNG"
-"FACTIONSTEALTH";name
-32;bitmask
-
-ALLIANCECATEGORY "WHATEVER"
-"WHATEVER";name
-64;bitmask
-
-ALLIANCECATEGORY "ALLES"
-"ALL";name
-123;bitmask

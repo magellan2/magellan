@@ -12,7 +12,6 @@ package com.eressea.cr;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.util.Map;
@@ -20,13 +19,14 @@ import java.util.Map;
 import com.eressea.CompleteData;
 import com.eressea.GameData;
 import com.eressea.Rules;
+import com.eressea.io.xml.XMLRulesIO;
 import com.eressea.resource.ResourcePathClassLoader;
-import com.eressea.io.xml.*;
 import com.eressea.rules.GenericRules;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.file.CopyFile;
 import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
+import com.eressea.util.TrustLevels;
 
 
 public class Loader {
@@ -79,6 +79,10 @@ public class Loader {
 		file.close();
 		/* the gamedata is read. now we do the necessary post processing. */
 		newData.postProcess();
+		// recalculate default-trustlevels after CR-Load
+		TrustLevels.recalculateTrustLevels(newData);
+
+		newData.resetToUnchanged();
 		return newData;
 	}
 
