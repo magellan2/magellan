@@ -1940,7 +1940,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 */
 		public void run() {
 			e.formatTokens();
-			e.setModified(false);
+			// this is not allowed as it may prevent storing of changed orders of a unit!
+			// e.setModified(false);
 		}
 	}
 
