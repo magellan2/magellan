@@ -91,12 +91,8 @@ public class CombatSpell extends Identifiable {
 	 * @return combat spell object as string.
 	 */
 	public String toString() {
-		Spell s = getSpell();
-		if (s != null) {
-			return s.getTypeName() + ", " + getCastingLevel() + ": " + s.toString();
-		} else {
-			return "";
-		}
+		return getSpell() == null ? "" :
+			getSpell().getTypeName() + ", " + getCastingLevel() + ": " + getSpell().toString();
 	}
 	
 	/**
@@ -109,11 +105,8 @@ public class CombatSpell extends Identifiable {
 	 * CombatSpell object.
 	 */
 	public boolean equals(Object o) {
-		if (o instanceof CombatSpell) {
-			return this.getID().equals(((CombatSpell)o).getID());
-		} else {
-			return false;
-		}
+		return this == o ||
+			(o instanceof CombatSpell && this.getID().equals(((CombatSpell)o).getID()));
 	}
 	
 	/**

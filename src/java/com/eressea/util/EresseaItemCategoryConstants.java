@@ -15,7 +15,7 @@ import com.eressea.StringID;
 /**
  * Contains the IDs of all Eressea item type categories.
  */
-public interface EresseaItemCategoryConstants {
+public class EresseaItemCategoryConstants {
 	public static final ID C_WEAPONS   = StringID.create("WEAPONS");
 	public static final ID C_ARMOUR    = StringID.create("ARMOUR");
 	public static final ID C_RESOURCES = StringID.create("RESOURCES");
