@@ -123,9 +123,6 @@ public abstract class MenuAction extends AbstractAction {
 		this.putValue(Action.SMALL_ICON, icon);
 	}
 
-	/**
-		 *
-		 */
 	public String getIconName() {
 		// String className = this.getClass().getName().toLowerCase();
 		// int pos = className.lastIndexOf(".");

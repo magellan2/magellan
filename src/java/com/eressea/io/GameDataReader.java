@@ -117,7 +117,7 @@ public class GameDataReader {
 		return newData;
 	}
 
-	private GameData createGameData(String aGameName) throws IOException {
+	public GameData createGameData(String aGameName) throws IOException {
 		Rules rules = new RulesReader().readRules(aGameName);
 
 		if(rules == null) {

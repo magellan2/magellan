@@ -17,8 +17,8 @@ import com.eressea.rules.ItemType;
 
 /**
  * A class representing an item in Eressea. Items are qualified by their type and a certain amount.
- * Mark that the item class is quite 'bare', i.e. its name and identifiability are not enforced
- * by sub-classing the respective interfaces.
+ * Mark that the item class is quite 'bare', i.e. its name and identifiability are not enforced by
+ * sub-classing the respective interfaces.
  */
 public class Item {
 	private ItemType type;

@@ -22,11 +22,8 @@ import java.util.List;
  * @version $Revision$
  */
 public interface CellObject2 extends CellObject {
-	/**
-		 *
-		 */
+
 	List getGraphicsElements();
 
-	/** */
 	boolean reverseOrder();
 }
