@@ -324,7 +324,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * The items carried by this unit. The keys are the IDs of the item's type, the values are the
 	 * Item objects themselves.
 	 */
-	public Map items = null;
+	protected Map items = null;
 
 	/**
 	 * The spells known to this unit. The keys are the IDs of the spells, the values are the Spell
