@@ -1,3 +1,7 @@
+2004-03-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/UnitContainer.java: Bugfix for bugzilla bug 801.
+
 2004-02-29 <Ulrich Küster@uni-jena.de>
 	* Some performance related issues, reduced memory consumption
 	  by avoiding unnecessary String allocations
