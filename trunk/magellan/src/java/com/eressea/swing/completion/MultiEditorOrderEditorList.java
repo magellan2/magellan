@@ -2262,9 +2262,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 				while(true) {
 					if(first) { // reset if it's the first dialog for this temp unit
-						dialog.show(newID.toString());
+						dialog.show(newID.toString(),parentUnit.getName());
 					} else { // do not reset if we had formerly wrong data
-						dialog.show();
+						dialog.show(parentUnit.getName());
 					}
 
 					first = false;

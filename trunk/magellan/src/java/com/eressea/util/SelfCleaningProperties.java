@@ -82,6 +82,13 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 	 * @param name the name of the current property to check for cleaning.
 	 */
 	private void doClean(String name) {
+		if(doRemoveProperty(name,"AgingProperties.numberofsessions")) {
+			return;
+		}
+		if(doRemoveProperty(name,"AgingProperties.sessionsofkeys")) {
+			return;
+		}
+
 		if(1==2) {
 			if(doRemoveProperty(name, "EMapOverviewPanel.displayIslands")) {
 				// after a property has been removed, we dont need more checks

@@ -14,6 +14,7 @@
 package com.eressea.util;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Window;
 
@@ -49,6 +50,34 @@ public class JVMUtilities {
 
 			return Color.black;
 		}
+	}
+
+	/** 
+	 * Request the focus in the current window.
+	 */
+
+	public static final boolean requestFocusInWindow(Component aObj) {
+		try {
+			Object result = aObj.getClass()
+				.getMethod("requestFocusInWindow", new Class[] {  })
+				.invoke(aObj, new Object[] {  });
+
+			if(log.isDebugEnabled()) {
+				log.debug("JVMUtitities : successfully called Component.requestFocusInWindow()!");
+			}
+
+			return ((Boolean) result).booleanValue();
+		} catch(java.lang.NoSuchMethodException ex) {
+		} catch(java.lang.IllegalAccessException ex) {
+		} catch(java.lang.reflect.InvocationTargetException ex) {
+		} catch(ClassCastException ex) {
+			if(log.isDebugEnabled()) {
+				log.debug(ex);
+			}
+		}
+		// fallback for java < 1.4
+		aObj.requestFocus();
+		return false;
 	}
 
 	/**

@@ -1,12 +1,3 @@
--------------------------------------------------------------------------------
-Noch n Featurewunsch via Mail. Nicht böse sein, sitze im Zug. Kannst du die
-Nummer von Einheiten, Gebäuden und Schiffen in die Details aufnehmen?
-Oftmals steht die Nummer einer Einheit im Baum so weit rechts, dass sie nur
-durch ausgiebiges scrollen sichtbar wird. Danach muss man dann auch noch
-wieder zurückscrollen.
-
-
-
 
 -------------------------------------------------------------------------------
 move eressea specific stuff to com.eressea.gamebinding.eressea
@@ -50,3 +41,61 @@ Extend Inspectors with following logic:
 -Ueberbelegung von Gebaeuden (Kennzeichnung der "aussenstehenden" Einheiten)
 -usw.
 
+
+
+-------------------------------------------------------------------------------
+Bugzilla Bug 776
+   Regionsbaum: Einheitsnamen zwischen Talente und Gegenstände  
+
+Moin!
+
+Ich würde die Reihenfolge der Icons & Namen & Nummer gerne konfigurierbar
+machen. Bisher kann man zwar den Namen voranstellen, dies macht es aber
+unübersichtlich, weil die Talente doch stark beim Identifizieren der Einheit
+helfen. Stellt man den Namen nach hinten, sieht man ihn bei einer EInheit mit
+vielen Gegenständen nicht mehr. 
+
+Alterantiv könnte es reichen, wenn das Kategorisieren von Gegenständen
+wengistens im Regionsbaum wieder funzen würde - dann sieht man wenigstens
+Kräuter und Handelswaren nicht x-mal.
+
+Reinhaun,
+Hinnerk
+-------------------------------------------------------------------------------
+Bugzilla Bug 753  
+   Durchschiffungsmeldungen und Seeschlangensichtungen  
+Hallo!
+
+Ist es möglich in Magellan (analog zu den zusätzlich auf der Karte
+darstellbaren Gebäuden) Durchschiffungsmeldungen und Seeschlangensichtungen
+grafisch darstellen zu lassen? Am besten noch mit Freund/Feind-Kennung. Zur
+Zeit sieht man es nur in Ozeanregionsmeldungen (die keiner ernsthaft jede
+Woche abruft). Schön wäre eine Angabe über die Richtungspfeile (bei 
+Durchschiffungen).
+
+
+Gruß
+
+Tarvo
+
+
+------- Additional Comments From Tarvo 2003-09-20 14:36 -------
+
+Einfache Punkte als Ozeanregionmarker reichen auch
+
+Gelb Seeschlangen
+Blau alle Durchschiffungen von Schiffen, die nicht mehr im Report sind
+Rot alle Regionen mit Schiffen, bei denen keine Einheiten mit
+Vertrauenslevel 100 drin sind
+Grün alle Regionen mit eigenen Schiffen
+Schwarz alle Ozeanregionen, in denen ein Kampf stattgefunden hat
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------

@@ -1,3 +1,11 @@
+2004-01-15  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/SelfCleaningProperties.java: remove 
+	AgingProperties.
+
+	* src/java/com/eressea/swing/completion/TempUnitDialog.java: set
+	name from parent unit an mark it (bug 765).
+
 2004-01-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/Group.java (toString): removed id information.
