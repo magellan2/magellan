@@ -1176,6 +1176,19 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
+		// MERGE FACTIONS, SECOND PASS
+		// must be done before merging units to keep group information
+		if(gd2.factions() != null) {
+			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
+				Faction curFaction = (Faction) iter.next();
+				Faction newFaction = newGD.getFaction(curFaction.getID());
+				
+				// second pass
+				Faction.merge(gd2, curFaction, newGD, newFaction);
+			}
+		}
+		
+
 		// MERGE UNITS
 
 		/* Note: To gather level change informations all units are used.
@@ -1222,17 +1235,6 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
-		// MERGE FACTIONS, SECOND PASS
-		if(gd2.factions() != null) {
-			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
-				Faction curFaction = (Faction) iter.next();
-				Faction newFaction = newGD.getFaction(curFaction.getID());
-				
-				// second pass
-				Faction.merge(gd2, curFaction, newGD, newFaction);
-			}
-		}
-		
 		// MERGE REGIONS, SECOND PASS
 		if(gd2.regions() != null) {
 			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
