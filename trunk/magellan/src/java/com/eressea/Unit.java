@@ -23,6 +23,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Properties;
+import com.eressea.util.IDBaseConverter;
 
 import com.eressea.gamebinding.MovementEvaluator;
 
@@ -826,6 +828,112 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	}
 
 	/**
+	 * Creates a temp id.
+	 * @param data The current GameData object
+	 * @param settings The active settings
+	 * @param parentUnit The parent unit of the temp unit (maybe null)
+	 * @return the new temp id. Notize: The id will represent a positive
+	 * int value, although Magellan expects temp ids to be negative.
+	 * Thus before creating a temp unit with this id, the id has to
+	 * be inverted. Bad thing, kept this way due to consistency with old code.
+	 * Should be corrected someday.
+	 */
+	public static UnitID createTempID(GameData data, Properties settings, Unit parentUnit) {
+		UnitID id = null;
+		if (data.getCurTempID() == -1) {
+			// uninitialized
+			String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
+			data.setCurTempID(s);
+		}
+		if (data.getCurTempID() == 0 && parentUnit != null) {
+			// use old system: same id as parent unit
+			id = (UnitID)parentUnit.getID();
+			int i = id.intValue();
+			while (data.tempUnits().get(UnitID.createUnitID(-i)) != null) {
+				i = getNextDecimalID(i, true);
+			}
+			id = UnitID.createUnitID(i);
+		} else {
+			int i = data.getCurTempID();
+			UnitID checkID = UnitID.createUnitID(-i);
+			while (data.tempUnits().get(checkID) != null) {
+				boolean ascending = settings.getProperty("ClientPreferences.ascendingOrder", "true").
+									equalsIgnoreCase("true");
+
+				if (settings.getProperty("ClientPreferences.countDecimal",
+										 "true").equalsIgnoreCase("true")) {
+					i = getNextDecimalID(i, ascending);
+				} else {
+					if (ascending) {
+						i++;
+					} else {
+						i--;
+					}
+				}
+				if (ascending) {
+					if (i > IDBaseConverter.getMaxId(data.base)) {
+						i = 1;
+					}
+				} else {
+					if (i <= 0) {
+						i = IDBaseConverter.getMaxId(data.base);
+					}
+				}
+				checkID = UnitID.createUnitID(-i);
+			}
+			data.setCurTempID(i);
+			id = UnitID.createUnitID(-checkID.intValue());
+		}
+		return id;
+	}
+
+
+	/**
+	 * @param i
+	 * @param ascending
+	 * @return the next int, that is bigger than the given one but consists only out of decimal
+	 * 		   digits (interpreted in the current base) if the given int did so also.
+	 */
+	private static int getNextDecimalID(int i, boolean ascending) {
+		int base = IDBaseConverter.getBase();
+
+		if(ascending) {
+			i++;
+			if((i % base) == 10) {
+				i += (base - 10);
+			}
+			if((i % (base * base)) == (base * 10)) {
+				i += ((base - 10) * base * base);
+			}
+			if((i % (base * base * base)) == (base * base * 10)) {
+				i += ((base - 10) * base * base * base);
+			}
+			if (i > IDBaseConverter.getMaxId()) {
+				i = 1;
+			}
+		} else {
+			if(i == 0) {
+				i = (base * base * base * 10) + 10;
+			}
+			if((i % (base * base * base)) == 0) {
+				i = i - (base * base * base) + (base * base * 10);
+			}
+			if((i % (base * base)) == 0) {
+				i = i - (base * base) + (base * 10);
+			}
+			if((i % base) == 0) {
+				i = i - base + 10;
+			}
+			i--;
+			if (i <= 0) {
+				i = IDBaseConverter.getMaxId();
+			}
+		}
+		return i;
+	}
+
+
+	/**
 	 * Creates a new temp unit with this unit as the parent. The temp unit is fully initialised,
 	 * i.e. it is added to the region units collection in the specified game data,it inherits the
 	 * faction, building or ship, region, faction stealth status, group, race and combat status
@@ -875,6 +983,13 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			t.setGroup(this.group);
 		}
 
+		// add to tempunits in gamedata
+		if (this.getRegion() != null && this.getRegion().getData() != null) {
+			this.getRegion().getData().tempUnits().put(t.getID(), t);
+		} else {
+			log.warn("Unit.createTemp(): Warning: Couldn't add temp unit to game data. Couldn't access game data");
+		}
+
 		return t;
 	}
 
@@ -904,6 +1019,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 			t.ordersObject.removeOrders();
 			t.setParent(null);
+			data.tempUnits().remove(id);
 		}
 	}
 
@@ -1807,7 +1923,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		int load = getRegion().getData().getGameSpecificStuff().getMovementEvaluator()
 					   .getModifiedLoad(this);
 
-		// also take care of passengers 
+		// also take care of passengers
 		Map passengers = getPassengers();
 
 		for(Iterator iter = passengers.values().iterator(); iter.hasNext();) {
