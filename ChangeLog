@@ -1,3 +1,8 @@
+2005-03-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/event/EventDispatcher.java: remove
+	WeakReference stuff as this is the wrong approach.
+
 2005-02-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/context/UnitContextMenu.java: add
