@@ -1,6 +1,4 @@
 -------------------------------------------------------------------------------
-	add gui for flag writeUnitTagsAsVorlageComment of OrderWriter
--------------------------------------------------------------------------------
 Hier mal ein paar Anregungen für Ilja:
 1. Tags sollten viel stärker benutzt werden. Z.B. alle Einheiten mit einem
 auszuwählenden Tag be-/entstätigen.

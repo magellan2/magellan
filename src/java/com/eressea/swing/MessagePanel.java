@@ -761,7 +761,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 
 		// sort messages in the single categories
 		// and add them as nodes
-		Comparator comp = new MessageTypeComparator(new IDComparator());
+		Comparator comp = new MessageTypeComparator(IDComparator.DEFAULT);
 
 		for(Iterator iter = categories.keySet().iterator(); iter.hasNext();) {
 			Object category = iter.next();

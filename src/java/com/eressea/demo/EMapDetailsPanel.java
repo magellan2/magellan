@@ -217,7 +217,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	// pre-initialize this comparator so it is not created over and
 	// over again when needed
-	private Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
+	private Comparator sortIndexComparator = new SortIndexComparator(IDComparator.DEFAULT);
 	private final ID ironID = StringID.create("Eisen");
 	private final ID laenID = StringID.create("Laen");
 	private final ID treesID = StringID.create("Baeume");
@@ -1012,12 +1012,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		expandableNodes.add(new NodeWrapper(terrainsNode, "EMapDetailsPanel.RegionTerrainsExpanded"));
 
 		List sortedList = CollectionFactory.createLinkedList(regions.keySet());
-		Collections.sort(sortedList, new NameComparator(new IDComparator()));
+		Collections.sort(sortedList, new NameComparator(IDComparator.DEFAULT));
 
 		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
 			UnitContainerType rType = (UnitContainerType) iter.next();
 			List list = (List) regions.get(rType);
-			Collections.sort(list, new NameComparator(new IDComparator()));
+			Collections.sort(list, new NameComparator(IDComparator.DEFAULT));
 
 			DefaultMutableTreeNode regionsNode = createSimpleNode(rType.getName() + ": " +
 																  list.size(),
@@ -1040,7 +1040,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// resources of the regions sorted by name,id of resource
 		DefaultMutableTreeNode resourcesNode = new DefaultMutableTreeNode(getString("node.resources"));
 		sortedList = CollectionFactory.createLinkedList(resources.keySet());
-		Collections.sort(sortedList, new NameComparator(new IDComparator()));
+		Collections.sort(sortedList, new NameComparator(IDComparator.DEFAULT));
 
 		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
 			ItemType resType = (ItemType) iter.next();
@@ -1061,7 +1061,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// herbs of the regions sorted by name, id of herb
 		DefaultMutableTreeNode herbsNode = new DefaultMutableTreeNode(getString("node.herbs"));
 		sortedList = CollectionFactory.createLinkedList(herbs.keySet());
-		Collections.sort(sortedList, new NameComparator(new IDComparator()));
+		Collections.sort(sortedList, new NameComparator(IDComparator.DEFAULT));
 
 		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
 			ItemType herbType = (ItemType) iter.next();
@@ -1072,7 +1072,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			// m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(herbType.getName() + ": " + i, herbType.getIconName()));
 			herbsNode.add(regionsNode);
-			Collections.sort(regionList, new NameComparator(new IDComparator()));
+			Collections.sort(regionList, new NameComparator(IDComparator.DEFAULT));
 
 			for(ListIterator iter2 = regionList.listIterator(); iter2.hasNext();) {
 				Region myRegion = (Region) iter2.next();
@@ -1413,7 +1413,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																			  .toString());
 				skillsNode.add(skillNode);
 
-				Comparator idCmp = new IDComparator();
+				Comparator idCmp = IDComparator.DEFAULT;
 				Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(item.skill.getSkillType(),
 																								   new SkillComparator(),
 																								   null),
@@ -1485,7 +1485,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 				List sortedAllies = CollectionFactory.createLinkedList(g.allies().values());
 				Collections.sort(sortedAllies,
-								 new AllianceFactionComparator(new NameComparator(new IDComparator())));
+								 new AllianceFactionComparator(new NameComparator(IDComparator.DEFAULT)));
 
 				for(Iterator iter = sortedAllies.iterator(); iter.hasNext();) {
 					DefaultMutableTreeNode m = new DefaultMutableTreeNode(iter.next());
@@ -1553,7 +1553,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																										  .toString()));
 					n.add(m);
 
-					Comparator idCmp = new IDComparator();
+					Comparator idCmp = IDComparator.DEFAULT;
 					Comparator unitCmp = new UnitSkillComparator(new BestSkillComparator(new SkillComparator(),
 																						 new SkillTypeComparator(new SkillTypeRankComparator(new NameComparator(idCmp),
 																																			 settings),

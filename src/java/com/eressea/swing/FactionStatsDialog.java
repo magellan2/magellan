@@ -73,7 +73,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 
 	//private EresseaOptionPanel optionPanel = null;
 	private static FactionTrustComparator factionTrustComparator = FactionTrustComparator.DEFAULT_COMPARATOR;
-	private static NameComparator nameComparator = new NameComparator(new IDComparator());
+	private static NameComparator nameComparator = new NameComparator(IDComparator.DEFAULT);
 
 	/**
 	 * Create a new FactionStatsDialog object as a dialog with a parent window.

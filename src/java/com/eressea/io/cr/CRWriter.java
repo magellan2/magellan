@@ -84,7 +84,7 @@ import com.eressea.util.logging.Logger;
 public class CRWriter extends BufferedWriter {
 	private static final Logger log = Logger.getInstance(CRWriter.class);
 	private boolean useTildesForQuotes = false;
-	private Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
+	private Comparator sortIndexComparator = new SortIndexComparator(IDComparator.DEFAULT);
 
 	// incremented whenever a unit is written, can then be compared
 	// to the total number of units in the game data

@@ -94,6 +94,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	private JCheckBox chkRemoveSSComments = null;
 	private JCheckBox chkConfirmedOnly = null;
 	private JCheckBox chkSelRegionsOnly = null;
+	private JCheckBox chkWriteUnitTagsAsVorlageComment = null;
 	private JCheckBox chkCCToSender = null;
 	private JComboBox cmbFaction = null;
 	private JComboBox cmbGroup = null;
@@ -328,6 +329,9 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 										  (Boolean.valueOf(settings.getProperty("OrderWriter.includeSelRegionsOnly",
 																			"false"))).booleanValue());
 		chkSelRegionsOnly.setEnabled((regions != null) && (regions.size() > 0));
+		chkWriteUnitTagsAsVorlageComment = new JCheckBox(getString("chk.writeUnitTagsAsVorlageComment.caption"),
+										  (Boolean.valueOf(settings.getProperty("OrderWriter.writeUnitTagsAsVorlageComment",
+																			"false"))).booleanValue());
 
 		JPanel pnlCmdSave = new JPanel();
 		pnlCmdSave.setLayout(new BoxLayout(pnlCmdSave, BoxLayout.Y_AXIS));
@@ -341,6 +345,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		pnlCmdSave.add(chkRemoveSSComments);
 		pnlCmdSave.add(chkConfirmedOnly);
 		pnlCmdSave.add(chkSelRegionsOnly);
+		pnlCmdSave.add(chkWriteUnitTagsAsVorlageComment);
 
 		return pnlCmdSave;
 	}
@@ -644,6 +649,9 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 								 String.valueOf(chkSelRegionsOnly.isSelected()));
 		}
 
+		settings.setProperty("OrderWriter.writeUnitTagsAsVorlageComment", 
+							String.valueOf(chkWriteUnitTagsAsVorlageComment.isSelected()));
+
 		settings.setProperty("OrderWriter.faction",
 							 ((EntityID) ((Faction) cmbFaction.getSelectedItem()).getID()).intValue() +
 							 "");
@@ -742,6 +750,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			cw.setAddECheckComments(chkECheckComments.isSelected());
 			cw.setRemoveComments(chkRemoveSCComments.isSelected(), chkRemoveSSComments.isSelected());
 			cw.setConfirmedOnly(chkConfirmedOnly.isSelected());
+			cw.setWriteUnitTagsAsVorlageComment(chkWriteUnitTagsAsVorlageComment.isSelected());
 
 			if(chkSelRegionsOnly.isSelected() && (regions != null) && (regions.size() > 0)) {
 				cw.setRegions(regions);
@@ -1013,6 +1022,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			defaultTranslations.put("chk.skipunconfirmedorders.caption",
 									"Skip units with unconfirmed orders");
 			defaultTranslations.put("chk.selectedregions.caption", "Selected regions");
+			defaultTranslations.put("chk.writeUnitTagsAsVorlageComment.caption", "Include unknown tags as vorlage command.");
 			defaultTranslations.put("chk.usesettingsfromcr.caption", "Use values of cr");
 			defaultTranslations.put("chk.cctosender.caption", "CC to sender");
 			defaultTranslations.put("border.outputoptions", "Output options");

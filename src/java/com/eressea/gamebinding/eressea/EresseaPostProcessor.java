@@ -148,7 +148,7 @@ public class EresseaPostProcessor {
 		 create them as TempUnit objects */
 		int sortIndex = 0;
 		List sortedUnits = CollectionFactory.createLinkedList(data.units().values());
-		Collections.sort(sortedUnits, new SortIndexComparator(new IDComparator()));
+		Collections.sort(sortedUnits, new SortIndexComparator(IDComparator.DEFAULT));
 
 		for(Iterator unitIter = sortedUnits.iterator(); unitIter.hasNext();) {
 			Unit unit = (Unit) unitIter.next();
@@ -310,7 +310,7 @@ public class EresseaPostProcessor {
 		if(data.buildings() != null) {
 			BuildingType type = data.rules.getBuildingType(EresseaConstants.B_LIGHTTOWER);
 			RegionType oceanType = data.rules.getRegionType(EresseaConstants.RT_OCEAN);
-			Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
+			Comparator sortIndexComparator = new SortIndexComparator(IDComparator.DEFAULT);
 
 			if(type != null) {
 				for(Iterator iter = data.buildings().values().iterator(); iter.hasNext();) {
