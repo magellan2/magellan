@@ -10,6 +10,7 @@ public class MergeTestSuite {
 		suite.addTest (new TestSuite (WriteGameData.class));
 		//suite.addTest (new TestSuite (MergeSimplestGameData.class));
 		suite.addTest (new TestSuite (MergeSimpleGameData.class));
+		suite.addTest (new TestSuite (MergeWithRoads.class));
 		return suite;
 	}
 }
