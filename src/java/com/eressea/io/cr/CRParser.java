@@ -1423,7 +1423,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			allies = CollectionFactory.createOrderedHashtable();
 		}
 
-		EntityID id = EntityID.createEntityID(sc.argv[0].substring(8), 10);
+		EntityID id = EntityID.createEntityID(Integer.parseInt(sc.argv[0].substring(8)), world.base);
 		sc.getNextToken();
 
 		int state = -1;
@@ -1493,7 +1493,7 @@ public class CRParser implements RulesIO, GameDataIO {
 		Race type = null;
 		int raceRecruit = -1;
 		int groupSortIndex = 0;
-		EntityID id = EntityID.createEntityID(sc.argv[0].substring(7), 10);
+		EntityID id = EntityID.createEntityID(Integer.parseInt(sc.argv[0].substring(7)), world.base);
 		sc.getNextToken(); // skip PARTEI nr
 
 		Faction faction = getAddFaction(world, id);
@@ -1801,7 +1801,7 @@ public class CRParser implements RulesIO, GameDataIO {
 
 
 	private int parseUnit(GameData world, Region region, int sortIndex) throws IOException {
-		Unit unit = getAddUnit(world, UnitID.createUnitID(sc.argv[0].substring(8), 10));
+		Unit unit = getAddUnit(world, UnitID.createUnitID(Integer.parseInt(sc.argv[0].substring(8)), world.base));
 		EntityID factionID = EntityID.createEntityID(-1,world.base);
 		ID groupID = null;
 
@@ -1834,10 +1834,10 @@ public class CRParser implements RulesIO, GameDataIO {
 				unit.realRace = world.rules.getRace(StringID.create(sc.argv[0]), true);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("temp")) {
-				unit.setTempID(UnitID.createUnitID(sc.argv[0], 10));
+				unit.setTempID(UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("alias")) {
-				unit.setAlias(UnitID.createUnitID(sc.argv[0], 10));
+				unit.setAlias(UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("privat")) {
 				unit.privDesc = sc.argv[0];
@@ -1846,7 +1846,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				unit.persons = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Partei")) {
-				factionID = EntityID.createEntityID(sc.argv[0], 10);
+				factionID = EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Parteiname")) {
 				sc.getNextToken();
@@ -1869,10 +1869,10 @@ public class CRParser implements RulesIO, GameDataIO {
 
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("belagert")) {
-				unit.siege = getAddBuilding(world, EntityID.createEntityID(sc.argv[0], 10));
+				unit.siege = getAddBuilding(world, EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("folgt")) {
-				unit.follows = getAddUnit(world, UnitID.createUnitID(sc.argv[0], 10));
+				unit.follows = getAddUnit(world, UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Silber")) {
 				int money = Integer.parseInt(sc.argv[0]);
@@ -1882,7 +1882,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Burg")) {
 				Integer.parseInt(sc.argv[0]);
 
-				Building b = getAddBuilding(world, EntityID.createEntityID(sc.argv[0], 10));
+				Building b = getAddBuilding(world, EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base));
 
 				if(unit.getBuilding() != b) {
 					unit.setBuilding(b);
@@ -1890,7 +1890,7 @@ public class CRParser implements RulesIO, GameDataIO {
 
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Schiff")) {
-				Ship s = getAddShip(world, EntityID.createEntityID(sc.argv[0], 10));
+				Ship s = getAddShip(world, EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base));
 
 				if(unit.getShip() != s) {
 					unit.setShip(s);
@@ -1959,7 +1959,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) &&
 						  (sc.argv[1].equalsIgnoreCase("verkleidung") ||
 						  sc.argv[1].equalsIgnoreCase("anderepartei"))) {
-				ID fid = EntityID.createEntityID(sc.argv[0], 10);
+				ID fid = EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base);
 
 				/* currently (2004-02) the cr is inconsistent with nr. There may
 				 * be a situation where the corresponding faction of this tag
@@ -2086,7 +2086,7 @@ public class CRParser implements RulesIO, GameDataIO {
 	}
 
 	private void parseShip(GameData world, Region region, int sortIndex) throws IOException {
-		EntityID id = EntityID.createEntityID(sc.argv[0].substring(7), 10);
+		EntityID id = EntityID.createEntityID(Integer.parseInt(sc.argv[0].substring(7)), world.base);
 		sc.getNextToken(); // skip "SCHIFF nr"
 
 		Ship ship = getAddShip(world, id);
@@ -2110,13 +2110,13 @@ public class CRParser implements RulesIO, GameDataIO {
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Partei")) {
 				if((ship.getOwnerUnit() != null) && (ship.getOwnerUnit().getFaction() == null)) {
-					Faction f = world.getFaction(EntityID.createEntityID(sc.argv[0], 10));
+					Faction f = world.getFaction(EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base));
 					ship.getOwnerUnit().setFaction(f);
 				}
 
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Kapitaen")) {
-				ship.setOwnerUnit(getAddUnit(world, UnitID.createUnitID(sc.argv[0], 10)));
+				ship.setOwnerUnit(getAddUnit(world, UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base)));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Kueste")) {
 				ship.shoreId = Integer.parseInt(sc.argv[0]);
@@ -2155,7 +2155,7 @@ public class CRParser implements RulesIO, GameDataIO {
 	private void parseBuilding(GameData world, Region region, int sortIndex)
 						throws IOException
 	{
-		EntityID id = EntityID.createEntityID(sc.argv[0].substring(5), 10);
+		EntityID id = EntityID.createEntityID(Integer.parseInt(sc.argv[0].substring(5)), world.base);
 		sc.getNextToken(); // skip "BURG nr"
 
 		Building bld = getAddBuilding(world, id);
@@ -2178,12 +2178,12 @@ public class CRParser implements RulesIO, GameDataIO {
 				bld.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Besitzer")) {
-				UnitID unitID = UnitID.createUnitID(sc.argv[0], 10);
+				UnitID unitID = UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base);
 				bld.setOwnerUnit(getAddUnit(world, unitID));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Partei")) {
 				if((bld.getOwnerUnit() != null) && (bld.getOwnerUnit().getFaction() == null)) {
-					Faction f = world.getFaction(EntityID.createEntityID(sc.argv[0], 10));
+					Faction f = world.getFaction(EntityID.createEntityID(Integer.parseInt(sc.argv[0]), world.base));
 					bld.getOwnerUnit().setFaction(f);
 				}
 
