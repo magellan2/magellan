@@ -1,3 +1,8 @@
+2004-08-12  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/*: changed equals to get rid of
+	instanceof usage
+
 2004-08-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/gamebinding/eressea/EresseaOrderParser.java:

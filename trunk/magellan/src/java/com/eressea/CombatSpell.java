@@ -106,8 +106,12 @@ public class CombatSpell extends Identifiable {
 	 * 		   to the id of this  CombatSpell object.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof CombatSpell && this.getID().equals(((CombatSpell) o).getID()));
+		try {
+		return (this == o) || this.getID().equals(((CombatSpell) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
+
 	}
 
 	/**

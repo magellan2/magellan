@@ -66,9 +66,9 @@ public class HotSpot extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof HotSpot) {
+		try {
 			return this.getID().equals(((HotSpot) o).getID());
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

@@ -131,9 +131,9 @@ public class Potion extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Potion) {
-			return this.getID().equals(((Potion) o).getID());
-		} else {
+		try {
+			return this==o || this.getID().equals(((Potion) o).getID());
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

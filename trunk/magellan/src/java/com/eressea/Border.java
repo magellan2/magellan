@@ -87,9 +87,9 @@ public class Border extends Identifiable {
 	 * 		   the id of this  Border object.
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Border) {
+		try {
 			return this.getID().equals(((Border) o).getID());
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

@@ -156,8 +156,11 @@ public class ShipType extends UnitContainerType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof ShipType && this.getID().equals(((ShipType) o).getID()));
+		try {
+			return (this == o) || (this.getID().equals(((ShipType) o).getID()));
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

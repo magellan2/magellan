@@ -123,24 +123,23 @@ public class Bucket extends AbstractCollection {
 		if(o == this) {
 			return true;
 		}
-
-		if(o instanceof Bucket) {
+		
+		try {
 			Bucket b = (Bucket) o;
-
+			
 			if((this.getMaxSize() == b.getMaxSize()) && (this.size() == b.size())) {
 				Iterator i1 = this.iterator();
 				Iterator i2 = b.iterator();
-
+				
 				while(i1.hasNext() && i2.hasNext()) {
 					if(!i1.next().equals(i2.next())) {
 						return false;
 					}
 				}
-
 				return true;
 			}
+		} catch(ClassCastException e) {
 		}
-
 		return false;
 	}
 

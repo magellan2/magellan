@@ -144,7 +144,11 @@ public class EntityID extends IntegerID {
 	 * 		   and o match.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof EntityID && (id == ((EntityID) o).id));
+		try {
+			return (this == o) || id == ((EntityID) o).id;
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

@@ -109,7 +109,11 @@ public class OptionCategory extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (o instanceof OptionCategory) && ((OptionCategory) o).getID().equals(this.getID());
+		try {
+			return ((OptionCategory) o).getID().equals(this.getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

@@ -92,10 +92,10 @@ public class FileHistoryAction extends AbstractAction {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if((o != null) && o instanceof FileHistoryAction) {
-			return file.equals(((FileHistoryAction) o).getFile());
+		try {
+			return o != null && file.equals(((FileHistoryAction) o).getFile());
+		} catch(ClassCastException e) {
+			return false;
 		}
-
-		return false;
 	}
 }

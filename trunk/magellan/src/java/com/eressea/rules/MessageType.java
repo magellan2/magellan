@@ -93,8 +93,11 @@ public class MessageType extends Identifiable {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof MessageType && this.getID().equals(((MessageType) o).getID()));
+		try {
+			return (this == o) || this.getID().equals(((MessageType) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

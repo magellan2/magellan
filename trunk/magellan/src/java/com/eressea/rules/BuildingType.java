@@ -232,8 +232,11 @@ public class BuildingType extends UnitContainerType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof BuildingType && this.getID().equals(((BuildingType) o).getID()));
+		try {
+			return this == o || this.getID().equals(((BuildingType) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

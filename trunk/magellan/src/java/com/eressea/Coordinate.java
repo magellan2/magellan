@@ -82,13 +82,13 @@ public class Coordinate implements ID {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(!(o instanceof Coordinate)) {
+		try {
+			Coordinate c = (Coordinate) o;
+			
+			return ((c == this) || ((x == c.x) && (y == c.y) && (z == c.z)));
+		} catch(ClassCastException e) {
 			return false;
 		}
-
-		Coordinate c = (Coordinate) o;
-
-		return ((c == this) || ((x == c.x) && (y == c.y) && (z == c.z)));
 	}
 
 	/**

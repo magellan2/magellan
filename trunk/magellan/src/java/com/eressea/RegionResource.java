@@ -154,13 +154,13 @@ public class RegionResource implements Unique {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof RegionResource) {
+		try {
 			// pavkovic 2003.01.16: even if the id seems to be unique 
 			// use the item type for uniqueness
 			return this.getType().getID().equals(((RegionResource) o).getType().getID());
-
+			
 			// return this.getID().equals(((RegionResource)o).getID());
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}
