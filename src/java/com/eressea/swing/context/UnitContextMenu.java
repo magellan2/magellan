@@ -180,8 +180,41 @@ public class UnitContextMenu extends JPopupMenu {
 					}
 				});
 			add(addOrder);
+			
 		}
 
+		// tag stuff
+		if(getComponentCount() > 0) {
+			addSeparator();
+		}
+
+		JMenuItem addTag = new JMenuItem(getString("addtag.caption"));
+		addTag.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				event_addTag();
+				}
+			});
+		add(addTag);
+
+		Collection tags = CollectionFactory.createTreeSet();
+		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+			Unit u = (Unit) iter.next();
+			tags.addAll(u.getTagMap().keySet());
+		}
+		for(Iterator iter = tags.iterator(); iter.hasNext(); ) {
+			String tag = (String) iter.next();
+
+			JMenuItem removeTag = new JMenuItem(getString("removetag.caption")+": "+tag);
+			removeTag.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_removeTag(e);
+					}
+				});
+			add(removeTag);
+		}
+
+		
+		
 		// test route planning capability
 		boolean canPlan = UnitRoutePlanner.canPlan(unit);
 		Region reg = unit.getRegion();
@@ -198,7 +231,7 @@ public class UnitContextMenu extends JPopupMenu {
 				}
 			}
 		}
-
+		
 		if(canPlan) {
 			if(getComponentCount() > 0) {
 				addSeparator();
@@ -280,6 +313,44 @@ public class UnitContextMenu extends JPopupMenu {
 		selectedUnits.clear();
 	}
 
+	private void event_addTag() {
+		String key = JOptionPane.showInputDialog(getString("addtag.tagname.message"));
+
+		if((key != null) && (key.length() > 0)) {
+			String value = JOptionPane.showInputDialog(getString("addtag.tagvalue.message"));	
+			for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
+			    u.putTag(key,value);
+			    // TODO: Coalesce unitordersevent
+				dispatcher.fire(new UnitOrdersEvent(this,u));
+			}
+		}
+		
+		unit = null;
+		selectedUnits.clear();
+	}
+
+	private void event_removeTag(ActionEvent e) {
+		String command = e.getActionCommand();
+		int index = command.indexOf(": ");
+		if(index > 0) {
+			String key = command.substring(index+2,command.length());
+			if(key != null) {	
+				for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+					Unit u = (Unit) iter.next();
+					u.removeTag(key);
+				    // TODO: Coalesce unitordersevent
+					dispatcher.fire(new UnitOrdersEvent(this,u));
+				}
+			}
+		}
+		
+		unit = null;
+		selectedUnits.clear();
+
+	}
+	
+	
 	private void event_copyID(ActionEvent e) {
 		String idString = null;
 
@@ -432,6 +503,12 @@ public class UnitContextMenu extends JPopupMenu {
 			defaultTranslations.put("menu.copyids.caption", "Copy IDs");
 			defaultTranslations.put("menu.copyidsandnames.caption", "Copy IDs and names");
 			defaultTranslations.put("menu.removeFromTeachersList", "Don't be taught any more by");
+
+			defaultTranslations.put("addtag.tagvalue.message", "Please enter tag value");
+			defaultTranslations.put("addtag.tagname.message", "Please enter tag name");
+			defaultTranslations.put("addtag.caption", "Add tag");
+			defaultTranslations.put("removetag.caption", "Remove tag");
+
 		}
 
 		return defaultTranslations;
