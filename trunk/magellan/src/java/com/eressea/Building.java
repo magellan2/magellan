@@ -8,6 +8,8 @@
 
 package com.eressea;
 
+import com.eressea.rules.BuildingType;
+
 public class Building extends UnitContainer implements HasRegion {
 	/**
 	 * Size of the building.
@@ -70,13 +72,17 @@ public class Building extends UnitContainer implements HasRegion {
 	public void setRegion(Region region) {
 		// remove the building from a prior location
 		if (this.region != null) {
-			this.region.removeBuilding(this.getID());
+			this.region.removeBuilding(this);
 		}
 		// set the new region and add the building
 		this.region = region;
 		if (this.region != null) {
 			this.region.addBuilding(this);
 		}
+	}
+
+	public BuildingType getBuildingType() {
+		return (BuildingType) getType();
 	}
 
 	/**

@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.eressea.Border;
 import com.eressea.Building;
 import com.eressea.CombatSpell;
 import com.eressea.Coordinate;
@@ -759,16 +758,6 @@ public class RegionWriter
 		}
 	}
 		
-	/* TODO: unused method appendBorders (nonfunctional, too)
-	protected void appendBorders(PrintStream out, Region r)
-	{
-		Iterator it = r.borders().iterator();
-		while (it.hasNext()) {
-			Border b = (Border)it.next();
-		}
-	}
-	*/
-	
 	private boolean isMagician(Unit u)
 	{
 		return u.auraMax > 0;

@@ -26,8 +26,10 @@ import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
 import com.eressea.relation.ItemTransferRelation;
 import com.eressea.relation.LeaveRelation;
+import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
+import com.eressea.relation.RelationFactory;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
@@ -51,6 +53,7 @@ import com.eressea.util.OrderTokenizer;
 import com.eressea.util.OrderWriter;
 import com.eressea.util.ROCollection;
 import com.eressea.util.ROIterator;
+import com.eressea.util.Translations;
 import com.eressea.util.comparator.SortIndexComparator;
 import com.eressea.util.Sorted;
 import com.eressea.util.TagMap;
@@ -58,7 +61,7 @@ import com.eressea.util.Taggable;
 import com.eressea.util.logging.Logger;
 
 
-public class Unit extends DescribedObject implements HasRegion, EresseaOrderConstants, Sorted, Taggable {
+public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable {
 	private final static Logger log = Logger.getInstance(Unit.class);
 
 	private final static String CONFIRMEDTEMPCOMMENT = ";"+OrderWriter.CONFIRMEDTEMP;
@@ -74,8 +77,6 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	/** an object encapsulation  the orders of this unit as <tt>String</tt> objects */
 	protected Orders ordersObject = new Orders();
 
-	//protected List orders = null;
-
 	public boolean ordersAreNull() {
 		return ordersObject.ordersAreNull();
 	}
@@ -88,12 +89,15 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	}
 
 	/** 
-	 * This function clears the orders and refreshes the relations
+	 * Clears the orders and refreshes the relations
 	 */
 	public void clearOrders() {
 		clearOrders(true);
 	}
 
+	/**
+	 * Clears the orders and possibly refreshes the relations
+	 */
 	public void clearOrders(boolean refreshRelations) {
 		ordersObject.clearOrders();
 		if(refreshRelations) {
@@ -101,10 +105,17 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		}
 	}
 
+	/** 
+	 * Removes the order at position <tt>i</tt> and refreshes the relations
+	 */
 	public void removeOrderAt(int i) {
 		removeOrderAt(i,true);
 	}
 
+
+	/** 
+	 * Removes the order at position <tt>i</tt> and possibly refreshes the relations
+	 */
 	public void removeOrderAt(int i, boolean refreshRelations) {
 		ordersObject.removeOrderAt(i);
 		if(refreshRelations) {
@@ -112,41 +123,15 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		}
 	}
 
-	public void addOrders(String newOrders) {
-		addOrders(newOrders,true);
-	}
-
-	public void addOrders(String newOrders, boolean refreshRelations) {
-		addOrders(Collections.singleton(newOrders),refreshRelations);
-	}
-
 	/** 
-	 * This function adds orders of this object. 
-	 * it automatically refreshes the relations of this object
-	 */
-	public void addOrders(Collection newOrders) {
-		addOrders(newOrders,true);
-	}
-
-	/** 
-	 * This function adds orders of this object.
-	 */
-	public void addOrders(Collection newOrders, boolean refreshRelations) {
-		int newPos = ordersObject.addOrders(newOrders);
-		if(refreshRelations) {
-			refreshRelations(newPos);
-		}
-	}
-
-	/** 
-	 * This function adds orders of this object and refreshes the relations. 
+	 * Adds the order at position <tt>i</tt> and refreshes the relations
 	 */
 	public void addOrderAt(int i,String newOrders) {
 		addOrderAt(i, newOrders,true);
 	}
 
 	/** 
-	 * This function adds orders of this object and refreshes the relations. 
+	 * Adds the order at position <tt>i</tt> and possibly refreshes the relations
 	 */
 	protected void addOrderAt(int i,String newOrders, boolean refreshRelations) {
 		ordersObject.addOrderAt(i, newOrders);
@@ -156,15 +141,45 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	}
 
 	/** 
-	 * This function sets the orders of this object. 
-	 * it automatically refreshes the relations of this object
+	 * Adds the order and refreshes the relations
+	 */
+	public void addOrders(String newOrders) {
+		addOrders(newOrders,true);
+	}
+
+	/** 
+	 * Adds the order and possibly refreshes the relations
+	 */
+	public void addOrders(String newOrders, boolean refreshRelations) {
+		addOrders(Collections.singleton(newOrders),refreshRelations);
+	}
+	
+	/** 
+	 * Adds the orders and refreshes the relations
+	 */
+	public void addOrders(Collection newOrders) {
+		addOrders(newOrders,true);
+	}
+	
+	/** 
+	 * Adds the orders and possibly refreshes the relations
+	 */
+	public void addOrders(Collection newOrders, boolean refreshRelations) {
+		int newPos = ordersObject.addOrders(newOrders);
+		if(refreshRelations) {
+			refreshRelations(newPos);
+		}
+	}
+	
+	/** 
+	 * Sets the orders and refreshes the relations
 	 */
 	public void setOrders(Collection newOrders) {
 		setOrders(newOrders,true);
 	}
-
+	
 	/** 
-	 * this function sets the orders of this object.
+	 * Sets the orders and possibly refreshes the relations
 	 */
 	public void setOrders(Collection newOrders, boolean refreshRelations) {
 		ordersObject.setOrders(newOrders);
@@ -172,11 +187,14 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 			refreshRelations();
 		}
 	}
-
+	
+	/** 
+	 * Delivers a readonly collection of alle orders of this unit.
+	 */
 	public Collection getOrders() {
 		return new ROCollection(ordersObject.getOrders());
 	}
-
+	
 	public int persons = 1;
 	public int guard = 0;
 	public static final int GUARDFLAG_WOOD = 4;
@@ -190,43 +208,52 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	public Unit follows = null;			// folgt-Tag
 	public String health = null;
 	public boolean isStarving = false;	// hunger-Tag
+
 	/**
 	 * The cache object containing cached information that may be not
 	 * related enough to be encapsulated as a function and is time
 	 * consuming to gather.
 	 */
 	public com.eressea.util.Cache cache = null;
+	
 	/**
 	 * Messages directly sent to this unit. The list contains
 	 * instances of class <tt>Message</tt> with type -1 and only the
 	 * text set.
 	 */
 	public List unitMessages = null;
+	
 	/**
 	 * A map for storing unknown tags.
 	 */
 	private TagMap externalMap = null;
+	
 	/**
 	 * A list containing <tt>String</tt> objects, specifying
 	 * effects on this <tt>Unit</tt> object.
 	 */
 	public List effects = null;
+	
 	/**
 	 * true indicates that the unit has orders confirmed by an user.
 	 */
 	public boolean ordersConfirmed = false;
 	public Map skills = null;		// maps SkillType.getID() objects to Skill objects
 	protected boolean skillsCopied = false;
+	
 	/**
 	 * The items carried by this unit. The keys are the IDs of the
 	 * item's type, the values are the Item objects themselves.
 	 */
+	
 	public Map items = null;
 	/**
 	 * The spells known to this unit. The keys are the IDs of the
 	 * spells, the values are the Spell objects themselves.
 	 */
+	
 	public Map spells = null;
+
 	/**
 	 * Contains the spells this unit has set for use in a combat.
 	 * This map contains data if a unit has a magic skill and has
@@ -234,10 +261,12 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * of type CombatSpell, the keys are their ids.
 	 */
 	public Map combatSpells = null;
+	
 	/**
 	 * The group this unit belongs to.
 	 */
 	private Group group = null;
+
 	/**
 	 * Sets the group this unit belongs to.
 	 */
@@ -262,6 +291,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * The previous id of this unit.
 	 */
 	private UnitID alias = null;
+
 	/**
 	 * Sets an alias id for this unit.
 	 */
@@ -278,19 +308,15 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	public UnitID getAlias() {
 		return alias;
 	}
-
+	
 	/**
 	 * Returns the item of the specified type if the unit owns such an
 	 * item. If not, null is returned.
 	 */
 	public Item getItem(ItemType type) {
-		Item i = null;
-		if (items != null) {
-			i = (Item)items.get(type.getID());
-		}
-		return i;
+		return items != null ? (Item)items.get(type.getID()) : null;
 	}
-
+	
 	/**
 	 * Indicates that this unit belongs to a different faction than
 	 * it pretends to. A unit cannot
@@ -305,7 +331,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 */
 	public void setSpy(boolean bool) {
 		this.isSpy = bool;
-		if (this.isSpy == true) {
+		if (this.isSpy) {
 			this.setGuiseFaction(null);
 		}
 	}
@@ -641,12 +667,12 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		List cmds = CollectionFactory.createLinkedList();
 		for (Iterator iter = tempUnits().iterator(); iter.hasNext(); ) {
 			TempUnit u = (TempUnit)iter.next();
-			cmds.add(getOrder(O_MAKE) + " " + getOrder(O_TEMP) + " " + u.getID().toString());
+			cmds.add(getOrder(EresseaOrderConstants.O_MAKE) + " " + getOrder(EresseaOrderConstants.O_TEMP) + " " + u.getID().toString());
 			cmds.addAll(u.getOrders());
 			if(u.ordersConfirmed) {
 				cmds.add(CONFIRMEDTEMPCOMMENT);
 			}
-			cmds.add(getOrder(O_END));
+			cmds.add(getOrder(EresseaOrderConstants.O_END));
 		}
 		return cmds;
 	}
@@ -831,71 +857,25 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		if(this.ordersAreNull()) {
 			return Collections.EMPTY_LIST;
 		}
-		
-		String nachOrder = getOrder(EresseaOrderConstants.O_MOVE);
-		String routeOrder = getOrder(EresseaOrderConstants.O_ROUTE);
-		int nachLength = nachOrder.length();
-		int routeLength = routeOrder.length();
-		
-		// find move order
-		String cmd = null;
-		for (Iterator iter = this.getOrders().iterator(); iter.hasNext();) {
-			// also remove @ from string to make "@nach so so so" interpretable
-			// we dont use OrderTokenizer here because of performance
-			String s = ((String)iter.next()).replace('@',' ').trim();
-			if (s.regionMatches(true, 0, nachOrder, 0, nachLength) || s.regionMatches(true, 0, routeOrder, 0, routeLength)) {
-				cmd = s;
-				break;
-			}
-		}
-		if(cmd == null) {
-			// we did not find 
+		Collection movementRelations = getRelations(MovementRelation.class);
+		if(movementRelations.isEmpty()) {
 			return Collections.EMPTY_LIST;
 		}
-		
-		List modifiedMovement = CollectionFactory.createArrayList(2);
-		// dissect the order into pieces to detect which way the unit
-		// is taking
-		OrderTokenizer ct = new OrderTokenizer(new StringReader(cmd));
-		OrderToken token = ct.getNextToken();
-		if (token.ttype == OrderToken.TT_UNDEF && (token.equalsToken(nachOrder) || token.equalsToken(routeOrder))) {
-			Region r = this.getRegion();
-			Coordinate c = new Coordinate((Coordinate)r.getID());
-			modifiedMovement.add(c);
-			
-			token = ct.getNextToken();
-			while (token.ttype == OrderToken.TT_UNDEF) {
-				int dir = Direction.toInt(token.getText());
-				if (dir != -1) {
-					c = new Coordinate(c); // make c a new copy
-					c.translate(Direction.toCoordinate(dir));
-					modifiedMovement.add(c);
-				} else {
-					break;
-				}
-				token = ct.getNextToken();
-			}
-		}
-		return modifiedMovement;
-
+		return ((MovementRelation) movementRelations.iterator().next()).movement;
 	}
 
-
 	public Ship getModifiedShip() {
-		for (Iterator iter = getRelations().iterator(); iter.hasNext(); ) {
-			UnitRelation rel = (UnitRelation)iter.next();
-			if (rel instanceof UnitContainerRelation) {
-				UnitContainerRelation ucr = (UnitContainerRelation)rel;
-				if (ucr instanceof EnterRelation) {
-					if(ucr.target instanceof Ship) {
-						// make fast return: first Ship-EnterRelation wins
-						return (Ship) ucr.target;
-					}
-				} else if (ucr instanceof LeaveRelation &&
-						   ucr.target.equals(getShip())) {
-					// we only left our ship
-					return null;
+		for (Iterator iter = getRelations(UnitContainerRelation.class).iterator(); iter.hasNext(); ) {
+			UnitContainerRelation ucr = (UnitContainerRelation) iter.next();
+			if (ucr instanceof EnterRelation) {
+				if(ucr.target instanceof Ship) {
+					// make fast return: first Ship-EnterRelation wins
+					return (Ship) ucr.target;
 				}
+			} else if (ucr instanceof LeaveRelation &&
+					   ucr.target.equals(getShip())) {
+				// we only left our ship
+				return null;
 			}
 		}
 		// we stayed in our ship
@@ -1164,11 +1144,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * a skill, else null is returned.
 	 */
 	public Skill getSkill(SkillType type) {
-		Skill s = null;
-		if (skills != null) {
-			s = (Skill)skills.get(type.getID());
-		}
-		return s;
+		return skills != null ? (Skill)skills.get(type.getID()) : null;
 	}
 
 	/**
@@ -1675,6 +1651,22 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		return passengers;
 	}
 
+	/**
+	 * Returns all units indicating by their orders that they would
+	 * transport this unit as a passanger (if there is more than one
+	 * such unit, that is a semantical error of course).
+	 */
+	public Map getCarriers() {
+		Map carriers = CollectionFactory.createHashtable();
+		for (Iterator iter = getRelations(TransportRelation.class).iterator(); iter.hasNext(); ) {
+			TransportRelation tr = (TransportRelation) iter.next();
+			if (this.equals(tr.target)) {
+				carriers.put(tr.source.getID(), tr.source);
+			}
+		}
+		return carriers;
+	}
+
 	public Collection getAttackVictims() {
 		Collection ret = CollectionFactory.createLinkedList();
 		for(Iterator iter = getRelations(AttackRelation.class).iterator(); iter.hasNext(); ) {
@@ -1697,27 +1689,14 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		return ret;
 	}
 
-	/**
-	 * Returns all units indicating by their orders that they would
-	 * transport this unit as a passanger (if there is more than one
-	 * such unit, that is a semantical error of course).
+	/** 
+	 * remove relations that are originating from us with a line number &gt;= <tt>from</tt>
 	 */
-	public Map getCarriers() {
-		Map carriers = CollectionFactory.createHashtable();
-		for (Iterator iter = getRelations(TransportRelation.class).iterator(); iter.hasNext(); ) {
-			TransportRelation tr = (TransportRelation) iter.next();
-			if (this.equals(tr.target)) {
-				carriers.put(tr.source.getID(), tr.source);
-			}
-		}
-		return carriers;
-	}
-
-	private void removeRelationsOriginatingFromUs() {
+	private void removeRelationsOriginatingFromUs(int from) {
 		Collection deathRow = CollectionFactory.createLinkedList();
 		for (Iterator iter = getRelations().iterator(); iter.hasNext(); ) {
 			UnitRelation r = (UnitRelation)iter.next();
-			if (this.equals(r.origin)) {
+			if (this.equals(r.origin) && r.line >=from) {
 				if (r instanceof InterUnitRelation) {
 					if (((InterUnitRelation)r).target != null) {
 						// remove relations in target units
@@ -1746,14 +1725,10 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 
 
 	public void refreshRelations() {
-		refreshRelations(0);
+		refreshRelations(1);
 	}
+		
 
-	public void refreshRelations(int from) {
-		refreshRelations(getRegion().getData());
-	}
-
-	private final static int REFRESHRELATIONS_ALL = -2;
 	/**
 	 * Parses the orders of this unit and detects relations between
 	 * units established by those orders.
@@ -1767,281 +1742,41 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * lead to different relations. Therefore refreshRelations() has
 	 * to be invoked on a unit after its orders were modified.
 	 */
-	public synchronized void refreshRelations(GameData data) {
-		Map modItems = null;	// needed to track changes in the items for GIB orders
-		int modPersons = this.getPersons();
-		// 1. can this unit have relations to others at all?
-		if (ordersObject.ordersAreNull()) {
+	public synchronized void refreshRelations(int from) {
+		if (ordersObject.ordersAreNull() || getRegion() == null) {
 			return;
 		}
-
-		// invalidate the cache of this unit
 		invalidateCache();
-
-		// 2. remove all relations originating from us
-		removeRelationsOriginatingFromUs();
-
-		// 3. clone this unit's items
-		modItems = CollectionFactory.createHashtable();
-		if (this.items != null) {
-			for (Iterator iter = this.items.values().iterator(); iter.hasNext(); ) {
-				Item i = (Item)iter.next();
-				modItems.put(i.getType().getID(), new Item(i.getType(), i.getAmount()));
-			}
-		}
-		
-		// 4. parse the orders and create new relations
-		OrderParser parser = new OrderParser((Eressea)data.rules);
-		boolean tempOrders = false;
-		int line = 0;
-		for (Iterator iter = getOrders().iterator(); iter.hasNext(); ) {
-			line++; // keep track of line
-			String order = (String)iter.next();
-			if (parser.read(new StringReader(order))) {
-				List tokens = parser.getTokens();
-				if (((OrderToken)tokens.get(0)).ttype == OrderToken.TT_COMMENT) {
-					continue;
-				}
-				if (((OrderToken)tokens.get(0)).ttype == OrderToken.TT_PERSIST) {
-					tokens.remove(0);
-				}
-				if (!tempOrders) {
-					if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_MAKE)) &&
-					((OrderToken)tokens.get(1)).getText().toUpperCase().startsWith(getOrder(O_TEMP))) {
-						tempOrders = true;
-						continue;
-					}
-					// transport relation
-					if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_CARRY))) {
-						OrderToken t = (OrderToken)tokens.get(1);
-						Unit target = getTargetUnit(t, this.getRegion());
-						if (target == null || this.equals(target)) {
-							continue;
-						}
-						TransportRelation rel = new TransportRelation(this, target, line);
-						addRelation(rel);
-						if (target != null) {
-							target.addRelation(rel);
-						}
-					} else
-						// transfer relation
-						if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_GIVE)) ||
-							((OrderToken)tokens.get(0)).equalsToken(getOrder(O_SUPPLY))) {
-							boolean parseTarget = false;	// indicates whether to parse the object to be transferred
-							OrderToken t = (OrderToken)tokens.get(1);
-							Unit target = getTargetUnit(t, this.getRegion());
-							if (target != null) {
-								if (!target.equals(this)) {
-									TransferRelation rel = new TransferRelation(this, target, -1, line);
-									// -1 means that the amount could not determined
-									t = (OrderToken)tokens.get(2);
-									if (t.ttype == OrderToken.TT_NUMBER) {
-										// this is a plain number
-										rel.amount = Integer.parseInt(t.getText());
-										parseTarget = true;
-									} else if (t.ttype == OrderToken.TT_KEYWORD && t.equalsToken(getOrder(O_ALL))) {
-										// -2 encodes that everything is to be transferred
-										rel.amount = REFRESHRELATIONS_ALL;
-										parseTarget = true;
-									} else if (t.equalsToken(getOrder(O_HERBS))) {
-										// if the 'amount' is HERBS then create relations for all herbs the unit carries
-										ItemCategory herbCategory = data.rules.getItemCategory(StringID.create(("HERBS")));
-										if (herbCategory != null && this.items != null) {
-											for (Iterator items = modItems.values().iterator(); items.hasNext(); ) {
-												Item i = (Item)items.next();
-												if (herbCategory.equals(i.getType().getCategory())) {
-													TransferRelation r = new ItemTransferRelation(this, target, i.getAmount(), i.getType(), line);
-													i.setAmount(0);
-													this.addRelation(r);
-													target.addRelation(r);
-												}
-											}
-										}
-										parseTarget = false;
-									}
-
-									if (parseTarget) {
-										if (rel.amount != -1) {	// -1 means that the amount could not determined
-											t = (OrderToken)tokens.get(3);
-											if (t.ttype != OrderToken.TT_EOC) {
-												// now the order must look something like:
-												// GIVE <unit id> <amount> <object><EOC>
-												String itemName = stripQuotes(t.getText());
-												if (t.equalsToken(getOrder(O_MEN))) {
-													// if the specified amount was 'all':
-													if (rel.amount == REFRESHRELATIONS_ALL) {
-														rel.amount = modPersons;
-													} else {
-														// if not, only transfer the minimum amount the unit has
-														rel.amount = Math.min(modPersons, rel.amount);
-													}
-													rel = new PersonTransferRelation(this, target, rel.amount, this.realRace != null ? this.realRace : this.race, line);
-													// update the modified person amount
-													modPersons = Math.max(0, modPersons - rel.amount);
-												} else if (itemName.length() > 0) {
-													ItemType iType = ((Eressea)data.rules).getItemType(itemName);
-													if (iType != null) {
-														// get the item from the list of modified items
-														Item i = (Item)modItems.get(iType.getID());
-														if(i==null) {
-															// item unknown
-															rel.amount = 0;
-														} else {
-															// if the specified amount is 'all', convert this to a decent number
-															if (rel.amount == REFRESHRELATIONS_ALL) {
-																rel.amount = i.getAmount();
-															} else {
-																// if not, only transfer the minimum amount the unit has
-																rel.amount = Math.min(i.getAmount(), rel.amount);
-															}
-														}
-														// create the new transfer relation
-														rel = new ItemTransferRelation(this, target, rel.amount, iType, line);
-														// update the modified item amount
-														if (i != null) {
-															i.setAmount(Math.max(0,i.getAmount() - rel.amount));
-														}
-													} else {
-														rel = null;
-													}
-												} else {
-													rel = null;
-												}
-
-												// let's see whether there is a valid relation to add
-												if (rel != null) {
-													addRelation(rel);
-													if (target != null) {
-														target.addRelation(rel);
-													}
-												}
-											} else {
-												// in this case the order looks like:
-												// GIVE <unit id> <amount><EOC>
-												if (rel.amount == REFRESHRELATIONS_ALL) { // -2 is used to encode that the amount was 'ALL'
-													for (Iterator items = modItems.values().iterator(); items.hasNext(); ) {
-														Item i = (Item)items.next();
-														TransferRelation r = new ItemTransferRelation(this, target, i.getAmount(), i.getType(), line);
-														i.setAmount(0);
-														this.addRelation(r);
-														target.addRelation(r);
-													}
-												}
-											}
-										} else {
-											log.warn("Unit.updateRelations(): cannot parse amount in order " + order);
-										}
-									}
-								} else {
-									// relation to myself? you're sick
-								}
-							}
-						} else
-							// recruitment relation
-							if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_RECRUIT))) {
-								OrderToken t = (OrderToken)tokens.get(1);
-								if (t.ttype == OrderToken.TT_NUMBER) {
-									RecruitmentRelation rel = new RecruitmentRelation(this, Integer.parseInt(t.getText()), line);
-									rel.source.addRelation(rel);
-									rel.target.addRelation(rel);
-								} else {
-									log.warn("Unit.updateRelations(): invalid amount in order " + order);
-								}
-							} else
-								// enter relation
-								if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_ENTER))) {
-									OrderToken t = (OrderToken)tokens.get(1);
-									UnitContainer uc = null;
-									if (t.equalsToken(getOrder(O_CASTLE))) {
-										t = (OrderToken)tokens.get(2);
-										uc = this.getRegion().getBuilding(EntityID.createEntityID(t.getText()));
-									} else
-										if (t.equalsToken(getOrder(O_SHIP))) {
-											t = (OrderToken)tokens.get(2);
-											uc = this.getRegion().getShip(EntityID.createEntityID(t.getText()));
-										}
-									if (uc != null) {
-										EnterRelation rel = new EnterRelation(this, uc, line);
-										addRelation(rel);
-										uc.addRelation(rel);
-									} else {
-										log.warn("Unit.updateRelations(): cannot find target in order " + order);
-									}
-									// check whether the unit leaves a container
-									UnitContainer leftUC = this.getBuilding();
-									if (leftUC == null) {
-										leftUC = this.getShip();
-									}
-									if (leftUC != null) {
-										LeaveRelation rel = new LeaveRelation(this, leftUC, line);
-										addRelation(rel);
-										leftUC.addRelation(rel);
-									}
-								} else
-									// leave relation
-									if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_LEAVE))) {
-										UnitContainer uc = getBuilding();
-										if (uc == null) {
-											uc = getShip();
-										}
-										if (uc != null) {
-											LeaveRelation rel = new LeaveRelation(this, uc, line);
-											addRelation(rel);
-											uc.addRelation(rel);
-										} else {
-											log.warn("Unit.updateRelations(): unit " + this + " cannot leave a ship or a building as indicated by order " + order);
-										}
-									} else
-										// teach relation
-										if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_TEACH))) {
-											int tokCtr = 1;
-											OrderToken token = (OrderToken)tokens.get(tokCtr);
-											while (token.ttype != OrderToken.TT_EOC) {
-												Unit pupil = getTargetUnit(token, this.getRegion());
-												if (pupil != null) {
-													if (!this.equals(pupil)) {
-														TeachRelation rel = new TeachRelation(this, pupil, line);
-														this.addRelation(rel);
-														if (pupil != null) {
-															pupil.addRelation(rel);
-														}
-													} // else can't teach myself
-												} // else pupil not found
-												tokCtr++;
-												token = (OrderToken)tokens.get(tokCtr);
-											}
-										} else {
-											// attack relation
-											if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_ATTACK))) {
-												OrderToken token = (OrderToken)tokens.get(1);
-												Unit enemy = getTargetUnit(token, this.getRegion());
-												if(enemy != null) {
-													AttackRelation rel = new AttackRelation(this, enemy, line);
-													addRelation(rel);
-													enemy.addRelation(rel);
-												}
-											}
-										}
-				} else {
-					if (((OrderToken)tokens.get(0)).equalsToken(getOrder(O_END))) {
-						tempOrders = false;
-						continue;
-					}
-				}
-			}
-		}
+		removeRelationsOriginatingFromUs(from);
+		addAndSpreadRelations(new RelationFactory().createRelations(this,from));
 	}
 
-	private Unit getTargetUnit(OrderToken t, Region r) {
-		Unit u = null;
-		try {
-			UnitID id = UnitID.createUnitID(t.getText());
-			u = r.getUnit(id);
-		} catch (NumberFormatException e) {
-			log.warn("Unit.getTargetUnit(): cannot parse unit id \"" + t.getText() + "\"!");
+	private void addAndSpreadRelations(Collection newRelations) {
+		if(log.isDebugEnabled()) {
+			log.debug("Relations for "+this);
+			log.debug(newRelations);
 		}
-
-		return u;
+		for(Iterator iter = newRelations.iterator(); iter.hasNext(); ) {
+			UnitRelation r = (UnitRelation) iter.next();
+			this.addRelation(r);
+			if(r.source != this) {
+				r.source.addRelation(r);
+			}
+			if(r instanceof InterUnitRelation) {
+				InterUnitRelation iur = (InterUnitRelation) r;
+				if(iur.target != null) {
+					iur.target.addRelation(r);
+				}
+				continue;
+			} 
+			if(r instanceof UnitContainerRelation) {
+				UnitContainerRelation ucr = (UnitContainerRelation) r;
+				if(ucr.target != null) {
+					ucr.target.addRelation(r);
+				}
+				continue;				
+			}
+		}
 	}
 
 	/**
@@ -2169,11 +1904,11 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 				}
 
 				if (false == tempBlock) {
-					if (t.equalsToken(getOrder(O_MAKE))) {
+					if (t.equalsToken(getOrder(EresseaOrderConstants.O_MAKE))) {
 						t = ct.getNextToken();
 						if (OrderToken.TT_EOC == t.ttype) {
 							continue;
-						} else if (t.equalsToken(getOrder(O_TEMP))) {
+						} else if (t.equalsToken(getOrder(EresseaOrderConstants.O_TEMP))) {
 							tempBlock = true;
 							continue;
 						}
@@ -2194,7 +1929,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 						continue;
 					}
 				} else {
-					if (t.equalsToken(getOrder(O_END))) {
+					if (t.equalsToken(getOrder(EresseaOrderConstants.O_END))) {
 						tempBlock = false;
 						continue;
 					}
@@ -2497,23 +2232,6 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	}
 
 	/**
-	 * Removes quotes at the beginning and at the end of str or
-	 * replaces tilde characters with spaces.
-	 */
-	private String stripQuotes(String str) {
-		if (str == null) {
-			return null;
-		}
-
-		int strLen = str.length();
-		if (strLen >= 2 && str.charAt(0) == '"' && str.charAt(strLen - 1) == '"') {
-			return str.substring(1, strLen - 1);
-		} else {
-			return str.replace('~', ' ');
-		}
-	}
-
-	/**
 	 * Indicates whether this Unit object is equal to another
 	 * object. Returns true only if o is not null and an instance of
 	 * class Unit and o's id is equal to the id of this
@@ -2539,7 +2257,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * Returns a translation for the specified order key.
 	 */
 	private String getOrder(String key) {
-		return com.eressea.util.Translations.getOrderTranslation(key);
+		return Translations.getOrderTranslation(key);
 	}
 
 	/**
@@ -2547,7 +2265,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * specified locale.
 	 */
 	private String getOrder(String key, Locale locale) {
-		return com.eressea.util.Translations.getOrderTranslation(key,locale);
+		return Translations.getOrderTranslation(key,locale);
 	}
 
 	/**
@@ -2586,9 +2304,9 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 				com.eressea.util.OrderTokenizer ct = new com.eressea.util.OrderTokenizer(new StringReader(line));
 				com.eressea.util.OrderToken token = ct.getNextToken();
 				if (tempUnit == null) {
-					if (token.equalsToken(getOrder(O_MAKE, locale))) {
+					if (token.equalsToken(getOrder(EresseaOrderConstants.O_MAKE, locale))) {
 						token = ct.getNextToken();
-						if (token.equalsToken(getOrder(O_TEMP, locale))) {
+						if (token.equalsToken(getOrder(EresseaOrderConstants.O_TEMP, locale))) {
 							token = ct.getNextToken();
 							try {
 								UnitID id = new UnitID(com.eressea.util.IDBaseConverter.parse(token.getText()) * -1);
@@ -2598,7 +2316,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 									cmdIterator.remove();
 									token = ct.getNextToken();
 									if (token.ttype != com.eressea.util.OrderToken.TT_EOC) {
-										tempUnit.addOrders(getOrder(O_NAME, locale) + " " + getOrder(O_UNIT, locale) + " " + token.getText(),false);
+										tempUnit.addOrders(getOrder(EresseaOrderConstants.O_NAME, locale) + " " + getOrder(EresseaOrderConstants.O_UNIT, locale) + " " + token.getText(),false);
 									}
 								} else {
 									log.warn("Unit.extractTempUnits(): region " +
@@ -2613,7 +2331,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 					}
 				} else {
 					cmdIterator.remove();
-					if (token.equalsToken(getOrder(O_END, locale))) {
+					if (token.equalsToken(getOrder(EresseaOrderConstants.O_END, locale))) {
 						tempUnit = null;
 					} else {
 						if(CONFIRMEDTEMPCOMMENT.equals(line.trim())) {

@@ -10,10 +10,8 @@ package com.eressea.swing;
 
 
 import java.io.File;
-
 import java.util.Map;
 
-import javax.swing.filechooser.FileFilter;
 import com.eressea.util.CollectionFactory;
 
 public class EresseaFileFilter extends javax.swing.filechooser.FileFilter {

@@ -8,8 +8,6 @@
 
 package com.eressea.extern;
 
-import java.util.Properties;
-
 import com.eressea.demo.Client;
 
 /**

@@ -145,6 +145,11 @@ public class Direction {
 		return toString(dir, false);
 	}
 	
+
+	public static String toString(Coordinate c) {
+		return toString(toInt(c));
+	}
+
 	/**
 	 * Returns a String representation of the specified direction.
 	 *

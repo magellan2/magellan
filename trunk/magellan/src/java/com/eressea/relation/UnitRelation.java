@@ -32,4 +32,8 @@ public class UnitRelation {
 	public String toString() {
 		return this.getClass().getName()+"@ORIGIN="+origin+"@SOURCE="+source+"@line="+line;
 	}
+
+	public boolean isLongOrder() {
+		return this instanceof LongOrderRelation;
+	}
 }

@@ -10,13 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-
 import com.eressea.Faction;
 import com.eressea.Item;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
 

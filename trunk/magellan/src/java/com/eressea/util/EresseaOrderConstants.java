@@ -12,7 +12,8 @@ package com.eressea.util;
 /**
  * Contains the String keys of all Eressea orders
  */
-public interface EresseaOrderConstants {
+public final class EresseaOrderConstants {
+	
 	public static final String O_ADDRESSES      = "ADDRESSES";
 	public static final String O_AGGRESSIVE     = "AGGRESSIVE";
 	public static final String O_AFTER          = "AFTER";

@@ -89,9 +89,16 @@ public class Message extends Identifiable {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
-	public MessageType getType() {
+
+	public MessageType getMessageType() {	
 		return type;
+	}
+
+	/** 
+	 * @deprecated
+	 */
+	public MessageType getType() {
+		return getMessageType();
 	}
 	
 	public void setType(MessageType type) {

@@ -15,7 +15,7 @@ import com.eressea.Unit;
  * A relation indicating that the source unit has a LEHREN order for
  * the target unit.
  */
-public class TeachRelation extends InterUnitRelation {
+public class TeachRelation extends InterUnitRelation implements LongOrderRelation {
 	public TeachRelation(Unit s, Unit t, int line) {
 		super(s, t, line);
 	}

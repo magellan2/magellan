@@ -37,15 +37,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -60,6 +57,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.apache.tools.mail.MailMessage;
+
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -73,8 +72,6 @@ import com.eressea.util.PropertiesHelper;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
-
-import org.apache.tools.mail.MailMessage;
 
 /**
  * A GUI for writing orders to a file or copy them to the clipboard.

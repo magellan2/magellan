@@ -11,14 +11,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.swing.JMenu;
 
 import com.eressea.demo.Client;
 import com.eressea.demo.actions.FileHistoryAction;
-import com.eressea.util.CollectionFactory;
-import com.eressea.util.PropertiesHelper;
 
 /**
  * A kind of wrapper for the file history (menu) functionality.

@@ -341,9 +341,8 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 	 * @param map A map containig RegionType/String - Color pairs
 	 */
 	public void setRegionColors(Map map) {
-		Iterator it=map.keySet().iterator();
-		while(it.hasNext()) {
-			Object o=it.next();
+		for(Iterator iter=map.keySet().iterator(); iter.hasNext(); ) {
+			Object o = iter.next();
 			if (o instanceof RegionType) {
 				regionColors.put(((RegionType)o).getID(), map.get(o));
 			}
@@ -644,7 +643,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 		
 		switch(paintMode) {
 			case PAINT_REGIONTYPE:
-				return getRegionTypeColor((RegionType)r.getType());
+				return getRegionTypeColor(r.getRegionType());
 			case PAINT_POLITICS:
 				return getPoliticsColor(r);
 			case PAINT_ALLFACTIONS:
@@ -932,7 +931,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 		it = data.regions().values().iterator();
 		while(it.hasNext()) {
 			Region r = (Region)it.next();
-			getRegionTypeColor((RegionType)r.getType());
+			getRegionTypeColor(r.getRegionType());
 		}
 		this.data = data;
 	}

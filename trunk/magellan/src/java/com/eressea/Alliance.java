@@ -10,6 +10,7 @@ package com.eressea;
 
 
 import com.eressea.util.EresseaOrderConstants;
+import com.eressea.util.Translations;
 
 /**
  * A class representing an alliance status between two factions.
@@ -114,16 +115,16 @@ public class Alliance {
 	public String stateToString() {
 		
 		if (getState(ALL)) {
-			return com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_ALL);
+			return Translations.getOrderTranslation(EresseaOrderConstants.O_ALL);
 		}
 		
 		int[] stateSet = { SILVER, COMBAT, GIVE, GUARD, GUISE };
 		String[] names = {
-			com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_SILVER),
-			com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_COMBAT),
-			com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE),
-			com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_GUARD),
-			com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_FACTIONSTEALTH)
+			Translations.getOrderTranslation(EresseaOrderConstants.O_SILVER),
+			Translations.getOrderTranslation(EresseaOrderConstants.O_COMBAT),
+			Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE),
+			Translations.getOrderTranslation(EresseaOrderConstants.O_GUARD),
+			Translations.getOrderTranslation(EresseaOrderConstants.O_FACTIONSTEALTH)
 		};
 		StringBuffer retVal = new StringBuffer();
 		

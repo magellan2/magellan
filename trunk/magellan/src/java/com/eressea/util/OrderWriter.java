@@ -191,7 +191,7 @@ public class OrderWriter {
 			stream.write(";\t\t" + unit.getName() + " [" + unit.persons + "," + money + "$");
 			if (unit.getBuilding() != null) {
 				if (unit.equals(unit.getBuilding().getOwnerUnit())) {
-					BuildingType type = (BuildingType)unit.getBuilding().getType();
+					BuildingType type = unit.getBuilding().getBuildingType();
 					if (type != null) {
 						Item i = type.getMaintenance(StringID.create("Silber"));
 						if (i != null) {

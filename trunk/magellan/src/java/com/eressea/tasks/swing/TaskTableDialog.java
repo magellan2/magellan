@@ -8,26 +8,16 @@
 
 package com.eressea.tasks.swing;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import com.eressea.GameData;
-import com.eressea.swing.InternationalizedDataDialog;
-
 import com.eressea.event.EventDispatcher;
+import com.eressea.swing.InternationalizedDataDialog;
 import com.eressea.util.CollectionFactory;
 
 /**

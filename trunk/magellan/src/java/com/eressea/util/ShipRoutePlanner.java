@@ -38,14 +38,13 @@ public class ShipRoutePlanner {
 
 	public static boolean canPlan(Ship ship) {
 		Unit shipOwner = ship.getOwnerUnit();
-		boolean bool = false;
-		try{
-			bool = shipOwner.getFaction().trustLevel >= Faction.TL_PRIVILEGED;
-		}catch(Exception exc) {return false;}
-		if (ship.size < ((ShipType)ship.getType()).getMaxSize()) {
-			bool = false;
+		if (ship.size < ship.getShipType().getMaxSize()) {
+			return false;
 		}
-		return bool;
+		try{
+			return shipOwner.getFaction().trustLevel >= Faction.TL_PRIVILEGED;
+		}catch(NullPointerException exc) {}
+		return false;
 	}
 
 	public static Unit planShipRoute(Ship ship, GameData data, Component ui) {
@@ -90,7 +89,7 @@ public class ShipRoutePlanner {
 						// Now try to calculate the orders:
 						int shipRange = 0;
 						try{
-							shipRange = ((ShipType)ship.getType()).getRange() + meerManBonus;
+							shipRange = ship.getShipType().getRange() + meerManBonus;
 						}catch(Exception exc) {}
 
 						if (!v.useRange) {

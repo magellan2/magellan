@@ -669,7 +669,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// peasants
-		int maxWorkers = ((RegionType)r.getType()).getMaxWorkers() - (Math.max(r.trees, 0) * 8) - (Math.max(r.sprouts, 0) * 4);
+		int maxWorkers = r.getRegionType().getMaxWorkers() - (Math.max(r.trees, 0) * 8) - (Math.max(r.sprouts, 0) * 4);
 		int workers = Math.min(maxWorkers, r.peasants);
 		int surplus = workers * r.getPeasantWage() - r.peasants * 10;
 		int oldWorkers = Math.min(maxWorkers, r.oldPeasants);
@@ -1152,7 +1152,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 //					if (f.getType() != null) {
 //						bonus = ((Race)f.getType()).getSkillBonus(item.skill.getType());
 //						if (lastRegion != null) {
-//							bonus += ((Race)f.getType()).getSkillBonus(item.skill.getType(), (RegionType)lastRegion.getType());
+//							bonus += ((Race)f.getType()).getSkillBonus(item.skill.getType(), lastRegion.getRegionType());
 //						}
 //					}
 					DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getType().getID().toString());
@@ -1267,7 +1267,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					if ((f = g.getFaction()) != null && f.getType() != null) {
 						bonus = ((Race)f.getType()).getSkillBonus(item.skill.getType());
 						if (lastRegion != null) {
-							bonus += ((Race)f.getType()).getSkillBonus(item.skill.getType(), (RegionType)lastRegion.getType());
+							bonus += ((Race)f.getType()).getSkillBonus(item.skill.getType(), lastRegion.getRegionType());
 						}
 					}
 					DefaultMutableTreeNode m = new DefaultMutableTreeNode(new SimpleNodeWrapper(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getType().getID().toString()));
@@ -1899,7 +1899,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 parent.insert(n, 0);
 
 		 // Gebaeudeunterhalt
-		Iterator iter = ((BuildingType)b.getType()).getMaintenanceItems();
+		Iterator iter = b.getBuildingType().getMaintenanceItems();
 		if (iter.hasNext()) {
 			n = new DefaultMutableTreeNode(getString("node.upkeep"));
 			parent.add(n);
@@ -1919,7 +1919,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// Baukosten
-		iter = ((BuildingType)b.getType()).getRawMaterials();
+		iter = b.getBuildingType().getRawMaterials();
 		if (iter.hasNext()) {
 			n = new DefaultMutableTreeNode(getString("node.buildingcost"));
 			parent.add(n);
@@ -1982,7 +1982,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(createSimpleNode(getString("node.type") + ": " + s.getType().getName(),s.getType().getID().toString()));
 		}
 
-		int nominalShipSize = ((ShipType)s.getType()).getMaxSize();
+		int nominalShipSize = s.getShipType().getMaxSize();
 		if (s.size != nominalShipSize) {
 			int ratio = 0;
 			if (nominalShipSize != 0) {
@@ -1996,7 +1996,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 
 			// Reichweite (bei Schaden aufrunden)
-			int rad = ((ShipType)s.getType()).getRange();
+			int rad = s.getShipType().getRange();
 			// rad = rad*(100.0-damageRatio)/100.0
 			rad = new BigDecimal(rad).multiply(new BigDecimal(100-s.damageRatio)).divide(new BigDecimal(100),BigDecimal.ROUND_UP).intValue();
 
@@ -2028,7 +2028,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(n);
 			Skill sailingSkill = s.getOwnerUnit().getModifiedSkill(sailingSkillType);
 			sailingSkillAmount = (sailingSkill == null) ? 0 : sailingSkill.getLevel();
-			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.captainskill") + ": " + sailingSkillAmount + " / " + ((ShipType)s.getType()).getCaptainSkillLevel(),"captain"));
+			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.captainskill") + ": " + sailingSkillAmount + " / " + s.getShipType().getCaptainSkillLevel(),"captain"));
 			parent.add(n);
 		}
 
@@ -2043,7 +2043,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				sailingSkillAmount += sailingSkill.getLevel() * u.getModifiedPersons();
 			}
 		}
-		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.crewskill") + ": " + sailingSkillAmount + " / " + ((ShipType)s.getType()).getSailorSkillLevel(),"crew"));
+		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.crewskill") + ": " + sailingSkillAmount + " / " + s.getShipType().getSailorSkillLevel(),"crew"));
 		parent.add(n);
 		// Insassen
 		units = CollectionFactory.createLinkedList(s.units());	// the collection of units currently on the ship
@@ -2116,8 +2116,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			int intCap = s.getMaxCapacity();
 			intCap = new BigDecimal(intCap).multiply(new BigDecimal(100-s.damageRatio)).divide(new BigDecimal(100),BigDecimal.ROUND_DOWN).intValue();
 			String strCap = Integer.toString(intCap);
-			log.debug("outer ship state: "+ ((ShipType)s.getType()).getCapacity()+"(intCap "+intCap+")");
-
+			if(log.isDebugEnabled()) {
+				log.debug("outer ship state: "+ s.getShipType().getCapacity()+"(intCap "+intCap+")");
+			}
 			loadNode.setUserObject(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") + ": " + strLoad + " (" + strModLoad + ") / " + strCap + " " + getString("node.weightunits"),"beladung"));
 		}
 
@@ -2147,7 +2148,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if (b.buildRatio > -1 && b.buildRatio != 100) {
 			String str = getString("node.completion") + ": " + b.buildRatio + " %";
 			if (Umlaut.normalize(b.type).equals("STRASSE")) {
-				int stones = ((RegionType)lastRegion.getType()).getRoadStones();
+				int stones = lastRegion.getRegionType().getRoadStones();
 				str += " (" + ((b.buildRatio * stones) / 100) + " / " + stones + " " + data.rules.getItemType(StringID.create("Stein")).getName() + ")";
 			}
 			parent.add(new DefaultMutableTreeNode(str));

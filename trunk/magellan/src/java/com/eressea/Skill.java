@@ -9,7 +9,6 @@
 package com.eressea;
 
 
-import com.eressea.rules.BuildingType;
 import com.eressea.rules.Race;
 import com.eressea.rules.RegionType;
 import com.eressea.rules.SkillType;
@@ -91,8 +90,6 @@ public class Skill {
 	}
 
 	public int getLevel(Unit unit, boolean includeBuilding) {
-		int level = 0;
-
 		if (unit != null && unit.persons != 0) {
 			int raceBonus = 0;
 			int terrainBonus = 0;
@@ -107,16 +104,16 @@ public class Skill {
 			}
 
 			if (unit.getRegion() != null) {
-				terrainBonus = unit.race.getSkillBonus(getType(), (RegionType)unit.getRegion().getType());
+				terrainBonus = unit.race.getSkillBonus(getType(), unit.getRegion().getRegionType());
 			}
 
 			if (includeBuilding && unit.getBuilding() != null) {
-				buildingBonus = ((BuildingType)unit.getBuilding().getType()).getSkillBonus(getType());
+				buildingBonus = (unit.getBuilding().getBuildingType()).getSkillBonus(getType());
 			}
 
-			level = getLevel(getPoints() / unit.persons, raceBonus, terrainBonus, buildingBonus, unit.isStarving);
+			return getLevel(getPoints() / unit.persons, raceBonus, terrainBonus, buildingBonus, unit.isStarving);
 		}
-		return level;
+		return 0;
 	}
 
 	/**
@@ -124,8 +121,6 @@ public class Skill {
 	 * persons in the unit and the skill points of this skill.
 	 */
 	public int getModifiedLevel(Unit unit, boolean includeBuilding) {
-		int level = 0;
-
 		if (unit != null && unit.getModifiedPersons() != 0) {
 			int raceBonus = 0;
 			int terrainBonus = 0;
@@ -136,16 +131,16 @@ public class Skill {
 			}
 
 			if (unit.getRegion() != null) {
-				terrainBonus = unit.race.getSkillBonus(getType(), (RegionType)unit.getRegion().getType());
+				terrainBonus = unit.race.getSkillBonus(getType(), unit.getRegion().getRegionType());
 			}
 
 			if (includeBuilding && unit.getBuilding() != null) {
-				buildingBonus = ((BuildingType)unit.getBuilding().getType()).getSkillBonus(getType());
+				buildingBonus = unit.getBuilding().getBuildingType().getSkillBonus(getType());
 			}
 
-			level = getLevel(getPoints() / unit.getModifiedPersons(), raceBonus, terrainBonus, buildingBonus, unit.isStarving);
+			return getLevel(getPoints() / unit.getModifiedPersons(), raceBonus, terrainBonus, buildingBonus, unit.isStarving);
 		}
-		return level;
+		return 0;
 	}
 
 	/**
@@ -170,7 +165,7 @@ public class Skill {
 	 */
 	public static int getModifier(SkillType skillType, Unit unit) {
 		Race race = unit.realRace != null ? unit.realRace : unit.race;
-		RegionType terrain = unit.getRegion() != null ? (RegionType)unit.getRegion().getType() : null;
+		RegionType terrain = unit.getRegion() != null ? unit.getRegion().getRegionType() : null;
 
 		return getModifier(skillType, race, terrain);
 	}
@@ -180,7 +175,7 @@ public class Skill {
 	 * skill in the terrain the specified unit resides in.
 	 */
 	public int getModifier(Unit unit) {
-		RegionType terrain = unit.getRegion() != null ? (RegionType)unit.getRegion().getType() : null;
+		RegionType terrain = unit.getRegion() != null ? unit.getRegion().getRegionType() : null;
 
 		return getModifier(this.type, unit);
 	}
@@ -194,8 +189,15 @@ public class Skill {
 		return this.noSkillPoints;
 	}
 
-	public SkillType getType() {
+	public SkillType getSkillType() {
 		return type;
+	}
+	
+	/** 
+	 * @deprecated
+	 */
+	public SkillType getType() {
+		return getSkillType();
 	}
 
 	public String getName() {

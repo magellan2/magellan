@@ -10,18 +10,11 @@ package com.eressea.demo.actions;
 
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.KeyStroke;
-import java.util.Iterator;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.demo.Client;
-import com.eressea.demo.desktop.DesktopEnvironment;
-import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.tasks.swing.TaskTableDialog;
-import com.eressea.util.Translations;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

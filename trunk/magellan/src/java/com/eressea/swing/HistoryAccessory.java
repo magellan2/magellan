@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;

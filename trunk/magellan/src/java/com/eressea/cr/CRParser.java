@@ -1931,7 +1931,7 @@ public class CRParser {
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Prozent") == true &&
 				ship.getType() != null) {
-				ship.size = (((ShipType)ship.getType()).getMaxSize() * java.lang.Integer.parseInt(sc.argv[0])) / 100;
+				ship.size = (ship.getShipType().getMaxSize() * java.lang.Integer.parseInt(sc.argv[0])) / 100;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Schaden") == true) {
