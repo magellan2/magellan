@@ -21,9 +21,8 @@ import com.eressea.Unit;
 import com.eressea.util.CollectionFactory;
 
 /**
- * The base class for filtering units. Designed after FileFilter and similar
- * interfaces, but as an abstract class to have a short-cut for Collections
- * implemented. ,
+ * The base class for filtering units. Designed after FileFilter and similar interfaces, but as an
+ * abstract class to have a short-cut for Collections implemented. ,
  *
  * @author Andreas
  * @version
@@ -84,8 +83,7 @@ public abstract class UnitFilter {
 	 */
 	public String getName() {
 		String ret = com.eressea.util.Translations.getTranslation(UnitFilter.class,
-																  getClass()
-																	  .getName());
+																  getClass().getName());
 
 		if(ret == null) {
 			ret = "UnitFilter";

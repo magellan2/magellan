@@ -23,8 +23,8 @@ import com.eressea.HasRegion;
  */
 public class CriticizedInformation extends AbstractProblem implements Problem {
 	/**
-								 *
-								 */
+									 *
+									 */
 	public CriticizedInformation(Object s, HasRegion o, Inspector i, String m) {
 		super(s, o, i, m);
 	}
@@ -38,8 +38,7 @@ public class CriticizedInformation extends AbstractProblem implements Problem {
 	 * @param m TODO: DOCUMENT ME!
 	 * @param l TODO: DOCUMENT ME!
 	 */
-	public CriticizedInformation(Object s, HasRegion o, Inspector i, String m,
-								 int l) {
+	public CriticizedInformation(Object s, HasRegion o, Inspector i, String m, int l) {
 		super(s, o, i, m, l);
 	}
 

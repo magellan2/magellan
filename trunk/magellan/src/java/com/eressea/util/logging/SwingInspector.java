@@ -49,11 +49,10 @@ public class SwingInspector {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static String printInputMaps(JComponent comp) {
-		return printMap(comp.getInputMap(JComponent.WHEN_FOCUSED),
-						"WHEN_FOCUSED", comp.getActionMap()) +
-			   printMap(comp.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
-						"WHEN_ANCESTOR_OF_FOCUSED_COMPONENT",
+		return printMap(comp.getInputMap(JComponent.WHEN_FOCUSED), "WHEN_FOCUSED",
 						comp.getActionMap()) +
+			   printMap(comp.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),
+						"WHEN_ANCESTOR_OF_FOCUSED_COMPONENT", comp.getActionMap()) +
 			   printMap(comp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW),
 						"WHEN_IN_FOCUSED_WINDOW", comp.getActionMap()) +
 			   printMap(comp.getActionMap());
@@ -70,8 +69,7 @@ public class SwingInspector {
 		return printKeysAndActions(comp.getKeymap()).toString();
 	}
 
-	private static String printMap(InputMap map, String desc,
-								   ActionMap actionmap) {
+	private static String printMap(InputMap map, String desc, ActionMap actionmap) {
 		StringBuffer sb = new StringBuffer();
 
 		if(map != null) {
@@ -82,8 +80,7 @@ public class SwingInspector {
 				sb.append("KeyStrokes[] ist null!" + "\n");
 			} else {
 				sb.append(keystrokes.length + "\n");
-				sb.append(printKeyStrokes(keystrokes,
-										  new ActionProvider(map, actionmap)));
+				sb.append(printKeyStrokes(keystrokes, new ActionProvider(map, actionmap)));
 			}
 
 			sb.append("-------------------------------------------" + "\n");
@@ -115,8 +112,8 @@ public class SwingInspector {
 		StringBuffer sb = new StringBuffer();
 
 		if(keymap != null) {
-			Action	    actions[]    = keymap.getBoundActions();
-			KeyStroke   keystrokes[] = keymap.getBoundKeyStrokes();
+			Action actions[] = keymap.getBoundActions();
+			KeyStroke keystrokes[] = keymap.getBoundKeyStrokes();
 			sb.append("Keymap: " + keymap.getName() + "\n");
 			sb.append(actions.length + " " + keystrokes.length + "\n");
 			sb.append(printKeyStrokes(keystrokes, new ActionProvider(keymap)));
@@ -160,8 +157,7 @@ public class SwingInspector {
 
 			String keyText = ppString((keystroke.getKeyChar() != 0)
 									  ? String.valueOf(keystroke.getKeyChar())
-									  : KeyEvent.getKeyText(keystroke.getKeyCode()),
-									  15);
+									  : KeyEvent.getKeyText(keystroke.getKeyCode()), 15);
 			sb.append(keyText + " ");
 
 			if(keystroke.isOnKeyRelease()) {
@@ -188,8 +184,8 @@ public class SwingInspector {
 	}
 
 	private static class ActionProvider {
-		private Keymap    keymap;
-		private InputMap  inputmap;
+		private Keymap keymap;
+		private InputMap inputmap;
 		private ActionMap actionmap;
 
 		ActionProvider(Keymap km) {
@@ -197,7 +193,7 @@ public class SwingInspector {
 		}
 
 		ActionProvider(InputMap im, ActionMap am) {
-			inputmap  = im;
+			inputmap = im;
 			actionmap = am;
 		}
 

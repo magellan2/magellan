@@ -23,17 +23,15 @@ import com.eressea.Unit;
  */
 public interface Inspector {
 	/**
-	 * This Function is called to review a unit and returns a list of
-	 * <tt>Problem</tt> objects. It should generally call
-	 * reviewUnit(u,Problem.INFO), reviewUnit(u,Problem.WARNING)...
+	 * This Function is called to review a unit and returns a list of <tt>Problem</tt> objects. It
+	 * should generally call reviewUnit(u,Problem.INFO), reviewUnit(u,Problem.WARNING)...
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List reviewUnit(Unit u);
 
 	/**
-	 * This Function is called to review a unit and returns a list of
-	 * <tt>Problem</tt> objects.
+	 * This Function is called to review a unit and returns a list of <tt>Problem</tt> objects.
 	 *
 	 * @param u unit to review
 	 * @param type the type of the review e.g. Problem.INFO

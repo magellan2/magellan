@@ -60,8 +60,7 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 
 		if(!u.getModifiedMovement().isEmpty()) {
 			// only test for foot/horse movement if unit is not owner of a modified ship
-			if((u.getModifiedShip() == null) ||
-				   !u.equals(u.getModifiedShip().getOwnerUnit())) {
+			if((u.getModifiedShip() == null) || !u.equals(u.getModifiedShip().getOwnerUnit())) {
 				problems.addAll(reviewUnitOnFoot(u));
 				problems.addAll(reviewUnitOnHorse(u));
 			}
@@ -91,16 +90,14 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 		int maxOnFoot = u.getPayloadOnFoot();
 
 		if(maxOnFoot == Unit.CAP_UNSKILLED) {
-			return CollectionFactory.singletonList(new CriticizedWarning(u, u,
-																		 this,
+			return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
 																		 "Foot movement too many horses!"));
 		}
 
 		int modLoad = u.getModifiedLoad();
 
 		if((maxOnFoot - modLoad) < 0) {
-			return CollectionFactory.singletonList(new CriticizedWarning(u, u,
-																		 this,
+			return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
 																		 "Foot movement overloaded!"));
 		}
 
@@ -111,8 +108,7 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 		int maxOnHorse = u.getPayloadOnHorse();
 
 		if(maxOnHorse == Unit.CAP_UNSKILLED) {
-			return CollectionFactory.singletonList(new CriticizedWarning(u, u,
-																		 this,
+			return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
 																		 "Horse movement too many horses!"));
 		}
 
@@ -120,9 +116,7 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 			int modLoad = u.getModifiedLoad();
 
 			if((maxOnHorse - modLoad) < 0) {
-				return CollectionFactory.singletonList(new CriticizedWarning(u,
-																			 u,
-																			 this,
+				return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
 																			 "Horse movement overloaded!"));
 			}
 		}

@@ -47,8 +47,7 @@ public class UnitFactionTLFilter extends UnitFilter {
 	public boolean acceptUnit(Unit u) {
 		Faction f = u.getFaction();
 
-		return (f != null) && (minTL <= f.trustLevel) &&
-			   (f.trustLevel <= maxTL);
+		return (f != null) && (minTL <= f.trustLevel) && (f.trustLevel <= maxTL);
 	}
 
 	/**

@@ -22,11 +22,11 @@ import com.eressea.HasRegion;
  * @version $Revision$
  */
 public abstract class AbstractProblem implements Problem {
-	protected Object    source;
+	protected Object source;
 	protected HasRegion object;
 	protected Inspector inspector;
-	protected String    message;
-	protected int	    line;
+	protected String message;
+	protected int line;
 
 	/**
 	 * Creates a new AbstractProblem object.
@@ -56,11 +56,11 @@ public abstract class AbstractProblem implements Problem {
 			throw new NullPointerException();
 		}
 
-		source    = s;
-		object    = o;
+		source = s;
+		object = o;
 		inspector = i;
-		message   = m;
-		line	  = l;
+		message = m;
+		line = l;
 	}
 
 	/**

@@ -59,7 +59,7 @@ public class ToDoInspector extends AbstractInspector implements Inspector {
 
 		List problems = CollectionFactory.createArrayList(2);
 
-		int  line = 0;
+		int line = 0;
 
 		for(Iterator iter = u.getOrders().iterator(); iter.hasNext();) {
 			line++;
@@ -70,16 +70,14 @@ public class ToDoInspector extends AbstractInspector implements Inspector {
 				order = order.substring(2).trim();
 
 				if(order.startsWith("TODO")) {
-					problems.add(new CriticizedInformation(u, u, this, order,
-														   line));
+					problems.add(new CriticizedInformation(u, u, this, order, line));
 				}
 			} else {
 				if(order.startsWith(";")) {
 					order = order.substring(1).trim();
 
 					if(order.startsWith("TODO")) {
-						problems.add(new CriticizedInformation(u, u, this,
-															   order, line));
+						problems.add(new CriticizedInformation(u, u, this, order, line));
 					}
 				}
 			}

@@ -28,8 +28,7 @@ public class AWTLogger implements AWTEventListener {
 	PrintStream out;
 
 	// right now log focus, window and key events
-	private final long AWTMASK = AWTEvent.FOCUS_EVENT_MASK |
-								 AWTEvent.KEY_EVENT_MASK;
+	private final long AWTMASK = AWTEvent.FOCUS_EVENT_MASK | AWTEvent.KEY_EVENT_MASK;
 
 	/*
 
@@ -38,8 +37,7 @@ public class AWTLogger implements AWTEventListener {
 	public AWTLogger() {
 		try {
 			out = new PrintStream(new FileOutputStream("awtDebug" +
-													   System.getProperty("java.version") +
-													   ".txt"));
+													   System.getProperty("java.version") + ".txt"));
 			Toolkit.getDefaultToolkit().addAWTEventListener(this, AWTMASK);
 		} catch(IOException e) {
 		}
