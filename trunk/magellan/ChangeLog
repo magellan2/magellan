@@ -1,3 +1,11 @@
+2004-04-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/desktop/SplitBuilder.java: used
+	ClearLook to reduce redundant borders.
+
+	* src/java/com/eressea/swing/MagellanLookAndFeel.java: added
+	support for ClearLook (tm).
+
 2004-03-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/res/plaf/plaf.ini: added support for WinLaF (see 

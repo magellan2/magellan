@@ -656,6 +656,9 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 
 		JScrollPane treeScrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 													 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		// ClearLook suggests to remove this border
+		treeScrollPane.setBorder(null);
+
 		setLayout(new GridLayout(1, 0));
 		add(treeScrollPane);
 
