@@ -25,32 +25,18 @@ import com.eressea.util.Translations;
 
 /**
  * This class keeps all anchors to global resources e.g. EventDispatcher, Properties...<br>
- * This class implements the <tt>Singleton</tt> pattern.
  */
-public class MagellanContext {
-	// prevent creation 
-	private MagellanContext() {
-	}
+public class MagellanContext implements MagellanEnvironment {
 
-	private static final MagellanContext CONTEXT = new MagellanContext();
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public static MagellanContext getInstance() {
-		return CONTEXT;
+	public MagellanContext() {
 	}
 
 	private Properties settings;
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/** 
+	 * Returns the properties of Magellan.
 	 */
-	public Properties getSettings() {
+	public Properties getProperties() {
 		return settings;
 	}
 
@@ -63,38 +49,31 @@ public class MagellanContext {
 		settings = p;
 	}
 
-	//private EventDispatcher dispatcher;
+	private EventDispatcher dispatcher;
 
-	/**
-	 * Returns the shared instance of the event dispatcher. This will create a new one if there's
-	 * no current one. This is the Singleton pattern.
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/** 
+	 * Returns the EventDispatcher of Magellan.
 	 */
 	public EventDispatcher getEventDispatcher() {
-		return EventDispatcher.getDispatcher();
+		return dispatcher;
 
-		//if (dispatcher ==null) {
-		//	dispatcher = new EventDispatcher();
-		//}
-		//return dispatcher;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param settings TODO: DOCUMENT ME!
+	public void setEventDispatcher(EventDispatcher d) {
+		dispatcher = d;
+	}
+
+	/** 
+	 * Initializes global resources.
 	 */
-	public void init(Properties settings) {
-		setProperties(settings);
-
+	public void init() {
 		ResourcePathClassLoader.init(settings); // init resource class with new settings
-
+		
 		Locales.init(settings); // init the locales with new settings
-
+		
 		// init the translations with the loaded settings
 		Translations.setClassLoader(new ResourcePathClassLoader(settings));
-
+		
 		// init the idbaseconverter
 		IDBaseConverter.init();
 

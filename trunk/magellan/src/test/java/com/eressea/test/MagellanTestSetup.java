@@ -13,7 +13,9 @@ public class MagellanTestSetup extends TestSetup {
 	}
 
 	protected void setUp() {
-		MagellanContext.getInstance().init(new Properties());
+		MagellanContext context = new MagellanContext();
+		context.setProperties(new Properties());
+		context.init();
 	}
 
 	protected void tearDown() {

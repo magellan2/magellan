@@ -125,6 +125,7 @@ import com.eressea.io.file.FileTypeFactory;
 import com.eressea.main.MagellanContext;
 import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.rules.EresseaDate;
+import com.eressea.swing.desktop.WorkSpace;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MagellanLookAndFeel;
 import com.eressea.swing.MapperPanel;
@@ -187,6 +188,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	private MenuAction saveAction;
 	private OptionAction optionAction;
 	private MagellanDesktop desktop;
+	private WorkSpace 		workSpace;
 	private ReportObserver reportState;
 
 	/** Manager for setting and activating bookmarks. */
@@ -258,11 +260,10 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 							 (startBundle != null) ? startBundle.getString("3")
 												   : "Creating desktop environment...");
 		desktop = new MagellanDesktop(this, settings, components, settingsDirectory);
-		DesktopEnvironment.init(desktop);
 
-		com.eressea.swing.desktop.Desktop d = new com.eressea.swing.desktop.Desktop(desktop.getButtonGroup());
-		d.setContent(desktop);
-		setContentPane(d);
+		workSpace = new WorkSpace(desktop.getButtonGroup());
+		workSpace.setContent(desktop);
+		setContentPane(workSpace);
 
 		// do it here because we need the desktop menu
 		setJMenuBar(createMenuBar(topLevelComponents));
@@ -303,7 +304,10 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			newFile = true;
 		}
 
-		MagellanContext.getInstance().init(settings);
+		MagellanContext context = new MagellanContext();
+		context.setProperties(settings);
+		context.setEventDispatcher(dispatcher);
+		context.init();
 
 		if(newFile) {
 			LanguageDialog ld = new LanguageDialog(settings, filesDirectory);

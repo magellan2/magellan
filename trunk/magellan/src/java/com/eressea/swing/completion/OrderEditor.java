@@ -307,6 +307,8 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 			// so we need to create it before changing orders of the unit
 			UnitOrdersEvent e = new UnitOrdersEvent(this, unit);
 			unit.setOrders(getOrders());
+			// we also need to notify that the unit orders are now unmodified
+			setModified(false);
 			dispatcher.fire(e);
 		}
 	}

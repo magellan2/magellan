@@ -303,6 +303,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 		//for adapter
 		loadFrameModeSettings();
+
+		DesktopEnvironment.init(this);
 	}
 
 	private List actions = CollectionFactory.createArrayList();
