@@ -14,7 +14,6 @@
 package com.eressea.util.logging;
 
 import java.io.PrintStream;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

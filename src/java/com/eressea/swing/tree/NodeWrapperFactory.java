@@ -32,12 +32,10 @@ import com.eressea.Region;
 import com.eressea.Skill;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;

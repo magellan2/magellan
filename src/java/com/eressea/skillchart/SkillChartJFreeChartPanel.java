@@ -1,14 +1,16 @@
 package com.eressea.skillchart;
 
-import com.jrefinery.chart.*;
-import com.jrefinery.chart.event.*;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+import java.util.Vector;
 
-import java.util.*;
-import javax.swing.*;
+import javax.swing.ToolTipManager;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.event.*;
+import com.jrefinery.chart.JFreeChart;
+import com.jrefinery.chart.JFreeChartPanel;
 
 /**
  * @author Ulrich Küster

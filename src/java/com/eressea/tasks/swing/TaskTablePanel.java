@@ -16,7 +16,6 @@ package com.eressea.tasks.swing;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,23 +33,19 @@ import com.eressea.GameData;
 import com.eressea.HasRegion;
 import com.eressea.Region;
 import com.eressea.Unit;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.table.TableSorter;
-
 import com.eressea.tasks.Inspector;
 import com.eressea.tasks.MovementInspector;
 import com.eressea.tasks.Problem;
 import com.eressea.tasks.ShipInspector;
 import com.eressea.tasks.ToDoInspector;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

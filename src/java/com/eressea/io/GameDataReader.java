@@ -18,7 +18,6 @@ import java.io.Reader;
 
 import com.eressea.GameData;
 import com.eressea.Rules;
-
 import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
 

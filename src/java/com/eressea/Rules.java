@@ -16,7 +16,6 @@ package com.eressea;
 import java.util.Iterator;
 
 import com.eressea.gamebinding.GameSpecificStuff;
-
 import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;

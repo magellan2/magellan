@@ -26,7 +26,6 @@ import javax.swing.text.JTextComponent;
 
 import com.eressea.completion.AutoCompletion;
 import com.eressea.completion.Completion;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,19 +53,14 @@ import com.eressea.ID;
 import com.eressea.Region;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.demo.desktop.Initializable;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-
 import com.eressea.rules.RegionType;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.logging.Logger;

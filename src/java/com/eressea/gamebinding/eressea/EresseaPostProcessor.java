@@ -36,11 +36,9 @@ import com.eressea.Ship;
 import com.eressea.Skill;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.RegionType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Regions;
 import com.eressea.util.comparator.IDComparator;

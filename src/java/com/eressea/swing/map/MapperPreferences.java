@@ -29,13 +29,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -63,7 +61,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

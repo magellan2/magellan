@@ -22,7 +22,6 @@ import java.util.Map;
 import com.eressea.rules.CastleType;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.RegionType;
-
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Regions;

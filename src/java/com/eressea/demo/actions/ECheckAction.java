@@ -14,7 +14,6 @@
 package com.eressea.demo.actions;
 
 import java.awt.event.KeyEvent;
-
 import java.util.Iterator;
 import java.util.Map;
 
@@ -23,9 +22,7 @@ import javax.swing.KeyStroke;
 import com.eressea.demo.Client;
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
-
 import com.eressea.swing.ECheckDialog;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 

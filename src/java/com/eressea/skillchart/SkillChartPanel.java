@@ -1,19 +1,42 @@
 package com.eressea.skillchart;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
 
-import com.eressea.*;
-import com.eressea.event.*;
-import com.eressea.rules.*;
-import com.eressea.util.*;
-import com.eressea.resource.*;
-import com.eressea.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.border.EtchedBorder;
 
-import com.jrefinery.chart.*;
+import com.eressea.Faction;
+import com.eressea.GameData;
+import com.eressea.Region;
+import com.eressea.Skill;
+import com.eressea.Unit;
+import com.eressea.event.EventDispatcher;
+import com.eressea.event.SelectionEvent;
+import com.eressea.event.SelectionListener;
+import com.eressea.rules.SkillType;
+import com.eressea.swing.InternationalizedDataPanel;
+import com.eressea.util.SkillStats;
+import com.eressea.util.Translations;
+import com.jrefinery.chart.Axis;
+import com.jrefinery.chart.AxisNotCompatibleException;
+import com.jrefinery.chart.DefaultCategoryDataSource;
+import com.jrefinery.chart.HorizontalCategoryAxis;
+import com.jrefinery.chart.JFreeChart;
+import com.jrefinery.chart.Plot;
+import com.jrefinery.chart.VerticalNumberAxis;
 
 /**
  * @author Ulrich Küster

@@ -15,11 +15,9 @@ package com.eressea.gamebinding;
 
 import com.eressea.GameData;
 import com.eressea.Rules;
-
 import com.eressea.completion.Completer;
 import com.eressea.completion.CompleterSettingsProvider;
 import com.eressea.completion.OrderParser;
-
 import com.eressea.io.GameDataIO;
 
 /**

@@ -15,15 +15,11 @@ package com.eressea.demo.actions;
 
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
-
 import java.util.Map;
 
 import com.eressea.GameData;
-
 import com.eressea.demo.Client;
-
 import com.eressea.event.GameDataEvent;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Islands;
 

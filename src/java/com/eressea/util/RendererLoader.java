@@ -15,9 +15,7 @@ package com.eressea.util;
 
 import java.io.File;
 import java.io.InputStream;
-
 import java.lang.reflect.Constructor;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -30,7 +28,6 @@ import java.util.zip.ZipFile;
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.map.ExternalMapCellRenderer;
 import com.eressea.swing.map.MapCellRenderer;
-
 import com.eressea.util.logging.Logger;
 
 /**

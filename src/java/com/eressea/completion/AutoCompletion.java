@@ -23,7 +23,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -65,7 +64,6 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.swing.InternationalizedDialog;
 import com.eressea.swing.completion.CompletionGUI;
 import com.eressea.swing.completion.ListCompletionGUI;
@@ -73,7 +71,6 @@ import com.eressea.swing.completion.MarkedTextCompletionGUI;
 import com.eressea.swing.completion.NoneCompletionGUI;
 import com.eressea.swing.completion.OrderEditorList;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;

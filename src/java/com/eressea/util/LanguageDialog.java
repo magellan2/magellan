@@ -19,11 +19,8 @@
 package com.eressea.util;
 
 import java.awt.Component;
-
 import java.io.File;
-
 import java.net.URL;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +31,6 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.logging.Logger;
 
 /**

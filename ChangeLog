@@ -1,3 +1,12 @@
+2004-03-15  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Unit.java: changed merging of
+	skills. Perhaps this removes some problems?
+
+2004-03-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Unit.java: moved createTempID to UnitID.java.
+
 2004-03-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/InfoDlg.java: Changed

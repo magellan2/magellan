@@ -14,7 +14,6 @@
 package com.eressea;
 
 import java.io.StringReader;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,11 +22,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.Properties;
-import com.eressea.util.IDBaseConverter;
 
 import com.eressea.gamebinding.MovementEvaluator;
-
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
@@ -39,14 +35,13 @@ import com.eressea.relation.RecruitmentRelation;
 import com.eressea.relation.TransportRelation;
 import com.eressea.relation.UnitContainerRelation;
 import com.eressea.relation.UnitRelation;
-
 import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
 import com.eressea.rules.SkillType;
-
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.EresseaOrderConstants;
+import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Locales;
 import com.eressea.util.OrderToken;
 import com.eressea.util.OrderTokenizer;
@@ -826,112 +821,6 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		return cmds;
 	}
-
-	/**
-	 * Creates a temp id.
-	 * @param data The current GameData object
-	 * @param settings The active settings
-	 * @param parentUnit The parent unit of the temp unit (maybe null)
-	 * @return the new temp id. Notize: The id will represent a positive
-	 * int value, although Magellan expects temp ids to be negative.
-	 * Thus before creating a temp unit with this id, the id has to
-	 * be inverted. Bad thing, kept this way due to consistency with old code.
-	 * Should be corrected someday.
-	 */
-	public static UnitID createTempID(GameData data, Properties settings, Unit parentUnit) {
-		UnitID id = null;
-		if (data.getCurTempID() == -1) {
-			// uninitialized
-			String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
-			data.setCurTempID(s);
-		}
-		if (data.getCurTempID() == 0 && parentUnit != null) {
-			// use old system: same id as parent unit
-			id = (UnitID)parentUnit.getID();
-			int i = id.intValue();
-			while (data.tempUnits().get(UnitID.createUnitID(-i)) != null) {
-				i = getNextDecimalID(i, true);
-			}
-			id = UnitID.createUnitID(i);
-		} else {
-			int i = data.getCurTempID();
-			UnitID checkID = UnitID.createUnitID(-i);
-			while (data.tempUnits().get(checkID) != null) {
-				boolean ascending = settings.getProperty("ClientPreferences.ascendingOrder", "true").
-									equalsIgnoreCase("true");
-
-				if (settings.getProperty("ClientPreferences.countDecimal",
-										 "true").equalsIgnoreCase("true")) {
-					i = getNextDecimalID(i, ascending);
-				} else {
-					if (ascending) {
-						i++;
-					} else {
-						i--;
-					}
-				}
-				if (ascending) {
-					if (i > IDBaseConverter.getMaxId(data.base)) {
-						i = 1;
-					}
-				} else {
-					if (i <= 0) {
-						i = IDBaseConverter.getMaxId(data.base);
-					}
-				}
-				checkID = UnitID.createUnitID(-i);
-			}
-			data.setCurTempID(i);
-			id = UnitID.createUnitID(-checkID.intValue());
-		}
-		return id;
-	}
-
-
-	/**
-	 * @param i
-	 * @param ascending
-	 * @return the next int, that is bigger than the given one but consists only out of decimal
-	 * 		   digits (interpreted in the current base) if the given int did so also.
-	 */
-	private static int getNextDecimalID(int i, boolean ascending) {
-		int base = IDBaseConverter.getBase();
-
-		if(ascending) {
-			i++;
-			if((i % base) == 10) {
-				i += (base - 10);
-			}
-			if((i % (base * base)) == (base * 10)) {
-				i += ((base - 10) * base * base);
-			}
-			if((i % (base * base * base)) == (base * base * 10)) {
-				i += ((base - 10) * base * base * base);
-			}
-			if (i > IDBaseConverter.getMaxId()) {
-				i = 1;
-			}
-		} else {
-			if(i == 0) {
-				i = (base * base * base * 10) + 10;
-			}
-			if((i % (base * base * base)) == 0) {
-				i = i - (base * base * base) + (base * base * 10);
-			}
-			if((i % (base * base)) == 0) {
-				i = i - (base * base) + (base * 10);
-			}
-			if((i % base) == 0) {
-				i = i - base + 10;
-			}
-			i--;
-			if (i <= 0) {
-				i = IDBaseConverter.getMaxId();
-			}
-		}
-		return i;
-	}
-
 
 	/**
 	 * Creates a new temp unit with this unit as the parent. The temp unit is fully initialised,
@@ -2456,19 +2345,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			}
 		}
 
-		if(!curUnit.ordersAreNull() && (curUnit.getOrders().size() > 0)) {
-			Collection orders = CollectionFactory.createArrayList();
-
-			/*
-			if(!newUnit.ordersAreNull()) {
-			    for(Iterator iter = newUnit.getOrders().iterator(); iter.hasNext(); ) {
-			        String actOrder = (String) iter.next();
-			        orders.add("; "+actOrder);
-			    }
-			}
-			*/
-			orders.addAll(curUnit.getOrders());
-			newUnit.setOrders(orders, false);
+		if(!curUnit.ordersAreNull() && (curUnit.getCompleteOrders().size() > 0)) {
+			newUnit.setOrders(curUnit.getCompleteOrders(),false);
 		}
 
 		newUnit.ordersConfirmed |= curUnit.ordersConfirmed;
@@ -2592,36 +2470,34 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		if((curUnit.skills != null) && (curUnit.skills.size() > 0)) {
 			for(Iterator iter = curUnit.skills.values().iterator(); iter.hasNext();) {
 				Skill curSkill = (Skill) iter.next();
-				Skill newSkill = new Skill(newGD.rules.getSkillType(curSkill.getSkillType().getID(),
-																	true), curSkill.getPoints(),
+				SkillType newSkillType = newGD.rules.getSkillType(curSkill.getSkillType().getID(), true);
+				Skill newSkill = new Skill(newSkillType, curSkill.getPoints(),
 										   curSkill.getLevel(), newUnit.getPersons(),
 										   curSkill.noSkillPoints());
 
 				if(curSkill.isLevelChanged()) {
 					newSkill.setLevelChanged(true);
 					newSkill.setChangeLevel(curSkill.getChangeLevel());
-
-					if(curSkill.isLostSkill()) {
-						newSkill.setLevel(-1);
-					}
 				}
+				if(curSkill.isLostSkill()) {
+					newSkill.setLevel(-1);
+				}
+
 
 				// NOTE: Maybe some decision about change-level computation in reports of
 				//       same date here
-				Skill oldSkill = (Skill) newUnit.skills.put(newSkill.getSkillType().getID(),
-															newSkill);
+				Skill oldSkill = (Skill) newUnit.skills.put(newSkillType.getID(), newSkill);
 
-				if(newUnit.skillsCopied) {
-					int dec = 0;
-
+				if(!firstPass) {
+					// notify change if we are not in the same round.
 					if(oldSkill != null) {
-						dec = oldSkill.getLevel();
-					}
-
-					newSkill.setChangeLevel(newSkill.getLevel() - dec);
-
-					if(oldSkill == null) { // since we have a skill now, even if it is level 0
-						newSkill.setLevelChanged(true);
+						int dec = oldSkill.getLevel();
+						newSkill.setChangeLevel(newSkill.getLevel() - dec);
+					} else {
+						if(!sameRound) {
+  							// the skill is new as we did not have it before
+							newSkill.setLevelChanged(true);
+						}
 					}
 				}
 
@@ -2635,22 +2511,19 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		// if not, the old skill values stay where they are
 		// pavkovic 2003.05.13: ...but never remove skills from the same round (as before with items)
 		// andreasg 2003.10.05: ...but if old skills from earlier date!
-		if(curWellKnown && (!sameRound || newUnit.skillsCopied)) {
+		// pavkovic 2004.01.27: now we remove oldSkills only if the round changed.
+		if(!firstPass) {
 			// Now remove all skills that are lost
-			if(oldSkills.size() > 0) {
-				for(Iterator iter = oldSkills.iterator(); iter.hasNext();) {
-					Skill oldSkill = (Skill) iter.next();
-
-					if(oldSkill.isLostSkill()) { // remove if it was lost
-						newUnit.skills.remove(oldSkill);
-					} else {
-						oldSkill.setChangeLevel(-oldSkill.getLevel());
-						oldSkill.setLevel(-1);
-					}
+			for(Iterator iter = oldSkills.iterator(); iter.hasNext();) {
+				Skill oldSkill = (Skill) iter.next();
+				
+				if(oldSkill.isLostSkill()) { // remove if it was lost
+					newUnit.skills.remove(oldSkill.getSkillType().getID());
+				} else { // dont remove it but mark it as a lostSkill 
+					oldSkill.setChangeLevel(-oldSkill.getLevel());
+					oldSkill.setLevel(-1);
 				}
 			}
-
-			// newUnit.skillsCopied = true;
 		}
 
 		newUnit.sortIndex = Math.max(newUnit.sortIndex, curUnit.sortIndex);
@@ -2722,11 +2595,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		// merge tags
 		if(curUnit.hasTags()) {
-			Iterator it = curUnit.getTagMap().keySet().iterator();
-
-			while(it.hasNext()) {
-				String s = (String) it.next();
-				newUnit.putTag(s, curUnit.getTag(s));
+			for(Iterator iter = curUnit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
+				String tag = (String) iter.next();
+				newUnit.putTag(tag, curUnit.getTag(tag));
 			}
 		}
 	}
@@ -2740,11 +2611,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Unit) {
-			return this.getID().equals(((Unit) o).getID());
-		} else {
-			return false;
-		}
+		return o instanceof Unit && 
+			getID().equals(((Unit) o).getID());
 	}
 
 	/**
@@ -2824,7 +2692,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 							token = ct.getNextToken();
 
 							try {
-								UnitID id = new UnitID(com.eressea.util.IDBaseConverter.parse(token.getText()) * -1);
+								UnitID id = new UnitID(IDBaseConverter.parse(token.getText()) * -1);
 
 								if(this.getRegion().getUnit(id) == null) {
 									tempUnit = this.createTemp(id);

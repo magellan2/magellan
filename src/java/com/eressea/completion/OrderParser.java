@@ -14,7 +14,6 @@
 package com.eressea.completion;
 
 import java.io.Reader;
-
 import java.util.List;
 
 /**

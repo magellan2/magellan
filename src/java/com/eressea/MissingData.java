@@ -17,7 +17,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.eressea.rules.GenericRules;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -23,7 +23,6 @@ import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;

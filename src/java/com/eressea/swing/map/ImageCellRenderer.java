@@ -16,7 +16,6 @@ package com.eressea.swing.map;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MediaTracker;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;

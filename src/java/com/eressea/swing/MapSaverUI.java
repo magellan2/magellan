@@ -17,9 +17,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-
 import java.io.File;
-
 import java.util.Map;
 
 import javax.swing.ButtonGroup;
@@ -30,7 +28,6 @@ import javax.swing.JSlider;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 

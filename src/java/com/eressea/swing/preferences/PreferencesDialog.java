@@ -23,7 +23,6 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -44,7 +43,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.eressea.swing.CenterLayout;
 import com.eressea.swing.InternationalizedDialog;
-
 import com.eressea.util.CollectionFactory;
 
 /**

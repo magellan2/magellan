@@ -16,7 +16,6 @@ package com.eressea.extern;
 import java.util.Properties;
 
 import com.eressea.GameData;
-
 import com.eressea.event.EventDispatcher;
 
 /**

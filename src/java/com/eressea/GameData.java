@@ -19,15 +19,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.eressea.cr.Loader;
-
 import com.eressea.gamebinding.GameSpecificStuff;
-
 import com.eressea.io.file.FileType;
-
 import com.eressea.rules.Date;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.MessageType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Locales;

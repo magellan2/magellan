@@ -30,11 +30,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
-
 import java.math.BigDecimal;
-
 import java.text.NumberFormat;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -99,29 +96,23 @@ import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
 import com.eressea.ZeroUnit;
-
 import com.eressea.completion.AutoCompletion;
-
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-
 import com.eressea.relation.ItemTransferRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.UnitRelation;
-
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
-
 import com.eressea.swing.BasicRegionPanel;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MenuProvider;
@@ -144,7 +135,6 @@ import com.eressea.swing.tree.TreeUpdate;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
 import com.eressea.swing.tree.UnitListNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.EresseaRaceConstants;

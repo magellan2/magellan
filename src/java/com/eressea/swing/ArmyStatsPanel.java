@@ -44,21 +44,17 @@ import com.eressea.Rules;
 import com.eressea.Skill;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.SkillType;
-
 import com.eressea.swing.tree.CellRenderer;
 import com.eressea.swing.tree.CopyTree;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

@@ -26,7 +26,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -89,10 +88,8 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitID;
 import com.eressea.ZeroUnit;
-
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.OrderConfirmEvent;
@@ -103,11 +100,8 @@ import com.eressea.event.TempUnitEvent;
 import com.eressea.event.TempUnitListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-
 import com.eressea.relation.TransferRelation;
-
 import com.eressea.rules.SkillType;
-
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MenuProvider;
 import com.eressea.swing.context.UnitContainerContextFactory;
@@ -129,7 +123,6 @@ import com.eressea.swing.tree.TreeHelper;
 import com.eressea.swing.tree.TreeUpdate;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.SelectionHistory;
 import com.eressea.util.comparator.BestSkillComparator;

@@ -16,7 +16,6 @@ package com.eressea.util.comparator;
 import java.util.Comparator;
 
 import com.eressea.Building;
-
 import com.eressea.rules.BuildingType;
 
 /**

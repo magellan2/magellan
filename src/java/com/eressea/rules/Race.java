@@ -16,7 +16,6 @@ package com.eressea.rules;
 import java.util.Map;
 
 import com.eressea.ID;
-
 import com.eressea.util.CollectionFactory;
 
 /**

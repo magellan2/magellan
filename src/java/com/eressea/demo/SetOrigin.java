@@ -17,7 +17,6 @@ import java.util.Map;
 
 import com.eressea.Coordinate;
 import com.eressea.GameData;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

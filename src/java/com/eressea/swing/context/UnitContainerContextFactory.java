@@ -16,9 +16,7 @@ package com.eressea.swing.context;
 import java.util.Properties;
 
 import com.eressea.UnitContainer;
-
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.swing.tree.FactionNodeWrapper;
 import com.eressea.swing.tree.RegionNodeWrapper;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;

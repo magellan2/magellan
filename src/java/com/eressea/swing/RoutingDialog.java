@@ -22,7 +22,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,7 +46,6 @@ import javax.swing.event.DocumentListener;
 import com.eressea.Coordinate;
 import com.eressea.GameData;
 import com.eressea.Region;
-
 import com.eressea.util.CollectionFactory;
 
 /**

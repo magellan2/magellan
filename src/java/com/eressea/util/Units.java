@@ -28,14 +28,10 @@ import com.eressea.Item;
 import com.eressea.Rules;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
-import com.eressea.StringID;
-
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
-
 import com.eressea.util.logging.Logger;
 
 /**

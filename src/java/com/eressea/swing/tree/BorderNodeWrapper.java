@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Properties;
 
 import com.eressea.Border;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -23,7 +23,6 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

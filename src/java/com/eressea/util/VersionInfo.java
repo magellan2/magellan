@@ -16,17 +16,14 @@ package com.eressea.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import java.util.Date;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.logging.Logger;
 
 /**

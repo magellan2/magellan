@@ -18,9 +18,7 @@ import java.util.Map;
 
 import com.eressea.LuxuryPrice;
 import com.eressea.Region;
-
 import com.eressea.rules.ItemType;
-
 import com.eressea.util.CollectionFactory;
 
 /**

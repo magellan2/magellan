@@ -14,11 +14,10 @@
 package com.eressea.util.comparator;
 
 import java.util.Comparator;
-import java.util.Properties;
 import java.util.Hashtable;
+import java.util.Properties;
 
 import com.eressea.Skill;
-
 import com.eressea.rules.SkillType;
 
 /**

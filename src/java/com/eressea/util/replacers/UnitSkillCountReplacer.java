@@ -25,9 +25,7 @@ import java.util.Map;
 import com.eressea.Region;
 import com.eressea.Skill;
 import com.eressea.Unit;
-
 import com.eressea.rules.SkillType;
-
 import com.eressea.util.CollectionFactory;
 
 /**

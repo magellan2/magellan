@@ -21,7 +21,6 @@ import com.eressea.Coordinate;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.StringID;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.Regions;

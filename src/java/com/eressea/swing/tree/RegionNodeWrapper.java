@@ -14,7 +14,6 @@
 package com.eressea.swing.tree;
 
 import java.awt.Image;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -25,7 +24,6 @@ import java.util.Properties;
 import javax.swing.Icon;
 
 import com.eressea.Region;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
 

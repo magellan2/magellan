@@ -16,7 +16,6 @@ package com.eressea.util.logging;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;

@@ -19,7 +19,6 @@ import java.util.Properties;
 
 import com.eressea.Skill;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -33,7 +33,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -68,14 +67,11 @@ import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Island;
 import com.eressea.Region;
-
 import com.eressea.demo.desktop.ExtendedShortcutListener;
 import com.eressea.demo.desktop.Initializable;
 import com.eressea.demo.desktop.ShortcutListener;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.map.HexCellRenderer;
 import com.eressea.swing.map.Mapper;
@@ -84,7 +80,6 @@ import com.eressea.swing.map.RegionImageCellRenderer;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

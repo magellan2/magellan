@@ -18,7 +18,6 @@ import java.util.Map;
 
 import com.eressea.ID;
 import com.eressea.Skill;
-
 import com.eressea.rules.SkillType;
 
 /**

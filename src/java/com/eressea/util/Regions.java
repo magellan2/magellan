@@ -29,10 +29,8 @@ import com.eressea.Region;
 import com.eressea.Rules;
 import com.eressea.Ship;
 import com.eressea.Unit;
-
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.RegionType;
-
 import com.eressea.util.logging.Logger;
 
 /**

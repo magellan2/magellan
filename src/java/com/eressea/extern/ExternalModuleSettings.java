@@ -17,7 +17,6 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,7 +26,6 @@ import javax.swing.JPanel;
 
 import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 
 /**

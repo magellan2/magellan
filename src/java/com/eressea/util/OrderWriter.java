@@ -16,7 +16,6 @@ package com.eressea.util;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
-
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -28,7 +27,6 @@ import com.eressea.Region;
 import com.eressea.StringID;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
-
 import com.eressea.rules.BuildingType;
 
 /**

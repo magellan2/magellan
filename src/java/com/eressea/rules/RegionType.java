@@ -19,7 +19,6 @@ import java.util.List;
 
 import com.eressea.ID;
 import com.eressea.StringID;
-
 import com.eressea.util.CollectionFactory;
 
 /**

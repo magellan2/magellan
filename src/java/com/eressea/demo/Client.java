@@ -23,20 +23,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.math.BigDecimal;
-
 import java.net.URL;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -67,7 +62,6 @@ import com.eressea.IntegerID;
 import com.eressea.Message;
 import com.eressea.MissingData;
 import com.eressea.Unit;
-
 import com.eressea.demo.actions.AbortAction;
 import com.eressea.demo.actions.AddCRAction;
 import com.eressea.demo.actions.AddSelectionAction;
@@ -112,7 +106,6 @@ import com.eressea.demo.actions.VorlageAction;
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.MagellanDesktop;
 import com.eressea.demo.desktop.ShortcutListener;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
@@ -124,20 +117,14 @@ import com.eressea.event.TempUnitEvent;
 import com.eressea.event.TempUnitListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-
 import com.eressea.extern.ExternalModule;
 import com.eressea.extern.ExternalModule2;
-
 import com.eressea.io.GameDataReader;
 import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileTypeFactory;
-
 import com.eressea.main.MagellanContext;
-
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.rules.EresseaDate;
-
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MagellanLookAndFeel;
 import com.eressea.swing.MapperPanel;
@@ -148,7 +135,6 @@ import com.eressea.swing.TipOfTheDay;
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
 import com.eressea.util.BookmarkManager;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FileHistory;

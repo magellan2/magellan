@@ -17,7 +17,6 @@ import java.util.Iterator;
 
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
-
 import com.eressea.util.Cache;
 
 /**

@@ -19,11 +19,8 @@ import java.util.Map;
 
 import com.eressea.Faction;
 import com.eressea.Unit;
-
 import com.eressea.demo.Client;
-
 import com.eressea.event.OrderConfirmEvent;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 

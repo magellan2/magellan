@@ -26,7 +26,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -44,22 +43,17 @@ import com.eressea.Region;
 import com.eressea.Scheme;
 import com.eressea.Ship;
 import com.eressea.Unit;
-
 import com.eressea.demo.desktop.Initializable;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-
 import com.eressea.rules.ItemType;
-
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.context.MapContextMenu;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 import com.eressea.util.replacers.ReplacerFactory;
@@ -83,6 +77,11 @@ public class Mapper extends InternationalizedDataPanel implements
 	SelectionListener, Scrollable, UnitOrdersListener,
 	GameDataListener, Initializable {
 	private static final Logger log = Logger.getInstance(Mapper.class);
+
+	/** a mapping for int positions of planes to logical names. Will be used for magellan_desktop.ini */
+	public final static String[] PLANE_STRINGS = { "REGION", "BORDER", "BUILDING", "SHIP", 
+												   "TEXT", "PATH", "HIGHLIGHT", "MARKINGS",
+												   "SCHEMES" };
 
 	/** TODO: DOCUMENT ME! */
 	public static final int PLANE_REGION = 0;

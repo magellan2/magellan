@@ -14,10 +14,8 @@
 package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
-
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,14 +23,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
-
 import com.eressea.io.cr.CRWriter;
 import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
-
 import com.eressea.swing.EresseaFileFilter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;

@@ -22,11 +22,9 @@ import com.eressea.relation.EnterRelation;
 import com.eressea.relation.LeaveRelation;
 import com.eressea.relation.UnitContainerRelation;
 import com.eressea.relation.UnitRelation;
-
 import com.eressea.rules.CastleType;
 import com.eressea.rules.RegionType;
 import com.eressea.rules.UnitContainerType;
-
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.TagMap;

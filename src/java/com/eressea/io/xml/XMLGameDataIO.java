@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 import com.eressea.GameData;
-
 import com.eressea.io.GameDataIO;
-
 import com.eressea.util.logging.Logger;
 
 /**

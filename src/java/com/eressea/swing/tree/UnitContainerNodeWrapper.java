@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.UnitContainer;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
 

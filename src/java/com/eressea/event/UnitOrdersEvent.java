@@ -16,7 +16,6 @@ package com.eressea.event;
 import java.util.Collection;
 
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 
 /**

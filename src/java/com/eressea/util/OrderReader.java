@@ -16,7 +16,6 @@ package com.eressea.util;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -32,9 +31,7 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
-
 import com.eressea.rules.GenericRules;
-
 import com.eressea.util.logging.Logger;
 
 /**

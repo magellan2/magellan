@@ -14,10 +14,9 @@
 package com.eressea.util;
 
 import java.io.File;
-
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -29,10 +28,7 @@ import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.Scheme;
 import com.eressea.StringID;
-import com.eressea.Unit;
-
 import com.eressea.rules.RegionType;
-
 import com.eressea.util.logging.Logger;
 
 /**

@@ -17,13 +17,11 @@ import java.io.File;
 import java.io.IOException;
 
 import com.eressea.GameData;
-
 import com.eressea.io.GameDataReader;
 import com.eressea.io.cr.CRWriter;
 import com.eressea.io.file.CopyFile;
 import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
-
 import com.eressea.util.logging.Logger;
 
 /**

@@ -16,7 +16,6 @@ package com.eressea.demo.actions;
 import java.util.Map;
 
 import com.eressea.demo.Client;
-
 import com.eressea.util.CollectionFactory;
 
 /**

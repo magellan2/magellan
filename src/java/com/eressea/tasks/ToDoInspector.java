@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 
 /**

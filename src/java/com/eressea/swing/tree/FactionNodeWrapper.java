@@ -21,7 +21,6 @@ import java.util.Properties;
 import com.eressea.Alliance;
 import com.eressea.Faction;
 import com.eressea.Region;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

@@ -17,15 +17,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-
 import java.io.InputStream;
-
 import java.net.URL;
-
 import java.util.Properties;
 
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.logging.Logger;
 
 /**

@@ -21,7 +21,6 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -31,9 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.eressea.GameData;
-
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.util.CollectionFactory;
 
 /**

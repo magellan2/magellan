@@ -20,10 +20,8 @@ import java.util.NoSuchElementException;
 import com.eressea.ID;
 import com.eressea.Rules;
 import com.eressea.StringID;
-
 import com.eressea.gamebinding.GameSpecificStuff;
 import com.eressea.gamebinding.GameSpecificStuffProvider;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
@@ -957,7 +955,9 @@ public class GenericRules implements Rules {
 			}
 		}
 
-		return null;
+		// pavkovic 2004.03.08: for now also return object with id
+		//return null;
+		return (ObjectType) objects.get(StringID.create(normName));
 	}
 
 	

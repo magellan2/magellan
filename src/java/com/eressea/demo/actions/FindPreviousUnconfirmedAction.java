@@ -15,11 +15,9 @@ package com.eressea.demo.actions;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-
 import java.util.Map;
 
 import com.eressea.demo.EMapOverviewPanel;
-
 import com.eressea.util.CollectionFactory;
 
 /**

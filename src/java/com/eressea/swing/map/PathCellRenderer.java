@@ -22,7 +22,6 @@ import java.awt.Toolkit;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -39,11 +38,8 @@ import com.eressea.Message;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.UnitID;
-
 import com.eressea.rules.MessageType;
-
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;

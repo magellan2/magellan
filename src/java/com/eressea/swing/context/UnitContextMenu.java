@@ -17,7 +17,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -27,21 +26,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
-
 import com.eressea.demo.EMapDetailsPanel;
-
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.UnitOrdersEvent;
-
 import com.eressea.relation.TeachRelation;
-
 import com.eressea.swing.GiveOrderDialog;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.UnitRoutePlanner;

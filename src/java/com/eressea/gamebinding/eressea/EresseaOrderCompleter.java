@@ -14,7 +14,6 @@
 package com.eressea.gamebinding.eressea;
 
 import java.io.StringReader;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,12 +39,10 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
-
 import com.eressea.completion.Completer;
 import com.eressea.completion.CompleterSettingsProvider;
 import com.eressea.completion.Completion;
 import com.eressea.completion.OrderParser;
-
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
 import com.eressea.rules.ItemCategory;
@@ -53,7 +50,6 @@ import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
 import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.OrderToken;

@@ -21,11 +21,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -51,9 +49,7 @@ import javax.swing.undo.UndoManager;
 
 import com.eressea.GameData;
 import com.eressea.Unit;
-
 import com.eressea.completion.OrderParser;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
@@ -61,7 +57,6 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.MergeLineReader;

@@ -17,13 +17,10 @@ import java.io.File;
 import java.io.IOException;
 
 import com.eressea.Rules;
-
 import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
-
 import com.eressea.rules.GenericRules;
-
 import com.eressea.util.logging.Logger;
 
 /**

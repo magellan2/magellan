@@ -14,12 +14,10 @@
 package com.eressea.demo.actions;
 
 import java.awt.Frame;
-
 import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.swing.TipOfTheDay;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -15,12 +15,10 @@ package com.eressea.io.cr;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import java.util.Map;
 
 import com.eressea.io.GameNameIO;
 import com.eressea.io.file.FileType;
-
 import com.eressea.util.logging.Logger;
 
 /**
