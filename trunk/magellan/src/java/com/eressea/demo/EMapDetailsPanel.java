@@ -3075,7 +3075,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			setNameAndDescription("", "", false);
 			appendFactionsInfo(c, rootNode, myExpandableNodes);
 		} else if (units) {
-			setNameAndDescription("", "", false);
+			setNameAndDescription(c.size() + " Einheiten", "", false);
 			appendUnitsInfo(c, rootNode, myExpandableNodes);
 		} else {
 			return false;
