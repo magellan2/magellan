@@ -1,3 +1,22 @@
+2004-06-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Unit.java: changed merging of unit messages.
+
+2004-06-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/gamebinding/eressea/EresseaOrderCompleter.java: 	
+	autocompletion of ZAUBERE REGION (CAST REGION) does not really
+	create correct coordinates, reinstall old behaviour.
+
+	* src/java/com/eressea/util/Units.java: removed unused code.
+
+	* src/java/com/eressea/util/Units.java: change from getItems to
+	getModifiedItems.
+
+	* src/java/com/eressea/demo/EMapDetailsPanel.java: remove option
+	EMapDetailsPanel.units.showDetailedSkills and make it default
+	behaviour.
+
 2004-06-08  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/demo/EMapDetailsPanel.java: show unit

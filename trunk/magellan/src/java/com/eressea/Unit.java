@@ -2579,28 +2579,30 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		// Messages are special because they can contain different
 		// data for different factions in the same turn.
 		// Take new messages and stuff only into the new game data
-		// if the two source game data objects are not from the
+		// if the two source game data objects are from the
 		// same turn and curGD is the newer game data or if both
 		// are from the same turn. Both conditions are tested by the
 		// following if statement
-		if(sameRound) {
-			if((curUnit.unitMessages != null) && (curUnit.unitMessages.size() > 0)) {
-				if(newUnit.unitMessages == null) {
-					newUnit.unitMessages = CollectionFactory.createLinkedList();
+ 		if(!sameRound) {
+ 			newUnit.unitMessages = null;
+ 		}
+
+		if((curUnit.unitMessages != null) && (curUnit.unitMessages.size() > 0)) {
+			if(newUnit.unitMessages == null) {
+				newUnit.unitMessages = CollectionFactory.createLinkedList();
+			}
+			
+			for(Iterator iter = curUnit.unitMessages.iterator(); iter.hasNext();) {
+				Message curMsg = (Message) iter.next();
+				Message newMsg = null;
+				
+				try {
+					newMsg = new Message((ID) curMsg.getID().clone());
+				} catch(CloneNotSupportedException e) {
 				}
-
-				for(Iterator iter = curUnit.unitMessages.iterator(); iter.hasNext();) {
-					Message curMsg = (Message) iter.next();
-					Message newMsg = null;
-
-					try {
-						newMsg = new Message((ID) curMsg.getID().clone());
-					} catch(CloneNotSupportedException e) {
-					}
-
-					Message.merge(curGD, curMsg, newGD, newMsg);
-					newUnit.unitMessages.add(newMsg);
-				}
+				
+				Message.merge(curGD, curMsg, newGD, newMsg);
+				newUnit.unitMessages.add(newMsg);
 			}
 		}
 

@@ -1555,8 +1555,11 @@ public class EresseaOrderCompleter implements Completer {
 					prio = 8;
 				}
 
-				Coordinate distance = region.getCoordinate().createDistanceCoordinate(c);
-				completions.add(new Completion(name, distance.toString(" "), " ", prio));
+				// FIXME(pavkovic, 2004.06.09): this seems to be wrong 
+				// Coordinate distance = region.getCoordinate().createDistanceCoordinate(c);
+				// completions.add(new Completion(name, distance.toString(" "), " ", prio));
+				// We should store the translation while merging different cr files
+				completions.add(new Completion(name, c.toString(" "), " ", prio));
 			}
 
 			regions2.remove(c);

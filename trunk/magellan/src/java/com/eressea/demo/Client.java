@@ -125,7 +125,6 @@ import com.eressea.io.file.FileTypeFactory;
 import com.eressea.main.MagellanContext;
 import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.rules.EresseaDate;
-import com.eressea.swing.desktop.WorkSpace;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MagellanLookAndFeel;
 import com.eressea.swing.MapperPanel;
@@ -188,7 +187,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	private MenuAction saveAction;
 	private OptionAction optionAction;
 	private MagellanDesktop desktop;
-	private WorkSpace 		workSpace;
 	private ReportObserver reportState;
 
 	/** Manager for setting and activating bookmarks. */

@@ -20,7 +20,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -44,7 +43,7 @@ public class Units {
 	// items without category
 	private StatItemContainer catLessContainer = null;
 	private Map itemCategoriesMap = CollectionFactory.createHashtable();
-	private NodeWrapperFactory nodeWrapperFactory = null;
+
 	private static ItemType silberbeutel = new ItemType(StringID.create("Silberbeutel"));
 	private static ItemType silberkassette = new ItemType(StringID.create("Silberkassette"));
 
@@ -55,7 +54,6 @@ public class Units {
 	 */
 	public Units(Rules rules) {
 		setRules(rules);
-		nodeWrapperFactory = new NodeWrapperFactory(new Properties());
 	}
 
 	/**
@@ -90,7 +88,7 @@ public class Units {
 		for(Iterator it = units.iterator(); it.hasNext();) {
 			Unit u = (Unit) it.next();
 
-			for(Iterator i = u.getItems().iterator(); i.hasNext();) {
+			for(Iterator i = u.getModifiedItems().iterator(); i.hasNext();) {
 				Item item = (Item) i.next();
 
 				// get the container this item is stored in
@@ -140,7 +138,7 @@ public class Units {
 		for(Iterator it = units.iterator(); it.hasNext();) {
 			Unit u = (Unit) it.next();
 
-			for(Iterator i = u.getItems().iterator(); i.hasNext();) {
+			for(Iterator i = u.getModifiedItems().iterator(); i.hasNext();) {
 				Item item = (Item) i.next();
 
 				// get the stat item by item type
@@ -185,28 +183,10 @@ public class Units {
 	 * 		  units are sorted by the amount of the item carried underneath which they appear.
 	 * @param showUnits if true each item node gets child nodes containing the unit(s) carrying
 	 * 		  that item.
+	 * @param factory TODO: DOCUMENT ME!
 	 *
 	 * @return a collection of DefaultMutableTreeNode objects with user objects of class
 	 * 		   ItemCategory or null if the categorization of the items failed.
-	 */
-	public Collection addCategorizedUnitItems(Collection units, DefaultMutableTreeNode parentNode,
-											  Comparator itemComparator, Comparator unitComparator,
-											  boolean showUnits) {
-		return addCategorizedUnitItems(units, parentNode, itemComparator, unitComparator,
-									   showUnits, nodeWrapperFactory);
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param units TODO: DOCUMENT ME!
-	 * @param parentNode TODO: DOCUMENT ME!
-	 * @param itemComparator TODO: DOCUMENT ME!
-	 * @param unitComparator TODO: DOCUMENT ME!
-	 * @param showUnits TODO: DOCUMENT ME!
-	 * @param factory TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection addCategorizedUnitItems(Collection units, DefaultMutableTreeNode parentNode,
 											  Comparator itemComparator, Comparator unitComparator,
@@ -273,65 +253,6 @@ public class Units {
 		}
 
 		return catNodes;
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param units TODO: DOCUMENT ME!
-	 * @param parentNode TODO: DOCUMENT ME!
-	 * @param itemComparator TODO: DOCUMENT ME!
-	 * @param unitComparator TODO: DOCUMENT ME!
-	 * @param showUnits TODO: DOCUMENT ME!
-	 */
-	public void addUnitItems(Collection units, DefaultMutableTreeNode parentNode,
-							 Comparator itemComparator, Comparator unitComparator, boolean showUnits) {
-		addUnitItems(units, parentNode, itemComparator, unitComparator, showUnits,
-					 nodeWrapperFactory);
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param units TODO: DOCUMENT ME!
-	 * @param parentNode TODO: DOCUMENT ME!
-	 * @param itemComparator TODO: DOCUMENT ME!
-	 * @param unitComparator TODO: DOCUMENT ME!
-	 * @param showUnits TODO: DOCUMENT ME!
-	 * @param factory TODO: DOCUMENT ME!
-	 */
-	public void addUnitItems(Collection units, DefaultMutableTreeNode parentNode,
-							 Comparator itemComparator, Comparator unitComparator,
-							 boolean showUnits, NodeWrapperFactory factory) {
-		List sortedItems = CollectionFactory.createLinkedList(sumUpUnitItems(units));
-
-		if(itemComparator != null) {
-			Collections.sort(sortedItems, itemComparator);
-		} else {
-			Collections.sort(sortedItems);
-		}
-
-		for(Iterator iter = sortedItems.iterator(); iter.hasNext();) {
-			StatItem si = (StatItem) iter.next();
-			DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType()
-																										   .getName() +
-																										 ": " +
-																										 si.getAmount(),
-																										 "items/" +
-																										 si.getItemType()
-																										   .getIconName()));
-			parentNode.add(itemNode);
-
-			if(showUnits && (si.units != null)) {
-				Collections.sort(si.units, new UnitWrapperComparator(unitComparator));
-
-				for(Iterator it = si.units.iterator(); it.hasNext();) {
-					UnitWrapper uw = (UnitWrapper) it.next();
-					itemNode.add(new DefaultMutableTreeNode(factory.createUnitNodeWrapper(uw.getUnit(),
-																						  uw.getAmount())));
-				}
-			}
-		}
 	}
 
 	private static class StatItem extends Item implements Comparable {
