@@ -562,7 +562,7 @@ public class ReportMerger extends java.lang.Object {
 			for(Iterator regionIter = data.regions().values().iterator(); regionIter.hasNext();) {
 				Region r = (Region) regionIter.next();
 
-				if(r.getType() == null) {
+				if(r.getType() == null || r.getType().equals(RegionType.unknown)) {
 					continue;
 				}
 
@@ -580,7 +580,7 @@ public class ReportMerger extends java.lang.Object {
 					/* the hit count for the current translation must
 					   only be modified, if there actually are regions
 					   to be compared and their terrains are valid */
-					if((reportDataRegion != null) && (reportDataRegion.getType() != null)) {
+					if((reportDataRegion != null) && (reportDataRegion.getType() != null) && !(reportDataRegion.getType().equals(RegionType.unknown))) {
 						if(!r.getType().equals(reportDataRegion.getType())) {
 							/* now we have a mismatch. If the reports
 							   are from the same turn, terrains may
