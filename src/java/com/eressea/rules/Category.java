@@ -332,4 +332,28 @@ public abstract class Category extends ObjectType {
 			return i1.getID().compareTo(i2.getID());
 		}
 	}
+
+	private String iconName = null;
+
+	/**
+	 * Returns the file name of the icon to use for this item.
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public String getIconName() {
+		if(iconName == null && parent != null) {
+			return parent.getIconName();
+		}
+		return iconName;
+	}
+	
+	/**
+	 * Sets the file name of the icon to use for this item.
+	 *
+	 * @param iName TODO: DOCUMENT ME!
+	 */
+	public void setIconName(String iName) {
+		iconName = iName;
+	}
+
 }

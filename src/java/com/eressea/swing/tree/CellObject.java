@@ -34,12 +34,12 @@ public interface CellObject {
 	void propertiesChanged();
 
 	/**
-	 * Returns a collection of String objects that denote the file name
+	 * Returns a list of String objects that denote the file name
 	 * (without the extension) of the icons to be displayed by the tree cell
-	 * renderer. The order of the elements is obeyed. A return value of null
-	 * is valid to indicate that no icons should be displayed.
+	 * renderer. A return value of <code>null</code>
+	 * is valid to indicate that no icons shall be displayed.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return list of iconnames or null if no icons shall be displayed.
 	 */
 	List getIconNames();
 
@@ -47,14 +47,14 @@ public interface CellObject {
 	 * Controls whether the tree cell renderer should display this item more
 	 * noticeably than other nodes.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return true if this item shall be displayed emphasized, false otherwise
 	 */
 	boolean emphasized();
 
 	/**
 	 * This enforces the toString method
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return String representation of this CellObject
 	 */
 	String toString();
 }

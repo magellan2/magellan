@@ -18,7 +18,6 @@ import java.util.Iterator;
 import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
-import com.eressea.rules.Herb;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.ObjectType;
@@ -305,48 +304,6 @@ public interface Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ItemType getItemType(String id);
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(ID id);
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 * @param add TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(ID id, boolean add);
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Iterator getHerbIterator();
-
-	/**
-	 * get Herb by (possibly localized) name
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(String id, boolean add);
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(String id);
 
 	/**
 	 * TODO: DOCUMENT ME!

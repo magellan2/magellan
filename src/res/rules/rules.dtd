@@ -1,24 +1,61 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<!ELEMENT  Rules (regiontype*,skillcategory*)>
+<!ELEMENT  Rules (OptionCategory*,AllianceCategory*,ItemCategory*,SkillCategory*,RegionType*, SkillType*)>
 <!ATTLIST rules
   game        CDATA            #REQUIRED
   version     CDATA            #REQUIRED
   revision    CDATA            #IMPLIED
 >
 
-<!ELEMENT  regiontype EMPTY>
-<!ATTLIST regiontype
+<!ELEMENT OptionCategory EMPTY>
+<!ATTLIST OptionCategory
   id            ID               #REQUIRED
-  inhabitants   CDATA            #IMPLIED
+  order         CDATA            #REQUIRED
+  bitmask       CDATA            #REQUIRED
 >
 
-<!ELEMENT skillcategory EMPTY>
-<!ATTLIST skillcategory
+<!ELEMENT AllianceCategory EMPTY>
+<!ATTLIST AllianceCategory
+  id            ID               #REQUIRED
+  bitmask       CDATA            #REQUIRED
+>
+
+<!ELEMENT ItemCategory EMPTY>
+<!ATTLIST ItemCategory
   id            ID               #REQUIRED
   naturalorder  CDATA            #REQUIRED
   parent        IDREF            #IMPLIED
 >
+
+<!ELEMENT SkillCategory EMPTY>
+<!ATTLIST SkillCategory
+  id            ID               #REQUIRED
+  naturalorder  CDATA            #REQUIRED
+>
+
+<!ELEMENT RegionType (Road?)>
+<!ATTLIST RegionType 
+  id            ID               #REQUIRED
+  inhabitants   CDATA            #IMPLIED
+>
+
+<!ELEMENT Road (Resource*)>
+
+<!ELEMENT Resource EMPTY>
+<!ATTLIST Resource
+  type          CDATA            #REQUIRED
+  refid         IDREF            #REQUIRED
+  amount        CDATA            #IMPLIED
+>
+
+<!ELEMENT SkillType EMPTY>
+<!ATTLIST SkillType
+  id            ID               #REQUIRED
+  category      IDREF            #REQUIRED
+>
+
+
+<!-- OLD OLD OLD -->
 
 <!ELEMENT skill EMPTY>
 <!ATTLIST skill

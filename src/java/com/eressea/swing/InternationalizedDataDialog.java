@@ -20,6 +20,7 @@ import java.util.Properties;
 import com.eressea.GameData;
 
 import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 
 /**
@@ -28,7 +29,7 @@ import com.eressea.event.GameDataListener;
  * @author $author$
  * @version $Revision$
  */
-public class InternationalizedDataDialog extends InternationalizedDialog
+public abstract class InternationalizedDataDialog extends InternationalizedDialog
 	implements GameDataListener
 {
 	protected GameData		  data		 = null;
@@ -63,7 +64,7 @@ public class InternationalizedDataDialog extends InternationalizedDialog
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void gameDataChanged(com.eressea.event.GameDataEvent e) {
+	public void gameDataChanged(GameDataEvent e) {
 		this.data = e.getGameData();
 	}
 
@@ -71,10 +72,12 @@ public class InternationalizedDataDialog extends InternationalizedDialog
 		super.quit();
 
 		if(dispatcher != null) {
+			dispatcher.removeGameDataListener(this);
+
 			// remove stale listeners
 			dispatcher.removeAllListeners(this);
 
-			//dispatcher.removeGameDataListener(this);
+
 		}
 	}
 }

@@ -23,8 +23,8 @@ import java.util.List;
  */
 public interface CellObject2 extends CellObject {
 	/**
-								 *
-								 */
+	 *
+	 */
 	List getGraphicsElements();
 
 	/** */

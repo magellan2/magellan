@@ -593,7 +593,7 @@ public class Region extends UnitContainer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
-	 * @throws NullPointerException TODO: DOCUMENT ME!
+	 * @throws NullPointerException if border is <code>null</code>
 	 */
 	public Border addBorder(Border border) {
 		if(border == null) {
@@ -622,17 +622,16 @@ public class Region extends UnitContainer {
 	 * 		   exists in this region.
 	 */
 	public Border removeBorder(Border b) {
-		if(this.borders == null) {
+		if(borders == null) {
 			return null;
 		}
-
-		Border ret = (Border) this.borders.remove(id);
-
-		if(this.borders.isEmpty()) {
-			this.borders		  = null;
-			this.borderCollection = null;
+		
+		Border ret = (Border) borders.remove(id);
+		
+		if(borders.isEmpty()) {
+			clearBorders();
 		}
-
+		
 		return ret;
 	}
 
@@ -640,10 +639,10 @@ public class Region extends UnitContainer {
 	 * Removes all borders from this region.
 	 */
 	public void clearBorders() {
-		if(this.borders != null) {
-			this.borders.clear();
-			this.borders		  = null;
-			this.borderCollection = null;
+		if(borders != null) {
+			borders.clear();
+			borders		  = null;
+			borderCollection = null;
 		}
 	}
 
@@ -656,7 +655,7 @@ public class Region extends UnitContainer {
 	 * 		   exists in this region.
 	 */
 	public Border getBorder(ID id) {
-		return (this.borders != null) ? (Border) this.borders.get(id) : null;
+		return (borders != null) ? (Border) borders.get(id) : null;
 	}
 
 	/** All ships that are in this container. */
@@ -690,7 +689,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Ship getShip(ID id) {
-		return (ships != null) ? (Ship) this.ships.get(id) : null;
+		return (ships != null) ? (Ship) ships.get(id) : null;
 	}
 
 	/**
@@ -700,15 +699,15 @@ public class Region extends UnitContainer {
 	 * @param s TODO: DOCUMENT ME!
 	 */
 	public void addShip(Ship s) {
-		if(this.ships == null) {
-			this.ships = CollectionFactory.createHashtable();
-
+		if(ships == null) {
+			ships = CollectionFactory.createHashtable();
+			
 			// enforce the creation of a new collection view
 			// AG: Since we just create if the ship map is non-null not necessary
 			// this.shipCollection = null;
 		}
 
-		this.ships.put(s.getID(), s);
+		ships.put(s.getID(), s);
 	}
 
 	/**
@@ -720,15 +719,15 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Ship removeShip(Ship s) {
-		if(this.ships == null) {
+		if(ships == null) {
 			return null;
 		}
-
-		Ship ret = (Ship) this.ships.remove(s.getID());
-
-		if(this.ships.isEmpty()) {
-			this.ships		    = null;
-			this.shipCollection = null;
+		
+		Ship ret = (Ship) ships.remove(s.getID());
+		
+		if(ships.isEmpty()) {
+			ships		   = null;
+			shipCollection = null;
 		}
 
 		return ret;
@@ -766,7 +765,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Building getBuilding(ID id) {
-		return (buildings != null) ? (Building) this.buildings.get(id) : null;
+		return (buildings != null) ? (Building) buildings.get(id) : null;
 	}
 
 	/**
@@ -776,15 +775,15 @@ public class Region extends UnitContainer {
 	 * @param u TODO: DOCUMENT ME!
 	 */
 	void addBuilding(Building u) {
-		if(this.buildings == null) {
-			this.buildings = CollectionFactory.createHashtable();
+		if(buildings == null) {
+			buildings = CollectionFactory.createHashtable();
 
 			// enforce the creation of a new collection view
-			// AG: Since we just create if the ship map is non-null not necessary
+			// AG: Since we just create if the builing map is non-null not necessary
 			// this.buildingCollection = null;
 		}
 
-		this.buildings.put(u.getID(), u);
+		buildings.put(u.getID(), u);
 	}
 
 	/**
@@ -796,15 +795,15 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	Building removeBuilding(Building b) {
-		if(this.buildings == null) {
+		if(buildings == null) {
 			return null;
 		}
 
 		Building ret = (Building) this.buildings.remove(b.getID());
 
-		if(this.buildings.isEmpty()) {
-			this.buildings		    = null;
-			this.buildingCollection = null;
+		if(buildings.isEmpty()) {
+			buildings		    = null;
+			buildingCollection = null;
 		}
 
 		return ret;
@@ -886,7 +885,7 @@ public class Region extends UnitContainer {
 	 */
 	public int maxRecruit() {
 		// pavkovic 2002.05.10: in case we dont have a recruit max set we evaluate it
-		return (recruits == -1) ? maxRecruit(this.peasants) : recruits;
+		return (recruits == -1) ? maxRecruit(peasants) : recruits;
 	}
 
 	/**
@@ -897,7 +896,7 @@ public class Region extends UnitContainer {
 	 */
 	public int maxOldRecruit() {
 		// pavkovic 2002.05.10: in case we dont have a recruit max set we evaluate it
-		return (oldRecruits == -1) ? maxRecruit(this.oldPeasants) : oldRecruits;
+		return (oldRecruits == -1) ? maxRecruit(oldPeasants) : oldRecruits;
 	}
 
 	/**
@@ -923,7 +922,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int maxEntertain() {
-		return maxEntertain(this.silver);
+		return maxEntertain(silver);
 	}
 
 	/**
@@ -933,7 +932,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int maxOldEntertain() {
-		return maxEntertain(this.oldSilver);
+		return maxEntertain(oldSilver);
 	}
 
 	/**
@@ -959,7 +958,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int maxLuxuries() {
-		return maxLuxuries(this.peasants);
+		return maxLuxuries(peasants);
 	}
 
 	/**
@@ -969,7 +968,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int maxOldLuxuries() {
-		return maxLuxuries(this.oldPeasants);
+		return maxLuxuries(oldPeasants);
 	}
 
 	/**

@@ -436,80 +436,22 @@ public class MapSaverUI extends InternationalizedDialog {
 						  float fQuality, int iSaveType)
 				   throws Exception
 	{
-		int		  iX	  = 0;
-		int		  iY	  = 0;
-		int		  iWidth  = 0;
-		int		  iHeight = 0;
 		Dimension dim     = new Dimension(outComponent.getBounds().width,
 										  outComponent.getBounds().height);
 
-		iWidth = ((int) dim.getWidth()) / iCountX;
+		int iWidth = ((int) dim.getWidth()) / iCountX;
 
 		if(((int) dim.getWidth()) > (iWidth * iCountX)) {
 			iWidth++;
 		}
 
-		iHeight = ((int) dim.getHeight()) / iCountY;
+		int iHeight = ((int) dim.getHeight()) / iCountY;
 
 		if(((int) dim.getHeight()) > (iHeight * iCountY)) {
 			iHeight++;
 		}
 
-		iX = (int) (dim.getWidth() / iWidth);
-
-		if((((int) dim.getWidth()) % iWidth) > 0) {
-			iX++;
-		}
-
-		iY = (int) (dim.getHeight() / iHeight);
-
-		if((((int) dim.getHeight()) % iHeight) > 0) {
-			iY++;
-		}
-
-		dim = null;
-
-		BufferedImage bimg = new BufferedImage(iWidth, iHeight,
-											   BufferedImage.TYPE_INT_RGB);
-		Graphics2D    g2 = null;
-
-		try {
-			for(int y = 0; y < iY; y++) {
-				for(int x = 0; x < iX; x++) {
-					g2 = bimg.createGraphics();
-					g2.setClip(0, 0, iWidth, iHeight);
-
-					java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
-					transform.setToIdentity();
-					transform.translate(-x * iWidth, -y * iHeight);
-					g2.transform(transform);
-
-					outComponent.paint(g2);
-
-					transform = null;
-					g2.dispose();
-					g2 = null;
-
-					SaveAs(strOut, bimg, x, y, x + (y * iX) + 1, iX * iY,
-						   iSaveType, fQuality);
-				}
-			}
-
-			bimg.flush();
-			bimg = null;
-		} catch(OutOfMemoryError e) {
-			if(g2 != null) {
-				g2.dispose();
-				g2 = null;
-			}
-
-			if(bimg != null) {
-				bimg.flush();
-				bimg = null;
-			}
-
-			throw e;
-		}
+		saveAs(strOut, iWidth, iHeight, fQuality, iSaveType);
 	}
 
 	private void SaveAs(String strOut, BufferedImage bimg, int x, int y,

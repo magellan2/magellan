@@ -1,10 +1,3 @@
--- technical todo:
-
-- remove src/java/com/eressea/crtonr
-- remove src/java/com/eressea/rules/Eressea
-
-
-
 -------------------------------------------------------------------------------
 Noch n Featurewunsch via Mail. Nicht böse sein, sitze im Zug. Kannst du die
 Nummer von Einheiten, Gebäuden und Schiffen in die Details aufnehmen?

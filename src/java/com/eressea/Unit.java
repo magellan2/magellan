@@ -2433,7 +2433,17 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		}
 
 		if(!curUnit.ordersAreNull() && (curUnit.getOrders().size() > 0)) {
-			newUnit.setOrders(curUnit.getOrders(), false);
+			Collection orders = CollectionFactory.createArrayList();
+			/*
+			if(!newUnit.ordersAreNull()) {
+				for(Iterator iter = newUnit.getOrders().iterator(); iter.hasNext(); ) {
+					String actOrder = (String) iter.next();
+					orders.add("; "+actOrder);
+				}
+			}
+			*/
+			orders.addAll(curUnit.getOrders());
+			newUnit.setOrders(orders, false);
 		}
 
 		newUnit.ordersConfirmed |= curUnit.ordersConfirmed;

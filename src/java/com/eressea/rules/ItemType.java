@@ -44,7 +44,6 @@ public class ItemType extends ObjectType {
 	 */
 	public ItemType(ID id) {
 		super(id);
-		iconName = id.toString();
 	}
 
 	/**
@@ -193,13 +192,20 @@ public class ItemType extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getIconName() {
-		if(this.iconName == null) {
-			this.iconName = Umlaut.convertUmlauts(this.getID().toString())
-								  .toLowerCase();
+		if(!iconNameEvaluated && iconName == null) {
+			if(category != null) {
+				iconName = category.getIconName();
+			}
+			if(iconName == null) {
+				iconName = getID().toString();
+			}
+			iconName = Umlaut.convertUmlauts(iconName.toLowerCase());
+			iconNameEvaluated = true;
 		}
-
-		return this.iconName;
+		return iconName;
 	}
+
+	private boolean iconNameEvaluated = false;
 
 	/**
 	 * Sets the file name of the icon to use for this item.
@@ -208,5 +214,6 @@ public class ItemType extends ObjectType {
 	 */
 	public void setIconName(String iName) {
 		iconName = iName;
+		iconNameEvaluated = false;
 	}
 }

@@ -27,7 +27,7 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
-	 * @throws NullPointerException TODO: DOCUMENT ME!
+	 * @throws NullPointerException if ID is <code>null</code>
 	 */
 	public Identifiable(ID id) {
 		if(id == null) {
