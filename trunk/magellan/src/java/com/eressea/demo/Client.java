@@ -148,6 +148,7 @@ import com.eressea.util.PropertiesHelper;
 import com.eressea.util.RendererLoader;
 import com.eressea.util.SelectionHistory;
 import com.eressea.util.SelfCleaningProperties;
+import com.eressea.util.Translations;
 import com.eressea.util.TrustLevels;
 import com.eressea.util.VersionInfo;
 import com.eressea.util.logging.Logger;
@@ -234,11 +235,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 		// init icon, fonts, repaint shortcut, L&F, window things
 		initUI();
-
-		// check for new version
-		if(this.isCheckingVersionOnStartup()) {
-			(new VersionCheckThread()).start();
-		}
 
 		// create management and observer objects
 		dispatcher.addSelectionListener(SelectionHistory.getEventHook());
@@ -1301,18 +1297,28 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	// UPDATE Code //
 	/////////////////
 	private void updateTitleCaption() {
+		String title = Client.createTitle(data,showStatus, false);
+		try {
+			title = Client.createTitle(data,showStatus, true);
+		} catch(Exception e) {
+			log.error("createTitle failed!", e);
+		}
+		setTitle(title);
+	}
+	
+	private static String createTitle(GameData data, boolean showStatus, boolean longTitle) {
+		
 		// set frame title (date)
 		String title = "Magellan";
-
+		
 		String version = VersionInfo.getVersion();
 		if(version != null) {
 			title += " "+version;
 		}
-
+		
 		// pavkovic 2002.05.7: data may be null in this situation
 		if(data == null) {
-			setTitle(title);
-			return;
+			return title;
 		}
 
 		if(data.filetype != null) {
@@ -1333,6 +1339,10 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 					data.getDate().toString(showStatus ? EresseaDate.TYPE_SHORT
 													   : EresseaDate.TYPE_PHRASE_AND_SEASON) +
 					" (" + data.getDate().getDate() + ")";
+		}
+
+		if(!longTitle) {
+			return title;
 		}
 
 		if(showStatus) {
@@ -1373,8 +1383,9 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			}
 		}
 
-		setTitle(title);
+		return title;
 	}
+
 
 	/**
 	 * Updates the order confirmation menu after the game data changed.
@@ -1525,25 +1536,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	}
 
 	/**
-	 * Sets whether the application checks if a new version is available when starting.
-	 *
-	 * @param bool TODO: DOCUMENT ME!
-	 */
-	public void checkVersionOnStartup(boolean bool) {
-		settings.setProperty("Client.checkVersionOnStartup", (new Boolean(bool)).toString());
-	}
-
-	/**
-	 * Returns whether the application checks if a new version is available when starting.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean isCheckingVersionOnStartup() {
-		return Boolean.valueOf(settings.getProperty("Client.checkVersionOnStartup",
-													Boolean.FALSE.toString())).booleanValue();
-	}
-
-	/**
 	 * Get the selected Regions. The returned map can be empty but is never null. This is a wrapper
 	 * function so we dont need to give away MapperPanel.
 	 *
@@ -1678,9 +1670,9 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	protected String getString(String key) {
+	protected static String getString(String key) {
 		// this will indirectly evaluate getDefaultTranslation!
-		return com.eressea.util.Translations.getTranslation(this, key);
+		return Translations.getTranslation(Client.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -1904,60 +1896,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		public void propertyChange(PropertyChangeEvent e) {
 			if((e.getPropertyName() != null) && e.getPropertyName().equals("accelerator")) {
 				item.setAccelerator((KeyStroke) e.getNewValue());
-			}
-		}
-	}
-
-	private class VersionCheckThread extends Thread {
-		/**
-		 * Creates a new VersionCheckThread object.
-		 */
-		public VersionCheckThread() {
-		}
-
-		/**
-		 * TODO: DOCUMENT ME!
-		 */
-		public void run() {
-			java.util.Date myDate = VersionInfo.getBuildDate();
-			java.util.Date serverDate = VersionInfo.getServerBuildDate();
-
-			if((myDate != null) && (serverDate != null)) {
-				if(!myDate.equals(serverDate)) {
-					File magDir = MagellanFinder.findMagellanDirectory();
-
-					if(magDir.exists() && magDir.canRead() &&
-						   (new File(magDir, "magellan-patcher.jar")).exists()) {
-						int result = JOptionPane.showConfirmDialog(Client.this,
-																   getString("msg.startpatcher.text"),
-																   getString("msg.startpatcher.title"),
-																   JOptionPane.YES_NO_OPTION,
-																   JOptionPane.QUESTION_MESSAGE);
-
-						if(result == JOptionPane.YES_OPTION) {
-							try {
-								Runtime.getRuntime().exec("java -jar " +
-														  (new File(magDir, "magellan-patcher.jar")).getAbsolutePath());
-								System.exit(0);
-							} catch(IOException ioe) {
-								JOptionPane.showMessageDialog(Client.this,
-															  getString("msg.patchererror.text") +
-															  ioe,
-															  getString("msg.patchererror.title"),
-															  JOptionPane.WARNING_MESSAGE);
-							}
-						}
-					} else {
-						JOptionPane.showMessageDialog(Client.this,
-													  getString("msg.newversion.text"),
-													  getString("msg.newversion.title"),
-													  JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			} else {
-				JOptionPane.showMessageDialog(Client.this, getString("msg.versionunknown.text"),
-											  getString("msg.versionunknown.title"),
-											  JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

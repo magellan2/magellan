@@ -70,7 +70,6 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 	private static final Logger log = Logger.getInstance(ClientPreferences.class);
 	Properties settings = null;
 	Client source = null;
-	private javax.swing.JCheckBox chkCheckVersionOnStartup = null;
 	private javax.swing.JComboBox cmbGUILocale = null;
 	private javax.swing.JComboBox cmbOrderLocale = null;
 
@@ -138,25 +137,19 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
 									 c.insets, 0, 0);
 
-		// startup and exit panel
-		add(getStartupExitPanel(), c);
 		c.insets.top = 0;
-
-		GridBagHelper.setConstraints(c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
-									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
-									 c.insets, 0, 0);
 
 		// locales
 		add(getLocalesPanel(), c);
 
-		GridBagHelper.setConstraints(c, 0, 2, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
+		GridBagHelper.setConstraints(c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
 									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
 									 c.insets, 0, 0);
 
 		// temp unit panel
 		add(getTempUnitPanel(), c);
 
-		GridBagHelper.setConstraints(c, 0, 3, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
+		GridBagHelper.setConstraints(c, 0, 2, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
 									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
 									 c.insets, 0, 0);
 
@@ -229,7 +222,6 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		tempIDs.add(descendingOrder, c2);
 		c2.weightx = 1.0;
 
-		// pavkovic
 		c2.gridy = 3;
 		c2.gridx = 0;
 		c2.gridwidth = 3;
@@ -244,31 +236,6 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		countBase36.setToolTipText(getString("tempids.countbase36.tooltip"));
 
 		return tempIDs;
-	}
-
-	/**
-	 * Creates a panel for the controls determining startup and exit behaviour.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	private Component getStartupExitPanel() {
-		GridBagConstraints c = new GridBagConstraints();
-		JPanel pnl = new JPanel(new GridBagLayout());
-		pnl.setBorder(new javax.swing.border.TitledBorder(BorderFactory.createEtchedBorder(),
-														  getString("border.startupexit")));
-
-		chkCheckVersionOnStartup = new JCheckBox(getString("chk.checkversiononstartup.caption"),
-												 source.isCheckingVersionOnStartup());
-
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		pnl.add(chkCheckVersionOnStartup, c);
-
-		return pnl;
 	}
 
 	/**
@@ -332,7 +299,6 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 	 * TODO: DOCUMENT ME!
 	 */
 	public void applyPreferences() {
-		source.checkVersionOnStartup(chkCheckVersionOnStartup.isSelected());
 		Locales.setGUILocale(((LocaleWrapper) cmbGUILocale.getSelectedItem()).getLocale());
 		Locales.setOrderLocale(((LocaleWrapper) cmbOrderLocale.getSelectedItem()).getLocale());
 
@@ -738,8 +704,6 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("categorized", "Sort in categories");
-			defaultTranslations.put("border.startupexit", "Startup of Magellan");
-			defaultTranslations.put("chk.checkversiononstartup.caption", "Check for new version");
 			defaultTranslations.put("border.fontsize", "Font size");
 			defaultTranslations.put("lbl.relativefontsize.caption", "relative font size");
 			defaultTranslations.put("txt.restartforfontsize.caption",

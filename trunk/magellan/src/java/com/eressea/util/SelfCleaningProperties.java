@@ -68,6 +68,21 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 		}
 	}
 
+	private final static String[] propertiesToRemove = {	"AgingProperties.numberofsessions",
+															"AgingProperties.sessionsofkeys",
+															"Client.checkVersionOnStartup"
+														 }; 
+
+	private boolean doRemoveProperties(String name) {
+		for(int i=0; i < propertiesToRemove.length; i++) {
+			String property = propertiesToRemove[i];
+			if(doRemoveProperty(name, property)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * this operation check possible clean states on a given property name. Add more cleanings here
 	 * (and take care to return a possibly new key name value!)
@@ -75,14 +90,9 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 	 * @param name the name of the current property to check for cleaning.
 	 */
 	private void doClean(String name) {
-		if(doRemoveProperty(name, "AgingProperties.numberofsessions")) {
+		if(doRemoveProperties(name)) {
 			return;
 		}
-
-		if(doRemoveProperty(name, "AgingProperties.sessionsofkeys")) {
-			return;
-		}
-
 		if(1 == 2) {
 			if(doRemoveProperty(name, "EMapOverviewPanel.displayIslands")) {
 				// after a property has been removed, we dont need more checks
