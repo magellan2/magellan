@@ -877,9 +877,9 @@ public class Region extends UnitContainer {
 			unitRelationsRefreshed = true;
 			for (Iterator iter = this.units().iterator(); iter.hasNext(); ) {
 				Unit u = (Unit)iter.next();
-				u.refreshRelations(data);
+				u.refreshRelations();
 			}
-			getZeroUnit().refreshRelations(data);
+			getZeroUnit().refreshRelations();
 		}
 	}
 

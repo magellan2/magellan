@@ -1795,7 +1795,7 @@ public class CRParser {
 			} else if (sc.argc == 1 &&
 				sc.argv[0].equals("COMMANDS") == true) {
 				// there can be only one order block for a unit, replace existing ones
-				unit.setOrders(parseStringSequence(null));
+				unit.setOrders(parseStringSequence(null),false);
 			} else if (sc.argc == 1 &&
 				sc.argv[0].equals("TALENTE") == true) {
 				// there can be only one skills block for a unit, replace existing ones

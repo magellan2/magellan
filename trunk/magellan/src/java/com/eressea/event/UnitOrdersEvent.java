@@ -8,6 +8,10 @@
 
 package com.eressea.event;
 
+import java.util.Collection;
+
+import com.eressea.Unit;
+import com.eressea.util.CollectionFactory;
 
 /**
  * An event indicating that the orders of a certain unit were
@@ -17,7 +21,13 @@ package com.eressea.event;
  * @see EventDispatcher
  */
 public class UnitOrdersEvent extends TimeStampedEvent {
-	private com.eressea.Unit unit;
+	
+	private Unit unit;
+
+	/** 
+	 * A collection of related units *before* the unit orders was changed
+	 */
+	private Collection relatedUnits;
 
 	/**
 	 * Creates an event object.
@@ -25,15 +35,24 @@ public class UnitOrdersEvent extends TimeStampedEvent {
 	 * @param source the object that originated the event.
 	 * @param unit the unit which orders changed.
 	 */
-	public UnitOrdersEvent(Object source, com.eressea.Unit unit) {
+	public UnitOrdersEvent(Object source, Unit unit) {
 		super(source);
 		this.unit = unit;
+		this.relatedUnits = CollectionFactory.createHashSet();
+		unit.getRelatedUnits(relatedUnits);
 	}
 
 	/**
 	 * Returns the unit which orders changed.
 	 */
-	public com.eressea.Unit getUnit() {
+	public Unit getUnit() {
 		return unit;
+	}
+
+	/** 
+	 * Returns the relates units
+	 */
+	public Collection getRelatedUnits() {
+		return relatedUnits;
 	}
 }

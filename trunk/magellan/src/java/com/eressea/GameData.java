@@ -946,7 +946,7 @@ abstract public class GameData implements Cloneable {
 				}
 				if (dateEqual && !u.tempUnits().isEmpty()) {
 					parentUnits1.put(u.getID(), u);
-					u.addOrders(u.getTempOrders());
+					u.setOrders(u.getCompleteOrders(),false);
 					// temp units are not deleted, assume that the
 					// old game data is thrown away anyway
 					// FIXME(pavkovic): this is NOT the case if we 
@@ -972,7 +972,7 @@ abstract public class GameData implements Cloneable {
 				 */
 				if (!u.tempUnits().isEmpty()) {
 					parentUnits2.put(u.getID(), u);
-					u.addOrders(u.getTempOrders());
+					u.setOrders(u.getCompleteOrders(),false);
 					// temp units are not deleted, assume that the
 					// old game data is thrown away anyway
 				}

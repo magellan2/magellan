@@ -312,6 +312,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 	
 	public void unitOrdersChanged(UnitOrdersEvent e) {
+		// TODO: do we really need to repaint this?
 		repaint();
 	}
 	

@@ -99,20 +99,15 @@ public class UnitContextMenu extends JPopupMenu{
 			}
 
 			// is student of someone?
-			unit.refreshRelations(data);
-			Collection c = unit.getRelations();
+			Collection c = unit.getRelations(TeachRelation.class);
 			for (Iterator iter = c.iterator(); iter.hasNext(); ) {
-				Object o = iter.next();
-				if (o instanceof TeachRelation) {
-					TeachRelation tr = (TeachRelation)o;
-					if (tr.target == unit) {
-						Unit teacher = tr.source;
-						JMenuItem removeFromTeachersList = new JMenuItem(getString("menu.removeFromTeachersList") + ": " + teacher.toString());
-						add(removeFromTeachersList);
-						removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit, teacher));
-					}
+				TeachRelation tr = (TeachRelation)iter.next();
+				if (tr.target == unit) {
+					Unit teacher = tr.source;
+					JMenuItem removeFromTeachersList = new JMenuItem(getString("menu.removeFromTeachersList") + ": " + teacher.toString());
+					add(removeFromTeachersList);
+					removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit, teacher));
 				}
-
 			}
 
 		} else {
@@ -416,13 +411,13 @@ public class UnitContextMenu extends JPopupMenu{
 			if (found) {
 				String newOrder = order.substring(0, order.indexOf(id)) + order.substring(java.lang.Math.min(order.indexOf(id) + 1 + id.length(), order.length()), order.length());
 				// FIXME(pavkovic: Problem hier!
-				teacher.removeOrderAt(i);
+				UnitOrdersEvent event = new UnitOrdersEvent(this,teacher);
+				teacher.removeOrderAt(i,false);
 				if (!newOrder.trim().equalsIgnoreCase("LEHREN") && !newOrder.trim().equalsIgnoreCase("LEHRE")) {
 					// FIXME(pavkovic: Problem hier!
 					teacher.addOrderAt(i, newOrder);
 				}
-				dispatcher.fire(new UnitOrdersEvent(this, teacher));
-				teacher.refreshRelations(data);
+				dispatcher.fire(event);
 			}
 		}
 	}

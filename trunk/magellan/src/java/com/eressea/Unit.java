@@ -19,6 +19,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+
+import com.eressea.event.*;
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
@@ -85,28 +87,90 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		ordersObject.setOrdersChanged(changed);
 	}
 
+	/** 
+	 * This function clears the orders and refreshes the relations
+	 */
 	public void clearOrders() {
+		clearOrders(true);
+	}
+
+	public void clearOrders(boolean refreshRelations) {
 		ordersObject.clearOrders();
+		if(refreshRelations) {
+			refreshRelations();
+		}
 	}
 
 	public void removeOrderAt(int i) {
-		ordersObject.removeOrderAt(i);
+		removeOrderAt(i,true);
 	}
 
-	public void addOrderAt(int i,String newOrders) {
-		ordersObject.addOrderAt(i, newOrders);
+	public void removeOrderAt(int i, boolean refreshRelations) {
+		ordersObject.removeOrderAt(i);
+		if(refreshRelations) {
+			refreshRelations(i);
+		}
 	}
 
 	public void addOrders(String newOrders) {
-		ordersObject.addOrders(newOrders);
+		addOrders(newOrders,true);
 	}
 
+	public void addOrders(String newOrders, boolean refreshRelations) {
+		addOrders(Collections.singleton(newOrders),refreshRelations);
+	}
+
+	/** 
+	 * This function adds orders of this object. 
+	 * it automatically refreshes the relations of this object
+	 */
 	public void addOrders(Collection newOrders) {
-		ordersObject.addOrders(newOrders);
+		addOrders(newOrders,true);
 	}
 
+	/** 
+	 * This function adds orders of this object.
+	 */
+	public void addOrders(Collection newOrders, boolean refreshRelations) {
+		int newPos = ordersObject.addOrders(newOrders);
+		if(refreshRelations) {
+			refreshRelations(newPos);
+		}
+	}
+
+	/** 
+	 * This function adds orders of this object and refreshes the relations. 
+	 */
+	public void addOrderAt(int i,String newOrders) {
+		addOrderAt(i, newOrders,true);
+	}
+
+	/** 
+	 * This function adds orders of this object and refreshes the relations. 
+	 */
+	protected void addOrderAt(int i,String newOrders, boolean refreshRelations) {
+		ordersObject.addOrderAt(i, newOrders);
+		if(refreshRelations) {
+			refreshRelations(i);
+		}
+	}
+
+	/** 
+	 * This function sets the orders of this object. 
+	 * it automatically refreshes the relations of this object
+	 */
 	public void setOrders(Collection newOrders) {
+		setOrders(newOrders,true);
+	}
+
+	/** 
+	 * this function sets the orders of this object.
+	 */
+	public void setOrders(Collection newOrders, boolean refreshRelations) {
 		ordersObject.setOrders(newOrders);
+		if(refreshRelations) {
+			refreshRelations();
+		}
 	}
 
 	public Collection getOrders() {
@@ -550,7 +614,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * the caching collection, does not perform clean-up like
 	 * deleteTemp() does.
 	 */
-	private void clearTemps() {
+	public void clearTemps() {
 		if (tempUnits != null) {
 			tempUnits.clear();
 			tempUnits = null;
@@ -718,6 +782,20 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 			}
 		}
 		return r;
+	}
+
+	/** 
+	 * deliver all directly related units
+	 */
+	public void getRelatedUnits(Collection units) {
+		units.add(this);
+		for (Iterator iter = this.getRelations(InterUnitRelation.class).iterator(); iter.hasNext(); ) {
+			InterUnitRelation iur = (InterUnitRelation) iter.next();
+			units.add(iur.source);
+			if(iur.target != null) {
+				units.add(iur.target);
+			}
+		}
 	}
 
 	/**
@@ -1666,6 +1744,16 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		}
 	}
 
+
+	public void refreshRelations() {
+		refreshRelations(0);
+	}
+
+	public void refreshRelations(int from) {
+		refreshRelations(getRegion().getData());
+	}
+
+	private final static int REFRESHRELATIONS_ALL = -2;
 	/**
 	 * Parses the orders of this unit and detects relations between
 	 * units established by those orders.
@@ -1679,8 +1767,6 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * lead to different relations. Therefore refreshRelations() has
 	 * to be invoked on a unit after its orders were modified.
 	 */
-	private final static int REFRESHRELATIONS_ALL = -2;
-
 	public synchronized void refreshRelations(GameData data) {
 		Map modItems = null;	// needed to track changes in the items for GIB orders
 		int modPersons = this.getPersons();
@@ -2051,7 +2137,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 	 * @return <tt>true</tt> if the order was successfully added.
 	 */
 	public boolean addOrder(String order, boolean replace, int length) {
-		if (null == order || order.trim().equals("") || ordersAreNull() || (replace && length < 1)) {
+		if (order == null || order.trim().equals("") || ordersAreNull() || (replace && length < 1)) {
 			return false;
 		}
 
@@ -2184,7 +2270,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 			}
 		}
 		if (!curUnit.ordersAreNull() && curUnit.getOrders().size() > 0) {
-			newUnit.setOrders(curUnit.getOrders());
+			newUnit.setOrders(curUnit.getOrders(),false);
 		}
 		newUnit.ordersConfirmed |= curUnit.ordersConfirmed;
 		if (curUnit.effects != null && curUnit.effects.size() > 0) {
@@ -2512,7 +2598,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 									cmdIterator.remove();
 									token = ct.getNextToken();
 									if (token.ttype != com.eressea.util.OrderToken.TT_EOC) {
-										tempUnit.addOrders(getOrder(O_NAME, locale) + " " + getOrder(O_UNIT, locale) + " " + token.getText());
+										tempUnit.addOrders(getOrder(O_NAME, locale) + " " + getOrder(O_UNIT, locale) + " " + token.getText(),false);
 									}
 								} else {
 									log.warn("Unit.extractTempUnits(): region " +
@@ -2533,7 +2619,7 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 						if(CONFIRMEDTEMPCOMMENT.equals(line.trim())) {
 							tempUnit.ordersConfirmed = true;
 						} else {
-							tempUnit.addOrders(line);
+							tempUnit.addOrders(line,false);
 						}
 					}
 				}
@@ -2598,21 +2684,20 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		public Orders() {
 		}
 
-		public void addOrders(String newOrders) {
-			if(newOrders != null) {
-				addOrders(CollectionFactory.singleton(newOrders));
-			}
+		public int getSize() {
+			return orders == null ? 0 : orders.size();
 		}
-
-		public void addOrders(Collection newOrders) {
+		public int addOrders(Collection newOrders) {
+			int oldSize = getSize();
 			if(newOrders == null) {
-				return;
+				return oldSize;
 			}
 			if(orders == null) {
 				orders = CollectionFactory.createArrayList(newOrders.size());
 			}
 			orders.addAll(newOrders);
 			changed = true;
+			return oldSize;
 		}
 
 		public void setOrders(Collection newOrders) {
@@ -2639,7 +2724,6 @@ public class Unit extends DescribedObject implements HasRegion, EresseaOrderCons
 		public boolean ordersAreNull() {
 			return orders == null;
 		}
-
 
 		public void addOrderAt(int i,String newOrders) {
 			if(orders == null) {
