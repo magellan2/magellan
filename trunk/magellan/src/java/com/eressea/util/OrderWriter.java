@@ -48,7 +48,8 @@ public class OrderWriter {
 	private boolean confirmedOnly = false;
 	private boolean forceUnixLineBreaks = false;
 	private Collection regions = null;
-
+	private boolean writeUnitTagsAsVorlageComment = false;
+	
 	/**
 	 * Creates a new OrderWriter object extracting the orders of faction f's units and writing them
 	 * to the stream w.
@@ -117,6 +118,15 @@ public class OrderWriter {
 		stream.flush();
 
 		return units;
+	}
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param bool TODO: DOCUMENT ME!
+	 */
+	public void setWriteUnitTagsAsVorlageComment(boolean bool) {
+		writeUnitTagsAsVorlageComment = bool;
 	}
 
 	/**
@@ -280,7 +290,14 @@ public class OrderWriter {
 		}
 
 		writeOrders(unit.getCompleteOrders(), stream);
-
+		
+		if(writeUnitTagsAsVorlageComment && unit.hasTags()) {
+			for(Iterator iter = unit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
+				String tag = (String) iter.next();
+				writeln(stream, "// #after 1 { #tag Einheit "+tag+" "+unit.getTag(tag)+" }");
+			}
+		}
+		
 		return true;
 	}
 
@@ -351,14 +368,14 @@ public class OrderWriter {
 		String strSumPart = strSum.substring(strSum.length() - 3);
 		String strTimePart = strTime.substring(strTime.length() - 6, strTime.length() - 3);
 		String rot = rotate(strSumPart, Integer.parseInt(strTimePart));
-		String merge = "";
+		StringBuffer mergeSB = new StringBuffer("");
 
 		for(int i = 0; i < 3; i++) {
-			merge += ((Integer.parseInt(rot.substring(i, i + 1)) +
-			Integer.parseInt(strTimePart.substring(i, i + 1))) % 10);
+			mergeSB.append(((Integer.parseInt(rot.substring(i, i + 1)) +
+			Integer.parseInt(strTimePart.substring(i, i + 1))) % 10));
 		}
 
-		int foo = Integer.parseInt(merge);
+		int foo = Integer.parseInt(mergeSB.toString());
 		String padded = ((foo < 100) ? "0" : "") + ((foo < 10) ? "0" : "") + foo;
 		String res = strTime.substring(0, strTime.length() - 3) + padded;
 
@@ -385,6 +402,10 @@ public class OrderWriter {
 		} else {
 			stream.newLine();
 		}
+	}
+
+	private void write(BufferedWriter stream, String text) throws IOException {
+		stream.write(text);
 	}
 
 	/**

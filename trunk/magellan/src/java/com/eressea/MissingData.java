@@ -13,11 +13,7 @@
 
 package com.eressea;
 
-import java.util.Locale;
-import java.util.Map;
-
 import com.eressea.rules.GenericRules;
-import com.eressea.util.CollectionFactory;
 
 /**
  * A Zero Pattern implementation of the <tt>GameData</tt> supporting all of the attributes defined

@@ -1275,6 +1275,21 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		/*
+        // from Region.java.~1.19~
+		// pavkovic 2002.04.12: This logic seems to be more reasonable:
+		// prerequisites: there are borders in the current region
+		// if there are no borders in the new region
+		//   -> the borders of the current region are added to the new region
+		// if there are borders in the new region *and* there is at least one
+		//    person in the current region
+		//   -> the borders of the current region are added to the new region
+		//
+		if(!curRegion.borders().isEmpty() &&
+			   (newRegion.borders().isEmpty() || !curRegion.units().isEmpty())) {
+		*/
+
+		/*
 		// pavkovic 2004.06.03: This logic seems to be more reasonable:
 		// 
 		// |new.units| == 0, |current.units| == 0: current
@@ -1291,6 +1306,12 @@ public class Region extends UnitContainer {
 		// 
 		// nice try but still buggy:
 		if(!curRegion.units().isEmpty() || (newRegion.units().isEmpty() && curRegion.borders != null &&!(curRegion.borders.isEmpty()))) {
+		*/
+		
+		// if we have units in the current region wins.
+		// if we are not in the same turn the current region wins.
+		// if we dont have units in the new region the current region wins.
+		if(!curRegion.units().isEmpty() || !sameTurn || newRegion.units().isEmpty()) {
 			newRegion.clearBorders();
 
 			for(Iterator iter = curRegion.borders().iterator(); iter.hasNext();) {

@@ -67,7 +67,7 @@ public class XMLIO {
 			//if(dtd == null) {
 				//log.warn("Could not find a dtd.");
 			//} else {
-			is.setSystemId(dtd.toString());
+			//is.setSystemId(dtd.toString());
 			//}
 
 			return db.parse(is);

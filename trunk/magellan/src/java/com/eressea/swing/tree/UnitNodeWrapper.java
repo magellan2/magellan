@@ -300,16 +300,8 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		return sb.toString();
 	}
 
-	private List createGraphicsElements(Unit u, List c) {
-		List names = null;
-
-		if(c != null) {
-			names = c;
-			names.clear();
-		} else {
-			names = CollectionFactory.createLinkedList();
-		}
-
+	private List createGraphicsElements(Unit u) {
+		List names  = CollectionFactory.createLinkedList();
 		List skills = CollectionFactory.createLinkedList();
 
 		if(isShowingSkillIcons() && (u.skills != null)) {
@@ -352,6 +344,11 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		Tag2Element.apply(start);
 
 		GraphicsElement ge = null;
+
+		// Heldenanzeige
+		if(u.isHero) {
+			names.add(new GraphicsElement(null, null, "hero"));
+		}
 
 		if(isShowingContainerIcons()) {
 			if(unit.getBuilding() != null) {
@@ -648,7 +645,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 	 */
 	public List getGraphicsElements() {
 		if(!iconNamesCreated) {
-			this.iconNames = createGraphicsElements(this.unit, iconNames);
+			this.iconNames = createGraphicsElements(this.unit);
 			iconNamesCreated = true;
 		}
 

@@ -36,6 +36,7 @@ import com.eressea.util.comparator.BuildingTypeComparator;
 import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
+import com.eressea.util.comparator.TaggableComparator;
 import com.eressea.util.comparator.UnitHealthComparator;
 import com.eressea.util.comparator.UnitTrustComparator;
 
@@ -65,6 +66,9 @@ public class TreeHelper {
 
 	/** TODO: DOCUMENT ME! */
 	public static final int TRUSTLEVEL = 5;
+
+	/** TODO: DOCUMENT ME! */
+	public static final int TAGGABLE = 6;
 
 	private static final Comparator nameComparator = new NameComparator(new IDComparator());
 	private static final Comparator buildingComparator = new BuildingTypeComparator(nameComparator);
@@ -365,6 +369,31 @@ public class TreeHelper {
 					}
 
 					break;
+					
+				case TAGGABLE:
+
+					if(change(TAGGABLE, curUnit, prevUnit)) {
+						String label = TaggableComparator.getLabel(prevUnit);
+						if(label != null) {
+							SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(label,null);
+							DefaultMutableTreeNode taggableNode = new DefaultMutableTreeNode(simpleNodeWrapper);
+							mother.add(taggableNode);
+
+							if(se != null) {
+								se.getSubordinatedElements().add(simpleNodeWrapper);
+							}
+						
+							retVal += addSortedUnits(taggableNode, treeStructure, sortCriteria + 1,
+													 helpList, factory, activeAlliances, unitNodes, data);
+						} else {
+							retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1,
+													 helpList, factory, activeAlliances, unitNodes,
+													 data);
+						}
+						helpList.clear();
+					}
+
+					break;
 				} // end of switch
 
 				helpList.add(curUnit);
@@ -553,6 +582,9 @@ public class TreeHelper {
 
 		case TRUSTLEVEL:
 			return UnitTrustComparator.DEFAULT_COMPARATOR.compare(prevUnit, curUnit) != 0;
+
+		case TAGGABLE:
+			return TaggableComparator.DEFAULT_COMPARATOR.compare(prevUnit, curUnit) != 0;
 		}
 
 		return false; // default

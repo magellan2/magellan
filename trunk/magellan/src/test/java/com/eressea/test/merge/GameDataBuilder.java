@@ -17,10 +17,14 @@ public class GameDataBuilder {
 	}
 	
 	public GameData createSimplestGameData(int round) throws Exception {
-		return createSimplestGameData(round, true);
+		return createSimplestGameData(round,true);
 	}
 
-	public GameData createSimplestGameData(int round, boolean postProcess) throws Exception {
+	public GameData createSimplestGameData(int round, boolean addUnit) throws Exception {
+		return createSimplestGameData(round,addUnit,true);
+	}
+
+	private GameData createSimplestGameData(int round, boolean addUnit, boolean postProcess) throws Exception {
 		GameData data = new GameDataReader().createGameData("Eressea");
 		
 		data.base=36;
@@ -48,7 +52,9 @@ public class GameDataBuilder {
 		Region region_0_0 = addRegion(data,"0 0", "Region_0_0","Gletscher",1);
 		region_0_0.setIsland(island);
 
-		Unit unit = addUnit(data, "1", "Unit_1", faction, region_0_0);
+		if(addUnit) {
+			Unit unit = addUnit(data, "1", "Unit_1", faction, region_0_0);
+		}
 
 		if(postProcess) {
 			data.postProcess();
@@ -61,15 +67,21 @@ public class GameDataBuilder {
 	}
 	
 	public GameData createSimpleGameData(int round) throws Exception {
-		GameData data = createSimplestGameData(round, false);
+		return createSimpleGameData(round, true);
+	}
+	
+	public GameData createSimpleGameData(int round, boolean addUnit) throws Exception {
+		GameData data = createSimplestGameData(round, addUnit, false);
 
-		Unit unit = (Unit) data.units().values().iterator().next();
+		if(data.units().size() > 0) {
+			Unit unit = (Unit) data.units().values().iterator().next();
 
-		Skill skill1 = addSkill(unit, "Hiebwaffen", 4, 3, true); // Hiebwaffen 4 (+3)
-		Skill skill2 = addSkill(unit, "Segeln", 4, 3,false); // Segeln 4
-		Skill skill3 = addSkill(unit, "Magie", -1, -3,true); // Magie - (-3)
-		Skill skill4 = addSkill(unit, "Steinbau", -1, -3,false); // Steinbau - 
-
+			Skill skill1 = addSkill(unit, "Hiebwaffen", 4, 3, true); // Hiebwaffen 4 (+3)
+			Skill skill2 = addSkill(unit, "Segeln", 4, 3,false); // Segeln 4
+			Skill skill3 = addSkill(unit, "Magie", -1, -3,true); // Magie - (-3)
+			Skill skill4 = addSkill(unit, "Steinbau", -1, -3,false); // Steinbau - 
+		}
+		
 		data.postProcess();
 		return data;
 	}

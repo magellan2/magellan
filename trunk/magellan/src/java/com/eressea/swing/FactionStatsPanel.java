@@ -263,7 +263,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		 * Used to collect persons of different race than their faction. Key: String (racename),
 		 * Value: List containing the units
 		 */
-		Map specialPersons = CollectionFactory.createHashtable();
+		Map specialPersons = CollectionFactory.createOrderedHashtable();
+		Collection heroes = CollectionFactory.createLinkedList();
 
 		if(factions.size() == 1) {
 			f = (Faction) factions.values().iterator().next();
@@ -299,6 +300,9 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 						v.add(u);
 					}
+					if(u.isHero) {
+						heroes.add(u);
+					}
 
 					/**
 					 * poorly it is necessary to refresh all relations, as at this time it is not
@@ -322,9 +326,24 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		n = new DefaultMutableTreeNode(getString("node.units") + (units.size() - tempUnitsCounter) +
 									   " (" + modifiedUnitsCounter + ")");
 		rootNode.add(n);
+
 		n = new DefaultMutableTreeNode(getString("node.persons") + personCounter + " (" +
 									   modifiedPersonCounter + ")");
 		rootNode.add(n);
+
+		if(!heroes.isEmpty()) {
+			n = new DefaultMutableTreeNode(getString("node.heroes"));
+			rootNode.add(n);
+
+			for(Iterator iter = heroes.iterator(); iter.hasNext(); ) {
+				Unit u = (Unit) iter.next();
+				
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u));
+				n.add(m);
+			}
+
+		}
+		
 
 		if(f != null) {
 			if(f.getType() != null) {
@@ -536,14 +555,15 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			for(int i = 0; i < earned.length; i++) {
 				if((earned[i] != 0) || (wanted[i] != 0)) {
 					Object msgArgs[] = { new Integer(earned[i]) };
-					String s = (new java.text.MessageFormat(getString("node.income" + i)).format(msgArgs));
+					StringBuffer sb = new StringBuffer();
+					sb.append(new java.text.MessageFormat(getString("node.income" + i)).format(msgArgs));
 
 					if(earned[i] != wanted[i]) {
 						msgArgs = new Object[] { new Integer(wanted[i]) };
-						s += (new java.text.MessageFormat(getString("node.incomewanted"))).format(msgArgs);
+						sb.append((new java.text.MessageFormat(getString("node.incomewanted"))).format(msgArgs));
 					}
 
-					m = new DefaultMutableTreeNode(s);
+					m = new DefaultMutableTreeNode(sb.toString());
 					n.add(m);
 				}
 			}
@@ -884,6 +904,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("node.units", "Units: ");
 			defaultTranslations.put("node.persons", "Persons: ");
+			defaultTranslations.put("node.heroes", "Heroes: ");
 			defaultTranslations.put("node.race", "Race: ");
 			defaultTranslations.put("node.magicschool", "Magic school: ");
 			defaultTranslations.put("node.banner", "Banner: ");

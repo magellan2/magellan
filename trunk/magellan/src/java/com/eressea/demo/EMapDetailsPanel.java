@@ -105,7 +105,6 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-import com.eressea.relation.ItemTransferRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.UnitRelation;

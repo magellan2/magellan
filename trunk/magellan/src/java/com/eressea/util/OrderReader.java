@@ -26,7 +26,6 @@ import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.ID;
-import com.eressea.Region;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;

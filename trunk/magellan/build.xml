@@ -529,22 +529,32 @@
     </fileset>
   </path>
   <property name="FINDBUGS.CLASSPATH" refid="FINDBUGS.CLASSPATH"/>
+
+
+<!--
+  ant 1.6.1
+  <typedef name="findbugs" 
+           adapter="org.apache.tools.ant.TaskAdapter" 
+           adaptto="org.apache.tools.ant.Task"
+           classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+		   classpath="${FINDBUGS.CLASSPATH}"/>
+-->
+
+<!--
   <taskdef name="findbugs" 
            classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
 		   classpath="${FINDBUGS.CLASSPATH}"/>
 
   <target name="findbugs" depends="clean,compile.magellan">
     <findbugs home="${FINDBUGS}"
+	          jvmargs="-Xmx512M"
               output="emacs">
-<!--              output="xml"
-              outputFile="bcel-fb.xml">
--->
-<!--      <auxClasspath path="${basedir}/lib/Regex.jar" />-->
       <auxClasspath path="${LIB.JFREECHART}"/>
       <sourcePath path="${SRC.MAGELLAN}" />
       <class location="${CLASSES.MAGELLAN}"/>
     </findbugs>
   </target>
+-->
 
 </project>
 

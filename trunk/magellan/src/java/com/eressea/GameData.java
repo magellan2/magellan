@@ -1448,9 +1448,11 @@ public abstract class GameData implements Cloneable {
 		for(Iterator iter = messages.iterator(); iter.hasNext();) {
 			Message msg = (Message) iter.next();
 
-			//if(ht.put(msg, msg) != null) {
-			// log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
-			//}
+			if(ht.put(msg, msg) != null) {
+				if(1==2) {
+					log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
+				}
+			}
 		}
 
 		messages.clear();

@@ -1,3 +1,22 @@
+2004-09-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/EMapOverwiewPanel.java: add support
+	for new grouping with flag 'ejcTaggableComparator'
+
+	* src/java/com/eressea/GameData.java: prevent loss of messages in
+	postprocess.
+
+	* src/java/com/eressea/swing/FactionStatsPanel.java: added support
+	for heroes.
+
+2004-08-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Region.java: yet another road merging
+	fix. Perhaps we are going into the final lap?
+
+	* src/java/com/eressea/io/file/BZip2FileType.java: increased speed
+	with cached temporary file.
+
 2004-08-14  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/build.xml: added support for findbugs.
