@@ -367,11 +367,11 @@ public class Region extends UnitContainer {
 			this.resources.put(resource.getType().getID(), resource);
 		}
 
-		if(log.isDebugEnabled()) {
-			log.debug("Region.addResource:" + this);
-			log.debug("Region.addResource:" + resource);
-			log.debug("Region.addResource:" + resources);
-		}
+// 		if(log.isDebugEnabled()) {
+// 			log.debug("Region.addResource:" + this);
+// 			log.debug("Region.addResource:" + resource);
+// 			log.debug("Region.addResource:" + resources);
+// 		}
 
 		return resource;
 	}
@@ -413,17 +413,17 @@ public class Region extends UnitContainer {
 			this.resourceCollection = null;
 		}
 
-		if(log.isDebugEnabled()) {
-			log.debug("Region.removeResource:" + this);
-			log.debug("Region.removeResource:" + ret);
+// 		if(log.isDebugEnabled()) {
+// 			log.debug("Region.removeResource:" + this);
+// 			log.debug("Region.removeResource:" + ret);
 
-			if(ret != null) {
-				log.debug("Region.removeResource:" + ret.getID());
-				log.debug("Region.removeResource:" + ret.getType().getID());
-			}
+// 			if(ret != null) {
+// 				log.debug("Region.removeResource:" + ret.getID());
+// 				log.debug("Region.removeResource:" + ret.getType().getID());
+// 			}
 
-			log.debug("Region.removeResource:" + resources);
-		}
+// 			log.debug("Region.removeResource:" + resources);
+// 		}
 
 		return ret;
 	}

@@ -1,13 +1,16 @@
 2004-03-25  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/gamebinding/eressea/EresseaOrderParser.java:
+	fixed bugzilla bug #808
+
 	* src/java/com/eressea/event/EventDispatcher.java: Added support
 	for using WeakReference logic.
 
 	* src/java/com/eressea/event/EventDispatcher.java: Prevent
 	ConcurrentModificationException while running the Notifier Thread
 	by cloning the listener lists. Also switched to ArrayLists for a
-	probable slight performance increase.
-	
+	probable slight performance increase. This also seems to prevent
+	bugzilla bug #805 (part 1).
 
 	* src/java/com/eressea/swing/completion/OrderEditor.java: Remove
 	implementation of GameDataListener and dependency to GameData.

@@ -385,6 +385,9 @@ public class EventDispatcher {
 	 * @param synchronous TODO: DOCUMENT ME!
 	 */
 	public void fire(EventObject e, boolean synchronous) {
+		if(log.isDebugEnabled()) {
+			log.debug("EventDispatcher("+e+","+synchronous+"): fired event ",new Exception());
+		}
 		if(synchronous) {
 			new Notifier(e).run();
 		} else {
@@ -574,6 +577,9 @@ public class EventDispatcher {
 		 * TODO: DOCUMENT ME!
 		 */
 		public void run() {
+			if(log.isDebugEnabled()) {
+				log.debug("EventDispatcher.Notifier.run called ",new Exception());
+			}
 			notifierIsAlive = true;
 
 			// the for loops are duplicated for each event type to
