@@ -1,3 +1,10 @@
+2004-01-30    <Ulrich.Kuester@uni-jena.de>
+
+	*  New Feature: Displaying of multiple units in 
+	EMapDetailsPanel. Up to now only selections of multiple
+	regions or factions were supported.
+
+
 2004-01-29    <Ulrich.Kuester@uni-jena.de>
 
 	*  Schemes are no fully interpreted. Scheme regions are added
