@@ -91,20 +91,19 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 
 		int horsesWithoutCarts = horses - (carts * 2);
 
+		Race race = getRace(unit);
 		if(horsesWithoutCarts >= 0) {
 			capacity = (((carts * 140) + (horsesWithoutCarts * 20)) * 100) -
-					   (((int) (((unit.realRace != null) ? unit.realRace.getWeight()
-														 : unit.race.getWeight()) * 100)) * unit.getModifiedPersons());
+					   (((int) ((race.getWeight()) * 100)) * unit.getModifiedPersons());
 		} else {
 			int cartsWithoutHorses = carts - (horses / 2);
 			horsesWithoutCarts = horses % 2;
 			capacity = (((((carts - cartsWithoutHorses) * 140) + (horsesWithoutCarts * 20)) -
 					   (cartsWithoutHorses * 40)) * 100) -
-					   (((int) (((unit.realRace != null) ? unit.realRace.getWeight()
-														 : unit.race.getWeight()) * 100)) * unit.getModifiedPersons());
+ 				       (((int) ((race.getWeight()) * 100)) * unit.getModifiedPersons());
 		}
 
-		return capacity;
+		return respectGOTS(unit, capacity);
 	}
 
 	/**
@@ -170,11 +169,7 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 			horsesWithoutCarts = horses - (carts * 2);
 		}
 
-		Race race = unit.race;
-
-		if(unit.realRace != null) {
-			race = unit.realRace;
-		}
+		Race race = getRace(unit);
 
 		if((race == null) || (race.getID().equals(EresseaConstants.R_TROLLE) == false)) {
 			capacity = (((((carts - cartsWithoutHorses) * 140) + (horsesWithoutCarts * 20)) -
@@ -198,9 +193,33 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 					   trollsTowingCarts));
 		}
 
-		return capacity;
+		return respectGOTS(unit,capacity);
 	}
 
+
+	private int respectGOTS(Unit unit, int capacity) {
+		Item gots = unit.getModifiedItem(new ItemType(EresseaConstants.I_GOTS));
+		if(gots == null) {
+			return capacity;
+		}
+		int multiplier = Math.max(0,Math.min(unit.persons,gots.getAmount()));
+		Race race = getRace(unit);
+		if(multiplier == 0 || race == null) {
+			return capacity;
+		}
+		
+		// increase capacity by 49*unit.race.capacity per GOTS
+		return capacity + (multiplier*(49*(int) (race.getCapacity() * 100)));
+	}
+
+	private Race getRace(Unit unit) {
+		Race race = unit.race;
+		
+		if(unit.realRace != null) {
+			race = unit.realRace;
+		}
+		return race;
+	}
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

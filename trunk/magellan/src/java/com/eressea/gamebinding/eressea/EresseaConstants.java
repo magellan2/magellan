@@ -566,6 +566,9 @@ public class EresseaConstants {
 	public static final ID I_CART = StringID.create("Wagen");
 
 	/** TODO: DOCUMENT ME! */
+	public static final ID I_GOTS = StringID.create("Gürtel der Trollstärke");
+
+	/** TODO: DOCUMENT ME! */
 	public static final ID RT_OCEAN = StringID.create("Ozean");
 
 	/** TODO: DOCUMENT ME! */
