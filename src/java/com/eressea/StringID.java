@@ -107,7 +107,11 @@ public class StringID implements ID {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof StringID && id.equals(((StringID) o).id));
+		try {
+			return (this == o) || id.equals(((StringID) o).id);
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

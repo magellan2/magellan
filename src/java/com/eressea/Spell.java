@@ -249,9 +249,9 @@ public class Spell extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Spell) {
+		try {
 			return this.getID().equals(((Spell) o).getID());
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

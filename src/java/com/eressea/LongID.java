@@ -141,7 +141,11 @@ public class LongID implements ID {
 	 * 		   specified object are equal.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof LongID && (id == ((LongID) o).id));
+		try {
+			return (this == o) || (id == ((LongID) o).id);
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

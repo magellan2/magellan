@@ -252,7 +252,11 @@ public class UnitID extends EntityID {
 	 * 		   object o are equal.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof EntityID && (id == ((EntityID) o).id));
+		try {
+			return this == o || id == ((EntityID) o).id;
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

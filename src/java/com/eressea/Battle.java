@@ -88,9 +88,9 @@ public class Battle extends Identifiable {
 	 * 		   the id of this  Battle object.
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Battle) {
+		try {
 			return this.getID().equals(((Battle) o).getID());
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

@@ -51,7 +51,11 @@ public class Island extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (o instanceof Island) && this.getID().equals(((Island) o).getID());
+		try {
+			return this==o || (o != null && this.getID().equals(((Island) o).getID()));
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

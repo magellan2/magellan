@@ -43,8 +43,12 @@ public class SkillType extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof SkillType && this.getID().equals(((SkillType) o).getID()));
+		try {
+			return (this == o) ||
+			   (this.getID().equals(((SkillType) o).getID()));
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

@@ -123,9 +123,9 @@ public class Building extends UnitContainer implements HasRegion {
 	 * 		   the id of this  Building object.
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Building) {
+		try {
 			return this.getID().equals(((Building) o).getID());
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

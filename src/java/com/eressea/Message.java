@@ -287,7 +287,7 @@ public class Message extends Identifiable {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Message) {
+		try {
 			boolean ret = this.getID().equals(ambiguousID) ? isPrimitiveEquals((Message) o)
 														   : isComplexEquals((Message) o);
 
@@ -300,7 +300,7 @@ public class Message extends Identifiable {
 			}
 			*/
 			return ret;
-		} else {
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

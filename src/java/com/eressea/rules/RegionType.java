@@ -171,8 +171,11 @@ public class RegionType extends UnitContainerType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof RegionType && this.getID().equals(((RegionType) o).getID()));
+		try {
+			return (this == o) || (this.getID().equals(((RegionType) o).getID()));
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

@@ -46,9 +46,9 @@ public class Scheme extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Scheme) {
-			return this.getID().equals(((Scheme) o).getID());
-		} else {
+		try {
+			return this == o || this.getID().equals(((Scheme) o).getID());
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

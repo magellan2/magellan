@@ -192,7 +192,11 @@ public class Race extends UnitContainerType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof Race && this.getID().equals(((Race) o).getID()));
+		try {
+			return (this == o) || this.getID().equals(((Race) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

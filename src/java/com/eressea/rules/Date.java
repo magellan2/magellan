@@ -71,7 +71,11 @@ public abstract class Date extends Object implements ID {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof Date && (iDate == ((Date) o).iDate));
+		try {
+			return (this == o) || iDate == ((Date) o).iDate;
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

@@ -194,7 +194,11 @@ public class Ship extends UnitContainer implements HasRegion {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof Ship && this.getID().equals(((Ship) o).getID()));
+		try {
+			return (this == o) || this.getID().equals(((Ship) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

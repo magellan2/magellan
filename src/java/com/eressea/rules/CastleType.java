@@ -99,8 +99,11 @@ public class CastleType extends BuildingType implements Comparable {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof CastleType && this.getID().equals(((CastleType) o).getID()));
+		try {
+			return (this == o) ||this.getID().equals(((CastleType) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

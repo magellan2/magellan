@@ -290,8 +290,12 @@ public abstract class Category extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof Category && this.getID().equals(((Category) o).getID()));
+		try {
+			return (this == o) ||
+			   (this.getID().equals(((Category) o).getID()));
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

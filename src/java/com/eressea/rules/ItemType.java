@@ -168,8 +168,11 @@ public class ItemType extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof ItemType && this.getID().equals(((ItemType) o).getID()));
+		try {
+			return (this == o) || this.getID().equals(((ItemType) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

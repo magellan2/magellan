@@ -2629,7 +2629,11 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return o instanceof Unit && getID().equals(((Unit) o).getID());
+		try {
+			return this == o || getID().equals(((Unit) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

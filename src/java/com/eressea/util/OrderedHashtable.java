@@ -421,14 +421,14 @@ public class OrderedHashtable extends Hashtable {
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public boolean equals(Object o) {
-			if(o instanceof OHEntry) {
+			try {
 				OHEntry e2 = (OHEntry) o;
-
+				
 				return ((key == null) ? (e2.key == null) : key.equals(e2.key)) &&
-					   ((value == null) ? (e2.value == null) : value.equals(e2.value));
+					((value == null) ? (e2.value == null) : value.equals(e2.value));
+			} catch(ClassCastException e) {
+				return false;
 			}
-
-			return false;
 		}
 
 		/**

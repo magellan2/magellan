@@ -118,9 +118,11 @@ public class AllianceCategory extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (o == this) ||
-			   ((o instanceof AllianceCategory) &&
-			   ((AllianceCategory) o).getID().equals(this.getID()));
+		try {
+			return (o == this) || ((AllianceCategory) o).getID().equals(this.getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

@@ -165,9 +165,9 @@ class DirWrapper {
 
 	// Bucket needs this
 	public boolean equals(Object o) {
-		if((o != null) && o instanceof DirWrapper) {
-			return this.getDirectory().equals(((DirWrapper) o).getDirectory());
-		} else {
+		try {
+			return o != null && this.getDirectory().equals(((DirWrapper) o).getDirectory());
+		} catch(ClassCastException e) {
 			return false;
 		}
 	}

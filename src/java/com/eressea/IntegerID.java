@@ -141,7 +141,11 @@ public class IntegerID implements ID {
 	 * 		   the specified object are equal.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof IntegerID && (id == ((IntegerID) o).id));
+		try {
+			return this == o || id == ((IntegerID) o).id;
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**

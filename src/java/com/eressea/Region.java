@@ -989,7 +989,11 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) || (o instanceof Region && this.getID().equals(((Region) o).getID()));
+		try {
+			return (this == o) || this.getID().equals(((Region) o).getID());
+		} catch(ClassCastException e) {
+			return false;
+		}
 	}
 
 	/**
