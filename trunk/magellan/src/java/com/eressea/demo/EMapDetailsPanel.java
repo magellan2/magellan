@@ -623,10 +623,24 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 												DESCRIPTION_SEPARATOR.length()));
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param u TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static boolean isPrivilegedAndNoSpy(Unit u) {
 		return (u != null) && isPrivileged(u.getFaction()) && !u.isSpy();
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param f TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static boolean isPrivileged(Faction f) {
 		return (f != null) && (f.isPrivileged());
 	}
@@ -3020,8 +3034,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 			for(Iterator iter = s.getComponents().keySet().iterator();
 					iter.hasNext();) {
-				String				   key = (String) iter.next();
-				String				   val = (String) s.getComponents().get(key);
+				String				   key	    = (String) iter.next();
+				String				   val	    = (String) s.getComponents()
+															.get(key);
 				DefaultMutableTreeNode compNode;
 
 				if(key.equalsIgnoreCase("Aura")) {

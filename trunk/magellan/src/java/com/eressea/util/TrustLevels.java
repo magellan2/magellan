@@ -65,7 +65,7 @@ public class TrustLevels {
 					if(!f.trustLevelSetByUser) {
 						f.trustLevel = -100;
 					}
-				} else if(f.isPrivileged() && f.allies != null) { // privileged
+				} else if(f.isPrivileged() && (f.allies != null)) { // privileged
 
 					Iterator iter = f.allies.entrySet().iterator();
 

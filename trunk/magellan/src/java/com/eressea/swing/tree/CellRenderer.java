@@ -24,6 +24,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import java.net.URL;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,8 +48,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import com.eressea.resource.ResourcePathClassLoader;
+
 import com.eressea.util.Colors;
+import com.eressea.util.ImageFactory;
 import com.eressea.util.JVMUtilities;
+import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -124,11 +130,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		// load missing icon
 		// pavkovic 2003.09.11: only initialize once
 		if(missingIcon == null) {
-			java.net.URL url = com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/icons/missing.gif");
-
-			if(url != null) {
-				missingIcon = new ImageIcon(getToolkit().createImage(url));
-			}
+			missingIcon = ImageFactory.getFactory().loadImageIcon("missing");
 		}
 
 		javax.swing.UIManager.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -668,31 +670,13 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		}
 
 		if(icon instanceof String) {
-			String		 iconName		    = (String) icon;
-			Icon		 ic;
-			String		 normalizedIconName = com.eressea.util.Umlaut.convertUmlauts(iconName)
-																	 .toLowerCase();
-			java.net.URL url = com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/icons/" +
-																								  normalizedIconName +
-																								  ".gif");
+			String iconName			  = (String) icon;
+			String normalizedIconName = Umlaut.convertUmlauts(iconName)
+											  .toLowerCase();
 
-			if(url == null) {
-				// also try to find a .jpg
-				url = com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/icons/" +
-																						 normalizedIconName +
-																						 ".jpg");
-			}
+			Icon   ic = ImageFactory.getFactory().loadImageIcon(normalizedIconName);
 
-			if(url == null) {
-				// also try to find a .png
-				url = com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/icons/" +
-																						 normalizedIconName +
-																						 ".png");
-			}
-
-			if(url != null) {
-				ic = new ImageIcon(getToolkit().getImage(url));
-			} else {
+			if(ic == null) {
 				ic = missingIcon;
 			}
 

@@ -1,3 +1,8 @@
+2003-12-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/ImageFactory.java: refactored
+	functions; added support for game specific sub directory.
+
 2003-12-06  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea: Removed deprecated ROCollection and

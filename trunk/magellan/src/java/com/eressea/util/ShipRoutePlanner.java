@@ -56,8 +56,8 @@ public class ShipRoutePlanner {
 			return false;
 		}
 
-		return ship.getOwnerUnit() != null && 
-			ship.getOwnerUnit().getFaction().isPrivileged();
+		return (ship.getOwnerUnit() != null) &&
+			   ship.getOwnerUnit().getFaction().isPrivileged();
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class ShipRoutePlanner {
 			Unit shipOwner = ship.getOwnerUnit();
 
 			if(shipOwner != null) {
-				if(shipOwner.getFaction() != null &&
+				if((shipOwner.getFaction() != null) &&
 					   shipOwner.getFaction().isPrivileged()) {
 					int meerManBonus = 0;
 

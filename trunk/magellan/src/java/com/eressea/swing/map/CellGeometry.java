@@ -20,7 +20,11 @@ import java.awt.Rectangle;
 
 import java.io.InputStream;
 
+import java.net.URL;
+
 import java.util.Properties;
+
+import com.eressea.resource.ResourcePathClassLoader;
 
 import com.eressea.util.logging.Logger;
 
@@ -101,9 +105,9 @@ public class CellGeometry {
 		Properties p = new Properties();
 
 		try {
-			java.net.URL url = com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/map/" +
-																								  fileName);
-			InputStream  is = url.openStream();
+			URL		    url = ResourcePathClassLoader.getResourceStatically("images/map/" +
+																			fileName);
+			InputStream is = url.openStream();
 			p.load(is);
 			is.close();
 		} catch(Exception e) {

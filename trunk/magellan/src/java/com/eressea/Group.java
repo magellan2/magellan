@@ -152,11 +152,13 @@ public class Group extends NamedObject {
 	 */
 	public Collection units() {
 		if(units == null) {
-			return CollectionFactory.EMPTY_COLLECTION;	
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
+
 		if(unitCollection == null) {
 			unitCollection = CollectionFactory.unmodifiableCollection(units);
 		}
+
 		return unitCollection;
 	}
 

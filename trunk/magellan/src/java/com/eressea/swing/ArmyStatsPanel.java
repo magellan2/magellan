@@ -345,9 +345,10 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		if(fac.isPrivileged()) {
 			icon = "alliancestate_basisfaction";
 		} else if(data != null) {
-			int		 minTrust = 255;
+			int minTrust = 255;
 
-			for(Iterator iter = data.factions().values().iterator(); iter.hasNext(); ) {
+			for(Iterator iter = data.factions().values().iterator();
+					iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				if(f.isPrivileged()) {
@@ -733,9 +734,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			return;
 		}
 
-		front	   = r.getItemCategory(StringID.create("front weapons"), false);
-		back	   = r.getItemCategory(StringID.create("distance weapons"),
-									   false);
+		front = r.getItemCategory(StringID.create("front weapons"), false);
+		back  = r.getItemCategory(StringID.create("distance weapons"), false);
 		armourType = r.getItemCategory(StringID.create("armour"), false);
 		shieldType = r.getItemCategory(StringID.create("shield"), false);
 
@@ -809,7 +809,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 				}
 			}
 
-			if(unit.getFaction().isPrivileged() && excludeCombatStates != null) {
+			if(unit.getFaction().isPrivileged() &&
+				   (excludeCombatStates != null)) {
 				boolean  doContinue = true;
 				Iterator it = excludeCombatStates.iterator();
 

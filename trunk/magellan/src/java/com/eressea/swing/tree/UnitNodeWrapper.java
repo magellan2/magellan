@@ -154,8 +154,8 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 */
 	public boolean emphasized() {
 		Faction f = unit.getFaction();
-		
-		if(f != null && f.isPrivileged()) {
+
+		if((f != null) && f.isPrivileged()) {
 			if(!unit.ordersConfirmed) {
 				return true;
 			}

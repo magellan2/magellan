@@ -1160,9 +1160,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 			refreshModifiedSkills();
 		}
 
-		if(cache != null && cache.modifiedSkills != null) {
+		if((cache != null) && (cache.modifiedSkills != null)) {
 			return CollectionFactory.unmodifiableCollection(cache.modifiedSkills);
 		}
+
 		return CollectionFactory.EMPTY_COLLECTION;
 	}
 

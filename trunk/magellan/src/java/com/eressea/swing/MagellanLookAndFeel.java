@@ -143,8 +143,8 @@ public class MagellanLookAndFeel {
 	private static Map lafCache;
 
 	/**
-	 * Delivers a Map (String, MagLookAndFeelWrapper) of possibly
-	 * useable look and feel implementations
+	 * Delivers a Map (String, MagLookAndFeelWrapper) of possibly useable look
+	 * and feel implementations
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -413,6 +413,7 @@ public class MagellanLookAndFeel {
 		}
 
 		//delegation of all methods
+
 		/*
 		// @since 1.4
 		public void provideErrorFeedback(Component component) {
