@@ -9,48 +9,67 @@
 package com.eressea.rules;
 
 
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import com.eressea.ID;
+import com.eressea.util.CollectionFactory;
 
 public class RegionType extends UnitContainerType {
-	private int maxWorkers = -1;
-	private int maxTrees = -1;
-	private int roadStones = -1;
-	private BuildingType roadSupport = null; // Building needed for road.
+	private int inhabitants = -1;
 
 	public RegionType(ID id) {
 		super(id);
 	}
 
-	public void setMaxWorkers(int w) {
-		maxWorkers = w;
+	public void setInhabitants(int i) {
+		inhabitants = i;
 	}
 
-	public int getMaxWorkers() {
-		return maxWorkers;
+	/** helper method for xml reader */
+	public void setInhabitants(String i) {
+		setInhabitants(Integer.parseInt(i));
 	}
 
-	public void setMaxTrees(int mt) {
-		maxTrees = mt;
+
+	public int getInhabitants() {
+		return inhabitants;
 	}
 
-	public int getMaxTrees() {
-		return maxTrees;
-	}
-
-	public void setRoadStones(int i) {
-		roadStones = i;
-	}
-
+	/** @deprecated */
 	public int getRoadStones() {
-		return roadStones;
+		for(Iterator iter = resources.iterator(); iter.hasNext(); ) {
+			Resource r = (Resource) iter.next();
+			if(r.getObjectType() instanceof ItemType) {
+				return r.getAmount();
+			}
+		}
+		return -1;
 	}
-
-	public void setRoadSupportBuilding(BuildingType b) {
-		roadSupport = b;
-	}
-
+	
+	/** @deprecated */
 	public BuildingType getRoadSupportBuilding() {
-		return roadSupport;
+		for(Iterator iter = resources.iterator(); iter.hasNext(); ) {
+			Resource r = (Resource) iter.next();
+			if(r.getObjectType() instanceof BuildingType) {
+				return (BuildingType) r.getObjectType();
+			}
+		}
+		return null;
+	}
+
+	private List resources = CollectionFactory.createLinkedList();
+	public void addRoadResource(Resource r) {
+		resources.add(r);
+	}
+
+	/**
+	 * Gets a List of needed Resources for road building
+	 */
+	public List getRoadResources() {
+		return Collections.unmodifiableList(resources);
 	}
 	
 	/**

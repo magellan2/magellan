@@ -1629,7 +1629,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 				skillList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 				if (data != null) {
 					List v = CollectionFactory.createLinkedList();
-					for (Iterator iter = data.rules.getSkillTypes(); iter.hasNext(); ) {
+					for (Iterator iter = data.rules.getSkillTypeIterator(); iter.hasNext(); ) {
 						SkillType type = (SkillType)iter.next();
 						v.add(type);
 					}

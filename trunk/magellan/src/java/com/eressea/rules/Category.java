@@ -133,6 +133,12 @@ public abstract class Category extends ObjectType {
 		}
 		return false;
 	}
+
+
+	/** helper method for xml reader */
+	public void setNaturalorder(String i) {
+		setSortIndex(Integer.parseInt(i));
+	}
 	
 	/**
 	 * Sets the sort index of this item category indicating its

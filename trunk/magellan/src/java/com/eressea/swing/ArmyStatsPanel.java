@@ -550,8 +550,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		armourType = r.getItemCategory(StringID.create("armour"), false);
 		shieldType = r.getItemCategory(StringID.create("shield"), false);
 
-		Iterator iter = r.getItemTypes();
-		while(iter.hasNext()) {
+		for(Iterator iter = r.getItemTypeIterator();iter.hasNext(); ) {
 			ItemType it = (ItemType)iter.next();
 			if(it.getCategory() != null && it.getCategory().isDescendant(weapon)) {
 				Skill sk = it.getUseSkill();

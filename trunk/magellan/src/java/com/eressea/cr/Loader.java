@@ -21,6 +21,7 @@ import com.eressea.CompleteData;
 import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.resource.ResourcePathClassLoader;
+import com.eressea.io.xml.*;
 import com.eressea.rules.GenericRules;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.file.CopyFile;
@@ -99,27 +100,36 @@ public class Loader {
 		}
 	}
 
-	/**
-	 * Loads the Eressea rules from the file rules.cr and adds it
-	 * to the current game data.
-	 */
-/*
-	private void loadRules(GameData _data) {
-		URL url = ResourcePathClassLoader.getResourceStatically("rules/rules.cr");
+	private Rules loadRulesXML(String name) {
+		log.info("LOAD RULES VIA XML PARSER !!!");
+
+		log.debug("loading rules for \""+name+"\"");
+		URL url = ResourcePathClassLoader.getResourceStatically("rules/" + name.toLowerCase() + ".xml");
 		if (url != null) {
+			Rules rules = null;
 			try {
-				Reader inReader = FileType.createEncodingReader(url.openStream());
-				(new CRParser()).read(inReader, _data);
-				inReader.close();
+				rules = (new XMLRulesIO()).readRules(url.openStream());
 			} catch (IOException e) {
-				log.error(e);
+				log.error("Exception while reading the rules for game " + name + ".",e);
 			}
+			if (rules == null) {
+				/* This doesn't seem to be a rule file. Fallback to default,
+				 if we haven't tried that yet. */
+				log.warn("Encountered invalid rule file for game " + name + ".");
+				/* This is bad, the default rules are invalid. */
+				log.warn("The default ruleset is invalid. Operating with empty ruleset.");
+				return new GenericRules();
+			}
+			return rules;
 		} else {
-			log.warn("The rules file could not be found");
+			/* The desired rule file doesn't exist. Fallback to default, if
+			 we haven't tried that yet. */
+			/* This is bad. We don't even have the default rules. */
+			log.warn("The default ruleset couldn't be found! Operating with an empty ruleset.");
+			return new GenericRules();
 		}
 	}
 
-*/
 	/** @author Rainer Klaffehn
 	 * Read a rule file given by the specific name. This allows us to have
 	 * separate rule files for different games. If a specific rule file
@@ -128,13 +138,16 @@ public class Loader {
 	 * @return the ruleset object.
 	 */
 	private Rules loadRules(String name) {
+		if(new File("XML").exists()) {
+			return loadRulesXML(name);
+		}
+
 		log.debug("loading rules for \""+name+"\"");
 		URL url = ResourcePathClassLoader.getResourceStatically("rules/" + name.toLowerCase() + ".cr");
 		if (url != null) {
 			Rules rules = null;
 			try {
-				Reader reader = new InputStreamReader(url.openStream());
-				rules = (new CRParser()).readRules(reader);
+				rules = (new CRParser()).readRules(url.openStream());
 			} catch (IOException e) {
 				log.error("Exception while reading the rules for game " + name + ".",e);
 				rules = null;

@@ -150,15 +150,12 @@ public class ReplacerHelp implements GameDataListener{
 		if (data == null) {
 			return;
 		}
-		Iterator it=data.rules.getRegionTypes();
-		if (it!=null && it.hasNext()) {
+		for(Iterator iter=data.rules.getRegionTypeIterator(); iter.hasNext(); ) {
+			RegionType type=(RegionType)iter.next();
 			Object arg[] = new Object[1];
-			while(it.hasNext()) {
-				RegionType type=(RegionType)it.next();
-				String name = "is"+type.getID().toString();
-				arg[0] = type;
-				defaultFactory.putReplacer(name, RegionTypeSwitch.class, arg);
-			}
+			String name = "is"+type.getID().toString();
+			arg[0] = type;
+			defaultFactory.putReplacer(name, RegionTypeSwitch.class, arg);
 		}
 	}
 	

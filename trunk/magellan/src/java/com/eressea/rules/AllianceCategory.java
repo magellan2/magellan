@@ -12,21 +12,17 @@ package com.eressea.rules;
 import com.eressea.ID;
 import com.eressea.NamedObject;
 
-public class OptionCategory extends ObjectType {
-	private int bitMask = 0;
-	private boolean isActive = false;
-	private boolean isOrder = false;
+public class AllianceCategory extends ObjectType {
+	private int bitMask = -1;
 	
-	public OptionCategory(ID id) {
+	public AllianceCategory(ID id) {
 		super(id);
 	}
 
 	/** copy constructor */
-	public OptionCategory(OptionCategory orig) {
+	public AllianceCategory(AllianceCategory orig) {
 		super(orig.getID());
 		bitMask = orig.bitMask;
-		isActive = orig.isActive;
-		isOrder = orig.isOrder;
 	}
 
 	public void setBitMask(int mask) {
@@ -37,27 +33,17 @@ public class OptionCategory extends ObjectType {
 		return this.bitMask;
 	}
 	
-	public void setActive(boolean bool) {
-		this.isActive = bool;
-	}
-	
-	public boolean isActive() {
-		return this.isActive;
-	}
-	
-	public void setOrder(boolean bool) {
-		this.isOrder = bool;
-	}
-	
-	public boolean isOrder() {
-		return this.isOrder;
-	}
-	
 	public boolean equals(Object o) {
-		return (o instanceof OptionCategory) && ((OptionCategory)o).getID().equals(this.getID());
+		return o==this || (o instanceof AllianceCategory) && ((AllianceCategory)o).getID().equals(this.getID());
 	}
 	
 	public int compareTo(Object o) {
-		return this.getID().compareTo(((OptionCategory)o).getID());
+		int anotherBitMask = ((AllianceCategory) o).bitMask;
+		return bitMask<anotherBitMask ? -1 : (bitMask==anotherBitMask ? 0 : 1);
 	}
+
+	public String toString() {
+		return "AllianceCategory[name="+name+", bitMask="+bitMask+"]";
+	}
+	
 }

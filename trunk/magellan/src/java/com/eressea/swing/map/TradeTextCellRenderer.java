@@ -119,9 +119,8 @@ public class TradeTextCellRenderer extends TextCellRenderer implements GameDataL
 		if (cat == null) {
 			return;
 		}
-		Iterator it = data.rules.getItemTypes();
-		while(it.hasNext()) {
-			ItemType type = (ItemType)it.next();
+		for(Iterator iter = data.rules.getItemTypeIterator(); iter.hasNext(); ) {
+			ItemType type = (ItemType)iter.next();
 			if (type.getCategory() != null && cat.equals(type.getCategory())) {
 				allLuxuries.add(type);
 				if (type.getID().toString().equals(itemName)) {

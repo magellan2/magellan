@@ -126,7 +126,7 @@ import com.eressea.swing.TipOfTheDay;
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-import com.eressea.util.AgingProperties;
+import com.eressea.util.*;
 import com.eressea.util.BookmarkManager;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FileHistory;
@@ -250,8 +250,8 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	protected void loadSettings(File directory,String fileName) {
 		if (settings == null) {
 			// settings = new OrderedOutputProperties();
-			settings = new AgingProperties();
-			// an Andreas: ? Was soll das? ((AgingProperties)settings).setSwappedDirectory(directory.toString());
+			// settings = new AgingProperties();
+			settings = new SelfCleaningProperties();
 		}
 		settings.clear();
 		

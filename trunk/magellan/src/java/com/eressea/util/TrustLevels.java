@@ -59,7 +59,7 @@ public class TrustLevels {
 						// trustlevels were not set by the user
 						Faction ally = alliance.getFaction();
 						if (!ally.trustLevelSetByUser) {
-						    ally.trustLevel = Math.max(ally.trustLevel, data.getGameSpecificStuff().getTrustLevel(alliance));
+						    ally.trustLevel = Math.max(ally.trustLevel, alliance.getTrustLevel());
 						}
 					}
 				}

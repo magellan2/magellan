@@ -1,6 +1,5 @@
 package com.eressea.gamebinding;
 
-import com.eressea.Alliance;
 import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.completion.Completer;
@@ -10,7 +9,6 @@ import com.eressea.completion.OrderParser;
 public interface GameSpecificStuff {
 
 	// for TrustLevels
-	public int getTrustLevel(Alliance alliance);
 
 	// for GameData
 	/**

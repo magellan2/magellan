@@ -25,6 +25,8 @@
   <property name="LIB.JFREECHART"        value="${SRC.RELEASE}/lib/jfreechart-0.9.8.jar"/>
   <property name="LIB.JFLAP"             value="${SRC.RELEASE}/lib/jflap4_0b7.jar"/>
   <property name="LIB.FORMS"             value="${SRC.RELEASE}/lib/forms-1.0.2.jar"/>
+  <property name="LIB.JAXP"              value="${SRC.RELEASE}/lib/xml-apis.jar"/>
+
   <property name="TEST"                  value="${basedir}/test"/>
   <property name="BUILD"                 value="${basedir}/build"/>
   <property name="CLASSES.MAGELLAN"      value="${BUILD}/build/magellan/classes"/>
@@ -94,6 +96,7 @@
            debug  = "${JAVAC.DEBUG}">
 	  <classpath>
         <pathelement location="${LIB.FORMS}"/>
+        <pathelement location="${LIB.JAXP}"/>
       </classpath>
 <!--
       <fileset>
@@ -451,13 +454,23 @@
   </target>
 
   <!-- helper target to modify jalopy settings (a very nice tool!!!)-->
-  <target name="setup.jalopy">
+  <target name="setup.jalopy" depends="init">
     <java classname="de.hunsicker.jalopy.swing.SettingsDialog"
         fork="yes"
         failonerror="yes"
 		classpath="${JALOPY.CLASSPATH}">
 	</java>
   </target>
+
+  <!-- target for validating XML rules -->
+  <target name="validateXML" depends="init">
+    <xmlvalidate failonerror="yes" warn="yes">
+      <fileset dir="${SRC.RES}/rules">
+        <include name="*.xml"/>
+      </fileset>
+    </xmlvalidate>
+  </target>
+
 </project>
 
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!ELEMENT  Rules (regiontype*,skillcategory*)>
+<!ATTLIST rules
+  game        CDATA            #REQUIRED
+  version     CDATA            #REQUIRED
+  revision    CDATA            #IMPLIED
+>
+
+<!ELEMENT  regiontype EMPTY>
+<!ATTLIST regiontype
+  id            ID               #REQUIRED
+  inhabitants   CDATA            #IMPLIED
+>
+
+<!ELEMENT skillcategory EMPTY>
+<!ATTLIST skillcategory
+  id            ID               #REQUIRED
+  naturalorder  CDATA            #REQUIRED
+  parent        IDREF            #IMPLIED
+>
+
+<!ELEMENT skill EMPTY>
+<!ATTLIST skill
+  id            ID               #REQUIRED
+  category      CDATA            #REQUIRED
+>
+
+<!ELEMENT translations (translate*)>
+<!ATTLIST translations
+  to            CDATA            #REQUIRED
+>
+
+
+<!ELEMENT translate (EMPTY)>
+<!ATTLIST translate
+  from          CDATA            #REQUIRED
+  to            CDATA            #REQUIRED
+>

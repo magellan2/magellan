@@ -1,4 +1,4 @@
-VERSION 40
+VERSION 41
 RULES "$Id$"
 
 SKILLCATEGORY "war"
@@ -124,8 +124,6 @@ RACE "Zwerge"
 110;recruitmentcosts
 10;weight
 5.4;capacity
-24;hitpoints
-5;magicresistance
 TALENTBONI
 2;Bergbau
 -1;Bogenschieﬂen
@@ -157,8 +155,6 @@ RACE "Orks"
 50;recruitmentcosts
 10;weight
 5.4;capacity
-24;hitpoints
--5;magicresistance
 TALENTBONI
 1;Alchemie
 1;Bergbau
@@ -184,8 +180,6 @@ RACE "Snotlinge"
 50;recruitmentcosts
 10;weight
 5.4;capacity
-24;hitpoints
--5;magicresistance
 TALENTBONI
 1;Alchemie
 1;Bergbau
@@ -211,8 +205,6 @@ RACE "Elfen"
 130;recruitmentcosts
 10;weight
 5.4;capacity
-18;hitpoints
-10;magicresistance
 TALENTBONI
 -1;Alchemie
 -2;Bergbau
@@ -239,7 +231,6 @@ RACE "Katzen"
 90;recruitmentcosts
 10;weight
 5.4;capacity
-20;hitpoints
 TALENTBONI
 -1;Alchemie
 -2;Bergbau
@@ -261,9 +252,6 @@ RACE "D‰monen"
 150;recruitmentcosts
 10;weight
 5.4;capacity
-50;hitpoints
-2;naturalarmour
-15;magicresistance
 TALENTBONI
 2;Alchemie
 -3;Handeln
@@ -289,8 +277,6 @@ RACE "Halblinge"
 80;recruitmentcosts
 10;weight
 5.4;capacity
-18;hitpoints
-5;magicresistance
 TALENTBONI
 1;Armbrustschieﬂen
 1;Bergbau
@@ -318,7 +304,6 @@ RACE "Menschen"
 75;recruitmentcosts
 10;weight
 5.4;capacity
-20;hitpoints
 TALENTBONI
 1;Handeln
 -1;Kr‰uterkunde
@@ -330,8 +315,6 @@ RACE "Goblins"
 40;recruitmentcosts
 6;weight
 4.4;capacity
-16;hitpoints
--5;magicresistance
 TALENTBONI
 1;Alchemie
 1;Bergbau
@@ -352,9 +335,6 @@ RACE "Insekten"
 80;recruitmentcosts
 10;weight
 5.4;capacity
-24;hitpoints
-2;naturalarmour
-5;magicresistance
 TALENTBONI
 1;Armbrustschieﬂen
 1;Bergbau
@@ -379,9 +359,6 @@ RACE "Trolle"
 90;recruitmentcosts
 20;weight
 10.8;capacity
-30;hitpoints
-1;naturalarmour
-10;magicresistance
 TALENTBONI
 2;Bergbau
 -2;Bogenschieﬂen
@@ -408,7 +385,6 @@ RACE "Meermenschen"
 80;recruitmentcosts
 10;weight
 5.4;capacity
-20;hitpoints
 TALENTBONI
 -2;Bergbau
 -1;Burgenbau
@@ -1629,3 +1605,31 @@ OPTIONCATEGORY "PUNKTE"
 "PUNKTE";name
 "false";order
 11;bitmask
+
+ALLIANCECATEGORY "SILBER"
+"SILVER";name
+1;bitmask
+
+ALLIANCECATEGORY "KƒMPFE"
+"COMBAT";name
+2;bitmask
+
+ALLIANCECATEGORY "GIB"
+"GIVE";name
+8;bitmask
+
+ALLIANCECATEGORY "BEWACHEN"
+"GUARD";name
+16;bitmask
+
+ALLIANCECATEGORY "PARTEITARNUNG"
+"FACTIONSTEALTH";name
+32;bitmask
+
+ALLIANCECATEGORY "WHATEVER"
+"WHATEVER";name
+64;bitmask
+
+ALLIANCECATEGORY "ALLES"
+"ALL";name
+123;bitmask

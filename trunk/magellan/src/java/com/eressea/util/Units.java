@@ -292,27 +292,22 @@ public class Units {
 	}
 
 	private void initItemCategories() {
-		for (Iterator iter = rules.getItemCategories(); iter.hasNext();) {
+		for (Iterator iter = rules.getItemCategoryIterator(); iter.hasNext();) {
 			ItemCategory cat = (ItemCategory)iter.next();
 			StatItemContainer sic = new StatItemContainer(cat);
 			itemCategoriesMap.put(cat, sic);
-			if (EresseaItemCategoryConstants.C_MISC.equals(cat.getID())) {
+			if(! iter.hasNext()) {
+				// pavkovic 2003.11.20: we assume that the last item category is the "misc" category
 				catLessContainer = sic;
 			}
 		}
 	}
 
 	private StatItemContainer getItemContainer(ItemType type) {
-		StatItemContainer sic = null;
-		if (type.getCategory() != null) {
-			sic = (StatItemContainer)itemCategoriesMap.get(type.getCategory());
-		} else {
-			sic = (StatItemContainer)itemCategoriesMap.get(rules.getItemCategory(EresseaItemCategoryConstants.C_MISC));
+		if (type.getCategory() == null || itemCategoriesMap.get(type.getCategory()) == null) {
+			return catLessContainer;
 		}
-		if (sic == null) {
-			sic = catLessContainer;
-		}
-		return sic;
+		return (StatItemContainer) itemCategoriesMap.get(type.getCategory());
 	}
 
 	private void clearItemContainers() {
