@@ -639,7 +639,11 @@ public class EventDispatcher {
 
 					if(o != null) {
 						eventsDispatched++;
-						((SelectionListener) o).selectionChanged(e);
+						try {
+							((SelectionListener) o).selectionChanged(e);
+						} catch(Exception ex) {
+							log.error("An Exception occured in the EventDispatcher",ex);
+						}
 					}
 
 					if(EventDispatcher.this.stopNotification) {
@@ -664,7 +668,11 @@ public class EventDispatcher {
 
 					if(o != null) {
 						eventsDispatched++;
-						((OrderConfirmListener) o).orderConfirmationChanged(e);
+						try {
+							((OrderConfirmListener) o).orderConfirmationChanged(e);
+						} catch(Exception ex) {
+							log.error("An Exception occured in the EventDispatcher",ex);
+						}
 					}
 
 					if(EventDispatcher.this.stopNotification) {
@@ -689,7 +697,12 @@ public class EventDispatcher {
 
 					if(o != null) {
 						eventsDispatched++;
-						((UnitOrdersListener) o).unitOrdersChanged(e);
+						try {
+							((UnitOrdersListener) o).unitOrdersChanged(e);
+						} catch(Exception ex) {
+							log.error("An Exception occured in the EventDispatcher",ex);
+						}
+
 					}
 
 					if(EventDispatcher.this.stopNotification) {
@@ -717,11 +730,16 @@ public class EventDispatcher {
 
 						TempUnitListener l = (TempUnitListener) o;
 
-						if(e.getType() == TempUnitEvent.CREATED) {
-							l.tempUnitCreated(e);
-						} else if(e.getType() == TempUnitEvent.DELETED) {
-							l.tempUnitDeleted(e);
+						try {
+							if(e.getType() == TempUnitEvent.CREATED) {
+								l.tempUnitCreated(e);
+							} else if(e.getType() == TempUnitEvent.DELETED) {
+								l.tempUnitDeleted(e);
+							}
+						} catch(Exception ex) {
+							log.error("An Exception occured in the EventDispatcher",ex);
 						}
+
 					}
 
 					if(EventDispatcher.this.stopNotification) {
@@ -746,7 +764,11 @@ public class EventDispatcher {
 
 					if(o != null) {
 						eventsDispatched++;
-						((GameDataListener) o).gameDataChanged(e);
+						try {
+							((GameDataListener) o).gameDataChanged(e);
+						} catch(Exception ex) {
+							log.error("An Exception occured in the EventDispatcher",ex);
+						}
 					}
 
 					if(EventDispatcher.this.stopNotification) {

@@ -1945,11 +1945,13 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			while(it.hasNext()) {
 				Frame f = (((FrameRectangle) it.next()).getConnectedFrame());
 
-				if(!f.isVisible()) {
-					continue;
-				}
+				if(f != null) {
+					if(!f.isVisible()) {
+						continue;
+					}
 
-				f.repaint(500);
+					f.repaint(500);
+				}
 			}
 		}
 	}
