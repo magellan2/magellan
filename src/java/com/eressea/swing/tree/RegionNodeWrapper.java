@@ -138,31 +138,12 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	public boolean emphasized() {
 		for(Iterator iter = subordinatedElements.iterator(); iter.hasNext();) {
 			SupportsEmphasizing se = (SupportsEmphasizing) iter.next();
-
+			
 			if(se.emphasized()) {
 				return true;
 			}
 		}
-
 		return false;
-
-		/* OLD IMPLEMENTATION:
-		boolean ret = false;
-		Iterator it = region.units().iterator();
-		if (it != null) {
-		    Unit u = null;
-		    while (it.hasNext()) {
-		        u = (Unit)it.next();
-		        if (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
-		            if (!u.ordersConfirmed) {
-		                ret = true;
-		                break;
-		            }
-		        }
-		    }
-		}
-		return ret;
-		*/
 	}
 
 	/**

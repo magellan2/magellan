@@ -21,7 +21,6 @@ import com.eressea.Item;
 import com.eressea.Skill;
 
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROIterator;
 import com.eressea.util.Umlaut;
 
 /**
@@ -143,11 +142,7 @@ public class ItemType extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Iterator getResources() {
-		if(resources != null) {
-			return new ROIterator(resources.values().iterator());
-		} else {
-			return new ROIterator();
-		}
+		return CollectionFactory.unmodifiableIterator(resources);
 	}
 
 	/**

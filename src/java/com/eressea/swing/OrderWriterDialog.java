@@ -386,7 +386,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 				iter.hasNext();) {
 			Faction f = (Faction) iter.next();
 
-			if(f.trustLevel >= Faction.TL_PRIVILEGED) {
+			if(f.isPrivileged()) {
 				cmbFaction.addItem(f);
 			}
 		}

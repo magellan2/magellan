@@ -623,12 +623,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 												DESCRIPTION_SEPARATOR.length()));
 	}
 
-	private static boolean isPrivilegedAndNoSpy(Unit u) {
+	public static boolean isPrivilegedAndNoSpy(Unit u) {
 		return (u != null) && isPrivileged(u.getFaction()) && !u.isSpy();
 	}
 
-	private static boolean isPrivileged(Faction f) {
-		return (f != null) && (f.trustLevel >= Faction.TL_PRIVILEGED);
+	public static boolean isPrivileged(Faction f) {
+		return (f != null) && (f.isPrivileged());
 	}
 
 	private void setNameAndDescription(DescribedObject d, boolean isEditable) {
@@ -1787,8 +1787,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 																				Unit.combatStatusToString(u),
 																				"kampfstatus");
 
-		if((u.getFaction() != null) &&
-			   (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+		if(isPrivileged(u.getFaction())) {
 			cWrapper.setContextFactory(combatContext);
 			cWrapper.setArgument(u);
 		}
@@ -1865,8 +1864,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			SimpleNodeWrapper wrapper = nodeWrapperFactory.createSimpleNodeWrapper(strHide,
 																				   icon);
 
-			if((stealthLevel > 0) && (u.getFaction() != null) &&
-				   (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+			if((stealthLevel > 0) && isPrivileged(u.getFaction())) {
 				wrapper.setContextFactory(stealthContext);
 				wrapper.setArgument(u);
 			}

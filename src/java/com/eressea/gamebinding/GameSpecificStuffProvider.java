@@ -18,7 +18,7 @@ import com.eressea.gamebinding.eressea.EresseaSpecificStuff;
 import com.eressea.util.logging.Logger;
 
 /**
- * TODO: DOCUMENT ME!
+ * This class maps game names to <code>GameSpecicifStuff</code> objects
  *
  * @author $author$
  * @version $Revision$
@@ -27,19 +27,17 @@ public class GameSpecificStuffProvider {
 	private static final Logger log = Logger.getInstance(GameSpecificStuffProvider.class);
 
 	/**
-	 * Creates a new GameSpecificStuffProvider object.
-	 */
-	public GameSpecificStuffProvider() {
-	}
-
-	/**
 	 * Returns the GameSpecificStuff object for the given game name
 	 *
-	 * @param aName TODO: DOCUMENT ME!
+	 * @param aName the name of the game to load
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a GameSpecificStuff object based on the given game name
 	 */
 	public GameSpecificStuff getGameSpecificStuff(String aName) {
+		if("eressea".equalsIgnoreCase(aName)) {
+			return new EresseaSpecificStuff();
+		}
+
 		log.warn("Unable to determine GameSpecificStuff for name '" + aName +
 				 "'. Falling back to eressea");
 

@@ -29,7 +29,6 @@ import java.util.Properties;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IteratorEnumeration;
 import com.eressea.util.PropertiesHelper;
-import com.eressea.util.ROCollection;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -67,7 +66,7 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection getPaths() {
-		return new ROCollection(this.resourcePaths);
+		return CollectionFactory.unmodifiableCollection(this.resourcePaths);
 	}
 
 	/**
@@ -90,7 +89,7 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 * @see com.eressea.util.ResourcePathClassLoader#init(java.util.Properties)
 	 */
 	public static Collection getStaticPaths() {
-		return new ROCollection(staticResourcePaths);
+		return CollectionFactory.unmodifiableCollection(staticResourcePaths);
 	}
 
 	/**

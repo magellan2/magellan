@@ -88,7 +88,7 @@ public class IslandNodeWrapper implements CellObject, SupportsClipboard {
 				while(it.hasNext()) {
 					Unit u = (Unit) it.next();
 
-					if(u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
+					if(u.getFaction().isPrivileged()) {
 						if(!u.ordersConfirmed) {
 							ret = true;
 

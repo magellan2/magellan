@@ -404,7 +404,7 @@ public class EresseaPostProcessor {
 					ID id = EntityID.createEntityID(s.substring(startpos, endpos));
 
 					if((data.getUnit(id) != null) &&
-						   (data.getUnit(id).getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+						   (data.getUnit(id).getFaction().isPrivileged())) {
 						// fast return
 						region.setFogOfWar(0);
 
@@ -415,7 +415,7 @@ public class EresseaPostProcessor {
 						if(ship != null) {
 							for(Iterator i = ship.units().iterator();
 									i.hasNext();) {
-								if(((Unit) i.next()).getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
+								if(((Unit) i.next()).getFaction().isPrivileged()) {
 									// fast return
 									region.setFogOfWar(0);
 

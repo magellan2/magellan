@@ -19,7 +19,6 @@ import java.util.Map;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ExternalTagMap;
-import com.eressea.util.ROCollection;
 
 /**
  * A class representing a group of units within a faction.
@@ -152,10 +151,12 @@ public class Group extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection units() {
-		if(unitCollection == null) {
-			unitCollection = new ROCollection(units);
+		if(units == null) {
+			return CollectionFactory.EMPTY_COLLECTION;	
 		}
-
+		if(unitCollection == null) {
+			unitCollection = CollectionFactory.unmodifiableCollection(units);
+		}
 		return unitCollection;
 	}
 

@@ -169,6 +169,7 @@ public class Mapper extends InternationalizedDataPanel
 		final Mapper mapper = this;
 
 		// set the tracker used to repaint when loading and scaling images takes a while
+		// TODO: remove this decision from options. This is a developer decision!!!
 		if((new Boolean(settings.getProperty("Mapper.deferPainting", "true"))).booleanValue()) {
 			tracker = new MediaTracker(this);
 			ImageCellRenderer.setTracker(tracker);

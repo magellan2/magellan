@@ -650,8 +650,7 @@ public class Client extends JFrame implements ShortcutListener,
 					iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
-				if((f.trustLevel >= Faction.TL_PRIVILEGED) &&
-					   !f.units().isEmpty()) {
+				if((f.isPrivileged()) && !f.units().isEmpty()) {
 					aMenu.add(new ChangeFactionConfirmationAction(this, f,
 																  aConfirmationType,
 																  false));
@@ -1391,7 +1390,7 @@ public class Client extends JFrame implements ShortcutListener,
 			while(it.hasNext()) {
 				Unit u = (Unit) it.next();
 
-				if(u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
+				if(u.getFaction().isPrivileged()) {
 					units++;
 
 					if(u.ordersConfirmed) {

@@ -1868,14 +1868,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			for(Iterator iter = r.units().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
-				if((u.getFaction() != null) &&
-					   (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-					   (u.isSpy() == false)) {
+				if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 					if(first) {
 						confirm = !u.ordersConfirmed;
 						first   = false;
 					}
-
+					
 					u.ordersConfirmed = confirm;
 				}
 			}
@@ -1884,9 +1882,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		} else if(activeObject instanceof Unit) {
 			Unit u = (Unit) activeObject;
 
-			if((u.getFaction() != null) &&
-				   (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-				   (u.isSpy() == false)) {
+			if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 				u.ordersConfirmed = !u.ordersConfirmed;
 
 				List units = CollectionFactory.createLinkedList();
@@ -1948,7 +1944,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				iter.hasNext();) {
 			Faction f = (Faction) iter.next();
 
-			if(f.trustLevel >= Faction.TL_PRIVILEGED) {
+			if(f.isPrivileged()) {
 				privilegedFactions.add(f);
 
 				if((f.allies == null) || (f.allies.values().size() <= 0)) {
@@ -2754,7 +2750,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			skillSort.applyPreferences();
 
 			// TODO: wirklich ein GameDatachange?
-			gameDataChanged(new GameDataEvent(EMapOverviewPanel.this, data));
+			if(data != null) {
+				gameDataChanged(new GameDataEvent(EMapOverviewPanel.this, data));
+			}
 		}
 
 		/**
@@ -3336,6 +3334,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		 * @param data TODO: DOCUMENT ME!
 		 */
 		public void buildTree(DefaultMutableTreeNode rootNode, GameData data) {
+			if(data == null) {
+				return;
+			}
 			buildTree(rootNode, sortRegions(data.regions().values()),
 					  data.units().values(), regionNodes, unitNodes,
 					  buildingNodes, shipNodes, unitComparator,
@@ -3440,8 +3441,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 	}
 
-	protected void createTreeBuilder() {
-		treeBuilder = new TreeBuilder();
+	protected TreeBuilder createTreeBuilder() {
+		TreeBuilder treeBuilder = new TreeBuilder();
 		treeBuilder.setRegionNodes(regionNodes);
 		treeBuilder.setUnitNodes(unitNodes);
 		treeBuilder.setShipNodes(shipNodes);
@@ -3449,6 +3450,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		treeBuilder.setActiveAlliances(activeAlliances);
 		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters",
 																  "1")));
+		return treeBuilder;
 	}
 
 	// class encapsulating the whole menu
@@ -3472,7 +3474,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			item.setEnabled(false);
 
 			if(treeBuilder == null) {
-				createTreeBuilder();
+				treeBuilder = createTreeBuilder();
 			}
 
 			int mode = treeBuilder.getMode();
@@ -3499,7 +3501,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		protected void updateState() {
 			if(treeBuilder == null) {
-				createTreeBuilder();
+				treeBuilder = createTreeBuilder();
 			}
 
 			int mode = treeBuilder.getMode() & treeBuilder.CREATE_ISLANDS;

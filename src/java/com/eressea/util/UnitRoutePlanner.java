@@ -60,7 +60,7 @@ public class UnitRoutePlanner {
 		}
 
 		if(unit.getFaction() != null) {
-			return unit.getFaction().trustLevel >= Faction.TL_PRIVILEGED;
+			return unit.getFaction().isPrivileged();
 		}
 
 		return false;

@@ -52,18 +52,12 @@ public class ShipRoutePlanner {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static boolean canPlan(Ship ship) {
-		Unit shipOwner = ship.getOwnerUnit();
-
 		if(ship.size < ship.getShipType().getMaxSize()) {
 			return false;
 		}
 
-		try {
-			return shipOwner.getFaction().trustLevel >= Faction.TL_PRIVILEGED;
-		} catch(NullPointerException exc) {
-		}
-
-		return false;
+		return ship.getOwnerUnit() != null && 
+			ship.getOwnerUnit().getFaction().isPrivileged();
 	}
 
 	/**
@@ -117,8 +111,8 @@ public class ShipRoutePlanner {
 			Unit shipOwner = ship.getOwnerUnit();
 
 			if(shipOwner != null) {
-				if((shipOwner.getFaction() != null) &&
-					   (shipOwner.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+				if(shipOwner.getFaction() != null &&
+					   shipOwner.getFaction().isPrivileged()) {
 					int meerManBonus = 0;
 
 					try {

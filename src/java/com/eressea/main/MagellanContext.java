@@ -20,6 +20,7 @@ import com.eressea.event.EventDispatcher;
 import com.eressea.resource.ResourcePathClassLoader;
 
 import com.eressea.util.IDBaseConverter;
+import com.eressea.util.ImageFactory;
 import com.eressea.util.Locales;
 import com.eressea.util.NameGenerator;
 import com.eressea.util.Translations;
@@ -100,5 +101,8 @@ public class MagellanContext {
 		IDBaseConverter.init();
 
 		NameGenerator.init(settings);
+
+		// inits ImageFactory
+		ImageFactory.getFactory();
 	}
 }

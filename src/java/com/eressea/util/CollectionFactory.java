@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -204,5 +205,24 @@ public class CollectionFactory {
 	 */
 	public static Map singletonMap(Object key, Object value) {
 		return Collections.singletonMap(key, value);
+	}
+
+	public static final Iterator EMPTY_ITERATOR     = Collections.EMPTY_SET.iterator();
+	public static final Collection EMPTY_COLLECTION = Collections.EMPTY_SET;
+	
+	public static Iterator unmodifiableIterator(Map m) {
+		return CollectionFactory.unmodifiableIterator(m == null ? null : m.values());
+	}
+
+	public static Iterator unmodifiableIterator(Collection c) {
+		return c != null ? Collections.unmodifiableCollection(c).iterator() : EMPTY_ITERATOR;
+	}
+
+	public static Collection unmodifiableCollection(Map m) {
+		return m != null ? CollectionFactory.unmodifiableCollection(m.values()) : EMPTY_COLLECTION;
+	}
+
+	public static Collection unmodifiableCollection(Collection c) {
+		return c != null ? Collections.unmodifiableCollection(c) : EMPTY_COLLECTION;
 	}
 }

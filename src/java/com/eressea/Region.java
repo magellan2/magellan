@@ -25,7 +25,6 @@ import com.eressea.rules.RegionType;
 
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROCollection;
 import com.eressea.util.Regions;
 import com.eressea.util.logging.Logger;
 
@@ -148,7 +147,7 @@ public class Region extends UnitContainer {
 			for(Iterator iter = units().iterator(); iter.hasNext();) {
 				Faction f = ((Unit) iter.next()).getFaction();
 
-				if(f.trustLevel >= Faction.TL_PRIVILEGED) {
+				if(f.isPrivileged()) {
 					fogOfWar = 0;
 
 					break;
@@ -334,6 +333,7 @@ public class Region extends UnitContainer {
 	 */
 	public Collection resources() {
 		if(this.resourceCollection == null) {
+
 			/* since resources appear twice in the map, once with the
 			 numerical ID and once with the item type ID, we have to
 			 make sure that this collection lists only one of them.
@@ -341,11 +341,11 @@ public class Region extends UnitContainer {
 			 to its numerical ID a HashSet can do the job */
 
 			// 2002.02.18 ip: this.resources can be null
-			this.resourceCollection = new ROCollection(CollectionFactory.createHashSet((this.resources == null)
-																					   ? Collections.EMPTY_SET
-																					   : this.resources.values()));
+			this.resourceCollection = CollectionFactory.unmodifiableCollection(
+                                               CollectionFactory.createHashSet((this.resources == null)
+																			   ? Collections.EMPTY_SET
+																			   : this.resources.values()));
 		}
-
 		return this.resourceCollection;
 	}
 
@@ -477,17 +477,15 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection schemes() {
-		if(schemeCollection == null) {
-			if(schemes == null) {
-				return ROCollection.EMPTY_COLLECTION;
-			}
-
-			schemeCollection = new ROCollection(schemes);
+		if(schemes == null) {
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
-
+		if(schemeCollection == null) {
+			schemeCollection = CollectionFactory.unmodifiableCollection(schemes);
+		}
 		return schemeCollection;
 	}
-
+	
 	/**
 	 * Adds a scheme to this region.
 	 *
@@ -576,15 +574,13 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection borders() {
-		if(this.borderCollection == null) {
-			if(this.borders == null) {
-				return ROCollection.EMPTY_COLLECTION;
-			}
-
-			this.borderCollection = new ROCollection(this.borders);
+		if(borders == null) {
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
-
-		return this.borderCollection;
+		if(borderCollection == null) {
+			borderCollection = CollectionFactory.unmodifiableCollection(borders);
+		}
+		return borderCollection;
 	}
 
 	/**
@@ -672,15 +668,13 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection ships() {
-		if(this.shipCollection == null) {
-			if(ships == null) {
-				return ROCollection.EMPTY_COLLECTION;
-			}
-
-			this.shipCollection = new ROCollection(this.ships);
+		if(ships == null) {
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
-
-		return this.shipCollection;
+		if(shipCollection == null) {
+			shipCollection = CollectionFactory.unmodifiableCollection(ships);
+		}
+		return shipCollection;
 	}
 
 	/**
@@ -748,15 +742,13 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection buildings() {
-		if(this.buildingCollection == null) {
-			if(buildings == null) {
-				return ROCollection.EMPTY_COLLECTION;
-			}
-
-			this.buildingCollection = new ROCollection(this.buildings);
+		if(buildings == null) {
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
-
-		return this.buildingCollection;
+		if(buildingCollection == null) {
+			buildingCollection = CollectionFactory.unmodifiableCollection(buildings);
+		}
+		return buildingCollection;
 	}
 
 	/**
@@ -824,7 +816,7 @@ public class Region extends UnitContainer {
 			refreshItems();
 		}
 
-		return new ROCollection(cache.regionItems.values());
+		return CollectionFactory.unmodifiableCollection(cache.regionItems);
 	}
 
 	/**
@@ -862,7 +854,7 @@ public class Region extends UnitContainer {
 		for(Iterator iter = units().iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 
-			if(u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
+			if(u.getFaction().isPrivileged()) {
 				for(Iterator items = u.getItems().iterator(); items.hasNext();) {
 					Item item = (Item) items.next();
 					Item i = (Item) cache.regionItems.get(item.getItemType()
