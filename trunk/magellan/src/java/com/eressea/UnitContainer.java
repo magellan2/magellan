@@ -418,7 +418,8 @@ public abstract class UnitContainer extends DescribedObject implements com.eress
 				// Ulrich has more experiences with "Astralraum" :-))
 				// if (newUC.getType() == null || newUC.getType().equals(RegionType.unknown)) {
 				if ((curUC.getType() != null && !curUC.getType().equals(RegionType.unknown)) ||
-					((newUC.getType() != null) && newUC.getType().equals(RegionType.unknown))) {
+					newUC.getType() == null ||
+					newUC.getType().equals(RegionType.unknown)) {
 					newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(), true));
 				}
 			} else if(curUC instanceof Ship) {
