@@ -1,0 +1,487 @@
+<!--
+  This is the ant-makefile for Magellan.
+  It contains the following targets:
+  compile
+  help
+-->
+
+<project name="magellan" default="help">
+  <!--  <property name="build.compiler"  value="jikes"/>-->
+
+  <property name="SRC.RELEASE"           value="${basedir}/src/release"/>
+  <property name="SRC.MAGELLAN"          value="${basedir}/src/magellan/src"/>
+  <property name="SRC.RES"               value="${basedir}/src/magellan/res"/>
+  <property name="SRC.PATCHER"           value="${basedir}/src/patcher"/>
+  <property name="SRC.CHART"             value="${basedir}/src/chart"/>
+  <property name="SRC.HELP"              value="${basedir}/src/help"/>
+
+  <property name="LIB.JFREECHART"        value="${SRC.RELEASE}/lib/jfreechart-0.9.8.jar"/>
+  <property name="LIB.JFLAP"             value="${SRC.RELEASE}/lib/jflap4_0b7.jar"/>
+  <property name="LIB.FORMS"             value="${SRC.RELEASE}/lib/forms-1.0.2.jar"/>
+  <property name="TEST"                  value="${basedir}\test"/>
+  <property name="BUILD"                 value="${basedir}\build"/>
+  <property name="CLASSES.MAGELLAN"      value="${BUILD}\build\magellan\classes"/>
+  <property name="CLASSES.MAGELLAN.JRAT" value="${BUILD}\build\jrat\magellan\classes"/>
+
+  <property name="CLASSES.PATCHER"       value="${BUILD}\build\patcher\classes"/>
+  <property name="CLASSES.CHART"         value="${BUILD}\build\chart\classes"/>
+
+  <property name="JALOPY"                value="${basedir}/tools/jalopy"/>
+
+  <property name="JRAT"                  value="${basedir}/tools/jrat"/>
+
+  <!-- be VERY conservative while compilation -->
+  <property name="JAVAC.TARGET"         value="1.1"/>
+  <property name="JAVAC.DEBUG"          value="true"/>
+  <property name="JAVAC.DEPRECATION"    value="true"/>
+
+
+
+  <!-- ==================================================================== -->
+  <!-- Defines the JRat task                                                -->
+  <!-- ==================================================================== -->
+  <path id="JRAT.CLASSPATH">
+      <fileset dir="${JRAT}">
+        <include name="*.jar" />
+      </fileset>
+  </path>
+  <property name="JRAT.CLASSPATH" refid="JRAT.CLASSPATH"/>
+  <taskdef name="injectAndCopy" 
+           classname="org.shiftone.jrat.inject.ant.InjectCopyTask"
+		   classpath="${JRAT.CLASSPATH}">
+    <!--
+      we did not copy the needed .jars into the /lib directory of Ant in order
+      to avoid possible classpath issues, so we have to specify a lookup
+      classpath here
+      -->
+  </taskdef>
+
+  <target name="jrat" depends="init">
+    <java classname="org.shiftone.jrat.ui.Desktop"
+  classpath="${JRAT.CLASSPATH}" fork="yes"/>
+  </target>
+
+  <target name="help" depends="init">
+    <echo>
+      This buildfile contains the following targets:
+      [help]           - prints this info
+      [compile]	       - compile Magellan (${SRC})
+    </echo>
+  </target>
+  
+  <target name="init">
+    <property name="build.compiler.emacs" value="on"/>
+  </target>
+
+  <target name="compile" depends="compile.magellan, compile.chart, compile.patcher"/>
+  
+  <target name="compile.magellan" depends="init">
+    <mkdir dir="${CLASSES.MAGELLAN}"/>
+    <javac srcdir  = "${SRC.MAGELLAN}"
+           destdir = "${CLASSES.MAGELLAN}"
+           deprecation = "${JAVAC.DEPRECATION}"
+           target = "${JAVAC.TARGET}"
+           debug  = "${JAVAC.DEBUG}">
+	  <classpath>
+        <pathelement location="${LIB.FORMS}"/>
+      </classpath>
+<!--
+      <fileset>
+        <exclude name="*/ncompletion/*"/>
+      </fileset>
+-->
+    </javac>
+  </target>
+
+  <target name="compile.magellan.jrat" depends="compile.magellan">
+    <echo message="JRat injection (with classpath ${JRAT.CLASSPATH}) "/>
+    <mkdir dir="${CLASSES.MAGELLAN.JRAT}"/>
+<!-- fixed in org.shiftone.jrat.inject.ant.InjectCopyTask, but if it does not
+     go into the distribution, we keep this workaround
+	<copy todir="${CLASSES.MAGELLAN.JRAT}">
+      <fileset dir="${CLASSES.MAGELLAN}"/>
+	</copy>
+	<delete>
+      <fileset dir="${CLASSES.MAGELLAN.JRAT}" includes="**/*.class"/>
+    </delete>
+-->
+
+<!--	<injectAndCopy todir="${CLASSES.MAGELLAN.JRAT}" verbose="true">-->
+	<injectAndCopy todir="${CLASSES.MAGELLAN.JRAT}" verbose="false">
+      <fileset dir="${CLASSES.MAGELLAN}"/>
+	</injectAndCopy>
+  </target>
+
+  <target name="compile.magellan.jflap" depends="init">
+    <mkdir dir="${CLASSES.MAGELLAN}"/>
+    <javac srcdir  = "${SRC.MAGELLAN}"
+           destdir = "${CLASSES.MAGELLAN}"
+           deprecation = "${JAVAC.DEPRECATION}"
+           target = "${JAVAC.TARGET}"
+           debug  = "${JAVAC.DEBUG}">
+	 <classpath>
+        <pathelement location="${LIB.JFLAP}"/>
+      </classpath>
+    </javac>
+  </target>
+
+
+  <target name="compile.patcher" depends="init">
+    <mkdir dir="${CLASSES.PATCHER}"/>
+    <javac srcdir  = "${SRC.PATCHER}"
+           destdir = "${CLASSES.PATCHER}"
+           deprecation = "${JAVAC.DEPRECATION}"
+           target  = "${JAVAC.TARGET}"
+		   debug   = "${JAVAC.DEBUG}">
+	 <classpath>
+        <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${LIB.JFREECHART}"/>
+      </classpath>
+
+    </javac>
+  </target>
+
+  <target name="compile.chart" depends="compile.magellan">
+    <mkdir dir="${CLASSES.CHART}"/>
+    <javac srcdir  = "${SRC.CHART}"
+           destdir = "${CLASSES.CHART}"
+           deprecation = "${JAVAC.DEPRECATION}"
+           target  = "${JAVAC.TARGET}"
+           debug   = "${JAVAC.DEBUG}">
+	 <classpath>
+        <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${LIB.JFREECHART}"/>
+      </classpath>
+    </javac>
+<!--    <checksum>
+      <fileset dir="${CLASSES.CHART}">
+        <include name="**/*.class"/>
+      </fileset>
+    </checksum>
+-->
+  </target>
+
+  <target name="clean" depends="init">
+    <delete dir= "${BUILD}" quiet="false"/>
+  </target>
+
+  <target name="recompile" depends="clean,compile.magellan">
+  </target>
+
+  <target name="run" depends="init">
+  <!--
+    <copy file="${CONFIG}/magellan.ini" todir="${BUILD}"/>
+    <copy file="${CONFIG}/magellan_desktop.ini" todir="${BUILD}"/>
+	-->
+    <java classname="com.eressea.demo.Client" fork="yes">
+	  <classpath path="${BUILD}/build/magellan.jar" />
+	</java>
+  </target>
+
+  <target name="jar.magellan.jrat" depends="compile.magellan.jrat">
+    <delete file="${BUILD}/build/magellan_jrat.jar" quiet="false"/>
+    <jar jarfile="${BUILD}/build/magellan_jrat.jar"
+		 manifest="${SRC.MAGELLAN}/manifest.mf">
+		 <fileset dir="${CLASSES.MAGELLAN.JRAT}">
+           <include name="**/*.class"/>           
+		 </fileset>
+		 <fileset dir="${SRC.RES}/../">
+           <include name="res/**/*"/>
+         </fileset>
+	</jar>
+  </target>
+
+  <target name="jar.magellan" depends="compile.magellan">
+    <delete file="${BUILD}/build/magellan.jar" quiet="false"/>
+    <jar jarfile="${BUILD}/build/magellan.jar"
+		 manifest="${SRC.MAGELLAN}/manifest.mf">
+		 <fileset dir="${CLASSES.MAGELLAN}">
+           <include name="**/*.class"/>           
+		 </fileset>
+		 <fileset dir="${SRC.RES}/../">
+           <include name="res/**/*"/>
+         </fileset>
+	</jar>
+  </target>
+
+  <target name="jar.chart" depends="compile.chart">
+    <delete file="${BUILD}/build/chart.jar" quiet="false"/>
+    <jar jarfile="${BUILD}/build/chart.jar">
+		 <fileset dir="${CLASSES.CHART}">
+           <include name="**/*.class"/>
+		 </fileset>
+	</jar>
+  </target>
+
+  <target name="jar.patcher" depends="compile.patcher">
+    <delete file="${BUILD}/build/patcher.jar" quiet="false"/>
+    <jar jarfile="${BUILD}/build/patcher.jar"
+		 manifest="${SRC.PATCHER}/META-INF/manifest.mf">
+		 <fileset dir="${CLASSES.PATCHER}">
+           <include name="**/*.class"/>
+		 </fileset>
+	</jar>
+  </target>
+
+  <target name="jar.help" depends="init">
+    <delete file="${BUILD}/build/magellan-help.jar" quiet="false"/>
+    <jar jarfile="${BUILD}/build/magellan-help.jar"
+		 manifest="${SRC.HELP}/META-INF/manifest.mf">
+		 <fileset dir="${SRC.HELP}"/>
+	</jar>
+  </target>
+
+  <target name="release" depends="jar.magellan, jar.chart, jar.patcher, jar.help">
+    <mkdir dir="${BUILD}/release"/>
+
+	<!-- copy all files from lib -->
+	<copy todir="${BUILD}/release">
+		<fileset dir="${SRC.RELEASE}"/>
+	</copy>
+	<copy todir="${BUILD}/release/lib">
+		<fileset dir="${BUILD}/build">
+          <include name="chart.jar"/>
+          <include name="magellan.jar"/>
+          <include name="magellan-help.jar"/>
+          <include name="patcher.jar"/>
+		</fileset>
+	</copy>
+  </target>
+
+  <target name="release.jrat" depends="jar.magellan.jrat, jar.chart, jar.patcher, jar.help">
+    <mkdir dir="${BUILD}/release.jrat"/>
+
+	<!-- copy all files from lib -->
+	<copy todir="${BUILD}/release.jrat">
+		<fileset dir="${SRC.RELEASE}"/>
+	</copy>
+	<copy todir="${BUILD}/release.jrat/lib">
+		<fileset dir="${BUILD}/build">
+          <include name="chart.jar"/>
+          <include name="magellan_jrat.jar"/>
+          <include name="magellan-help.jar"/>
+          <include name="patcher.jar"/>
+		</fileset>
+	</copy>
+	<copy todir="${BUILD}/release.jrat/lib">
+      <fileset dir="${JRAT}">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="testcompile" depends="init,compile.magellan">
+    <javac srcdir  = "${TEST}/src"
+           destdir = "${CLASSES.MAGELLAN}"
+           deprecation = "${JAVAC.DEPRECATION}"
+           target  = "${JAVAC.TARGET}"
+           debug   = "${JAVAC.DEBUG}">
+      <classpath>
+        <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${TEST}/lib/junit.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  
+  <target name="test" depends="compile.magellan,testcompile">
+	<java classname="junit.textui.TestRunner" fork="yes">
+	  <arg value="com.eressea.util.OrderedHashtableTest"/>
+      <classpath>
+        <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${TEST}/lib/junit.jar"/>
+      </classpath>
+	</java>
+  </target>
+
+  <target name="update" depends="init">
+    <cvs dest="patcher" command="update -P -d"/>
+    <cvs dest="${SRC.RES}/res" command="update -P -d"/>
+    <cvs dest="${SRC.MAGELLAN}" command="update -P -d"/>
+  </target>
+
+  <target name="langermerge" depends="testcompile">
+    <java classname="junit.textui.TestRunner">
+	<arg value="com.eressea.MergeTest"/>
+      <classpath>
+	    <pathelement location="${BUILD}/classes"/>
+        <pathelement location="${TEST}/lib/junit.jar"/>
+	    <pathelement location="res/res/"/>
+      </classpath>
+	</java>
+  </target>
+
+  <target name="brt" depends="jar.magellan">
+    <java classname="com.eressea.swing.BasicRegionPanel">
+      <classpath>
+	    <pathelement location="${BUILD}/build/magellan.jar"/>
+        <pathelement location="${LIB.FORMS}"/>
+
+      </classpath>
+	</java>
+  </target>
+
+
+  <target name="testlongstart" depends="init">
+    <java classname="com.eressea.demo.Client" fork="yes">
+	  <classpath path="${BUILD}/build/magellan.jar" />
+	  <arg value="-d" />
+	  <arg value="${TEST}/files/longstart" />
+	</java>
+  </target>
+
+  <target name="toLocal" depends="init">
+    <replace dir="${basedir}" defaultexcludes="no">
+	  <include name="**/CVS/Root"/>
+	  <replacefilter  token="@cvs.sourceforge.net" value="@localhost"/>
+	  <replacefilter  token="@eressea.upb.de"      value="@localhost"/>
+    </replace>
+  </target>
+
+  <target name="toRemote" depends="init">
+    <replace dir="${basedir}" defaultexcludes="no">
+	  <include name="**/CVS/Root"/>
+	  <replacefilter  token="@cvs.sourceforge.net" value="@eressea.upb.de"/>
+	  <replacefilter  token="@localhost"           value="@eressea.upb.de"/>
+    </replace>
+  </target>
+
+  <target name="toSF" depends="init">
+    <replace dir="${basedir}" defaultexcludes="no">
+	  <include name="**/CVS/Root"/>
+	  <replacefilter  token="@eressea.upb.de" value="@cvs.sourceforge.net"/>
+	  <replacefilter  token="@localhost"      value="@cvs.sourceforge.net"/>
+    </replace>
+  </target>
+
+  <path id="JALOPY.CLASSPATH">
+      <fileset dir="${JALOPY}/lib">
+        <include name="*.jar" />
+      </fileset>
+  </path>
+  <property name="JALOPY.CLASSPATH" refid="JALOPY.CLASSPATH"/>
+
+  <!-- ==================================================================== -->
+  <!-- Defines the Jalopy task                                              -->
+  <!-- ==================================================================== -->
+  <taskdef name="jalopy"
+           classname="de.hunsicker.jalopy.plugin.ant.AntPlugin"
+		   classpath="${JALOPY.CLASSPATH}">
+    <!--
+      we did not copy the needed .jars into the /lib directory of Ant in order
+      to avoid possible classpath issues, so we have to specify a lookup
+      classpath here
+      -->
+  </taskdef>
+
+  <!-- ==================================================================== -->
+  <!-- Formats all source files                                             -->
+  <!-- ==================================================================== -->
+  <target name="format" depends="compile.magellan">
+    <echo message="Calling jalopy with classpath=${JALOPY.CLASSPATH}"/>
+	<mkdir dir="${BUILD}\src"/>
+	
+    <!--
+
+      Invokes Jalopy as follows:
+
+      - All formatted files will have unix fileformat (\n)
+      - Load your code convention from the given url
+      - Override the convention to use the file history feature
+      - Override the convention to use alder32 checksums of files for history testing
+      - Override the convention to use loglevel "info"
+      - Override the convention to use 2 threads
+      - The import optimization feature will work (if enabled in the active
+        convention), because a classpath reference is specified
+
+        Don't forget to setup an include pattern as Jalopy truly expects
+        valid Java source files as input!
+
+      -->
+    <jalopy fileformat="unix"
+            convention="${JALOPY}/magellan.xml"
+            history="file"
+            historymethod="adler32"
+            loglevel="info"
+            threads="1"
+			destdir="${BUILD}\jalopy">
+      <fileset dir="${SRC.MAGELLAN}">
+        <include name="**/*.java" />
+      </fileset>
+    </jalopy>
+	<antcall target="compile.magellan"/>
+  </target>
+
+  <!-- helper target to modify jalopy settings (a very nice tool!!!)-->
+  <target name="setup.jalopy">
+    <java classname="de.hunsicker.jalopy.swing.SettingsDialog"
+        fork="yes"
+        failonerror="yes"
+		classpath="${JALOPY.CLASSPATH}">
+	</java>
+  </target>
+
+
+  <target name="copyToSF">
+    <property name="sfdir" value="../../sf/magellan"/>
+
+    <mkdir dir="${sfdir}"/>
+    <copy todir="${sfdir}">
+      <fileset dir="${basedir}">
+        <include name="build*"/>
+        <exclude name="build"/>
+	  </fileset>
+    </copy>
+
+<!--
+    <mkdir dir="${sfdir}/buildlib"/>
+    <copy todir="${sfdir}/buildlib">
+      <fileset dir="${basedir}/buildlib">
+        <exclude name="**/*~"/>
+        <exclude name="**/CVS"/>
+	  </fileset>
+    </copy>
+
+    <mkdir dir="${sfdir}/src/release"/>
+    <copy todir="${sfdir}/src/release/">
+      <fileset dir="${SRC.RELEASE}">
+        <exclude name="**/*~"/>
+        <exclude name="**/CVS"/>
+	  </fileset>
+    </copy>
+-->
+    <mkdir dir="${sfdir}/tools"/>
+    <copy todir="${sfdir}/tools" verbose="on">
+      <fileset dir="${basedir}/tools">
+        <exclude name="**/*~"/>
+        <exclude name="**/CVS"/>
+	  </fileset>
+    </copy>
+
+
+    <mkdir dir="${sfdir}/src/java"/>
+    <copy todir="${sfdir}/src/java/" verbose="on">
+      <fileset dir="${SRC.MAGELLAN}">
+        <exclude name="Makefile"/>
+        <exclude name="**/*~"/>
+        <exclude name="**/*jgoodies*/**"/>
+        <exclude name="**/*.new"/>
+        <exclude name="**/*.form"/>
+        <exclude name="**/CVS"/>
+	  </fileset>
+    </copy>
+
+    <mkdir dir="${sfdir}/src/res"/>
+    <copy todir="${sfdir}/src/res/"  verbose="on">
+      <fileset dir="${SRC.RES}">
+        <exclude name="**/*~"/>
+        <exclude name="**/CVS"/>
+	  </fileset>
+    </copy>
+
+  </target>
+</project>
+
+
+
+
