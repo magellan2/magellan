@@ -57,4 +57,19 @@ public class InputStreamSourceFileType extends FileType {
 		throw new IOException("Unable to determine File for InputStream resource '" +
 							  toString() + "'.");
 	}
+
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
+	 */
+	public FileType checkConnection() throws IOException {
+		createInputStream().close();
+
+		return this;
+	}
+
 }

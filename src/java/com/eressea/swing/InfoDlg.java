@@ -14,12 +14,25 @@
 
 package com.eressea.swing;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import java.text.DateFormat;
 
 import java.util.Date;
 import java.util.Map;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import com.eressea.resource.ResourcePathClassLoader;
 
@@ -30,30 +43,30 @@ import com.eressea.util.VersionInfo;
  *
  */
 public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
-	private javax.swing.JPanel	    jPanel1;
-	private javax.swing.JButton     btn_OK;
-	private javax.swing.JButton     btn_Version;
-	private javax.swing.JLabel	    magallanImage;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JTextArea   jTextArea1;
+	private JPanel	    jPanel1;
+	private JButton     btn_OK;
+	private JButton     btn_Version;
+	private JLabel	    magallanImage;
+	private JScrollPane jScrollPane1;
+	private JTextArea   jTextArea1;
 
 	/**
 	 * Creates a new InfoDlg object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param parent modally stucked frame.
 	 */
-	public InfoDlg(javax.swing.JFrame parent) {
+	public InfoDlg(JFrame parent) {
 		super(parent, true);
 		initComponents();
 
 		magallanImage.setText("");
 
 		java.net.URL     url  = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
-		javax.swing.Icon icon = null;
+		Icon icon = null;
 
 		if(url != null) {
-			java.awt.Image image = getToolkit().createImage(url);
-			icon = new javax.swing.ImageIcon(image);
+			Image image = getToolkit().createImage(url);
+			icon = new ImageIcon(image);
 			magallanImage.setIcon(icon);
 		}
 
@@ -66,63 +79,63 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 	}
 
 	private void initComponents() {
-		jPanel1		  = new javax.swing.JPanel();
-		btn_OK		  = new javax.swing.JButton();
-		btn_Version   = new javax.swing.JButton();
-		magallanImage = new javax.swing.JLabel();
-		jScrollPane1  = new javax.swing.JScrollPane();
-		jTextArea1    = new javax.swing.JTextArea();
-		getContentPane().setLayout(new java.awt.GridBagLayout());
+		jPanel1		  = new JPanel();
+		btn_OK		  = new JButton();
+		btn_Version   = new JButton();
+		magallanImage = new JLabel();
+		jScrollPane1  = new JScrollPane();
+		jTextArea1    = new JTextArea();
+		getContentPane().setLayout(new GridBagLayout());
 
-		java.awt.GridBagConstraints gridBagConstraints1;
+		GridBagConstraints gridBagConstraints1;
 		setModal(true);
 		setTitle(getString("window.title"));
-		setBackground(new java.awt.Color(213, 169, 131));
+		setBackground(new Color(213, 169, 131));
 
-		jPanel1.setLayout(new java.awt.GridBagLayout());
+		jPanel1.setLayout(new GridBagLayout());
 
-		java.awt.GridBagConstraints gridBagConstraints2;
-		java.awt.GridBagConstraints gridBagConstraints3;
-		jPanel1.setBackground(new java.awt.Color(213, 169, 131));
+		GridBagConstraints gridBagConstraints2;
+		GridBagConstraints gridBagConstraints3;
+		jPanel1.setBackground(new Color(213, 169, 131));
 
 		btn_Version.setText(getString("btn.checkfornew.caption"));
-		btn_Version.setBackground(new java.awt.Color(213, 169, 131));
+		btn_Version.setBackground(new Color(213, 169, 131));
 		btn_Version.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					checkVersion(evt);
 				}
 			});
-		gridBagConstraints3		   = new java.awt.GridBagConstraints();
+		gridBagConstraints3		   = new GridBagConstraints();
 		gridBagConstraints3.gridx  = 0;
 		gridBagConstraints3.gridy  = 2;
 		gridBagConstraints3.insets = new java.awt.Insets(5, 5, 5, 5);
-		gridBagConstraints3.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+		gridBagConstraints3.anchor = GridBagConstraints.SOUTHWEST;
 		jPanel1.add(btn_Version, gridBagConstraints3);
 
 		btn_OK.setText(getString("btn.close.caption"));
-		btn_OK.setBackground(new java.awt.Color(213, 169, 131));
+		btn_OK.setBackground(new Color(213, 169, 131));
 		btn_OK.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					quit();
 				}
 			});
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
+		gridBagConstraints2		   = new GridBagConstraints();
 		gridBagConstraints2.gridx  = 1;
 		gridBagConstraints2.gridy  = 2;
 		gridBagConstraints2.insets = new java.awt.Insets(0, 5, 5, 5);
-		gridBagConstraints2.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+		gridBagConstraints2.anchor = GridBagConstraints.SOUTHEAST;
 		jPanel1.add(btn_OK, gridBagConstraints2);
 
 		magallanImage.setPreferredSize(new java.awt.Dimension(400, 200));
 		magallanImage.setMinimumSize(new java.awt.Dimension(400, 200));
 		magallanImage.setText("jLabel1");
-		magallanImage.setBackground(new java.awt.Color(213, 169, 131));
+		magallanImage.setBackground(new Color(213, 169, 131));
 		magallanImage.setMaximumSize(new java.awt.Dimension(400, 200));
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
+		gridBagConstraints2		   = new GridBagConstraints();
 		gridBagConstraints2.insets = new java.awt.Insets(5, 5, 0, 5);
 		jPanel1.add(magallanImage, gridBagConstraints2);
 
-		jScrollPane1.setBackground(new java.awt.Color(213, 169, 131));
+		jScrollPane1.setBackground(new Color(213, 169, 131));
 
 		String text		 = getString("infotext");
 		Date   buildDate = VersionInfo.getBuildDate();
@@ -135,28 +148,32 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 							   };
 			text += (new java.text.MessageFormat(getString("versiontext"))).format(msgArgs);
 		}
+		
+		if(VersionInfo.getVersion() != null) {
+			text += "\n[Magellan "+VersionInfo.getVersion()+"]";
+		}
 
 		jTextArea1.setWrapStyleWord(true);
 		jTextArea1.setPreferredSize(new java.awt.Dimension(160, 250));
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setEditable(false);
 		jTextArea1.setText(text);
-		jTextArea1.setBackground(new java.awt.Color(213, 169, 131));
+		jTextArea1.setBackground(new Color(213, 169, 131));
 		jTextArea1.setMinimumSize(new java.awt.Dimension(400, 200));
 		jScrollPane1.setViewportView(jTextArea1);
 
-		gridBagConstraints2			  = new java.awt.GridBagConstraints();
+		gridBagConstraints2			  = new GridBagConstraints();
 		gridBagConstraints2.gridx     = 0;
 		gridBagConstraints2.gridy     = 1;
 		gridBagConstraints2.gridwidth = 2;
-		gridBagConstraints2.fill	  = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints2.fill	  = GridBagConstraints.BOTH;
 		gridBagConstraints2.insets    = new java.awt.Insets(5, 5, 5, 5);
 		gridBagConstraints2.weightx   = 1.0;
 		gridBagConstraints2.weighty   = 1.0;
 		jPanel1.add(jScrollPane1, gridBagConstraints2);
 
-		gridBagConstraints1		    = new java.awt.GridBagConstraints();
-		gridBagConstraints1.fill    = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints1		    = new GridBagConstraints();
+		gridBagConstraints1.fill    = GridBagConstraints.BOTH;
 		gridBagConstraints1.weightx = 1.0;
 		gridBagConstraints1.weighty = 1.0;
 		getContentPane().add(jPanel1, gridBagConstraints1);

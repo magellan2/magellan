@@ -19,10 +19,8 @@ package com.eressea;
  */
 public interface ID extends Comparable, Cloneable {
 	/**
-	 * Returns a String representation of the ID formatted in a  user friendly
+	 * @return a String representation of the ID formatted in a  user friendly
 	 * manner.
-	 *
-	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString();
 
@@ -31,7 +29,8 @@ public interface ID extends Comparable, Cloneable {
 	 * manner with a given seperator. Right now only Coordinate should
 	 * implement this, all others should invoke toString()!
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a String representation of the ID formatted in a  user friendly
+	 * manner.
 	 */
 	public String toString(String delim);
 
@@ -40,14 +39,16 @@ public interface ID extends Comparable, Cloneable {
 	 * only if the argument is not null and is an object of the same class
 	 * implementing this interface and contains the same unique value.
 	 *
-	 * @return TODO: DOCUMENT ME!
+     * @param   obj   the reference object with which to compare.
+     * @return  <code>true</code> if this object is the same as the obj
+     *          argument; <code>false</code> otherwise.
 	 */
 	public boolean equals(Object o);
 
 	/**
 	 * Returns a hashcode for this ID.
 	 *
-	 * @return TODO: DOCUMENT ME!
+     * @return  a hash code value for this object.
 	 */
 	public int hashCode();
 

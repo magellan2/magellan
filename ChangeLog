@@ -1,3 +1,13 @@
+2003-11-30  Ilja Pavkovic  <noeskadu@gmx.de>
+
+	* src/java/com/eressea/swing/InfoDlg.java (initComponents): added
+	call to VersionInfo.getVersion simple version  
+
+	* build.xml: added support for junit testing.
+
+	* src/java/com/eressea/io/GameDataReader.java: added call to
+	GameData.postProcess.
+
 2003-11-29  Ilja Pavkovic  <noeskadu@gmx.de>
 
 	* src/java/com/eressea/util/Translations.java: removed obsolete
@@ -9,7 +19,7 @@
 	
 	* src/java/com/eressea/Alliance.java: removed dependency with Rules.
 
-	* src/res/about: moved to src/res/images/about
+	* src/res/about: moved to src/res/images/about .
 	
 	* src/java: installed use of jalopy to get well-formatted Java
 	source files.
