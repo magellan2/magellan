@@ -1,3 +1,13 @@
+2005-01-29  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/resource/ResourcePathClassLoader.java:
+	bugfix for wrongly created urls with space characters.
+
+2005-01-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/ReportMerger.java: added new interface
+	UserInterface for batch processing.
+
 2004-11-21  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/completion/OrderEditor.java: prevent
