@@ -44,7 +44,8 @@
 
   <property name="DISTRIBUTION"          value="${BUILD}/distribute"/>
 
-  <!-- be VERY conservative while compilation to support java 1.3 -->
+  <!-- be conservative while compilation to support java 1.3 -->
+  <!-- note that - if you cross compile - you need to set bootclasspath -->
   <property name="JAVAC.TARGET"         value="1.1"/>
   <property name="JAVAC.DEBUG"          value="true"/>
   <property name="JAVAC.DEPRECATION"    value="true"/>
@@ -368,10 +369,12 @@
 
 <!-- pavkovic 2004.01.26: now we have a dependency to jfreechart.jar so we do
      not distribute the jar file anymore.
+	 pavkovic 2004.02.15: dependency have been reduced so we still happily
+     distribute magellan.jar :-)
+-->
     <copy 
       tofile="${DISTRIBUTION}/magellan_${VERSION}.jar" 
       file="${BUILD}/build/magellan.jar"/>
--->
 
 	<zip
 	  destfile="${DISTRIBUTION}/magellan_${VERSION}.zip" 

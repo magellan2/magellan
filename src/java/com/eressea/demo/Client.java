@@ -923,7 +923,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 						Logger.setLevel(level);
 
 						if("A".equals(level)) {
-							log.awt("Start logging of awt events to awtdebug.txt!");
+							log.awt("Start logging of awt events to awtdebug.txt.");
 						}
 					}
 				} else if(args[i].equals("-d") && (args.length > (i + 1))) {
@@ -958,7 +958,12 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			log.info("Client.main(): directory used for ini files: " + settFileDir.toString());
 
 			// now redirect stderr through our log
-			System.setErr((new Log(fileDir)).getPrintStream());
+			{
+				Log LOG = new Log(fileDir);
+				System.setErr(LOG.getPrintStream());
+				
+				log.error("Start writing error file with encoding "+LOG.encoding);
+			}
 
 			// can't call loadRules from here, so we initially work with an empty ruleset.
 			// This is not very nice, though...

@@ -44,6 +44,23 @@ Extend Inspectors with following logic:
 
 
 -------------------------------------------------------------------------------
+Bugzilla Bug 762
+   Details und Befehle nicht aktualisiert nach Auswahl über Mausklick
+
+Ok, ich glaub ich hab den Fehler finden können. Hier ne Anleitung zum 
+Nachstellen:
+
+1. Irgendeine Einheit auswählen und für diese ein paar Befehle schreiben.
+2. Dann im Baum auf die nächste Einheit klicken.
+3. Man beachte die fehlende Aktualisierung.
+4. Auf irgendeine 3. Einheit klicken.
+5. Alles wird aktualisiert auf die 3. Einheit.
+
+Scheint also irgendwie mit dem Fokuswechsel Befehlsfenster/Baum 
+zusammenzuhängen. 
+
+-------------------------------------------------------------------------------
+
 Bugzilla Bug 776
    Regionsbaum: Einheitsnamen zwischen Talente und Gegenstände  
 
@@ -99,3 +116,56 @@ Schwarz alle Ozeanregionen, in denen ein Kampf stattgefunden hat
 
 
 -------------------------------------------------------------------------------------
+Hallo Ilja,
+
+ich hab Dir ja vor einiger Zeit von einem Bug bei verlorenen Talenten
+berichtet (Die Talente werden korrekt als verloren angezeigt, diese
+Information geht aber beim Speichern verloren und danach stehen die
+Talente mit Level 0 im Report).
+Ich hab das nun ein bisschen debugged und herausgefunden, dass das
+daran liegt, dass solche verlorenen Talente offenbar
+skill.isLevelChanged false haben (fälschlicherweise). Nun könnte man
+beim CRSchreiben einfach auf isLevelChanged || isLostSkill abfragen.
+Sinnvoller fände ich aber, wenn auch diese Talente korrekterweise
+isLevelChanged true hätten. Das müsste im Mergen geändert werden und
+da würd ich ungern drin herumpfuschen. Kannst Du das bitte
+korrigieren?
+
+
+346: Hiebwaffen 3
+347: Hiebwaffen verloren
+Merge: Hiebwaffen -(-3). Es fehlt Information, isLevelChanged == false. Sollte
+       sein: true
+
+
+Grüße,
+
+Uli
+
+PS: Die Berechnung der Personenzahl ist auch buggy. Wenn ich zwei
+Einheiten mit je 100 Personen habe und befehle:
+
+Einheit 1:
+  Gib Temp 1 100 Person
+Einheit 2:
+  Gib Temp 1 100 Person
+Temp 1:
+  Gib Einheit 1 100 Person
+  Gib Einheit 2 100 Person
+
+Dann wird die Tempeinheit vernichtet und die beiden Einheiten haben
+danach wieder je 100 Personen. Das funktioniert garantiert, weil
+Tempeinheiten vom Server immer nach allen normalen Einheiten
+ausgewertet werden.
+
+Magellan prognostiziert dann aber bei der Tempeinheit 200 Personen und
+bei den beiden Einheiten jeweils 0 (zumindest in meiner Konstellation
+gerade).
+Soll ich das ins alte Bugzilla posten?
+
+Und noch ein seltsames (neues) Verhalten:
+Wenn ich Einheit 1 befehle:
+  Gib Einheit 2 100 Pferd
+
+Und dann zur Einheit 2 wechsele, dann wird EMapDetailsPanel nicht
+aktualisiert. Erst ein neuerlicher Wechsel bringt den Erfolg?!

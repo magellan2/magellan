@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
 
@@ -31,6 +32,9 @@ import com.eressea.io.file.FileType;
  */
 public class Log {
 	private File baseDir = null;
+	
+	
+	public String encoding;
 
 	/**
 	 * Creates a new Log object copying the output onto the exported print stream to a file in the
@@ -47,31 +51,24 @@ public class Log {
 	 *
 	 * @return output stream to the error log.
 	 */
-	public PrintStream getPrintStream() {
-		Writer out = null;
-
-		try {
-			out = FileType.createEncodingWriter(new FileOutputStream(new File(baseDir, "errors.txt").getAbsolutePath(),
-																	 true));
-			out = new BufferedWriter(out);
-		} catch(IOException e) {
-		}
-
-		return new PrintStream(new StreamWrapper(out));
+	public PrintStream getPrintStream() throws IOException {
+		OutputStreamWriter osw = FileType.createEncodingWriter(new FileOutputStream(new File(baseDir, "errors.txt").getAbsolutePath(), true));
+		encoding = osw.getEncoding();
+		return new PrintStream(new StreamWrapper(new BufferedWriter(osw)));
 	}
 
 	/**
 	 * Wrapper for the logging stream for adding timestamp and linebreaks to output.
 	 */
 	private class StreamWrapper extends OutputStream {
-		Writer out = null;
+		BufferedWriter out = null;
 
 		/**
 		 * Creates a new StreamWrapper object.
 		 *
 		 * @param out TODO: DOCUMENT ME!
 		 */
-		public StreamWrapper(Writer out) {
+		public StreamWrapper(BufferedWriter out) {
 			super();
 			this.out = out;
 
@@ -82,7 +79,7 @@ public class Log {
 							// 2002.05.05 pavkovic: Synchronization needed because of multithreading
 							synchronized(StreamWrapper.this.out) {
 								StreamWrapper.this.out.write((new java.util.Date(System.currentTimeMillis())).toString());
-								StreamWrapper.this.out.write("\n\r");
+								StreamWrapper.this.out.newLine();
 								StreamWrapper.this.out.flush();
 							}
 						} catch(IOException e) {

@@ -1658,6 +1658,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			// the event since it originates from this.
 			selectionChanged(new SelectionEvent(u, null, u));
 			dispatcher.fire(new SelectionEvent(this, null, u));
+// 			final Unit u2 = u;
+// 			SwingUtilities.invokeLater(new Runnable() {
+// 					public void run() {
+// 						dispatcher.fire(new SelectionEvent(EMapOverviewPanel.this, null, u2));
+// 					}});
 		}
 	}
 

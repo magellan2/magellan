@@ -61,12 +61,10 @@ public class AddCRAction extends MenuAction {
 		JFileChooser fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(true);
 
-		EresseaFileFilter gz = new EresseaFileFilter(EresseaFileFilter.GZ_FILTER);
-		EresseaFileFilter zip = new EresseaFileFilter(EresseaFileFilter.ZIP_FILTER);
-		EresseaFileFilter cr = new EresseaFileFilter(EresseaFileFilter.CR_FILTER);
-		fc.addChoosableFileFilter(gz);
-		fc.addChoosableFileFilter(zip);
-		fc.addChoosableFileFilter(cr);
+		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.CR_FILTER));
+		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.GZ_FILTER));
+		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER));
+		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.ZIP_FILTER));
 
 		int lastFileFilter = Integer.parseInt(settings.getProperty("Client.lastSelectedAddCRFileFilter",
 																   "3"));
