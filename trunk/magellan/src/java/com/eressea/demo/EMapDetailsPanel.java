@@ -2616,7 +2616,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					BigDecimal.ROUND_UP)
 							   .intValue();
 				parent.add(createSimpleNode(getString("node.damage") + ": " + s.damageRatio +
-											"% / " + String.valueOf(absolute), "damage"));
+											"% / " + absolute, "damage"));
 			}
 		}
 
@@ -2773,12 +2773,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			String strLoad = (s.load != -1) ? Integer.toString(s.load)
 							 : weightNumberFormat.format(new Float(load / 100.0F));
 
-			// String strModLoad = weightNumberFormat.format(new Float(modLoad / 100.0F));
 			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
 			int intCap = s.getMaxCapacity();
-			intCap = new BigDecimal(intCap).multiply(new BigDecimal(100 - s.damageRatio))
-					 .divide(new BigDecimal(100), BigDecimal.ROUND_DOWN)
-					 .intValue();
 
 			String strCap = Integer.toString(intCap);
 
@@ -2788,12 +2784,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 
 			loadNode.setUserObject(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +
-				": " + strLoad +
-				" (" + strModLoad +
-				") / " + strCap +
-				" " +
-				getString("node.weightunits"),
-				"beladung"));
+																			  ": " + strLoad +
+																			  (!strModLoad.equals(strLoad) ?
+																			  (" (" + strModLoad + ") ") : " ")+
+																			  "/ " + strCap +
+																			  " " +
+																			  getString("node.weightunits"),
+																			  "beladung"));
 		}
 
 		// Kommentare

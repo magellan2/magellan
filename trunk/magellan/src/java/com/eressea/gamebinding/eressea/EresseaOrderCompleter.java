@@ -2036,7 +2036,15 @@ public class EresseaOrderCompleter implements Completer {
 			} else if(o1 instanceof Completion && o2 instanceof Completion) {
 				Completion c1 = (Completion) o1;
 				Completion c2 = (Completion) o2;
-				retVal = c1.getName().compareToIgnoreCase(c2.getName());
+				if(c1.getName() == null) {
+					return c1.getName() == null 
+						? 0 
+						: 1;
+				} else {
+					return c2.getName() == null 
+						? -1 :
+						c1.getName().compareToIgnoreCase(c2.getName());
+				}
 			} else if(o1 instanceof Completion && o2 instanceof String) {
 				String s1 = ((Completion) o1).getName();
 				String s2 = (String) o2;
