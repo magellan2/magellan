@@ -1,3 +1,11 @@
+2004-04-30  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: Moved
+	WorkSpace from Client.java to MagellanDesktop.java.
+
+	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: Made
+	showing of chooser optional.
+
 2004-04-29  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/desktop/WorkSpace.java: Renamed

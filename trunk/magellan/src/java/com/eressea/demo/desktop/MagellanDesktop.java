@@ -63,6 +63,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -86,6 +87,8 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import com.eressea.swing.desktop.WorkSpace;
+
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
@@ -102,6 +105,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 													   PreferencesFactory
 {
 	private static final Logger log = Logger.getInstance(MagellanDesktop.class);
+
+	/** the workSpace associated with this MagellanDesktop */
+	private WorkSpace workSpace;
 
 	// mode possibilities
 
@@ -231,7 +237,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		client.addWindowListener(this);
 		this.settings = settings;
 		setManagedComponents(components);
-		setLayout(new BorderLayout());
 
 		try {
 			File file = getDesktopFile(false);
@@ -253,6 +258,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 		// init desktop menu
 		initDesktopMenu();
+
+		initWorkSpace();
 
 		// find the desktop mode, default is split
 		String dmode = settings.getProperty("Desktop.Type", "SPLIT");
@@ -289,11 +296,11 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		}
 
 		if(mode == MODE_FRAME) {
-			initFrames();
+			setMode(mode);
 		}
 
 		if(mode == MODE_LAYOUT) {
-			initLayout(settings.getProperty("Desktop.Layout", "Standard"));
+			setMode(mode, settings.getProperty("Desktop.Layout", "Standard"));
 		}
 
 		loadTranslations();
@@ -307,10 +314,20 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		DesktopEnvironment.init(this);
 	}
 
-	private List actions = CollectionFactory.createArrayList();
+	private void initWorkSpace() {
+		if(workSpace == null) {
+			workSpace = new WorkSpace(setMenuGroup);
+			
+			this.setLayout(new BorderLayout());
+			this.removeAll();
+			this.add(workSpace, BorderLayout.CENTER);
+		}
+		workSpace.setEnabledChooser(settings.getProperty("Desktop.EnableWorkSpaceChooser","true").equals("true"));
+	}
 
-	public ButtonGroup getButtonGroup() {
-		return setMenuGroup;
+	private void setWorkSpaceChooser(boolean enabled) {
+		settings.setProperty("Desktop.EnableWorkSpaceChooser", String.valueOf(enabled));
+		initWorkSpace();
 	}
 
 	/**
@@ -610,7 +627,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 																		prefix+ index + ": " + name, 
 																		getString("menu.set.caption")+ " "+name);
 
-				actions.add(ase);
 				mi = new JCheckBoxMenuItem(ase);
 
 				if(index <= 10) {
@@ -640,7 +656,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 				ActivateLayoutAction action = new ActivateLayoutAction(name, 
 																	   prefix+ index + ": " + name, 
 																	   getString("menu.layout.caption")+ " "+name);
-				actions.add(action);
 				mi = new JCheckBoxMenuItem(action);
 
 				if(index <= 10) {
@@ -1275,9 +1290,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		}
 
 		// disable frames menu
-		if(framesMenu != null) {
-			disableFramesMenu();
-		}
+		disableFramesMenu();
 
 		mode = MODE_SPLIT;
 		setClientBounds();
@@ -1309,7 +1322,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		}
 
 		splitName = setName;
-		add(splitRoot, BorderLayout.CENTER);
+		workSpace.setContent(splitRoot);
 		buildShortCutTable(splitBuilder.getComponentsUsed());
 
 		// activate the corresponding menu item
@@ -1424,17 +1437,15 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 *
 	 * @param lName TODO: DOCUMENT ME!
 	 */
-	protected void initLayout(String lName) {
+	protected boolean initLayout(String lName) {
 		if((layoutComponents == null) || !layoutComponents.containsKey(lName)) {
-			return;
+			return false;
 		}
 
 		List scomps = CollectionFactory.createLinkedList();
 
 		// disable frames menu
-		if(framesMenu != null) {
-			disableFramesMenu();
-		}
+		disableFramesMenu();
 
 		// clear the frames
 		unconnectFrames();
@@ -1460,8 +1471,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			}
 		}
 
-		removeAll();
-		add(panel, BorderLayout.CENTER);
+		workSpace.setContent(panel);
 		setClientBounds();
 		layoutName = lName;
 
@@ -1475,6 +1485,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 		buildShortCutTable(scomps);
 		modeInitialized[MODE_LAYOUT] = true;
+
+		return true;
 	}
 
 	/*
@@ -2453,28 +2465,13 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	public void setMode(int mode) {
 		switch(mode) {
 		case MODE_SPLIT:
-
-			if(splitName != null) {
-				setMode(MODE_SPLIT, splitName);
-			} else {
-				setMode(MODE_SPLIT, settings.getProperty("Desktop.SplitSet", "Standard"));
-			}
-
+			setMode(mode, splitName != null ? splitName : settings.getProperty("Desktop.SplitSet", "Standard"));
 			break;
-
 		case MODE_FRAME:
-			setMode(MODE_FRAME, null);
-
+			setMode(mode, null);
 			break;
-
 		case MODE_LAYOUT:
-
-			if(layoutName != null) {
-				setMode(MODE_LAYOUT, layoutName);
-			} else {
-				setMode(MODE_LAYOUT, settings.getProperty("Desktop.Layout", "Standard"));
-			}
-
+			setMode(mode, layoutName != null ? layoutName : settings.getProperty("Desktop.Layout", "Standard"));
 			break;
 		}
 	}
@@ -2523,7 +2520,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			inFront = false;
 			retrieveConfiguration();
 			this.mode = mode;
-			removeAll();
+			
+			workSpace.removeContent();
 
 			if(mode == MODE_SPLIT) {
 				if((param != null) || !(param instanceof String)) {
@@ -2557,38 +2555,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 		client.repaint(500);
 		repaintAllComponents();
-	}
-
-	protected void setSplitSet(String name) {
-		if(!splitSets.containsKey(name)) {
-			return;
-		}
-
-		setAllVisible(false);
-		inFront = false;
-		retrieveConfiguration();
-		mode = MODE_SPLIT;
-		removeAll();
-		initSplitSet(name);
-		setAllVisible(true);
-		registerKeyStrokes(); // register listeners to the new frames
-		client.repaint(500);
-		splitRoot.repaint();
-	}
-
-	protected void setActiveLayout(String name) {
-		if(!layoutComponents.containsKey(name)) {
-			return;
-		}
-
-		setAllVisible(false);
-		inFront = false;
-		retrieveConfiguration();
-		mode = MODE_LAYOUT;
-		initLayout(name);
-		setAllVisible(true);
-		registerKeyStrokes(); // register listeners to the new frames
-		client.repaint(500);
 	}
 
 	/**
@@ -3265,6 +3231,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		CardLayout card;
 		JPanel center;
 		List scList;
+		JCheckBox enableWorkSpaceChooser;
+
 		private final String act[] = {
 										 getString("prefs.activationdescription.single"),
 										 getString("prefs.activationdescription.main"),
@@ -3292,6 +3260,10 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			modeBox.setSelectedIndex(getMode());
 			modeBox.addActionListener(this);
 			up.add(modeBox);
+			
+			enableWorkSpaceChooser = new JCheckBox(getString("prefs.displaychooser"), workSpace.isEnabledChooser());;
+			up.add(enableWorkSpaceChooser);
+			
 			this.add(up, BorderLayout.NORTH);
 
 			center = new JPanel();
@@ -3485,6 +3457,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			setMode(getDeskMode());
 			setActivationMode(getActMode());
 			setIconify(isModeIconify());
+			setWorkSpaceChooser(enableWorkSpaceChooser.isSelected());
 		}
 
 		/**
@@ -4246,6 +4219,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 								"Instead, a standard configuration is used.");
 		defaultTranslations.put("menu.desktop.caption", "Desktop");
 		defaultTranslations.put("menu.desktop.mnemonic", "d");
+		defaultTranslations.put("prefs.displaychooser", "Display Chooser");
+
 		defaultTranslations.put("prefs.shortcuts.others",
 								"Found {0, number} other, non-Magellan, non-changeable shortcuts. These belong to the system and should not be used. There may also be some other key combinations in use that are not registered, so choose your shortcuts with care.");
 		defaultTranslations.put("prefs.shortcuts.dialog.cancel", "Cancel");

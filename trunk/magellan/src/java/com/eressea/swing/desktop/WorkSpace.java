@@ -26,7 +26,6 @@ import javax.swing.*;
  */
 public class WorkSpace extends JPanel {
 	private JPanel contentPanel;
-	private JPanel content;
 	private JPanel chooser;
 
 	// private Perspective[] perspectives;
@@ -49,12 +48,22 @@ public class WorkSpace extends JPanel {
 		} else {
 			this.remove(chooser);
 		}
+		validate();
+	}
+
+	public boolean isEnabledChooser() {
+		Component[] components = this.getComponents();
+		for(int i=0; i<components.length; i++) {
+			if(components[i].equals(chooser)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void initUI(ButtonGroup buttonGroup) {
 		contentPanel = createContentPanel();
-		content = new EmptyPerspective().build();
-		contentPanel.add(content);
+		setContent(new EmptyPerspective().build());
 
 		this.setLayout(new BorderLayout());
 		this.add(contentPanel,BorderLayout.CENTER);
@@ -147,11 +156,12 @@ public class WorkSpace extends JPanel {
 	 * @param newContent TODO: DOCUMENT ME!
 	 */
 	public void setContent(Component newContent) {
-		if(content != null) {
-			contentPanel.remove(content);
-		}
-
+		removeContent();
 		contentPanel.add(newContent);
+	}
+
+	public void removeContent() {
+		contentPanel.removeAll();
 	}
 
 	public static void main(String args[]) throws Exception {
