@@ -50,7 +50,7 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-import com.eressea.gamebinding.OrderParser;
+import com.eressea.completion.OrderParser;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.MergeLineReader;

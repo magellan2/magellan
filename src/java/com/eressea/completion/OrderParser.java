@@ -8,6 +8,9 @@
 
 package com.eressea.completion;
 
+import java.io.Reader;
+import java.util.List;
+
 public interface OrderParser {
 	/**
 	 * Parses one line of text from the specified stream by
