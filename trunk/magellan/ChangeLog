@@ -1,3 +1,11 @@
+2004-02-29 <Ulrich Küster@uni-jena.de>
+	* Some performance related issues, reduced memory consumption
+	  by avoiding unnecessary String allocations
+	* Bugfix in report merging: When determining the translation
+	  for a report's coordinate system regions with unknown 
+	  region type are ignored now. These are most likely
+	  schemes and do not necessarily imply a mismatch in a translation.
+
 2004-02-17  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/Rules.java: added block GAMESPECIFIC to
