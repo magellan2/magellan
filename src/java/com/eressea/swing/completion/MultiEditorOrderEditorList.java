@@ -2138,110 +2138,23 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					parentUnit = ((TempUnit) currentUnit).getParent();
 				}
 
-				// calculate the tempUnits ID:
-				UnitID id = null;
-
-				if(data.getCurTempID() == -1) {
-					// uninitialized
-					String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
-					data.setCurTempID(s);
-				}
-
-				if(data.getCurTempID() == 0) {
-					// use old system: same id as parent unit
-					id = (UnitID) parentUnit.getID();
-				} else {
-					id = UnitID.createUnitID(data.getCurTempID());
-
-					boolean ascending = settings.getProperty("ClientPreferences.ascendingOrder",
-															 "true").equalsIgnoreCase("true");
-
-					if(settings.getProperty("ClientPreferences.countDecimal", "true")
-								   .equalsIgnoreCase("true")) {
-						data.setCurTempID(getNextDecimalID(data.getCurTempID(), ascending));
-					} else {
-						if(ascending) {
-							data.setCurTempID(data.getCurTempID() + 1);
-						} else {
-							data.setCurTempID(data.getCurTempID() - 1);
-						}
-					}
-
-					if(ascending) {
-						if(data.getCurTempID() > IDBaseConverter.getMaxId(data.base)) {
-							data.setCurTempID(1);
-						}
-					} else {
-						if(data.getCurTempID() <= 0) {
-							data.setCurTempID(IDBaseConverter.getMaxId(data.base));
-						}
-					}
-				}
-
+				UnitID id = Unit.createTempID(data, settings, parentUnit);
 				createTempImpl(parentUnit, id, parentUnit.getRegion());
 			}
 		}
 
-		/**
-		 * DOCUMENT ME!
-		 *
-		 * @param i TODO: DOCUMENT ME!
-		 * @param ascending TODO: DOCUMENT ME!
-		 *
-		 * @return the next int, that is bigger than the given one but consists only out of decimal
-		 * 		   digits (interpreted in the current base) if the given int did so also.
-		 */
-		private int getNextDecimalID(int i, boolean ascending) {
-			int base = IDBaseConverter.getBase();
-
-			if(ascending) {
-				i++;
-
-				if((i % base) == 10) {
-					i += (base - 10);
-				}
-
-				if((i % (base * base)) == (base * 10)) {
-					i += ((base - 10) * base * base);
-				}
-
-				if((i % (base * base * base)) == (base * base * 10)) {
-					i += ((base - 10) * base * base * base);
-				}
-			} else {
-				if(i == 0) {
-					i = (base * base * base * 10) + 10;
-				}
-
-				if((i % (base * base * base)) == 0) {
-					i = i - (base * base * base) + (base * base * 10);
-				}
-
-				if((i % (base * base)) == 0) {
-					i = i - (base * base) + (base * 10);
-				}
-
-				if((i % base) == 0) {
-					i = i - base + 10;
-				}
-
-				i--;
-			}
-
-			return i;
-		}
 
 		private void createTempImpl(Unit parentUnit, UnitID id, Region parentRegion) {
 			int unitIntID = id.intValue();
-			int newIDInt = 0;
+			int newIDInt = unitIntID;
 			UnitID newID = null;
 
-			for(newIDInt = unitIntID; newIDInt != (unitIntID - 1);
-					newIDInt = (newIDInt + (1 % IDBaseConverter.getMaxId()))) {
-				if(parentRegion.getUnit(UnitID.createUnitID(-newIDInt)) == null) {
-					break;
-				}
-			}
+//			for(newIDInt = unitIntID; newIDInt != (unitIntID - 1);
+//					newIDInt = (newIDInt + (1 % IDBaseConverter.getMaxId()))) {
+//				if(parentRegion.getUnit(UnitID.createUnitID(-newIDInt)) == null) {
+//					break;
+//				}
+//			}
 
 			if(!settings.getProperty("MultiEditorOrderEditorList.ButtonPanel.ShowTempUnitDialog",
 										 "true").equalsIgnoreCase("true")) {
@@ -2281,7 +2194,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 							int realNewIDInt = IDBaseConverter.parse(tempID);
 							UnitID checkID = UnitID.createUnitID(-realNewIDInt);
 
-							if(parentRegion.getUnit(checkID) == null) {
+							if(data.tempUnits().get(checkID) == null) {
 								TempUnit tempUnit = parentUnit.createTemp(checkID);
 
 								// Name
