@@ -320,6 +320,8 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 			}
 
 			if(u != null) {
+				u.getRegion().refreshUnitRelations();
+
 				// remove previous problems of this unit AND the given inspector
 				model.removeProblems(c, u);
 

@@ -48,11 +48,6 @@ public class GameDataBuilder {
 		Region region_0_0 = addRegion(data,"0 0", "Region_0_0","Gletscher",1);
 		region_0_0.setIsland(island);
 
-		Region region_1_0 = addRegion(data,"1 0", "Region_1_0","Ebene",2);
-		region_1_0.setIsland(island);
-
-		Region region_0_1 = addRegion(data,"0 1", "Region_0_1","Ozean",2);
-
 		Unit unit = addUnit(data, "1", "Unit_1", faction, region_0_0);
 
 		if(postProcess) {
@@ -119,6 +114,12 @@ public class GameDataBuilder {
 		
 		region.setSortIndex(sortIndex);
 		return region;
+	}
+	
+	public Unit addUnit(GameData data, String name, Region region) {
+		String number = "g"+(data.units().size()+1);
+		Faction faction = (Faction) data.factions().values().iterator().next();
+		return addUnit(data, number, name, faction, region);
 	}
 	
 	public Unit addUnit(GameData data, String number, String name,  Faction faction, Region region) {

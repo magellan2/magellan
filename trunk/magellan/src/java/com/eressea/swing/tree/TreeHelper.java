@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import com.eressea.Building;
+import com.eressea.Border;
 import com.eressea.GameData;
 import com.eressea.ID;
 import com.eressea.Region;
@@ -65,11 +66,10 @@ public class TreeHelper {
 	/** TODO: DOCUMENT ME! */
 	public static final int TRUSTLEVEL = 5;
 
-	/** TODO: DOCUMENT ME! */
-	public static final Comparator buildingComparator = new BuildingTypeComparator(new NameComparator(new IDComparator()));
+	private static final Comparator nameComparator = new NameComparator(new IDComparator());
+	private static final Comparator buildingComparator = new BuildingTypeComparator(nameComparator);
+	private static final Comparator healthCmp = new UnitHealthComparator(null);
 
-	/** TODO: DOCUMENT ME! */
-	public static final Comparator healthCmp = new UnitHealthComparator(null);
 
 	/**
 	 * Creates the subtree for one region with units (sorted by faction or other criteria), ships,
@@ -97,37 +97,34 @@ public class TreeHelper {
 
 		List units = new ArrayList(r.units());
 
-		Iterator it = null;
-
 		if(units.size() > 0) {
 			if(unitSorting != null) {
 				Collections.sort(units, unitSorting);
 			}
-
+			
 			addSortedUnits(regionNode, treeStructure, 0, units, factory, activeAlliances,
 						   unitNodes, data);
 		}
 
 		// add ships
-		it = r.ships().iterator();
-
-		while(it.hasNext()) {
-			Ship s = (Ship) it.next();
+		List sortedShips = new ArrayList(r.ships());
+		Collections.sort(sortedShips, nameComparator);
+		for(Iterator iter = sortedShips.iterator(); iter.hasNext(); ) {
+			Ship s = (Ship) iter.next();
 			node = new DefaultMutableTreeNode(factory.createUnitContainerNodeWrapper(s));
 			regionNode.add(node);
-
+			
 			if(shipNodes != null) {
 				shipNodes.put(s.getID(), node);
 			}
 		}
 
 		// add buildings
-		java.util.List sortedBuildings = new ArrayList(r.buildings());
+		List sortedBuildings = new ArrayList(r.buildings());
 		Collections.sort(sortedBuildings, buildingComparator);
-		it = sortedBuildings.iterator();
 
-		while(it.hasNext()) {
-			Building b = (Building) it.next();
+		for(Iterator iter = sortedBuildings.iterator(); iter.hasNext(); ) {
+			Building b = (Building) iter.next();
 			node = new DefaultMutableTreeNode(factory.createUnitContainerNodeWrapper(b));
 			regionNode.add(node);
 
@@ -137,10 +134,8 @@ public class TreeHelper {
 		}
 
 		// add borders
-		it = r.borders().iterator();
-
-		while(it.hasNext()) {
-			com.eressea.Border b = (com.eressea.Border) it.next();
+		for(Iterator iter = r.borders().iterator(); iter.hasNext(); ) {
+			Border b = (Border) iter.next();
 			node = new DefaultMutableTreeNode(factory.createBorderNodeWrapper(b));
 			regionNode.add(node);
 		}

@@ -1,3 +1,17 @@
+2004-07-11  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/tree/TreeHelper.java: added ship sorting
+	 by name and id.
+
+	* src/java/com/eressea/io/cr/CRWriter.java: respect sort index of
+	factions. 
+
+2004-07-05  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/tasks/swing/TaskTablePanel.java:
+	added call to u.getRegion().refreshUnitRelations before adding 
+	unit problems.
+
 2004-07-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/io/file/ZipFileType.java: prevent

@@ -27,6 +27,7 @@ import com.eressea.rules.RegionType;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.Sorted;
 import com.eressea.util.TagMap;
 import com.eressea.util.Taggable;
 import com.eressea.util.logging.Logger;
@@ -37,7 +38,7 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public abstract class UnitContainer extends DescribedObject implements com.eressea.util.Sorted,
+public abstract class UnitContainer extends DescribedObject implements Sorted,
 																	   Taggable
 {
 	private static final Logger log = Logger.getInstance(UnitContainer.class);
