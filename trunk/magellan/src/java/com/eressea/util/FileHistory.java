@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.util;
@@ -189,6 +188,7 @@ public class FileHistory {
 		}
 
 		GameData data = client.loadCR(file.getPath());
+
 		if(data != null) {
 			client.setData(data);
 			client.setReportChanged(false);

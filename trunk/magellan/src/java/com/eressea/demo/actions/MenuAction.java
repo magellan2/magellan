@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.demo.actions;
@@ -127,8 +126,8 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-				 *
-				 */
+						 *
+						 */
 	public String getIconName() {
 		//String className = this.getClass().getName().toLowerCase();
 		//int pos = className.lastIndexOf(".");

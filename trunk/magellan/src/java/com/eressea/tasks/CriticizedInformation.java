@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.tasks;
@@ -24,8 +23,8 @@ import com.eressea.HasRegion;
  */
 public class CriticizedInformation extends AbstractProblem implements Problem {
 	/**
-				 *
-				 */
+						 *
+						 */
 	public CriticizedInformation(Object s, HasRegion o, Inspector i, String m) {
 		super(s, o, i, m);
 	}

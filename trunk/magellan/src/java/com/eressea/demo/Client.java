@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.demo;
@@ -44,7 +43,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
 import java.util.zip.ZipEntry;
 
 import javax.swing.Action;
@@ -1208,7 +1206,8 @@ public class Client extends JFrame implements ShortcutListener,
 
 		try {
 			d = new GameDataReader().readGameData(FileTypeFactory.singleton()
-																 .createFileType(fileName, new ClientFileTypeChooser(this)));
+																 .createFileType(fileName,
+																				 new ClientFileTypeChooser(this)));
 			everLoadedReport = true;
 		} catch(MissingInputException e) {
 			JOptionPane.showMessageDialog(this,
@@ -1231,41 +1230,53 @@ public class Client extends JFrame implements ShortcutListener,
 		return d;
 	}
 
-	/** 
-	 * Callbacks of FileTypeFactory are handled by this object. Right now it returns the 
-	 * first ZipEntry to mimic old cr loading behaviour for zip files.
+	/**
+	 * Callbacks of FileTypeFactory are handled by this object. Right now it
+	 * returns the  first ZipEntry to mimic old cr loading behaviour for zip
+	 * files.
 	 */
-	private static class ClientFileTypeChooser extends FileTypeFactory.FileTypeChooser {
+	private static class ClientFileTypeChooser
+		extends FileTypeFactory.FileTypeChooser
+	{
 		Client client;
 
+		/**
+		 * Creates a new ClientFileTypeChooser object.
+		 *
+		 * @param client TODO: DOCUMENT ME!
+		 */
 		public ClientFileTypeChooser(Client client) {
 			this.client = client;
 		}
 
 		// open selection window to choose a zipentry
 		public ZipEntry chooseZipEntry(ZipEntry entries[]) {
-			String[] stringEntries = new String[entries.length];
-			for(int i = 0; i<entries.length; i++) {
+			String stringEntries[] = new String[entries.length];
+
+			for(int i = 0; i < entries.length; i++) {
 				stringEntries[i] = entries[i].toString();
 			}
-			Object selected = JOptionPane.showInputDialog(client.getRootPane(), 
+
+			Object selected = JOptionPane.showInputDialog(client.getRootPane(),
 														  client.getString("msg.loadcr.multiplezipentries.text"),
 														  client.getString("msg.loadcr.multiplezipentries.title"),
-														  JOptionPane.QUESTION_MESSAGE, 
-														  null,
-														  stringEntries, stringEntries[0]);
+														  JOptionPane.QUESTION_MESSAGE,
+														  null, stringEntries,
+														  stringEntries[0]);
+
 			if(selected == null) {
 				return null;
 			}
-			for(int i = 0; i<entries.length; i++) {
+
+			for(int i = 0; i < entries.length; i++) {
 				if(selected.equals(entries[i].toString())) {
 					return entries[i];
 				}
 			}
+
 			return null;
 		}
 	}
-
 
 	/**
 	 * Do some additional checks after loading a report.
@@ -1762,8 +1773,8 @@ public class Client extends JFrame implements ShortcutListener,
 			defaultTranslations.put("menu.extras.caption", "Extras");
 			defaultTranslations.put("menu.extras.mnemonic", "x");
 			defaultTranslations.put("msg.loadcr.multiplezipentries.text",
-									"Multiple computer reports have been\n"+
-									"found in the comppressed file.\n"+
+									"Multiple computer reports have been\n" +
+									"found in the comppressed file.\n" +
 									"Please choose one.");
 			defaultTranslations.put("msg.loadcr.multiplezipentries.title",
 									"Choose one");

@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.util;
@@ -99,8 +98,8 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 	}
 
 	/**
-				 *
-				 */
+						 *
+						 */
 	private String doExpandFactionColors(String oldName, String key) {
 		if(oldName.equals(key)) {
 			int    i     = 0;
