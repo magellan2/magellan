@@ -296,6 +296,9 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 	}
 
 	private void setOrdersAndFireEvent() {
+		if(log.isDebugEnabled()) {
+			log.debug("OrderEditor.setOrdersAndFireEvent("+isModified()+","+unit+")");
+		}
 		if(isModified() && (unit != null)) {
 			// this is done on purpose: in init of UnitOrdersEvent the list of related units is built
 			// so we need to create it before changing orders of the unit

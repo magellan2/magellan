@@ -2724,7 +2724,7 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean isNumeric(String txt) {
-		return isNumeric(txt, 10, 0, MAX_UID);
+		return isNumeric(txt, 10, 0, Integer.MAX_VALUE);
 	}
 
 	private boolean isID(String txt) {
