@@ -1,23 +1,21 @@
-package com.eressea.test;
+package com.eressea.test.merge;
 
 import junit.framework.TestSuite;
 
-import com.eressea.test.merge.MergeTestSuite;
-
-public class MagellanTestSuite {
+public class MergeTestSuite {
 	public static void main(String [] args) {
 		if ((args.length > 0) && args [0].toUpperCase ().equals ("TEXT")) {
 			junit.textui.TestRunner.run (suite ());
 		} else {
-			junit.swingui.TestRunner.run (MagellanTestSuite.class);
+			junit.swingui.TestRunner.run (MergeTestSuite.class);
 		}
 	}
 	
 	public static TestSuite suite() {
-		TestSuite suite = new TestSuite ("Magellan Test Suite");
+		TestSuite suite = new TestSuite ("Merge Test Suite");
 
 		//suite.addTest (ParserTestSuite.suite ());
-		suite.addTest(MergeTestSuite.suite());
+		suite.addTest (new TestSuite (WriteGameData.class));
 
 		return suite;
 	}
