@@ -36,11 +36,12 @@ To create a new release do the following steps:
 1. Update your local cvs repository to get the actual version in the cvs:
    cvs update -P -d
 2. Change build.xml to reflect your new MAJOR, MINOR and SUB number.
-3. Run ant target "dist".
-4. If everything was fine proceed with the next step otherwise abort.
-5. Checkin build.xml:
+3. Checkin build.xml:
    cvs commit -m "creating a new version" build.xml
-6. Tag the files with "v<MAJOR>_<MINOR>_<SUB>":
-   
-   cvs tag -R -r "v<MAJOR>_<MINOR>_<SUB>"
-7. Distribute the files created in build.
+3. Run ant target "tagdistribution".
+   This creates a directory "build/distribute" with all wanted files and
+   tags the repositories "magellan" and "magellan-help" with the 
+   tag "v<MAJOR>_<MINOR>_<SUB>".
+   (TODO: Right now tagging of repository magellan-help is broken)
+4. If everything was fine proceed with the next step otherwise abort.
+5. Distribute the files created in build/distributed.
