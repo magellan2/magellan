@@ -25,46 +25,24 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import com.eressea.event.EventDispatcher;
-
 /**
  * An extended JTree that supports CopyToClipboard by STRG+C and STRG+INSERT
  *
  * @author Ulrich Küster
  */
 public class CopyTree extends JTree implements KeyListener {
-	private EventDispatcher dispatcher = null;
 
 	/**
 	 * Creates a new CopyTree object.
-	 *
-	 * @param model TODO: DOCUMENT ME!
-	 * @param dispatcher TODO: DOCUMENT ME!
 	 */
-	public CopyTree(TreeModel model, EventDispatcher dispatcher) {
+	public CopyTree(TreeModel model) {
 		super(model);
-		initTree(dispatcher);
+		initTree();
 	}
 
-	/**
-	 * Creates a new CopyTree object.
-	 *
-	 * @param dispatcher TODO: DOCUMENT ME!
-	 */
-	public CopyTree(EventDispatcher dispatcher) {
+	public CopyTree() {
 		super();
-		initTree(dispatcher);
-	}
-
-	/**
-	 * Creates a new CopyTree object.
-	 *
-	 * @param root TODO: DOCUMENT ME!
-	 * @param dispatcher TODO: DOCUMENT ME!
-	 */
-	public CopyTree(TreeNode root, EventDispatcher dispatcher) {
-		super(root);
-		initTree(dispatcher);
+		initTree();
 	}
 
 	/**
@@ -72,21 +50,11 @@ public class CopyTree extends JTree implements KeyListener {
 	 *
 	 * @param dispatcher TODO: DOCUMENT ME!
 	 */
-	private void initTree(EventDispatcher dispatcher) {
+	private void initTree() {
 		// delete F2-key-binding to startEditing to allow bookmarking to be activ
 		// @see com.eressea.demo.desktop.BookmarkManager
-		try {
-			((InputMap) getInputMap()).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "none");
-		} catch(java.lang.NoSuchMethodError e) {
-			// in case of 1.2.2 JRE
-			// it's a bit crude, but unregisterKeyboardAction didn't work on my computer -
-			// for unknown reasons... so this is the compromise
-			this.unregisterKeyboardAction(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+		((InputMap) getInputMap()).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "none");
 
-			// probably 1.2.2 users will have to live without bookmarking ;(
-		}
-
-		this.dispatcher = dispatcher;
 
 		//		shortcuts = new Vector();
 		// 0-1 copyshortcut

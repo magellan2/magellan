@@ -850,7 +850,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 	private Container getStatPanel() {
 		rootNode = new DefaultMutableTreeNode(null);
 		treeModel = new DefaultTreeModel(rootNode);
-		tree = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel);
 		tree.setRootVisible(false);
 		tree.addTreeSelectionListener(this);
 

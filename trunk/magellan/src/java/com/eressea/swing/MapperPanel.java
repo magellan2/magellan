@@ -53,7 +53,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
