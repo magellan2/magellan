@@ -56,13 +56,14 @@ public class SortIndexComparator implements Comparator {
 	 * 		   sub-comparator's comparison is returned.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = ((Sorted) o1).getSortIndex() - ((Sorted) o2).getSortIndex();
+		int s1 = ((Sorted) o1).getSortIndex();
+		int s2 = ((Sorted) o2).getSortIndex();
 
-		if((retVal == 0) && (sameIndexSubCmp != null)) {
-			retVal = sameIndexSubCmp.compare(o1, o2);
+		if((s1 == s2) && (sameIndexSubCmp != null)) {
+			return sameIndexSubCmp.compare(o1, o2);
+		} else {
+			return s1 < s2 ? -1 : 1;
 		}
-
-		return retVal;
 	}
 
 	/**
