@@ -43,6 +43,7 @@ import com.eressea.relation.TeachRelation;
 import com.eressea.swing.GiveOrderDialog;
 
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.UnitRoutePlanner;
 
 /**
@@ -134,6 +135,16 @@ public class UnitContextMenu extends JPopupMenu {
 					removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
 																								  teacher));
 				}
+			}
+			if(unit.getShip() != null && unit.equals(unit.getShip().getOwnerUnit()))  {
+				JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));
+				planShipRoute.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							planShipRoute();
+						}
+					});
+				planShipRoute.setEnabled(ShipRoutePlanner.canPlan(unit.getShip()));
+				add(planShipRoute);
 			}
 		} else {
 			// this part for multiple unit-selections
@@ -367,6 +378,14 @@ public class UnitContextMenu extends JPopupMenu {
 		selectedUnits.clear();
 	}
 
+	private void planShipRoute() {
+		Unit unit = ShipRoutePlanner.planShipRoute(this.unit.getShip(), data, this);
+
+		if(unit != null) {
+			dispatcher.fire(new UnitOrdersEvent(this, unit));
+		}
+	}
+
 	/**
 	 * Checks whether the selectedUnits contain at least one Unit-object, that belongs to a
 	 * privileged faction.
@@ -410,6 +429,7 @@ public class UnitContextMenu extends JPopupMenu {
 			defaultTranslations.put("units", "units");
 			defaultTranslations.put("menu.addorder.caption", "Add order");
 			defaultTranslations.put("menu.planroute", "Plan route");
+			defaultTranslations.put("menu.planshiproute.caption", "Ship route scheduler");
 			defaultTranslations.put("menu.confirm.caption", "Confirm");
 			defaultTranslations.put("menu.copyids.caption", "Copy IDs");
 			defaultTranslations.put("menu.copyidsandnames.caption", "Copy IDs and names");

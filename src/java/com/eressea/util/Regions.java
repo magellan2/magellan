@@ -478,31 +478,30 @@ public class Regions {
 	 * @param ship TODO: DOCUMENT ME!
 	 * @param destination TODO: DOCUMENT ME!
 	 * @param allregions TODO: DOCUMENT ME!
-	 * @param oceanType TODO: DOCUMENT ME!
 	 * @param harbour TODO: DOCUMENT ME!
 	 * @param speedBonus TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static List planShipRoute(Ship ship, Coordinate destination, Map allregions,
-									 RegionType oceanType, BuildingType harbour, int speedBonus) {
+									 /*RegionType oceanType,*/ BuildingType harbour, int speedBonus) {
 		if(destination != null) {
 			Map regions = CollectionFactory.createHashtable();
 			Map harbourRegions = CollectionFactory.createHashtable();
 
 			// Fetch all ocean-regions and all regions, that contain a harbour.
-			// These are the valid one in witch a path shall be searched.
-			if(oceanType != null) {
+			// These are the valid one in which a path shall be searched.
+			//if(oceanType != null) {
 				for(Iterator iter = allregions.values().iterator(); iter.hasNext();) {
 					Region r = (Region) iter.next();
 
-					if((r.getType() != null) && r.getType().equals(oceanType)) {
+					if((r.getRegionType() != null) && r.getRegionType().isOcean()) {
 						regions.put(r.getCoordinate(), r);
 					} else if(containsHarbour(r, harbour)) {
 						harbourRegions.put(r.getCoordinate(), r);
 					}
 				}
-			}
+			//}
 
 			// Add destination region:
 			Region destRegion = (Region) allregions.get(destination);
@@ -541,7 +540,7 @@ public class Regions {
 				c.y += curRegion.getCoordinate().y;
 				r = (Region) allregions.get(c);
 
-				if((r != null) && (r.getType().equals(oceanType) || containsHarbour(r, harbour))) {
+				if((r != null) && (r.getRegionType().isOcean() || containsHarbour(r, harbour))) {
 					startregions.add(r);
 					regions.put(r.getCoordinate(), r);
 				}
@@ -558,7 +557,7 @@ public class Regions {
 				c.y += curRegion.getCoordinate().y;
 				r = (Region) allregions.get(c);
 
-				if((r != null) && (r.getType().equals(oceanType) || containsHarbour(r, harbour))) {
+				if((r != null) && (r.getRegionType().isOcean() || containsHarbour(r, harbour))) {
 					startregions.add(r);
 					regions.put(r.getCoordinate(), r);
 				}
@@ -570,7 +569,7 @@ public class Regions {
 				c.y += curRegion.getCoordinate().y;
 				r = (Region) allregions.get(c);
 
-				if((r != null) && (r.getType().equals(oceanType) || containsHarbour(r, harbour))) {
+				if((r != null) && (r.getRegionType().isOcean() || containsHarbour(r, harbour))) {
 					startregions.add(r);
 					regions.put(r.getCoordinate(), r);
 				}

@@ -98,8 +98,8 @@ public class UnitContainerContextMenu extends JPopupMenu {
 						planShipRoute();
 					}
 				});
-			add(planShipRoute);
 			planShipRoute.setEnabled(ShipRoutePlanner.canPlan((Ship) uc));
+			add(planShipRoute);
 		} else if(uc instanceof Faction) {
 			JMenuItem copyMail = new JMenuItem(getString("menu.copymail.caption"));
 			copyMail.addActionListener(new ActionListener() {
