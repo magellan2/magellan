@@ -1,17 +1,4 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
- *                          Stefan Goetz, Sebastian Pappert,
- *                          Klaas Prause, Enno Rehling,
- *                          Sebastian Tusk, Ulrich Kuester,
- *                          Ilja Pavkovic
- *
- * This file is part of the Eressea Java Code Base, see the
- * file LICENSING for the licensing information applying to
- * this file.
- *
- */
-
-/*
  * Copyright (c) 2003 Sun Microsystems, Inc. All  Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without

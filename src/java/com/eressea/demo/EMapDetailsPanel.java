@@ -3393,7 +3393,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		if(o instanceof ActionListener) {
 			((ActionListener) o).actionPerformed(null);
-
 			return;
 		}
 
@@ -3439,6 +3438,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			}
 		}
 
+		// TODO: valueChanged is the worst selection event to change objects
+		// dont know how to mimic it. Double click would be nice
 		if(fireObj != null) {
 			dispatcher.fire(new com.eressea.event.SelectionEvent(this, null,
 																 fireObj));

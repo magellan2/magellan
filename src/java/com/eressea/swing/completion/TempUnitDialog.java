@@ -24,6 +24,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import java.util.Map;
 import java.util.Properties;
@@ -36,11 +38,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.eressea.swing.InternationalizedDialog;
 
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.JVMUtilities;
 import com.eressea.util.NameGenerator;
+import com.eressea.util.logging.Logger;
+
 
 /**
  * TODO: DOCUMENT ME!
@@ -51,6 +57,9 @@ import com.eressea.util.NameGenerator;
 public class TempUnitDialog extends InternationalizedDialog
 	implements ActionListener
 {
+
+	private final static Logger log = Logger.getInstance(TempUnitDialog.class);
+
 	protected JTextField		 id;
 	protected JTextField		 name;
 	protected JButton			 more;
@@ -211,6 +220,25 @@ public class TempUnitDialog extends InternationalizedDialog
 		}
 
 		loadBounds();
+		
+		addWindowListener(new WindowAdapter() {
+				public void windowActivated(WindowEvent e){
+					// dont look too close on this method. It recalls itself until this.name is 
+					// showing on screen and then it calls requestFocusInWindow on it (via
+					// reflection api to stay compatible with jdk < 1.4
+					SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								if(log.isDebugEnabled()) {
+									log.debug("TempUnitDialog.requestFocusInWindows: "+
+											  TempUnitDialog.this.name.isShowing());
+								}
+								if(TempUnitDialog.this.name.isShowing()) {
+									JVMUtilities.requestFocusInWindow(TempUnitDialog.this.name);
+								} else {
+									SwingUtilities.invokeLater(this);
+								}
+							}});
+				}});
 	}
 
 	// overrides InternationalizedDialog.quit()
@@ -264,22 +292,18 @@ public class TempUnitDialog extends InternationalizedDialog
 	}
 
 	protected void setFocusList(boolean extended) {
+		id.setNextFocusableComponent(name);
 		if(extended) {
-			id.setNextFocusableComponent(name);
 			name.setNextFocusableComponent(recruit);
 			recruit.setNextFocusableComponent(order);
 			order.setNextFocusableComponent(descript);
 			descript.setNextFocusableComponent(more);
-			more.setNextFocusableComponent(ok);
-			ok.setNextFocusableComponent(cancel);
-			cancel.setNextFocusableComponent(id);
 		} else {
-			id.setNextFocusableComponent(name);
 			name.setNextFocusableComponent(more);
-			more.setNextFocusableComponent(ok);
-			ok.setNextFocusableComponent(cancel);
-			cancel.setNextFocusableComponent(id);
 		}
+		more.setNextFocusableComponent(ok);
+		ok.setNextFocusableComponent(cancel);
+		cancel.setNextFocusableComponent(id);
 	}
 
 	/**
@@ -306,14 +330,14 @@ public class TempUnitDialog extends InternationalizedDialog
 		setVisible(false);
 	}
 
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @param newID TODO: DOCUMENT ME!
 	 */
-	public void show(String newID) {
+	public void show(String newID, String newName) {
 		id.setText(newID);
-		name.setText(null);
 		recruit.setText(null);
 
 		if(settings.getProperty("TempUnitDialog.LastOrderEmpty", "false")
@@ -324,17 +348,21 @@ public class TempUnitDialog extends InternationalizedDialog
 		}
 
 		descript.setText(null);
-		name.requestFocus();
-		show();
+		show(newName);
 	}
 
 	/**
 	 * TODO: DOCUMENT ME!
 	 */
-	public void show() {
+	public void show(String newName) {
 		approved = false;
+		name.setText(newName);
+		// mark whole name
+		name.getCaret().setDot(0);
+		name.getCaret().moveDot(name.getText().length());
+
 		checkNameGen();
-		super.show();
+		super.setVisible(true);
 		saveCostStates();
 	}
 
