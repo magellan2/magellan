@@ -51,7 +51,7 @@ public class TaggableComparator implements Comparator {
 	 * @param subComparator the comparator used to compare the Tagged tags if this one thinks they are equal
 	 */
 	public TaggableComparator(Comparator subComparator) {
-		this(subComparator,"ejcTaggableComparatorValue");
+		this(subComparator,"ejcTaggableComparator");
 	}
 
 	/**

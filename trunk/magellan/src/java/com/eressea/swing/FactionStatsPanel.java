@@ -682,7 +682,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					List unitList = skillStats.getUnits(skill);
 
 					// now sort the units and add them as nodes...
-					Comparator idCmp = new IDComparator();
+					Comparator idCmp = IDComparator.DEFAULT;
 					Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(type,
 																									   new SkillComparator(),
 																									   null),
@@ -859,7 +859,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 		List sortedAllies = CollectionFactory.createLinkedList(allies.values());
 		Collections.sort(sortedAllies,
-						 new AllianceFactionComparator(new NameComparator(new IDComparator())));
+						 new AllianceFactionComparator(new NameComparator(IDComparator.DEFAULT)));
 
 		for(Iterator iter = sortedAllies.iterator(); iter.hasNext();) {
 			DefaultMutableTreeNode n = new DefaultMutableTreeNode(iter.next());

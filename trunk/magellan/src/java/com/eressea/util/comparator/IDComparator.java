@@ -24,17 +24,14 @@ public class IDComparator implements Comparator {
 	/**
 	 * Creates a new IDComparator object.
 	 */
-	public IDComparator() {
+	private IDComparator() {
 	}
-
-	/** The default IDComparator */
+	
+	/** The default IDComparator. We only has extrinsic state so we can use singleton here.*/
 	public static final Comparator DEFAULT = new IDComparator();
-
+	
 	/**
 	 * Compares its two arguments for order according to their ids.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 * @param o2 TODO: DOCUMENT ME!
 	 *
 	 * @return the natural ordering of <tt>o1</tt>'s id and <tt>o2</tt>'s id.
 	 */

@@ -227,7 +227,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 	private Set collapseInfo = CollectionFactory.createHashSet();
 	private Set expandInfo = CollectionFactory.createHashSet();
 	private Set selectionTransfer = CollectionFactory.createHashSet();
-	private static final Comparator idCmp = new IDComparator();
+	private static final Comparator idCmp = IDComparator.DEFAULT;
 	private static final Comparator nameCmp = new NameComparator(idCmp);
 
 	/**
@@ -1455,7 +1455,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 																					.getID());
 
 		if(parentNode != null) {
-			Comparator idComp = new IDComparator();
+			Comparator idComp = IDComparator.DEFAULT;
 			List siblings = CollectionFactory.createLinkedList(e.getTempUnit().getParent()
 																.tempUnits());
 			Collections.sort(siblings, idComp);
@@ -1514,13 +1514,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		if((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions", "true"))).booleanValue() == true) {
 			if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates").equals("coordinates")) {
 				List sortedRegions = CollectionFactory.createLinkedList(regions);
-				Collections.sort(sortedRegions, new IDComparator());
+				Collections.sort(sortedRegions, IDComparator.DEFAULT);
 
 				return sortedRegions;
 			} else if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates")
 								  .equals("islands")) {
 				List sortedRegions = CollectionFactory.createLinkedList(regions);
-				Comparator idCmp = new IDComparator();
+				Comparator idCmp = IDComparator.DEFAULT;
 				Collections.sort(sortedRegions,
 								 new RegionIslandComparator(new NameComparator(idCmp), idCmp, idCmp));
 
@@ -1979,7 +1979,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					}
 
 					Collections.sort(v,
-									 new SkillTypeRankComparator(new NameComparator(new IDComparator()),
+									 new SkillTypeRankComparator(new NameComparator(IDComparator.DEFAULT),
 																 EMapOverviewPanel.this.settings));
 					skillList.setListData(v.toArray());
 				}

@@ -70,7 +70,7 @@ public class TreeHelper {
 	/** TODO: DOCUMENT ME! */
 	public static final int TAGGABLE = 6;
 
-	private static final Comparator nameComparator = new NameComparator(new IDComparator());
+	private static final Comparator nameComparator = new NameComparator(IDComparator.DEFAULT);
 	private static final Comparator buildingComparator = new BuildingTypeComparator(nameComparator);
 	private static final Comparator healthCmp = new UnitHealthComparator(null);
 
