@@ -444,6 +444,9 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 		}
 
 		newUC.cache = null;
+
+		newUC.sortIndex = Math.max(newUC.sortIndex, curUC.sortIndex);
+
 	}
 
 	/**
