@@ -13,14 +13,18 @@
 
 package com.eressea.swing.desktop;
 
+import javax.swing.JPanel;
+
 /**
- * TODO: DOCUMENT ME!
+ * A perspective is a composite view with a menubar 
  *
- * @author $author$
+ * @author Ilja Pavkovic
  * @version $Revision$
  */
 public interface Perspective {
 	/*
 	 * A Perspective holds informations about the desktop view
 	 */
+
+	public JPanel getJPanel();
 }

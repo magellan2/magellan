@@ -8,5 +8,10 @@
 	<classpathentry kind="lib" path="src/release/lib/xml/jaxp-api.jar"/>
 	<classpathentry kind="lib" path="buildlib/xml-apis.jar"/>
 	<classpathentry sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.0.0/src/org.junit_3.8.1/junitsrc.zip" kind="var" path="JUNIT_HOME/junit.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/skins/kunststoff.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/skins/metouia.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/skins/xplookandfeel.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/jh.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/looks-1.3b1.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

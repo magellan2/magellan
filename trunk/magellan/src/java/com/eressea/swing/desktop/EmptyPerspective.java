@@ -30,7 +30,7 @@ public class EmptyPerspective implements Perspective {
 	/*
 	 * A Perspective holds informations about the desktop view
 	 */
-	public JPanel build() {
+	public JPanel getJPanel() {
 		int border = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
 		JPanel ret = new JPanel();
 		ret.setBorder(BorderFactory.createEmptyBorder(border, border, border, border));
