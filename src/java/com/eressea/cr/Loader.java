@@ -51,7 +51,7 @@ public class Loader {
 			File tempFile = CopyFile.createCrTempFile();
 			tempFile.deleteOnExit();
 
-			FileType filetype = FileTypeFactory.singleton().createFileType(tempFile);
+			FileType filetype = FileTypeFactory.singleton().createFileType(tempFile, false);
 
 			// write cr to file
 			CRWriter crw = new CRWriter(filetype);

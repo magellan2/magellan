@@ -135,7 +135,7 @@ public class FileSaveAsAction extends MenuAction {
 
 	protected void doSaveAction(File file) {
 		try {
-			doSaveAction(FileTypeFactory.singleton().createFileType(file));
+			doSaveAction(FileTypeFactory.singleton().createFileType(file, false));
 		} catch(IOException exc) {
 			log.error(exc);
 			JOptionPane.showMessageDialog(client, exc.toString(),

@@ -1,5 +1,8 @@
 2003-12-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/io/file/*.java: added new boolean readonly 
+	to mark read only files.
+
 	* src/java/com/eressea/util/FileHistory.java: Prevent NPE if
 	GameData is not loadable.
 
@@ -12,7 +15,7 @@
 2003-11-30  Ilja Pavkovic  <noeskadu@gmx.de>
 
 	* src/java/com/eressea/swing/InfoDlg.java (initComponents): added
-	call to VersionInfo.getVersion simple version  
+	call to VersionInfo.getVersion simple version.
 
 	* build.xml: added support for junit testing.
 

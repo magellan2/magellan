@@ -25,14 +25,14 @@ import org.apache.tools.bzip2.CBZip2InputStream;
 import org.apache.tools.bzip2.CBZip2OutputStream;
 
 /**
- * TODO: DOCUMENT ME!
+ * A <code>BZip2FileType</code> represents file compressed with bzip2.
  *
  * @author $author$
  * @version $Revision$
  */
 public class BZip2FileType extends FileType {
-	BZip2FileType(String aFile) throws IOException {
-		super(aFile);
+	BZip2FileType(String aFile, boolean readonly) throws IOException {
+		super(aFile, readonly);
 	}
 
 	protected InputStream createInputStream() throws IOException {

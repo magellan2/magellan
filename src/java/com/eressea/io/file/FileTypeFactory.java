@@ -19,10 +19,8 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import com.eressea.io.MissingInputException;
-
 /**
- * A class to create FileTypes
+ * A class to create FileTypes.
  */
 public class FileTypeFactory {
 	private FileTypeFactory() {
@@ -33,70 +31,77 @@ public class FileTypeFactory {
 	/**
 	 * Returns the sole FileTypeFactory (with respect to singleton pattern).
 	 *
-	 * @return the sole <code>FileTypeFactory</code>
+	 * @return the singleton <code>FileTypeFactory</code>
 	 */
 	public static FileTypeFactory singleton() {
 		return singleton;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates an <code>InputStreamSourceFileType</code> of the given
+	 * file name.
 	 *
-	 * @param fileName TODO: DOCUMENT ME!
+	 * @param url the URL to the InputStream
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return an InputStreamSourceFileType pointing to the given URL.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
-	public FileType createInputStreamSourceFileType(String fileName)
+	public FileType createInputStreamSourceFileType(String url)
 											 throws IOException
 	{
-		return new InputStreamSourceFileType(fileName).checkConnection();
+		return new InputStreamSourceFileType(url).checkConnection();
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates an <code>InputStreamSourceFileType</code> of the given
+	 * file name.
 	 *
-	 * @param fileName TODO: DOCUMENT ME!
+	 * @param url the URL to the InputStream
+	 * @param readonly file shall be readonly
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a FileType pointing to the given File.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
-	public FileType createFileType(File fileName) throws IOException {
-		return createFileType(fileName.getPath());
+	public FileType createFileType(File fileName, boolean readonly) throws IOException {
+		return createFileType(fileName.getPath(), readonly);
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates an <code>InputStreamSourceFileType</code> of the given
+	 * file name.
 	 *
-	 * @param fileName TODO: DOCUMENT ME!
+	 * @param url the URL to the InputStream
+	 * @param readonly file shall be readonly
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a FileType pointing to the given File.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
-	public FileType createFileType(String fileName) throws IOException {
-		return createFileType(fileName, null);
+	public FileType createFileType(String fileName, boolean readonly) throws IOException {
+		return createFileType(fileName, readonly, null);
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates an <code>InputStreamSourceFileType</code> of the given
+	 * file name.
 	 *
-	 * @param fileName TODO: DOCUMENT ME!
-	 * @param ftc TODO: DOCUMENT ME!
+	 * @param url the URL to the InputStream
+	 * @param readonly file shall be readonly
+	 * @param ftc a FileTypeChooser used if entry in compressed file is not unique.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a FileType pointing to the given File.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
-	public FileType createFileType(String fileName, FileTypeChooser ftc)
+	public FileType createFileType(String fileName, boolean readonly, FileTypeChooser ftc)
 							throws IOException
 	{
-		return doCreateFileType(fileName, ftc).checkConnection();
+		return doCreateFileType(fileName, readonly, ftc).checkConnection();
 	}
 
-	private FileType doCreateFileType(String fileName, FileTypeChooser ftc)
+	private FileType doCreateFileType(String fileName, boolean readonly, FileTypeChooser ftc)
 							   throws IOException
 	{
 		if(fileName == null) {
@@ -106,30 +111,30 @@ public class FileTypeFactory {
 		String fileNameLC = fileName.toLowerCase();
 
 		if(fileNameLC.endsWith(FileType.GZIP)) {
-			return new GZipFileType(fileName);
+			return new GZipFileType(fileName, readonly);
 		}
 
 		if(fileNameLC.endsWith(FileType.BZIP2)) {
-			return new BZip2FileType(fileName);
+			return new BZip2FileType(fileName, readonly);
 		}
 
 		if(fileNameLC.endsWith(FileType.ZIP)) {
-			return createZipFileType(fileName, ftc);
+			return createZipFileType(fileName, readonly, ftc);
 		}
 
 		if(fileNameLC.endsWith(FileType.CR) ||
 			   fileNameLC.endsWith(FileType.XML)) {
-			return new FileType(fileName);
+			return new FileType(fileName, readonly);
 		}
 
-		return new UnknownFileType(fileName);
+		return new UnknownFileType(fileName, readonly);
 	}
 
 	private static final String ENDINGS[] = new String[] {
 												FileType.CR, FileType.XML
 											};
 
-	protected FileType createZipFileType(String fileName, FileTypeChooser ftc)
+	protected FileType createZipFileType(String fileName, boolean readonly, FileTypeChooser ftc)
 								  throws IOException
 	{
 		ZipFile  zFile = new ZipFile(fileName);
@@ -137,43 +142,59 @@ public class FileTypeFactory {
 		ZipEntry entries[] = ZipFileType.getZipEntries(zFile, ENDINGS);
 
 		if(entries.length == 0) {
-			throw new MissingInputException();
+			throw new NoValidEntryException();
 		}
 
 		if(entries.length == 1) {
-			return new ZipFileType(fileName, entries[0]);
+			return new ZipFileType(fileName, readonly, entries[0]);
 		}
 
 		// entries > 1, so we need to choose one
 		if(ftc == null) {
-			throw new MissingInputException();
+			throw new NotUniqueEntryException();
 		}
 
 		ZipEntry chosenEntry = ftc.chooseZipEntry(entries);
 
 		if(chosenEntry == null) {
-			throw new MissingInputException();
+			throw new NotUniqueEntryException();
 		}
 
-		return new ZipFileType(fileName, chosenEntry);
+		return new ZipFileType(fileName, readonly, chosenEntry);
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @author $author$
-	 * @version $Revision$
+	 * A <code>FileTypeChooser</code> selects single entry if
+	 * multiple valid entries are found in a compressed file, e.g.
+	 * multiple .cr files in a .zip file.
 	 */
 	public static class FileTypeChooser {
 		/**
-		 * Choose a zip entry of a list of entries
+		 * Selects a <code>ZipEntry</code>.
 		 *
-		 * @param entries TODO: DOCUMENT ME!
+		 * @param entries an array of ZipEntry objects
 		 *
-		 * @return TODO: DOCUMENT ME!
+		 * @return the selected ZipEntry or <code>null</code> if none 
+		 * have been selected.
 		 */
 		public ZipEntry chooseZipEntry(ZipEntry entries[]) {
 			return null;
 		}
 	}
+
+	/**
+	 * A <code>NotUniqueEntryException</code> shall be thrown if 
+	 * there are multiple valid entries in a compressed file and 
+	 * none have been selected.
+	 */
+	public static class NotUniqueEntryException extends IOException {
+	}
+
+	/**
+	 * A <code>NotValidEntryException</code> shall be thrown if 
+	 * there is no valid entry in a compressed file.
+	 */
+	public static class NoValidEntryException extends IOException {
+	}
+
 }

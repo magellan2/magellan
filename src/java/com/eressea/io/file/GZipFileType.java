@@ -24,14 +24,14 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * TODO: DOCUMENT ME!
+ * A <code>GZipFileType</code> represents a file compressed with gzip.
  *
  * @author $author$
  * @version $Revision$
  */
 public class GZipFileType extends FileType {
-	GZipFileType(String aFile) throws IOException {
-		super(aFile);
+	GZipFileType(String aFile, boolean readonly) throws IOException {
+		super(aFile, readonly);
 	}
 
 	protected InputStream createInputStream() throws IOException {

@@ -24,11 +24,11 @@ import com.eressea.resource.ResourcePathClassLoader;
 
 /**
  * This FileType represent a "File" via an input stream URL. This is a
- * convenient object for encapsulating ClassLoader stuff
+ * convenient object for encapsulating ClassLoader stuff.
  */
 public class InputStreamSourceFileType extends FileType {
 	InputStreamSourceFileType(String url) throws IOException {
-		super(url);
+		super(url,true);
 	}
 
 	protected InputStream createInputStream() throws IOException {
@@ -46,27 +46,15 @@ public class InputStreamSourceFileType extends FileType {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the underlying file.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a File object
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException if file cannot be determined, e.g. for 
+	 * an url pointing to an InputStream.
 	 */
 	public File getFile() throws IOException {
 		throw new IOException("Unable to determine File for InputStream resource '" +
 							  toString() + "'.");
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 *
-	 * @throws IOException TODO: DOCUMENT ME!
-	 */
-	public FileType checkConnection() throws IOException {
-		createInputStream().close();
-
-		return this;
 	}
 }
