@@ -1082,22 +1082,18 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Ship getModifiedShip() {
-		for(Iterator iter = getRelations(UnitContainerRelation.class).iterator(); iter.hasNext();) {
-			UnitContainerRelation ucr = (UnitContainerRelation) iter.next();
+		UnitContainer uc = getModifiedUnitContainer();
+		return (uc instanceof Ship) ? (Ship) uc : null;
+	}
 
-			if(ucr instanceof EnterRelation) {
-				if(ucr.target instanceof Ship) {
-					// make fast return: first Ship-EnterRelation wins
-					return (Ship) ucr.target;
-				}
-			} else if(ucr instanceof LeaveRelation && ucr.target.equals(getShip())) {
-				// we only left our ship
-				return null;
-			}
-		}
-
-		// we stayed in our ship
-		return getShip();
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public Building getModifiedBuilding() {
+		UnitContainer uc = getModifiedUnitContainer();
+		return (uc instanceof Building) ? (Building) uc : null;
 	}
 
 	/**
@@ -1376,25 +1372,41 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	}
 
 	/**
-	 * Returns the unit container this unit is in. The type of unit container returned (faction,
-	 * region, building or ship) is equal to the class of the uc parameter.
-	 *
-	 * @param uc TODO: DOCUMENT ME!
+	 * Returns the unit container this belongs to. (ship, building or null)
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public UnitContainer getUnitContainer(UnitContainer uc) {
-		if(uc instanceof Faction) {
-			return getFaction();
-		} else if(uc instanceof Region) {
-			return getRegion();
-		} else if(uc instanceof Building) {
-			return getBuilding();
-		} else if(uc instanceof Ship) {
+	public UnitContainer getUnitContainer() {
+		if(getShip() != null) {
 			return getShip();
 		}
-
+		if(getBuilding() != null) {
+			return getBuilding();
+		}
 		return null;
+	}
+
+	/**
+	 * Returns the modified unit container this unit belongs to. (ship, building or null)
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public UnitContainer getModifiedUnitContainer() {
+		for(Iterator iter = getRelations(UnitContainerRelation.class).iterator(); iter.hasNext();) {
+			UnitContainerRelation ucr = (UnitContainerRelation) iter.next();
+
+			if(ucr instanceof EnterRelation) {
+				// fast return: first EnterRelation wins
+				return ucr.target;
+			} else if(ucr instanceof LeaveRelation && ucr.target.equals(getShip())) {
+				// fast return: first LeaveRelation wins
+				// we only left our container
+				return null;
+			}
+		}
+
+		// we stayed in our ship
+		return getUnitContainer();
 	}
 
 	/**

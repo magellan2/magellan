@@ -1075,8 +1075,8 @@ public class EresseaOrderCompleter implements Completer {
 		}
 
 		if(unit != null) {
-			if((unit.getBuilding() != null) &&
-				   unit.getBuilding().getType().equals(data.rules.getBuildingType(StringID.create("Akademie")))) {
+			if((unit.getModifiedBuilding() != null) &&
+			   unit.getModifiedBuilding().getType().equals(data.rules.getBuildingType(StringID.create("Akademie")))) {
 				if(cost == 0) {
 					cost = 50;
 				} else {

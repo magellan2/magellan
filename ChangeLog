@@ -1,5 +1,14 @@
 2004-06-08  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/demo/EMapDetailsPanel.java: show unit
+	container and modified unitcontainer in unit information.
+
+	* src/java/com/eressea/gamebinding/eressea/EresseaOrderCompleter.java: 
+	getSkillCost uses modified unit container for evaluating.
+
+	* src/java/com/eressea/Unit.java: new methods getModifiedBuilding,
+	getUnitContainer, getModifierUnitContainer.
+
 	* src/java/com/eressea/gamebinding/eressea/EresseaOrderCompleter.java:
 	autocompletion of ZAUBERE REGION (CAST REGION) creates correct coordinates.
 
