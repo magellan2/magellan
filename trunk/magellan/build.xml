@@ -339,6 +339,7 @@
 
   <target name="tagVersion" depends="distribution">
     <cvs command='tag -r "v${VERSION}"'/>
+    <cvs command='tag -r "v${VERSION} ${SRC.HELP}"'/>
   </target>
 
   <target name="test" depends="compile.magellan">
