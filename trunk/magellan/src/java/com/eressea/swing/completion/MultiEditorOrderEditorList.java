@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -89,6 +91,7 @@ import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.demo.EMapOverviewPanel;
 import com.eressea.demo.desktop.DesktopEnvironment;
 
+import com.eressea.event.GameDataEvent;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.OrderConfirmListener;
@@ -185,7 +188,11 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		focusAdapter = new MEFocusAdapter(this);
 
 		undoMgr = _undoMgr;
-
+		initGUI();
+		//startTimer();
+	}
+	
+	private void initGUI() {
 		readSettings();
 
 		content = new ScrollPanel();
@@ -234,6 +241,54 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			});
 	}
 
+
+	private static final int RECALL_IN_MS = 2;
+	private static final boolean REGIONS_WITH_UNCONFIRMED_UNITS_ONLY = true;
+	private Timer timer;
+	private Iterator unitsIterator;
+	private void startTimer() {
+		if((data != null) && (data.regions() != null)) {
+			unitsIterator = data.units().values().iterator();
+
+			if(timer == null) {
+				timer = new Timer(true);
+				timer.scheduleAtFixedRate(new TimerTask() {
+						public void run() {
+							inspectNextUnit();
+						}
+					}, RECALL_IN_MS, RECALL_IN_MS);
+			}
+		} else {
+			stopTimer();
+		}
+	}
+	private void stopTimer() {
+		unitsIterator = null;
+
+		if(timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+	}
+	private void inspectNextUnit() {
+		if(unitsIterator.hasNext()) {
+			Unit unit = (Unit) unitsIterator.next();
+			if(EMapDetailsPanel.isPrivilegedAndNoSpy(unit) && !unit.ordersConfirmed) {
+				buildOrderEditor(unit);
+			}
+		} else {
+			stopTimer();
+		}
+	}
+	
+	public void gameDataChanged(GameDataEvent e) {
+		super.gameDataChanged(e);
+
+		// rebuild order editors
+		// startTimer();
+	}
+
+
 	private void readSettings() {
 		multiEditorLayout = Boolean.valueOf(settings.getProperty("OrderEditor.multiEditorLayout",
 																 Boolean.TRUE.toString()))
@@ -268,8 +323,6 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		if(swingGlitch) {
 			swingGlitch = false;
 			SwingUtilities.invokeLater(swingGlitchThread);
-
-			// swingGlitchThread.run();
 		}
 	}
 
@@ -296,7 +349,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 							   (currentUnit.cache.orderEditor != null) &&
 							   currentUnit.cache.orderEditor.hasFocus());
 
-		// if WE triggered the selection change, the new unit DOES get the focue
+		// if WE triggered the selection change, the new unit DOES get the focus
 		restoreFocus = restoreFocus || (se.getSource() == this);
 
 		if(multiEditorLayout) {
@@ -473,7 +526,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			}
 
 			if((e.getTempUnit().cache != null) && (e.getTempUnit().cache.orderEditor != null)) {
-				requestFocus(e.getTempUnit().cache.orderEditor);
+				// pavkovic 2002.02.15: here we don't request focus in an invokeLater runnable
+				// because this would lead to intense focus change between parent and temp unit.
+				e.getTempUnit().cache.orderEditor.requestFocus();
 			}
 		}
 	}
@@ -1060,6 +1115,17 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 * @param u TODO: DOCUMENT ME!
 	 */
 	private void addUnit(Unit u) {
+		buildOrderEditor(u);
+
+		content.add(u.cache.orderEditor);
+		addListeners(u.cache.orderEditor);
+		units.add(u);
+	}
+
+	/**
+	 * Builds and attaches the order editor for and to the given unit.
+	 */
+	private void buildOrderEditor(Unit u) {
 		if((u.cache == null) || (u.cache.orderEditor == null)) {
 			OrderEditor ce = new OrderEditor(data, settings, undoMgr, dispatcher);
 
@@ -1084,12 +1150,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			u.cache.orderEditor = ce;
 			u.cache.addHandler(this);
 		}
-
-		content.add(u.cache.orderEditor);
-		addListeners(u.cache.orderEditor);
-		units.add(u);
 	}
-
 	/**
 	 * Performs the clean-up necessary to put the editor list into a state without units and
 	 * editors
