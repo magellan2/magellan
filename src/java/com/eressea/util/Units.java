@@ -31,6 +31,7 @@ import com.eressea.Unit;
 
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
+import com.eressea.StringID;
 
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
@@ -48,6 +49,9 @@ public class Units {
 	private StatItemContainer catLessContainer = null;
 	private Map itemCategoriesMap = CollectionFactory.createHashtable();
 	private NodeWrapperFactory nodeWrapperFactory = null;
+
+	private static ItemType silberbeutel = new ItemType(StringID.create("Silberbeutel"));
+	private static ItemType silberkassette = new ItemType(StringID.create("Silberkassette"));
 
 	/**
 	 * Creates a new Units object.
@@ -99,18 +103,22 @@ public class Units {
 
 				// get the stat item from the category container
 				StatItem stored = (StatItem) container.get(item.getItemType().getID());
-
-				if(stored != null) {
-					// add up the amount in the stat item
-					stored.setAmount(stored.getAmount() + item.getAmount());
-				} else {
-					// create a new stat item for this item type
-					stored = new StatItem(item.getItemType(), item.getAmount());
+				if (stored == null) {
+					stored = new StatItem(item.getItemType(), 0);
 					container.put(stored.getItemType().getID(), stored);
 				}
 
+				// add up the amount in the stat item
+				// multiply amount with unit.persons if item is
+				// silver
+				int amount = item.getAmount();
+				if (item.getItemType().equals(silberbeutel) || item.getItemType().equals(silberkassette)) {
+					amount *= u.persons;
+				}
+				stored.setAmount(stored.getAmount() + amount);
+
 				// add the unit owning the item to the stat item
-				stored.units.add(new UnitWrapper(u, item.getAmount()));
+				stored.units.add(new UnitWrapper(u, amount));
 			}
 		}
 
@@ -138,18 +146,21 @@ public class Units {
 
 				// get the stat item by item type
 				StatItem stored = (StatItem) items.get(item.getItemType().getID());
-
-				if(stored != null) {
-					// add up the amount in the stat item
-					stored.setAmount(stored.getAmount() + item.getAmount());
-				} else {
-					// create a new stat item for this item type
-					stored = new StatItem(item.getItemType(), item.getAmount());
+				if (stored == null) {
+					stored = new StatItem(item.getItemType(), 0);
 					items.put(stored.getItemType().getID(), stored);
 				}
+				// add up the amount in the stat item
+				// multiply amount with unit.persons if item is
+				// silver
+				int amount = item.getAmount();
+				if (item.getItemType().equals(silberbeutel) || item.getItemType().equals(silberkassette)) {
+					amount *= u.persons;
+				}
+				stored.setAmount(stored.getAmount() + amount);
 
 				// add the unit owning the item to the stat item
-				stored.units.add(new UnitWrapper(u, item.getAmount()));
+				stored.units.add(new UnitWrapper(u, amount));
 			}
 		}
 
