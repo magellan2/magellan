@@ -1606,6 +1606,11 @@ public class CRWriter extends BufferedWriter {
 			writeQuotedTag(region.getIsland().getID().toString(), "Insel");
 		}
 
+		if(!serverConformance && region.getData().getSelectedRegionCoordinates().containsKey(region.getID())) {
+			write("1;ejcIsSelected");
+			newLine();
+		}
+
 		if(region.hasTags()) {
 			java.util.Map map = region.getTagMap();
 			java.util.Iterator it = map.keySet().iterator();

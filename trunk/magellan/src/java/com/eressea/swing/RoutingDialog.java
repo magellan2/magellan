@@ -192,14 +192,10 @@ public class RoutingDialog extends InternationalizedDialog {
 			c.gridy = 3;
 			regionList = CollectionFactory.createLinkedList();
 
-			if(destRegions == null) {
-				destRegions = data.regions().values();
-			}
-
 			for(Iterator iter = destRegions.iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
-				if(!excludeUnnamed || ((r.getName() != null) && (r.getName() != ""))) {
+				if(!excludeUnnamed || ((r.getName() != null) && (!"".equals(r.getName())))) {
 					regionList.add(r);
 				}
 			}

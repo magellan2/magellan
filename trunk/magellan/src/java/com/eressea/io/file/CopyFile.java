@@ -107,6 +107,11 @@ public class CopyFile {
 	/** Copies the given source inputstream to the given destination outputstream. */
 	private static final int BUFF_SIZE = 100000;
 
+
+	public static synchronized void copyStreams(InputStream source, OutputStream target) throws IOException {
+		copyStreams(source, target, true);
+	}
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -115,7 +120,7 @@ public class CopyFile {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static synchronized void copyStreams(InputStream source, OutputStream target)
+	public static synchronized void copyStreams(InputStream source, OutputStream target, boolean closeStreams)
 										 throws IOException
 	{
 		InputStream in = null;
@@ -143,15 +148,24 @@ public class CopyFile {
 				out.write(buffer, 0, count);
 				count = in.read(buffer, 0, buffer.length);
 			} while(count != -1);
-
-			out.close();
+			
 		} finally {
-			if(in != null) {
-				in.close();
-			}
-
-			if(out != null) {
-				out.close();
+			if(closeStreams) {
+				if(in != null) {
+					try {
+						in.close();
+					} catch(IOException e) {
+					}
+				}
+				
+				if(out != null) {
+					try {
+						out.close();
+					} catch(IOException e) {
+					}
+				}
+			} else {
+				out.flush();
 			}
 		}
 	}

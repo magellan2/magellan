@@ -2006,19 +2006,9 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 				s2 = ((RegionArmies) o2).region.getName();
 			}
 
-			int retVal = 0;
-
-			if((s1 == null) && (s2 == null)) {
-				retVal = 0;
-			} else if((s1 == null) && (s2 != null)) {
-				retVal = -1;
-			} else if((s1 != null) && (s2 == null)) {
-				retVal = 1;
-			} else {
-				retVal = s1.compareTo(s2);
-			}
-
-			return retVal;
+			return s1 == null ? 
+				(s2 == null ? 0 : -1) :
+				s1.compareTo(s2);
 		}
 
 		/**

@@ -130,7 +130,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		this.dispatcher = d;
 
 		//this.dispatcher.addGameDataListener(this);
-		highlightSyntax = (new Boolean(settings.getProperty("OrderEditor.highlightSyntax", "true")).booleanValue());
+		highlightSyntax = (Boolean.valueOf(settings.getProperty("OrderEditor.highlightSyntax", "true")).booleanValue());
 
 		getDocument().addDocumentListener(this);
 
@@ -258,9 +258,9 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		} else if(e.getKeyCode() == KeyEvent.VK_C) {
 			int mask = KeyEvent.SHIFT_MASK | KeyEvent.CTRL_MASK;
 
-			if(e.getModifiers() == mask) {
-				// moved to ordereditorkit!
-			}
+			//if(e.getModifiers() == mask) {
+			// moved to ordereditorkit!
+			//}
 		}
 	}
 
@@ -391,10 +391,8 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		ignoreModifications = true;
 		setText("");
 
-		Iterator it = orders.iterator();
-
-		while(it.hasNext()) {
-			addOrder((String) it.next());
+		for(Iterator iter = orders.iterator(); iter.hasNext(); ) {
+			addOrder((String) iter.next());
 		}
 
 		setCaretPosition(0);
@@ -414,7 +412,8 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		Document doc = getDocument();
 
 		try {
-			if((doc.getLength() > 0) && (doc.getText(doc.getLength(), 1) != "\n")) {
+			//if((doc.getLength() > 0) && !doc.getText(doc.getLength(), 1).equals("\n")) {
+			if((doc.getLength() > 0)) {
 				doc.insertString(doc.getLength(), "\n", null);
 			}
 
@@ -466,7 +465,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 			highlightSyntax = bool;
 
 			if(settings != null) {
-				settings.setProperty("OrderEditor.highlightSyntax", (new Boolean(bool)).toString());
+				settings.setProperty("OrderEditor.highlightSyntax", String.valueOf(bool));
 			}
 
 			formatTokens();
@@ -896,7 +895,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 					   (text.substring(offset, offset + e.getLength()).indexOf("\n") > -1)) {
 					// multiple-line-insert happened
 					//try {
-					if((text != null) && (text.equals("") == false)) {
+					if(text.equals("") == false){
 						int p = pos;
 
 						while(p > -1) {

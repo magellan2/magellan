@@ -137,7 +137,7 @@ public class ExternalModuleLoader {
 					for(int i = 0; i < newPaths.length; i++) {
 						// add in first position
 						String newPrefix = packagePrefix + file.getName() +
-										   ((packagePrefix == "") ? "" : ".");
+										   (("".equals(packagePrefix)) ? "" : ".");
 						classes.addAll(getClassesFromPath(resLoader, externalModuleClass,
 														  newPaths[i].getAbsolutePath(), newPrefix,
 														  postfix));

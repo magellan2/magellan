@@ -281,24 +281,6 @@ public abstract class Category extends ObjectType {
 	}
 
 	/**
-	 * Indicates whether this ItemCategory object is equal to another object. Returns true only if
-	 * o is not null and an instance of class ItemCategory and o's id is equal to the id of this
-	 * ItemCategory object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) ||
-			   (this.getID().equals(((Category) o).getID()));
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
 	 * Imposes a natural ordering on ItemCategory objects. Since we may have more structured item
 	 * types, begin with the top-level ancestors and work down.
 	 *

@@ -2621,33 +2621,6 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	}
 
 	/**
-	 * Indicates whether this Unit object is equal to another object. Returns true only if o is not
-	 * null and an instance of class Unit and o's id is equal to the id of this Unit object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this == o || getID().equals(((Unit) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Unit objects equivalent to the natural ordering of their ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Unit) o).getID());
-	}
-
-	/**
 	 * Returns a translation for the specified order key.
 	 *
 	 * @param key TODO: DOCUMENT ME!

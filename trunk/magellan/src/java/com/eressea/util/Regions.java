@@ -292,12 +292,9 @@ public class Regions {
 
 		/* first, determine the distance from the start region to all
 		   other regions */
-		while(true) {
+		while(!backlogList.isEmpty()) {
 			/* in this loop the backlog list contains all regions with
 			   unkown distance to start */
-			if((backlogList == null) || (backlogList.size() == 0)) {
-				break;
-			}
 
 			/* take the first region from the backlog list */
 			curRegion = (Region) backlogList.getFirst();

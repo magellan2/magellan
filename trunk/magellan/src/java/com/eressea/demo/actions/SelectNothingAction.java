@@ -92,6 +92,7 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 			}
 		}
 
+		client.getData().setSelectedRegionCoordinates(selectedRegions);
 		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}

@@ -225,29 +225,6 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this Group object is equal to another object. Returns true only if o is
-	 * not null and an instance of class Group and o's id is equal to the id of this Group object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		return (this == o) || (o instanceof Group && this.getID().equals(((Group) o).getID()));
-	}
-
-	/**
-	 * Imposes a natural ordering on Group objects equivalent to the natural ordering of their ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Group) o).getID());
-	}
-
-	/**
 	 * Transfers all available information from the current group to the new one.
 	 *
 	 * @param curGD fully loaded game data

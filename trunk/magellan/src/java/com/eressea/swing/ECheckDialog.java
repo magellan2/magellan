@@ -89,9 +89,9 @@ public class ECheckDialog extends InternationalizedDataDialog {
 		int y = Integer.parseInt(settings.getProperty("ECheckDialog.y",
 													  ((screen.height - getHeight()) / 2) + ""));
 		this.setLocation(x, y);
-		pnlECheck.setSelRegionsOnly(new Boolean(settings.getProperty("ECheckDialog.includeSelRegionsOnly",
+		pnlECheck.setSelRegionsOnly(Boolean.valueOf(settings.getProperty("ECheckDialog.includeSelRegionsOnly",
 																	 "false")).booleanValue());
-		pnlECheck.setConfirmedOnly(new Boolean(settings.getProperty("ECheckDialog.confirmedOnly",
+		pnlECheck.setConfirmedOnly(Boolean.valueOf(settings.getProperty("ECheckDialog.confirmedOnly",
 																	"false")).booleanValue());
 	}
 
@@ -134,14 +134,14 @@ public class ECheckDialog extends InternationalizedDataDialog {
 	}
 
 	private void storeSettings() {
-		settings.setProperty("ECheckDialog.x", getX() + "");
-		settings.setProperty("ECheckDialog.y", getY() + "");
-		settings.setProperty("ECheckDialog.width", getWidth() + "");
-		settings.setProperty("ECheckDialog.height", getHeight() + "");
+		settings.setProperty("ECheckDialog.x", String.valueOf(getX()));
+		settings.setProperty("ECheckDialog.y", String.valueOf(getY()));
+		settings.setProperty("ECheckDialog.width", String.valueOf(getWidth()));
+		settings.setProperty("ECheckDialog.height", String.valueOf(getHeight()));
 		settings.setProperty("ECheckDialog.includeSelRegionsOnly",
-							 new Boolean(pnlECheck.getSelRegionsOnly()) + "");
+							 String.valueOf(pnlECheck.getSelRegionsOnly()));
 		settings.setProperty("ECheckDialog.confirmedOnly",
-							 new Boolean(pnlECheck.getConfirmedOnly()) + "");
+							 String.valueOf(pnlECheck.getConfirmedOnly()));
 	}
 
 	protected void quit() {

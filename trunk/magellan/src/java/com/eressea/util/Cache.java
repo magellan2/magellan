@@ -26,25 +26,22 @@ import java.util.Map;
 public class Cache {
 	private Collection handlers = null;
 
-	// used in swing.completion.* classes per unit
-
-	/** TODO: DOCUMENT ME! */
+	/** used in swing.completion.* classes per unit */
 	public com.eressea.swing.completion.OrderEditor orderEditor = null;
 
 	// used in swing.map.RegionImageCellRenderer per region
 	// public int fogOfWar = -1;
-	// used in Unit and UnitContainer for relations between or to units
-
-	/** TODO: DOCUMENT ME! */
+	
+	/** used in Unit and UnitContainer for relations between or to units */
 	public Collection relations = null;
 
-	// used in Unit for skills after person transfers and recruiting
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// IMPORTANT: do not modify this thing (except for assignments)
-	// since it may point to the Unit.skills map!!
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	/** TODO: DOCUMENT ME! */
+	/**
+	 * used in Unit for skills after person transfers and recruiting
+	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * IMPORTANT: do not modify this thing (except for assignments)
+	 * since it may point to the Unit.skills map!!
+	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
 	public Map modifiedSkills = null;
 
 	/** TODO: DOCUMENT ME! */
@@ -59,22 +56,22 @@ public class Cache {
 	/** TODO: DOCUMENT ME! */
 	public int modifiedPersons = -1;
 
-	// used in UnitContainer
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// IMPORTANT: do not modify this thing (except for assignments)
-	// since it may point to the UnitContainer.units map!!
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	/** TODO: DOCUMENT ME! */
+	/**
+	* used in UnitContainer
+	* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	* IMPORTANT: do not modify this thing (except for assignments)
+	* since it may point to the UnitContainer.units map!!
+	* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	*/
 	public Map modifiedContainerUnits = null;
 
 	/** TODO: DOCUMENT ME! */
 	public Map regionItems = null;
 
-	// Used in Unit (FIXME(pavkovic): right now used in PathCellRenderer) to store
-	// movement information extracted from travelThru (-Ship) and faction messages
-
-	/** TODO: DOCUMENT ME! */
+	/**
+	 * Used in Unit (FIXME(pavkovic): right now used in PathCellRenderer) to store
+	 * movement information extracted from travelThru (-Ship) and faction messages
+	 */
 	public List movementPath = null;
 
 	/** TODO: DOCUMENT ME! */

@@ -103,6 +103,7 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 		}
 
 		selectedRegions = newSelectedRegions;
+		client.getData().setSelectedRegionCoordinates(selectedRegions);
 		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}

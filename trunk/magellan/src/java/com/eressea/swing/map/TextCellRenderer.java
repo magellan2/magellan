@@ -72,7 +72,7 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 			} catch(NumberFormatException e) {
 			}
 
-			setScalingFont((new Boolean(settings.getProperty("TextCellRenderer.isScalingFont",
+			setScalingFont((Boolean.valueOf(settings.getProperty("TextCellRenderer.isScalingFont",
 															 "false"))).booleanValue());
 		}
 
@@ -102,7 +102,7 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 		if(bool != isScalingFont()) {
 			super.setScalingFont(bool);
 			settings.setProperty("TextCellRenderer.isScalingFont",
-								 (new Boolean(isScalingFont())).toString());
+								 String.valueOf(isScalingFont()));
 		}
 	}
 

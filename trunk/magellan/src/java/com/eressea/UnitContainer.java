@@ -505,24 +505,6 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 		return r;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract boolean equals(Object o);
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract int compareTo(Object o);
-
 	// EXTERNAL TAG METHODS
 	public void deleteAllTags() {
 		externalMap = null;

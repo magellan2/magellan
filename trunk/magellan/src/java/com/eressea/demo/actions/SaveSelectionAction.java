@@ -16,6 +16,8 @@ package com.eressea.demo.actions;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.io.file.FileBackup;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
@@ -121,24 +124,38 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 		fc.setDialogTitle(getString("title"));
 
 		if(fc.showSaveDialog(client) == JFileChooser.APPROVE_OPTION) {
+			PrintWriter pw = null;
 			try {
 				client.getSettings().setProperty(getPropertyName(),
 												 fc.getSelectedFile().getAbsolutePath());
 
-				BufferedWriter bw = new BufferedWriter(new FileWriter(fc.getSelectedFile()));
+				if(fc.getSelectedFile().exists()) {
+					// create backup file
+					try {
+						File backup = FileBackup.create(fc.getSelectedFile());
+						log.info("Created backupfile " + backup);
+					} catch(IOException ie) {
+						log.warn("Could not create backupfile for file " + fc.getSelectedFile());
+					}
+				} 
+				
+				pw = new PrintWriter(new BufferedWriter(new FileWriter(fc.getSelectedFile())));
 
 				for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
-					bw.write(((Coordinate) iter.next()).toString(DELIMITER));
-					bw.newLine();
+					pw.println(((Coordinate) iter.next()).toString(DELIMITER));
 				}
 
-				bw.close();
-			} catch(Exception exc) {
+				pw.close();
+			} catch(IOException exc) {
 				log.error(exc);
 				JOptionPane.showMessageDialog(client, exc.toString(),
 											  Translations.getTranslation(this,
 																		  "msg.filesave.error.title"),
 											  JOptionPane.ERROR_MESSAGE);
+			} finally {
+				if(pw != null) {
+					pw.close();
+				}
 			}
 		}
 	}

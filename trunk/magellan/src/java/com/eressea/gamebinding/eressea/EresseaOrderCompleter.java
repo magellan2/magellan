@@ -868,7 +868,7 @@ public class EresseaOrderCompleter implements Completer {
 								resourcename = "\"" + resourcename + "\"";
 							}
 
-							if(order == "") {
+							if("".equals(order)) {
 								order += resourcename;
 							} else {
 								order += ("\n" +

@@ -55,14 +55,14 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 	 */
 	public RegionImageCellRenderer(CellGeometry geo, Properties settings) {
 		super(geo, settings);
-		fogOfWar = (new Boolean(settings.getProperty("RegionImageCellRenderer.fogOfWar",
+		fogOfWar = (Boolean.valueOf(settings.getProperty("RegionImageCellRenderer.fogOfWar",
 													 Boolean.TRUE.toString()))).booleanValue();
 		item = new JCheckBoxMenuItem(getString("chk.showfow.caption"), fogOfWar);
 		item.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
 					fogOfWar = item.isSelected();
 					getSettings().setProperty("RegionImageCellRenderer.fogOfWar",
-											  (new Boolean(fogOfWar)).toString());
+											  String.valueOf(fogOfWar));
 
 					if(obs != null) {
 						obs.contextDataChanged();
@@ -159,7 +159,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 	 */
 	public void setFogOfWar(boolean bool) {
 		fogOfWar = bool;
-		settings.setProperty("RegionImageCellRenderer.fogOfWar", (new Boolean(fogOfWar)).toString());
+		settings.setProperty("RegionImageCellRenderer.fogOfWar", String.valueOf(fogOfWar));
 		item.setSelected(fogOfWar);
 	}
 

@@ -824,7 +824,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public void setMultiEditorLayout(boolean bool) {
 		if(bool != multiEditorLayout) {
-			settings.setProperty("OrderEditor.multiEditorLayout", (new Boolean(bool)).toString());
+			settings.setProperty("OrderEditor.multiEditorLayout", String.valueOf(bool));
 			clearUnits();
 
 			if(bool && (editor != null)) {
@@ -863,7 +863,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public void setHideButtons(boolean bool) {
 		if(bool != hideButtons) {
-			settings.setProperty("OrderEditor.hideButtons", (new Boolean(bool)).toString());
+			settings.setProperty("OrderEditor.hideButtons", String.valueOf(bool));
 			hideButtons = bool;
 			redrawPane();
 		}
@@ -2248,7 +2248,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 									String descript = dialog.getDescript();
 
 									if((descript != null) && !descript.trim().equals("")) {
-										descript.replace('\n', ' ');
+										descript = descript.replace('\n', ' ');
 										tempUnit.setDescription(descript);
 										data.getGameSpecificStuff().getOrderChanger()
 											.addDescribeUnitOrder(tempUnit, descript);

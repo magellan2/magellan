@@ -30,22 +30,4 @@ public abstract class UnitContainerType extends ObjectType {
 	public UnitContainerType(ID id) {
 		super(id);
 	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract boolean equals(Object o);
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract int compareTo(Object o);
 }

@@ -106,7 +106,7 @@ public class HelpAction extends MenuAction {
 			Class setDisplayedMethodSignature[] = { boolean.class };
 			Method setDisplayedMethod = this.helpBroker.getClass().getMethod("setDisplayed",
 																			 setDisplayedMethodSignature);
-			Object setDisplayedMethodArgs[] = { new Boolean(true) };
+			Object setDisplayedMethodArgs[] = { Boolean.TRUE };
 
 			// this calls new javax.help.HelpBroker.setDisplayed(true)
 			setDisplayedMethod.invoke(this.helpBroker, setDisplayedMethodArgs);

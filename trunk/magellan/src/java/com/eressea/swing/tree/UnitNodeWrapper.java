@@ -562,7 +562,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void setReverseOrder(boolean bool) {
-		reverse = new Boolean(bool);
+		reverse = bool ? Boolean.TRUE : Boolean.FALSE;
 	}
 
 	/**

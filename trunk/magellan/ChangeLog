@@ -1,3 +1,18 @@
+2004-08-14  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/build.xml: added support for findbugs.
+
+	* src/java/com/eressea/Identifiable.java: created a default
+	implementation for equals, hashCode and compareTo to reduce
+	redundant code.
+
+2004-08-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/*: store selection in GameData file.
+
+	* src/java/com/eressea/demo/actions/SaveSelectionAction.java:
+	save backup file if file exists.
+
 2004-08-12  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/*: changed equals to get rid of

@@ -353,31 +353,4 @@ public class Faction extends UnitContainer {
 			}
 		}
 	}
-
-	/**
-	 * Compares this faction to another object. Returns true only if o is not null and an instance
-	 * of class Faction and their id's are equal.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) || this.getID().equals(((Faction) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on faction objects based on the natural ordering of their ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Faction) o).getID());
-	}
 }

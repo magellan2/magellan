@@ -159,35 +159,6 @@ public class ItemType extends ObjectType {
 	}
 
 	/**
-	 * Indicates whether this ItemType object is equal to another object. Returns true only if o is
-	 * not null and an instance of class ItemType and o's id is equal to the id of this ItemType
-	 * object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) || this.getID().equals(((ItemType) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on ItemType objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((ItemType) o).getID());
-	}
-
-	/**
 	 * Returns the file name of the icon to use for this item.
 	 *
 	 * @return TODO: DOCUMENT ME!

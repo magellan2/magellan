@@ -59,7 +59,7 @@ public class ExternalModuleSettings extends InternationalizedPanel implements Pr
 		GridBagConstraints c = new GridBagConstraints();
 
 		chkSearchResources = new JCheckBox(getString("chk.searchResources"),
-										   new Boolean(settings.getProperty("ExternalModuleLoader.searchResourcePathClassLoader",
+										   Boolean.valueOf(settings.getProperty("ExternalModuleLoader.searchResourcePathClassLoader",
 																			"true")).booleanValue());
 
 		c.gridx = 0;
@@ -71,7 +71,7 @@ public class ExternalModuleSettings extends InternationalizedPanel implements Pr
 		pnl.add(chkSearchResources, c);
 
 		chkSearchClassPath = new JCheckBox(getString("chk.searchClassPath"),
-										   new Boolean(settings.getProperty("ExternalModuleLoader.searchClassPath",
+										   Boolean.valueOf(settings.getProperty("ExternalModuleLoader.searchClassPath",
 																			"true")).booleanValue());
 
 		c.gridx = 0;

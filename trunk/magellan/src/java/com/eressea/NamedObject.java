@@ -75,21 +75,21 @@ public abstract class NamedObject extends Identifiable implements Named {
 		return super.clone();
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract boolean equals(Object o);
+// 	/**
+// 	 * TODO: DOCUMENT ME!
+// 	 *
+// 	 * @param o TODO: DOCUMENT ME!
+// 	 *
+// 	 * @return TODO: DOCUMENT ME!
+// 	 */
+// 	public abstract boolean equals(Object o);
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract int compareTo(Object o);
+// 	/**
+// 	 * TODO: DOCUMENT ME!
+// 	 *
+// 	 * @param o TODO: DOCUMENT ME!
+// 	 *
+// 	 * @return TODO: DOCUMENT ME!
+// 	 */
+// 	public abstract int compareTo(Object o);
 }

@@ -176,7 +176,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		// set the tracker used to repaint when loading and scaling images takes a while
 		// TODO: remove this decision from options. This is a developer decision!!!
-		if((new Boolean(settings.getProperty("Mapper.deferPainting", "true"))).booleanValue()) {
+		if((Boolean.valueOf(settings.getProperty("Mapper.deferPainting", "true"))).booleanValue()) {
 			tracker = new MediaTracker(this);
 			ImageCellRenderer.setTracker(tracker);
 		}
@@ -224,6 +224,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 									selectedRegions.remove(c);
 								}
 
+								data.setSelectedRegionCoordinates(selectedRegions);
 								dispatcher.fire(new SelectionEvent(mapper,
 																   selectedRegions.values(),
 																   null,
@@ -290,6 +291,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 							}
 
 							if(doFire) {
+								data.setSelectedRegionCoordinates(selectedRegions);
 								dispatcher.fire(new SelectionEvent(mapper,
 																   selectedRegions.values(),
 																   null,
@@ -364,9 +366,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 					if(translationCoord != null) {
 						Coordinate c = new Coordinate(activeRegion.getCoordinate());
 						activeRegion = data.getRegion(c.translate(translationCoord));
-						dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null,
-																			 activeRegion,
-																			 SelectionEvent.ST_REGIONS));
+						data.setSelectedRegionCoordinates(null);
+						dispatcher.fire(new SelectionEvent(mapper, null,
+														   activeRegion,
+														   SelectionEvent.ST_REGIONS));
 						repaint();
 					}
 				}
@@ -1310,7 +1313,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			}
 
 			ImageCellRenderer.setTracker(tracker);
-			settings.setProperty("Mapper.deferPainting", (new Boolean(bool)).toString());
+			settings.setProperty("Mapper.deferPainting", String.valueOf(bool));
 		}
 	}
 

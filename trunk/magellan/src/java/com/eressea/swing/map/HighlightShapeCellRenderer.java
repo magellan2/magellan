@@ -71,7 +71,7 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 			} catch(NumberFormatException e) {
 			}
 
-			drawFilled = new Boolean(settings.getProperty("HighlightShapeCellRenderer.drawfilled",
+			drawFilled = Boolean.valueOf(settings.getProperty("HighlightShapeCellRenderer.drawfilled",
 														  "true")).booleanValue();
 		}
 	}
@@ -158,7 +158,7 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 
 		if(settings != null) {
 			settings.setProperty("HighlightShapeCellRenderer.drawfilled",
-								 (new Boolean(bool)).toString());
+								 String.valueOf(bool));
 		}
 	}
 

@@ -90,23 +90,6 @@ public class CastleType extends BuildingType implements Comparable {
 	}
 
 	/**
-	 * Indicates whether this CastleType object is equal to another object. Returns true only if o
-	 * is not null and an instance of class CastleType and o's id is equal to the id of this
-	 * CastleType object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) ||this.getID().equals(((CastleType) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
 	 * Imposes a natural ordering on CastleType objects according to their minimum size attribute.
 	 * If obj is an instance of class BuildingType the return value reflects the natural ordering
 	 * of the ids of this object and obj.
@@ -129,7 +112,7 @@ public class CastleType extends BuildingType implements Comparable {
 
 			return 0;
 		} else {
-			return this.getID().compareTo(((BuildingType) obj).getID());
+			return super.compareTo(obj);
 		}
 	}
 }

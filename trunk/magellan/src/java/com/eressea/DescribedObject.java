@@ -47,20 +47,6 @@ public abstract class DescribedObject extends NamedObject implements Described {
 	}
 
 	/**
-	 * Indicates whether another described object is "equal to" this one.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract boolean equals(Object o);
-
-	/**
-	 * Imposes a natural ordering on described objects.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract int compareTo(Object o);
-
-	/**
 	 * Returns a copy of this described object.
 	 *
 	 * @return TODO: DOCUMENT ME!

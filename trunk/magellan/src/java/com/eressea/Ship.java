@@ -186,33 +186,6 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Indicates whether this Ship object is equal to another object. Returns true only if o is not
-	 * null and an instance of class Ship and o's id is equal to the id of this  Ship object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) || this.getID().equals(((Ship) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Ship objects equivalent to the natural ordering of their ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Ship) o).getID());
-	}
-
-	/**
 	 * Merges ships.
 	 *
 	 * @param curGD TODO: DOCUMENT ME!
