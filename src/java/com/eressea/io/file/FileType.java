@@ -59,6 +59,14 @@ public class FileType {
 		this.readonly = readonly;
 	}
 
+
+	/** 
+	 * Sets if file is readonly
+	 */
+	public void setReadonly(boolean readonly) {
+		this.readonly = readonly;
+	}
+
 	/**
 	 * Tests if an InputStream can be opened for this FileType.
 	 *

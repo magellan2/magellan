@@ -23,13 +23,9 @@ import java.awt.image.PixelGrabber;
 
 import java.net.URL;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-
-import com.eressea.GameData;
 
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;

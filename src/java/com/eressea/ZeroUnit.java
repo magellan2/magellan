@@ -21,7 +21,7 @@ import com.eressea.relation.RecruitmentRelation;
 import com.eressea.util.Cache;
 
 /**
- * TODO: DOCUMENT ME!
+ * A ZeroUnit mimics behaviour of a unit called "0".
  *
  * @author $author$
  * @version $Revision$
@@ -36,7 +36,7 @@ public class ZeroUnit extends Unit {
 	/**
 	 * Creates a new ZeroUnit object.
 	 *
-	 * @param r TODO: DOCUMENT ME!
+	 * @param r the region this ZeroUnit belongs to.
 	 */
 	public ZeroUnit(Region r) {
 		// pavkovic 2003.09.09: reduce amount of UnitID(0) from n regions to 1
@@ -45,9 +45,9 @@ public class ZeroUnit extends Unit {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Sets the region of this unit
 	 *
-	 * @param r TODO: DOCUMENT ME!
+	 * @param r the region of this unit
 	 */
 	public void setRegion(Region r) {
 		if(r != getRegion()) {
@@ -64,22 +64,21 @@ public class ZeroUnit extends Unit {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the amount of recruitable persons
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return amount of recruitable persons
 	 */
 	public int getPersons() {
-		// delivers the amount of recruitable persons
+		// 
 		return getRegion().maxRecruit();
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the amount of recruitable persons - recruited persons
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return amount of recruitable persons - recruited persons
 	 */
 	public int getModifiedPersons() {
-		// delivers the amount of recruitable persons - recruited persons
 		if(cache == null) {
 			cache = new Cache();
 		}
@@ -111,7 +110,7 @@ public class ZeroUnit extends Unit {
 	/**
 	 * Returns a string representation of this temporary unit.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a string representation of this temporary unit
 	 */
 	public String toString() {
 		return getRegion().toString();

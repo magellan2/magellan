@@ -23,7 +23,6 @@ import java.util.Properties;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ImageFactory;
-import com.eressea.util.logging.Logger;
 
 /**
  * A template for a renderer that uses images for rendering objects. This class
@@ -32,7 +31,6 @@ import com.eressea.util.logging.Logger;
  * bundle.
  */
 public abstract class ImageCellRenderer extends HexCellRenderer {
-	private static final Logger log     = Logger.getInstance(ImageCellRenderer.class);
 	private Map				    images  = CollectionFactory.createHashMap();
 	private static MediaTracker tracker = null;
 
