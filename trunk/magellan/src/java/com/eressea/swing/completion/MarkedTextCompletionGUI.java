@@ -20,8 +20,8 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.SimpleAttributeSet;
 
 import com.eressea.completion.AutoCompletion;
+import com.eressea.completion.Completion;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.Completion;
 
 /**
  *

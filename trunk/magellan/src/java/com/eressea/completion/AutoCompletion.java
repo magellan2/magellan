@@ -62,17 +62,22 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.swing.InternationalizedDialog;
 import com.eressea.swing.completion.CompletionGUI;
+import com.eressea.swing.completion.ListCompletionGUI;
+import com.eressea.swing.completion.MarkedTextCompletionGUI;
+import com.eressea.swing.completion.NoneCompletionGUI;
 import com.eressea.swing.completion.OrderEditorList;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.Completion;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
  * @author  Andreas Gampe, Ulrich Küster
  */
-public class AutoCompletion implements SelectionListener, KeyListener, ActionListener, CaretListener, FocusListener, GameDataListener {
+public class AutoCompletion implements SelectionListener, KeyListener, ActionListener, 
+									   CaretListener, FocusListener, GameDataListener,
+									   CompleterSettingsProvider {
+
 	private final static Logger log = Logger.getInstance(AutoCompletion.class);
 
 	private OrderEditorList editors;
@@ -123,6 +128,13 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 
 		loadSettings();
 		timer=new Timer(time,this);
+
+		addCompletionGUI(new ListCompletionGUI());
+		addCompletionGUI(new MarkedTextCompletionGUI());
+		addCompletionGUI(new NoneCompletionGUI());
+		// let the AutoCompletion choose the current GUI
+		loadComplete();
+
 
 	}
 
@@ -522,6 +534,7 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 	}
 
 	public void gameDataChanged(GameDataEvent e) {
+		setCompleter(e.getGameData().getGameSpecificStuff().getCompleter(e.getGameData(),this));
 		if (currentGUI!=null)
 			currentGUI.stopOffer();
 	}
@@ -599,8 +612,8 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 	 * Returns a Vector containing the self defined completions as
 	 * Completion objects.
 	 */
-	public Vector getSelfDefinedCompletions() {
-		Vector retVal = new Vector();
+	public List getSelfDefinedCompletions() {
+		List retVal = new Vector();
 		for (Iterator iter = selfDefinedCompletions.keySet().iterator(); iter.hasNext(); ) {
 			String name = (String)iter.next();
 			String value = (String)selfDefinedCompletions.get(name);

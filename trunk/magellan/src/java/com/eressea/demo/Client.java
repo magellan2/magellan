@@ -49,12 +49,12 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-import com.eressea.CompleteData;
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.IntegerID;
 import com.eressea.Message;
+import com.eressea.MissingData;
 import com.eressea.Unit;
 import com.eressea.cr.Loader;
 import com.eressea.demo.actions.AbortAction;
@@ -392,7 +392,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		topLevel.add(messagePanel);
 		
 		// configure and add details panel
-		detailsPanel = new EMapDetailsPanel(dispatcher, settings, undoMgr);
+		detailsPanel = new EMapDetailsPanel(dispatcher, data, settings, undoMgr);
 		detailsPanel.setMinimumSize(new Dimension(100, 10));
 		panels.add(detailsPanel);
 		nodeWrapperFactories.add(detailsPanel.getNodeWrapperFactory());
@@ -835,7 +835,8 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			System.setErr((new Log(fileDir)).getPrintStream());
 			// can't call loadRules from here, so we initially work with an empty ruleset.
 			// This is not very nice, though...
-			GameData data = new CompleteData(new com.eressea.rules.Eressea(), "void");
+			GameData data = new MissingData();
+			// new CompleteData(new com.eressea.rules.Eressea(), "void");
 			Client c = new Client(data, fileDir, settFileDir);
 			
 			if (report != null) {

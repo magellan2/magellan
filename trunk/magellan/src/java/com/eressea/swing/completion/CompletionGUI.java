@@ -14,7 +14,7 @@ import java.util.Collection;
 import javax.swing.text.JTextComponent;
 
 import com.eressea.completion.AutoCompletion;
-import com.eressea.util.Completion;
+import com.eressea.completion.Completion;
 
 /**
  * Simple base interface for all elements that show the user possible

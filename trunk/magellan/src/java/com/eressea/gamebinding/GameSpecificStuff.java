@@ -1,5 +1,11 @@
 package com.eressea.gamebinding;
 
+import com.eressea.GameData;
+import com.eressea.Rules;
+import com.eressea.completion.Completer;
+import com.eressea.completion.OrderParser;
+import com.eressea.completion.CompleterSettingsProvider;
+
 public interface GameSpecificStuff {
 
 	// for Unit
@@ -9,8 +15,11 @@ public interface GameSpecificStuff {
 	// for EMapDetailsPanel
 	public OrderChanger    getOrderChanger();
 
-	// public OrderParser getOrderParser();
+	// public 
+	public OrderParser getOrderParser(Rules rules);
 	// public OrderWriter getOrderReader();
 	// public OrderWriter getOrderWriter();
-	// public OrderCompleter getOrderCompleter?
+	
+	public Completer getCompleter(GameData data, CompleterSettingsProvider csp);
+
 }

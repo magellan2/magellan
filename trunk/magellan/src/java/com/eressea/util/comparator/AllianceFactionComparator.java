@@ -36,17 +36,14 @@ public class AllianceFactionComparator implements Comparator {
 	 * factions of the alliances o1 and o2.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = 0;
 		Alliance a1 = (Alliance)o1;
 		Alliance a2 = (Alliance)o2;
-		if (a1 != null && a2 != null) {
-			retVal = factionSubCmp.compare(a1.getFaction(), a2.getFaction());
-		} else if (a1 == null && a2 != null) {
-			retVal = Integer.MAX_VALUE;
-		} else if (a1 != null && a2 == null) {
-			retVal = Integer.MIN_VALUE;
+
+		if(a1 == null) {
+			return a2 == null ? 0 : 1;
+		} else {
+			return a2 == null ? -1 : factionSubCmp.compare(a1.getFaction(), a2.getFaction());
 		}
-		return retVal;
 	}
 
 	/**

@@ -66,7 +66,7 @@ public class TopmostRankedSkillComparator implements Comparator {
 					return 0;
 				}
 			}
-			retVal = rankCmp.compare(s1.getType(), s2.getType());
+			retVal = rankCmp.compare(s1.getSkillType(), s2.getSkillType());
 			if (retVal != 0) {
 				return retVal;
 			} else {

@@ -30,8 +30,6 @@ import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
-import com.eressea.util.EresseaOrderConstants;
-import com.eressea.util.OrderParser;
 import com.eressea.util.OrderToken;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
@@ -67,7 +65,7 @@ public class EresseaRelationFactory implements RelationFactory {
 		}
 		
 		// 4. parse the orders and create new relations
-		OrderParser parser = new OrderParser((Eressea)data.rules);
+		EresseaOrderParser parser = new EresseaOrderParser(data.rules);
 		boolean tempOrders = false;
 		int line = 0;
 		for (Iterator iter = u.getOrders().iterator(); iter.hasNext(); ) {

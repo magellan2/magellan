@@ -26,7 +26,7 @@ import com.eressea.rules.BuildingType;
  * the result of the sub-comparator's comparison is returned.</p>
  */
 public class BuildingTypeComparator implements Comparator {
-	protected Comparator sameTypeSubCmp = null;
+	protected Comparator subCmp = null;
 
 	/**
 	 * Creates a new BuildingTypeComparator object.
@@ -34,8 +34,8 @@ public class BuildingTypeComparator implements Comparator {
 	 * same type are compared, this sub-comparator is applied if
 	 * it is not <tt>null</tt>.
 	 */
-	public BuildingTypeComparator (Comparator sameTypeSubComparator) {
-		sameTypeSubCmp = sameTypeSubComparator;
+	public BuildingTypeComparator (Comparator aSubCmp) {
+		subCmp = aSubCmp;
 	}
 
 	/**
@@ -49,11 +49,9 @@ public class BuildingTypeComparator implements Comparator {
 	public int compare(Object o1, Object o2) {
 		BuildingType t1 = (BuildingType)((Building)o1).getType();
 		BuildingType t2 = (BuildingType)((Building)o2).getType();
+		
 		int retVal = t1.compareTo(t2);
-		if (retVal == 0 && sameTypeSubCmp != null) {
-			retVal = sameTypeSubCmp.compare(o1, o2);
-		}
-		return retVal;
+		return (retVal == 0 && subCmp != null) ? subCmp.compare(o1,o2) : retVal;
 	}
 
 	/**

@@ -6,7 +6,7 @@
 // $Id$
 // ===
 
-package com.eressea.util;
+package com.eressea.gamebinding.eressea;
 
 
 import java.io.Reader;
@@ -15,12 +15,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import com.eressea.Rules;
 import com.eressea.UnitID;
+import com.eressea.completion.OrderParser;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
 import com.eressea.rules.Eressea;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
+import com.eressea.util.Direction;
+import com.eressea.util.IDBaseConverter;
+import com.eressea.util.OrderToken;
+import com.eressea.util.OrderTokenizer;
+import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -31,8 +38,8 @@ import com.eressea.util.logging.Logger;
  * <tt>OrderParser</tt> will call the corresponding methods of the
  * <tt>OrderCompleter</tt> if it encounters an incomplete order.
  */
-public class OrderParser {
-	private final static Logger log = Logger.getInstance(OrderParser.class);
+public class EresseaOrderParser implements OrderParser {
+	private final static Logger log = Logger.getInstance(EresseaOrderParser.class);
 
 	// this is not entirely true with dynamic bases but it probably doesn't really hurt
 	private final static int MAX_UID = 1679615;
@@ -40,26 +47,26 @@ public class OrderParser {
 	private String errMsg = null;
 	private TokenBucket tokenBucket = null;
 	private Iterator tokens = null;
-	private OrderCompleter completer = null;
+	private EresseaOrderCompleter completer = null;
 	private Eressea rules = null;
 
 	/**
-	 * Creates a new <tt>OrderParser</tt> object.
+	 * Creates a new <tt>EresseaOrderParser</tt> object.
 	 */
-	public OrderParser(Eressea rules) {
+	public EresseaOrderParser(Rules rules) {
 		this(rules, null);
 	}
 
 	/**
-	 * Creates a new <tt>OrderParser</tt> object and registers
+	 * Creates a new <tt>EresseaOrderParser</tt> object and registers
 	 * the specified <tt>OrderCompleter</tt> object. This
 	 * constructor should be used only by the
 	 * <tt>OrderCompleter</tt> class itself.
 	 */
-	public OrderParser(Eressea rules, OrderCompleter cc) {
+	public EresseaOrderParser(Rules rules, EresseaOrderCompleter cc) {
 		tokenBucket = new TokenBucket();
 		completer = cc;
-		this.rules = rules;
+		this.rules = (Eressea) rules;
 	}
 
 	/**
@@ -79,10 +86,6 @@ public class OrderParser {
 	 */
 	public String getErrorMessage() {
 		return errMsg;
-	}
-
-	public void setRules(Eressea rules) {
-		this.rules = rules;
 	}
 
 	/**

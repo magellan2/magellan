@@ -202,7 +202,7 @@ public class Units {
 
 		for (Iterator iter = sortedItems.iterator(); iter.hasNext();) {
 			StatItem si = (StatItem)iter.next();
-			DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType().getName() + ": " + si.getAmount(),"items/"+si.getType().getIconName()));
+			DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType().getName() + ": " + si.getAmount(),"items/"+si.getItemType().getIconName()));
 			parentNode.add(itemNode);
 			if (showUnits && si.units != null) {
 				Collections.sort(si.units, new UnitWrapperComparator(unitComparator));
@@ -222,7 +222,7 @@ public class Units {
 		}
 
 		public int compareTo(Object o) {
-			return this.getType().getName().compareTo(((StatItem)o).getType().getName());
+			return this.getItemType().getName().compareTo(((StatItem)o).getItemType().getName());
 		}
 	}
 

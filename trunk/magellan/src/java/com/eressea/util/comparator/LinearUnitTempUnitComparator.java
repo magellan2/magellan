@@ -25,7 +25,7 @@ import com.eressea.Unit;
  * unit sub-comparator's comparison is returned.</p>
  */
 public class LinearUnitTempUnitComparator implements Comparator {
-	protected Comparator unitSubCmp = null;
+	protected Comparator subCmp = null;
 
 	/**
 	 * Creates a new LinearUnitTempUnitComparator object.
@@ -34,7 +34,7 @@ public class LinearUnitTempUnitComparator implements Comparator {
 	 * is not <tt>null</tt>.
 	 */
 	public LinearUnitTempUnitComparator (Comparator unitSubComparator) {
-		this.unitSubCmp = unitSubComparator;
+		this.subCmp = unitSubComparator;
 	}
 
 	/**
@@ -53,14 +53,14 @@ public class LinearUnitTempUnitComparator implements Comparator {
 		Unit u2 = (Unit)o2;
 
 		if (u1 instanceof TempUnit && u2 instanceof TempUnit) {
-			return this.unitSubCmp != null ? this.unitSubCmp.compare(o1, o2) : 0;
+			return this.subCmp != null ? this.subCmp.compare(o1, o2) : 0;
 		} else {
 			if (u1 instanceof TempUnit) {
 				return 1;
 			} else if (u2 instanceof TempUnit) {
 				return -1;
 			} else {
-				return this.unitSubCmp != null ? this.unitSubCmp.compare(o1, o2) : 0;
+				return this.subCmp != null ? this.subCmp.compare(o1, o2) : 0;
 			}
 		}
 	}

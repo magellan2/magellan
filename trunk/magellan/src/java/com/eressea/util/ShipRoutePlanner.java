@@ -144,11 +144,11 @@ public class ShipRoutePlanner {
 						}
 						orders.add(0, order);
 						if (v.replaceOrders) {
-							// clear all orders
-							shipOwner.clearOrders();
-						}
-						for (ListIterator iter = orders.listIterator(); iter.hasNext(); ) {
-							shipOwner.addOrder((String)iter.next(), false, 0);
+							shipOwner.setOrders(orders);
+						} else {
+							for (ListIterator iter = orders.listIterator(); iter.hasNext(); ) {
+								shipOwner.addOrder((String)iter.next(), false, 0);
+							}
 						}
 						return shipOwner;
 					} else {

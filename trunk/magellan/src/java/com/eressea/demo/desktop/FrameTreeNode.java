@@ -137,7 +137,6 @@ public class FrameTreeNode implements PropertyChangeListener{
         this.absolute = absolute;
     }
 
-	/** @deprecated */
 	public void write(PrintWriter out) {
 		if (isLeaf()) {
 			if (getConfiguration()!=null)

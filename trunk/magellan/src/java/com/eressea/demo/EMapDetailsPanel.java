@@ -92,7 +92,6 @@ import com.eressea.UnitContainer;
 import com.eressea.UnitID;
 import com.eressea.ZeroUnit;
 import com.eressea.completion.AutoCompletion;
-import com.eressea.completion.EresseaCompleter;
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.event.EventDispatcher;
@@ -112,11 +111,7 @@ import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.BasicRegionPanel;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.MenuProvider;
-import com.eressea.swing.completion.CompletionGUI;
-import com.eressea.swing.completion.ListCompletionGUI;
-import com.eressea.swing.completion.MarkedTextCompletionGUI;
 import com.eressea.swing.completion.MultiEditorOrderEditorList;
-import com.eressea.swing.completion.NoneCompletionGUI;
 import com.eressea.swing.context.ContextFactory;
 import com.eressea.swing.context.UnitContextMenu;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
@@ -212,8 +207,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private final ID mallornID = StringID.create("Mallorn");
 	private final ID sproutsID = StringID.create("Schoesslinge");
 	private final ID stonesID = StringID.create("Steine");
-	public EMapDetailsPanel(EventDispatcher d, Properties p, UndoManager _undoMgr) {
-		super(d, p);
+	public EMapDetailsPanel(EventDispatcher d, GameData data, Properties p,  UndoManager _undoMgr) {
+		super(d, data, p);
 		initGUI(_undoMgr);
 	}
 
@@ -423,19 +418,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// split pane combining name, desc & tree
 		topSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nameDescPanel, pnlRegionInfoTree);
 		topSplitPane.setOneTouchExpandable(true);
+		editor = new MultiEditorOrderEditorList(dispatcher, data, settings, _undoMgr);
 		// build auto completion structure
 		orders = new AutoCompletion(settings, dispatcher);
-		EresseaCompleter completer = new EresseaCompleter(data, dispatcher, orders);
-		orders.setCompleter(completer);
-		editor = new MultiEditorOrderEditorList(dispatcher, data, settings, _undoMgr);
 		orders.attachEditorManager(editor);
-		CompletionGUI cgui = new ListCompletionGUI();
-		CompletionGUI mgui = new MarkedTextCompletionGUI();
-		orders.addCompletionGUI(cgui);
-		orders.addCompletionGUI(mgui);
-		orders.addCompletionGUI(new NoneCompletionGUI());
-		// let the AutoCompletion choose the current GUI
-		orders.loadComplete();
 		shortCuts = CollectionFactory.createArrayList(3);
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.CTRL_MASK));
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK));
@@ -1240,7 +1226,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 							bonus += f.getRace().getSkillBonus(item.skill.getSkillType(), lastRegion.getRegionType());
 						}
 					}
-					DefaultMutableTreeNode m = new DefaultMutableTreeNode(new SimpleNodeWrapper(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getType().getID().toString()));
+					DefaultMutableTreeNode m = new DefaultMutableTreeNode(new SimpleNodeWrapper(item.skill.getName() + " " + item.skill.getLevel() + ": " + item.unitCounter, item.skill.getSkillType().getID().toString()));
 					n.add(m);
 					Comparator idCmp = new IDComparator();
 					Comparator unitCmp = new UnitSkillComparator(new BestSkillComparator(new SkillComparator(), new SkillTypeComparator(new SkillTypeRankComparator(new NameComparator(idCmp), settings), new SkillComparator()), null), idCmp);
@@ -1249,7 +1235,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						Unit u = (Unit)uIter.next();
 						StringBuffer sb = new StringBuffer();
 						sb.append(u.toString());
-						Skill skill = u.getSkill(item.skill.getType());
+						Skill skill = u.getSkill(item.skill.getSkillType());
 						if (skill != null) {
 							sb.append(": [").append(skill.getPointsPerPerson()).append(" -> ").append(Skill.getPointsAtLevel((item.skill.getLevel() - bonus) + 1)).append("]");
 						}
@@ -1378,7 +1364,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 			String icon=null;
 			try {
-				icon=stealth.getType().getID().toString();
+				icon=stealth.getSkillType().getID().toString();
 			} catch(Exception exc) {icon="tarnung";}
 
 			SimpleNodeWrapper wrapper = nodeWrapperFactory.createSimpleNodeWrapper(strHide,icon);
@@ -1392,7 +1378,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// disguise
 		if (u.getGuiseFaction() != null) {
-			parent.add(createSimpleNode(getString("node.disguisedas") + u.getGuiseFaction(),(stealth!=null?stealth.getType().getID().toString():"tarnung")));
+			parent.add(createSimpleNode(getString("node.disguisedas") + u.getGuiseFaction(),(stealth!=null?stealth.getSkillType().getID().toString():"tarnung")));
 		}
 
 		// spy
@@ -1548,15 +1534,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				if (modSkills != null) {
 					// assume that we are iterating over the mod skills
 					ms = (Skill)iter.next();
-					os = u.getSkill(ms.getType());
+					os = u.getSkill(ms.getSkillType());
 				} else {
 					// assume that we are iterating over the original skills
 					os = (Skill)iter.next();
 				}
 				if (!isTrader && os != null) { // check for trader
-					if (tradeCat != null && tradeCat.isInstance(os.getType())) {
+					if (tradeCat != null && tradeCat.isInstance(os.getSkillType())) {
 						isTrader = true;
-					} else if (tradeSkill != null && tradeSkill.equals(os.getType())) {
+					} else if (tradeSkill != null && tradeSkill.equals(os.getSkillType())) {
 						isTrader = true;
 					}
 				}

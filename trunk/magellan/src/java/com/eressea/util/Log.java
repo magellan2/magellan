@@ -67,7 +67,7 @@ public class Log {
 						} catch (IOException e) {
 						}
 						try {
-							Thread.sleep(600000);
+							Thread.sleep(1000*60*10);
 						} catch (InterruptedException e) {
 						}
 					}

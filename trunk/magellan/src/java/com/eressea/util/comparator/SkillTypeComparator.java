@@ -10,6 +10,9 @@ package com.eressea.util.comparator;
 
 import java.util.Comparator;
 
+import com.eressea.Skill;
+import com.eressea.rules.SkillType;
+
 /**
  * A comparator imposing an ordering on Skill objects by comparing
  * their types.
@@ -50,8 +53,9 @@ public class SkillTypeComparator implements Comparator {
 	public int compare(Object o1, Object o2) {
 		int retVal = 0;
 
-		com.eressea.rules.SkillType s1 = ((com.eressea.Skill)o1).getType();
-		com.eressea.rules.SkillType s2 = ((com.eressea.Skill)o2).getType();
+
+		SkillType s1 = ((Skill)o1).getSkillType();
+		SkillType s2 = ((Skill)o2).getSkillType();
 
 		retVal = typeCmp.compare(s1, s2);
 		if (retVal == 0 && subCmp != null) {

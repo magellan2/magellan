@@ -15,6 +15,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -192,9 +193,10 @@ public class UnitContextMenu extends JPopupMenu{
 				Unit u = (Unit)iter.next();
 				if (!u.isSpy() && u.getFaction() != null && u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
 					if (replace) {
-						u.clearOrders();
+						u.setOrders(Collections.singleton(s[0]));
+					} else {
+						u.addOrder(s[0], false, 0);
 					}
-					u.addOrder(s[0], false, 0);
 					dispatcher.fire(new UnitOrdersEvent(this, u));
 				}
 			}

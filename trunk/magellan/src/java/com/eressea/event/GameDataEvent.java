@@ -8,6 +8,7 @@
 
 package com.eressea.event;
 
+import com.eressea.GameData;
 
 /**
  * An event indicating that the previous game data object is no longer
@@ -17,7 +18,7 @@ package com.eressea.event;
  * @see EventDispatcher
  */
 public class GameDataEvent extends TimeStampedEvent {
-	private com.eressea.GameData data;
+	private GameData data;
 
 	/**
 	 * Creates an event object.
@@ -25,7 +26,7 @@ public class GameDataEvent extends TimeStampedEvent {
 	 * @param source the object that originated the event.
 	 * @param data the new game data object.
 	 */
-	public GameDataEvent(Object source, com.eressea.GameData data) {
+	public GameDataEvent(Object source, GameData data) {
 		super(source);
 		this.data = data;
 	}
@@ -33,7 +34,7 @@ public class GameDataEvent extends TimeStampedEvent {
 	/**
 	 * Returns the new valid game data object.
 	 */
-	public com.eressea.GameData getGameData() {
+	public GameData getGameData() {
 		return data;
 	}
 }

@@ -65,7 +65,7 @@ public class UnitSkillCountReplacer extends AbstractParameterReplacer implements
 			Iterator it2=u.getSkills().iterator();
 			while(it2.hasNext()) {
 				Skill sk=(Skill)it2.next();
-				SkillType sty=sk.getType();
+				SkillType sty=sk.getSkillType();
 				if (sty.getName().equals(skill) || sty.getID().toString().equals(skill)) {
 					if (!minMode || (sk.getLevel()>=min)) {
 						if (sumMode)

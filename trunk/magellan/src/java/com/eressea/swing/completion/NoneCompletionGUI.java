@@ -12,8 +12,9 @@ import java.util.Map;
 
 import javax.swing.text.JTextComponent;
 
+import com.eressea.completion.AutoCompletion;
+import com.eressea.completion.Completion;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.Completion;
 
 /**
  *
@@ -37,7 +38,7 @@ public class NoneCompletionGUI extends AbstractCompletionGUI {
 		return false;
 	}
 	
-	public com.eressea.util.Completion getSelectedCompletion() {
+	public Completion getSelectedCompletion() {
 		return last;
 	}
 	
@@ -45,7 +46,7 @@ public class NoneCompletionGUI extends AbstractCompletionGUI {
 		return null;
 	}
 	
-	public void init(com.eressea.completion.AutoCompletion autoCompletion) {
+	public void init(AutoCompletion autoCompletion) {
 	}
 	
 	public boolean isOfferingCompletion() {

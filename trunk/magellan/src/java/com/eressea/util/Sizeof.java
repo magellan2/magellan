@@ -57,7 +57,7 @@ public class Sizeof {
 		for (int i = 0; (usedMem1 < usedMem2) && (i < 500); ++ i) {
 			s_runtime.runFinalization ();
 			s_runtime.gc ();
-			Thread.currentThread ().yield ();
+			Thread.yield ();
 			
 			usedMem2 = usedMem1;
 			usedMem1 = usedMemory ();

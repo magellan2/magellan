@@ -142,10 +142,11 @@ public class UnitRoutePlanner {
 				}				
 
 				if (v.replaceOrders) {
-					unit.clearOrders();
-				}
-				for (Iterator iter = orders.iterator(); iter.hasNext(); ) {
-					unit.addOrder((String)iter.next(), false, 0);
+					unit.setOrders(orders);
+				} else {
+					for (Iterator iter = orders.iterator(); iter.hasNext(); ) {
+						unit.addOrder((String)iter.next(), false, 0);
+					}
 				}
 				if (otherUnits != null && otherUnits.size() > 0) {
 					Iterator it = otherUnits.iterator();
@@ -153,10 +154,11 @@ public class UnitRoutePlanner {
 						Unit u = (Unit)it.next();
 						if (!u.equals(unit)) {
 							if (v.replaceOrders) {
-								u.clearOrders();
-							}
-							for (Iterator iter = orders.iterator(); iter.hasNext(); ) {
-								u.addOrder((String)iter.next(), false, 0);					
+								u.setOrders(orders);
+							} else {
+								for (Iterator iter = orders.iterator(); iter.hasNext(); ) {
+									u.addOrder((String)iter.next(), false, 0);					
+								}
 							}
 						}
 					}

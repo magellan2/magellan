@@ -57,7 +57,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 		if (s != null) {
 			skill = s;
 		} else {
-			skill = new Skill(ms.getType(), 0, 0, 0, ms.noSkillPoints());
+			skill = new Skill(ms.getSkillType(), 0, 0, 0, ms.noSkillPoints());
 		}
 		modSkill = ms;
 	}
@@ -257,9 +257,9 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 			ge.setType(GraphicsElement.MAIN);
 			
 			if (skill != null)
-				ge.setImageName(skill.getType().getID().toString());
+				ge.setImageName(skill.getSkillType().getID().toString());
 			else if (modSkill != null)
-				ge.setImageName(modSkill.getType().getID().toString());
+				ge.setImageName(modSkill.getSkillType().getID().toString());
 			
 			int diff = 0;
 			boolean isDiff = false;
