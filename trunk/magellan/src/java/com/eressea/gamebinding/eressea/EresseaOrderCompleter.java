@@ -183,7 +183,11 @@ public class EresseaOrderCompleter implements Completer {
 									   Translations.getOrderTranslation(EresseaConstants.O_BANNER),
 									   " \"\"", 9, 1));
 
-		if(hasSkill(unit, EresseaConstants.S_TARNUNG) == true) {
+		if(!unit.isHero) {
+			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_PROMOTION)));
+		}
+
+		if(hasSkill(unit, EresseaConstants.S_TARNUNG)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_STEAL),
 										   " "));
 		}
@@ -230,7 +234,7 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_FOLLOW),
 									   " "));
 
-		if(hasSkill(unit, EresseaConstants.S_KRAEUTERKUNDE, 7) == true) {
+		if(hasSkill(unit, EresseaConstants.S_KRAEUTERKUNDE, 7)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_RESEARCH) +
 										   " " +
 										   Translations.getOrderTranslation(EresseaConstants.O_HERBS)));
@@ -243,12 +247,12 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_HELP),
 									   " "));
 
-		if(hasSkill(unit, EresseaConstants.S_MAGIE) == true) {
+		if(hasSkill(unit, EresseaConstants.S_MAGIE)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_COMBATSPELL),
 										   " "));
 		}
 
-		if(hasSkill(unit, EresseaConstants.S_HANDELN) == true) {
+		if(hasSkill(unit, EresseaConstants.S_HANDELN)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_BUY),
 										   " "));
 		}
@@ -274,7 +278,7 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_PASSWORD),
 									   " "));
 
-		if(hasSkill(unit, EresseaConstants.S_KRAEUTERKUNDE, 6) == true) {
+		if(hasSkill(unit, EresseaConstants.S_KRAEUTERKUNDE, 6)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_PLANT)));
 		}
 
@@ -305,7 +309,7 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SORT),
 									   " "));
 
-		if(hasSkill(unit, EresseaConstants.S_SPIONAGE) == true) {
+		if(hasSkill(unit, EresseaConstants.S_SPIONAGE)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SPY),
 										   " "));
 		}
@@ -316,12 +320,12 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_CARRY),
 									   " "));
 
-		if(hasSkill(unit, EresseaConstants.S_STEUEREINTREIBEN) == true) {
+		if(hasSkill(unit, EresseaConstants.S_STEUEREINTREIBEN)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_TAX),
 										   " "));
 		}
 
-		if(hasSkill(unit, EresseaConstants.S_UNTERHALTUNG) == true) {
+		if(hasSkill(unit, EresseaConstants.S_UNTERHALTUNG)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_ENTERTAIN),
 										   " "));
 		}
@@ -334,7 +338,7 @@ public class EresseaOrderCompleter implements Completer {
 										   " "));
 		}
 
-		if(hasSkill(unit, EresseaConstants.S_HANDELN) == true) {
+		if(hasSkill(unit, EresseaConstants.S_HANDELN)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SELL),
 										   " "));
 		}
@@ -343,7 +347,7 @@ public class EresseaOrderCompleter implements Completer {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_LEAVE)));
 		}
 
-		if(hasSkill(unit, EresseaConstants.S_MAGIE) == true) {
+		if(hasSkill(unit, EresseaConstants.S_MAGIE)) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_CAST),
 										   " "));
 		}
@@ -447,7 +451,7 @@ public class EresseaOrderCompleter implements Completer {
 			Faction ownerFaction = unit.getFaction();
 			Iterator buildings = region.buildings().iterator();
 
-			while(buildings.hasNext() == true) {
+			while(buildings.hasNext()) {
 				Building b = (Building) buildings.next();
 
 				if(b.getType().getID().equals(StringID.create("Burg")) &&
@@ -507,7 +511,7 @@ public class EresseaOrderCompleter implements Completer {
 			Faction ownerFaction = unit.getFaction();
 			Iterator units = region.units().iterator();
 
-			while(units.hasNext() == true) {
+			while(units.hasNext()) {
 				Unit u = (Unit) units.next();
 
 				if(u.getFaction().equals(ownerFaction) == false) {
@@ -528,7 +532,7 @@ public class EresseaOrderCompleter implements Completer {
 			Faction ownerFaction = unit.getFaction();
 			Iterator buildings = region.buildings().iterator();
 
-			while(buildings.hasNext() == true) {
+			while(buildings.hasNext()) {
 				Building b = (Building) buildings.next();
 
 				if((b.getOwnerUnit() != null) &&
@@ -552,7 +556,7 @@ public class EresseaOrderCompleter implements Completer {
 			Faction ownerFaction = unit.getFaction();
 			Iterator factions = data.factions().values().iterator();
 
-			while(factions.hasNext() == true) {
+			while(factions.hasNext()) {
 				Faction f = (Faction) factions.next();
 
 				if(f.equals(ownerFaction) == false) {
@@ -573,7 +577,7 @@ public class EresseaOrderCompleter implements Completer {
 			Faction ownerFaction = unit.getFaction();
 			Iterator ships = region.ships().iterator();
 
-			while(ships.hasNext() == true) {
+			while(ships.hasNext()) {
 				Ship s = (Ship) ships.next();
 
 				if((s.getOwnerUnit() != null) &&
@@ -766,11 +770,11 @@ public class EresseaOrderCompleter implements Completer {
 		if(region != null) {
 			Iterator i = region.ships().iterator();
 
-			while(i.hasNext() == true) {
+			while(i.hasNext()) {
 				Ship s = (Ship) i.next();
 
 				if((s.getOwnerUnit() != null) &&
-					   (unit.getFaction().equals(s.getOwnerUnit().getFaction()) == true)) {
+					   (unit.getFaction().equals(s.getOwnerUnit().getFaction()))) {
 					String id = s.getID().toString();
 					String name = s.getName();
 

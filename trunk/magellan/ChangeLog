@@ -1,3 +1,8 @@
+2004-08-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/gamebinding/eressea/EresseaOrderParser.java:
+	add support for BEFÖRDERUNG
+
 2004-07-11  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/tree/TreeHelper.java: added ship sorting

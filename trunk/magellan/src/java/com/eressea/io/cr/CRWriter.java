@@ -1376,6 +1376,11 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
+		if(unit.isHero) {
+			write("1;hero");
+			newLine();
+		}
+
 		if(!serverConformance && unit.ordersConfirmed) {
 			write("1;ejcOrdersConfirmed");
 			newLine();

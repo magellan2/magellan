@@ -72,7 +72,9 @@ import com.eressea.demo.desktop.ExtendedShortcutListener;
 import com.eressea.demo.desktop.Initializable;
 import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.event.SelectionEvent;
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.map.HexCellRenderer;
 import com.eressea.swing.map.Mapper;
@@ -127,7 +129,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void gameDataChanged(com.eressea.event.GameDataEvent e) {
+	public void gameDataChanged(GameDataEvent e) {
 		data = e.getGameData();
 		mapper.gameDataChanged(e);
 		minimap.gameDataChanged(e);
@@ -171,7 +173,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 *
 	 * @param se TODO: DOCUMENT ME!
 	 */
-	public void selectionChanged(com.eressea.event.SelectionEvent se) {
+	public void selectionChanged(SelectionEvent se) {
 		if(log.isDebugEnabled()) {
 			log.debug("MapperPanel.selectionChanged called with " + se.getActiveObject());
 		}

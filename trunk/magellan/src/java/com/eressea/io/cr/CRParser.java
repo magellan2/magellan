@@ -1380,6 +1380,8 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else {
 				break;
 			}
+
+			sc.getNextToken();
 		}
 	}
 
@@ -1387,21 +1389,26 @@ public class CRParser implements RulesIO, GameDataIO {
 		int f = sc.argv[0].indexOf("\"", 0);
 		int t = sc.argv[0].indexOf("\"", f + 1);
 		ID id = StringID.create(sc.argv[0].substring(f + 1, t));
-		AllianceCategory opt = rules.getAllianceCategory(id, true);
+		AllianceCategory cat = rules.getAllianceCategory(id, true);
 		sc.getNextToken(); // skip ALLIANCECATEGORY xx
 
 		while(!sc.eof) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("name")) {
-				opt.setName(sc.argv[0]);
+				cat.setName(sc.argv[0]);
 				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("parent")) {
+				AllianceCategory parent = rules.getAllianceCategory(StringID.create(sc.argv[0]), false);
+				cat.setParent(parent);
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("bitmask")) {
-				opt.setBitMask(Integer.parseInt(sc.argv[0]));
+				cat.setBitMask(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if(sc.argc == 2) {
 				unknown("ALLIANCECATEGORY", true);
 			} else {
 				break;
 			}
+
+			sc.getNextToken();			
 		}
 	}
 
@@ -1949,6 +1956,10 @@ public class CRParser implements RulesIO, GameDataIO {
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("kapazitaet")) {
 				// Verdanon tag
+				sc.getNextToken();
+ 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("hero")) {
+ 				// new promotion level
+				unit.isHero = (Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
 			} else if((sc.argc == 1) && sc.argv[0].equals("COMMANDS")) {
 				// there can be only one order block for a unit, replace existing ones

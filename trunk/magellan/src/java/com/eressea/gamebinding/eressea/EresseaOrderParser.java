@@ -130,6 +130,8 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readAttack(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_BANNER))) {
 			retVal = readBanner(t);
+		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_PROMOTION))) {
+			retVal = readBefoerderung(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_STEAL))) {
 			retVal = readBeklaue(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_SIEGE))) {
@@ -303,6 +305,13 @@ public class EresseaOrderParser implements OrderParser {
 		}
 
 		return retVal;
+	}
+
+	//************* BEFÖRDERUNG
+	private boolean readBefoerderung(OrderToken token) {
+		token.ttype = OrderToken.TT_KEYWORD;
+		
+		return checkNextFinal();
 	}
 
 	//************* BEKLAUE
