@@ -417,7 +417,7 @@ public abstract class UnitContainer extends DescribedObject implements com.eress
 				// known or newUC.getType is same as "unknown" (this is a miracle to me but
 				// Ulrich has more experiences with "Astralraum" :-)
 				// if (newUC.getType() == null || newUC.getType().equals(RegionType.unknown)) {
-				if (curUC.getType() != null || 
+				if ((curUC.getType() != null && !curUC.getType().equals(RegionType.unknown)) ||
 					(newUC.getType () != null && newUC.getType().equals(RegionType.unknown))) {
 					newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(), true));
 				}
