@@ -557,8 +557,14 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 		// return casted Panel
 		return (JPanel) skillChartPanel;
         */
-        JPanel skillChartPanel = new com.eressea.skillchart.SkillChartPanel(dispatcher, data, settings);
-        return skillChartPanel;
+		try {
+			JPanel skillChartPanel = new com.eressea.skillchart.SkillChartPanel(
+				dispatcher, data, settings);
+			return skillChartPanel;
+		} catch (Exception e) {
+			log.warn("FactionStatsDialog.getSkillChartPanel(): Couldn't create skillChartPanel! Delivering null.");
+		}
+		return null;
 	}
 
 	private void storeSettings() {
