@@ -227,4 +227,5 @@ public class FileType {
 	 */
 	public static class ReadOnlyException extends IOException {
 	}
+
 }

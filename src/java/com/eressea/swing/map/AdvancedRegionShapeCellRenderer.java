@@ -91,6 +91,7 @@ import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.Locales;
+import com.eressea.util.logging.Logger;
 import com.eressea.util.replacers.ReplacerHelp;
 import com.eressea.util.replacers.ReplacerSystem;
 
@@ -103,6 +104,7 @@ import com.eressea.util.replacers.ReplacerSystem;
 public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 	implements GameDataListener, ContextChangeable, ActionListener, MapperAware
 {
+	private final static Logger log = Logger.getInstance(AdvancedRegionShapeCellRenderer.class);
 	protected String currentSet;
 	protected ColorTable cTable;
 	protected ValueMapping vMapping;
@@ -1561,7 +1563,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 		}
 
 		protected void showIOError(IOException ioe) {
-			ioe.printStackTrace();
+			log.error(ioe);
 			JOptionPane.showMessageDialog(this, ioe);
 		}
 

@@ -364,11 +364,8 @@ public class Faction extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		try {
-			return this.getID().equals(((Faction) o).getID());
-		} catch(Exception e) {
-			return false;
-		}
+		return (this == o) ||
+			(o instanceof Faction && this.getID().equals(((Faction) o).getID()));
 	}
 
 	/**

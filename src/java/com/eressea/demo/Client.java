@@ -1058,7 +1058,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 				try {
 					saveAction.actionPerformed(null);
 				} catch(Exception e) {
-					e.printStackTrace();
+					log.error(e);
 
 					return false;
 				}
@@ -1306,9 +1306,15 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	private void updateTitleCaption() {
 		// set frame title (date)
 		String title = "Magellan";
+		
+		String version = VersionInfo.getVersion();
+		if(version != null) {
+			title += " "+version;
+		}
 
 		// pavkovic 2002.05.7: data may be null in this situation
 		if(data == null) {
+			setTitle(title);
 			return;
 		}
 
