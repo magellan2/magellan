@@ -7,8 +7,9 @@ import com.eressea.completion.CompleterSettingsProvider;
 import com.eressea.completion.OrderParser;
 
 public interface GameSpecificStuff {
-
-	// for TrustLevels
+	
+	// for Unit
+	
 
 	// for GameData
 	/**
@@ -22,6 +23,8 @@ public interface GameSpecificStuff {
 	 * @param data the GameData object to process.
 	 */
 	public void postProcess(GameData data);
+
+	// for TrustLevels
 	public void postProcessAfterTrustlevelChange(GameData data);
 
 	// for Unit

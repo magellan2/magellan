@@ -38,7 +38,7 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 	public int getPayloadOnHorse(Unit unit) {
 		int capacity = 0;
 		int horses = 0;
-		Item i = unit.getModifiedItem(new ItemType(StringID.create("Pferd")));
+		Item i = unit.getModifiedItem(new ItemType(EresseaConstants.I_HORSE));
 		if (i != null) {
 			horses = i.getAmount();
 		}
@@ -56,7 +56,7 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 		}
 
 		int carts = 0;
-		i = unit.getModifiedItem(new ItemType(StringID.create("Wagen")));
+		i = unit.getModifiedItem(new ItemType(EresseaConstants.I_CART));
 		if (i != null) {
 			carts = i.getAmount();
 		}
@@ -89,7 +89,7 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 	public int getPayloadOnFoot(Unit unit) {
 		int capacity = 0;
 		int horses = 0;
-		Item i = unit.getModifiedItem(new ItemType(StringID.create("Pferd")));
+		Item i = unit.getModifiedItem(new ItemType(EresseaConstants.I_HORSE));
 
 		if (i != null) {
 			horses = i.getAmount();
@@ -109,7 +109,7 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 		}
 
 		int carts = 0;
-		i = unit.getModifiedItem(new ItemType(StringID.create("Wagen")));
+		i = unit.getModifiedItem(new ItemType(EresseaConstants.I_CART));
 		if (i != null) {
 			carts = i.getAmount();
 		}

@@ -23,10 +23,10 @@ import com.eressea.io.xml.XMLRulesIO;
 import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.rules.GenericRules;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.TrustLevels;
 import com.eressea.util.file.CopyFile;
 import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
-import com.eressea.util.TrustLevels;
 
 
 public class Loader {

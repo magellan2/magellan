@@ -9,7 +9,6 @@
 package com.eressea.rules;
 
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -33,9 +32,7 @@ import com.eressea.util.logging.Logger;
  */
 public class GenericRules implements Rules {
 	private final static Logger log = Logger.getInstance(GenericRules.class);
-
-	private Collection objectTypes = CollectionFactory.createArrayList();
-
+	
 	// Map consisting of Race, RegionType, ShipType, BuildingType, CastleType
 	private Map mapUnitContainerType      = CollectionFactory.createOrderedHashtable();
 	private Map mapUnitContainerTypeNames = CollectionFactory.createOrderedHashtable();
