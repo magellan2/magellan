@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.io;
@@ -34,9 +33,9 @@ import com.eressea.io.file.FileType;
  */
 public class GameDataReader {
 	/**
-	 * Read a gamedata from a given File.
-	 * At the beginning the game name is read by a <code>GameNameReader</code>. With this 
-	 * name the corresponding rules and game
+	 * Read a gamedata from a given File. At the beginning the game name is
+	 * read by a <code>GameNameReader</code>. With this  name the
+	 * corresponding rules and game
 	 *
 	 * @param aFileType the filetype representing a cr or xml file.
 	 *

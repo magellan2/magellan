@@ -228,9 +228,9 @@
             <use>false</use>
         </footer>
         <header>
-            <keys>Eressea Java Code</keys>
-            <smartMode>20</smartMode>
-            <text>/*| *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,| *                          Stefan Goetz, Sebastian Pappert,| *                          Klaas Prause, Enno Rehling,| *                          Sebastian Tusk, Ulrich Kuester,| *                          Ilja Pavkovic| *| * This file is part of the Eressea Java Code Base, see the| * file LICENSING for the licensing information applying to| * this file.| *| * $Id$| */</text>
+            <keys>Eressea Java Code Base</keys>
+            <smartMode>5</smartMode>
+            <text>/*| *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,| *                          Stefan Goetz, Sebastian Pappert,| *                          Klaas Prause, Enno Rehling,| *                          Sebastian Tusk, Ulrich Kuester,| *                          Ilja Pavkovic| *| * This file is part of the Eressea Java Code Base, see the| * file LICENSING for the licensing information applying to| * this file.| *| */</text>
             <use>true</use>
         </header>
         <history>

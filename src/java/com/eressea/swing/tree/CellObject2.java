@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.swing.tree;
@@ -24,8 +23,8 @@ import java.util.List;
  */
 public interface CellObject2 extends CellObject {
 	/**
-				 *
-				 */
+						 *
+						 */
 	List getGraphicsElements();
 
 	/** */

@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.demo.actions;
@@ -109,6 +108,7 @@ public class OpenCRAction extends MenuAction {
 			}
 
 			GameData data = client.loadCR(fc.getSelectedFile().getPath());
+
 			if(data != null) {
 				client.setData(data);
 				client.setReportChanged(false);

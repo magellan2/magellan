@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.completion;
@@ -99,8 +98,8 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	/**
 	 * Keys for cycling, completing and breaking. completerKeys[]
 	 * completerKeys[][0]    completerKeys[1]     cycle forward modifier key
-	 * cycle backward        modifier key complete
-	 * modifier key     break modifier key
+	 * cycle backward        modifier key complete modifier key     break
+	 * modifier key
 	 */
 	private int		  completerKeys[][];
 	private Timer     timer;

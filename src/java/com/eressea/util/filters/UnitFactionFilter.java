@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.util.filters;

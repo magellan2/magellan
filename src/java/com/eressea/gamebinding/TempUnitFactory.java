@@ -9,7 +9,6 @@
  * file LICENSING for the licensing information applying to
  * this file.
  *
- * $Id$
  */
 
 package com.eressea.gamebinding;
@@ -34,7 +33,7 @@ public interface TempUnitFactory {
 	public List getTempOrders(Unit unit);
 
 	/**
-				 *
-				 */
+						 *
+						 */
 	public List extractTempUnits(Unit unit);
 }
