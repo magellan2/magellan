@@ -151,6 +151,14 @@ public class RegionType extends UnitContainerType {
 		this.isOcean = isOcean;
 	}
 
+	public String toString() {
+		String s = getName();
+		if (s == null) {
+			s = id.toString();
+		}
+		return s;
+	}
+
 	/**
 	 * Indicates whether this RegionType object is equal to another object. Returns true only if o
 	 * is not null and an instance of class RegionType and o's id is equal to the id of this
