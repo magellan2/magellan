@@ -624,7 +624,7 @@ public class EresseaOrderCompleter implements Completer {
 		addUnitItems("");
 		// add completions, that create multiple Give-Orders for the resources of an item
 		if (i != 0 && uid != null) {
-			for (Iterator iter = data.rules.getItemTypes(); iter.hasNext(); ) {
+			for (Iterator iter = data.rules.getItemTypeIterator(); iter.hasNext(); ) {
 				ItemType iType = (ItemType)iter.next();
 				if (iType.getResources().hasNext() // necessary resources are known
 					&& checkForMaterials(iType.getResources(), i)) { // necessary resources are available
@@ -727,7 +727,7 @@ public class EresseaOrderCompleter implements Completer {
 			if (data != null && data.rules != null) {
 				ItemCategory luxCat = data.rules.getItemCategory(EresseaConstants.C_LUXURIES);
 				if (luxCat != null) {
-					for (Iterator iter = data.rules.getItemTypes(); iter.hasNext(); ) {
+					for (Iterator iter = data.rules.getItemTypeIterator(); iter.hasNext(); ) {
 						ItemType t = (ItemType)iter.next();
 						if (t.getCategory().equals(luxCat)) {
 							completions.add(new Completion(t.getName()));
@@ -775,7 +775,7 @@ public class EresseaOrderCompleter implements Completer {
 
 	void cmpltLerne() {
 		if (data != null && data.rules != null) {
-			for (Iterator iter = data.rules.getSkillTypes(); iter.hasNext(); ) {
+			for (Iterator iter = data.rules.getSkillTypeIterator(); iter.hasNext(); ) {
 				SkillType t = (SkillType)iter.next();
 				int cost = getSkillCost(t, unit);
 				if (cost > 0) {
@@ -850,7 +850,7 @@ public class EresseaOrderCompleter implements Completer {
 		// buildings
 		if (hasSkill(unit, EresseaConstants.S_BURGENBAU)) {
 			if (data != null && data.rules != null) {
-				for (Iterator iter = data.rules.getBuildingTypes(); iter.hasNext(); ) {
+				for (Iterator iter = data.rules.getBuildingTypeIterator(); iter.hasNext(); ) {
 					BuildingType t = (BuildingType)iter.next();
 					if (t instanceof CastleType == false
 						&& t.containsRegionType(region.getRegionType())
@@ -868,7 +868,7 @@ public class EresseaOrderCompleter implements Completer {
 		if (hasSkill(unit, EresseaConstants.S_SCHIFFBAU)
 			&& (!completerSettingsProvider.getLimitMakeCompletion() || region.getItem(data.rules.getItemType(StringID.create("Holz"))) != null)) {
 			if (data != null && data.rules != null) {
-				for (Iterator iter = data.rules.getShipTypes(); iter.hasNext(); ) {
+				for (Iterator iter = data.rules.getShipTypeIterator(); iter.hasNext(); ) {
 					ShipType t = (ShipType)iter.next();
 					if (hasSkill(unit, EresseaConstants.S_SCHIFFBAU, t.getBuildLevel())) {
 						completions.add(new Completion(t.getName(), " "));
@@ -879,7 +879,7 @@ public class EresseaOrderCompleter implements Completer {
 		}
 		// streets
 		// check, if there is the necessary roadsupportbuilding
-		BuildingType b = (region.getRegionType()).getRoadSupportBuilding();
+		BuildingType b = region.getRegionType().getRoadSupportBuilding();
 		boolean canMake = false;
 		if (b == null) {
 			canMake = true;
@@ -896,7 +896,7 @@ public class EresseaOrderCompleter implements Completer {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_ROAD), " "));
 		}
 		// items
-		for (Iterator iter = data.rules.getItemTypes(); iter.hasNext(); ) {
+		for (Iterator iter = data.rules.getItemTypeIterator(); iter.hasNext(); ) {
 			ItemType itemType = (ItemType)iter.next();
 			canMake = true;
 			if (itemType.getMakeSkill() == null) {
@@ -1154,7 +1154,7 @@ public class EresseaOrderCompleter implements Completer {
 			Race demons = data.rules.getRace(EresseaConstants.R_DAEMONEN);
 			if (demons == null || unit.realRace == null || unit.realRace.equals(demons))
 			{
-				for (Iterator iter = data.rules.getRaces(); iter.hasNext(); ) {
+				for (Iterator iter = data.rules.getRaceIterator(); iter.hasNext(); ) {
 					Race r = (Race)iter.next();
 					completions.add(new Completion(r.getName()));
 				}

@@ -1,5 +1,8 @@
 package com.eressea.gamebinding.eressea;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import com.eressea.Item;
 import com.eressea.Skill;
 import com.eressea.StringID;
@@ -10,7 +13,6 @@ import com.eressea.rules.Race;
 import com.eressea.rules.SkillType;
 
 public class EresseaMovementEvaluator implements MovementEvaluator {
-	//private final static Logger log = Logger.getInstance(EresseaMovementEvaluator.class);
 
 	private EresseaMovementEvaluator() {
 	}
@@ -151,6 +153,29 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 
 	}
 
-	
+
+	public int getLoad(Unit unit) {
+		return getLoad(unit, unit.getItems());
+	}
+
+	public int getModifiedLoad(Unit unit) {
+		return getLoad(unit, unit.getModifiedItems());
+	}
+
+	private int getLoad(Unit unit, Collection items) {
+		int load = 0;
+		ItemType horse = unit.getRegion().getData().rules.getItemType(EresseaConstants.I_HORSE);
+		ItemType cart  = unit.getRegion().getData().rules.getItemType(EresseaConstants.I_CART);
+		for (Iterator iter = items.iterator(); iter.hasNext(); ) {
+			Item i = (Item)iter.next();
+			if (!i.getItemType().equals(horse) && !i.getItemType().equals(cart)) {
+				// pavkovic 2003.09.10: only take care about (possibly) modified items with positive amount
+				if(i.getAmount() > 0) {
+					load += ((int)(i.getItemType().getWeight() * 100)) * i.getAmount();
+				}
+			}
+		}
+		return load;
+	}
 
 }

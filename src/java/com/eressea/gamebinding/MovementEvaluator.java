@@ -40,5 +40,9 @@ public interface MovementEvaluator {
 	 */	
 	public int getPayloadOnFoot(Unit unit);
 
+	public int getLoad(Unit unit);
+
+	public int getModifiedLoad(Unit unit);
+
 	
 }

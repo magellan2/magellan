@@ -11,7 +11,7 @@ The version numbering system
 The version is split into 3 parts:
 Major - minor - sub
 
-Major represents a major release. Major will only be changed for 
+Major represents a major release. Major will only be adopted for 
 heavy changes.
 
 Minor represents the minor release. Odd Minor numbers represent a

@@ -286,7 +286,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog implements Acti
 			nPanel.setBorder(new javax.swing.border.TitledBorder(border, getString("names")));
 			
 			// create skill-type check-boxes
-			Iterator it = data.rules.getSkillTypes();
+			Iterator it = data.rules.getSkillTypeIterator();
 			List l = CollectionFactory.createLinkedList();
 			while(it.hasNext()) {
 				l.add(it.next());

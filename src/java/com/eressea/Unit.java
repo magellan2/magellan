@@ -1349,7 +1349,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			UnitRelation rel = (UnitRelation)iter.next();
 			if (rel instanceof RecruitmentRelation) {
 				RecruitmentRelation rr = (RecruitmentRelation)rel;
-				Item modifiedItem = (Item)cache.modifiedItems.get(new StringID("Silber"));
+				// FIXME(pavkovic): here is a bad binding to "Silber", what to do?
+				Item modifiedItem = (Item)cache.modifiedItems.get(StringID.create("Silber"));
 				if (modifiedItem != null) {
 					Race race = this.realRace;
 					if (race == null) {
@@ -1461,19 +1462,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * horses or carts in GE * 100.
 	 */
 	public int getLoad() {
-		int load = 0;
-		ItemType horse = new ItemType(StringID.create("Pferd"));
-		ItemType cart = new ItemType(StringID.create("Wagen"));
-		for (Iterator iter = getItems().iterator(); iter.hasNext(); ) {
-			Item i = (Item)iter.next();
-			if (!i.getItemType().equals(horse) && !i.getItemType().equals(cart)) {
-				// pavkovic 2003.09.10: only take care about (possibly) modified items with positive amount
-				if(i.getAmount() > 0) {
-					load += ((int)(i.getItemType().getWeight() * 100)) * i.getAmount();
-				}
-			}
-		}
-		return load;
+		return getRegion().getData().getGameSpecificStuff().getMovementEvaluator().getLoad(this);
 	}
 
 	/**
@@ -1481,18 +1470,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * horses or carts in GE * 100 based on the modified items.
 	 */
 	public int getModifiedLoad() {
-		int load = 0;
-		ItemType horse = new ItemType(StringID.create("Pferd"));
-		ItemType cart = new ItemType(StringID.create("Wagen"));
-		for (Iterator iter = getModifiedItems().iterator(); iter.hasNext(); ) {
-			Item i = (Item)iter.next();
-			// pavkovic 2003.09.10: only take care about modified items with positive amount
-			if(i.getAmount() > 0) {
-				if (!i.getItemType().equals(horse) && !i.getItemType().equals(cart)) {
-					load += ((int)(i.getItemType().getWeight() * 100)) * i.getAmount();
-				}
-			}
-		}
+		int load = getRegion().getData().getGameSpecificStuff().getMovementEvaluator().getModifiedLoad(this);
+
 		// also take care of passengers 
 		Map passengers = getPassengers();
 		for (Iterator iter = passengers.values().iterator(); iter.hasNext(); ) {

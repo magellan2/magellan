@@ -50,30 +50,6 @@ public class Race extends UnitContainerType {
 		return capacity;
 	}
 	
-	public void setHitPoints(int hitPoints) {
-		this.hitPoints = hitPoints;
-	}
-	
-	public int getHitPoints() {
-		return this.hitPoints;
-	}
-	
-	public void setNaturalArmour(int naturalArmour) {
-		this.naturalArmour = naturalArmour;
-	}
-	
-	public int getNaturalArmour() {
-		return this.naturalArmour;
-	}
-	
-	public void setMagicResistance(int magicResistance) {
-		this.magicResistance = magicResistance;
-	}
-	
-	public int getMagicResistance() {
-		return this.magicResistance;
-	}
-	
 	/**
 	 * Returns the bonus this race has on the specified skill.
 	 *

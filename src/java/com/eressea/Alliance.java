@@ -8,8 +8,9 @@
 
 package com.eressea;
 
+import java.util.Iterator;
 
-import com.eressea.util.EresseaOrderConstants;
+import com.eressea.rules.AllianceCategory;
 import com.eressea.util.Translations;
 
 /**
@@ -18,21 +19,6 @@ import com.eressea.util.Translations;
  * is an explicite field of this class.
  */
 public class Alliance {
-	/** A state selector for the "Helfe Silber" state. */
-	private static final int SILVER = 1 << 0;
-	/** A state selector for the "Helfe Kämpfe" state. */
-	private static final int COMBAT = 1 << 1;
-	/** A state selector for the "Helfe Gib" state. */
-	private static final int GIVE = 1 << 3;
-	/** A state selector for the "Helfe Bewache" state. */
-	private static final int GUARD = 1 << 4;
-	/** A state selector for the "Helfe Parteitarnung" state. */
-	private static final int GUISE = 1 << 5;
-	/** A state selector for the "Helfe ?" state. */
-	private static final int WHATEVER = 1 << 6;
-	/** A state selector for all of the alliance states. */
-	// private static final int ALL = 0x003B;
-	private static final int ALL = SILVER | COMBAT | GIVE | GUARD | GUISE | WHATEVER; // (binary value should be: 111101 (#123) )
 	
 	private final Faction faction;
 	private final Rules rules;
@@ -57,7 +43,7 @@ public class Alliance {
 	 *
 	 * @param faction the faction to establish an alliance with
 	 * 
-	 * @param rules the underlying rules object to get connection to 
+	 * @param Rules the underlying Rules object to get connection to 
 	 * Alliance Categories.
 	 * @param state the alliance status, must be one of constants
 	 * SILVER, FIGHT, GIVE, GUARD, GUISE or ALL.
@@ -72,12 +58,22 @@ public class Alliance {
 		this.state = state;
 	}
 	
-	
-	/** copy constructor */
-	public Alliance(Alliance orig) {
-		this(orig.faction,orig.rules,orig.state);
-	}
 
+	private AllianceCategory getMaxAllianceCategory() {
+		Iterator iter = rules.getAllianceCategoryIterator();
+		if(iter.hasNext()) {
+			AllianceCategory ret = (AllianceCategory) iter.next();
+			while(iter.hasNext()) {
+				AllianceCategory ac = (AllianceCategory) iter.next();
+				if(ac.compareTo(ret) > 0) {
+					ret = ac;
+				}
+			}
+			return ret;
+		}
+		return null;
+	}
+	
 	/**
 	 * Returns the faction this alliance refers to. The return value
 	 * is never null.
@@ -121,31 +117,29 @@ public class Alliance {
 	 * @return the alliance state as string.
 	 */
 	public String stateToString() {
-		
-		if (getState(ALL)) {
-			return Translations.getOrderTranslation(EresseaOrderConstants.O_ALL);
+
+		AllianceCategory maxAC = getMaxAllianceCategory();
+
+		if(maxAC==null) {
+			return "";
 		}
-		
-		int[] stateSet = { SILVER, COMBAT, GIVE, GUARD, GUISE };
-		String[] names = {
-			Translations.getOrderTranslation(EresseaOrderConstants.O_SILVER),
-			Translations.getOrderTranslation(EresseaOrderConstants.O_COMBAT),
-			Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE),
-			Translations.getOrderTranslation(EresseaOrderConstants.O_GUARD),
-			Translations.getOrderTranslation(EresseaOrderConstants.O_FACTIONSTEALTH)
-		};
-		StringBuffer retVal = new StringBuffer();
-		
+
+		if(getState(maxAC.getBitMask())) {
+			return Translations.getOrderTranslation(maxAC.getName());
+		}
+		StringBuffer ret = new StringBuffer();
+		  
 		// connect all state strings separated by spaces
-		for (int stateNo = 0; stateNo < stateSet.length; stateNo++) {
-			if (getState(stateSet[stateNo])) {
-				retVal.append(names[stateNo]).append(" ");
-			}
+		for(Iterator iter = rules.getAllianceCategoryIterator(); iter.hasNext(); ) {
+			AllianceCategory ac = (AllianceCategory) iter.next();
+			if( ! ac.equals(maxAC) && getState(ac.getBitMask())) {
+				ret.append(Translations.getOrderTranslation(ac.getName()));
+				if(iter.hasNext()) {
+					ret.append(" ");
+				}
+			}			
 		}
-		// remove trailing space
-		if (retVal.length()>0) {retVal.deleteCharAt(retVal.length() - 1);}
-		
-		return retVal.toString();
+		return ret.toString();
 	}
 	
 	/**
@@ -156,4 +150,21 @@ public class Alliance {
 	public String toString() {
 		return faction.toString() + ": " + stateToString();
 	}
+
+	/**
+	 * A method to convert an alliance into a trustlevel.
+	 * This method should be uses when Magellan calculates trust levels on its own.
+	 */
+	public int getTrustLevel() {
+		int ret = 0;
+		// connect all state strings separated by spaces
+		for(Iterator iter = rules.getAllianceCategoryIterator(); iter.hasNext(); ) {
+			AllianceCategory ac = (AllianceCategory) iter.next();
+			if(getState(ac.getBitMask())) {
+				ret += 10;
+			}			
+		}
+		return ret;
+	}
+
 }

@@ -18,7 +18,7 @@ public class MaxWorkersReplacer extends AbstractRegionReplacer {
 
 		public Object getRegionReplacement(Region region) {
 			if (region.trees!=-1 && region.sprouts!=-1 && region.getType()!=null)
-				return new Integer(((RegionType)region.getType()).getMaxWorkers()-8*region.trees-4*region.sprouts);
+				return new Integer(((RegionType)region.getType()).getInhabitants()-8*region.trees-4*region.sprouts);
 			return null;				
 		}
 		

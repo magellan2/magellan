@@ -625,7 +625,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// peasants
-		int maxWorkers = r.getRegionType().getMaxWorkers() - (Math.max(r.trees, 0) * 8) - (Math.max(r.sprouts, 0) * 4);
+		int maxWorkers = r.getRegionType().getInhabitants() - (Math.max(r.trees, 0) * 8) - (Math.max(r.sprouts, 0) * 4);
 		int workers = Math.min(maxWorkers, r.peasants);
 		int surplus = workers * r.getPeasantWage() - r.peasants * 10;
 		int oldWorkers = Math.min(maxWorkers, r.oldPeasants);

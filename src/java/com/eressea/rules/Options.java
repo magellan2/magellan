@@ -68,7 +68,7 @@ public class Options {
 
 	private void initOptions(Rules rules) {
 		options = CollectionFactory.createOrderedHashtable();
-		for(Iterator iter = rules.getOptionCategories(); iter.hasNext(); ) {
+		for(Iterator iter = rules.getOptionCategoryIterator(); iter.hasNext(); ) {
 			OptionCategory orig = (OptionCategory) iter.next();
 			options.put(orig.getID(), new OptionCategory(orig));
 		}

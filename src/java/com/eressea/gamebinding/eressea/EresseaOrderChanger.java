@@ -106,7 +106,7 @@ public class EresseaOrderChanger implements OrderChanger {
 			String order = (String)iter.next();
 			if (order.startsWith(Translations.getOrderTranslation(EresseaConstants.O_HIDE)) && order.indexOf(Translations.getOrderTranslation(EresseaConstants.O_FACTION))==-1) {
 				boolean raceFound = false;
-				for(Iterator it2 = unit.getRegion().getData().rules.getRaces(); it2.hasNext(); ) {
+				for(Iterator it2 = unit.getRegion().getData().rules.getRaceIterator(); it2.hasNext(); ) {
 					Race race = (Race)it2.next();
 					if (order.indexOf(race.getName())>0) {
 						raceFound = true;
