@@ -18,13 +18,15 @@
  */
 package com.eressea.event;
 
+import java.util.EventObject;
+
 /**
  * DOCUMENT ME!
  *
  * @author Andreas
  * @version
  */
-public abstract class TimeStampedEvent extends java.util.EventObject {
+public abstract class TimeStampedEvent extends EventObject {
 	private long timestamp;
 
 	/**
