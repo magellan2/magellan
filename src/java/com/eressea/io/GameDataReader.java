@@ -26,20 +26,23 @@ import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
 
 /**
- * TODO: DOCUMENT ME!
+ * The <code>GameDataReader</code> reads a <code>GameData</code> from a given
+ * <code>FileType</code>
  *
  * @author $author$
  * @version $Revision$
  */
 public class GameDataReader {
 	/**
-	 * Read a gamedata from a given File
+	 * Read a gamedata from a given File.
+	 * At the beginning the game name is read by a <code>GameNameReader</code>. With this 
+	 * name the corresponding rules and game
 	 *
-	 * @param aFileType TODO: DOCUMENT ME!
+	 * @param aFileType the filetype representing a cr or xml file.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a GameData object read from the cr or xml file.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException iff something went wrong while reading the file.
 	 */
 	public GameData readGameData(FileType aFileType) throws IOException {
 		// a) read game name
@@ -52,17 +55,21 @@ public class GameDataReader {
 
 		if(isXMLFile(aFileType)) {
 			GameData data = readGameDataXML(aFileType, gameName);
-			if(data != null) { 
+
+			if(data != null) {
 				data.postProcess();
 			}
+
 			return data;
 		}
 
 		if(isCRFile(aFileType)) {
 			GameData data = readGameDataCR(aFileType, gameName);
-			if(data != null) { 
+
+			if(data != null) {
 				data.postProcess();
 			}
+
 			return data;
 		}
 

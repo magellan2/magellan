@@ -469,7 +469,8 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 				 * of privileged factions
 				 **/
 				if(newData.factions() != null) {
-					Iterator it = newData.factions().values().iterator();
+					Iterator it				 = newData.factions().values()
+													  .iterator();
 					boolean  excludeBRegions = (crw.getIncludeMessages() &&
 											   chkSelRegionsOnly.isSelected() &&
 											   (regions != null) &&

@@ -221,9 +221,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	public static final int COLLAPSE_FLAG = 1;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int COLLAPSE_ONLY_EXPANDED = 2;
-	private int			    collapseMode = COLLAPSE_FLAG |
-										   COLLAPSE_ONLY_EXPANDED | (3 << 2);
+	public static final int		    COLLAPSE_ONLY_EXPANDED = 2;
+	private int					    collapseMode = COLLAPSE_FLAG |
+												   COLLAPSE_ONLY_EXPANDED |
+												   (3 << 2);
 	private List				    lastExpanded	  = CollectionFactory.createLinkedList();
 	private Set					    collapsedNodes    = CollectionFactory.createHashSet();
 	private Set					    collapseInfo	  = CollectionFactory.createHashSet();
@@ -2001,8 +2002,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		// now add all privileged factions with alliance state Integer.MAX_VALUE
 		for(Iterator iter = privilegedFactions.iterator(); iter.hasNext();) {
 			Faction f = (Faction) iter.next();
-			activeAlliances.put(f.getID(),
-								new Alliance(f, Integer.MAX_VALUE));
+			activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
 		}
 	}
 
@@ -3239,9 +3239,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		public final int COMMENTS = 8;
 
 		/** TODO: DOCUMENT ME! */
-		public final int   CREATE_ISLANDS  = 16384;
-		private int		   mode			   = UNITS | BUILDINGS | SHIPS |
-											 COMMENTS;
+		public final int   CREATE_ISLANDS = 16384;
+		private int		   mode = UNITS | BUILDINGS | SHIPS | COMMENTS;
 		private Map		   regionNodes;
 		private Map		   unitNodes;
 		private Map		   buildingNodes;
@@ -3365,12 +3364,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 							  Map buildingNodes, Map shipNodes,
 							  Comparator unitSorting, Map activeAlliances,
 							  int treeStructure[], GameData data) {
-			Iterator regions			 = regionCollection.iterator();
-			boolean  unitInteresting     = (mode & UNITS) != 0;
-			boolean  buildingInteresting = (mode & BUILDINGS) != 0;
-			boolean  shipInteresting     = (mode & SHIPS) != 0;
-			boolean  commentInteresting  = (mode & COMMENTS) != 0;
-			boolean  createIslandNodes   = (mode & CREATE_ISLANDS) != 0;
+			Iterator			   regions			   = regionCollection.iterator();
+			boolean				   unitInteresting     = (mode & UNITS) != 0;
+			boolean				   buildingInteresting = (mode & BUILDINGS) != 0;
+			boolean				   shipInteresting     = (mode & SHIPS) != 0;
+			boolean				   commentInteresting  = (mode & COMMENTS) != 0;
+			boolean				   createIslandNodes   = (mode &
+														 CREATE_ISLANDS) != 0;
 
 			DefaultMutableTreeNode islandNode = null;
 			DefaultMutableTreeNode regionNode = null;

@@ -98,10 +98,9 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 
 	/**
 	 * Keys for cycling, completing and breaking. completerKeys[]
-	 * completerKeys[][0]    completerKeys[1]     cycle forward modifier
-	 * key     cycle backward        modifier key
-	 * complete                    modifier key     break
-	 * modifier key
+	 * completerKeys[][0]    completerKeys[1]     cycle forward modifier key
+	 * cycle backward        modifier key complete
+	 * modifier key     break modifier key
 	 */
 	private int		  completerKeys[][];
 	private Timer     timer;

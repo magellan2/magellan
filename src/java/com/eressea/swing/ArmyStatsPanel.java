@@ -735,8 +735,9 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			return;
 		}
 
-		front = r.getItemCategory(StringID.create("front weapons"), false);
-		back  = r.getItemCategory(StringID.create("distance weapons"), false);
+		front	   = r.getItemCategory(StringID.create("front weapons"), false);
+		back	   = r.getItemCategory(StringID.create("distance weapons"),
+									   false);
 		armourType = r.getItemCategory(StringID.create("armour"), false);
 		shieldType = r.getItemCategory(StringID.create("shield"), false);
 

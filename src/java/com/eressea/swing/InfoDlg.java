@@ -27,8 +27,8 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -61,8 +61,8 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 
 		magallanImage.setText("");
 
-		java.net.URL     url  = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
-		Icon icon = null;
+		java.net.URL url  = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
+		Icon		 icon = null;
 
 		if(url != null) {
 			Image image = getToolkit().createImage(url);
@@ -148,9 +148,9 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 							   };
 			text += (new java.text.MessageFormat(getString("versiontext"))).format(msgArgs);
 		}
-		
+
 		if(VersionInfo.getVersion() != null) {
-			text += "\n[Magellan "+VersionInfo.getVersion()+"]";
+			text += ("\n[Magellan " + VersionInfo.getVersion() + "]");
 		}
 
 		jTextArea1.setWrapStyleWord(true);

@@ -33,7 +33,7 @@ public class Alliance {
 	 * Create a new Alliance object for an alliance with the specified faction
 	 * and without any alliance status set.
 	 *
-	 * @param faction the faction to establish an alliance with. 
+	 * @param faction the faction to establish an alliance with.
 	 */
 	public Alliance(Faction faction) {
 		this(faction, 0);
@@ -82,7 +82,7 @@ public class Alliance {
 	 * Returns the faction this alliance refers to. The return value is never
 	 * null.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the faction of this alliance
 	 */
 	public Faction getFaction() {
 		return faction;
@@ -166,7 +166,7 @@ public class Alliance {
 	 * A method to convert an alliance into a trustlevel. This method should be
 	 * uses when Magellan calculates trust levels on its own.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the trustlevel of this alliance
 	 */
 	public int getTrustLevel() {
 		int ret = 0;

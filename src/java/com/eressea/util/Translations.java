@@ -14,8 +14,8 @@
 
 package com.eressea.util;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.Locale;
 import java.util.Map;
@@ -345,7 +345,7 @@ public class Translations {
 	public static PropertyResourceBundle loadResourceBundle(final String name,
 															Locale l,
 															ClassLoader loader) {
-		String			    fileName = null;
+		String	    fileName = null;
 		InputStream in = null;
 
 		try {

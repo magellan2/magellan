@@ -58,7 +58,6 @@ public class InputStreamSourceFileType extends FileType {
 							  toString() + "'.");
 	}
 
-
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -71,5 +70,4 @@ public class InputStreamSourceFileType extends FileType {
 
 		return this;
 	}
-
 }

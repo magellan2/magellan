@@ -356,10 +356,13 @@ public class OrderWriter {
 	}
 
 	private String getTimeStamp() {
-		long   time = System.currentTimeMillis();
-		int    x = System.getProperties().getProperty("user.name").hashCode();
-		int    y = System.getProperties().getProperty("os.name").hashCode();
-		int    z = System.getProperties().getProperty("java.version").hashCode();
+		long   time		   = System.currentTimeMillis();
+		int    x		   = System.getProperties().getProperty("user.name")
+								   .hashCode();
+		int    y		   = System.getProperties().getProperty("os.name")
+								   .hashCode();
+		int    z		   = System.getProperties().getProperty("java.version")
+								   .hashCode();
 		long   sum		   = x + y + z;
 		String strSum	   = Long.toString(sum);
 		String strTime     = Long.toString(time);

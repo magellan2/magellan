@@ -217,7 +217,8 @@ public class OrderReader {
 				break;
 			} else if(localeOrder.startsWith(token)) {
 				if(tokenizer.hasMoreTokens()) {
-					token = tokenizer.nextToken().replace('"', ' ').trim();
+					token		  = tokenizer.nextToken().replace('"', ' ')
+											 .trim();
 					currentLocale = new Locale(token, "");
 
 					/* update the locale dependent cached orders */

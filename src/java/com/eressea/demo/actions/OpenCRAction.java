@@ -23,6 +23,8 @@ import java.util.Properties;
 
 import javax.swing.JFileChooser;
 
+import com.eressea.GameData;
+
 import com.eressea.demo.Client;
 
 import com.eressea.swing.EresseaFileFilter;
@@ -106,9 +108,11 @@ public class OpenCRAction extends MenuAction {
 									 fc.getSelectedFile().getAbsolutePath());
 			}
 
-			client.setData(client.loadCR(fc.getSelectedFile().getPath()));
-
-			client.setReportChanged(false);
+			GameData data = client.loadCR(fc.getSelectedFile().getPath());
+			if(data != null) {
+				client.setData(data);
+				client.setReportChanged(false);
+			}
 		}
 	}
 

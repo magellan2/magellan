@@ -155,7 +155,8 @@ public class UnitRoutePlanner {
 					order += (" " + getOrder(EresseaOrderConstants.O_PAUSE));
 					orders.add(order);
 				} else {
-					String nach = getOrder(EresseaOrderConstants.O_MOVE) + " ";
+					String nach    = getOrder(EresseaOrderConstants.O_MOVE) +
+									 " ";
 					int    count   = 0;
 					int    after   = 0;
 					List   curPath = CollectionFactory.createLinkedList();

@@ -1,3 +1,14 @@
+2003-12-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/FileHistory.java: Prevent NPE if
+	GameData is not loadable.
+
+	* src/java/com/eressea/demo/Client.java: add support for zip files
+	with multiple loadable entries.
+
+	* src/java/com/eressea/demo/actions/OpenCRAction.java: Prevent NPE
+	if GameData is not loadable.
+
 2003-11-30  Ilja Pavkovic  <noeskadu@gmx.de>
 
 	* src/java/com/eressea/swing/InfoDlg.java (initComponents): added

@@ -127,8 +127,8 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-			 *
-			 */
+				 *
+				 */
 	public String getIconName() {
 		//String className = this.getClass().getName().toLowerCase();
 		//int pos = className.lastIndexOf(".");

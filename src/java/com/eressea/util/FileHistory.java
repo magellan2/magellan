@@ -23,6 +23,8 @@ import java.util.Properties;
 
 import javax.swing.JMenu;
 
+import com.eressea.GameData;
+
 import com.eressea.demo.Client;
 import com.eressea.demo.actions.FileHistoryAction;
 
@@ -186,8 +188,10 @@ public class FileHistory {
 			settings.setProperty("Client.lastCRSaved", file.getAbsolutePath());
 		}
 
-		client.setData(client.loadCR(file.getPath()));
-
-		client.setReportChanged(false);
+		GameData data = client.loadCR(file.getPath());
+		if(data != null) {
+			client.setData(data);
+			client.setReportChanged(false);
+		}
 	}
 }

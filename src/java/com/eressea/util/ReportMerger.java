@@ -476,15 +476,16 @@ public class ReportMerger extends java.lang.Object {
 
 		/* check whether any of the translations is impossible by
 		   comparing the terrains */
-		int maxTerrainMismatches = (int) (Math.max(data.regions().size(),
-												   report.data.regions().size()) * 0.02);
-		Coordinate loopCoord     = new Coordinate(0, 0, 0);
-		RegionType forestTerrain = data.rules.getRegionType(StringID.create("Wald"));
-		RegionType plainTerrain  = data.rules.getRegionType(StringID.create("Ebene"));
-		RegionType oceanTerrain  = data.rules.getRegionType(StringID.create("Ozean"));
-		RegionType glacierTerrain = data.rules.getRegionType(StringID.create("Gletscher"));
+		int		   maxTerrainMismatches = (int) (Math.max(data.regions().size(),
+														  report.data.regions()
+																	 .size()) * 0.02);
+		Coordinate loopCoord		    = new Coordinate(0, 0, 0);
+		RegionType forestTerrain	    = data.rules.getRegionType(StringID.create("Wald"));
+		RegionType plainTerrain		    = data.rules.getRegionType(StringID.create("Ebene"));
+		RegionType oceanTerrain		    = data.rules.getRegionType(StringID.create("Ozean"));
+		RegionType glacierTerrain	    = data.rules.getRegionType(StringID.create("Gletscher"));
 		RegionType activeVolcanoTerrain = data.rules.getRegionType(StringID.create("Aktiver Vulkan"));
-		RegionType volcanoTerrain = data.rules.getRegionType(StringID.create("Vulkan"));
+		RegionType volcanoTerrain	    = data.rules.getRegionType(StringID.create("Vulkan"));
 
 		for(Iterator iter = translationMap.keySet().iterator(); iter.hasNext();) {
 			Coordinate translation = (Coordinate) iter.next();

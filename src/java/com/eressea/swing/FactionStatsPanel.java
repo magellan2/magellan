@@ -112,7 +112,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 		factions = CollectionFactory.createHashtable(data.factions());
 		regions  = CollectionFactory.createHashtable(data.regions());
 		dispatcher.addSelectionListener(this);
-		unitsTools = (data != null) ? new Units(data.rules) : new Units(null);
+		unitsTools		   = (data != null) ? new Units(data.rules)
+											: new Units(null);
 		nodeWrapperFactory = new NodeWrapperFactory(settings);
 
 		// to get the pref-adapter
