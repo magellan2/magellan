@@ -94,22 +94,28 @@ public class EventDispatcher {
 		}
 	}
 
+	private static boolean weakReferenced = false;
+
 	/** 
 	 * Clones the List (and remove WeakReference objects with null target)
 	 */
 	private List cloneList(List list) {
-		List ret = CollectionFactory.createArrayList(list.size());
-		for(Iterator iter = list.iterator(); iter.hasNext(); ) {
-			WeakReference ref = (WeakReference) iter.next();
-			if(ref.get() != null) {
-				ret.add(ref);
+		if(weakReferenced) {
+			List ret = CollectionFactory.createArrayList(list.size());
+			for(Iterator iter = list.iterator(); iter.hasNext(); ) {
+				WeakReference ref = (WeakReference) iter.next();
+				if(ref.get() != null) {
+					ret.add(ref);
+				}
 			}
+			return ret;
+		} else {
+			return CollectionFactory.createArrayList(list);
 		}
-		return ret;
 	}
 
 	private Object encapsulate(Object o) {
-		return new EqualizedWeakReference(o);
+		return weakReferenced ? new EqualizedWeakReference(o) : o;
 	}
 
 	private void addListener(int pos, Object l) {
@@ -591,7 +597,11 @@ public class EventDispatcher {
 				notifierIsAliveOnList[SELECTION] = true;
 				for(Iterator iter = listeners[SELECTION].iterator();
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
-					Object o = ((WeakReference) iter.next()).get();
+					//Object o = ((WeakReference) iter.next()).get();
+					Object o = iter.next();
+					if(weakReferenced) {
+						o = ((WeakReference) o).get();
+					}
 					if(o!= null) {
 						eventsDispatched++;
 						((SelectionListener) o).selectionChanged(e);
@@ -609,7 +619,12 @@ public class EventDispatcher {
 				notifierIsAliveOnList[ORDERCONFIRM] = true;
 				for(Iterator iter = listeners[ORDERCONFIRM].iterator();
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
-					Object o = ((WeakReference) iter.next()).get();
+					//Object o = ((WeakReference) iter.next()).get();
+					Object o = iter.next();
+					if(weakReferenced) {
+						o = ((WeakReference) o).get();
+					}
+
 					if(o!= null) {
 						eventsDispatched++;
 						((OrderConfirmListener) o).orderConfirmationChanged(e);
@@ -626,7 +641,12 @@ public class EventDispatcher {
 				notifierIsAliveOnList[UNITORDERS] = true;
 				for(Iterator iter = listeners[UNITORDERS].iterator();
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
-					Object o = ((WeakReference) iter.next()).get();
+					//Object o = ((WeakReference) iter.next()).get();
+					Object o = iter.next();
+					if(weakReferenced) {
+						o = ((WeakReference) o).get();
+					}
+
 					if(o!= null) {
 						eventsDispatched++;
 						((UnitOrdersListener) o).unitOrdersChanged(e);
@@ -643,7 +663,12 @@ public class EventDispatcher {
 				notifierIsAliveOnList[TEMPUNIT] = true;
 				for(Iterator iter = listeners[TEMPUNIT].iterator();
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
-					Object o = ((WeakReference) iter.next()).get();
+					//Object o = ((WeakReference) iter.next()).get();
+					Object o = iter.next();
+					if(weakReferenced) {
+						o = ((WeakReference) o).get();
+					}
+
 					if(o!= null) {
 						eventsDispatched++;
 						TempUnitListener l = (TempUnitListener) o;
@@ -665,7 +690,12 @@ public class EventDispatcher {
 				notifierIsAliveOnList[GAMEDATA] = true;
 				for(Iterator iter = listeners[GAMEDATA].iterator();
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
-					Object o = ((WeakReference) iter.next()).get();
+					//Object o = ((WeakReference) iter.next()).get();
+					Object o = iter.next();
+					if(weakReferenced) {
+						o = ((WeakReference) o).get();
+					}
+
 					if(o!= null) {
 						eventsDispatched++;
 						((GameDataListener) o).gameDataChanged(e);
