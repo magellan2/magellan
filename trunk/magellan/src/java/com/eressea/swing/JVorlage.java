@@ -604,7 +604,6 @@ public class JVorlage extends InternationalizedDialog {
 				}
 			}
 			try {
-				int exitValue = p.exitValue();
 				if (p.exitValue() != 0) {
 					Object[] msgArgs = {
 						new Integer(p.exitValue())

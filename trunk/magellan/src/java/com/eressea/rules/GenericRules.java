@@ -43,11 +43,11 @@ public class GenericRules implements Rules {
 	private Map skillTypes = CollectionFactory.createHashtable();
 	private Map skillTypeNames = CollectionFactory.createHashtable();
 	private Map itemCategories = CollectionFactory.createHashtable();
-	private Map itemCategorieNames = CollectionFactory.createHashtable();
+	//private Map itemCategorieNames = CollectionFactory.createHashtable();
 	private Map skillCategories = CollectionFactory.createHashtable();
-	private Map skillCategorieNames = CollectionFactory.createHashtable();
+	//private Map skillCategorieNames = CollectionFactory.createHashtable();
 	private Map optionCategories = CollectionFactory.createHashtable();
-	private Map optionCategorieNames = CollectionFactory.createHashtable();
+	//private Map optionCategorieNames = CollectionFactory.createHashtable();
 
 
 	public Race addRace(Race t) {

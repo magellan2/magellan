@@ -80,7 +80,7 @@ public class EresseaDate extends Date {
 		"Es ist Frühling", "Es ist Frühling", "Es ist Sommer"};
 
 
-	private final int epochsBeginAt[] = {0, 1, 184};
+	// private static int epochsBeginAt[] = {0, 1, 184};
 	private int epoch = 1;
 
 	/** Creates new EresseaDate */

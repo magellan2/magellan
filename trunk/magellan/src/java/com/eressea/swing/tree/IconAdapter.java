@@ -975,7 +975,6 @@ public class IconAdapter extends InternationalizedPanel implements ExtendedPrefe
 			Map map=CellRenderer.getStylesets();
 			List list = null;
 			if (map!=null) {
-				int i=3;
 				list = CollectionFactory.createLinkedList(map.keySet());
 				list.remove("DEFAULT");
 				list.remove("MAIN");
@@ -990,8 +989,7 @@ public class IconAdapter extends InternationalizedPanel implements ExtendedPrefe
 						node = new DefaultMutableTreeNode(new TreeObject(s));
 						nodeMap.put(s, node);
 						
-						String parentSearch = s;
-						
+					
 						if (s.indexOf('.') > 0) {
 							String parent = s.substring(0, s.lastIndexOf('.'));
 							if (nodeMap.containsKey(parent)) {

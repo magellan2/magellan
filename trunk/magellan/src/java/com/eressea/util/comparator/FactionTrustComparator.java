@@ -59,7 +59,6 @@ public class FactionTrustComparator implements Comparator {
 	 *	is returned.
 	 */
 	public int compare(Object o1, Object o2) {
-		int ret = 0;
 		int t1 = getTrustLevel(((Faction)o1).trustLevel);
 		int t2 = getTrustLevel(((Faction)o2).trustLevel);
 

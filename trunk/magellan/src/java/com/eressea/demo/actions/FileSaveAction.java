@@ -13,7 +13,6 @@ import java.util.Map;
 import com.eressea.demo.Client;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.file.FileType;
-import com.eressea.util.logging.Logger;
 
 /**
  *
@@ -21,7 +20,6 @@ import com.eressea.util.logging.Logger;
  * @version 
  */
 public class FileSaveAction extends FileSaveAsAction {
-	private final static Logger log = Logger.getInstance(FileSaveAction.class);
 	
 	// pavkovic 2003.05.20: this object is essentially doing the same as FileSaveAsAction
 	public FileSaveAction(Client parent) {

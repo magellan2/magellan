@@ -628,7 +628,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 					continue;
 				}
 				if (unitMap.size()==0) {
-					inFront = guessCombatState(unit, nonSkillWeapons) == 0;
+					inFront = guessCombatState(nonSkillWeapons) == 0;
 				}
 			}
 			if (!facMap.containsKey(unit.getFaction())) {
@@ -709,7 +709,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		return col;
 	}
 
-	protected int guessCombatState(Unit unit, Collection weapons) {
+	protected int guessCombatState(Collection weapons) {
 		int guess = 0; // guess front
 		// now search for distance weapons
 		if (weapons != null && back!=null) {

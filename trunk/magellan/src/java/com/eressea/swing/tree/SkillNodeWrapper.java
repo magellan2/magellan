@@ -261,10 +261,8 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 			else if (modSkill != null)
 				ge.setImageName(modSkill.getSkillType().getID().toString());
 			
-			int diff = 0;
 			boolean isDiff = false;
 			if (skill != null) {
-				diff = skill.getChangeLevel();
 				isDiff = skill.isLevelChanged();
 			}
 			

@@ -11,7 +11,6 @@ package com.eressea.swing.tree;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Vector;
 
 import javax.swing.InputMap;
 import javax.swing.JTree;
@@ -29,7 +28,6 @@ import com.eressea.event.EventDispatcher;
  */
 public class CopyTree extends JTree implements KeyListener {
 
-	private Vector shortcuts = null;
 	private EventDispatcher dispatcher = null;
 
 	public CopyTree(TreeModel model, EventDispatcher dispatcher) {

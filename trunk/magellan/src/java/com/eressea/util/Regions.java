@@ -413,7 +413,6 @@ public class Regions {
 			// determine the possible ways off (ships casually can not leave
 			// land to all directions)
 			List startregions = CollectionFactory.createLinkedList();
-			Unit shipOwner = ship.getOwnerUnit();
 			int shipRange = ship.getShipType().getRange();
 			shipRange += speedBonus;
 			Region curRegion = ship.getRegion();
@@ -499,7 +498,6 @@ public class Regions {
 					if (shipRange > 0) {
 						int counter = shipRange;
 						weeks = 1;
-						int weekCounter = 0;
 						for (Iterator i = path.iterator(); i.hasNext(); counter--) {
 							if (counter == 0) {
 								counter = shipRange;

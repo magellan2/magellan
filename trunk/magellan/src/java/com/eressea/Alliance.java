@@ -19,22 +19,23 @@ import com.eressea.util.Translations;
  */
 public class Alliance {
 	/** A state selector for the "Helfe Silber" state. */
-	public static final int SILVER = 1 << 0;
+	private static final int SILVER = 1 << 0;
 	/** A state selector for the "Helfe Kämpfe" state. */
-	public static final int COMBAT = 1 << 1;
+	private static final int COMBAT = 1 << 1;
 	/** A state selector for the "Helfe Gib" state. */
-	public static final int GIVE = 1 << 3;
+	private static final int GIVE = 1 << 3;
 	/** A state selector for the "Helfe Bewache" state. */
-	public static final int GUARD = 1 << 4;
+	private static final int GUARD = 1 << 4;
 	/** A state selector for the "Helfe Parteitarnung" state. */
-	public static final int GUISE = 1 << 5;
+	private static final int GUISE = 1 << 5;
 	/** A state selector for the "Helfe ?" state. */
-	public static final int WHATEVER = 1 << 6;
+	private static final int WHATEVER = 1 << 6;
 	/** A state selector for all of the alliance states. */
-	// public static final int ALL = 0x003B;
-	public static final int ALL = SILVER | COMBAT | GIVE | GUARD | GUISE | WHATEVER; // (binary value should be: 111101 (#123) )
+	// private static final int ALL = 0x003B;
+	private static final int ALL = SILVER | COMBAT | GIVE | GUARD | GUISE | WHATEVER; // (binary value should be: 111101 (#123) )
 	
 	private final Faction faction;
+	private final Rules rules;
 	private int state = 0;
 
 	/**
@@ -46,30 +47,37 @@ public class Alliance {
 	 * @throws IllegalArgumentException if the faction parameter is
 	 * null.
 	 */
-	public Alliance(Faction faction) {
-		this(faction, 0);
+	public Alliance(Faction faction, Rules rules) {
+		this(faction, rules, 0);
 	}
 
 	/**
 	 * Create a new Alliance object for an alliance with the
 	 * specified faction and the specified status.
 	 *
-	 * @param faction the faction to establish an alliance with. An
-	 * IllegalArgumentException is thrown if faction is null.
+	 * @param faction the faction to establish an alliance with
+	 * 
+	 * @param rules the underlying rules object to get connection to 
+	 * Alliance Categories.
 	 * @param state the alliance status, must be one of constants
 	 * SILVER, FIGHT, GIVE, GUARD, GUISE or ALL.
 	 * @throws IllegalArgumentException if the faction parameter is
 	 * null.
 	 */
-	public Alliance(Faction faction, int state) {
-		if (faction != null) {
-			this.faction = faction;
-		} else {
-			throw new IllegalArgumentException("Alliance.Alliance(): invalid faction specified!");
-		}
+	public Alliance(Faction faction, Rules rules, int state) {
+		if(faction == null) throw new NullPointerException();
+		if(rules == null) throw new NullPointerException();
+		this.faction = faction;
+		this.rules = rules;
 		this.state = state;
 	}
 	
+	
+	/** copy constructor */
+	public Alliance(Alliance orig) {
+		this(orig.faction,orig.rules,orig.state);
+	}
+
 	/**
 	 * Returns the faction this alliance refers to. The return value
 	 * is never null.

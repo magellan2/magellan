@@ -2123,18 +2123,6 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	}
 
 	/**
-	 * Returns the weight of the specified item type in GE * 100 or 0
-	 * if type is null.
-	 */
-	private int getItemWeight(ItemType type) {
-		if (type != null) {
-			return (int)(type.getWeight() * 100);
-		} else {
-			return 0;
-		}
-	}
-
-	/**
 	 * Indicates whether this Unit object is equal to another
 	 * object. Returns true only if o is not null and an instance of
 	 * class Unit and o's id is equal to the id of this

@@ -37,7 +37,6 @@ import com.eressea.completion.AutoCompletion;
 import com.eressea.completion.Completion;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.JVMUtilities;
-import com.eressea.util.logging.Logger;
 
 /**
  *
@@ -45,7 +44,6 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class ListCompletionGUI extends AbstractCompletionGUI {
-	private final static Logger log = Logger.getInstance(ListCompletionGUI.class);
 
 	protected ListPane listPane;
 	protected AutoCompletion ac;

@@ -425,9 +425,7 @@ public class JECheck extends Reader {
 			throw new IllegalArgumentException("JECheck.getAffectedObject(): invalid msgs argument specified.");
 		}
 
-		Object obj = null;
 		String line = null;
-		String unitLine = null;
 		LineNumberReader lnr = null;
 		List orders = CollectionFactory.createLinkedList();
 
@@ -536,19 +534,6 @@ public class JECheck extends Reader {
 	 */
 	public static Version getRequiredVersion() {
 		return new Version("4.1.2", ".");
-	}
-
-	public static void main(String args[]) throws IOException, java.text.ParseException
-	{
-		File echk = new File("C:\\Documents and Settings\\Administrator\\My Documents\\Eressea\\ECheck.exe");
-		File cmds = new File("C:\\Documents and Settings\\Administrator\\My Documents\\Eressea\\228.txt");
-		File output = new File("C:\\Documents and Settings\\Administrator\\Desktop\\echeck.txt");
-		Collection msgs = JECheck.getMessages(new FileReader(output));
-		for (Iterator iter = msgs.iterator(); iter.hasNext();) {
-			ECheckMessage msg = (ECheckMessage)iter.next();
-			log.info(msg);
-		}
-
 	}
 
 	/**

@@ -283,7 +283,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 */
 	public MapperPanel(EventDispatcher ed, Properties p,Collection customRenderers,CellGeometry geo) {
 		super(ed, p);
-		final MapperPanel thisMapperPanel = this;
+		//final MapperPanel thisMapperPanel = this;
 		
 		initMinimap();
 		

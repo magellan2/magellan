@@ -59,34 +59,12 @@ public class TrustLevels {
 						// trustlevels were not set by the user
 						Faction ally = alliance.getFaction();
 						if (!ally.trustLevelSetByUser) {
-						    ally.trustLevel = Math.max(ally.trustLevel, getTrustLevel(alliance));
+						    ally.trustLevel = Math.max(ally.trustLevel, data.getGameSpecificStuff().getTrustLevel(alliance));
 						}
 					}
 				}
 			}
 		}
-	}
-
-	/**
-	 * A method to convert an alliance into a trustlevel.
-	 * This method should be uses when Magellan calculates trust levels on its own.
-	 */
-	public static int getTrustLevel(Alliance alliance) {
-		int retVal = 0;
-		if (alliance.getState(Alliance.ALL)) {
-			retVal = 60;
-		} else if (alliance.getState(Alliance.GUISE)) {
-			retVal = 50;
-		} else if (alliance.getState(Alliance.COMBAT)) {
-			retVal = 40;
-		} else if (alliance.getState(Alliance.GUARD)) {
-			retVal = 30;
-		} else if (alliance.getState(Alliance.GIVE)) {
-			retVal = 20;
-		} else if (alliance.getState(Alliance.SILVER)) {
-			retVal = 10;
-		}
-		return retVal;
 	}
 
 	/**

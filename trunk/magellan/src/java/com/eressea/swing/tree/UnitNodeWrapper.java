@@ -35,10 +35,8 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.SkillComparator;
 import com.eressea.util.comparator.SkillTypeComparator;
 import com.eressea.util.comparator.SkillTypeRankComparator;
-import com.eressea.util.logging.Logger;
 
 public class UnitNodeWrapper implements CellObject2, SupportsClipboard, SupportsEmphasizing {
-	private final static Logger log = Logger.getInstance(UnitNodeWrapper.class);
 
 	private final static Comparator skillComparator = new SkillComparator();
 	private static Comparator rankComparator = null;
@@ -46,10 +44,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 	// all the time a new one (for implementation of SupportsEmphasizing)
 	private List subordinatedElements = null;
 
-	private final static String COLOR_TAG = "unitColor";
-	private final static String STYLE_TAG = "unitStyle";
 	private final static String SKILL_CHANGE_STYLE_PREFIX = "Talent";
-	private final static String WARNING_IMAGE = "warnung";
 
 	private Unit unit = null;
 	private int amount = -1;
@@ -164,14 +159,6 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 
 	public boolean isShowingCatagorized(int type) {
 		return adapter.properties[adapter.CATEGORIZE_START + type];
-	}
-
-	public boolean isUsingWarner() {
-		return adapter.properties[adapter.SHOW_WARNINGS] && adapter.uWarning != null;
-	}
-
-	public UnitWarning getWarner() {
-		return adapter.uWarning;
 	}
 
 	private static String getText(Unit u, String prefix, int amount1, int amount2) {
@@ -381,17 +368,6 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		}
 		if (reverseOrder()) {
 			Collections.reverse(names);
-			if (isUsingWarner()) {
-				if (getWarner().warn(this.unit)) {
-					start.setImageName(WARNING_IMAGE);
-				}
-			}
-		} else {
-			if (isUsingWarner()) {
-				if (getWarner().warn(this.unit)) {
-					names.add(0, new GraphicsElement(null, null, null, WARNING_IMAGE));
-				}
-			}
 		}
 		names.add(0,start);
 
@@ -489,8 +465,6 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		protected JMenu contextMenu;
 		protected JCheckBoxMenuItem itemItem, skillItem;
 
-		protected UnitWarning uWarning;
-		
 		public UnitNodeWrapperDrawPolicy(Properties settings,String prefix, Map defaultTrans) {
 			// super(5, new int[] {6, 2, 7, -1, -1}, settings, prefix,new String[][] {
 			super(4, new int[] {7, 2, 7, 0}, settings, prefix,new String[][] {

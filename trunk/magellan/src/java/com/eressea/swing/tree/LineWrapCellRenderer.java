@@ -94,8 +94,6 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer, Co
 			return false;
 		}
 		
-		int lineHeight = 10;
-		
 		Insets in = getInsets();
 		
 		int maxLength = treeWidth - indent - labelWidth - 3 - in.left - in.right;

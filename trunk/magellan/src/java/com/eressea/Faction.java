@@ -166,7 +166,7 @@ public class Faction extends UnitContainer {
 			for (Iterator iter = curFaction.allies.values().iterator(); iter.hasNext();) {
 				Alliance alliance = (Alliance)iter.next();
 				Faction ally = newGD.getFaction(alliance.getFaction().getID());
-				newFaction.allies.put(ally.getID(), new Alliance(ally, alliance.getState()));
+				newFaction.allies.put(ally.getID(), new Alliance(ally, newGD.rules, alliance.getState()));
 			}
 		}
 		if (curFaction.email != null) {

@@ -12,7 +12,6 @@ package com.eressea.swing;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
@@ -24,7 +23,6 @@ import com.eressea.util.VersionInfo;
  *
  */
 public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
-	private ResourceBundle componentDictionary = null;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JButton btn_OK;
 	private javax.swing.JButton btn_Version;

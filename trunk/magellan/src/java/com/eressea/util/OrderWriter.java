@@ -25,7 +25,6 @@ import com.eressea.StringID;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
-import com.eressea.util.logging.Logger;
 
 
 /**
@@ -33,7 +32,6 @@ import com.eressea.util.logging.Logger;
  * a stream.
  */
 public class OrderWriter {
-	private final static Logger log = Logger.getInstance(OrderWriter.class);
 
 	public final static String CONFIRMED     = "bestaetigt";
 	public final static String CONFIRMEDTEMP = CONFIRMED+"_temp";
@@ -166,7 +164,6 @@ public class OrderWriter {
 	}
 
 	private boolean writeUnit(Unit unit, BufferedWriter stream) throws IOException {
-		OrderToken t = null;
 		if (unit instanceof TempUnit) {
 			return false;
 		}

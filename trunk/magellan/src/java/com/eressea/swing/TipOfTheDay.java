@@ -132,7 +132,6 @@ public class TipOfTheDay extends InternationalizedDialog implements ActionListen
 		panel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 		panel.setBackground(foreground);
 		
-		boolean imageFound = false;
 		// try to find the image
 		Icon icon = null;
 		JLabel iconLabel = null;
@@ -141,13 +140,11 @@ public class TipOfTheDay extends InternationalizedDialog implements ActionListen
 			icon = new ImageIcon(url);
 		}catch(RuntimeException exc) {}
 		if (icon != null) {
-			imageFound = true;
 			iconLabel = new JLabel(icon);
 			iconLabel.setBackground(background);
 			iconLabel.setOpaque(true);
 			panel.add(iconLabel, BorderLayout.WEST);
 		} else {
-			imageFound = true;
 			iconLabel = new JLabel(" Pic here ");
 			iconLabel.setBackground(background);
 			iconLabel.setOpaque(true);

@@ -6,20 +6,18 @@
 
 package com.eressea.util.replacers;
 
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.filters.UnitFactionFilter;
-import com.eressea.util.logging.Logger;
+
 /**
  *
  * @author  Andreas
  * @version
  */
 public class FactionSwitch extends AbstractParameterReplacer implements EnvironmentDependent, SwitchOnly{
-	private final static Logger log = Logger.getInstance(FactionSwitch.class);
 		
 	protected ReplacerEnvironment environment;
 	
@@ -38,7 +36,6 @@ public class FactionSwitch extends AbstractParameterReplacer implements Environm
 			if (!fName.equals(CLEAR)) {
 				if (fName.indexOf(',') != -1) {
 					StringTokenizer st = new StringTokenizer(fName, ",");
-					LinkedList list = new LinkedList();
 					while(st.hasMoreTokens()) {
 						UnitFactionFilter filter = new UnitFactionFilter(st.nextToken());
 						((UnitSelection)environment.getPart(ReplacerEnvironment.UNITSELECTION_PART)).addFilter(filter);

@@ -443,7 +443,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 			return -1f;
 		}
 		public void removeEntry(float val) {
-			Object old = values.remove(new Float(val));
+			values.remove(new Float(val));
 		}
 		public void removeAll() {
 			values.clear();
@@ -1343,7 +1343,6 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 			protected int find(int x, int y, int maxDiff) {
 				if (value.size() > 0) {
 					int width = mapPainter.getWidth();
-					int height = mapPainter.getHeight();
 					for(int i=0;i<value.size();i++) {
 						Float next = (Float)value.get(i);
 						int j = (int)(next.floatValue()*width);

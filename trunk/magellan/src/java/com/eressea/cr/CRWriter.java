@@ -1199,7 +1199,7 @@ public class CRWriter extends BufferedWriter {
 				Object key = it.next();
 				Object value = map.get(key);
 				try {
-					int i = Integer.parseInt(value.toString());
+					Integer.parseInt(value.toString());
 					write(value + ";" + key);
 					newLine();
 				} catch (NumberFormatException e) {
@@ -1375,7 +1375,7 @@ public class CRWriter extends BufferedWriter {
 				Object key = it.next();
 				Object value = map.get(key);
 				try {
-					int i = Integer.parseInt(value.toString());
+					Integer.parseInt(value.toString());
 					write(value + ";" + key);
 					newLine();
 				} catch (NumberFormatException e) {

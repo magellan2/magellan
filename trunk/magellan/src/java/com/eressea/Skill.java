@@ -175,8 +175,6 @@ public class Skill {
 	 * skill in the terrain the specified unit resides in.
 	 */
 	public int getModifier(Unit unit) {
-		RegionType terrain = unit.getRegion() != null ? unit.getRegion().getRegionType() : null;
-
 		return getModifier(this.type, unit);
 	}
 

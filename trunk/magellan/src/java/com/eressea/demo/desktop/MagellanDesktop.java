@@ -139,24 +139,13 @@ public class MagellanDesktop extends javax.swing.JPanel implements java.awt.even
 	private Map componentsReversed;
 	
 	/**
-	 * A HashMap containing all components that use short cuts
-	 */
-	private Map shortCutComponents = CollectionFactory.createHashMap();
-	
-	/**
 	 * Some shortcut things
 	 */
 	private Map shortCutListeners = CollectionFactory.createHashMap();
 	private Map shortCutTranslations = CollectionFactory.createHashMap();
 	private KeyHandler keyHandler;
 	
-	
-	/**
-	 * A HashMap containing the ShortcutListeners that don't want
-	 * to be registered at the client.
-	 */
-	private Map shortCutComponentsNC;
-	
+		
 	/**
 	 * In case of MODE_FRAME this HashMap holds all the frames. The
 	 * key is the ID of the covered component.
@@ -208,10 +197,6 @@ public class MagellanDesktop extends javax.swing.JPanel implements java.awt.even
 	 * can do it better, please DO IT.
 	 */
 	private boolean inFront=false;
-	/**
-	 * Repaint flag beim Timer.
-	 */
-	private boolean inRepaint=false;
 	
 	private Timer timer;
 	
@@ -1120,9 +1105,6 @@ public class MagellanDesktop extends javax.swing.JPanel implements java.awt.even
 		modeInitialized[MODE_FRAME]=true;
 	}
 	
-	private void checkFrameMenuItem(FrameRectangle f,boolean state) {
-		checkFrameMenuItem(f.getFrameTitle(),state);
-	}
 	private void checkFrameMenuItem(FrameRectangle f) {
 		checkFrameMenuItem(f.getFrameTitle(),f.isVisible());
 	}

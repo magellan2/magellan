@@ -702,19 +702,6 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 		j.addCaretListener(caretAdapter);
 	}
 
-	/**
-	 * Adds the Adapters for Key-, Caret- & Focusevents to
-	 * all sub-components that are JTextComponents.
-	 */
-	private void addListenersToAll() {
-		Component c[] = content.getComponents();
-
-		if (c != null && c.length > 0)
-			for (int i = 0; i < c.length; i++)
-				if (c[i] instanceof JTextComponent)
-					addListeners((JTextComponent) c[i]);
-	}
-
 	private void loadEditors(Island i) {
 		List l = CollectionFactory.createLinkedList();
 		if (listMode >> LIST_ISLAND != 0) {
@@ -1696,12 +1683,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 			int newIDInt = 0;
 			UnitID newID = null;
 
-			// find a free id
-			boolean foundUnusedID = false;
-
 			for (newIDInt = unitIntID; newIDInt != unitIntID - 1; newIDInt = (newIDInt + 1 % IDBaseConverter.getMaxId())) {
 				if (parentRegion.getUnit(UnitID.createUnitID(-newIDInt)) == null) {
-					foundUnusedID = true;
 					break;
 				}
 			}

@@ -71,7 +71,7 @@ public class TreeHelper {
 			if (unitSorting != null) {
 				Collections.sort(units, unitSorting);
 			}
-			int regionUnits = addSortedUnits(regionNode, treeStructure, 0, units, factory, activeAlliances, unitNodes, data);
+			addSortedUnits(regionNode, treeStructure, 0, units, factory, activeAlliances, unitNodes, data);
 		}
 
 		// add ships

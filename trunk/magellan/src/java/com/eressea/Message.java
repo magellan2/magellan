@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.eressea.rules.MessageType;
-import com.eressea.util.logging.Logger;
 
 /**
  * A class for representing a message.
@@ -35,7 +34,6 @@ import com.eressea.util.logging.Logger;
  * have no type or attributes and an invalid id of -1.</p>
  */
 public class Message extends Identifiable {
-	private final static Logger log = Logger.getInstance(Message.class);
 	private String text = null;
 	private MessageType type = null;
 	/**
