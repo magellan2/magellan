@@ -207,7 +207,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	}
 
 	public void unitOrdersChanged(UnitOrdersEvent e) {
-		// TODO: rebuild warning list for given unit
+		// rebuild warning list for given unit
 		reviewObjects(e.getUnit(), e.getUnit().getRegion());
 	}
 

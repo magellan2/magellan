@@ -236,11 +236,11 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					}
 					/**
 					 * poorly it is necessary to refresh all relations,
-					 * as at this time it is not assured, that they are always
+					 * as at this time it is not assured that they are always
 					 * up to date. Possibly it would be better, to calculate them
 					 * only, if orders are loaded or changed...
 					 */
-					u.refreshRelations(data);
+					u.getRegion().refreshUnitRelations();
 					if(u.getModifiedPersons() > 0) {
 						modifiedUnitsCounter++;
 						modifiedPersonCounter += u.getModifiedPersons();

@@ -410,7 +410,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 						 focusLost event in the order editor does
 						 not occur before the selection event */
 							if (currentUnit != null && currentUnit.cache != null && currentUnit.cache.orderEditor != null && currentUnit.cache.orderEditor.isModified()) {
-								currentUnit.refreshRelations(data);
+								currentUnit.refreshRelations();
 							}
 
 							Unit u = ((Unit) units.get(currentUnitIndex + 1));

@@ -2352,8 +2352,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		/** Invoked when the orders of a unit are modified.
 		 */
 		public void unitOrdersChanged(UnitOrdersEvent e) {
-			Unit u = e.getUnit();
-			update(u, true);
+			update(e.getUnit(), true);
 		}
 		protected synchronized void update(Unit u, boolean updateRelationPartners) {
 			if (unitNodes.containsKey(u.getID())) {

@@ -35,6 +35,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+import javax.swing.JTextPane;
 
 import com.eressea.GameData;
 import com.eressea.Unit;
@@ -57,7 +58,7 @@ import com.eressea.util.logging.Logger;
 /**
  * A text pane for convenient editing and handling of Eressea orders.
  */
-public class OrderEditor extends javax.swing.JTextPane implements DocumentListener, KeyListener, SelectionListener, FocusListener, GameDataListener {
+public class OrderEditor extends JTextPane implements DocumentListener, KeyListener, SelectionListener, FocusListener, GameDataListener {
 	private final static Logger log = Logger.getInstance(OrderEditor.class);
 	// Style name constants
 	public static final String S_REGULAR = "regular";
@@ -107,9 +108,9 @@ public class OrderEditor extends javax.swing.JTextPane implements DocumentListen
 		addFocusListener(this);
 		dispatcher.addUnitOrdersListener(new UnitOrdersListener() {
 				public void unitOrdersChanged(UnitOrdersEvent e) {
+					// refresh local copy of orders in editor
 					if (e.getSource() != OrderEditor.this && e.getUnit().equals(OrderEditor.this.unit)) {
 						setOrders(OrderEditor.this.unit.getOrders());
-						OrderEditor.this.unit.refreshRelations(getData());
 					}
 				}
 			});
@@ -160,8 +161,10 @@ public class OrderEditor extends javax.swing.JTextPane implements DocumentListen
 	 * is registered with this editor.
 	 */
 	public void selectionChanged(SelectionEvent e) {
-		log.debug("OrderEditor.selectionChanged: "+e.getActiveObject());
-		log.debug("OrderEditor.selectionChanged: "+e.getActiveObject().getClass());
+		if(log.isDebugEnabled()) {
+			log.debug("OrderEditor.selectionChanged: "+e.getActiveObject());
+			log.debug("OrderEditor.selectionChanged: "+e.getActiveObject().getClass());
+		}
 		Object activeObject = e.getActiveObject();
 		if (activeObject instanceof Unit) {
 			setUnit((Unit)activeObject);
@@ -170,7 +173,8 @@ public class OrderEditor extends javax.swing.JTextPane implements DocumentListen
 
 	public void keyPressed(KeyEvent e) {
 		if (unit != null && (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE)) {
-			OrderEditor.this.unit.refreshRelations(getData());
+			// TODO: refreshRelations hier noch notwendig?
+			OrderEditor.this.unit.refreshRelations();
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			int mask = KeyEvent.SHIFT_MASK | KeyEvent.CTRL_MASK;
 			if (e.getModifiers() == mask) {
@@ -203,12 +207,20 @@ public class OrderEditor extends javax.swing.JTextPane implements DocumentListen
 	}
 
 	public void focusLost(FocusEvent e) {
-		if (isModified() && unit != null) {
-			unit.setOrders(getOrders());
-			unit.refreshRelations(data);
-		}
+		setOrdersAndFireEvent();
 	}
 
+	private void setOrdersAndFireEvent() {
+		if (isModified() && unit != null) {
+			// this is done on purpose: in init of UnitOrdersEvent the list of related units is built
+			// so we need to create it before changing orders of the unit
+			UnitOrdersEvent e = new UnitOrdersEvent(this,unit);
+			unit.setOrders(getOrders());
+			dispatcher.fire(e);
+		}
+
+	}
+	
 	/**
 	 * Returns the unit currently registered with this editor.
 	 */
@@ -222,9 +234,7 @@ public class OrderEditor extends javax.swing.JTextPane implements DocumentListen
 	 * component, its orders are updated.
 	 */
 	public void setUnit(Unit u) {
-		if (unit != null && modified == true) {
-			unit.setOrders(getOrders());
-		}
+		setOrdersAndFireEvent();
 
 		ignoreModifications = true;
 		unit = u;
@@ -319,6 +329,7 @@ public class OrderEditor extends javax.swing.JTextPane implements DocumentListen
 	public void setModified(boolean isModified) {
 		if (isModified) {
 			unit.setOrders(getOrders());
+			// TODO: fire change event?
 		}
 		modified = isModified;
 	}

@@ -263,7 +263,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						if ((u.getName() == null && name.getText().equals("") == false ||
 							 u.getName() != null && name.getText().equals(u.getName()) == false) &&
 							isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
-							u.addOrder(Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + name.getText() + "\"", true, 2);
+							// the following code only changes the name
+							// right now it is not necessary to refresh the relations
+							String newOrder = Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + 
+								Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + 
+								name.getText() + "\"";
+							u.addOrder(newOrder, true, 2);
 							dispatcher.fire(new UnitOrdersEvent(this, u));
 							//if (u.cache != null && u.cache.orderEditor != null) {
 							//	u.cache.orderEditor.reloadOrders();
@@ -488,16 +493,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		editor.addComponentListener(splitPaneListener);
 		// register for shortcuts
 		DesktopEnvironment.registerShortcutListener(this);
-		/* Make this component update itself when the orders of the
-		 currently displayed unit change */
-		this.dispatcher.addUnitOrdersListener(new UnitOrdersListener() {
-			public void unitOrdersChanged(UnitOrdersEvent e) {
-				if (e.getUnit().equals(EMapDetailsPanel.this.displayedObject)) {
-					EMapDetailsPanel.this.show(e.getUnit(),false);
+		// update this component if the orders of the currently displayed unit changed
+		dispatcher.addUnitOrdersListener(new UnitOrdersListener() {
+				public void unitOrdersChanged(UnitOrdersEvent e) {
+					if (e.getRelatedUnits().contains(EMapDetailsPanel.this.displayedObject)) {
+						EMapDetailsPanel.this.show(e.getUnit(),false);
+					}
 				}
-			}
 			});
-
+		
 		excludeTags.add("magStyle");
 		excludeTags.add("regionicon");
 	}
