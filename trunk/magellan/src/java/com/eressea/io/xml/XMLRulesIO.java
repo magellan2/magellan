@@ -1,28 +1,29 @@
 package com.eressea.io.xml;
 
-import java.io.*;
-import java.net.*;
-import java.lang.reflect.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 
-
-import com.eressea.*;
-import com.eressea.io.*;
-import com.eressea.resource.*;
-import com.eressea.rules.*;
-
-import com.eressea.util.file.*;
-import com.eressea.util.logging.*;
-
-
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.*;
-
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.eressea.Rules;
+import com.eressea.io.RulesIO;
+import com.eressea.rules.GenericRules;
+import com.eressea.util.file.FileType;
+import com.eressea.util.logging.Logger;
 
 
 public class XMLRulesIO implements RulesIO {

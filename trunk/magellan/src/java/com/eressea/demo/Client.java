@@ -126,7 +126,6 @@ import com.eressea.swing.TipOfTheDay;
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-import com.eressea.util.*;
 import com.eressea.util.BookmarkManager;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FileHistory;
@@ -139,6 +138,7 @@ import com.eressea.util.NameGenerator;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.RendererLoader;
 import com.eressea.util.SelectionHistory;
+import com.eressea.util.SelfCleaningProperties;
 import com.eressea.util.TrustLevels;
 import com.eressea.util.VersionInfo;
 import com.eressea.util.file.FileBackup;
@@ -324,7 +324,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		try {
 			float fScale = PropertiesHelper.getfloat(settings,"Client.FontScale", 1.0f);
 			if(fScale != 1.0f) {
-				// TODO(pavkovic): the following route bloates the fonts in an undesired way, perhaps
+				// TODO(pavkovic): the following code bloates the fonts in an undesired way, perhaps
 				// we remove this configuration option?
 				UIDefaults table = UIManager.getDefaults();
 				Enumeration eKeys = table.keys();
@@ -1041,6 +1041,9 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 										};
 										if (JOptionPane.showConfirmDialog(getRootPane(), (new java.text.MessageFormat(getString("msg.postprocessloadedcr.acceptnewpassword.text"))).format(msgArgs), getString("msg.postprocessloadedcr.acceptnewpassword.title"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 											f.password = password;
+											if (!f.trustLevelSetByUser) {	// password set
+												f.trustLevel = Faction.TL_PRIVILEGED;
+											}
 											privFacsWoPwd = false;
 											if (settings != null) {
 												settings.setProperty("Faction.password." + ((EntityID)f.getID()).intValue(), f.password);

@@ -1257,4 +1257,7 @@ abstract public class GameData implements Cloneable {
 		postProcessed = true;
 	}
 
+	public void postProcessAfterTrustlevelChange() {
+		getGameSpecificStuff().postProcessAfterTrustlevelChange(this);
+	}
 }

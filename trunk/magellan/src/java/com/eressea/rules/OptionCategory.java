@@ -10,7 +10,6 @@ package com.eressea.rules;
 
 
 import com.eressea.ID;
-import com.eressea.NamedObject;
 
 public class OptionCategory extends ObjectType {
 	private int bitMask = 0;

@@ -9,8 +9,6 @@
 package com.eressea.rules;
 
 
-import com.eressea.ID;
-import com.eressea.NamedObject;
 
 /** 
  * A Resource reflects a needed resource for 

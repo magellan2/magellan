@@ -10,10 +10,9 @@ package com.eressea;
 
 import java.util.Iterator;
 
+import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
-
-import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.Herb;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;

@@ -287,15 +287,6 @@ public class OrderWriter {
 		return new String(res);
 	}
 
-	private String crop(String text) {
-		if (text.trim().startsWith(";")) {
-			return null;
-		} else {
-			return text.trim();
-		}
-	}
-
-
 	private void writeln(BufferedWriter stream, String text) throws IOException {
 		if(text != null) {
 			stream.write(text);

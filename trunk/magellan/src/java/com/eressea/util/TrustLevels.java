@@ -65,6 +65,7 @@ public class TrustLevels {
 				}
 			}
 		}
+		data.postProcessAfterTrustlevelChange();
 	}
 
 	/**
@@ -72,12 +73,11 @@ public class TrustLevels {
 	 * set by the user explicitly or read from CR (which means the same)
 	 */
 	public static boolean containsTrustLevelsSetByUser(GameData data) {
-	    boolean retVal = false;
-		for (Iterator iter = data.factions().values().iterator(); iter.hasNext() && !retVal; ) {
+		for (Iterator iter = data.factions().values().iterator(); iter.hasNext(); ) {
 		    if (((Faction)iter.next()).trustLevelSetByUser) {
-			    retVal = true;
+				return true;
 		    }
 		}
-		return retVal;
+		return false;
 	}
 }
