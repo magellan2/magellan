@@ -20,6 +20,8 @@ import com.eressea.demo.Client;
  * found in one of the resource paths of Magellan. All that has to be done is to implement this
  * interface and integrate the class file into a resource path. The class must have the default
  * constructor. For performance reasons the name of the class must end with "Module2".
+ * If classes implement SelectionListener, they are automatically registered at the
+ * event dispatcher.
  *
  * @author Ilja Pavkovic
  */

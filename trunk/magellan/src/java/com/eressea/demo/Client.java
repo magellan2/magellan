@@ -222,7 +222,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 	/**
 	 * Creates a new Client object taking its data from <tt>gd</tt>.
-	 * 
+	 *
 	 * <p>
 	 * Preferences are read from and stored in a file called <tt>client.ini</tt>. This file is
 	 * usually located in the user's home directed, which is the Windows directory in a Microsoft
@@ -782,9 +782,14 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 				Class foundClass = (Class) iter.next();
 
 				// get it's constructor
-				Object externalModule = foundClass.getConstructor(new Class[] {  }).newInstance(new Object[] {
-																									
-																								});
+				Object externalModule = foundClass.getConstructor(new Class[] {}).newInstance(new Object[] {});
+
+				// register as SelectionListener if applicable
+				if (externalModule instanceof SelectionListener) {
+					dispatcher.addSelectionListener((SelectionListener)externalModule);
+				}
+
+				// get menuString
 				String menuString = null;
 
 				if(externalModule instanceof ExternalModule) {
@@ -797,6 +802,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 					menuString = module.getMenuItemName();
 				}
 
+				// create menu item
 				JMenuItem item = new JMenuItem(new ExternalModuleAction(this, menuString,
 																		externalModule));
 				menuItems.add(item);
@@ -1311,7 +1317,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	private void updateTitleCaption() {
 		// set frame title (date)
 		String title = "Magellan";
-		
+
 		String version = VersionInfo.getVersion();
 		if(version != null) {
 			title += " "+version;
@@ -1412,7 +1418,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			}
 		}
 
-		// pavkovic 2004.01.04: 
+		// pavkovic 2004.01.04:
 		// this method behaves at if the gamedata has been loaded by this method.
 		// this is not true at all but true enough for our needs.
 		// dispatcher.fire(new GameDataEvent(this, data));
