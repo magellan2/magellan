@@ -17,6 +17,10 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import com.eressea.swing.MagellanLookAndFeel;
 
 //import org.apache.log4j.*;
@@ -181,22 +185,14 @@ public class Logger {
 		}
 	}
 
-	private void log(PrintStream aOut, int aLevel, Object aObj, Throwable aThrowable) {
+	private void log(int aLevel, Object aObj, Throwable aThrowable) {
 		if(verboseLevel >= aLevel) {
-			if(aObj != null) {
-				if(aObj instanceof Throwable) {
-					((Throwable) aObj).printStackTrace(aOut);
-				} else {
-					aOut.println(aObj);
-				}
-			}
-
-			if(aThrowable != null) {
-				aThrowable.printStackTrace(aOut);
+			if(logListeners.isEmpty()) {
+				DEFAULTLOGLISTENER.log(aLevel, aObj, aThrowable);
 			} else {
-				if((aObj != null) && !(aObj instanceof Throwable) &&
-					   aObj.toString().endsWith("Error")) {
-					new Exception("SELF GENERATED STACK TRACE").printStackTrace(aOut);
+				for(Iterator iter = logListeners.iterator(); iter.hasNext(); ) {
+					LogListener l = (LogListener) iter.next();
+					l.log(aLevel, aObj, aThrowable);
 				}
 			}
 		}
@@ -218,7 +214,7 @@ public class Logger {
 	 * @param aThrowable TODO: DOCUMENT ME!
 	 */
 	public void fatal(Object aObj, Throwable aThrowable) {
-		log(System.out, FATAL, aObj, aThrowable);
+		log(FATAL, aObj, aThrowable);
 	}
 
 	/**
@@ -246,7 +242,7 @@ public class Logger {
 	 * @param aThrowable TODO: DOCUMENT ME!
 	 */
 	public void error(Object aObj, Throwable aThrowable) {
-		log(System.err, ERROR, aObj, aThrowable);
+		log(ERROR, aObj, aThrowable);
 	}
 
 	/**
@@ -274,7 +270,7 @@ public class Logger {
 	 * @param aThrowable TODO: DOCUMENT ME!
 	 */
 	public void warn(Object aObj, Throwable aThrowable) {
-		log(System.out, WARN, aObj, aThrowable);
+		log(WARN, aObj, aThrowable);
 	}
 
 	/**
@@ -302,7 +298,7 @@ public class Logger {
 	 * @param aThrowable TODO: DOCUMENT ME!
 	 */
 	public void info(Object aObj, Throwable aThrowable) {
-		log(System.out, INFO, aObj, aThrowable);
+		log(INFO, aObj, aThrowable);
 	}
 
 	/**
@@ -330,7 +326,7 @@ public class Logger {
 	 * @param aThrowable TODO: DOCUMENT ME!
 	 */
 	public void debug(Object aObj, Throwable aThrowable) {
-		log(System.err, DEBUG, aObj, aThrowable);
+		log(DEBUG, aObj, aThrowable);
 	}
 
 	/**
@@ -358,7 +354,7 @@ public class Logger {
 	 * @param aThrowable TODO: DOCUMENT ME!
 	 */
 	public void awt(Object aObj, Throwable aThrowable) {
-		log(System.err, AWT, aObj, aThrowable);
+		log(AWT, aObj, aThrowable);
 
 		if(isAwtEnabled()) {
 			if(searchAwtLogger) {
@@ -399,5 +395,42 @@ public class Logger {
 	 */
 	public boolean isAwtEnabled() {
 		return verboseLevel >= AWT;
+	}
+	
+	private static Collection logListeners = new ArrayList();
+
+	public static void addLogListener(LogListener l) {
+		logListeners.add(l);
+	}
+
+	public static void removeLogListener(LogListener l) {
+		logListeners.remove(l);
+	}
+
+	private static LogListener DEFAULTLOGLISTENER = new DefaultLogListener();
+
+	private static class DefaultLogListener implements LogListener {
+		public void log(int aLevel, Object aObj, Throwable aThrowable) {
+			log(System.err, aLevel, aObj, aThrowable);
+		} 
+		
+		private void log(PrintStream aOut, int aLevel, Object aObj, Throwable aThrowable) {
+			if(aObj != null) {
+				if(aObj instanceof Throwable) {
+					((Throwable) aObj).printStackTrace(aOut);
+				} else {
+					aOut.println(aObj);
+				}
+			}
+			
+			if(aThrowable != null) {
+				aThrowable.printStackTrace(aOut);
+			} else {
+				if((aObj != null) && !(aObj instanceof Throwable) &&
+				   aObj.toString().endsWith("Error")) {
+					new Exception("SELF GENERATED STACK TRACE").printStackTrace(aOut);
+				}
+			}
+		}
 	}
 }

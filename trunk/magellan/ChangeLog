@@ -1,3 +1,9 @@
+2004-09-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/logging/Logger.java: add support for
+	LogListeners. If a logListener is attached to Logger the default
+	logging to stderr is disabled.
+
 2004-09-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/demo/EMapOverwiewPanel.java: add support
