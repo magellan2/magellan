@@ -263,7 +263,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// name text area
 		name = new JTextArea();
 		name.setLineWrap(false);
-		name.setFont(new Font("SansSerif", Font.PLAIN, name.getFont().getSize()));
+		//name.setFont(new Font("SansSerif", Font.PLAIN, name.getFont().getSize()));
 		name.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		name.setEditable(false);
 		name.getDocument().addUndoableEditListener(_undoMgr);
@@ -284,7 +284,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 							// right now it is not necessary to refresh the relations; are we sure??
 							data.getGameSpecificStuff().getOrderChanger().addNamingOrder(u,
 																						 name.getText());
-							dispatcher.fire(new UnitOrdersEvent(this, u));
+							dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, u));
 
 							//if (u.cache != null && u.cache.orderEditor != null) {
 							//	u.cache.orderEditor.reloadOrders();
@@ -307,7 +307,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								data.getGameSpecificStuff().getOrderChanger().addNamingOrder(modUnit,
 																							 uc,
 																							 name.getText());
-								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
+								dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, modUnit));
 
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -360,7 +360,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								u.privDesc = privat;
 							}
 
-							dispatcher.fire(new UnitOrdersEvent(this, u));
+							dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, u));
 
 							//if (u.cache != null && u.cache.orderEditor != null) {
 							//	u.cache.orderEditor.reloadOrders();
@@ -384,7 +384,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								data.getGameSpecificStuff().getOrderChanger()
 									.addDescribeUnitContainerOrder(modUnit, uc,
 																   normalizeDescription(description.getText()));
-								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
+								dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, modUnit));
 
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -3282,13 +3282,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					if(displayedObject instanceof UnitContainer) {
 						((UnitContainer) displayedObject).putTag(key, value);
 					} else if(displayedObject instanceof Unit) {
-						((Unit) displayedObject).putTag(key, value);
+						Unit u = (Unit) displayedObject;
+						u.putTag(key, value);
+					    // TODO: Coalesce unitordersevent
+						dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this,u));
 					}
 
 					show(displayedObject, false);
 
-					// NOTE: Don't know if it's really necessary ...
-					dispatcher.fire(new GameDataEvent(this, data));
 				}
 			}
 		} else {
@@ -3307,15 +3308,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						if(displayedObject instanceof UnitContainer) {
 							((UnitContainer) displayedObject).removeTag(name);
 							show(displayedObject, false);
-
-							// NOTE: Don't know if it's really necessary ...
-							dispatcher.fire(new GameDataEvent(this, data));
 						} else if(displayedObject instanceof Unit) {
-							((Unit) displayedObject).removeTag(name);
+							Unit u = (Unit) displayedObject;
+							u.removeTag(name);
 							show(displayedObject, false);
 
-							// NOTE: Don't know if it's really necessary ...
-							dispatcher.fire(new GameDataEvent(this, data));
+						    // TODO: Coalesce unitordersevent
+							dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this,u));
 						}
 					}
 				}
@@ -3798,7 +3797,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					 *       has changed but I think it's not necessary and consumes too much time
 					 *                  Andreas
 					 */
-					//dispatcher.fire(new GameDataEvent(EMapDetailsPanel.this, data));
 					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));
 				}
 			}
@@ -4204,6 +4202,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("addtag.tagvalue.message", "Please enter tag value");
 			defaultTranslations.put("addtag.tagname.message", "Please enter tag name");
 			defaultTranslations.put("addtag.caption", "Add tag");
+			defaultTranslations.put("removetag.caption", "Remove tag");
 			defaultTranslations.put("node.tags", "Tags");
 			defaultTranslations.put("node.terrain", "Terrain");
 			defaultTranslations.put("node.terrains", "Terrains");
@@ -4231,7 +4230,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("wrapperfactory.title", "Detail Entries");
 
 			defaultTranslations.put("backbutton.text", "Back");
-			defaultTranslations.put("removetag.caption", "Remove Tag");
 			defaultTranslations.put("node.coordinates", "Coordinates");
 			defaultTranslations.put("node.horses", "Horses");
 			defaultTranslations.put("node.resources", "Resources");

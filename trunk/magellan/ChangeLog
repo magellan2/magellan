@@ -1,3 +1,8 @@
+2005-02-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/context/UnitContextMenu.java: add
+	support for tag handling in context menu.
+
 2005-02-07  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/map/ShipCellRenderer.java: add
