@@ -40,8 +40,9 @@ public class TempUnit extends Unit {
 	public TempUnit(ID id, Unit parent) {
 		super(id);
 		this.parent = parent;
+
 		// pavkovic 2003.12.04: TempUnits have empty orders by default
-		this.setOrders(Collections.singleton(""),false);
+		this.setOrders(Collections.singleton(""), false);
 		this.clearOrders();
 	}
 

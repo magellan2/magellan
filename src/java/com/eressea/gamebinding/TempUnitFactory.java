@@ -32,5 +32,12 @@ public interface TempUnitFactory {
 	 */
 	public List getTempOrders(Unit unit);
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param unit TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public List extractTempUnits(Unit unit);
 }

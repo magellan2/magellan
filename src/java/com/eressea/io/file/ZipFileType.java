@@ -36,7 +36,9 @@ public class ZipFileType extends FileType {
 	// TODO: ZipEntry may also be a "normal" FileType
 	protected ZipEntry zipentry = null;
 
-	ZipFileType(String aFile, boolean readonly, ZipEntry aEntry) throws IOException {
+	ZipFileType(String aFile, boolean readonly, ZipEntry aEntry)
+		 throws IOException
+	{
 		super(aFile, readonly);
 
 		if(aEntry == null) {

@@ -90,11 +90,15 @@ public class Faction extends UnitContainer {
 	 * orders).
 	 */
 	public int trustLevel = TL_DEFAULT;
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public boolean isPrivileged() {
 		return trustLevel >= TL_PRIVILEGED;
 	}
-	
 
 	/**
 	 * true: indicates that this trustlevel was explicitly set by the user or
@@ -110,8 +114,11 @@ public class Faction extends UnitContainer {
 	/** contains error messages for this faction as <tt>String</tt> objects */
 	public List errors = null;
 
-	/** contains the battles, this faction had in the current round, as <tt>Battle</tt> objects */
-	public List battles = null; 
+	/**
+	 * contains the battles, this faction had in the current round, as
+	 * <tt>Battle</tt> objects
+	 */
+	public List battles = null;
 
 	/**
 	 * The allies of this faction are stored in this map with the faction ID of

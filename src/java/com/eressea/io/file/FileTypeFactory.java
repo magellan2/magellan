@@ -38,14 +38,14 @@ public class FileTypeFactory {
 	}
 
 	/**
-	 * Creates an <code>InputStreamSourceFileType</code> of the given
-	 * file name.
+	 * Creates an <code>InputStreamSourceFileType</code> of the given file
+	 * name.
 	 *
 	 * @param url the URL to the InputStream
 	 *
 	 * @return an InputStreamSourceFileType pointing to the given URL.
 	 *
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public FileType createInputStreamSourceFileType(String url)
 											 throws IOException
@@ -54,54 +54,61 @@ public class FileTypeFactory {
 	}
 
 	/**
-	 * Creates an <code>InputStreamSourceFileType</code> of the given
-	 * file name.
+	 * Creates an <code>InputStreamSourceFileType</code> of the given file
+	 * name.
 	 *
-	 * @param url the URL to the InputStream
+	 * @param fileName the URL to the InputStream
 	 * @param readonly file shall be readonly
 	 *
 	 * @return a FileType pointing to the given File.
 	 *
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public FileType createFileType(File fileName, boolean readonly) throws IOException {
+	public FileType createFileType(File fileName, boolean readonly)
+							throws IOException
+	{
 		return createFileType(fileName.getPath(), readonly);
 	}
 
 	/**
-	 * Creates an <code>InputStreamSourceFileType</code> of the given
-	 * file name.
+	 * Creates an <code>InputStreamSourceFileType</code> of the given file
+	 * name.
 	 *
-	 * @param url the URL to the InputStream
+	 * @param fileName the URL to the InputStream
 	 * @param readonly file shall be readonly
 	 *
 	 * @return a FileType pointing to the given File.
 	 *
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public FileType createFileType(String fileName, boolean readonly) throws IOException {
+	public FileType createFileType(String fileName, boolean readonly)
+							throws IOException
+	{
 		return createFileType(fileName, readonly, null);
 	}
 
 	/**
-	 * Creates an <code>InputStreamSourceFileType</code> of the given
-	 * file name.
+	 * Creates an <code>InputStreamSourceFileType</code> of the given file
+	 * name.
 	 *
-	 * @param url the URL to the InputStream
+	 * @param fileName the URL to the InputStream
 	 * @param readonly file shall be readonly
-	 * @param ftc a FileTypeChooser used if entry in compressed file is not unique.
+	 * @param ftc a FileTypeChooser used if entry in compressed file is not
+	 * 		  unique.
 	 *
 	 * @return a FileType pointing to the given File.
 	 *
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public FileType createFileType(String fileName, boolean readonly, FileTypeChooser ftc)
+	public FileType createFileType(String fileName, boolean readonly,
+								   FileTypeChooser ftc)
 							throws IOException
 	{
 		return doCreateFileType(fileName, readonly, ftc).checkConnection();
 	}
 
-	private FileType doCreateFileType(String fileName, boolean readonly, FileTypeChooser ftc)
+	private FileType doCreateFileType(String fileName, boolean readonly,
+									  FileTypeChooser ftc)
 							   throws IOException
 	{
 		if(fileName == null) {
@@ -134,7 +141,8 @@ public class FileTypeFactory {
 												FileType.CR, FileType.XML
 											};
 
-	protected FileType createZipFileType(String fileName, boolean readonly, FileTypeChooser ftc)
+	protected FileType createZipFileType(String fileName, boolean readonly,
+										 FileTypeChooser ftc)
 								  throws IOException
 	{
 		ZipFile  zFile = new ZipFile(fileName);
@@ -164,9 +172,9 @@ public class FileTypeFactory {
 	}
 
 	/**
-	 * A <code>FileTypeChooser</code> selects single entry if
-	 * multiple valid entries are found in a compressed file, e.g.
-	 * multiple .cr files in a .zip file.
+	 * A <code>FileTypeChooser</code> selects single entry if multiple valid
+	 * entries are found in a compressed file, e.g. multiple .cr files in a
+	 * .zip file.
 	 */
 	public static class FileTypeChooser {
 		/**
@@ -174,8 +182,8 @@ public class FileTypeFactory {
 		 *
 		 * @param entries an array of ZipEntry objects
 		 *
-		 * @return the selected ZipEntry or <code>null</code> if none 
-		 * have been selected.
+		 * @return the selected ZipEntry or <code>null</code> if none  have
+		 * 		   been selected.
 		 */
 		public ZipEntry chooseZipEntry(ZipEntry entries[]) {
 			return null;
@@ -183,18 +191,17 @@ public class FileTypeFactory {
 	}
 
 	/**
-	 * A <code>NotUniqueEntryException</code> shall be thrown if 
-	 * there are multiple valid entries in a compressed file and 
-	 * none have been selected.
+	 * A <code>NotUniqueEntryException</code> shall be thrown if  there are
+	 * multiple valid entries in a compressed file and  none have been
+	 * selected.
 	 */
 	public static class NotUniqueEntryException extends IOException {
 	}
 
 	/**
-	 * A <code>NotValidEntryException</code> shall be thrown if 
-	 * there is no valid entry in a compressed file.
+	 * A <code>NotValidEntryException</code> shall be thrown if  there is no
+	 * valid entry in a compressed file.
 	 */
 	public static class NoValidEntryException extends IOException {
 	}
-
 }

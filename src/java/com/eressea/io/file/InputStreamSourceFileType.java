@@ -28,7 +28,7 @@ import com.eressea.resource.ResourcePathClassLoader;
  */
 public class InputStreamSourceFileType extends FileType {
 	InputStreamSourceFileType(String url) throws IOException {
-		super(url,true);
+		super(url, true);
 	}
 
 	protected InputStream createInputStream() throws IOException {
@@ -50,8 +50,8 @@ public class InputStreamSourceFileType extends FileType {
 	 *
 	 * @return a File object
 	 *
-	 * @throws IOException if file cannot be determined, e.g. for 
-	 * an url pointing to an InputStream.
+	 * @throws IOException if file cannot be determined, e.g. for  an url
+	 * 		   pointing to an InputStream.
 	 */
 	public File getFile() throws IOException {
 		throw new IOException("Unable to determine File for InputStream URL '" +

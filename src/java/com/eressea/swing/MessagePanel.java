@@ -20,6 +20,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
+import java.net.URL;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -668,7 +670,7 @@ public class MessagePanel extends InternationalizedDataPanel
 		setLayout(new GridLayout(1, 0));
 		add(treeScrollPane);
 
-		java.net.URL imgURL = ResourcePathClassLoader.getResourceStatically("images/bullets/leaf.gif");
+		URL imgURL = ResourcePathClassLoader.getResourceStatically("images/bullets/leaf.gif");
 
 		if(imgURL != null) {
 			((DefaultTreeCellRenderer) tree.getCellRenderer()).setLeafIcon(new ImageIcon(imgURL));

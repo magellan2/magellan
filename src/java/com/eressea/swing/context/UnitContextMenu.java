@@ -235,7 +235,7 @@ public class UnitContextMenu extends JPopupMenu {
 					} else {
 						u.addOrder(s[0], false, 0);
 					}
-					
+
 					dispatcher.fire(new UnitOrdersEvent(this, u));
 				}
 			}

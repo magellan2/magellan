@@ -64,7 +64,7 @@ public class FileType {
 	 *
 	 * @return <code>this</code>
 	 *
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public FileType checkConnection() throws IOException {
 		try {
@@ -76,6 +76,7 @@ public class FileType {
 				throw e;
 			}
 		}
+
 		return this;
 	}
 
@@ -84,8 +85,8 @@ public class FileType {
 	 *
 	 * @return a File object
 	 *
-	 * @throws IOException if file cannot be determined, e.g. for 
-	 * an url pointing to an InputStream.
+	 * @throws IOException if file cannot be determined, e.g. for  an url
+	 * 		   pointing to an InputStream.
 	 */
 	public File getFile() throws IOException {
 		return new File(getName());
@@ -128,25 +129,26 @@ public class FileType {
 	 *
 	 * @return a Reader of the underlying File.
 	 *
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public Reader createReader() throws IOException {
 		return new BufferedReader(FileType.createEncodingReader(createInputStream()));
 	}
 
 	/**
-	 * Creates a backup of the underlying file and returns 
-	 * a Writer for this.
-	 * 
+	 * Creates a backup of the underlying file and returns  a Writer for this.
+	 *
 	 * @return a Writer of the underlying File.
 	 *
-	 * @throws IOException If file is marked as readonly or 
-	 * another IOException occured.
+	 * @throws IOException If file is marked as readonly or  another
+	 * 		   IOException occured.
+	 * @throws ReadOnlyException TODO: DOCUMENT ME!
 	 */
 	public Writer createWriter() throws IOException {
 		if(readonly) {
 			throw new ReadOnlyException();
 		}
+
 		FileBackup.create(new File(filename));
 
 		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream()));
@@ -177,7 +179,7 @@ public class FileType {
 	/**
 	 * Creates a Reader with the default encoding iso-8859-1.
 	 *
-	 * @param is the InputStream 
+	 * @param is the InputStream
 	 *
 	 * @return a Reader for the given InputStream
 	 *
@@ -192,7 +194,7 @@ public class FileType {
 	/**
 	 * Creates a Writer with the default encoding iso-8859-1.
 	 *
-	 * @param is the OutputStream 
+	 * @param os the OutputStream
 	 *
 	 * @return a Writer for the given OutputStream
 	 *
@@ -204,9 +206,15 @@ public class FileType {
 		return new OutputStreamWriter(os, DEFAULT_ENCODING);
 	}
 
-	/** A String representation of the default encoding.  */
+	/** A String representation of the default encoding. */
 	public static final String DEFAULT_ENCODING = "iso-8859-1";
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @author $author$
+	 * @version $Revision$
+	 */
 	public static class ReadOnlyException extends IOException {
 	}
 }

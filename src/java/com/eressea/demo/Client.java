@@ -35,6 +35,8 @@ import java.io.IOException;
 
 import java.math.BigDecimal;
 
+import java.net.URL;
+
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -346,7 +348,7 @@ public class Client extends JFrame implements ShortcutListener,
 	 */
 	public static Image getApplicationIcon() {
 		// set the application icon
-		java.net.URL iconURL = ResourcePathClassLoader.getResourceStatically("images/about/appicon.gif");
+		URL iconURL = ResourcePathClassLoader.getResourceStatically("images/about/appicon.gif");
 
 		if(iconURL == null) {
 			iconURL = ResourcePathClassLoader.getResourceStatically("res/images/about/appicon.gif");
@@ -910,8 +912,7 @@ public class Client extends JFrame implements ShortcutListener,
 			Icon startIcon = null;
 
 			try {
-				java.net.URL url = ClassLoader.getSystemClassLoader()
-											  .getResource("res/images/about/magellan.gif");
+				URL url = ClassLoader.getSystemClassLoader().getResource("res/images/about/magellan.gif");
 
 				if(url != null) {
 					startIcon = new ImageIcon(url);
@@ -1019,7 +1020,7 @@ public class Client extends JFrame implements ShortcutListener,
 				File crFile = new File(report);
 
 				c.dataFile = crFile;
-				
+
 				// load new data
 				c.setData(c.loadCR(crFile.getAbsolutePath()));
 			}
@@ -1193,7 +1194,7 @@ public class Client extends JFrame implements ShortcutListener,
 
 		try {
 			d = new GameDataReader().readGameData(FileTypeFactory.singleton()
-																 .createFileType(fileName, 
+																 .createFileType(fileName,
 																				 true,
 																				 new ClientFileTypeChooser(this)));
 			everLoadedReport = true;

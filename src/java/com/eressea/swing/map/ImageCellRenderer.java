@@ -23,7 +23,6 @@ import java.util.Properties;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ImageFactory;
-
 import com.eressea.util.logging.Logger;
 
 /**
@@ -93,6 +92,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 			return null;
 		}
 	}
+
 	/**
 	 * Make the renderer reload all of its cached images.
 	 */
@@ -122,7 +122,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	}
 
 	protected Image loadFile(String fileName) {
-		return ImageFactory.getFactory().loadCellRendererImage(fileName);
+		return ImageFactory.getFactory().loadMapImage(fileName);
 	}
 
 	/**

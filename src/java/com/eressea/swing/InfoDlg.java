@@ -18,6 +18,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 
+import java.net.URL;
+
 import java.text.DateFormat;
 
 import java.util.Date;
@@ -60,8 +62,8 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 
 		magallanImage.setText("");
 
-		java.net.URL url  = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
-		Icon		 icon = null;
+		URL  url  = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
+		Icon icon = null;
 
 		if(url != null) {
 			Image image = getToolkit().createImage(url);

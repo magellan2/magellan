@@ -333,7 +333,6 @@ public class Region extends UnitContainer {
 	 */
 	public Collection resources() {
 		if(this.resourceCollection == null) {
-
 			/* since resources appear twice in the map, once with the
 			 numerical ID and once with the item type ID, we have to
 			 make sure that this collection lists only one of them.
@@ -341,11 +340,11 @@ public class Region extends UnitContainer {
 			 to its numerical ID a HashSet can do the job */
 
 			// 2002.02.18 ip: this.resources can be null
-			this.resourceCollection = CollectionFactory.unmodifiableCollection(
-                                               CollectionFactory.createHashSet((this.resources == null)
-																			   ? Collections.EMPTY_SET
-																			   : this.resources.values()));
+			this.resourceCollection = CollectionFactory.unmodifiableCollection(CollectionFactory.createHashSet((this.resources == null)
+																											   ? Collections.EMPTY_SET
+																											   : this.resources.values()));
 		}
+
 		return this.resourceCollection;
 	}
 
@@ -480,12 +479,14 @@ public class Region extends UnitContainer {
 		if(schemes == null) {
 			return CollectionFactory.EMPTY_COLLECTION;
 		}
+
 		if(schemeCollection == null) {
 			schemeCollection = CollectionFactory.unmodifiableCollection(schemes);
 		}
+
 		return schemeCollection;
 	}
-	
+
 	/**
 	 * Adds a scheme to this region.
 	 *
@@ -577,9 +578,11 @@ public class Region extends UnitContainer {
 		if(borders == null) {
 			return CollectionFactory.EMPTY_COLLECTION;
 		}
+
 		if(borderCollection == null) {
 			borderCollection = CollectionFactory.unmodifiableCollection(borders);
 		}
+
 		return borderCollection;
 	}
 
@@ -671,9 +674,11 @@ public class Region extends UnitContainer {
 		if(ships == null) {
 			return CollectionFactory.EMPTY_COLLECTION;
 		}
+
 		if(shipCollection == null) {
 			shipCollection = CollectionFactory.unmodifiableCollection(ships);
 		}
+
 		return shipCollection;
 	}
 
@@ -745,9 +750,11 @@ public class Region extends UnitContainer {
 		if(buildings == null) {
 			return CollectionFactory.EMPTY_COLLECTION;
 		}
+
 		if(buildingCollection == null) {
 			buildingCollection = CollectionFactory.unmodifiableCollection(buildings);
 		}
+
 		return buildingCollection;
 	}
 

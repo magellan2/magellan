@@ -17,7 +17,6 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
-
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
@@ -28,14 +27,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+
 import com.eressea.GameData;
 
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-import com.eressea.resource.ResourcePathClassLoader;
-import com.eressea.util.logging.Logger;
 
+import com.eressea.resource.ResourcePathClassLoader;
+
+import com.eressea.util.logging.Logger;
 
 /**
  * TODO: DOCUMENT ME!
@@ -44,27 +46,32 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class ImageFactory implements GameDataListener {
-	private final static Logger log = Logger.getInstance(ImageFactory.class);
-
+	private static final Logger		  log = Logger.getInstance(ImageFactory.class);
 	private static final ImageFactory factory = new ImageFactory();
+	private String					  gamename = "eressea";
 
-	private String gamename="eressea";
-	
 	private ImageFactory() {
 		EventDispatcher.getDispatcher().addGameDataListener(this);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void gameDataChanged(GameDataEvent e) {
 		if(e.getGameData() != null) {
 			gamename = e.getGameData().name.toLowerCase();
+
 			if(log.isDebugEnabled()) {
-				log.debug("ImageFactory.gameDataChanged: set gamename to "+gamename);
+				log.debug("ImageFactory.gameDataChanged: set gamename to " +
+						  gamename);
 			}
-			
+
 			images.clear();
 		}
 	}
-	
+
 	/**
 	 * Get the singleton ImageFactory.
 	 *
@@ -79,28 +86,74 @@ public class ImageFactory implements GameDataListener {
 	/**
 	 * Loads the given image. First it tests to load
 	 *
-	 * @param name TODO: DOCUMENT ME!
+	 * @param imageName TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Image loadImage(String name) {
-		Image img = (Image) images.get(name);
+	public Image loadImage(String imageName) {
+		// look into cache
+		if(images.containsKey(imageName)) {
+			return (Image) images.get(imageName);
+		}
+
+		String fName = Umlaut.normalize(imageName).toLowerCase();
+
+		Image  img = doLoadImage(gamename + "/" + fName);
 
 		if(img == null) {
-			URL url = ResourcePathClassLoader.getResourceStatically(name);
+			img = doLoadImage(fName);
+		}
 
-			if(url != null) {
-				img = Toolkit.getDefaultToolkit().getImage(url);
-			}
-
-			images.put(name, img);
+		// store into cache
+		if(img != null) {
+			images.put(imageName, img);
 		}
 
 		if(log.isDebugEnabled()) {
-			log.debug("LoadImage("+name+"): "+(img!=null));
+			log.debug("ImageFactory.loadImage(" + imageName + "): " +
+					  (img != null));
 		}
 
 		return img;
+	}
+
+	private Image doLoadImage(String imageName) {
+		//  try to find a .png
+		URL url		 = ResourcePathClassLoader.getResourceStatically(imageName +
+																	 ".png");
+		URL alphaURL = null;
+
+		//  try to find a .jpg
+		if(url == null) {
+			url = ResourcePathClassLoader.getResourceStatically(imageName +
+																".jpg");
+		}
+
+		//  try to find a .gif 
+		if(url == null) {
+			url = ResourcePathClassLoader.getResourceStatically(imageName +
+																".gif");
+
+			if(url != null) {
+				alphaURL = ResourcePathClassLoader.getResourceStatically(imageName +
+																		 "-alpha.gif");
+			}
+		}
+
+		//  try to find without ending
+		if(url == null) {
+			url = ResourcePathClassLoader.getResourceStatically(imageName);
+		}
+
+		if(url == null) {
+			return null;
+		}
+
+		Image img = Toolkit.getDefaultToolkit().getImage(url);
+
+		return (alphaURL == null) ? img
+								  : merge(img,
+										  Toolkit.getDefaultToolkit().getImage(url));
 	}
 
 	/**
@@ -116,18 +169,18 @@ public class ImageFactory implements GameDataListener {
 	 */
 	public Image merge(Image rgb, Image alpha) {
 		Image result = null;
-		
+
 		if((rgb == null) || (alpha == null)) {
 			return result;
 		}
-		
+
 		// pavkovic 2002.06.05: change way to wait for image data. This should dramatically
 		// reduce the number of calls to getWidth and getHeight 
 		waitForImage(rgb);
-		
+
 		int			   w = rgb.getWidth(null);
 		int			   h = rgb.getHeight(null);
-		
+
 		int			   pixelsRGB[]   = new int[w * h];
 		int			   pixelsAlpha[] = new int[pixelsRGB.length];
 		PixelGrabber   pgRGB		 = new PixelGrabber(rgb, 0, 0, w, h,
@@ -164,15 +217,33 @@ public class ImageFactory implements GameDataListener {
 
 		return result;
 	}
-	
-	public void waitForImage(Image img){
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param img TODO: DOCUMENT ME!
+	 */
+	public void waitForImage(Image img) {
 		MediaTracker mt = new MediaTracker(new Frame());
-		
+
 		try {
 			mt.addImage(img, 0);
 			mt.waitForAll();
 		} catch(InterruptedException e) {
 		}
+	}
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param imageName TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public ImageIcon loadImageIcon(String imageName) {
+		Image img = loadImage("images/icons/" + imageName);
+
+		return (img == null) ? null : new ImageIcon(img);
 	}
 
 	/**
@@ -183,100 +254,15 @@ public class ImageFactory implements GameDataListener {
 	 * alpha information in the .gif file is used. If no such file seems to
 	 * exist, null is returned. All file names are prepended with the path
 	 * 'images/map/'+gamename enforcing that the files are located in such a
-	 * sub-directory of the resources root directory /res. If no such image
-	 * is found, the fallback to 'images/map/' is used to load the file
+	 * sub-directory of the resources root directory /res. If no such image is
+	 * found, the fallback to 'images/map/' is used to load the file
 	 *
-	 * @param fileName a file name without extension.
-	 *
-	 * @return the image loaded from fileName, or null if not file could be
-	 * 		   found.
-	 */
-	public Image loadCellRendererImage(String fileName) {
-		String fName = "images/map/"+fileName.toLowerCase();
-		if(images.get(fName) != null) {
-			return (Image) images.get(fName);
-		}
-		
-		Image img = loadFile(gamename+"/"+fName);
-
-		if(img == null) {
-			img = loadFile(fName);
-		}
-		if(img != null) {
-			images.put(fName, img);
-		}
-		if(log.isDebugEnabled()) {
-			log.debug("Tries to read image "+fileName+ "("+gamename+"): "+(img != null));
-		}
-		return img;
-	}
-
-	/**
-	 * Load an image by file name. This procedure tries different file formats
-	 * in the following order: .png, if not found then .gif. If a .gif file is
-	 * available, an optional -alpha.gif file is used for alpha-channel
-	 * information. If no such -alpha.gif file can be found, the optional
-	 * alpha information in the .gif file is used. If no such file seems to
-	 * exist, null is returned. 
-	 *
-	 * @param fileName a file name without extension.
+	 * @param imageName a file name without extension.
 	 *
 	 * @return the image loaded from fileName, or null if not file could be
 	 * 		   found.
 	 */
-	protected Image loadFile(String file) {
-
-		Image		 imgAlpha = null;
-		Image		 imgRGB   = null;
-		Image		 img	  = null;
-		URL pngURL   = null;
-		URL gifURL   = null;
-		URL alphaURL = null;
-
-		Collection   names = CollectionFactory.createArrayList(3);
-		names.add(file + ".png");
-		names.add(file + ".gif");
-		names.add(file + "-alpha.gif");
-
-		Collection files = ResourcePathClassLoader.getResourcesStatically(names);
-
-		for(Iterator iter = files.iterator(); iter.hasNext();) {
-			URL    url = (URL) iter.next();
-			String u = url.toString();
-
-			if(u.endsWith(".png")) {
-				pngURL = url;
-
-				continue;
-			} else if(u.endsWith("-alpha.gif")) {
-				alphaURL = url;
-
-				continue;
-			} else if(u.endsWith(".gif")) {
-				gifURL = url;
-
-				continue;
-			}
-		}
-
-
-		if(log.isDebugEnabled()) {
-			log.debug("LoadFile("+file+"): "+pngURL+", "+gifURL+")");
-		}
-
-		if(pngURL != null) {
-			img = Toolkit.getDefaultToolkit().getImage(pngURL);
-		} else {
-			if(gifURL != null) {
-				if(alphaURL != null) {
-					imgRGB   = Toolkit.getDefaultToolkit().getImage(gifURL);
-					imgAlpha = Toolkit.getDefaultToolkit().getImage(alphaURL);
-					img		 = ImageFactory.getFactory().merge(imgRGB, imgAlpha);
-				} else {
-					img = Toolkit.getDefaultToolkit().getImage(gifURL);
-				}
-			}
-		}
-		return img;
+	public Image loadMapImage(String imageName) {
+		return loadImage("images/map/" + imageName);
 	}
 }

@@ -207,22 +207,58 @@ public class CollectionFactory {
 		return Collections.singletonMap(key, value);
 	}
 
-	public static final Iterator EMPTY_ITERATOR     = Collections.EMPTY_SET.iterator();
+	/** TODO: DOCUMENT ME! */
+	public static final Iterator   EMPTY_ITERATOR   = Collections.EMPTY_SET.iterator();
+
+	/** TODO: DOCUMENT ME! */
 	public static final Collection EMPTY_COLLECTION = Collections.EMPTY_SET;
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param m TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static Iterator unmodifiableIterator(Map m) {
-		return CollectionFactory.unmodifiableIterator(m == null ? null : m.values());
+		return CollectionFactory.unmodifiableIterator((m == null) ? null
+																  : m.values());
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param c TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static Iterator unmodifiableIterator(Collection c) {
-		return c != null ? Collections.unmodifiableCollection(c).iterator() : EMPTY_ITERATOR;
+		return (c != null) ? Collections.unmodifiableCollection(c).iterator()
+						   : EMPTY_ITERATOR;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param m TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static Collection unmodifiableCollection(Map m) {
-		return m != null ? CollectionFactory.unmodifiableCollection(m.values()) : EMPTY_COLLECTION;
+		return (m != null)
+			   ? CollectionFactory.unmodifiableCollection(m.values())
+			   : EMPTY_COLLECTION;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param c TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static Collection unmodifiableCollection(Collection c) {
-		return c != null ? Collections.unmodifiableCollection(c) : EMPTY_COLLECTION;
+		return (c != null) ? Collections.unmodifiableCollection(c)
+						   : EMPTY_COLLECTION;
 	}
 }

@@ -83,8 +83,8 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitID;
 
-import com.eressea.demo.EMapOverviewPanel;
 import com.eressea.demo.EMapDetailsPanel;
+import com.eressea.demo.EMapOverviewPanel;
 import com.eressea.demo.desktop.DesktopEnvironment;
 
 import com.eressea.event.EventDispatcher;
@@ -333,7 +333,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 			if(se.getActiveObject() != null) {
 				if(se.getActiveObject() instanceof Unit &&
-				   EMapDetailsPanel.isPrivilegedAndNoSpy((Unit) se.getActiveObject())) {
+					   EMapDetailsPanel.isPrivilegedAndNoSpy((Unit) se.getActiveObject())) {
 					Unit u = (Unit) se.getActiveObject();
 
 					loadEditors(u);
@@ -375,8 +375,10 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					currentUnit		 = null;
 					currentUnitIndex = -1;
 
-					if(((Faction) se.getActiveObject()).isPrivileged() && currentRegion != null) {
-						loadEditors((Faction) se.getActiveObject(), currentRegion);
+					if(((Faction) se.getActiveObject()).isPrivileged() &&
+						   (currentRegion != null)) {
+						loadEditors((Faction) se.getActiveObject(),
+									currentRegion);
 					} else {
 						units.clear();
 						removeListenersFromAll();
@@ -411,7 +413,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		} else {
 			Object activeObject = se.getActiveObject();
 
-			if(activeObject instanceof Unit && EMapDetailsPanel.isPrivilegedAndNoSpy((Unit) activeObject)) {
+			if(activeObject instanceof Unit &&
+				   EMapDetailsPanel.isPrivilegedAndNoSpy((Unit) activeObject)) {
 				currentUnit = (Unit) activeObject;
 				editor.setUnit(currentUnit);
 
@@ -2104,8 +2107,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		}
 
 		protected void createTempUnit() {
-			if(currentUnit != null &&
-			   currentUnit.getFaction().isPrivileged()) {
+			if((currentUnit != null) &&
+				   currentUnit.getFaction().isPrivileged()) {
 				// Use the current unit as the parent or its parent if it
 				// is itself a temp unit
 				Unit parentUnit = currentUnit;
@@ -2443,8 +2446,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 * TODO: DOCUMENT ME!
 		 */
 		public void currentUnitChanged() {
-			boolean enabled = currentUnit != null &&
-				currentUnit.getFaction().isPrivileged();
+			boolean enabled = (currentUnit != null) &&
+							  currentUnit.getFaction().isPrivileged();
 
 			setConfirmEnabled(enabled);
 			setCreationEnabled(enabled);
