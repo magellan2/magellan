@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -21,6 +22,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
+import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
@@ -34,15 +36,14 @@ import com.eressea.util.logging.Logger;
 public class HelpAction extends MenuAction {
 	private static final Logger log = Logger.getInstance(HelpAction.class);
 	private Object helpBroker = null;
-	private Client client;
 
 	/**
 	 * Creates a new HelpAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public HelpAction(Client parent) {
-		client = parent;
+	public HelpAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -50,10 +51,10 @@ public class HelpAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		// SG: had a lot of fun when I implemented this :-)
 		try {
-			ClassLoader loader = new com.eressea.resource.ResourcePathClassLoader(client.getSettings());
+			ClassLoader loader = new ResourcePathClassLoader(client.getProperties());
 
 			URL hsURL = loader.getResource("magellan.hs");
 

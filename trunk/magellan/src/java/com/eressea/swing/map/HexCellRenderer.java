@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.GameData;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 
@@ -46,15 +47,18 @@ public abstract class HexCellRenderer implements MapCellRenderer {
 	 */
 	protected Point offset = null;
 
+    protected MagellanContext context;
+    
 	/**
 	 * A constructor assigning a cell geometry and settings.
 	 *
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public HexCellRenderer(CellGeometry geo, Properties settings) {
+	public HexCellRenderer(CellGeometry geo, MagellanContext context) {
 		cellGeo = geo;
-		this.settings = settings;
+        this.context = context;
+		this.settings = context.getProperties();
 	}
 
 	/**

@@ -32,7 +32,6 @@ import com.eressea.util.CollectionFactory;
  */
 public class OptionAction extends MenuAction {
 	private List adapters;
-	private Client client;
 
 	/**
 	 * This timer object is used to rebuild the PreferencesDialog in background. If the
@@ -46,9 +45,9 @@ public class OptionAction extends MenuAction {
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param adapters TODO: DOCUMENT ME!
 	 */
-	public OptionAction(Client parent, List adapters) {
+	public OptionAction(Client client, List adapters) {
+        super(client);
 		this.adapters = adapters;
-		client = parent;
 		initTimer();
 	}
 
@@ -82,7 +81,7 @@ public class OptionAction extends MenuAction {
 			return;
 		}
 
-		PreferencesDialog pd = new PreferencesDialog(client, true, client.getSettings(), adapters);
+		PreferencesDialog pd = new PreferencesDialog(client, true, client.getProperties(), adapters);
 
 		if(dialog == null) {
 			dialog = pd;

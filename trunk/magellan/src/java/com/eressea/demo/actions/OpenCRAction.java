@@ -33,15 +33,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class OpenCRAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates new OpenCRAction
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public OpenCRAction(Client parent) {
-		client = parent;
+	public OpenCRAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -56,7 +55,7 @@ public class OpenCRAction extends MenuAction {
 		}
 
 		JFileChooser fc = new JFileChooser();
-		Properties settings = client.getSettings();
+		Properties settings = client.getProperties();
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.CR_FILTER));
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.GZ_FILTER));
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER));

@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -40,7 +41,6 @@ import com.eressea.util.logging.Logger;
  */
 public class OpenSelectionAction extends MenuAction implements GameDataListener {
 	private static final Logger log = Logger.getInstance(OpenSelectionAction.class);
-	protected Client client;
 	protected Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
@@ -49,7 +49,7 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 	 * @param client TODO: DOCUMENT ME!
 	 */
 	public OpenSelectionAction(Client client) {
-		this.client = client;
+        super(client);
 		client.getDispatcher().addGameDataListener(this);
 	}
 
@@ -77,15 +77,15 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(new EresseaFileFilter(SaveSelectionAction.EXTENSION,
 														SaveSelectionAction.DESCRIPTION));
-		fc.setSelectedFile(new File(client.getSettings().getProperty(getPropertyName(), "")));
+		fc.setSelectedFile(new File(client.getProperties().getProperty(getPropertyName(), "")));
 		fc.setDialogTitle(getString("title"));
 
 		if(fc.showOpenDialog(client) == JFileChooser.APPROVE_OPTION) {
-			client.getSettings().setProperty(getPropertyName(),
+			client.getProperties().setProperty(getPropertyName(),
 											 fc.getSelectedFile().getAbsolutePath());
 
 			List coordinates = CollectionFactory.createLinkedList();

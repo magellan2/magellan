@@ -13,8 +13,12 @@
 
 package com.eressea.swing.context;
 
+import java.util.Collection;
 import java.util.Properties;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import com.eressea.GameData;
 import com.eressea.UnitContainer;
 import com.eressea.event.EventDispatcher;
 import com.eressea.swing.tree.FactionNodeWrapper;
@@ -49,21 +53,23 @@ public class UnitContainerContextFactory implements ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
-													java.util.Collection selectedObjects,
-													javax.swing.tree.DefaultMutableTreeNode node) {
+	public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher,
+                                                    GameData data, 
+                                                    Object argument,
+													Collection selectedObjects,
+													DefaultMutableTreeNode node) {
 		if(argument instanceof UnitContainer) {
 			return new UnitContainerContextMenu((UnitContainer) argument,
-												EventDispatcher.getDispatcher(), data, settings);
+												dispatcher, data, settings);
 		} else if(argument instanceof RegionNodeWrapper) {
 			return new UnitContainerContextMenu(((RegionNodeWrapper) argument).getRegion(),
-												EventDispatcher.getDispatcher(), data, settings);
+												dispatcher, data, settings);
 		} else if(argument instanceof FactionNodeWrapper) {
 			return new UnitContainerContextMenu(((FactionNodeWrapper) argument).getFaction(),
-												EventDispatcher.getDispatcher(), data, settings);
+												dispatcher, data, settings);
 		} else if(argument instanceof UnitContainerNodeWrapper) {
 			return new UnitContainerContextMenu(((UnitContainerNodeWrapper) argument).getUnitContainer(),
-												EventDispatcher.getDispatcher(), data, settings);
+												dispatcher, data, settings);
 		}
 
 		return null;

@@ -123,6 +123,7 @@ import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
 import com.eressea.swing.tree.CellObject;
+import com.eressea.swing.tree.CellRenderer;
 import com.eressea.swing.tree.ContextManager;
 import com.eressea.swing.tree.CopyTree;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
@@ -247,7 +248,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		nodeWrapperFactory.setSource(this);
 
 		// to get the pref-adapter
-		Unit temp = new Unit(UnitID.createUnitID(0));
+		Unit temp = new Unit(UnitID.createUnitID(0,10));
 		nodeWrapperFactory.createUnitNodeWrapper(temp);
 		nodeWrapperFactory.createSkillNodeWrapper(temp,
 												  new Skill(new SkillType(StringID.create("Test")),
@@ -434,7 +435,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		tree.setRootVisible(false);
 
 		tree.setEditable(true);
-		tree.setCellRenderer(new com.eressea.swing.tree.CellRenderer(settings));
+		tree.setCellRenderer(new CellRenderer(getMagellanContext()));
 		tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
 				public void editingCanceled(ChangeEvent e) {
 				}
@@ -455,7 +456,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			});
 
-		contextManager = new ContextManager(tree);
+		contextManager = new ContextManager(tree,dispatcher);
 		stealthContext = new StealthContextFactory();
 		combatContext = new CombatStateContextFactory();
 		commentContext = new CommentContextFactory();
@@ -3737,9 +3738,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
+		public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+                                                        GameData data, Object argument,
 														Collection selectedObjects,
-														javax.swing.tree.DefaultMutableTreeNode node) {
+														DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
 				try {
 					return new StealthContextMenu((Unit) argument);
@@ -3861,7 +3863,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
+		public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+                                                        GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
@@ -3920,7 +3923,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
+		public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+                                                        GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof UnitContainer) {
@@ -4092,7 +4096,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
+		public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+                                GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {

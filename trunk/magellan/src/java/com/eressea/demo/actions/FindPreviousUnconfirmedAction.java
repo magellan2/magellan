@@ -17,6 +17,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 
+import com.eressea.demo.Client;
 import com.eressea.demo.EMapOverviewPanel;
 import com.eressea.util.CollectionFactory;
 
@@ -35,7 +36,8 @@ public class FindPreviousUnconfirmedAction extends MenuAction {
 	 * @param client TODO: DOCUMENT ME!
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public FindPreviousUnconfirmedAction(Component client, EMapOverviewPanel e) {
+	public FindPreviousUnconfirmedAction(Client client, EMapOverviewPanel e) {
+        super(client);
 		target = e;
 	}
 

@@ -76,7 +76,7 @@ public abstract class GameData implements Cloneable {
 	 * @param s TODO: DOCUMENT ME!
 	 */
 	public void setCurTempID(String s) {
-		setCurTempID("".equals(s) ? 0 : IDBaseConverter.parse(s));
+		setCurTempID("".equals(s) ? 0 : IDBaseConverter.parse(s,base));
 	}
 
 	/**
@@ -1209,7 +1209,7 @@ public abstract class GameData implements Cloneable {
 				tempID = curUnit2.getTempID();
 
 				if(tempID != null) {
-					tempID = new UnitID(-((UnitID) tempID).intValue());
+					tempID = UnitID.createUnitID(-((UnitID) tempID).intValue(), gd2.base);
 				}
 
 				newRegion = curUnit2.getRegion();

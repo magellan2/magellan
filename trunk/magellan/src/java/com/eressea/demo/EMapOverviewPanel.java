@@ -247,7 +247,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		nodeWrapperFactory.setSource(this);
 
 		// to get the pref-adapter
-		nodeWrapperFactory.createUnitNodeWrapper(new Unit(UnitID.createUnitID(0)));
+		nodeWrapperFactory.createUnitNodeWrapper(new Unit(UnitID.createUnitID(0,10)));
 
 		SelectionHistory.addListener(this);
 		d.addSelectionListener(this);
@@ -278,10 +278,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		scpTree.setBorder(null);
 
 		// tree uses different cell renderer
-		tree.setCellRenderer(new CellRenderer(settings));
+		tree.setCellRenderer(new CellRenderer(getMagellanContext()));
 
 		// init context manager with different node wrappers
-		contextManager = new ContextManager(tree);
+		contextManager = new ContextManager(tree,dispatcher);
 		contextManager.putSimpleObject(UnitNodeWrapper.class, new UnitContextFactory());
 
 		UnitContainerContextFactory conMenu = new UnitContainerContextFactory(settings);

@@ -313,14 +313,19 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		} else {
 			int tempID = 0;
 
+            int base = 10;
+            if(source.getData() != null) {
+                base = source.getData().base;
+            }
+            
 			try {
-				tempID = IDBaseConverter.parse(tempIDsInitialValue.getText());
+				tempID = IDBaseConverter.parse(tempIDsInitialValue.getText(),base);
 			} catch(java.lang.NumberFormatException nfe) {
 				log.warn("ClientPreferences.applyPreferences: Error when parsing the initial value of the temp ids: " +
 						 tempIDsInitialValue.getText());
 			}
 
-			if(tempID > IDBaseConverter.getMaxId()) {
+			if(tempID > IDBaseConverter.getMaxId(base)) {
 				log.warn("ClientPreferences.applyPreferences: Found tempID out of valid values: " +
 						 tempID);
 				tempIDsInitialValue.setText("");
@@ -330,7 +335,7 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 
 			if(tempID != 0) {
 				settings.setProperty("ClientPreferences.TempIDsInitialValue",
-									 IDBaseConverter.toString(tempID));
+									 IDBaseConverter.toString(tempID,base));
 			}
 		}
 

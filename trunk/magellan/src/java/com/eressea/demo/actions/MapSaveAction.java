@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
@@ -27,7 +28,6 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class MapSaveAction extends MenuAction {
-	private Client client;
 	private MapperPanel map;
 
 	/**
@@ -36,8 +36,8 @@ public class MapSaveAction extends MenuAction {
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param m TODO: DOCUMENT ME!
 	 */
-	public MapSaveAction(Client parent, MapperPanel m) {
-		client = parent;
+	public MapSaveAction(Client client, MapperPanel m) {
+        super(client);
 		map = m;
 	}
 
@@ -46,7 +46,7 @@ public class MapSaveAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		new MapSaverUI(client, true, map.getView()).show();
 	}
 

@@ -30,6 +30,7 @@ import com.eressea.StringID;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.main.MagellanContext;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.swing.context.ContextChangeable;
@@ -63,9 +64,9 @@ public class TradeTextCellRenderer extends TextCellRenderer implements GameDataL
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public TradeTextCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
-		EventDispatcher.getDispatcher().addGameDataListener(this);
+	public TradeTextCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
+		context.getEventDispatcher().addGameDataListener(this);
 		itemName = settings.getProperty("TradeTextCellRenderer.Item");
 		sellMode = settings.getProperty("TradeTextCellRenderer.SellMode", "false").equals("true");
 		findLuxuries();

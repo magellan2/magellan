@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
@@ -43,8 +44,8 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public MarkingsImageCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public MarkingsImageCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 		buf = new StringBuffer();
 	}
 

@@ -381,7 +381,7 @@ public class EresseaPostProcessor {
 
 			if((startpos > -1) && (endpos > startpos)) {
 				try {
-					ID id = EntityID.createEntityID(s.substring(startpos, endpos));
+					ID id = EntityID.createEntityID(s.substring(startpos, endpos),data.base);
 
 					if((data.getUnit(id) != null) &&
 						   (data.getUnit(id).getFaction().isPrivileged())) {

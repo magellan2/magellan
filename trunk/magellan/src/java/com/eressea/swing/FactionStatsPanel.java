@@ -110,7 +110,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		nodeWrapperFactory = new NodeWrapperFactory(settings);
 
 		// to get the pref-adapter
-		Unit temp = new Unit(UnitID.createUnitID(0));
+		Unit temp = new Unit(UnitID.createUnitID(0,data.base));
 		nodeWrapperFactory.createUnitNodeWrapper(temp);
 		nodeWrapperFactory.createSkillNodeWrapper(temp,
 												  new Skill(new SkillType(StringID.create("Test")),
@@ -796,10 +796,9 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 										value = (String) msg.attributes.get("unit");
 
 										if(value != null) {
-											int number = 0;
-											number = Integer.parseInt(value);
+											int number = Integer.parseInt(value);
 
-											UnitID id = UnitID.createUnitID(number);
+											UnitID id = UnitID.createUnitID(number,data.base);
 											Unit u = data.getUnit(id);
 
 											if(u != null) {
@@ -874,7 +873,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		tree.setRootVisible(false);
 		tree.addTreeSelectionListener(this);
 
-		CellRenderer tr = new CellRenderer(settings);
+		CellRenderer tr = new CellRenderer(getMagellanContext());
 		tree.setCellRenderer(tr);
 
 		JScrollPane treeScrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,

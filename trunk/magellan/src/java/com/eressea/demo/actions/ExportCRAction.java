@@ -27,15 +27,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class ExportCRAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new ExportCRAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public ExportCRAction(Client parent) {
-		client = parent;
+	public ExportCRAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class ExportCRAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		CRWriterDialog d = new CRWriterDialog(client, true, client.getData(), client.getSettings(),
+		CRWriterDialog d = new CRWriterDialog(client, true, client.getData(), client.getProperties(),
 											  client.getSelectedRegions().values());
 		d.setVisible(true);
 	}

@@ -13,11 +13,14 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 import javax.swing.Action;
 
+import com.eressea.demo.Client;
 import com.eressea.demo.MagellanUndoManager;
 import com.eressea.util.CollectionFactory;
 
@@ -36,7 +39,8 @@ public class UndoAction extends MenuAction implements PropertyChangeListener {
 	 *
 	 * @param m TODO: DOCUMENT ME!
 	 */
-	public UndoAction(MagellanUndoManager m) {
+	public UndoAction(Client client, MagellanUndoManager m) {
+        super(client);
 		this.name = getName();
 		undo = m;
 		setEnabled(undo.canUndo());
@@ -62,7 +66,7 @@ public class UndoAction extends MenuAction implements PropertyChangeListener {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		undo.undo();
 	}
 
@@ -71,7 +75,7 @@ public class UndoAction extends MenuAction implements PropertyChangeListener {
 	 *
 	 * @param p1 TODO: DOCUMENT ME!
 	 */
-	public void propertyChange(java.beans.PropertyChangeEvent p1) {
+	public void propertyChange(PropertyChangeEvent p1) {
 		boolean enabled = ((Boolean) p1.getNewValue()).booleanValue();
 
 		if(enabled) {

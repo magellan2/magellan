@@ -27,15 +27,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class TaskTableAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new TaskTableAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public TaskTableAction(Client parent) {
-		client = parent;
+	public TaskTableAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class TaskTableAction extends MenuAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		TaskTableDialog d = new TaskTableDialog(client, false, client.getDispatcher(),
-												client.getData(), client.getSettings());
+												client.getData(), client.getProperties());
 		d.setVisible(true);
 	}
 

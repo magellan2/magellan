@@ -31,7 +31,6 @@ import com.eressea.util.CollectionFactory;
  * @author Ulrich Küster
  */
 public class FillSelectionAction extends MenuAction implements SelectionListener, GameDataListener {
-	private Client client;
 	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
@@ -39,8 +38,8 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public FillSelectionAction(Client parent) {
-		client = parent;
+	public FillSelectionAction(Client client) {
+        super(client);
 		client.getDispatcher().addSelectionListener(this);
 		client.getDispatcher().addGameDataListener(this);
 	}

@@ -117,7 +117,7 @@ public class EresseaSpecificStuff implements GameSpecificStuff {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public OrderParser getOrderParser(Rules rules) {
-		return new EresseaOrderParser(rules);
+	public OrderParser getOrderParser(GameData data) {
+		return new EresseaOrderParser(data);
 	}
 }

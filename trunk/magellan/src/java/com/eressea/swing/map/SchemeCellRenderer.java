@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 
 /**
@@ -33,8 +34,8 @@ public class SchemeCellRenderer extends ImageCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public SchemeCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public SchemeCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	/**

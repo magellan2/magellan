@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
@@ -25,15 +26,14 @@ import com.eressea.util.CollectionFactory;
  * @author Ulrich Küster
  */
 public class TradeOrganizerAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new TradeOrganizerAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public TradeOrganizerAction(Client parent) {
-		client = parent;
+	public TradeOrganizerAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -41,8 +41,8 @@ public class TradeOrganizerAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
-		new TradeOrganizer(client, client.getDispatcher(), client.getData(), client.getSettings(),
+	public void actionPerformed(ActionEvent e) {
+		new TradeOrganizer(client, client.getDispatcher(), client.getData(), client.getProperties(),
 						   client.getSelectedRegions().values());
 	}
 

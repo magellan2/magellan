@@ -30,6 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.eressea.GameData;
+import com.eressea.event.EventDispatcher;
 import com.eressea.swing.context.ContextFactory;
 import com.eressea.util.logging.Logger;
 
@@ -43,6 +44,7 @@ public class ContextManager extends MouseAdapter {
 	private static final Logger log = Logger.getInstance(ContextManager.class);
 	private Collection listeners = null;
 	private JTree source;
+    private EventDispatcher dispatcher;
 	private Collection selection = null;
 	private GameData data = null;
 	private ContextFactory failFactory = null;
@@ -54,8 +56,9 @@ public class ContextManager extends MouseAdapter {
 	 *
 	 * @param source TODO: DOCUMENT ME!
 	 */
-	public ContextManager(JTree source) {
+	public ContextManager(JTree source, EventDispatcher dispatcher) {
 		this.source = source;
+        this.dispatcher = dispatcher;
 		source.addMouseListener(this);
 	}
 
@@ -182,7 +185,8 @@ public class ContextManager extends MouseAdapter {
 
 						if(((change.getChangeModes() & Changeable.CONTEXT_MENU) != 0) &&
 							   (change.getContextFactory() != null)) {
-							JPopupMenu menu = change.getContextFactory().createContextMenu(data,
+							JPopupMenu menu = change.getContextFactory().createContextMenu(dispatcher,
+                                                                                            data,
 																						   change.getArgument(),
 																						   selection,
 																						   node);
@@ -205,15 +209,15 @@ public class ContextManager extends MouseAdapter {
 					JPopupMenu menu = null;
 
 					if(failArgument != null) {
-						menu = failFactory.createContextMenu(data, failArgument, selection, node);
+						menu = failFactory.createContextMenu(dispatcher, data, failArgument, selection, node);
 					} else {
 						if(node != null) {
-							menu = failFactory.createContextMenu(data, node.getUserObject(),
+							menu = failFactory.createContextMenu(dispatcher, data, node.getUserObject(),
 																 selection, node);
 						}
 
 						if(menu == null) {
-							menu = failFactory.createContextMenu(data, node, selection, node);
+							menu = failFactory.createContextMenu(dispatcher, data, node, selection, node);
 						}
 					}
 
@@ -234,7 +238,7 @@ public class ContextManager extends MouseAdapter {
 			if(simpleObjects != null) {
 				if(simpleObjects.containsKey(user.getClass())) {
 					ContextFactory factory = (ContextFactory) simpleObjects.get(user.getClass());
-					JPopupMenu menu = factory.createContextMenu(data, user, selection, node);
+					JPopupMenu menu = factory.createContextMenu(dispatcher, data, user, selection, node);
 
 					if(menu != null) {
 						showMenu(menu, source, e.getX(), e.getY());
@@ -245,7 +249,7 @@ public class ContextManager extends MouseAdapter {
 
 				if(simpleObjects.containsKey(node.getClass())) {
 					ContextFactory factory = (ContextFactory) simpleObjects.get(node.getClass());
-					JPopupMenu menu = factory.createContextMenu(data, node, selection, node);
+					JPopupMenu menu = factory.createContextMenu(dispatcher, data, node, selection, node);
 
 					if(menu != null) {
 						showMenu(menu, source, e.getX(), e.getY());

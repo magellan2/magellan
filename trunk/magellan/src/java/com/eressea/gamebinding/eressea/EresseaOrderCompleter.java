@@ -89,7 +89,7 @@ public class EresseaOrderCompleter implements Completer {
 		this.data = gd;
 
 		if(data != null) {
-			parser = new EresseaOrderParser(this.data.rules, this);
+			parser = new EresseaOrderParser(this.data, this);
 		} else {
 			parser = new EresseaOrderParser(null, this);
 		}

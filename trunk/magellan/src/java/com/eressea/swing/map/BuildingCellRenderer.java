@@ -18,11 +18,11 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import com.eressea.Building;
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.util.CollectionFactory;
 
@@ -36,8 +36,8 @@ public class BuildingCellRenderer extends ImageCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public BuildingCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public BuildingCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	/**

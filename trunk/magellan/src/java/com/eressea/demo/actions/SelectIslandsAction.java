@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -32,7 +33,6 @@ import com.eressea.util.Islands;
  * @author Ulrich Küster
  */
 public class SelectIslandsAction extends MenuAction implements GameDataListener, SelectionListener {
-	private Client client;
 	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
@@ -40,8 +40,8 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public SelectIslandsAction(Client parent) {
-		client = parent;
+	public SelectIslandsAction(Client client) {
+        super(client);
 		client.getDispatcher().addSelectionListener(this);
 		client.getDispatcher().addGameDataListener(this);
 	}
@@ -84,7 +84,7 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		Map newSelectedRegions = CollectionFactory.createHashtable();
 
 		// add all regions, that were selected before and don't belong to the active level

@@ -29,7 +29,7 @@ public class GameDataBuilder {
 		
 		data.base=36;
 		// this is sadly needed
-		IDBaseConverter.setBase(data.base);
+		//IDBaseConverter.setBase(data.base);
 		
 		data.noSkillPoints=true;
 		
@@ -135,7 +135,7 @@ public class GameDataBuilder {
 	}
 	
 	public Unit addUnit(GameData data, String number, String name,  Faction faction, Region region) {
-		UnitID id = UnitID.createUnitID(number);
+		UnitID id = UnitID.createUnitID(number,data.base);
 
 		Unit unit = new Unit(id);
 		data.addUnit(unit);

@@ -237,7 +237,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 	}
 
 	protected void initTrees(EventDispatcher ed) {
-		CellRenderer renderer = new CellRenderer(settings);
+		CellRenderer renderer = new CellRenderer(getMagellanContext());
 
 		treeRoot = new DefaultMutableTreeNode();
 

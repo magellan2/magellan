@@ -52,6 +52,7 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
+import com.eressea.main.MagellanContext;
 import com.eressea.rules.ItemType;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.context.MapContextMenu;
@@ -154,6 +155,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	//context
 	protected MapContextMenu conMenu;
 
+    protected MagellanContext context;
 	/**
 	 * Creates a new Mapper object.
 	 *
@@ -162,10 +164,12 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geom TODO: DOCUMENT ME!
 	 */
-	public Mapper(EventDispatcher ed, Properties p, Collection customRenderers, CellGeometry geom) {
-		super(ed, p);
+	public Mapper(MagellanContext context, Collection customRenderers, CellGeometry geom) {
+		super(context.getEventDispatcher(), context.getProperties());
 
-		conMenu = new MapContextMenu(ed, p);
+        this.context = context;
+        
+		conMenu = new MapContextMenu(context.getEventDispatcher(), context.getProperties());
 
 		setTooltipDefinition(settings.getProperty("Mapper.ToolTip.Definition",
 												  "<html><font=-1>§rname§</font></html>"));
@@ -1413,20 +1417,20 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	private Collection initAvailableRenderers(CellGeometry geo, Properties settings,
 											  Collection cRenderers) {
 		Collection renderers = CollectionFactory.createLinkedList();
-		renderers.add(new RegionImageCellRenderer(geo, settings));
-		renderers.add(new RegionShapeCellRenderer(geo, settings));
-		renderers.add(new AdvancedRegionShapeCellRenderer(geo, settings));
-		renderers.add(new BorderCellRenderer(geo, settings));
-		renderers.add(new BuildingCellRenderer(geo, settings));
-		renderers.add(new ShipCellRenderer(geo, settings));
-		renderers.add(new TextCellRenderer(geo, settings));
-		renderers.add(new TradeTextCellRenderer(geo, settings));
-		renderers.add(new AdvancedTextCellRenderer(geo, settings));
-		renderers.add(new PathCellRenderer(geo, settings));
-		renderers.add(new HighlightImageCellRenderer(geo, settings));
-		renderers.add(new HighlightShapeCellRenderer(geo, settings));
-		renderers.add(new MarkingsImageCellRenderer(geo, settings));
-		renderers.add(new SchemeCellRenderer(geo, settings));
+		renderers.add(new RegionImageCellRenderer(geo, context));
+		renderers.add(new RegionShapeCellRenderer(geo, context));
+		renderers.add(new AdvancedRegionShapeCellRenderer(geo, context));
+		renderers.add(new BorderCellRenderer(geo, context));
+		renderers.add(new BuildingCellRenderer(geo, context));
+		renderers.add(new ShipCellRenderer(geo, context));
+		renderers.add(new TextCellRenderer(geo, context));
+		renderers.add(new TradeTextCellRenderer(geo, context));
+		renderers.add(new AdvancedTextCellRenderer(geo, context));
+		renderers.add(new PathCellRenderer(geo, context));
+		renderers.add(new HighlightImageCellRenderer(geo, context));
+		renderers.add(new HighlightShapeCellRenderer(geo, context));
+		renderers.add(new MarkingsImageCellRenderer(geo, context));
+		renderers.add(new SchemeCellRenderer(geo, context));
 
 		if(cRenderers != null) {
 			for(Iterator iter = cRenderers.iterator(); iter.hasNext();) {

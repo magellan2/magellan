@@ -33,15 +33,14 @@ import com.eressea.util.ReportMerger;
  * @author Andreas, Ulrich Küster
  */
 public class AddCRAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates new AddCRAction
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public AddCRAction(Client parent) {
-		client = parent;
+	public AddCRAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -52,7 +51,7 @@ public class AddCRAction extends MenuAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		final Client theclient = client;
-		Properties settings = client.getSettings();
+		Properties settings = client.getProperties();
 		JFileChooser fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(true);
 

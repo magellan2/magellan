@@ -87,6 +87,8 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import com.eressea.event.EventDispatcher;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.desktop.WorkSpace;
 
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
@@ -218,6 +220,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	private Image bgImage = null;
 	private Color bgColor = Color.red;
 
+    
+    /** the current context */
+    MagellanContext context;
 	/**
 	 * Creates new MagellanDesktop
 	 *
@@ -226,8 +231,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 * @param components TODO: DOCUMENT ME!
 	 * @param dir TODO: DOCUMENT ME!
 	 */
-	public MagellanDesktop(Frame client, Properties settings, Map components, File dir) {
+	public MagellanDesktop(Frame client, MagellanContext context, Properties settings, Map components, File dir) {
 		this.client = client;
+        this.context = context;
 
 		magellanDir = dir;
 		timer = new Timer(1000, this);
@@ -2410,7 +2416,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			public GameEventListener(KeyHandler parent) {
 				this.parent = parent;
 
-				com.eressea.event.EventDispatcher e = com.eressea.event.EventDispatcher.getDispatcher();
+				EventDispatcher e = context.getEventDispatcher();
 				e.addGameDataListener(this);
 				e.addSelectionListener(this);
 			}

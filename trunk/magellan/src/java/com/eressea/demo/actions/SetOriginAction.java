@@ -13,10 +13,12 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
 import com.eressea.demo.SetOrigin;
+import com.eressea.event.GameDataEvent;
 import com.eressea.util.CollectionFactory;
 
 /**
@@ -26,15 +28,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class SetOriginAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new SetOriginAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public SetOriginAction(Client parent) {
-		client = parent;
+	public SetOriginAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -42,9 +43,9 @@ public class SetOriginAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		new SetOrigin(client, client.getData()).show();
-		client.getDispatcher().fire(new com.eressea.event.GameDataEvent(client, client.getData()));
+		client.getDispatcher().fire(new GameDataEvent(client, client.getData()));
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

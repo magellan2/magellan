@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
@@ -38,8 +39,8 @@ public class HighlightImageCellRenderer extends ImageCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public HighlightImageCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public HighlightImageCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	/**

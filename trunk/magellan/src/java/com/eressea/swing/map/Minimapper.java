@@ -13,10 +13,12 @@
 
 package com.eressea.swing.map;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.event.EventDispatcher;
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 
 /**
@@ -35,8 +37,8 @@ public class Minimapper extends Mapper {
 	 * @param ed TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public Minimapper(EventDispatcher ed, Properties settings) {
-		super(ed, settings, null, new CellGeometry("cellgeometry.txt"));
+    public Minimapper(MagellanContext context) {
+		super(context, null, new CellGeometry("cellgeometry.txt"));
 
 		// if Mapper has registered us, we don't want this
 		javax.swing.ToolTipManager.sharedInstance().unregisterComponent(this);
@@ -67,7 +69,7 @@ public class Minimapper extends Mapper {
 		RenderingPlane p[] = new RenderingPlane[1];
 		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION, getString("plane.region.name"), 1);
 		p[PLANE_REGION].setRenderer(myRenderer = new RegionShapeCellRenderer(getCellGeometry(),
-																			 settings,
+																			 context,
 																			 "Minimap.FactionColors",
 																			 "Minimap.RegionColors",
 																			 "Minimap.PoliticsMode"));

@@ -35,8 +35,7 @@ public class ReplacerHelp implements GameDataListener {
 	 *
 	 * @param data TODO: DOCUMENT ME!
 	 */
-	public static void init(GameData data) {
-		new ReplacerHelp(); // adds a valid game data listener
+	public void init(GameData data) {
 
 		DefaultReplacerFactory drf = new DefaultReplacerFactory();
 
@@ -198,9 +197,10 @@ public class ReplacerHelp implements GameDataListener {
 	/**
 	 * Creates a new ReplacerHelp object.
 	 */
-	public ReplacerHelp() {
+	public ReplacerHelp(EventDispatcher dispatcher, GameData data) {
 		// we want to be informed early so that the replacer factory is updated at first
-		EventDispatcher.getDispatcher().addPriorityGameDataListener(this);
+		dispatcher.addPriorityGameDataListener(this);
+        init(data);
 	}
 
 	/**

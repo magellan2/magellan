@@ -39,15 +39,14 @@ import com.eressea.util.logging.Logger;
  */
 public class OpenOrdersAction extends MenuAction {
 	private static final Logger log = Logger.getInstance(OpenOrdersAction.class);
-	private Client client;
 
 	/**
 	 * Creates a new OpenOrdersAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public OpenOrdersAction(Client parent) {
-		client = parent;
+	public OpenOrdersAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -57,7 +56,7 @@ public class OpenOrdersAction extends MenuAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = new JFileChooser();
-		Properties settings = client.getSettings();
+		Properties settings = client.getProperties();
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.TXT_FILTER));
 		fc.setSelectedFile(new File(settings.getProperty("Client.lastOrdersOpened", "")));
 

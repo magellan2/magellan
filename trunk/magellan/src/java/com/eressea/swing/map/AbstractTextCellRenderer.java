@@ -25,6 +25,7 @@ import java.util.Properties;
 import com.eressea.Coordinate;
 import com.eressea.GameData;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 
 /**
  * Abstract base class for text renderers. Several possibilities to change the output. New feature:
@@ -61,8 +62,8 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	protected AbstractTextCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	protected AbstractTextCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	protected Color getFontColor() {

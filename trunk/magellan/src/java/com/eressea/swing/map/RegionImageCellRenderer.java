@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
@@ -53,8 +54,8 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public RegionImageCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public RegionImageCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 		fogOfWar = (Boolean.valueOf(settings.getProperty("RegionImageCellRenderer.fogOfWar",
 													 Boolean.TRUE.toString()))).booleanValue();
 		item = new JCheckBoxMenuItem(getString("chk.showfow.caption"), fogOfWar);

@@ -45,6 +45,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
+import com.eressea.main.MagellanContext;
 import com.eressea.util.Colors;
 import com.eressea.util.ImageFactory;
 import com.eressea.util.JVMUtilities;
@@ -59,12 +60,13 @@ import com.eressea.util.logging.Logger;
  */
 public class CellRenderer extends JPanel implements TreeCellRenderer {
 	private static final Logger log = Logger.getInstance(CellRenderer.class);
-	private static DefaultTreeCellRenderer defaultRenderer = null;
-	private static Border focusedBorder = null;
-	private static Border selectedBorder = null;
-	private static Border plainBorder = null;
-	private static Border emptyBorder = null;
-	private static Icon missingIcon = null;
+    
+	private DefaultTreeCellRenderer defaultRenderer = null;
+	private Border focusedBorder = null;
+	private Border selectedBorder = null;
+	private Border plainBorder = null;
+	private Border emptyBorder = null;
+	private Icon missingIcon = null;
 	private JLabel label = null;
 	private JLabel iconLabels[] = new JLabel[10];
 	private static Map mapIcons = new HashMap();
@@ -76,7 +78,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 
 	/** TODO: DOCUMENT ME! */
 	public static boolean showTooltips;
-	private static boolean initialized = false;
+	private boolean initialized = false;
 	private CellObject cellObj = null;
 	private CellObject2 cellObj2 = null;
 
@@ -93,14 +95,16 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	/** TODO: DOCUMENT ME! */
 	public static Color emphasizeColor = null;
 
+    private MagellanContext context;
 	/**
 	 * Creates new CellRenderer
 	 *
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public CellRenderer(Properties settings) {
-		CellRenderer.settings = settings;
-
+	public CellRenderer(MagellanContext context) {
+		CellRenderer.settings = context.getProperties();
+        this.context = context;
+        
 		if(!initialized) {
 			emptyBorder = new EmptyBorder(0, 0, 0, 1);
 
@@ -125,7 +129,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		// load missing icon
 		// pavkovic 2003.09.11: only initialize once
 		if(missingIcon == null) {
-			missingIcon = ImageFactory.getFactory().loadImageIcon("missing");
+			missingIcon = context.getImageFactory().loadImageIcon("missing");
 		}
 
 		javax.swing.UIManager.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -652,7 +656,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 			String iconName = (String) icon;
 			String normalizedIconName = Umlaut.convertUmlauts(iconName).toLowerCase();
 
-			Icon ic = ImageFactory.getFactory().loadImageIcon(normalizedIconName);
+			Icon ic = context.getImageFactory().loadImageIcon(normalizedIconName);
 
 			if(ic == null) {
 				ic = missingIcon;

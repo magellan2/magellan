@@ -25,15 +25,14 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class AbortAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new AbortAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public AbortAction(Client parent) {
-		client = parent;
+	public AbortAction(Client client) {
+        super(client);
 	}
 
 	/**

@@ -758,7 +758,7 @@ public class CRParser implements RulesIO, GameDataIO {
 					world.base = 10;
 				}
 
-				com.eressea.util.IDBaseConverter.setBase(world.base);
+				//com.eressea.util.IDBaseConverter.setBase(world.base);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Umlaute")) {
 				umlauts = Integer.parseInt(sc.argv[0]) != 0;
@@ -1802,7 +1802,7 @@ public class CRParser implements RulesIO, GameDataIO {
 
 	private int parseUnit(GameData world, Region region, int sortIndex) throws IOException {
 		Unit unit = getAddUnit(world, UnitID.createUnitID(sc.argv[0].substring(8), 10));
-		EntityID factionID = EntityID.createEntityID(-1);
+		EntityID factionID = EntityID.createEntityID(-1,world.base);
 		ID groupID = null;
 
 		if(region != unit.getRegion()) {

@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -31,7 +32,6 @@ import com.eressea.util.CollectionFactory;
  * @author Ulrich Küster
  */
 public class SelectNothingAction extends MenuAction implements SelectionListener, GameDataListener {
-	private Client client;
 	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
@@ -39,8 +39,8 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public SelectNothingAction(Client parent) {
-		client = parent;
+	public SelectNothingAction(Client client) {
+        super(client);
 		client.getDispatcher().addSelectionListener(this);
 		client.getDispatcher().addGameDataListener(this);
 	}
@@ -83,7 +83,7 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
 			Coordinate c = (Coordinate) iter.next();
 

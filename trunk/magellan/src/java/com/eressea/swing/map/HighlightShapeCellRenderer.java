@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
@@ -55,8 +56,8 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public HighlightShapeCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public HighlightShapeCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 
 		if(settings != null) {
 			try {

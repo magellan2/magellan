@@ -13,10 +13,10 @@
 
 package com.eressea.demo.actions;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 
+import com.eressea.demo.Client;
 import com.eressea.demo.EMapOverviewPanel;
 import com.eressea.util.CollectionFactory;
 
@@ -35,7 +35,8 @@ public class ConfirmAction extends MenuAction {
 	 * @param client TODO: DOCUMENT ME!
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public ConfirmAction(Component client, EMapOverviewPanel e) {
+	public ConfirmAction(Client client, EMapOverviewPanel e) {
+        super(client);
 		target = e;
 	}
 

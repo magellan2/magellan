@@ -38,7 +38,6 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 
 	/** TODO: DOCUMENT ME! */
 	public static final int INVERTCONFIRMATION = 2;
-	private Client client;
 	private Faction faction;
 	private int confirmation; // one of the values above, should be selfexplaining
 	private boolean selectedRegionsOnly; // only change confirmation in selected regions
@@ -53,9 +52,8 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 	 *
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public ChangeFactionConfirmationAction(Client c, Faction f, int conf, boolean r) {
-		super();
-		client = c;
+	public ChangeFactionConfirmationAction(Client client, Faction f, int conf, boolean r) {
+		super(client);
 
 		if(f != null) {
 			setName(f.toString());

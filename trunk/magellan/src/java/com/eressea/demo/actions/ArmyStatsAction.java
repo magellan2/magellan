@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
@@ -26,15 +27,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class ArmyStatsAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new ArmyStatsAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public ArmyStatsAction(Client parent) {
-		client = parent;
+	public ArmyStatsAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -42,8 +42,8 @@ public class ArmyStatsAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
-		new ArmyStatsDialog(client, client.getDispatcher(), client.getData(), client.getSettings()).setVisible(true);
+	public void actionPerformed(ActionEvent e) {
+		new ArmyStatsDialog(client, client.getDispatcher(), client.getData(), client.getProperties()).setVisible(true);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

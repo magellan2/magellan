@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
@@ -25,15 +26,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class RepaintAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new RepaintAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public RepaintAction(Client parent) {
-		client = parent;
+	public RepaintAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class RepaintAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		client.getDesktop().repaintAllComponents();
 	}
 

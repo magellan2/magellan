@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -61,7 +62,6 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 
 	/** TODO: DOCUMENT ME! */
 	public static final char COMMENT = ';';
-	private Client client;
 	private Map selectedRegions = CollectionFactory.createTreeMap();
 
 	/**
@@ -70,7 +70,7 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 	 * @param client TODO: DOCUMENT ME!
 	 */
 	public SaveSelectionAction(Client client) {
-		this.client = client;
+        super(client);
 		this.client.getDispatcher().addSelectionListener(this);
 		this.client.getDispatcher().addGameDataListener(this);
 	}
@@ -117,16 +117,16 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(new EresseaFileFilter(EXTENSION, DESCRIPTION));
-		fc.setSelectedFile(new File(client.getSettings().getProperty(getPropertyName(), "")));
+		fc.setSelectedFile(new File(client.getProperties().getProperty(getPropertyName(), "")));
 		fc.setDialogTitle(getString("title"));
 
 		if(fc.showSaveDialog(client) == JFileChooser.APPROVE_OPTION) {
 			PrintWriter pw = null;
 			try {
-				client.getSettings().setProperty(getPropertyName(),
+				client.getProperties().setProperty(getPropertyName(),
 												 fc.getSelectedFile().getAbsolutePath());
 
 				if(fc.getSelectedFile().exists()) {

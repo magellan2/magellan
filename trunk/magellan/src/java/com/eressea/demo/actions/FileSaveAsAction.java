@@ -40,15 +40,14 @@ import com.eressea.util.logging.Logger;
  */
 public class FileSaveAsAction extends MenuAction {
 	private static final Logger log = Logger.getInstance(FileSaveAsAction.class);
-	protected Client client;
 
 	/**
 	 * Creates a new FileSaveAsAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public FileSaveAsAction(Client parent) {
-		client = parent;
+	public FileSaveAsAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class FileSaveAsAction extends MenuAction {
 	}
 
 	protected void doSaveAsAction() {
-		Properties settings = client.getSettings();
+		Properties settings = client.getProperties();
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
 
@@ -170,7 +169,7 @@ public class FileSaveAsAction extends MenuAction {
 			client.setReportChanged(false);
 			client.getData().filetype = filetype;
 			client.getData().resetToUnchanged();
-			client.getSettings().setProperty("Client.lastCRSaved", filetype.getName());
+			client.getProperties().setProperty("Client.lastCRSaved", filetype.getName());
 		} catch(IOException exc) {
 			log.error(exc);
 			JOptionPane.showMessageDialog(client, exc.toString(),

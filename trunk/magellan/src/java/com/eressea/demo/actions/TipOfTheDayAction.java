@@ -13,10 +13,10 @@
 
 package com.eressea.demo.actions;
 
-import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.util.Map;
-import java.util.Properties;
 
+import com.eressea.demo.Client;
 import com.eressea.swing.TipOfTheDay;
 import com.eressea.util.CollectionFactory;
 
@@ -27,8 +27,6 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class TipOfTheDayAction extends MenuAction {
-	private Frame parent;
-	private Properties settings;
 
 	/**
 	 * Creates a new TipOfTheDayAction object.
@@ -36,9 +34,8 @@ public class TipOfTheDayAction extends MenuAction {
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public TipOfTheDayAction(Frame parent, Properties settings) {
-		this.parent = parent;
-		this.settings = settings;
+	public TipOfTheDayAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -46,9 +43,9 @@ public class TipOfTheDayAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		if(!TipOfTheDay.active) {
-			TipOfTheDay totd = new TipOfTheDay(parent, settings);
+			TipOfTheDay totd = new TipOfTheDay(client, client.getProperties());
 			totd.show();
 			totd.showNextTip();
 		}
