@@ -134,6 +134,7 @@ import com.eressea.util.comparator.SkillComparator;
 import com.eressea.util.comparator.SkillTypeComparator;
 import com.eressea.util.comparator.SkillTypeRankComparator;
 import com.eressea.util.comparator.SortIndexComparator;
+import com.eressea.util.comparator.TaggableComparator;
 import com.eressea.util.comparator.TopmostRankedSkillComparator;
 import com.eressea.util.comparator.UnitCombatStatusComparator;
 import com.eressea.util.comparator.UnitFactionComparator;
@@ -509,6 +510,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 			case TreeHelper.TRUSTLEVEL:
 				help = new UnitTrustComparator(cmp);
+
+				break;
+
+			case TreeHelper.TAGGABLE:
+				help = new TaggableComparator(cmp);
 
 				break;
 
@@ -2262,7 +2268,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 														  GridBagConstraints.HORIZONTAL,
 														  new Insets(2, 2, 2, 2), 0, 0);
 			pnlTreeStructure.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
-														getString("prefs.treestructure")));
+														getString("prefs.treeStructure")));
 
 			JPanel elementsPanel = new JPanel();
 			elementsPanel.setLayout(new BorderLayout(0, 0));
@@ -2276,6 +2282,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			model.add(3, getString("prefs.treeStructure.element.health"));
 			model.add(4, getString("prefs.treeStructure.element.factiondisguise"));
 			model.add(5, getString("prefs.treeStructure.element.trustlevel"));
+			model.add(6, getString("prefs.treeStructure.element.taggable"));
 			elementsList = new JList(model);
 
 			JScrollPane pane = new JScrollPane(elementsList);
@@ -2310,6 +2317,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 						s = getString("prefs.treeStructure.element.factiondisguise");
 					} else if(i == TreeHelper.TRUSTLEVEL) {
 						s = getString("prefs.treeStructure.element.trustlevel");
+					} else if(i == TreeHelper.TAGGABLE) {
+						s = getString("prefs.treeStructure.element.taggable");
 					}
 
 					model.add(model.getSize(), s);
@@ -2559,27 +2568,30 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 								 String.valueOf(useBestSkill.isSelected()));
 
 			DefaultListModel model = (DefaultListModel) useList.getModel();
-			String definition = "";
+			StringBuffer definition = new StringBuffer("");
 
 			for(int i = 0; i < model.getSize(); i++) {
 				String s = (String) model.getElementAt(i);
 
 				if(s.equals(getString("prefs.treeStructure.element.faction"))) {
-					definition += (TreeHelper.FACTION + " ");
+					definition.append(TreeHelper.FACTION + " ");
 				} else if(s.equals(getString("prefs.treeStructure.element.group"))) {
-					definition += (TreeHelper.GROUP + " ");
+					definition.append(TreeHelper.GROUP + " ");
 				} else if(s.equals(getString("prefs.treeStructure.element.combat"))) {
-					definition += (TreeHelper.COMBAT_STATUS + " ");
+					definition.append(TreeHelper.COMBAT_STATUS + " ");
 				} else if(s.equals(getString("prefs.treeStructure.element.health"))) {
-					definition += (TreeHelper.HEALTH + " ");
+					definition.append(TreeHelper.HEALTH + " ");
 				} else if(s.equals(getString("prefs.treeStructure.element.factiondisguise"))) {
-					definition += (TreeHelper.FACTION_DISGUISE_STATUS + " ");
+					definition.append(TreeHelper.FACTION_DISGUISE_STATUS + " ");
 				} else if(s.equals(getString("prefs.treeStructure.element.trustlevel"))) {
-					definition += (TreeHelper.TRUSTLEVEL + " ");
+					definition.append(TreeHelper.TRUSTLEVEL + " ");
+				} else if(s.equals(getString("prefs.treeStructure.element.taggable"))) {
+					definition.append(TreeHelper.TAGGABLE + " ");
+
 				}
 			}
 
-			settings.setProperty("EMapOverviewPanel.treeStructure", definition);
+			settings.setProperty("EMapOverviewPanel.treeStructure", definition.toString());
 
 			ePanel.apply();
 			cPanel.apply();
@@ -3412,18 +3424,19 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			defaultTranslations.put("prefs.sortbynames", "By name");
 			defaultTranslations.put("prefs.unitsorting", "Unit sorting");
 
-			defaultTranslations.put("prefs.treestructure", "Hierarchical tree structure");
-			defaultTranslations.put("prefs.treestructure.available", "Available structure elements");
-			defaultTranslations.put("prefs.treestructure.element.faction", "Faction");
-			defaultTranslations.put("prefs.treestructure.element.group", "Group");
-			defaultTranslations.put("prefs.treestructure.element.combat", "Combat status");
-			defaultTranslations.put("prefs.treestructure.element.health", "Health status");
+			defaultTranslations.put("prefs.treeStructure", "Hierarchical tree structure");
+			defaultTranslations.put("prefs.treeStructure.available", "Available structure elements");
+			defaultTranslations.put("prefs.treeStructure.element.faction", "Faction");
+			defaultTranslations.put("prefs.treeStructure.element.group", "Group");
+			defaultTranslations.put("prefs.treeStructure.element.combat", "Combat status");
+			defaultTranslations.put("prefs.treeStructure.element.health", "Health status");
+			defaultTranslations.put("prefs.treeStructure.element.taggable", "Tag 'ejcTaggableComparator'");
 			defaultTranslations.put("prefs.treeStructure.element.factiondisguise",
 									"Faction disguised");
 			defaultTranslations.put("prefs.treeStructure.element.trustlevel", "Trustlevel");
-			defaultTranslations.put("prefs.treestructure.use", "Use");
-			defaultTranslations.put("prefs.treestructure.up", "Up");
-			defaultTranslations.put("prefs.treestructure.down", "Down");
+			defaultTranslations.put("prefs.treeStructure.use", "Use");
+			defaultTranslations.put("prefs.treeStructure.up", "Up");
+			defaultTranslations.put("prefs.treeStructure.down", "Down");
 
 			defaultTranslations.put("prefs.showskillicons", "Show skill icons");
 			defaultTranslations.put("prefs.showcontainericons", "Show building and ship icons");
