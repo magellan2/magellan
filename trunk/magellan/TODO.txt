@@ -1,3 +1,4 @@
+
 - Extend createFileType* methods in com.eressea.io.file.FileTypeFactory with
   read/write boolean.
 

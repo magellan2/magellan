@@ -1,3 +1,4 @@
+
 package com.eressea.test;
 
 import junit.framework.TestSuite;
