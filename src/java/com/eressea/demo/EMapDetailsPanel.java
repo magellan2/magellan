@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -164,12 +164,13 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class EMapDetailsPanel extends InternationalizedDataPanel implements SelectionListener,
-	TreeSelectionListener,
-	ShortcutListener,
-	ActionListener,
-	TreeUpdate,
-	PreferencesFactory,
-	MenuProvider {
+																			TreeSelectionListener,
+																			ShortcutListener,
+																			ActionListener,
+																			TreeUpdate,
+																			PreferencesFactory,
+																			MenuProvider
+{
 	private static final Logger log = Logger.getInstance(EMapDetailsPanel.class);
 
 	// GUI elements
@@ -243,7 +244,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		undoMgr = _undoMgr;
 
 		nodeWrapperFactory = new NodeWrapperFactory(settings, "EMapDetailsPanel",
-			getString("wrapperfactory.title"));
+													getString("wrapperfactory.title"));
 		nodeWrapperFactory.setSource(this);
 
 		// to get the pref-adapter
@@ -251,7 +252,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		nodeWrapperFactory.createUnitNodeWrapper(temp);
 		nodeWrapperFactory.createSkillNodeWrapper(temp,
 												  new Skill(new SkillType(StringID.create("Test")),
-			0, 0, 0, false), null);
+															0, 0, 0, false), null);
 		nodeWrapperFactory.createItemNodeWrapper(new Item(new ItemType(StringID.create("Test")), 0));
 		nodeWrapperFactory.createSimpleNodeWrapper(null, null);
 
@@ -262,10 +263,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		dispatcher.addSelectionListener(this);
 
 		// load settings
-		showFactionItemCategories = Boolean.valueOf(settings.getProperty(
-			"EMapDetailsPanel.showFactionItemCategories",
-			Boolean.TRUE.toString()))
-									.booleanValue();
+		showFactionItemCategories = Boolean.valueOf(settings.getProperty("EMapDetailsPanel.showFactionItemCategories",
+																		 Boolean.TRUE.toString()))
+										   .booleanValue();
 
 		// name text area
 		name = new JTextArea();
@@ -275,64 +275,63 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		name.setEditable(false);
 		name.getDocument().addUndoableEditListener(_undoMgr);
 		name.addFocusListener(new FocusAdapter() {
-			public void focusLost(FocusEvent e) {
-				if ((name.isEditable() == false) || (displayedObject == null)) {
-					return;
-				}
-
-				if (displayedObject instanceof Unit) {
-					Unit u = (Unit)displayedObject;
-
-					if ((((u.getName() == null) && (name.getText().equals("") == false)) ||
-						 ((u.getName() != null) &&
-						  (name.getText().equals(u.getName()) == false))) &&
-						isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
-						// the following code only changes the name
-						// right now it is not necessary to refresh the relations; are we sure??
-						data.getGameSpecificStuff().getOrderChanger().addNamingOrder(u,
-							name.getText());
-						dispatcher.fire(new UnitOrdersEvent(this, u));
-
-						//if (u.cache != null && u.cache.orderEditor != null) {
-						//	u.cache.orderEditor.reloadOrders();
-						//}
-					}
-				} else if (displayedObject instanceof UnitContainer) {
-					UnitContainer uc = (UnitContainer)displayedObject;
-					Unit modUnit = null;
-
-					if (uc instanceof Faction) {
-						modUnit = (Unit)uc.units().iterator().next();
-					} else {
-						modUnit = uc.getOwnerUnit();
+				public void focusLost(FocusEvent e) {
+					if((name.isEditable() == false) || (displayedObject == null)) {
+						return;
 					}
 
-					if (isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
-						if (((uc.getName() == null) && (name.getText().equals("") == false)) ||
-							((uc.getName() != null) &&
-							 (name.getText().equals(uc.getName()) == false))) {
-							data.getGameSpecificStuff().getOrderChanger().addNamingOrder(modUnit,
-								uc,
-								name.getText());
-							dispatcher.fire(new UnitOrdersEvent(this, modUnit));
+					if(displayedObject instanceof Unit) {
+						Unit u = (Unit) displayedObject;
 
-							//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
-							//	modUnit.cache.orderEditor.reloadOrders();
+						if((((u.getName() == null) && (name.getText().equals("") == false)) ||
+							   ((u.getName() != null) &&
+							   (name.getText().equals(u.getName()) == false))) &&
+							   isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
+							// the following code only changes the name
+							// right now it is not necessary to refresh the relations; are we sure??
+							data.getGameSpecificStuff().getOrderChanger().addNamingOrder(u,
+																						 name.getText());
+							dispatcher.fire(new UnitOrdersEvent(this, u));
+
+							//if (u.cache != null && u.cache.orderEditor != null) {
+							//	u.cache.orderEditor.reloadOrders();
 							//}
 						}
-					} else {
-						JOptionPane.showMessageDialog((Client)((JComponent)e.getSource()).
-							getTopLevelAncestor(),
-							getString("msg.cannotrename.text"),
-							getString("error"),
-							javax.swing.JOptionPane.WARNING_MESSAGE);
-						tree.grabFocus();
+					} else if(displayedObject instanceof UnitContainer) {
+						UnitContainer uc = (UnitContainer) displayedObject;
+						Unit modUnit = null;
+
+						if(uc instanceof Faction) {
+							modUnit = (Unit) uc.units().iterator().next();
+						} else {
+							modUnit = uc.getOwnerUnit();
+						}
+
+						if(isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
+							if(((uc.getName() == null) && (name.getText().equals("") == false)) ||
+								   ((uc.getName() != null) &&
+								   (name.getText().equals(uc.getName()) == false))) {
+								data.getGameSpecificStuff().getOrderChanger().addNamingOrder(modUnit,
+																							 uc,
+																							 name.getText());
+								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
+
+								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
+								//	modUnit.cache.orderEditor.reloadOrders();
+								//}
+							}
+						} else {
+							JOptionPane.showMessageDialog((Client) ((JComponent) e.getSource()).getTopLevelAncestor(),
+														  getString("msg.cannotrename.text"),
+														  getString("error"),
+														  javax.swing.JOptionPane.WARNING_MESSAGE);
+							tree.grabFocus();
+						}
+					} else if(displayedObject instanceof Island) {
+						((Named) displayedObject).setName(name.getText());
 					}
-				} else if (displayedObject instanceof Island) {
-					((Named)displayedObject).setName(name.getText());
 				}
-			}
-		});
+			});
 
 		// description text area
 		description = new JTextArea();
@@ -343,82 +342,80 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		description.setEditable(false);
 		description.getDocument().addUndoableEditListener(_undoMgr);
 		description.addFocusListener(new FocusAdapter() {
-			public void focusLost(FocusEvent e) {
-				if ((description.isEditable() == false) || (displayedObject == null)) {
-					return;
-				}
-
-				if (displayedObject instanceof Unit) {
-					Unit u = (Unit)displayedObject;
-
-					if ((((u.getDescription() == null) &&
-						  (description.getText().equals("") == false)) ||
-						 ((u.getDescription() != null) &&
-						  (description.getText().equals(u.getDescription()) == false))) &&
-						isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
-						String descr = getDescriptionPart(description.getText());
-						String privat = getPrivatePart(description.getText());
-						data.getGameSpecificStuff().getOrderChanger().addDescribeUnitOrder(u,
-							descr);
-
-						if (((u.privDesc == null) && (privat.length() > 0)) ||
-							((u.privDesc != null) && !privat.equals(u.privDesc))) {
-							data.getGameSpecificStuff().getOrderChanger()
-								.addDescribeUnitPrivateOrder(u, privat);
-							u.privDesc = privat;
-						}
-
-						dispatcher.fire(new UnitOrdersEvent(this, u));
-
-						//if (u.cache != null && u.cache.orderEditor != null) {
-						//	u.cache.orderEditor.reloadOrders();
-						//}
-					}
-				} else if (displayedObject instanceof UnitContainer) {
-					UnitContainer uc = (UnitContainer)displayedObject;
-					Unit modUnit = null;
-
-					if (uc instanceof Faction) {
-						modUnit = (Unit)uc.units().iterator().next();
-					} else {
-						modUnit = uc.getOwnerUnit();
+				public void focusLost(FocusEvent e) {
+					if((description.isEditable() == false) || (displayedObject == null)) {
+						return;
 					}
 
-					if (isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
-						if (((uc.getDescription() == null) &&
-							 (description.getText().equals("") == false)) ||
-							((uc.getDescription() != null) &&
-							 (description.getText().equals(uc.getDescription()) == false))) {
-							data.getGameSpecificStuff().getOrderChanger()
-								.addDescribeUnitContainerOrder(modUnit, uc,
-								normalizeDescription(description.getText()));
-							dispatcher.fire(new UnitOrdersEvent(this, modUnit));
+					if(displayedObject instanceof Unit) {
+						Unit u = (Unit) displayedObject;
 
-							//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
-							//	modUnit.cache.orderEditor.reloadOrders();
+						if((((u.getDescription() == null) &&
+							   (description.getText().equals("") == false)) ||
+							   ((u.getDescription() != null) &&
+							   (description.getText().equals(u.getDescription()) == false))) &&
+							   isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
+							String descr = getDescriptionPart(description.getText());
+							String privat = getPrivatePart(description.getText());
+							data.getGameSpecificStuff().getOrderChanger().addDescribeUnitOrder(u,
+																							   descr);
+
+							if(((u.privDesc == null) && (privat.length() > 0)) ||
+								   ((u.privDesc != null) && !privat.equals(u.privDesc))) {
+								data.getGameSpecificStuff().getOrderChanger()
+									.addDescribeUnitPrivateOrder(u, privat);
+								u.privDesc = privat;
+							}
+
+							dispatcher.fire(new UnitOrdersEvent(this, u));
+
+							//if (u.cache != null && u.cache.orderEditor != null) {
+							//	u.cache.orderEditor.reloadOrders();
 							//}
 						}
-					} else {
-						JOptionPane.showMessageDialog((Client)((JComponent)e.getSource()).
-							getTopLevelAncestor(),
-							getString("msg.cannotdescribe.text"),
-							getString("error"),
-							javax.swing.JOptionPane.WARNING_MESSAGE);
-						tree.grabFocus();
+					} else if(displayedObject instanceof UnitContainer) {
+						UnitContainer uc = (UnitContainer) displayedObject;
+						Unit modUnit = null;
+
+						if(uc instanceof Faction) {
+							modUnit = (Unit) uc.units().iterator().next();
+						} else {
+							modUnit = uc.getOwnerUnit();
+						}
+
+						if(isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
+							if(((uc.getDescription() == null) &&
+								   (description.getText().equals("") == false)) ||
+								   ((uc.getDescription() != null) &&
+								   (description.getText().equals(uc.getDescription()) == false))) {
+								data.getGameSpecificStuff().getOrderChanger()
+									.addDescribeUnitContainerOrder(modUnit, uc,
+																   normalizeDescription(description.getText()));
+								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
+
+								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
+								//	modUnit.cache.orderEditor.reloadOrders();
+								//}
+							}
+						} else {
+							JOptionPane.showMessageDialog((Client) ((JComponent) e.getSource()).getTopLevelAncestor(),
+														  getString("msg.cannotdescribe.text"),
+														  getString("error"),
+														  javax.swing.JOptionPane.WARNING_MESSAGE);
+							tree.grabFocus();
+						}
+					} else if(displayedObject instanceof Island) {
+						((Described) displayedObject).setDescription(normalizeDescription(description.getText()));
 					}
-				} else if (displayedObject instanceof Island) {
-					((Described)displayedObject).setDescription(normalizeDescription(description.
-						getText()));
 				}
-			}
-		});
+			});
 
 		JScrollPane descScrollPane = new JScrollPane(description,
-			JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+													 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+													 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
 		// ClearLook suggests to remove border
- 		descScrollPane.setBorder(null);
-		
+		descScrollPane.setBorder(null);
 
 		// panel combining name and description
 		JPanel nameDescPanel = new JPanel(new BorderLayout(0, 2));
@@ -435,25 +432,24 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		tree.setEditable(true);
 		tree.setCellRenderer(new com.eressea.swing.tree.CellRenderer(settings));
 		tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
-			public void editingCanceled(ChangeEvent e) {
-			}
+				public void editingCanceled(ChangeEvent e) {
+				}
 
-			public void editingStopped(ChangeEvent e) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)tree.
-					getLastSelectedPathComponent();
+				public void editingStopped(ChangeEvent e) {
+					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
-				if ((selectedNode != null) && selectedNode instanceof CommentNode) {
-					CommentNode cn = (CommentNode)selectedNode;
-					DefaultMutableTreeNode parent = (DefaultMutableTreeNode)cn.getParent();
-					UnitContainer uc = cn.getUnitContainer();
+					if((selectedNode != null) && selectedNode instanceof CommentNode) {
+						CommentNode cn = (CommentNode) selectedNode;
+						DefaultMutableTreeNode parent = (DefaultMutableTreeNode) cn.getParent();
+						UnitContainer uc = cn.getUnitContainer();
 
-					if ((uc != null) && (uc.comments != null)) {
-						uc.comments.set(parent.getIndex(cn),
-										tree.getCellEditor().getCellEditorValue());
+						if((uc != null) && (uc.comments != null)) {
+							uc.comments.set(parent.getIndex(cn),
+											tree.getCellEditor().getCellEditorValue());
+						}
 					}
 				}
-			}
-		});
+			});
 
 		contextManager = new ContextManager(tree);
 		stealthContext = new StealthContextFactory();
@@ -466,13 +462,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		contextManager.putSimpleObject(UnitListNodeWrapper.class, unitContext);
 
 		JScrollPane treeScrollPane = new JScrollPane(tree);
+
 		// ClearLook suggests to remove border
 		treeScrollPane.setBorder(null);
 
 		// panel combining the region info and the tree
 		JPanel pnlRegionInfoTree = new JPanel(new BorderLayout());
 		pnlRegionInfoTree.add(regionPanel = new BasicRegionPanel(dispatcher, settings),
-											BorderLayout.NORTH);
+							  BorderLayout.NORTH);
 		pnlRegionInfoTree.add(treeScrollPane, BorderLayout.CENTER);
 
 		tagContainer = new JPanel();
@@ -489,10 +486,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		removeTag.setEnabled(false);
 		tagContainer.add(removeTag);
 
-		showTagButtons = settings.getProperty("EMapDetailsPanel.ShowTagButtons",
-						 "false").equals("true");
+		showTagButtons = settings.getProperty("EMapDetailsPanel.ShowTagButtons", "false").equals("true");
 
-		if (showTagButtons) {
+		if(showTagButtons) {
 			pnlRegionInfoTree.add(tagContainer, BorderLayout.SOUTH);
 		}
 
@@ -518,12 +514,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		add(bottomSplitPane);
 
 		// adjust split panes
-		bottomSplitPane.setDividerLocation(Integer.parseInt(settings.getProperty(
-			"EMapDetailsPanel.bottomSplitPane",
-			"400")));
-		topSplitPane.setDividerLocation(Integer.parseInt(settings.getProperty(
-			"EMapDetailsPanel.topSplitPane",
-			"200")));
+		bottomSplitPane.setDividerLocation(Integer.parseInt(settings.getProperty("EMapDetailsPanel.bottomSplitPane",
+																				 "400")));
+		topSplitPane.setDividerLocation(Integer.parseInt(settings.getProperty("EMapDetailsPanel.topSplitPane",
+																			  "200")));
 
 		// save split pane changes
 		ComponentAdapter splitPaneListener = new ComponentAdapter() {
@@ -544,12 +538,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// update this component if the orders of the currently displayed unit changed
 		dispatcher.addUnitOrdersListener(new UnitOrdersListener() {
-			public void unitOrdersChanged(UnitOrdersEvent e) {
-				if (e.getRelatedUnits().contains(EMapDetailsPanel.this.displayedObject)) {
-					EMapDetailsPanel.this.show(e.getUnit(), false);
+				public void unitOrdersChanged(UnitOrdersEvent e) {
+					if(e.getRelatedUnits().contains(EMapDetailsPanel.this.displayedObject)) {
+						EMapDetailsPanel.this.show(e.getUnit(), false);
+					}
 				}
-			}
-		});
+			});
 
 		excludeTags.add("magStyle");
 		excludeTags.add("regionicon");
@@ -569,16 +563,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * It also translates \r to \n
 	 */
 	protected String normalizeDescription(String s) {
-		if (s == null) {
+		if(s == null) {
 			return null;
 		}
 
 		StringBuffer ret = new StringBuffer(s.length());
 
-		for (StringTokenizer st = new StringTokenizer(s, "\n\r"); st.hasMoreTokens(); ) {
+		for(StringTokenizer st = new StringTokenizer(s, "\n\r"); st.hasMoreTokens();) {
 			ret.append(st.nextToken());
 
-			if (st.hasMoreTokens()) {
+			if(st.hasMoreTokens()) {
 				ret.append("\\n");
 			}
 		}
@@ -589,7 +583,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private static final String DESCRIPTION_SEPARATOR = "\n---\n";
 
 	protected String getDescriptionPart(String s) {
-		if (s.indexOf(DESCRIPTION_SEPARATOR) == -1) {
+		if(s.indexOf(DESCRIPTION_SEPARATOR) == -1) {
 			return normalizeDescription(s);
 		}
 
@@ -597,7 +591,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	protected String getPrivatePart(String s) {
-		if (s.indexOf(DESCRIPTION_SEPARATOR) == -1) {
+		if(s.indexOf(DESCRIPTION_SEPARATOR) == -1) {
 			return "";
 		}
 
@@ -628,7 +622,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	private void setNameAndDescription(DescribedObject d, boolean isEditable) {
-		if (d == null) {
+		if(d == null) {
 			return;
 		}
 
@@ -687,7 +681,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		appendRegionGuardInfo(r, parent, expandableNodes);
 
 		// orc infestation
-		if (r.orcInfested) {
+		if(r.orcInfested) {
 			parent.add(createSimpleNode(getString("node.orcinfestation"), "orkinfest"));
 		}
 
@@ -720,25 +714,25 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 */
 	private void appendRegionLuxuriesInfo(Region r, DefaultMutableTreeNode parent,
 										  Collection expandableNodes) {
-		if ((r == null) || (r.prices == null) || r.prices.values().isEmpty()) {
+		if((r == null) || (r.prices == null) || r.prices.values().isEmpty()) {
 			return;
 		}
 
 		DefaultMutableTreeNode luxuriesNode = new DefaultMutableTreeNode(getString("node.trade") +
-			": " +
-			getDiffString(r.maxLuxuries(),
-						  r.maxOldLuxuries()));
+																		 ": " +
+																		 getDiffString(r.maxLuxuries(),
+																					   r.maxOldLuxuries()));
 		parent.add(luxuriesNode);
 		expandableNodes.add(new NodeWrapper(luxuriesNode, "EMapDetailsPanel.RegionLuxuriesExpanded"));
 
-		for (Iterator luxuries = r.prices.values().iterator(); luxuries.hasNext(); ) {
-			LuxuryPrice p = (LuxuryPrice)luxuries.next();
+		for(Iterator luxuries = r.prices.values().iterator(); luxuries.hasNext();) {
+			LuxuryPrice p = (LuxuryPrice) luxuries.next();
 			int oldPrice = -1;
 
-			if (r.oldPrices != null) {
-				LuxuryPrice old = (LuxuryPrice)r.oldPrices.get(p.getItemType().getID());
+			if(r.oldPrices != null) {
+				LuxuryPrice old = (LuxuryPrice) r.oldPrices.get(p.getItemType().getID());
 
-				if (old != null) {
+				if(old != null) {
 					oldPrice = old.getPrice();
 				}
 			}
@@ -759,7 +753,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 */
 	private void appendRegionPeasantInfo(Region r, DefaultMutableTreeNode parent,
 										 Collection expandableNodes) {
-		if (r.peasants <= 0) {
+		if(r.peasants <= 0) {
 			return;
 		}
 
@@ -771,23 +765,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		int oldWorkers = Math.min(maxWorkers, r.oldPeasants);
 		int oldSurplus = -1;
 
-		if ((oldWorkers != -1) && (r.oldWage != -1) && (r.oldPeasants != -1)) {
+		if((oldWorkers != -1) && (r.oldWage != -1) && (r.oldPeasants != -1)) {
 			oldSurplus = (oldWorkers * (r.oldWage + 1)) - (r.oldPeasants * 10);
 		}
 
 		String peasantsInfo = getDiffString(r.peasants, r.oldPeasants, r.getModifiedPeasants())
-							  .toString();
+								  .toString();
 		peasantsInfo += (" / " + maxWorkers);
 
 		DefaultMutableTreeNode peasantsNode = createSimpleNode(getString("node.peasants") + ": " +
-			peasantsInfo, "bauern");
+															   peasantsInfo, "bauern");
 		parent.add(peasantsNode);
 		expandableNodes.add(new NodeWrapper(peasantsNode, "EMapDetailsPanel.RegionPeasantsExpanded"));
 
 		// recruit
 		peasantsNode.add(createSimpleNode(getString("node.recruit") + ": " +
 										  getDiffString(r.maxRecruit(), r.maxRecruit(),
-			r.modifiedRecruit()) + " " +
+														r.modifiedRecruit()) + " " +
 										  getString("node.of") + r.maxRecruit(), "rekruten"));
 
 		// silver
@@ -801,21 +795,20 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// wage
 		int wage = r.getPeasantWage() - 1;
 
-		if ((getWage(wage, false) != r.wage) && (getWage(wage, true) != r.wage)) {
+		if((getWage(wage, false) != r.wage) && (getWage(wage, true) != r.wage)) {
 			// well, this can't be standard or orc wage, so let's
 			// display this special wage
 			wage = r.wage;
 		}
 
-		StringBuffer nodeText = new StringBuffer(getString("node.wage")).append(": ").append(
-			getDiffString(getWage(wage,
-								  false),
-						  getWage(r.oldWage,
-								  false)));
+		StringBuffer nodeText = new StringBuffer(getString("node.wage")).append(": ").append(getDiffString(getWage(wage,
+																												   false),
+																										   getWage(r.oldWage,
+																												   false)));
 
-		if (data.rules.getRace(EresseaRaceConstants.R_ORKS) != null) {
+		if(data.rules.getRace(EresseaRaceConstants.R_ORKS) != null) {
 			nodeText.append(", ").append(data.rules.getRace(EresseaRaceConstants.R_ORKS).getName())
-				.append(": ").append(getDiffString(getWage(wage, true), getWage(r.oldWage, true)));
+					.append(": ").append(getDiffString(getWage(wage, true), getWage(r.oldWage, true)));
 		}
 
 		peasantsNode.add(createSimpleNode(nodeText.toString(), "lohn"));
@@ -830,19 +823,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 										  Collection expandableNodes) {
 		DefaultMutableTreeNode resourceNode = new DefaultMutableTreeNode(getString("node.resources"));
 
-		if (!r.resources().isEmpty()) {
+		if(!r.resources().isEmpty()) {
 			// resources of region
-			for (Iterator iter = r.resources().iterator(); iter.hasNext(); ) {
-				RegionResource res = (RegionResource)iter.next();
+			for(Iterator iter = r.resources().iterator(); iter.hasNext();) {
+				RegionResource res = (RegionResource) iter.next();
 				int oldValue = findOldValueByResourceType(r, res);
 				appendResource(res, resourceNode, oldValue);
 			}
 		} else {
 			// here we dont have resources, so make the "classic" way to create resource information
-			if ((r.trees > 0) || (r.oldTrees > 0)) {
+			if((r.trees > 0) || (r.oldTrees > 0)) {
 				DefaultMutableTreeNode treeNode;
 
-				if (r.mallorn) {
+				if(r.mallorn) {
 					treeNode = createSimpleNode(getString("node.mallorntrees") + ": " +
 												getDiffString(r.trees, r.oldTrees),
 												"items/" + mallornID);
@@ -855,13 +848,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				resourceNode.add(treeNode);
 			}
 
-			if ((r.iron > 0) || (r.oldIron > 0)) {
+			if((r.iron > 0) || (r.oldIron > 0)) {
 				resourceNode.add(createSimpleNode(data.rules.getItemType(StringID.create("Eisen"))
-												  .getName() + ": " +
+															.getName() + ": " +
 												  getDiffString(r.iron, r.oldIron), "items/Eisen"));
 			}
 
-			if ((r.laen > 0) || (r.oldLaen > 0)) {
+			if((r.laen > 0) || (r.oldLaen > 0)) {
 				resourceNode.add(createSimpleNode(getString("node.laen") + ": " +
 												  getDiffString(r.laen, r.oldLaen),
 												  "items/" + laenID));
@@ -869,17 +862,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// horse
-		if ((r.horses > 0) || (r.oldHorses > 0)) {
+		if((r.horses > 0) || (r.oldHorses > 0)) {
 			resourceNode.add(createSimpleNode(getString("node.horses") + ": " +
 											  getDiffString(r.horses, r.oldHorses), "items/pferd"));
 		}
 
 		// herb
-		if (r.herb != null) {
-			StringBuffer sb = new StringBuffer(getString("node.herbs")).append(": ").append(r.herb.
-				getName());
+		if(r.herb != null) {
+			StringBuffer sb = new StringBuffer(getString("node.herbs")).append(": ").append(r.herb.getName());
 
-			if (r.herbAmount != null) {
+			if(r.herbAmount != null) {
 				sb.append(" (").append(r.herbAmount).append(")");
 			}
 
@@ -887,15 +879,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			try {
 				icon = r.herb.getMakeSkill().getSkillType().getID().toString();
-			}
-			catch (Exception exc) {
+			} catch(Exception exc) {
 				icon = "kraeuterkunde";
 			}
 
 			resourceNode.add(createSimpleNode(sb.toString(), icon));
 		}
 
-		if (resourceNode.getChildCount() > 0) {
+		if(resourceNode.getChildCount() > 0) {
 			parent.add(resourceNode);
 			expandableNodes.add(new NodeWrapper(resourceNode,
 												"EMapDetailsPanel.RegionResourcesExpanded"));
@@ -903,27 +894,27 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	private int findOldValueByResourceType(Region r, RegionResource res) {
-		if ((r == null) || (res == null)) {
+		if((r == null) || (res == null)) {
 			return -1;
 		}
 
-		if (res.getType().getID().equals(ironID)) {
+		if(res.getType().getID().equals(ironID)) {
 			return r.oldIron;
 		}
 
-		if (res.getType().getID().equals(laenID)) {
+		if(res.getType().getID().equals(laenID)) {
 			return r.oldLaen;
 		}
 
-		if (res.getType().getID().equals(treesID) || res.getType().getID().equals(mallornID)) {
+		if(res.getType().getID().equals(treesID) || res.getType().getID().equals(mallornID)) {
 			return r.oldTrees;
 		}
 
-		if (res.getType().getID().equals(sproutsID)) {
+		if(res.getType().getID().equals(sproutsID)) {
 			return r.oldSprouts;
 		}
 
-		if (res.getType().getID().equals(stonesID)) {
+		if(res.getType().getID().equals(stonesID)) {
 			return r.oldStones;
 		}
 
@@ -946,21 +937,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		int peasants = 0;
 		int silver = 0;
 
-		for (Iterator iter = r.iterator(); iter.hasNext(); ) {
-			Region region = (Region)iter.next();
+		for(Iterator iter = r.iterator(); iter.hasNext();) {
+			Region region = (Region) iter.next();
 
-			if (region.peasants != -1) {
+			if(region.peasants != -1) {
 				peasants += region.peasants;
 			}
 
-			if (region.silver != -1) {
+			if(region.silver != -1) {
 				silver += region.silver;
 			}
 
-			if (region.herb != null) {
-				List regionList = (List)herbs.get(region.herb);
+			if(region.herb != null) {
+				List regionList = (List) herbs.get(region.herb);
 
-				if (regionList == null) {
+				if(regionList == null) {
 					regionList = CollectionFactory.createLinkedList();
 					herbs.put(region.herb, regionList);
 				}
@@ -968,22 +959,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				regionList.add(region);
 			}
 
-			List list = (List)regions.get(region.getType());
+			List list = (List) regions.get(region.getType());
 
-			if (list == null) {
+			if(list == null) {
 				list = CollectionFactory.createLinkedList();
 				regions.put(region.getType(), list);
 			}
 
 			list.add(region);
 
-			if (!region.resources().isEmpty()) {
-				for (Iterator iterator = region.resources().iterator(); iterator.hasNext(); ) {
-					RegionResource res = (RegionResource)iterator.next();
-					Integer amount = (Integer)resources.get(res.getType());
+			if(!region.resources().isEmpty()) {
+				for(Iterator iterator = region.resources().iterator(); iterator.hasNext();) {
+					RegionResource res = (RegionResource) iterator.next();
+					Integer amount = (Integer) resources.get(res.getType());
 					int i = res.getAmount();
 
-					if (amount != null) {
+					if(amount != null) {
 						i += amount.intValue();
 					}
 
@@ -991,12 +982,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			}
 
-			if (region.horses > 0) {
+			if(region.horses > 0) {
 				ItemType iType = data.rules.getItemType(StringID.create("Pferd"));
-				Integer amount = (Integer)resources.get(iType);
+				Integer amount = (Integer) resources.get(iType);
 				int i = region.horses;
 
-				if (amount != null) {
+				if(amount != null) {
 					i += amount.intValue();
 				}
 
@@ -1019,47 +1010,45 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		List sortedList = CollectionFactory.createLinkedList(regions.keySet());
 		Collections.sort(sortedList, new NameComparator(new IDComparator()));
 
-		for (ListIterator iter = sortedList.listIterator(); iter.hasNext(); ) {
-			UnitContainerType rType = (UnitContainerType)iter.next();
-			List list = (List)regions.get(rType);
+		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
+			UnitContainerType rType = (UnitContainerType) iter.next();
+			List list = (List) regions.get(rType);
 			Collections.sort(list, new NameComparator(new IDComparator()));
 
 			DefaultMutableTreeNode regionsNode = createSimpleNode(rType.getName() + ": " +
-				list.size(),
-				rType.getID().toString());
+																  list.size(),
+																  rType.getID().toString());
 			terrainsNode.add(regionsNode);
 
-			for (Iterator iter2 = list.iterator(); iter2.hasNext(); ) {
-				Region region = (Region)iter2.next();
+			for(Iterator iter2 = list.iterator(); iter2.hasNext();) {
+				Region region = (Region) iter2.next();
 				int persons = 0;
 
-				for (Iterator iter3 = region.units().iterator(); iter3.hasNext(); ) {
-					persons += ((Unit)iter3.next()).getPersons();
+				for(Iterator iter3 = region.units().iterator(); iter3.hasNext();) {
+					persons += ((Unit) iter3.next()).getPersons();
 				}
 
-				regionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.
-					createRegionNodeWrapper(region,
-											persons)));
+				regionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createRegionNodeWrapper(region,
+																									  persons)));
 			}
 		}
 
 		// resources of the regions sorted by name,id of resource
-		DefaultMutableTreeNode resourcesNode = new DefaultMutableTreeNode(getString(
-			"node.resources"));
+		DefaultMutableTreeNode resourcesNode = new DefaultMutableTreeNode(getString("node.resources"));
 		sortedList = CollectionFactory.createLinkedList(resources.keySet());
 		Collections.sort(sortedList, new NameComparator(new IDComparator()));
 
-		for (ListIterator iter = sortedList.listIterator(); iter.hasNext(); ) {
-			ItemType resType = (ItemType)iter.next();
-			int amount = ((Integer)resources.get(resType)).intValue();
+		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
+			ItemType resType = (ItemType) iter.next();
+			int amount = ((Integer) resources.get(resType)).intValue();
 
-			if (amount > 0) {
+			if(amount > 0) {
 				resourcesNode.add(createSimpleNode(resType.getName() + ": " + amount,
-					"items/" + resType.getIconName()));
+												   "items/" + resType.getIconName()));
 			}
 		}
 
-		if (resourcesNode.getChildCount() > 0) {
+		if(resourcesNode.getChildCount() > 0) {
 			parent.add(resourcesNode);
 			expandableNodes.add(new NodeWrapper(resourcesNode,
 												"EMapDetailsPanel.RegionResourcesExpanded"));
@@ -1070,25 +1059,24 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		sortedList = CollectionFactory.createLinkedList(herbs.keySet());
 		Collections.sort(sortedList, new NameComparator(new IDComparator()));
 
-		for (ListIterator iter = sortedList.listIterator(); iter.hasNext(); ) {
-			ItemType herbType = (ItemType)iter.next();
-			List regionList = (List)herbs.get(herbType);
+		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
+			ItemType herbType = (ItemType) iter.next();
+			List regionList = (List) herbs.get(herbType);
 			int i = regionList.size();
 			DefaultMutableTreeNode regionsNode = new DefaultMutableTreeNode(herbType.getName() +
-				": " + i, true);
+																			": " + i, true);
 
 			// m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(herbType.getName() + ": " + i, herbType.getIconName()));
 			herbsNode.add(regionsNode);
 			Collections.sort(regionList, new NameComparator(new IDComparator()));
 
-			for (ListIterator iter2 = regionList.listIterator(); iter2.hasNext(); ) {
-				Region myRegion = (Region)iter2.next();
-				regionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.
-					createRegionNodeWrapper(myRegion)));
+			for(ListIterator iter2 = regionList.listIterator(); iter2.hasNext();) {
+				Region myRegion = (Region) iter2.next();
+				regionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createRegionNodeWrapper(myRegion)));
 			}
 		}
 
-		if (herbsNode.getChildCount() > 0) {
+		if(herbsNode.getChildCount() > 0) {
 			parent.add(herbsNode);
 			expandableNodes.add(new NodeWrapper(herbsNode, "EMapDetailsPanel.HerbStatisticExpanded"));
 		}
@@ -1135,17 +1123,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private StringBuffer getDiffString(int current, int old, int future) {
 		StringBuffer ret = new StringBuffer(String.valueOf(current));
 
-		if (current == -1) {
+		if(current == -1) {
 			return ret;
 		}
 
-		if ((old != -1) && (current != old)) {
+		if((old != -1) && (current != old)) {
 			ret.append(" ");
 			ret.append(getDiffString(current - old, true));
 		}
 
 		// future value is treated differently, also negative numbers may exist
-		if (current != future) {
+		if(current != future) {
 			ret.append(" ");
 			ret.append(getDiffString(future, false));
 		}
@@ -1156,10 +1144,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private StringBuffer getDiffString(int value, boolean printSign) {
 		StringBuffer ret = new StringBuffer(4);
 
-		if (printSign) {
+		if(printSign) {
 			ret.append("[");
 
-			if (value > 0) {
+			if(value > 0) {
 				ret.append("+");
 			}
 
@@ -1180,23 +1168,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Set parties = CollectionFactory.createHashSet();
 		Set units = CollectionFactory.createHashSet();
 
-		for (Iterator iter = r.units().iterator(); iter.hasNext(); ) {
-			Unit unit = (Unit)iter.next();
+		for(Iterator iter = r.units().iterator(); iter.hasNext();) {
+			Unit unit = (Unit) iter.next();
 
-			if (unit.guard != 0) {
+			if(unit.guard != 0) {
 				parties.add(unit.getFaction());
 				units.add(unit);
 			}
 		}
 
-		if (parties.size() > 0) {
+		if(parties.size() > 0) {
 			DefaultMutableTreeNode guardRoot = new DefaultMutableTreeNode(getString("node.guarded") +
-				": ");
+																		  ": ");
 			parent.add(guardRoot);
 			expandableNodes.add(new NodeWrapper(guardRoot, "EMapDetailsPanel.RegionGuardExpanded"));
 
-			for (Iterator iter = parties.iterator(); iter.hasNext(); ) {
-				Faction faction = (Faction)iter.next();
+			for(Iterator iter = parties.iterator(); iter.hasNext();) {
+				Faction faction = (Faction) iter.next();
 				int iGuardFlags = 0;
 				StringBuffer strFaction = new StringBuffer();
 				DefaultMutableTreeNode guardParty = new DefaultMutableTreeNode(strFaction);
@@ -1204,12 +1192,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 				Iterator iterUnits = units.iterator();
 
-				while (iterUnits.hasNext()) {
-					Unit unit = (Unit)iterUnits.next();
+				while(iterUnits.hasNext()) {
+					Unit unit = (Unit) iterUnits.next();
 
-					if (unit.getFaction().equals(faction)) {
-						DefaultMutableTreeNode guardUnit = new DefaultMutableTreeNode(
-							nodeWrapperFactory.createUnitNodeWrapper(unit));
+					if(unit.getFaction().equals(faction)) {
+						DefaultMutableTreeNode guardUnit = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(unit));
 						guardParty.add(guardUnit);
 						iGuardFlags |= unit.guard;
 					}
@@ -1225,25 +1212,25 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		StringBuffer sb = new StringBuffer();
 		sb.append(res.getType().getName());
 
-		if ((res.getAmount() != -1) || (res.getSkillLevel() != -1)) {
+		if((res.getAmount() != -1) || (res.getSkillLevel() != -1)) {
 			sb.append(": ");
 
-			if (res.getAmount() != -1) {
+			if(res.getAmount() != -1) {
 				sb.append(getDiffString(res.getAmount(), oldValue));
 
-				if (res.getSkillLevel() != -1) {
+				if(res.getSkillLevel() != -1) {
 					sb.append(" / ");
 				}
 			}
 
-			if (res.getSkillLevel() != -1) {
+			if(res.getSkillLevel() != -1) {
 				sb.append("T").append(res.getSkillLevel());
 			}
 		}
 
 		String icon = res.getType().getIconName();
 
-		if (icon.equalsIgnoreCase("Steine")) {
+		if(icon.equalsIgnoreCase("Steine")) {
 			icon = "stein";
 		}
 
@@ -1259,7 +1246,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 */
 	private void appendRegionSchemes(Region region, DefaultMutableTreeNode parent,
 									 Collection expandableNodes) {
-		if (region.schemes().isEmpty()) {
+		if(region.schemes().isEmpty()) {
 			return;
 		}
 
@@ -1267,8 +1254,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		parent.add(schemeNode);
 		expandableNodes.add(new NodeWrapper(schemeNode, "EMapDetailsPanel.RegionSchemesExpanded"));
 
-		for (Iterator iter = region.schemes().iterator(); iter.hasNext(); ) {
-			Scheme s = (Scheme)iter.next();
+		for(Iterator iter = region.schemes().iterator(); iter.hasNext();) {
+			Scheme s = (Scheme) iter.next();
 			schemeNode.add(new DefaultMutableTreeNode(s));
 		}
 	}
@@ -1301,14 +1288,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendTags(Taggable uc, DefaultMutableTreeNode parent, Collection expandableNodes,
 							String nodeInfo) {
-		if (!uc.hasTags()) {
+		if(!uc.hasTags()) {
 			return;
 		}
 
 		DefaultMutableTreeNode tags = new DefaultMutableTreeNode(getString("node.tags"));
 
-		for (Iterator iter = uc.getTagMap().keySet().iterator(); iter.hasNext(); ) {
-			String name = (String)iter.next();
+		for(Iterator iter = uc.getTagMap().keySet().iterator(); iter.hasNext();) {
+			String name = (String) iter.next();
 			String value = uc.getTag(name);
 			tags.add(new DefaultMutableTreeNode(name + ": " + value));
 		}
@@ -1324,19 +1311,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendFactionsInfo(Collection factions, DefaultMutableTreeNode parent,
 									Collection expandableNodes) {
-		if (lastRegion != null) {
+		if(lastRegion != null) {
 			Collection units = CollectionFactory.createLinkedList();
-			for (Iterator iter = lastRegion.units().iterator(); iter.hasNext(); ) {
-				Unit u = (Unit)iter.next();
-				if ((u.getFaction() != null) && factions.contains(u.getFaction())) {
+
+			for(Iterator iter = lastRegion.units().iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
+
+				if((u.getFaction() != null) && factions.contains(u.getFaction())) {
 					units.add(u);
 				}
 			}
+
 			appendUnitsInfo(units, parent, expandableNodes);
 		}
+
 		// comments
-		for (Iterator iter = factions.iterator(); iter.hasNext(); ) {
-			appendComments((Faction)iter.next(), parent, expandableNodes);
+		for(Iterator iter = factions.iterator(); iter.hasNext();) {
+			appendComments((Faction) iter.next(), parent, expandableNodes);
 		}
 	}
 
@@ -1346,20 +1337,24 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// key: racename (string), Value: Integer-Object containing number of persons of that race
 		Map races = CollectionFactory.createHashtable();
-		for (Iterator iter = units.iterator(); iter.hasNext(); ) {
-			Unit u = (Unit)iter.next();
-			Integer number = (Integer)races.get(u.getRaceName(data));
+
+		for(Iterator iter = units.iterator(); iter.hasNext();) {
+			Unit u = (Unit) iter.next();
+			Integer number = (Integer) races.get(u.getRaceName(data));
 			int personCount = u.getPersons();
-			if (number != null) {
+
+			if(number != null) {
 				personCount += number.intValue();
 			}
+
 			races.put(u.getRaceName(data), new Integer(personCount));
 
-			for (Iterator i = u.getSkills().iterator(); i.hasNext(); ) {
-				Skill skill = (Skill)i.next();
-				SkillStatItem stored = (SkillStatItem)skills.get(skill.getName() +
-					skill.getLevel());
-				if (stored != null) {
+			for(Iterator i = u.getSkills().iterator(); i.hasNext();) {
+				Skill skill = (Skill) i.next();
+				SkillStatItem stored = (SkillStatItem) skills.get(skill.getName() +
+																  skill.getLevel());
+
+				if(stored != null) {
 					stored.unitCounter += u.getPersons();
 					stored.units.add(u);
 				} else {
@@ -1369,85 +1364,77 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			}
 		}
-		for (Iterator iter = races.keySet().iterator(); iter.hasNext(); ) {
-			String race = (String)iter.next();
-			int i = ((Integer)races.get(race)).intValue();
+
+		for(Iterator iter = races.keySet().iterator(); iter.hasNext();) {
+			String race = (String) iter.next();
+			int i = ((Integer) races.get(race)).intValue();
 			parent.add(createSimpleNode(i + " " + race, "person"));
 		}
-		if (showFactionItemCategories) {
-			Collection catNodes = unitsTools.addCategorizedUnitItems(units,
-				parent, null,
-				null, true,
-				nodeWrapperFactory);
+
+		if(showFactionItemCategories) {
+			Collection catNodes = unitsTools.addCategorizedUnitItems(units, parent, null, null,
+																	 true, nodeWrapperFactory);
 
 			if(catNodes != null) {
-				for (Iterator catIter = catNodes.iterator(); catIter.hasNext(); ) {
-					DefaultMutableTreeNode node = (DefaultMutableTreeNode)catIter.
-						next();
+				for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
 					Object o = node.getUserObject();
 					ItemCategory cat = null;
-					if (o instanceof ItemCategoryNodeWrapper) {
-						cat = ((ItemCategoryNodeWrapper)o).getItemCategory();
+
+					if(o instanceof ItemCategoryNodeWrapper) {
+						cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
 					} else {
-						cat = (ItemCategory)o;
+						cat = (ItemCategory) o;
 					}
-					
-					expandableNodes.add(new NodeWrapper(node, "EMapDetailsPanel." +
+
+					expandableNodes.add(new NodeWrapper(node,
+														"EMapDetailsPanel." +
 														cat.getID().toString() + "Expanded"));
 				}
 			}
 		} else {
-			DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(
-				getString("node.items"));
-			expandableNodes.add(new NodeWrapper(itemsNode,
-												"EMapDetailsPanel.FactionItemsExpanded"));
+			DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(getString("node.items"));
+			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.FactionItemsExpanded"));
 			parent.add(itemsNode);
-			unitsTools.addUnitItems(units, itemsNode, null, null, true,
-									nodeWrapperFactory);
+			unitsTools.addUnitItems(units, itemsNode, null, null, true, nodeWrapperFactory);
 		}
 
-		if (skills.size() > 0) {
-			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(
-				getString("node.skills"));
+		if(skills.size() > 0) {
+			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
 			parent.add(skillsNode);
-			expandableNodes.add(new NodeWrapper(skillsNode,
-												"EMapDetailsPanel.FactionSkillsExpanded"));
+			expandableNodes.add(new NodeWrapper(skillsNode, "EMapDetailsPanel.FactionSkillsExpanded"));
 
 			List sortedSkills = CollectionFactory.createLinkedList(skills.values());
 			Collections.sort(sortedSkills, new SkillStatItemComparator());
 
-			for (Iterator iter = sortedSkills.iterator(); iter.hasNext(); ) {
-				SkillStatItem item = (SkillStatItem)iter.next();
-				DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.
-					getName() + " " +
-					item.skill.getLevel() +
-					": " + item.unitCounter,
-					item.skill.getSkillType()
-					.getID().toString());
+			for(Iterator iter = sortedSkills.iterator(); iter.hasNext();) {
+				SkillStatItem item = (SkillStatItem) iter.next();
+				DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.getName() + " " +
+																	item.skill.getLevel() + ": " +
+																	item.unitCounter,
+																	item.skill.getSkillType().getID()
+																			  .toString());
 				skillsNode.add(skillNode);
 
 				Comparator idCmp = new IDComparator();
-				Comparator unitCmp = new UnitSkillComparator(new
-					SpecifiedSkillTypeSkillComparator(item.skill.getSkillType(),
-					new SkillComparator(),
-					null),
-					idCmp);
+				Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(item.skill.getSkillType(),
+																								   new SkillComparator(),
+																								   null),
+															 idCmp);
 				Collections.sort(item.units, unitCmp);
 
-				for (Iterator uIter = item.units.iterator(); uIter.hasNext(); ) {
-					Unit u = (Unit)uIter.next();
+				for(Iterator uIter = item.units.iterator(); uIter.hasNext();) {
+					Unit u = (Unit) uIter.next();
 					StringBuffer sb = new StringBuffer();
 					sb.append(u.toString());
 					sb.append(": " + u.getPersons());
 
-					if (u.getPersons() != u.getModifiedPersons()) {
-						sb.append(" (").append(u.getModifiedPersons()).append(
-							")");
+					if(u.getPersons() != u.getModifiedPersons()) {
+						sb.append(" (").append(u.getModifiedPersons()).append(")");
 					}
 
-					skillNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.
-						createUnitNodeWrapper(u,
-											  sb.toString())));
+					skillNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u,
+																									  sb.toString())));
 				}
 			}
 		}
@@ -1460,25 +1447,25 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	private void appendGroupInfo(Group g, DefaultMutableTreeNode parent, Collection expandableNodes) {
-		if (lastRegion != null) {
+		if(lastRegion != null) {
 			int personCount = 0;
 			Map skills = CollectionFactory.createHashtable();
 			Iterator units = lastRegion.units().iterator();
 			Collection regionUnits = CollectionFactory.createLinkedList();
 
-			while (units.hasNext() == true) {
-				Unit u = (Unit)units.next();
+			while(units.hasNext() == true) {
+				Unit u = (Unit) units.next();
 
-				if ((u.getGroup() != null) && u.getGroup().equals(g)) {
+				if((u.getGroup() != null) && u.getGroup().equals(g)) {
 					personCount += u.getPersons();
 					regionUnits.add(u);
 
-					for (Iterator i = u.getSkills().iterator(); i.hasNext(); ) {
-						Skill skill = (Skill)i.next();
-						SkillStatItem stored = (SkillStatItem)skills.get(skill.getName() +
-							skill.getLevel());
+					for(Iterator i = u.getSkills().iterator(); i.hasNext();) {
+						Skill skill = (Skill) i.next();
+						SkillStatItem stored = (SkillStatItem) skills.get(skill.getName() +
+																		  skill.getLevel());
 
-						if (stored != null) {
+						if(stored != null) {
 							stored.unitCounter += u.getPersons();
 							stored.units.add(u);
 						} else {
@@ -1491,10 +1478,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 
 			DefaultMutableTreeNode n = new DefaultMutableTreeNode(personCount + " " +
-				getString("node.persons"));
+																  getString("node.persons"));
 			parent.add(n);
 
-			if ((g.allies() != null) && (g.allies().values().size() > 0)) {
+			if((g.allies() != null) && (g.allies().values().size() > 0)) {
 				n = new DefaultMutableTreeNode(getString("node.alliances"));
 				parent.add(n);
 				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.AlliancesExpanded"));
@@ -1503,35 +1490,35 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				Collections.sort(sortedAllies,
 								 new AllianceFactionComparator(new NameComparator(new IDComparator())));
 
-				for (Iterator iter = sortedAllies.iterator(); iter.hasNext(); ) {
+				for(Iterator iter = sortedAllies.iterator(); iter.hasNext();) {
 					DefaultMutableTreeNode m = new DefaultMutableTreeNode(iter.next());
 					n.add(m);
 				}
 			}
 
-			if (showFactionItemCategories) {
+			if(showFactionItemCategories) {
 				Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits, parent, null,
-					null, true,
-					nodeWrapperFactory);
+																		 null, true,
+																		 nodeWrapperFactory);
 
 				if(catNodes != null) {
-					for (Iterator catIter = catNodes.iterator(); catIter.hasNext(); ) {
-						DefaultMutableTreeNode node = (DefaultMutableTreeNode)catIter.next();
-						
-						if (log.isDebugEnabled()) {
+					for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
+
+						if(log.isDebugEnabled()) {
 							log.debug("EmapDetailPanel.appendGroupInfo: found class " +
 									  node.getUserObject().getClass() + " (expected ItemCategory)");
 						}
-						
+
 						Object o = node.getUserObject();
 						ItemCategory cat = null;
-						
-						if (o instanceof ItemCategoryNodeWrapper) {
-							cat = ((ItemCategoryNodeWrapper)o).getItemCategory();
+
+						if(o instanceof ItemCategoryNodeWrapper) {
+							cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
 						} else {
-							cat = (ItemCategory)o;
+							cat = (ItemCategory) o;
 						}
-						
+
 						expandableNodes.add(new NodeWrapper(node,
 															"EMapDetailsPanel." +
 															cat.getID().toString() + "Expanded"));
@@ -1544,7 +1531,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				unitsTools.addUnitItems(regionUnits, n, null, null, true, nodeWrapperFactory);
 			}
 
-			if (skills.size() > 0) {
+			if(skills.size() > 0) {
 				n = new DefaultMutableTreeNode(getString("node.skills"));
 				parent.add(n);
 				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.RegionSkillsExpanded"));
@@ -1552,63 +1539,60 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				List sortedSkills = CollectionFactory.createLinkedList(skills.values());
 				Collections.sort(sortedSkills, new SkillStatItemComparator());
 
-				for (Iterator iter = sortedSkills.iterator(); iter.hasNext(); ) {
-					SkillStatItem item = (SkillStatItem)iter.next();
+				for(Iterator iter = sortedSkills.iterator(); iter.hasNext();) {
+					SkillStatItem item = (SkillStatItem) iter.next();
 					int bonus = 0;
 					Faction f = null;
 
-					if (((f = g.getFaction()) != null) && (f.getType() != null)) {
+					if(((f = g.getFaction()) != null) && (f.getType() != null)) {
 						bonus = f.getRace().getSkillBonus(item.skill.getSkillType());
 
-						if (lastRegion != null) {
+						if(lastRegion != null) {
 							bonus += f.getRace().getSkillBonus(item.skill.getSkillType(),
-								lastRegion.getRegionType());
+															   lastRegion.getRegionType());
 						}
 					}
 
-					DefaultMutableTreeNode m = new DefaultMutableTreeNode(new SimpleNodeWrapper(
-						item.skill.getName() +
-						" " +
-						item.skill.getLevel() +
-						": " +
-						item.unitCounter,
-						item.skill.getSkillType()
-						.getID()
-						.toString()));
+					DefaultMutableTreeNode m = new DefaultMutableTreeNode(new SimpleNodeWrapper(item.skill.getName() +
+																								" " +
+																								item.skill.getLevel() +
+																								": " +
+																								item.unitCounter,
+																								item.skill.getSkillType()
+																										  .getID()
+																										  .toString()));
 					n.add(m);
 
 					Comparator idCmp = new IDComparator();
-					Comparator unitCmp = new UnitSkillComparator(new BestSkillComparator(new
-						SkillComparator(),
-						new SkillTypeComparator(new SkillTypeRankComparator(new NameComparator(
-						idCmp),
-						settings),
-												new SkillComparator()),
-						null),
-						idCmp);
+					Comparator unitCmp = new UnitSkillComparator(new BestSkillComparator(new SkillComparator(),
+																						 new SkillTypeComparator(new SkillTypeRankComparator(new NameComparator(idCmp),
+																																			 settings),
+																												 new SkillComparator()),
+																						 null),
+																 idCmp);
 					Collections.sort(item.units, unitCmp);
 
-					for (Iterator uIter = item.units.iterator(); uIter.hasNext(); ) {
-						Unit u = (Unit)uIter.next();
+					for(Iterator uIter = item.units.iterator(); uIter.hasNext();) {
+						Unit u = (Unit) uIter.next();
 						StringBuffer sb = new StringBuffer();
 						sb.append(u.toString());
 
 						Skill skill = u.getSkill(item.skill.getSkillType());
 
-						if (skill != null) {
+						if(skill != null) {
 							sb.append(": [").append(skill.getPointsPerPerson()).append(" -> ")
-								.append(Skill.getPointsAtLevel((item.skill.getLevel() - bonus) + 1))
-								.append("]");
+							  .append(Skill.getPointsAtLevel((item.skill.getLevel() - bonus) + 1))
+							  .append("]");
 						}
 
 						sb.append(", ").append(u.getPersons());
 
-						if (u.getPersons() != u.getModifiedPersons()) {
+						if(u.getPersons() != u.getModifiedPersons()) {
 							sb.append(" (").append(u.getModifiedPersons()).append(")");
 						}
 
 						UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
-							sb.toString());
+																					 sb.toString());
 						m.add(new DefaultMutableTreeNode(w));
 					}
 				}
@@ -1620,11 +1604,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// update description text area
 		String strDesc = "";
 
-		if (u.getDescription() != null) {
+		if(u.getDescription() != null) {
 			strDesc += u.getDescription();
 		}
 
-		if (u.privDesc != null) {
+		if(u.privDesc != null) {
 			strDesc += (DESCRIPTION_SEPARATOR + u.privDesc);
 		}
 
@@ -1638,7 +1622,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendUnitInfo(Unit u, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		/* make sure that all unit relations have been established */
-		if (u.getRegion() != null) {
+		if(u.getRegion() != null) {
 			u.getRegion().refreshUnitRelations();
 		}
 
@@ -1648,29 +1632,26 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// Partei
 		DefaultMutableTreeNode fNode;
 
-		if (u.getFaction() == null) {
-			fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString(
-				"node.faction") +
-				": " +
-				getString("node.unknownfaction"),
-				"faction"));
+		if(u.getFaction() == null) {
+			fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
+																						  ": " +
+																						  getString("node.unknownfaction"),
+																						  "faction"));
 		} else {
-			fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString(
-				"node.faction") +
-				": " +
-				u.getFaction()
-				.toString(),
-				"faction"));
+			fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
+																						  ": " +
+																						  u.getFaction()
+																						   .toString(),
+																						  "faction"));
 		}
 
 		parent.add(fNode);
 
 		// Race
-		if (u.race != null) {
-			StringBuffer nodeText = new StringBuffer(getString("node.race")).append(": ").append(u.
-				getRaceName(this.data));
+		if(u.race != null) {
+			StringBuffer nodeText = new StringBuffer(getString("node.race")).append(": ").append(u.getRaceName(this.data));
 
-			if (u.realRace != null) {
+			if(u.realRace != null) {
 				nodeText.append(" (").append(u.realRace.getName()).append(")");
 			}
 
@@ -1678,24 +1659,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// Group
-		if (u.getGroup() != null) {
+		if(u.getGroup() != null) {
 			Group group = u.getGroup();
 			DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(getString("node.group") +
-				": \"" + group.getName() +
-				"\"");
+																		  ": \"" + group.getName() +
+																		  "\"");
 			parent.add(groupNode);
 			expandableNodes.add(new NodeWrapper(groupNode, "EMapDetailsPanel.UnitGroupExpanded"));
 			appendAlliances(group.allies(), groupNode);
 		}
 
 		// Kampfreihenanzeige
-		SimpleNodeWrapper cWrapper = nodeWrapperFactory.createSimpleNodeWrapper(getString(
-			"node.combatstatus") +
-			": " +
-			Unit.combatStatusToString(u),
-			"kampfstatus");
+		SimpleNodeWrapper cWrapper = nodeWrapperFactory.createSimpleNodeWrapper(getString("node.combatstatus") +
+																				": " +
+																				Unit.combatStatusToString(u),
+																				"kampfstatus");
 
-		if (isPrivileged(u.getFaction())) {
+		if(isPrivileged(u.getFaction())) {
 			cWrapper.setContextFactory(combatContext);
 			cWrapper.setArgument(u);
 		}
@@ -1703,22 +1683,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		parent.add(new DefaultMutableTreeNode(cWrapper));
 
 		// starvation
-		if (u.isStarving) {
+		if(u.isStarving) {
 			parent.add(createSimpleNode(getString("node.starved"), "hunger"));
 		}
 
 		// health state
-		if (u.health != null) {
+		if(u.health != null) {
 			String verw = data.getTranslation("verwundet");
 			String sverw = data.getTranslation("schwer verwundet");
 			String ersch = data.getTranslation("erschöpft");
 			String hicon = "gesundheit";
 
-			if (u.health.equals(verw)) {
+			if(u.health.equals(verw)) {
 				hicon = "verwundet";
-			} else if (u.health.equals(sverw)) {
+			} else if(u.health.equals(sverw)) {
 				hicon = "schwerverwundet";
-			} else if (u.health.equals(ersch)) {
+			} else if(u.health.equals(ersch)) {
 				hicon = "erschoepft";
 			}
 
@@ -1726,7 +1706,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// guard state
-		if (u.guard != 0) {
+		if(u.guard != 0) {
 			parent.add(createSimpleNode(getString("node.guards") + ": " +
 										Unit.guardFlagsToString(u.guard), "bewacht"));
 		}
@@ -1735,23 +1715,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Skill stealth = u.getSkill(data.rules.getSkillType(EresseaSkillConstants.S_TARNUNG, true));
 		int stealthLevel = 0;
 
-		if (stealth != null) {
+		if(stealth != null) {
 			stealthLevel = stealth.getLevel();
 		}
 
-		if (u.hideFaction || (stealthLevel > 0)) {
+		if(u.hideFaction || (stealthLevel > 0)) {
 			String strHide = getString("node.stealth") + ":";
 
-			if (stealthLevel > 0) {
-				if (u.stealth == -1) {
+			if(stealthLevel > 0) {
+				if(u.stealth == -1) {
 					strHide += (" " + stealthLevel);
 				} else {
 					strHide += (" " + u.stealth + " / " + stealthLevel);
 				}
 			}
 
-			if (u.hideFaction) {
-				if (stealthLevel > 0) {
+			if(u.hideFaction) {
+				if(stealthLevel > 0) {
 					strHide += ",";
 				}
 
@@ -1762,14 +1742,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			try {
 				icon = stealth.getSkillType().getID().toString();
-			}
-			catch (Exception exc) {
+			} catch(Exception exc) {
 				icon = "tarnung";
 			}
 
 			SimpleNodeWrapper wrapper = nodeWrapperFactory.createSimpleNodeWrapper(strHide, icon);
 
-			if ((stealthLevel > 0) && isPrivileged(u.getFaction())) {
+			if((stealthLevel > 0) && isPrivileged(u.getFaction())) {
 				wrapper.setContextFactory(stealthContext);
 				wrapper.setArgument(u);
 			}
@@ -1778,37 +1757,34 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// disguise
-		if (u.getGuiseFaction() != null) {
+		if(u.getGuiseFaction() != null) {
 			parent.add(createSimpleNode(getString("node.disguisedas") + u.getGuiseFaction(),
 										((stealth != null)
 										 ? stealth.getSkillType().getID().toString() : "tarnung")));
 		}
 
 		// spy
-		if (u.isSpy()) {
+		if(u.isSpy()) {
 			parent.add(createSimpleNode(getString("node.spy"), "spion"));
 		}
 
 		// Gebaeudeanzeige
-		if (u.getBuilding() != null) {
-			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(
-				u.getBuilding())));
+		if(u.getBuilding() != null) {
+			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getBuilding())));
 		}
 
 		// Schiffsanzeige
-		if (u.getShip() != null) {
-			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(
-				u.getShip())));
+		if(u.getShip() != null) {
+			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getShip())));
 		}
 
 		// wenn Schiff gewechselt: neues Schiff anzeigen!
-		if ((u.getModifiedShip() != null) && !(u.getModifiedShip().equals(u.getShip()))) {
-			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(
-				u.getModifiedShip())));
+		if((u.getModifiedShip() != null) && !(u.getModifiedShip().equals(u.getShip()))) {
+			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getModifiedShip())));
 		}
 
 		// magic aura
-		if (u.aura != -1) {
+		if(u.aura != -1) {
 			parent.add(createSimpleNode(getString("node.aura") + ": " + u.aura + " / " + u.auraMax,
 										"aura"));
 		}
@@ -1818,7 +1794,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Float modUWeight = new Float(u.getModifiedWeight() / 100.0F);
 		String text = getString("node.totalweight") + ": " + weightNumberFormat.format(uWeight);
 
-		if (!uWeight.equals(modUWeight)) {
+		if(!uWeight.equals(modUWeight)) {
 			text += (" (" + weightNumberFormat.format(modUWeight) + ")");
 		}
 
@@ -1829,11 +1805,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		int load = u.getLoad();
 		int modLoad = u.getModifiedLoad();
 
-		if ((load != 0) || (modLoad != 0)) {
+		if((load != 0) || (modLoad != 0)) {
 			text = getString("node.load") + ": " +
 				   weightNumberFormat.format(new Float(load / 100.0F));
 
-			if (load != modLoad) {
+			if(load != modLoad) {
 				text += (" (" + weightNumberFormat.format(new Float(modLoad / 100.0F)) + ")");
 			}
 
@@ -1844,7 +1820,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// payload
 		int maxOnFoot = u.getPayloadOnFoot();
 
-		if (maxOnFoot == Unit.CAP_UNSKILLED) {
+		if(maxOnFoot == Unit.CAP_UNSKILLED) {
 			parent.add(createSimpleNode(getString("node.capacityonfoot") + ": " +
 										getString("node.toomanyhorses"), "warnung"));
 		} else {
@@ -1852,30 +1828,28 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			Float free = new Float(Math.abs(maxOnFoot - modLoad) / 100.0F);
 			DefaultMutableTreeNode capacityNode;
 
-			if ((maxOnFoot - modLoad) < 0) {
-				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.
-					createSimpleNodeWrapper(getString("node.capacityonfoot") +
-											": " +
-											getString("node.overloadedby") +
-											weightNumberFormat.format(free) +
-											" " +
-											getString("node.weightunits"),
-											"warnung"));
+			if((maxOnFoot - modLoad) < 0) {
+				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.capacityonfoot") +
+																									 ": " +
+																									 getString("node.overloadedby") +
+																									 weightNumberFormat.format(free) +
+																									 " " +
+																									 getString("node.weightunits"),
+																									 "warnung"));
 			} else {
-				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.
-					createSimpleNodeWrapper(getString("node.capacityonfoot") +
-											": " +
-											weightNumberFormat.format(free) +
-											" / " +
-											weightNumberFormat.format(max) +
-											" " +
-											getString("node.weightunits"),
-											"fuss"));
+				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.capacityonfoot") +
+																									 ": " +
+																									 weightNumberFormat.format(free) +
+																									 " / " +
+																									 weightNumberFormat.format(max) +
+																									 " " +
+																									 getString("node.weightunits"),
+																									 "fuss"));
 				appendUnitCapacityByItems(capacityNode, u, maxOnFoot - modLoad);
 
-				if (capacityNode.getChildCount() > 0) {
+				if(capacityNode.getChildCount() > 0) {
 					expandableNodes.add(new NodeWrapper(capacityNode,
-						"EMapDetailsPanel.UnitCapacityOnFootExpanded"));
+														"EMapDetailsPanel.UnitCapacityOnFootExpanded"));
 				}
 			}
 
@@ -1884,39 +1858,37 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		int maxOnHorse = u.getPayloadOnHorse();
 
-		if (maxOnHorse == Unit.CAP_UNSKILLED) {
+		if(maxOnHorse == Unit.CAP_UNSKILLED) {
 			parent.add(createSimpleNode(getString("node.capacityonhorse") + ": " +
 										getString("node.toomanyhorses"), "warnung"));
-		} else if (maxOnHorse == Unit.CAP_NO_HORSES) {
+		} else if(maxOnHorse == Unit.CAP_NO_HORSES) {
 		} else {
 			Float max = new Float(maxOnHorse / 100.0F);
 			Float free = new Float(Math.abs(maxOnHorse - modLoad) / 100.0F);
 			DefaultMutableTreeNode capacityNode;
 
-			if ((maxOnHorse - modLoad) < 0) {
-				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.
-					createSimpleNodeWrapper(getString("node.capacityonhorse") +
-											": " +
-											getString("node.overloadedby") +
-											weightNumberFormat.format(free) +
-											" " +
-											getString("node.weightunits"),
-											"warnung"));
+			if((maxOnHorse - modLoad) < 0) {
+				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.capacityonhorse") +
+																									 ": " +
+																									 getString("node.overloadedby") +
+																									 weightNumberFormat.format(free) +
+																									 " " +
+																									 getString("node.weightunits"),
+																									 "warnung"));
 			} else {
-				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.
-					createSimpleNodeWrapper(getString("node.capacityonhorse") +
-											": " +
-											weightNumberFormat.format(free) +
-											" / " +
-											weightNumberFormat.format(max) +
-											" " +
-											getString("node.weightunits"),
-											"reiten"));
+				capacityNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.capacityonhorse") +
+																									 ": " +
+																									 weightNumberFormat.format(free) +
+																									 " / " +
+																									 weightNumberFormat.format(max) +
+																									 " " +
+																									 getString("node.weightunits"),
+																									 "reiten"));
 				appendUnitCapacityByItems(capacityNode, u, maxOnHorse - modLoad);
 
-				if (capacityNode.getChildCount() > 0) {
+				if(capacityNode.getChildCount() > 0) {
 					expandableNodes.add(new NodeWrapper(capacityNode,
-						"EMapDetailsPanel.UnitCapacityOnHorseExpanded"));
+														"EMapDetailsPanel.UnitCapacityOnHorseExpanded"));
 				}
 			}
 
@@ -1924,39 +1896,38 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		// items
-		if (u.getModifiedItems().size() > 0) {
+		if(u.getModifiedItems().size() > 0) {
 			DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(getString("node.items"));
 			parent.add(itemsNode);
 			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.UnitItemsExpanded"));
 
-			for (Iterator items = u.getModifiedItems().iterator(); items.hasNext(); ) {
-				Item modItem = (Item)items.next();
-				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(nodeWrapperFactory.
-					createItemNodeWrapper(u,
-										  modItem));
+			for(Iterator items = u.getModifiedItems().iterator(); items.hasNext();) {
+				Item modItem = (Item) items.next();
+				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(nodeWrapperFactory.createItemNodeWrapper(u,
+																													  modItem));
 
 				// pavkovic 2002.05.21: a try to handle this node as node with children
 				itemsNode.add(itemNode);
 				expandableNodes.add(new NodeWrapper(itemNode,
-					"EMapDetailsPanel.UnitItemsRelationsExpanded"));
+													"EMapDetailsPanel.UnitItemsRelationsExpanded"));
 
-				for (Iterator iter = u.getItemTransferRelations(modItem).iterator(); iter.hasNext(); ) {
-					ItemTransferRelation itr = (ItemTransferRelation)iter.next();
+				for(Iterator iter = u.getItemTransferRelations(modItem).iterator(); iter.hasNext();) {
+					ItemTransferRelation itr = (ItemTransferRelation) iter.next();
 					String prefix = String.valueOf(itr.amount) + " ";
 					String addIcon = null;
 					Unit u2 = null;
 
-					if (itr.source == u) {
+					if(itr.source == u) {
 						addIcon = "get";
 						u2 = itr.target;
-					} else if (itr.target == u) {
+					} else if(itr.target == u) {
 						addIcon = "give";
 						u2 = itr.source;
 					}
 
 					UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2, prefix,
-						u2.getPersons(),
-						u2.getModifiedPersons());
+																				   u2.getPersons(),
+																				   u2.getModifiedPersons());
 					unw.setAdditionalIcon(addIcon);
 					unw.setReverseOrder(true);
 
@@ -1973,14 +1944,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		SkillCategory tradeCat = data.rules.getSkillCategory(StringID.create("trade"));
 		SkillType tradeSkill = null;
 
-		if (tradeCat == null) {
+		if(tradeCat == null) {
 			tradeSkill = data.rules.getSkillType(StringID.create("Handeln"));
 		}
 
 		Collection modSkills = u.getModifiedSkills();
 		List sortedSkills = null;
 
-		if ((modSkills != null) && (modSkills.size() > 0)) {
+		if((modSkills != null) && (modSkills.size() > 0)) {
 			sortedSkills = CollectionFactory.createLinkedList(modSkills);
 		} else {
 			sortedSkills = CollectionFactory.createLinkedList(u.getSkills());
@@ -1988,37 +1959,36 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		Collections.sort(sortedSkills, new SkillComparator());
 
-		if (!sortedSkills.isEmpty()) {
+		if(!sortedSkills.isEmpty()) {
 			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
 			parent.add(skillsNode);
 			expandableNodes.add(new NodeWrapper(skillsNode, "EMapDetailsPanel.UnitSkillsExpanded"));
 
-			for (Iterator iter = sortedSkills.iterator(); iter.hasNext(); ) {
+			for(Iterator iter = sortedSkills.iterator(); iter.hasNext();) {
 				Skill os = null;
 				Skill ms = null;
 
-				if (modSkills != null) {
+				if(modSkills != null) {
 					// assume that we are iterating over the mod skills
-					ms = (Skill)iter.next();
+					ms = (Skill) iter.next();
 					os = u.getSkill(ms.getSkillType());
 				} else {
 					// assume that we are iterating over the original skills
-					os = (Skill)iter.next();
+					os = (Skill) iter.next();
 				}
 
-				if (!isTrader && (os != null)) { // check for trader
+				if(!isTrader && (os != null)) { // check for trader
 
-					if ((tradeCat != null) && tradeCat.isInstance(os.getSkillType())) {
+					if((tradeCat != null) && tradeCat.isInstance(os.getSkillType())) {
 						isTrader = true;
-					} else if ((tradeSkill != null) && tradeSkill.equals(os.getSkillType())) {
+					} else if((tradeSkill != null) && tradeSkill.equals(os.getSkillType())) {
 						isTrader = true;
 					}
 				}
 
-				skillsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createSkillNodeWrapper(
-					u,
-					os,
-					ms)));
+				skillsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createSkillNodeWrapper(u,
+																									os,
+																									ms)));
 			}
 		}
 
@@ -2026,14 +1996,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Collection pupils = CollectionFactory.createLinkedList();
 		Collection teachers = CollectionFactory.createLinkedList();
 
-		for (Iterator iter = u.getRelations().iterator(); iter.hasNext(); ) {
-			UnitRelation rel = (UnitRelation)iter.next();
+		for(Iterator iter = u.getRelations().iterator(); iter.hasNext();) {
+			UnitRelation rel = (UnitRelation) iter.next();
 
-			if (rel instanceof TeachRelation) {
-				TeachRelation tr = (TeachRelation)rel;
+			if(rel instanceof TeachRelation) {
+				TeachRelation tr = (TeachRelation) rel;
 
-				if (u.equals(tr.source)) {
-					if (tr.target != null) {
+				if(u.equals(tr.source)) {
+					if(tr.target != null) {
 						pupils.add(tr.target);
 					}
 				} else {
@@ -2042,7 +2012,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 		}
 
-		if (teachers.size() > 0) {
+		if(teachers.size() > 0) {
 			DefaultMutableTreeNode teachersNode = new DefaultMutableTreeNode("");
 			parent.add(teachersNode);
 			expandableNodes.add(new NodeWrapper(teachersNode,
@@ -2050,91 +2020,89 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			int teacherCounter = 0;
 
-			for (Iterator iter = teachers.iterator(); iter.hasNext(); ) {
-				Unit teacher = (Unit)iter.next();
+			for(Iterator iter = teachers.iterator(); iter.hasNext();) {
+				Unit teacher = (Unit) iter.next();
 				teacherCounter += teacher.getModifiedPersons();
 
 				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(teacher,
-					teacher.getPersons(),
-					teacher.getModifiedPersons());
+																			 teacher.getPersons(),
+																			 teacher.getModifiedPersons());
 				DefaultMutableTreeNode teacherNode = new DefaultMutableTreeNode(w);
 				teachersNode.add(teacherNode);
 			}
 
 			teachersNode.setUserObject(new UnitListNodeWrapper(getString("node.teacher") + ": " +
-				teacherCounter + " / " +
-				(((u.getModifiedPersons() % 10) == 0)
-				 ? (u.getModifiedPersons() / 10)
-				 : ((u.getModifiedPersons() / 10) +
-					1)), null, teachers));
+															   teacherCounter + " / " +
+															   (((u.getModifiedPersons() % 10) == 0)
+																? (u.getModifiedPersons() / 10)
+																: ((u.getModifiedPersons() / 10) +
+																1)), null, teachers));
 		}
 
-		if (pupils.size() > 0) {
+		if(pupils.size() > 0) {
 			DefaultMutableTreeNode pupilsNode = new DefaultMutableTreeNode("");
 			parent.add(pupilsNode);
 			expandableNodes.add(new NodeWrapper(pupilsNode, "EMapDetailsPanel.UnitPupilsExpanded"));
 
 			int pupilCounter = 0;
 
-			for (Iterator iter = pupils.iterator(); iter.hasNext(); ) {
-				Unit pupil = (Unit)iter.next();
+			for(Iterator iter = pupils.iterator(); iter.hasNext();) {
+				Unit pupil = (Unit) iter.next();
 				pupilCounter += pupil.getModifiedPersons();
 
 				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(pupil,
-					pupil.getPersons(),
-					pupil.getModifiedPersons());
+																			 pupil.getPersons(),
+																			 pupil.getModifiedPersons());
 				DefaultMutableTreeNode pupilNode = new DefaultMutableTreeNode(w);
 				pupilsNode.add(pupilNode);
 			}
 
 			pupilsNode.setUserObject(new UnitListNodeWrapper(getString("node.pupils") + ": " +
-				pupilCounter + " / " +
-				(u.getModifiedPersons() * 10), null,
-				pupils));
+															 pupilCounter + " / " +
+															 (u.getModifiedPersons() * 10), null,
+															 pupils));
 		}
 
 		// transportation relations
 		Map carriers = u.getCarriers();
 
-		if (carriers.size() > 0) {
-			DefaultMutableTreeNode carriersNode = new DefaultMutableTreeNode(new
-				UnitListNodeWrapper(getString("node.carriers"),
-									null,
-									carriers.values()));
+		if(carriers.size() > 0) {
+			DefaultMutableTreeNode carriersNode = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.carriers"),
+																									 null,
+																									 carriers.values()));
 			parent.add(carriersNode);
 			expandableNodes.add(new NodeWrapper(carriersNode,
 												"EMapDetailsPanel.UnitCarriersExpanded"));
 
-			for (Iterator iter = carriers.values().iterator(); iter.hasNext(); ) {
-				Unit carrier = (Unit)iter.next();
+			for(Iterator iter = carriers.values().iterator(); iter.hasNext();) {
+				Unit carrier = (Unit) iter.next();
 				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(carrier,
-					carrier.getPersons(),
-					carrier.getModifiedPersons());
+																			 carrier.getPersons(),
+																			 carrier.getModifiedPersons());
 				carriersNode.add(new DefaultMutableTreeNode(w));
 			}
 		}
 
 		Map passengers = u.getPassengers();
-		if (passengers.size() > 0) {
-			DefaultMutableTreeNode passengersNode = new DefaultMutableTreeNode(new
-				UnitListNodeWrapper(getString("node.passengers"),
-									null,
-									passengers.values()));
+
+		if(passengers.size() > 0) {
+			DefaultMutableTreeNode passengersNode = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.passengers"),
+																									   null,
+																									   passengers.values()));
 			parent.add(passengersNode);
 			expandableNodes.add(new NodeWrapper(passengersNode,
 												"EMapDetailsPanel.UnitPassengersExpanded"));
 
-			for (Iterator iter = passengers.values().iterator(); iter.hasNext(); ) {
-				Unit passenger = (Unit)iter.next();
+			for(Iterator iter = passengers.values().iterator(); iter.hasNext();) {
+				Unit passenger = (Unit) iter.next();
 				String str = passenger.toString() + ": " +
 							 weightNumberFormat.format(new Float(passenger.getWeight() / 100.0f)) +
 							 " " + getString("node.weightunits");
 
-				if (passenger.getWeight() != passenger.getModifiedWeight()) {
+				if(passenger.getWeight() != passenger.getModifiedWeight()) {
 					str += (" (" +
-							weightNumberFormat.format(new Float(passenger.getModifiedWeight() /
-						100.0f)) +
-							" " + getString("node.weightunits") + ")");
+					weightNumberFormat.format(new Float(passenger.getModifiedWeight() / 100.0f)) +
+					" " + getString("node.weightunits") + ")");
 				}
 
 				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(passenger, str);
@@ -2146,47 +2114,45 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		{
 			Collection attacks = u.getAttackVictims();
 
-			if (attacks.size() > 0) {
-				DefaultMutableTreeNode attacksNode = new DefaultMutableTreeNode(new
-					UnitListNodeWrapper(getString("node.attacks"),
-										null,
-										carriers.values()));
+			if(attacks.size() > 0) {
+				DefaultMutableTreeNode attacksNode = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.attacks"),
+																										null,
+																										carriers.values()));
 				parent.add(attacksNode);
 				expandableNodes.add(new NodeWrapper(attacksNode,
-					"EMapDetailsPanel.UnitAttacksExpanded"));
+													"EMapDetailsPanel.UnitAttacksExpanded"));
 
-				for (Iterator iter = attacks.iterator(); iter.hasNext(); ) {
-					Unit victim = (Unit)iter.next();
+				for(Iterator iter = attacks.iterator(); iter.hasNext();) {
+					Unit victim = (Unit) iter.next();
 					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(victim,
-						victim.getPersons(),
-						victim.getModifiedPersons());
+																				 victim.getPersons(),
+																				 victim.getModifiedPersons());
 					attacksNode.add(new DefaultMutableTreeNode(w));
 				}
 			}
 
 			Collection attackedBy = u.getAttackAggressors();
 
-			if (attackedBy.size() > 0) {
-				DefaultMutableTreeNode attackedByNode = new DefaultMutableTreeNode(new
-					UnitListNodeWrapper(getString("node.attackedBy"),
-										null,
-										carriers.values()));
+			if(attackedBy.size() > 0) {
+				DefaultMutableTreeNode attackedByNode = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.attackedBy"),
+																										   null,
+																										   carriers.values()));
 				parent.add(attackedByNode);
 				expandableNodes.add(new NodeWrapper(attackedByNode,
-					"EMapDetailsPanel.UnitAttackedByExpanded"));
+													"EMapDetailsPanel.UnitAttackedByExpanded"));
 
-				for (Iterator iter = attackedBy.iterator(); iter.hasNext(); ) {
-					Unit victim = (Unit)iter.next();
+				for(Iterator iter = attackedBy.iterator(); iter.hasNext();) {
+					Unit victim = (Unit) iter.next();
 					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(victim,
-						victim.getPersons(),
-						victim.getModifiedPersons());
+																				 victim.getPersons(),
+																				 victim.getModifiedPersons());
 					attackedByNode.add(new DefaultMutableTreeNode(w));
 				}
 			}
 		}
 
 		// magic spells
-		if ((u.spells != null) && (u.spells.size() > 0)) {
+		if((u.spells != null) && (u.spells.size() > 0)) {
 			DefaultMutableTreeNode spellsNode = new DefaultMutableTreeNode(getString("node.spells"));
 			parent.add(spellsNode);
 			expandableNodes.add(new NodeWrapper(spellsNode, "EMapDetailsPanel.UnitSpellsExpanded"));
@@ -2194,8 +2160,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			List sortedSpells = CollectionFactory.createLinkedList(u.spells.values());
 			Collections.sort(sortedSpells, new SpellLevelComparator(new NameComparator(null)));
 
-			for (Iterator iter = sortedSpells.iterator(); iter.hasNext(); ) {
-				Spell spell = (Spell)iter.next();
+			for(Iterator iter = sortedSpells.iterator(); iter.hasNext();) {
+				Spell spell = (Spell) iter.next();
 				spellsNode.add(createSimpleNode(spell, "spell"));
 			}
 		}
@@ -2204,34 +2170,32 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		appendUnitCombatSpells(u.combatSpells, parent, expandableNodes);
 
 		// Trank Anzeige
-		if ((data.potions() != null) && (u.skills != null) &&
-			u.skills.containsKey(EresseaSkillConstants.S_ALCHEMIE)) {
-			DefaultMutableTreeNode potionsNode = new DefaultMutableTreeNode(getString(
-				"node.potions"));
-			Skill alchSkill = (Skill)u.skills.get(EresseaSkillConstants.S_ALCHEMIE);
+		if((data.potions() != null) && (u.skills != null) &&
+			   u.skills.containsKey(EresseaSkillConstants.S_ALCHEMIE)) {
+			DefaultMutableTreeNode potionsNode = new DefaultMutableTreeNode(getString("node.potions"));
+			Skill alchSkill = (Skill) u.skills.get(EresseaSkillConstants.S_ALCHEMIE);
 			List potions = CollectionFactory.createLinkedList(data.potions().values());
 			Collections.sort(potions, new PotionLevelComparator(new NameComparator(null)));
 
-			for (Iterator iter = potions.iterator(); iter.hasNext(); ) {
-				Potion p = (Potion)iter.next();
+			for(Iterator iter = potions.iterator(); iter.hasNext();) {
+				Potion p = (Potion) iter.next();
 
-				if ((p.getLevel() * 2) <= alchSkill.getLevel()) {
+				if((p.getLevel() * 2) <= alchSkill.getLevel()) {
 					int max = getBrewablePotions(data.rules, p, u.getRegion());
-					potionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.
-						createPotionNodeWrapper(p,
-												": " +
-												max)));
+					potionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createPotionNodeWrapper(p,
+																										  ": " +
+																										  max)));
 				}
 			}
 
-			if (potionsNode.getChildCount() > 0) {
+			if(potionsNode.getChildCount() > 0) {
 				parent.add(potionsNode);
 				expandableNodes.add(new NodeWrapper(potionsNode,
-					"EMapDetailsPanel.UnitPotionsExpanded"));
+													"EMapDetailsPanel.UnitPotionsExpanded"));
 			}
 		}
 
-		if (isTrader) {
+		if(isTrader) {
 			appendRegionLuxuriesInfo(u.getRegion(), parent, expandableNodes);
 		}
 
@@ -2242,7 +2206,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 									  Collection expandableNodes) {
 		String strPersons = getString("node.persons") + ": " + u.getPersons();
 
-		if (u.getPersons() != u.getModifiedPersons()) {
+		if(u.getPersons() != u.getModifiedPersons()) {
 			strPersons += (" (" + u.getModifiedPersons() + ")");
 		}
 
@@ -2250,23 +2214,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		parent.add(personNode);
 		expandableNodes.add(new NodeWrapper(personNode, "EMapDetailsPanel.PersonsExpanded"));
 
-		for (Iterator iter = u.getPersonTransferRelations().iterator(); iter.hasNext(); ) {
-			PersonTransferRelation itr = (PersonTransferRelation)iter.next();
+		for(Iterator iter = u.getPersonTransferRelations().iterator(); iter.hasNext();) {
+			PersonTransferRelation itr = (PersonTransferRelation) iter.next();
 			String prefix = String.valueOf(itr.amount) + " ";
 			String addIcon = null;
 			Unit u2 = null;
 
-			if (itr.source == u) {
+			if(itr.source == u) {
 				addIcon = "get";
 				u2 = itr.target;
-			} else if (itr.target == u) {
+			} else if(itr.target == u) {
 				addIcon = "give";
 				u2 = itr.source;
 			}
 
 			UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2, prefix,
-				u2.getPersons(),
-				u2.getModifiedPersons());
+																		   u2.getPersons(),
+																		   u2.getModifiedPersons());
 			unw.setAdditionalIcon(addIcon);
 			unw.setReverseOrder(true);
 			parent.add(new DefaultMutableTreeNode(unw));
@@ -2275,18 +2239,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendUnitCombatSpells(Map spells, DefaultMutableTreeNode parent,
 										Collection expandableNodes) {
-		if ((spells == null) || spells.isEmpty()) {
+		if((spells == null) || spells.isEmpty()) {
 			return;
 		}
 
-		DefaultMutableTreeNode combatSpells = new DefaultMutableTreeNode(getString(
-			"node.combatspells"));
+		DefaultMutableTreeNode combatSpells = new DefaultMutableTreeNode(getString("node.combatspells"));
 		parent.add(combatSpells);
 		expandableNodes.add(new NodeWrapper(combatSpells,
 											"EMapDetailsPanel.UnitCombatSpellsExpanded"));
 
-		for (Iterator iter = spells.values().iterator(); iter.hasNext(); ) {
-			CombatSpell spell = (CombatSpell)iter.next();
+		for(Iterator iter = spells.values().iterator(); iter.hasNext();) {
+			CombatSpell spell = (CombatSpell) iter.next();
 			combatSpells.add(createSimpleNode(spell, "spell"));
 		}
 	}
@@ -2296,13 +2259,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		ItemType carts = data.rules.getItemType(StringID.create("Wagen"));
 		ItemType silver = data.rules.getItemType(StringID.create("Silber"));
 
-		for (Iterator iter = u.getRegion().items().iterator(); iter.hasNext(); ) {
-			Item item = (Item)iter.next();
+		for(Iterator iter = u.getRegion().items().iterator(); iter.hasNext();) {
+			Item item = (Item) iter.next();
 			ItemType type = item.getItemType();
 
-			if ((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
-				!type.equals(silver)) {
-				int weight = (int)(type.getWeight() * 100);
+			if((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
+				   !type.equals(silver)) {
+				int weight = (int) (type.getWeight() * 100);
 				parent.add(createSimpleNode("Max. " + type.getName() + ": " +
 											(freeCapacity / weight), "items/" + type.getIconName()));
 			}
@@ -2322,19 +2285,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private int getBrewablePotions(Rules rules, Potion potion, Region region) {
 		int max = Integer.MAX_VALUE;
 
-		for (Iterator iter = potion.ingredients().iterator(); iter.hasNext(); ) {
-			Item ingredient = (Item)iter.next();
+		for(Iterator iter = potion.ingredients().iterator(); iter.hasNext();) {
+			Item ingredient = (Item) iter.next();
 
-			if (ingredient.getItemType() != null) {
+			if(ingredient.getItemType() != null) {
 				// units can not own peasants!
 				int amount = 0;
 
-				if (ingredient.getItemType().equals(data.rules.getItemType(StringID.create("Bauer")))) {
+				if(ingredient.getItemType().equals(data.rules.getItemType(StringID.create("Bauer")))) {
 					amount = region.peasants;
 				} else {
 					Item item = region.getItem(ingredient.getItemType());
 
-					if (item != null) {
+					if(item != null) {
 						amount = item.getAmount();
 					}
 				}
@@ -2361,7 +2324,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		/* make sure that all unit relations have been established
 		 (necessary for enter-/leave relations) */
-		if (b.getRegion() != null) {
+		if(b.getRegion() != null) {
 			b.getRegion().refreshUnitRelations();
 		}
 
@@ -2374,18 +2337,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		parent.add(n);
 
 		// Besitzer
-		if (b.getOwnerUnit() != null) {
+		if(b.getOwnerUnit() != null) {
 			UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(b.getOwnerUnit(),
-				getString("node.owner") +
-				": ",
-				b.getOwnerUnit()
-				.getPersons(),
-				b.getOwnerUnit()
-				.getModifiedPersons());
+																		 getString("node.owner") +
+																		 ": ",
+																		 b.getOwnerUnit()
+																		  .getPersons(),
+																		 b.getOwnerUnit()
+																		  .getModifiedPersons());
 			n = new DefaultMutableTreeNode(w);
 			parent.add(n);
 
-			if (b.getOwnerUnit().getFaction() == null) {
+			if(b.getOwnerUnit().getFaction() == null) {
 				n = createSimpleNode(getString("node.faction") + ": " +
 									 getString("node.unknownfaction"), "faction");
 			} else {
@@ -2405,17 +2368,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		allInmates.addAll(units);
 		allInmates.addAll(modUnits);
 
-		if ((units.size() > 0) || (modUnits.size() > 0)) {
+		if((units.size() > 0) || (modUnits.size() > 0)) {
 			n = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.inmates"), null,
-				allInmates));
+																   allInmates));
 			parent.add(n);
 			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingInmatesExpanded"));
 
-			for (Iterator iter = units.iterator(); iter.hasNext(); ) {
-				Unit u = (Unit)iter.next();
+			for(Iterator iter = units.iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
 				StringBuffer text = new StringBuffer();
 
-				if (b.getModifiedUnit(u.getID()) == null) {
+				if(b.getModifiedUnit(u.getID()) == null) {
 					text.append("<- ");
 				}
 
@@ -2427,11 +2390,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				inmates += u.getPersons();
 			}
 
-			for (Iterator iter = modUnits.iterator(); iter.hasNext(); ) {
-				Unit u = (Unit)iter.next();
+			for(Iterator iter = modUnits.iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
 				modInmates += u.getModifiedPersons();
 
-				if (b.getUnit(u.getID()) == null) {
+				if(b.getUnit(u.getID()) == null) {
 					StringBuffer text = new StringBuffer();
 					text.append("-> ");
 					text.append(u.toString()).append(": ").append(u.getModifiedPersons());
@@ -2442,7 +2405,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			}
 
-			if (inmates == modInmates) {
+			if(inmates == modInmates) {
 				n.setUserObject(getString("node.inmates") + ": " + inmates);
 			} else {
 				n.setUserObject(getString("node.inmates") + ": " + inmates + " (" + modInmates +
@@ -2450,51 +2413,49 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 		}
 
-		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(((inmates ==
-			modInmates)
-			? (getString("node.size") +
-			   ": " + inmates)
-			: (getString("node.size") +
-			   ": " + inmates +
-			   " (" +
-			   modInmates +
-			   ")")) + " / " +
-			b.getSize(),
-			"build_size"));
+		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(((inmates == modInmates)
+																				   ? (getString("node.size") +
+																				   ": " + inmates)
+																				   : (getString("node.size") +
+																				   ": " + inmates +
+																				   " (" +
+																				   modInmates +
+																				   ")")) + " / " +
+																				  b.getSize(),
+																				  "build_size"));
 		parent.insert(n, 0);
 
 		// Gebaeudeunterhalt
 		Iterator iter = b.getBuildingType().getMaintenanceItems();
 
-		if (iter.hasNext()) {
+		if(iter.hasNext()) {
 			n = new DefaultMutableTreeNode(getString("node.upkeep"));
 			parent.add(n);
 			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingMaintenanceExpanded"));
 		}
 
-		while (iter.hasNext()) {
-			Item i = (Item)iter.next();
+		while(iter.hasNext()) {
+			Item i = (Item) iter.next();
 			String text = i.getName();
 
-			if (text.endsWith(" pro Größenpunkt")) {
+			if(text.endsWith(" pro Größenpunkt")) {
 				int amount = b.getSize() * i.getAmount();
 				String newText = text.substring(0, text.indexOf(" pro Größenpunkt"));
 				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(amount +
-					" " +
-					newText,
-					"items/" +
-					i.getItemType()
-					.getID()
-					.toString()));
+																						  " " +
+																						  newText,
+																						  "items/" +
+																						  i.getItemType()
+																						   .getID()
+																						   .toString()));
 			} else {
-				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.
-					getAmount() +
-					" " +
-					text,
-					"items/" +
-					i.getItemType()
-					.getID()
-					.toString()));
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() +
+																						  " " +
+																						  text,
+																						  "items/" +
+																						  i.getItemType()
+																						   .getID()
+																						   .toString()));
 			}
 
 			n.add(m);
@@ -2503,21 +2464,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// Baukosten
 		iter = b.getBuildingType().getRawMaterials();
 
-		if (iter.hasNext()) {
+		if(iter.hasNext()) {
 			n = new DefaultMutableTreeNode(getString("node.buildingcost"));
 			parent.add(n);
 			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingCostExpanded"));
 		}
 
-		while (iter.hasNext()) {
-			Item i = (Item)iter.next();
+		while(iter.hasNext()) {
+			Item i = (Item) iter.next();
 			String text = i.getName();
 			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() +
-				" " + text,
-				"items/" +
-				i.getItemType()
-				.getID()
-				.toString()));
+																					  " " + text,
+																					  "items/" +
+																					  i.getItemType()
+																					   .getID()
+																					   .toString()));
 			n.add(m);
 		}
 
@@ -2554,22 +2515,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		/* make sure that all unit relations have been established
 		 (necessary for enter-/leave relations) */
-		if (s.getRegion() != null) {
+		if(s.getRegion() != null) {
 			s.getRegion().refreshUnitRelations();
 		}
 
 		// Schiffstyp
-		if ((s.getName() != null) && (s.getType().getName() != null)) {
+		if((s.getName() != null) && (s.getType().getName() != null)) {
 			parent.add(createSimpleNode(getString("node.type") + ": " + s.getType().getName(),
 										s.getType().getID().toString()));
 		}
 
 		int nominalShipSize = s.getShipType().getMaxSize();
 
-		if (s.size != nominalShipSize) {
+		if(s.size != nominalShipSize) {
 			int ratio = 0;
 
-			if (nominalShipSize != 0) {
+			if(nominalShipSize != 0) {
 				ratio = (s.size * 100) / nominalShipSize;
 			}
 
@@ -2577,7 +2538,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 												  "% (" + s.size + "/" + nominalShipSize + ")"));
 		} else {
 			// Kueste
-			if (s.shoreId > -1) {
+			if(s.shoreId > -1) {
 				parent.add(createSimpleNode(getString("node.shore") + ": " +
 											Direction.toString(s.shoreId),
 											"shore_" + String.valueOf(s.shoreId)));
@@ -2588,12 +2549,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			// rad = rad*(100.0-damageRatio)/100.0
 			rad = new BigDecimal(rad).multiply(new BigDecimal(100 - s.damageRatio))
-				  .divide(new BigDecimal(100), BigDecimal.ROUND_UP).intValue();
+									 .divide(new BigDecimal(100), BigDecimal.ROUND_UP).intValue();
 
 			String rangeString = getString("node.range") + ": " + rad;
 
-			if ((s.getOwnerUnit() != null) && (s.getOwnerUnit().race != null) &&
-				s.getOwnerUnit().race.getID().equals(EresseaRaceConstants.R_MEERMENSCHEN)) {
+			if((s.getOwnerUnit() != null) && (s.getOwnerUnit().race != null) &&
+				   s.getOwnerUnit().race.getID().equals(EresseaRaceConstants.R_MEERMENSCHEN)) {
 				rangeString += (" + 1 (" + s.getOwnerUnit().race.getName() + ")");
 			}
 
@@ -2601,10 +2562,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			loadNode = new DefaultMutableTreeNode();
 			parent.add(loadNode);
 
-			if (s.damageRatio > 0) {
+			if(s.damageRatio > 0) {
 				int absolute = new BigDecimal(s.damageRatio * s.size).divide(new BigDecimal(100),
-					BigDecimal.ROUND_UP)
-							   .intValue();
+																			 BigDecimal.ROUND_UP)
+																	 .intValue();
 				parent.add(createSimpleNode(getString("node.damage") + ": " + s.damageRatio +
 											"% / " + absolute, "damage"));
 			}
@@ -2613,45 +2574,42 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// Besitzer
 		SkillType sailingSkillType = data.rules.getSkillType(StringID.create("Segeln"), true);
 
-		if (s.getOwnerUnit() != null) {
+		if(s.getOwnerUnit() != null) {
 			UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(s.getOwnerUnit(),
-				getString("node.captain") +
-				": ",
-				s.getOwnerUnit()
-				.getPersons(),
-				s.getOwnerUnit()
-				.getModifiedPersons());
+																		 getString("node.captain") +
+																		 ": ",
+																		 s.getOwnerUnit()
+																		  .getPersons(),
+																		 s.getOwnerUnit()
+																		  .getModifiedPersons());
 			n = new DefaultMutableTreeNode(w);
 			parent.add(n);
 
 			Faction fac = s.getOwnerUnit().getFaction();
 
-			if (fac == null) {
-				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString(
-					"node.faction") +
-					": " +
-					getString("node.unknownfaction"),
-					"faction"));
+			if(fac == null) {
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
+																						  ": " +
+																						  getString("node.unknownfaction"),
+																						  "faction"));
 			} else {
-				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString(
-					"node.faction") +
-					": " +
-					fac.toString(),
-					"faction"));
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
+																						  ": " +
+																						  fac.toString(),
+																						  "faction"));
 			}
 
 			parent.add(n);
 
 			Skill sailingSkill = s.getOwnerUnit().getModifiedSkill(sailingSkillType);
 			sailingSkillAmount = (sailingSkill == null) ? 0 : sailingSkill.getLevel();
-			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString(
-				"node.captainskill") +
-				": " +
-				sailingSkillAmount +
-				" / " +
-				s.getShipType()
-				.getCaptainSkillLevel(),
-				"captain"));
+			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.captainskill") +
+																					  ": " +
+																					  sailingSkillAmount +
+																					  " / " +
+																					  s.getShipType()
+																					   .getCaptainSkillLevel(),
+																					  "captain"));
 			parent.add(n);
 		}
 
@@ -2661,23 +2619,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// pavkovic 2003.10.03: use modifiedUnits to reflect FUTURE value?
 		modUnits = s.modifiedUnits(); // the collection of units on the ship in the next turn
 
-		for (Iterator sailors = modUnits.iterator(); sailors.hasNext(); ) {
-			Unit u = (Unit)sailors.next();
+		for(Iterator sailors = modUnits.iterator(); sailors.hasNext();) {
+			Unit u = (Unit) sailors.next();
 			Skill sailingSkill = u.getModifiedSkill(sailingSkillType);
 
-			if (sailingSkill != null) {
+			if(sailingSkill != null) {
 				sailingSkillAmount += (sailingSkill.getLevel() * u.getModifiedPersons());
 			}
 		}
 
-		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString(
-			"node.crewskill") +
-			": " +
-			sailingSkillAmount +
-			" / " +
-			s.getShipType()
-			.getSailorSkillLevel(),
-			"crew"));
+		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.crewskill") +
+																				  ": " +
+																				  sailingSkillAmount +
+																				  " / " +
+																				  s.getShipType()
+																				   .getSailorSkillLevel(),
+																				  "crew"));
 		parent.add(n);
 
 		// Insassen
@@ -2688,28 +2645,28 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		allInmates.addAll(units);
 		allInmates.addAll(modUnits);
 
-		if ((units.size() > 0) || (modUnits.size() > 0)) {
+		if((units.size() > 0) || (modUnits.size() > 0)) {
 			n = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.inmates"), null,
-				allInmates));
+																   allInmates));
 			parent.add(n);
 			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.ShipInmatesExpanded"));
 
-			for (Iterator iter = units.iterator(); iter.hasNext(); ) {
-				Unit u = (Unit)iter.next();
+			for(Iterator iter = units.iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
 				StringBuffer text = new StringBuffer();
 				Float weight = new Float(u.getWeight() / 100.0F);
 				Float modWeight = new Float(u.getModifiedWeight() / 100.0F);
 
-				if (s.getModifiedUnit(u.getID()) == null) {
+				if(s.getModifiedUnit(u.getID()) == null) {
 					text.append("<- ");
 				} else {
-				//modLoad += u.getModifiedWeight();
+					//modLoad += u.getModifiedWeight();
 				}
 
 				load += u.getWeight();
 				text.append(u.toString()).append(": ").append(weightNumberFormat.format(weight));
 
-				if (weight.equals(modWeight) == false) {
+				if(weight.equals(modWeight) == false) {
 					text.append(" (").append(weightNumberFormat.format(modWeight)).append(")");
 				}
 
@@ -2721,11 +2678,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				inmates += u.getPersons();
 			}
 
-			for (Iterator iter = modUnits.iterator(); iter.hasNext(); ) {
-				Unit u = (Unit)iter.next();
+			for(Iterator iter = modUnits.iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
 				modInmates += u.getModifiedPersons();
 
-				if (s.getUnit(u.getID()) == null) {
+				if(s.getUnit(u.getID()) == null) {
 					StringBuffer text = new StringBuffer();
 					Float weight = new Float(u.getWeight() / 100.0F);
 					Float modWeight = new Float(u.getModifiedWeight() / 100.0F);
@@ -2734,7 +2691,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					text.append("-> ");
 					text.append(u.toString()).append(": ").append(weightNumberFormat.format(weight));
 
-					if (weight.equals(modWeight) == false) {
+					if(weight.equals(modWeight) == false) {
 						text.append(" (").append(weightNumberFormat.format(modWeight)).append(")");
 					}
 
@@ -2746,39 +2703,40 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			}
 
-			if (inmates == modInmates) {
+			if(inmates == modInmates) {
 				n.setUserObject(getString("node.inmates") + ": " + inmates);
 			} else {
 				n.setUserObject(getString("node.inmates") + ": " + inmates + " (" + modInmates +
 								")");
 			}
 
-			if (ShipRoutePlanner.canPlan(s)) { // add a link to the ship route planer
+			if(ShipRoutePlanner.canPlan(s)) { // add a link to the ship route planer
 				parent.add(new DefaultMutableTreeNode(new ShipRoutingPlanerButton(s)));
 			}
 		}
 
 		// Ladung
-		if (loadNode != null) {
+		if(loadNode != null) {
 			String strLoad = (s.load != -1) ? Integer.toString(s.load)
-							 : weightNumberFormat.format(new Float(load / 100.0F));
+											: weightNumberFormat.format(new Float(load / 100.0F));
 
 			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
 			int intCap = s.getMaxCapacity();
 
 			String strCap = Integer.toString(intCap);
 
-			if (log.isDebugEnabled()) {
+			if(log.isDebugEnabled()) {
 				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(intCap " +
 						  intCap + ")");
 			}
 
 			loadNode.setUserObject(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +
 																			  ": " + strLoad +
-																			  (!strModLoad.equals(strLoad) ?
-																			  (" (" + strModLoad + ") ") : " ")+
-																			  "/ " + strCap +
-																			  " " +
+																			  ((!strModLoad.equals(strLoad))
+																			   ? (" (" +
+																			   strModLoad + ") ")
+																			   : " ") + "/ " +
+																			  strCap + " " +
 																			  getString("node.weightunits"),
 																			  "beladung"));
 		}
@@ -2807,13 +2765,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 									Direction.toString(b.direction),
 									"border_" + String.valueOf(b.direction)));
 
-		if ((b.buildRatio > -1) && (b.buildRatio != 100)) {
+		if((b.buildRatio > -1) && (b.buildRatio != 100)) {
 			String str = getString("node.completion") + ": " + b.buildRatio + " %";
 
-			if (Umlaut.normalize(b.type).equals("STRASSE")) {
+			if(Umlaut.normalize(b.type).equals("STRASSE")) {
 				int stones = lastRegion.getRegionType().getRoadStones();
 				str += (" (" + ((b.buildRatio * stones) / 100) + " / " + stones + " " +
-						data.rules.getItemType(StringID.create("Stein")).getName() + ")");
+				data.rules.getItemType(StringID.create("Stein")).getName() + ")");
 			}
 
 			parent.add(new DefaultMutableTreeNode(str));
@@ -2840,42 +2798,41 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " + s.getLevel()));
 		parent.add(new DefaultMutableTreeNode(getString("node.rank") + ": " + s.getRank()));
 
-		if (s.getOnShip()) {
+		if(s.getOnShip()) {
 			parent.add(new DefaultMutableTreeNode(getString("node.spell.ship")));
 		}
 
-		if (s.getIsFar()) {
+		if(s.getIsFar()) {
 			parent.add(new DefaultMutableTreeNode(getString("node.spell.far")));
 		}
 
-		if ((s.getComponents() != null) && (s.getComponents().size() > 0)) {
-			DefaultMutableTreeNode componentsNode = new DefaultMutableTreeNode(getString(
-				"node.components"));
+		if((s.getComponents() != null) && (s.getComponents().size() > 0)) {
+			DefaultMutableTreeNode componentsNode = new DefaultMutableTreeNode(getString("node.components"));
 			parent.add(componentsNode);
 			expandableNodes.add(new NodeWrapper(componentsNode,
 												"EMapDetailsPanel.SpellComponentsExpanded"));
 
-			for (Iterator iter = s.getComponents().keySet().iterator(); iter.hasNext(); ) {
-				String key = (String)iter.next();
-				String val = (String)s.getComponents().get(key);
+			for(Iterator iter = s.getComponents().keySet().iterator(); iter.hasNext();) {
+				String key = (String) iter.next();
+				String val = (String) s.getComponents().get(key);
 				DefaultMutableTreeNode compNode;
 
-				if (key.equalsIgnoreCase("Aura")) {
+				if(key.equalsIgnoreCase("Aura")) {
 					int blankPos = val.indexOf(" ");
 
-					if ((blankPos > 0) && (blankPos < val.length())) {
+					if((blankPos > 0) && (blankPos < val.length())) {
 						String aura = val.substring(0, blankPos);
 						String getLevelAtDays = val.substring(blankPos + 1, val.length());
 
-						if (getLevelAtDays.equals("0")) {
+						if(getLevelAtDays.equals("0")) {
 							compNode = createSimpleNode(aura + " " + getString("node.aura"), "aura");
-						} else if (getLevelAtDays.equals("1")) {
+						} else if(getLevelAtDays.equals("1")) {
 							compNode = createSimpleNode(aura + " " + getString("node.aura") +
-								" * " + getString("node.level"), "aura");
+														" * " + getString("node.level"), "aura");
 						} else {
 							compNode = createSimpleNode(aura + " " + getString("node.aura") +
-								" * " + getLevelAtDays + " * " +
-								getString("node.level"), "aura");
+														" * " + getLevelAtDays + " * " +
+														getString("node.level"), "aura");
 						}
 					} else {
 						compNode = createSimpleNode(key + ": " + val, "aura");
@@ -2909,16 +2866,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								  Collection expandableNodes, Object backTarget) {
 		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " + p.getLevel()));
 
-		if (p.ingredients().size() > 0) {
-			DefaultMutableTreeNode ingredientsNode = new DefaultMutableTreeNode(getString(
-				"node.ingredients"));
+		if(p.ingredients().size() > 0) {
+			DefaultMutableTreeNode ingredientsNode = new DefaultMutableTreeNode(getString("node.ingredients"));
 			parent.add(ingredientsNode);
 
-			for (Iterator iter = p.ingredients().iterator(); iter.hasNext(); ) {
-				Item ingredient = (Item)iter.next();
+			for(Iterator iter = p.ingredients().iterator(); iter.hasNext();) {
+				Item ingredient = (Item) iter.next();
 				ingredientsNode.add(createSimpleNode(ingredient.getItemType(),
-					"items/" +
-					ingredient.getItemType().getIconName()));
+													 "items/" +
+													 ingredient.getItemType().getIconName()));
 			}
 		}
 	}
@@ -2958,12 +2914,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	private void storeExpansionState() {
-		for (Iterator iter = myExpandableNodes.iterator(); iter.hasNext(); ) {
-			NodeWrapper nw = (NodeWrapper)iter.next();
+		for(Iterator iter = myExpandableNodes.iterator(); iter.hasNext();) {
+			NodeWrapper nw = (NodeWrapper) iter.next();
 
-			if (nw.getNode().getChildCount() > 0) {
-				DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode)nw.getNode()
-					.getFirstChild();
+			if(nw.getNode().getChildCount() > 0) {
+				DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) nw.getNode()
+																			   .getFirstChild();
 				settings.setProperty(nw.getDesc(),
 									 tree.isVisible(new TreePath(firstChild.getPath())) ? "1" : "0");
 			}
@@ -2971,13 +2927,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	private void restoreExpansionState() {
-		for (Iterator iter = myExpandableNodes.iterator(); iter.hasNext(); ) {
-			NodeWrapper nw = (NodeWrapper)iter.next();
+		for(Iterator iter = myExpandableNodes.iterator(); iter.hasNext();) {
+			NodeWrapper nw = (NodeWrapper) iter.next();
 
-			if (Integer.parseInt(settings.getProperty(nw.getDesc(), "1")) != 0) {
-				if (nw.getNode().getChildCount() > 0) {
-					DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode)nw.getNode()
-						.getFirstChild();
+			if(Integer.parseInt(settings.getProperty(nw.getDesc(), "1")) != 0) {
+				if(nw.getNode().getChildCount() > 0) {
+					DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) nw.getNode()
+																				   .getFirstChild();
 					tree.makeVisible(new TreePath(firstChild.getPath()));
 				}
 			}
@@ -3007,8 +2963,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 */
 		Collection c = se.getSelectedObjects();
 
-		if ((c != null) && (c.size() > 1)) {
-			if (showMultiple(c)) {
+		if((c != null) && (c.size() > 1)) {
+			if(showMultiple(c)) {
 				return;
 			}
 		}
@@ -3036,16 +2992,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		boolean factions = true;
 		boolean units = true;
 
-		for (Iterator iter = c.iterator(); iter.hasNext() && (regions || factions || units); ) {
+		for(Iterator iter = c.iterator(); iter.hasNext() && (regions || factions || units);) {
 			Object o = iter.next();
 
-			if (regions && !(o instanceof Region)) {
+			if(regions && !(o instanceof Region)) {
 				regions = false;
 			}
-			if (factions && !(o instanceof Faction)) {
+
+			if(factions && !(o instanceof Faction)) {
 				factions = false;
 			}
-			if (units && !(o instanceof Unit)) {
+
+			if(units && !(o instanceof Unit)) {
 				units = false;
 			}
 		}
@@ -3055,13 +3013,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		myExpandableNodes.clear();
 		rootNode.removeAllChildren();
 
-		if (regions) {
+		if(regions) {
 			setNameAndDescription(c.size() + " Regionen", "", false);
 			appendMultipleRegionInfo(c, rootNode, myExpandableNodes);
-		} else if (factions) {
+		} else if(factions) {
 			setNameAndDescription("", "", false);
 			appendFactionsInfo(c, rootNode, myExpandableNodes);
-		} else if (units) {
+		} else if(units) {
 			setNameAndDescription(c.size() + " Einheiten", "", false);
 			appendUnitsInfo(c, rootNode, myExpandableNodes);
 		} else {
@@ -3076,7 +3034,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	protected void show(Object o, boolean flag) {
 		try {
-			if ((flag && (displayedObject == o))) {
+			if((flag && (displayedObject == o))) {
 				return;
 			}
 
@@ -3086,8 +3044,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			Object oldDisplayedObject = displayedObject;
 			displayedObject = o;
 
-			if ((displayedObject != null) && displayedObject instanceof SimpleNodeWrapper) {
-				displayedObject = ((SimpleNodeWrapper)displayedObject).getText();
+			if((displayedObject != null) && displayedObject instanceof SimpleNodeWrapper) {
+				displayedObject = ((SimpleNodeWrapper) displayedObject).getText();
 			}
 
 			contextManager.setFailFallback(null, null);
@@ -3097,45 +3055,44 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			myExpandableNodes.clear();
 			rootNode.removeAllChildren();
 
-			if (displayedObject == null) {
+			if(displayedObject == null) {
 				showNothing();
-			} else if (displayedObject instanceof ZeroUnit) {
-				showRegion(((Unit)displayedObject).getRegion());
-				lastRegion = ((Unit)displayedObject).getRegion();
+			} else if(displayedObject instanceof ZeroUnit) {
+				showRegion(((Unit) displayedObject).getRegion());
+				lastRegion = ((Unit) displayedObject).getRegion();
 				contextManager.setFailFallback(displayedObject, commentContext);
-			} else if (displayedObject instanceof Unit) {
-				showUnit((Unit)displayedObject);
-				lastRegion = ((Unit)displayedObject).getRegion();
-			} else if (displayedObject instanceof Region) {
-				showRegion((Region)displayedObject);
-				lastRegion = (Region)displayedObject;
+			} else if(displayedObject instanceof Unit) {
+				showUnit((Unit) displayedObject);
+				lastRegion = ((Unit) displayedObject).getRegion();
+			} else if(displayedObject instanceof Region) {
+				showRegion((Region) displayedObject);
+				lastRegion = (Region) displayedObject;
 				contextManager.setFailFallback(displayedObject, commentContext);
-			} else if (displayedObject instanceof Faction) {
-				showFaction((Faction)displayedObject);
+			} else if(displayedObject instanceof Faction) {
+				showFaction((Faction) displayedObject);
 				contextManager.setFailFallback(displayedObject, commentContext);
-			} else if (displayedObject instanceof Group) {
-				showGroup((Group)displayedObject);
-			} else if (displayedObject instanceof Building) {
-				showBuilding((Building)displayedObject);
-				lastRegion = ((Building)displayedObject).getRegion();
+			} else if(displayedObject instanceof Group) {
+				showGroup((Group) displayedObject);
+			} else if(displayedObject instanceof Building) {
+				showBuilding((Building) displayedObject);
+				lastRegion = ((Building) displayedObject).getRegion();
 				contextManager.setFailFallback(displayedObject, commentContext);
-			} else if (displayedObject instanceof Ship) {
-				showShip((Ship)displayedObject);
-				lastRegion = ((Ship)displayedObject).getRegion();
+			} else if(displayedObject instanceof Ship) {
+				showShip((Ship) displayedObject);
+				lastRegion = ((Ship) displayedObject).getRegion();
 				contextManager.setFailFallback(displayedObject, commentContext);
-			} else if (displayedObject instanceof com.eressea.Border) {
-				showBorder((com.eressea.Border)displayedObject);
-			} else if (displayedObject instanceof Spell) {
-				showSpell((Spell)displayedObject, oldDisplayedObject);
-			} else if (displayedObject instanceof Potion) {
-				showPotion((Potion)displayedObject, oldDisplayedObject);
-			} else if (displayedObject instanceof PotionNodeWrapper) {
-				showPotion(((PotionNodeWrapper)displayedObject).getPotion(), oldDisplayedObject);
-			} else if (displayedObject instanceof Island) {
-				showIsland((Island)displayedObject);
+			} else if(displayedObject instanceof com.eressea.Border) {
+				showBorder((com.eressea.Border) displayedObject);
+			} else if(displayedObject instanceof Spell) {
+				showSpell((Spell) displayedObject, oldDisplayedObject);
+			} else if(displayedObject instanceof Potion) {
+				showPotion((Potion) displayedObject, oldDisplayedObject);
+			} else if(displayedObject instanceof PotionNodeWrapper) {
+				showPotion(((PotionNodeWrapper) displayedObject).getPotion(), oldDisplayedObject);
+			} else if(displayedObject instanceof Island) {
+				showIsland((Island) displayedObject);
 			}
-		}
-		catch (Exception e) {
+		} catch(Exception e) {
 			// something very evil happens. Empty tree and expandableNodes
 			log.error("EMapDetailsPanel.show hitting on exception", e);
 			myExpandableNodes.clear();
@@ -3156,27 +3113,27 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private int getWage(int wage, boolean isOrkRace) {
-		if (isOrkRace) {
-			switch (wage) {
-				case 12:
-					wage = 11;
+		if(isOrkRace) {
+			switch(wage) {
+			case 12:
+				wage = 11;
 
-					break;
+				break;
 
-				case 13:
-					wage = 12;
+			case 13:
+				wage = 12;
 
-					break;
+				break;
 
-				case 14:
-					wage = 12;
+			case 14:
+				wage = 12;
 
-					break;
+				break;
 
-				case 15:
-					wage = 13;
+			case 15:
+				wage = 13;
 
-					break;
+				break;
 			}
 		}
 
@@ -3191,54 +3148,54 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	public void valueChanged(TreeSelectionEvent e) {
 		removeTag.setEnabled(false);
 
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
-		if (node == null) {
+		if(node == null) {
 			return;
 		}
 
 		Object o = node.getUserObject();
 
-		if (o instanceof ActionListener) {
-			((ActionListener)o).actionPerformed(null);
+		if(o instanceof ActionListener) {
+			((ActionListener) o).actionPerformed(null);
 
 			return;
 		}
 
-		if (o instanceof SimpleNodeWrapper) {
-			o = ((SimpleNodeWrapper)o).getText();
+		if(o instanceof SimpleNodeWrapper) {
+			o = ((SimpleNodeWrapper) o).getText();
 		}
 
 		Object fireObj = null;
 
-		if (o instanceof UnitNodeWrapper) {
-			fireObj = ((UnitNodeWrapper)o).getUnit();
-		} else if (o instanceof UnitContainerNodeWrapper) {
-			fireObj = ((UnitContainerNodeWrapper)o).getUnitContainer();
-		} else if (o instanceof RegionNodeWrapper) {
-			fireObj = ((RegionNodeWrapper)o).getRegion();
-		} else if (o instanceof Building) {
+		if(o instanceof UnitNodeWrapper) {
+			fireObj = ((UnitNodeWrapper) o).getUnit();
+		} else if(o instanceof UnitContainerNodeWrapper) {
+			fireObj = ((UnitContainerNodeWrapper) o).getUnitContainer();
+		} else if(o instanceof RegionNodeWrapper) {
+			fireObj = ((RegionNodeWrapper) o).getRegion();
+		} else if(o instanceof Building) {
 			fireObj = o;
-		} else if (o instanceof Ship) {
+		} else if(o instanceof Ship) {
 			fireObj = o;
-		} else if (o instanceof Spell) {
+		} else if(o instanceof Spell) {
 			fireObj = o;
-		} else if (o instanceof CombatSpell) {
-			fireObj = ((CombatSpell)o).getSpell();
-		} else if (o instanceof Potion) {
+		} else if(o instanceof CombatSpell) {
+			fireObj = ((CombatSpell) o).getSpell();
+		} else if(o instanceof Potion) {
 			fireObj = o;
-		} else if (o instanceof PotionNodeWrapper) {
-			fireObj = ((PotionNodeWrapper)o).getPotion();
-		} else if (o instanceof String) {
-			String s = (String)o;
+		} else if(o instanceof PotionNodeWrapper) {
+			fireObj = ((PotionNodeWrapper) o).getPotion();
+		} else if(o instanceof String) {
+			String s = (String) o;
 
-			if (s.indexOf(": ") > 0) {
+			if(s.indexOf(": ") > 0) {
 				TreeNode node2 = node.getParent();
 
-				if ((node2 != null) && (node2 instanceof DefaultMutableTreeNode)) {
-					Object o2 = ((DefaultMutableTreeNode)node2).getUserObject();
+				if((node2 != null) && (node2 instanceof DefaultMutableTreeNode)) {
+					Object o2 = ((DefaultMutableTreeNode) node2).getUserObject();
 
-					if ((o2 instanceof String) && ((String)o2).equals(getString("node.tags"))) {
+					if((o2 instanceof String) && ((String) o2).equals(getString("node.tags"))) {
 						removeTag.setEnabled(true);
 					}
 				}
@@ -3247,18 +3204,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// TODO: valueChanged is the worst selection event to change objects
 		// dont know how to mimic it. Double click would be nice
-		if (fireObj != null) {
+		if(fireObj != null) {
 			dispatcher.fire(new com.eressea.event.SelectionEvent(this, null, fireObj));
 		}
 	}
 
 	private void appendAlliances(Map allies, DefaultMutableTreeNode parent) {
-		if ((allies == null) || (parent == null)) {
+		if((allies == null) || (parent == null)) {
 			return;
 		}
 
-		for (Iterator iter = allies.values().iterator(); iter.hasNext(); ) {
-			Alliance alliance = (Alliance)iter.next();
+		for(Iterator iter = allies.values().iterator(); iter.hasNext();) {
+			Alliance alliance = (Alliance) iter.next();
 			DefaultMutableTreeNode n = new DefaultMutableTreeNode(alliance.getFaction());
 			parent.add(n);
 			n.add(new DefaultMutableTreeNode(alliance.stateToString()));
@@ -3267,16 +3224,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendComments(UnitContainer uc, DefaultMutableTreeNode parent,
 								Collection expandableNodes) {
-		if ((uc.comments != null) && (uc.comments.size() > 0)) {
+		if((uc.comments != null) && (uc.comments.size() > 0)) {
 			CommentListNode commentNode = new CommentListNode(uc, getString("node.comments"));
 			parent.add(commentNode);
 			expandableNodes.add(new NodeWrapper(commentNode, "EMapDetailsPanel.CommentsExpanded"));
 
 			int i = 0;
 
-			for (Iterator iter = uc.comments.iterator(); iter.hasNext() && (i < uc.comments.size());
-								 i++) {
-				commentNode.add(new CommentNode(uc, (String)iter.next()));
+			for(Iterator iter = uc.comments.iterator(); iter.hasNext() && (i < uc.comments.size());
+					i++) {
+				commentNode.add(new CommentNode(uc, (String) iter.next()));
 			}
 		}
 	}
@@ -3284,10 +3241,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	// create a popup menu
 
 	/*private JPopupMenu getDetailsContextMenu(DefaultMutableTreeNode node) {
-		if (displayedObject != null) {
-			return new DetailsContextMenu(displayedObject, node);
-		}
-		return null;
+	    if (displayedObject != null) {
+	        return new DetailsContextMenu(displayedObject, node);
+	    }
+	    return null;
 	  }*/
 
 	/**
@@ -3298,7 +3255,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void showFactionItemCategories(boolean bool) {
-		if (showFactionItemCategories != bool) {
+		if(showFactionItemCategories != bool) {
 			showFactionItemCategories = bool;
 			settings.setProperty("EMapDetailsPanel.units.showDetailedSkills",
 								 (new Boolean(showFactionItemCategories)).toString());
@@ -3334,22 +3291,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	public void shortCut(javax.swing.KeyStroke shortcut) {
 		int index = shortCuts.indexOf(shortcut);
 
-		switch (index) {
-			case -1:
-				break; //unknown shortcut
+		switch(index) {
+		case -1:
+			break; //unknown shortcut
 
-			case 0:
-			case 1:
-				DesktopEnvironment.requestFocus("COMMANDS");
-				DesktopEnvironment.requestFocus("ORDERS");
+		case 0:
+		case 1:
+			DesktopEnvironment.requestFocus("COMMANDS");
+			DesktopEnvironment.requestFocus("ORDERS");
 
-				break;
+			break;
 
-			case 2:
-				orders.setLimitMakeCompletion(!orders.getLimitMakeCompletion());
+		case 2:
+			orders.setLimitMakeCompletion(!orders.getLimitMakeCompletion());
 
-				// toggle "limit make completion"
-				break;
+			// toggle "limit make completion"
+			break;
 		}
 	}
 
@@ -3368,18 +3325,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @param actionEvent TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-		if (actionEvent.getSource() == addTag) {
+		if(actionEvent.getSource() == addTag) {
 			String key = JOptionPane.showInputDialog(tree, getString("addtag.tagname.message"));
 
-			if ((key != null) && (key.length() > 0)) {
+			if((key != null) && (key.length() > 0)) {
 				String value = JOptionPane.showInputDialog(tree,
-					getString("addtag.tagvalue.message"));
+														   getString("addtag.tagvalue.message"));
 
-				if ((value != null) && (value.length() > 0)) {
-					if (displayedObject instanceof UnitContainer) {
-						((UnitContainer)displayedObject).putTag(key, value);
-					} else if (displayedObject instanceof Unit) {
-						((Unit)displayedObject).putTag(key, value);
+				if((value != null) && (value.length() > 0)) {
+					if(displayedObject instanceof UnitContainer) {
+						((UnitContainer) displayedObject).putTag(key, value);
+					} else if(displayedObject instanceof Unit) {
+						((Unit) displayedObject).putTag(key, value);
 					}
 
 					show(displayedObject, false);
@@ -3391,24 +3348,24 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		} else {
 			Object o = tree.getLastSelectedPathComponent();
 
-			if (o instanceof DefaultMutableTreeNode) {
-				Object o2 = ((DefaultMutableTreeNode)o).getUserObject();
+			if(o instanceof DefaultMutableTreeNode) {
+				Object o2 = ((DefaultMutableTreeNode) o).getUserObject();
 
-				if (o2 instanceof String) {
-					int index = ((String)o2).indexOf(": ");
+				if(o2 instanceof String) {
+					int index = ((String) o2).indexOf(": ");
 
-					if (index > 0) {
-						String name = ((String)o2).substring(0, index);
+					if(index > 0) {
+						String name = ((String) o2).substring(0, index);
 						log.info("Removing " + name);
 
-						if (displayedObject instanceof UnitContainer) {
-							((UnitContainer)displayedObject).removeTag(name);
+						if(displayedObject instanceof UnitContainer) {
+							((UnitContainer) displayedObject).removeTag(name);
 							show(displayedObject, false);
 
 							// NOTE: Don't know if it's really necessary ...
 							dispatcher.fire(new GameDataEvent(this, data));
-						} else if (displayedObject instanceof Unit) {
-							((Unit)displayedObject).removeTag(name);
+						} else if(displayedObject instanceof Unit) {
+							((Unit) displayedObject).removeTag(name);
 							show(displayedObject, false);
 
 							// NOTE: Don't know if it's really necessary ...
@@ -3435,11 +3392,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void setShowTagButtons(boolean bool) {
-		if (bool != isShowingTagButtons()) {
+		if(bool != isShowingTagButtons()) {
 			showTagButtons = bool;
 			settings.setProperty("EMapDetailsPanel.ShowTagButtons", bool ? "true" : "false");
 
-			if (bool) {
+			if(bool) {
 				treeContainer.add(tagContainer, BorderLayout.SOUTH);
 				tagContainer.doLayout();
 			} else {
@@ -3461,14 +3418,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		tree.treeDidChange();
 
 		/*        if (tree.getModel() instanceof DefaultTreeModel) {
-					((DefaultTreeModel)tree.getModel()).reload();
-				}*/
+		            ((DefaultTreeModel)tree.getModel()).reload();
+		        }*/
 
 		// Use the UI Fix
 		javax.swing.plaf.TreeUI ui = tree.getUI();
 
-		if (ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
-			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI)ui;
+		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
+			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
 			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
@@ -3566,12 +3523,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public int compare(Object o1, Object o2) {
-			int retVal = ((SkillStatItem)o1).skill.getName().compareTo(((SkillStatItem)o2).skill.
-				getName());
+			int retVal = ((SkillStatItem) o1).skill.getName().compareTo(((SkillStatItem) o2).skill.getName());
 
-			if (retVal == 0) {
-				retVal = ((SkillStatItem)o2).skill.getLevel() -
-						 ((SkillStatItem)o1).skill.getLevel();
+			if(retVal == 0) {
+				retVal = ((SkillStatItem) o2).skill.getLevel() -
+						 ((SkillStatItem) o1).skill.getLevel();
 			}
 
 			return retVal;
@@ -3613,20 +3569,20 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			// layout this container
 			/*
-				setLayout(new GridBagLayout());
-				GridBagConstraints c = new GridBagConstraints();
-				GridBagHelper.setConstraints(
-				c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
-				GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
-				// data view panel
-				JPanel help = getDataViewPanel();
-				this.add(help, c);
-				GridBagHelper.setConstraints(
-				 c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, // different weighty!
-				GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
-				// region panel information
-				regionPref = regionPanel.getPreferredAdapter();
-				this.add(regionPref.getComponent(), c);
+			    setLayout(new GridBagLayout());
+			    GridBagConstraints c = new GridBagConstraints();
+			    GridBagHelper.setConstraints(
+			    c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
+			    GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
+			    // data view panel
+			    JPanel help = getDataViewPanel();
+			    this.add(help, c);
+			    GridBagHelper.setConstraints(
+			     c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, // different weighty!
+			    GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
+			    // region panel information
+			    regionPref = regionPanel.getPreferredAdapter();
+			    this.add(regionPref.getComponent(), c);
 			 */
 			// layout this container
 			setLayout(new BorderLayout());
@@ -3646,12 +3602,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 											getString("prefs.datadisplay")));
 
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1.0, 0,
-				GridBagConstraints.NORTH,
-				GridBagConstraints.HORIZONTAL,
-				new Insets(3, 3, 3, 3), 0, 0);
+														  GridBagConstraints.NORTH,
+														  GridBagConstraints.HORIZONTAL,
+														  new Insets(3, 3, 3, 3), 0, 0);
 
 			chkshowFactionItemCategories = new JCheckBox(getString("prefs.factionItemCategories"),
-				source.isShowingFactionItemCategories());
+														 source.isShowingFactionItemCategories());
 			c.anchor = GridBagConstraints.WEST;
 			c.gridx = 0;
 			c.gridy = 0;
@@ -3800,8 +3756,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
-			dispatcher.fire(new com.eressea.event.SelectionEvent(EMapDetailsPanel.this, null,
-				target));
+			dispatcher.fire(new com.eressea.event.SelectionEvent(EMapDetailsPanel.this, null, target));
 		}
 	}
 
@@ -3826,7 +3781,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		public void actionPerformed(ActionEvent e) {
 			Unit unit = ShipRoutePlanner.planShipRoute(target, data, EMapDetailsPanel.this);
 
-			if (unit != null) {
+			if(unit != null) {
 				dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));
 			}
 		}
@@ -3844,13 +3799,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
-			Collection selectedObjects,
-			javax.swing.tree.DefaultMutableTreeNode node) {
-			if (argument instanceof Unit) {
+														Collection selectedObjects,
+														javax.swing.tree.DefaultMutableTreeNode node) {
+			if(argument instanceof Unit) {
 				try {
-					return new StealthContextMenu((Unit)argument);
-				}
-				catch (IllegalArgumentException exc) {
+					return new StealthContextMenu((Unit) argument);
+				} catch(IllegalArgumentException exc) {
 				}
 			}
 
@@ -3870,12 +3824,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			public StealthContextMenu(Unit u) {
 				unit = u;
 
-				Skill stealth = unit.getSkill(data.rules.getSkillType(EresseaSkillConstants.
-					S_TARNUNG,
-					true));
+				Skill stealth = unit.getSkill(data.rules.getSkillType(EresseaSkillConstants.S_TARNUNG,
+																	  true));
 
-				if (stealth.getLevel() > 0) {
-					for (int i = 0; i <= stealth.getLevel(); i++) {
+				if(stealth.getLevel() > 0) {
+					for(int i = 0; i <= stealth.getLevel(); i++) {
 						JMenuItem item = new JMenuItem(String.valueOf(i));
 						item.addActionListener(this);
 						this.add(item);
@@ -3893,13 +3846,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			public void actionPerformed(ActionEvent e) {
 				int newStealth = Integer.parseInt(e.getActionCommand());
 
-				if (newStealth != unit.stealth) {
+				if(newStealth != unit.stealth) {
 					unit.stealth = newStealth;
 
 					EMapDetailsPanel.this.show(unit, false);
 					data.getGameSpecificStuff().getOrderChanger().addHideOrder(unit,
-						e.getActionCommand()
-						.toString());
+																			   e.getActionCommand()
+																				.toString());
 
 					/* Note: Of course it would be better to inform all that a game data object
 					 *       has changed but I think it's not necessary and consumes too much time
@@ -3927,7 +3880,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 
 			protected void init() {
-				for (int i = 0; i < 6; i++) {
+				for(int i = 0; i < 6; i++) {
 					addItem(i);
 				}
 			}
@@ -3947,7 +3900,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			public void actionPerformed(ActionEvent e) {
 				int newState = Integer.parseInt(e.getActionCommand());
 
-				if (newState != unit.combatStatus) {
+				if(newState != unit.combatStatus) {
 					unit.combatStatus = newState;
 
 					EMapDetailsPanel.this.show(unit, false);
@@ -3971,10 +3924,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
-			Collection selectedObjects,
-			DefaultMutableTreeNode node) {
-			if (argument instanceof Unit) {
-				return new CombatStateContextMenu((Unit)argument);
+														Collection selectedObjects,
+														DefaultMutableTreeNode node) {
+			if(argument instanceof Unit) {
+				return new CombatStateContextMenu((Unit) argument);
 			}
 
 			return null;
@@ -4030,15 +3983,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
-			Collection selectedObjects,
-			DefaultMutableTreeNode node) {
-			if (argument instanceof UnitContainer) {
-				return new CommentContextMenu((UnitContainer)argument, node, false);
-			} else if (argument instanceof CommentListNode) {
-				return new CommentContextMenu(((CommentListNode)argument).getUnitContainer(),
+														Collection selectedObjects,
+														DefaultMutableTreeNode node) {
+			if(argument instanceof UnitContainer) {
+				return new CommentContextMenu((UnitContainer) argument, node, false);
+			} else if(argument instanceof CommentListNode) {
+				return new CommentContextMenu(((CommentListNode) argument).getUnitContainer(),
 											  node, true);
-			} else if (argument instanceof CommentNode) {
-				return new CommentContextMenu(((CommentNode)argument).getUnitContainer(), node,
+			} else if(argument instanceof CommentNode) {
+				return new CommentContextMenu(((CommentNode) argument).getUnitContainer(), node,
 											  false);
 			}
 
@@ -4064,16 +4017,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 									  boolean removeAll) {
 				uc = container;
 
-				if (node instanceof CommentNode) {
-					this.node = (CommentNode)node;
+				if(node instanceof CommentNode) {
+					this.node = (CommentNode) node;
 				}
 
 				addComment = new JMenuItem(getString("menu.createcomment"));
 				addComment.addActionListener(this);
 				this.add(addComment);
 
-				if (this.node != null) {
-					if (!(node instanceof CommentListNode)) {
+				if(this.node != null) {
+					if(!(node instanceof CommentListNode)) {
 						modifyComment = new JMenuItem(getString("menu.changecomment"));
 						modifyComment.addActionListener(this);
 						removeComment = new JMenuItem(getString("menu.removecomment"));
@@ -4084,7 +4037,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					}
 				}
 
-				if (removeAll) {
+				if(removeAll) {
 					removeAllComments = new JMenuItem(getString("menu.removecomment.all"));
 					removeAllComments.addActionListener(this);
 					this.add(removeAllComments);
@@ -4094,28 +4047,28 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			private void addComment() {
 				DefaultMutableTreeNode parent = null;
 
-				for (Enumeration enum = rootNode.children(); enum.hasMoreElements(); ) {
-					DefaultMutableTreeNode n = (DefaultMutableTreeNode)enum.nextElement();
+				for(Enumeration enum = rootNode.children(); enum.hasMoreElements();) {
+					DefaultMutableTreeNode n = (DefaultMutableTreeNode) enum.nextElement();
 					Object obj = n.getUserObject();
 
-					if ((obj != null) && obj instanceof String &&
-						obj.equals(getString("node.comments"))) {
+					if((obj != null) && obj instanceof String &&
+						   obj.equals(getString("node.comments"))) {
 						parent = n;
 
 						break;
 					}
 				}
 
-				if (parent == null) {
+				if(parent == null) {
 					parent = new CommentListNode(uc, getString("node.comments"));
 					rootNode.add(parent);
 				}
 
-				if (uc.comments == null) {
+				if(uc.comments == null) {
 					uc.comments = CollectionFactory.createLinkedList();
 				}
 
-				if (uc.comments.size() != parent.getChildCount()) {
+				if(uc.comments.size() != parent.getChildCount()) {
 					log.info("EMapDetailsPanel.DetailsContextMenu.getCreateCommentMenuItem(): number of comments and nodes differs!");
 
 					return;
@@ -4133,16 +4086,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 
 			private void modifyComment() {
-				if ((node.getUnitContainer() != null) && (node.getUnitContainer().comments != null)) {
+				if((node.getUnitContainer() != null) && (node.getUnitContainer().comments != null)) {
 					tree.startEditingAtPath(new TreePath(node.getPath()));
 				}
 			}
 
 			private void removeComment() {
-				DefaultMutableTreeNode parent = (DefaultMutableTreeNode)node.getParent();
+				DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
 
-				if (uc.comments != null) {
-					if (uc.comments.size() == parent.getChildCount()) {
+				if(uc.comments != null) {
+					if(uc.comments.size() == parent.getChildCount()) {
 						uc.comments.remove(parent.getIndex(node));
 					} else {
 						log.info("EMapDetailsPanel.DetailsContextMenu.getDeleteCommentMenuItem(): number of comments and nodes differs!");
@@ -4153,7 +4106,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 				treeModel.removeNodeFromParent(node);
 
-				if (parent.getChildCount() == 0) {
+				if(parent.getChildCount() == 0) {
 					treeModel.removeNodeFromParent(parent);
 				}
 
@@ -4173,13 +4126,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			 * @param e TODO: DOCUMENT ME!
 			 */
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == addComment) {
+				if(e.getSource() == addComment) {
 					addComment();
-				} else if (e.getSource() == removeComment) {
+				} else if(e.getSource() == removeComment) {
 					removeComment();
-				} else if (e.getSource() == modifyComment) {
+				} else if(e.getSource() == modifyComment) {
 					modifyComment();
-				} else if (e.getSource() == removeAllComments) {
+				} else if(e.getSource() == removeAllComments) {
 					removeAllComments();
 				}
 			}
@@ -4202,18 +4155,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
-			Collection selectedObjects,
-			DefaultMutableTreeNode node) {
-			if (argument instanceof Unit) {
-				return new UnitContextMenu((Unit)argument, selectedObjects, dispatcher, data);
-			} else if (argument instanceof UnitNodeWrapper) {
-				return new UnitContextMenu(((UnitNodeWrapper)argument).getUnit(), selectedObjects,
+														Collection selectedObjects,
+														DefaultMutableTreeNode node) {
+			if(argument instanceof Unit) {
+				return new UnitContextMenu((Unit) argument, selectedObjects, dispatcher, data);
+			} else if(argument instanceof UnitNodeWrapper) {
+				return new UnitContextMenu(((UnitNodeWrapper) argument).getUnit(), selectedObjects,
 										   dispatcher, data);
-			} else if (argument instanceof UnitListNodeWrapper) {
-				Collection col = ((UnitListNodeWrapper)argument).getUnits();
+			} else if(argument instanceof UnitListNodeWrapper) {
+				Collection col = ((UnitListNodeWrapper) argument).getUnits();
 
-				if ((col != null) && (col.size() > 0)) {
-					return new UnitContextMenu((Unit)col.iterator().next(), col, dispatcher, data);
+				if((col != null) && (col.size() > 0)) {
+					return new UnitContextMenu((Unit) col.iterator().next(), col, dispatcher, data);
 				}
 			}
 
@@ -4234,7 +4187,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static synchronized Map getDefaultTranslations() {
-		if (defaultTranslations == null) {
+		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("node.herbs", "Herbs");
 			defaultTranslations.put("node.peasants", "Peasants");
@@ -4328,9 +4281,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("prefs.factionItemCategories",
 									"Group a faction's items by category (herbs, weapons, etc.)");
 			defaultTranslations.put("prefs.showNextSkillLevelPoints",
-				"Show the number of points required to reach the next skill level with units");
+									"Show the number of points required to reach the next skill level with units");
 			defaultTranslations.put("prefs.showNextSkillLevelLearnTurns",
-				"Show the number of turns to learn in order to reach the next skill level");
+									"Show the number of turns to learn in order to reach the next skill level");
 			defaultTranslations.put("prefs.showRegionItemAmount", "Show a total with unit items");
 			defaultTranslations.put("prefs.datadisplay", "Data display");
 			defaultTranslations.put("prefs.showskillicons", "Show skill icons with units");

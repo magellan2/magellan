@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -175,8 +175,8 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 	 * @param rKey The regionKey value for settings operations
 	 * @param pKey The paintKey value for settings operations
 	 */
-	public RegionShapeCellRenderer(CellGeometry geo, Properties settings, String fKey,
-								   String rKey, String pKey) {
+	public RegionShapeCellRenderer(CellGeometry geo, Properties settings, String fKey, String rKey,
+								   String pKey) {
 		super(geo, settings);
 
 		factionColors = CollectionFactory.createHashMap();
@@ -684,20 +684,22 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 				factions.add(f);
 			}
 		}
-		
 
 		if(factions.size() == 0) {
 			singleColorArray[0] = getUnknownColor();
-			
+
 			if(r.getRegionType().isOcean()) {
 				singleColorArray[0] = getOceanColor();
 			}
+
 			return singleColorArray;
 		}
+
 		if(factions.size() == 1) {
 			singleColorArray[0] = getFactionColor((String) factions.get(0));
+
 			return singleColorArray;
-		}			
+		}
 
 		Color cols[] = new Color[factions.size()];
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -16,18 +16,19 @@ package com.eressea.io.xml;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import com.eressea.Rules;
 import com.eressea.io.RulesIO;
 import com.eressea.io.file.FileType;
 import com.eressea.rules.GenericRules;
 import com.eressea.util.logging.Logger;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+
+import org.xml.sax.SAXException;
 
 /**
  * TODO: DOCUMENT ME!

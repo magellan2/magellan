@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -68,18 +68,21 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 		}
 	}
 
-	private final static String[] propertiesToRemove = {	"AgingProperties.numberofsessions",
-															"AgingProperties.sessionsofkeys",
-															"Client.checkVersionOnStartup"
-														 }; 
+	private static final String propertiesToRemove[] = {
+														   "AgingProperties.numberofsessions",
+														   "AgingProperties.sessionsofkeys",
+														   "Client.checkVersionOnStartup"
+													   };
 
 	private boolean doRemoveProperties(String name) {
-		for(int i=0; i < propertiesToRemove.length; i++) {
+		for(int i = 0; i < propertiesToRemove.length; i++) {
 			String property = propertiesToRemove[i];
+
 			if(doRemoveProperty(name, property)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -93,6 +96,7 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 		if(doRemoveProperties(name)) {
 			return;
 		}
+
 		if(1 == 2) {
 			if(doRemoveProperty(name, "EMapOverviewPanel.displayIslands")) {
 				// after a property has been removed, we dont need more checks

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -106,14 +106,18 @@ public class Ship extends UnitContainer implements HasRegion {
 	public int getMaxCapacity() {
 		return (capacity != -1) ? capacity : getMaxCapacity(getShipType().getCapacity());
 	}
-	
-	/** 
+
+	/**
 	 * Returns the maximimum capacity with respect to damages of the ship.
+	 *
+	 * @param maxCapacity TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	private int getMaxCapacity(int maxCapacity) {
 		return new BigDecimal(maxCapacity).multiply(new BigDecimal(100 - damageRatio))
-			.divide(new BigDecimal(100), BigDecimal.ROUND_DOWN)
-			.intValue();
+										  .divide(new BigDecimal(100), BigDecimal.ROUND_DOWN)
+										  .intValue();
 	}
 
 	/**

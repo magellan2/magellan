@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -363,8 +363,7 @@ public class Faction extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			(o instanceof Faction && this.getID().equals(((Faction) o).getID()));
+		return (this == o) || (o instanceof Faction && this.getID().equals(((Faction) o).getID()));
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -42,9 +42,11 @@ public class RulesReader {
 	 * Reads the rules of the given gamedata. Right now it first tries to read it from an xml. If
 	 * this fails it  possibly reads the cr
 	 *
-	 * @param gameName TODO: DOCUMENT ME!
+	 * @param name TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public Rules readRules(String name) throws IOException {
 		try {
@@ -56,6 +58,7 @@ public class RulesReader {
 				/* This is bad. We don't even have the default rules. */
 				log.warn("The default ruleset couldn't be found! Operating with an empty ruleset.",
 						 e);
+
 				return new GenericRules();
 			} else {
 				return readRules("eressea");
@@ -69,6 +72,8 @@ public class RulesReader {
 	 * @param name TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	private Rules loadRules(String name) throws IOException {
 		String ending = new File("XML").exists() ? ".xml" : ".cr";
@@ -80,7 +85,7 @@ public class RulesReader {
 		FileType filetype = FileTypeFactory.singleton().createInputStreamSourceFileType("rules/" +
 																						name +
 																						ending);
-		
+
 		return new CRParser().readRules(filetype);
 	}
 }

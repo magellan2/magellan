@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -59,7 +59,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -449,8 +448,9 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		lastScale = (float) (size / (float) d.width);
 		minimap.setScaleFactor(lastScale);
 		minimapPane = new JScrollPane(minimap);
+
 		// ClearLook suggests to remove border 
-		minimapPane.setBorder(new EmptyBorder(0,0,0,0));
+		minimapPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		resizeMinimap = settings.getProperty("Minimap.AutoScale", "false").equals("true");
 		minimapScaler = new MinimapScaler();
@@ -608,22 +608,24 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 *
 	 * @param level TODO: DOCUMENT ME!
 	 */
-			 public void setLevel(int level) {
-					 minimap.setLevel(level);
-					 mapper.setLevel(level);
-					 // when there was a change from level 1 to level 0
-					 // i.e. from Astralraum back to normal map we
-					 // try to intelligently center the map
-					 if (mapper.getActiveRegion() != null) {
-							 Coordinate c = mapper.getActiveRegion().getCoordinate();
-							 if (c.z == level) {
-									 setCenter(c);
-							 } else if (c.z == 1 && level == 0) {
-									 Coordinate newCoordinate = new Coordinate(c.x * 4, c.y * 4, 0);
-									 setCenter(newCoordinate);
-							 }
-					 }
-			 }
+	public void setLevel(int level) {
+		minimap.setLevel(level);
+		mapper.setLevel(level);
+
+		// when there was a change from level 1 to level 0
+		// i.e. from Astralraum back to normal map we
+		// try to intelligently center the map
+		if(mapper.getActiveRegion() != null) {
+			Coordinate c = mapper.getActiveRegion().getCoordinate();
+
+			if(c.z == level) {
+				setCenter(c);
+			} else if((c.z == 1) && (level == 0)) {
+				Coordinate newCoordinate = new Coordinate(c.x * 4, c.y * 4, 0);
+				setCenter(newCoordinate);
+			}
+		}
+	}
 
 	/**
 	 * Centers the map on a certain region.
@@ -798,9 +800,10 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 
 	private Container getMainPane(Collection renderers, CellGeometry geo) {
 		mapper = new Mapper(dispatcher, settings, renderers, geo);
- 		scpMapper = new JScrollPane(mapper);
+		scpMapper = new JScrollPane(mapper);
+
 		// ClearLook suggests to remove border 
-		scpMapper.setBorder(new EmptyBorder(0,0,0,0));
+		scpMapper.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		JLabel lblScaling = new JLabel(getString("lbl.zoom.caption"));
 		sldScaling = new JSlider(SwingConstants.HORIZONTAL);
@@ -850,7 +853,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 					Integer level = (Integer) ((JComboBox) ae.getSource()).getSelectedItem();
 
 					if(level != null) {
-							setLevel(level.intValue());
+						setLevel(level.intValue());
 					}
 				}
 			});
@@ -1174,7 +1177,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 
 				// panel grouping minimap stuff
 				this.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
-																   getString("prefs.border.minimap")));
+												getString("prefs.border.minimap")));
 
 				this.setLayout(new GridBagLayout());
 

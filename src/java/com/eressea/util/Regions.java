@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -482,7 +482,8 @@ public class Regions {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static List planShipRoute(Ship ship, Coordinate destination, Map allregions,
-									 /*RegionType oceanType,*/ BuildingType harbour, int speedBonus) {
+									 
+	/*RegionType oceanType,*/ BuildingType harbour, int speedBonus) {
 		if(destination != null) {
 			Map regions = CollectionFactory.createHashtable();
 			Map harbourRegions = CollectionFactory.createHashtable();
@@ -490,17 +491,17 @@ public class Regions {
 			// Fetch all ocean-regions and all regions, that contain a harbour.
 			// These are the valid one in which a path shall be searched.
 			//if(oceanType != null) {
-				for(Iterator iter = allregions.values().iterator(); iter.hasNext();) {
-					Region r = (Region) iter.next();
+			for(Iterator iter = allregions.values().iterator(); iter.hasNext();) {
+				Region r = (Region) iter.next();
 
-					if((r.getRegionType() != null) && r.getRegionType().isOcean()) {
-						regions.put(r.getCoordinate(), r);
-					} else if(containsHarbour(r, harbour)) {
-						harbourRegions.put(r.getCoordinate(), r);
-					}
+				if((r.getRegionType() != null) && r.getRegionType().isOcean()) {
+					regions.put(r.getCoordinate(), r);
+				} else if(containsHarbour(r, harbour)) {
+					harbourRegions.put(r.getCoordinate(), r);
 				}
-			//}
+			}
 
+			//}
 			// Add destination region:
 			Region destRegion = (Region) allregions.get(destination);
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -209,7 +209,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 	/**
 	 * Creates a new Client object taking its data from <tt>gd</tt>.
-	 *
+	 * 
 	 * <p>
 	 * Preferences are read from and stored in a file called <tt>client.ini</tt>. This file is
 	 * usually located in the user's home directed, which is the Windows directory in a Microsoft
@@ -767,11 +767,13 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 				Class foundClass = (Class) iter.next();
 
 				// get it's constructor
-				Object externalModule = foundClass.getConstructor(new Class[] {}).newInstance(new Object[] {});
+				Object externalModule = foundClass.getConstructor(new Class[] {  }).newInstance(new Object[] {
+																									
+																								});
 
 				// register as SelectionListener if applicable
-				if (externalModule instanceof SelectionListener) {
-					dispatcher.addSelectionListener((SelectionListener)externalModule);
+				if(externalModule instanceof SelectionListener) {
+					dispatcher.addSelectionListener((SelectionListener) externalModule);
 				}
 
 				// get menuString
@@ -952,8 +954,8 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			{
 				Log LOG = new Log(fileDir);
 				System.setErr(LOG.getPrintStream());
-				
-				log.error("Start writing error file with encoding "+LOG.encoding);
+
+				log.error("Start writing error file with encoding " + LOG.encoding);
 			}
 
 			// can't call loadRules from here, so we initially work with an empty ruleset.
@@ -1300,25 +1302,27 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	// UPDATE Code //
 	/////////////////
 	private void updateTitleCaption() {
-		String title = Client.createTitle(data,showStatus, false);
+		String title = Client.createTitle(data, showStatus, false);
+
 		try {
-			title = Client.createTitle(data,showStatus, true);
+			title = Client.createTitle(data, showStatus, true);
 		} catch(Exception e) {
 			log.error("createTitle failed!", e);
 		}
+
 		setTitle(title);
 	}
-	
+
 	private static String createTitle(GameData data, boolean showStatus, boolean longTitle) {
-		
 		// set frame title (date)
 		String title = "Magellan";
-		
+
 		String version = VersionInfo.getVersion();
+
 		if(version != null) {
-			title += " "+version;
+			title += (" " + version);
 		}
-		
+
 		// pavkovic 2002.05.7: data may be null in this situation
 		if(data == null) {
 			return title;
@@ -1388,7 +1392,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 		return title;
 	}
-
 
 	/**
 	 * Updates the order confirmation menu after the game data changed.

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -21,14 +21,13 @@ import com.eressea.Skill;
 import com.eressea.rules.SkillType;
 
 /**
- * A comparator imposing an ordering on SkillType or Skill objects by
- * comparing their user modifiable ranking. (In case of skill objects the
- * skill's type is compared).
- *
+ * A comparator imposing an ordering on SkillType or Skill objects by comparing their user
+ * modifiable ranking. (In case of skill objects the skill's type is compared).
+ * 
  * <p>
  * Note: this comparator can impose orderings that are inconsistent with equals.
  * </p>
- *
+ * 
  * <p>
  * In order to overcome the inconsistency with equals this comparator allows the introduction of a
  * sub-comparator which is applied in cases of equality. I.e. if the two compared objects have the
@@ -41,13 +40,16 @@ import com.eressea.rules.SkillType;
 public class SkillTypeRankComparator implements Comparator {
 	private final Comparator subCmp;
 	private final Properties settings;
+
 	// avoid unnecessary object creation
-	private SkillType s1, s2;
+	private SkillType s1;
+
+	// avoid unnecessary object creation
+	private SkillType s2;
 
 	/**
-	 * To reduces memory consumption the ranks of
-	 * the various skills are cached.
-	 * Keys are SkillTypeIDs, values are Integers.
+	 * To reduces memory consumption the ranks of the various skills are cached. Keys are
+	 * SkillTypeIDs, values are Integers.
 	 */
 	private Hashtable skillRanks = new Hashtable();
 
@@ -76,15 +78,16 @@ public class SkillTypeRankComparator implements Comparator {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int compare(Object o1, Object o2) {
-		if (o1 instanceof Skill) {
-			s1 = ((Skill)o1).getType();
+		if(o1 instanceof Skill) {
+			s1 = ((Skill) o1).getType();
 		} else {
-			s1 = (SkillType)o1;
+			s1 = (SkillType) o1;
 		}
-		if (o2 instanceof Skill) {
-			s2 = ((Skill)o2).getType();
+
+		if(o2 instanceof Skill) {
+			s2 = ((Skill) o2).getType();
 		} else {
-			s2 = (SkillType)o2;
+			s2 = (SkillType) o2;
 		}
 
 		int retVal = getValue(s1) - getValue(s2);
@@ -97,13 +100,14 @@ public class SkillTypeRankComparator implements Comparator {
 	}
 
 	private int getValue(SkillType s) {
-		Integer retVal = (Integer)skillRanks.get(s.getID());
-		if (retVal == null) {
+		Integer retVal = (Integer) skillRanks.get(s.getID());
+
+		if(retVal == null) {
 			String prop = settings.getProperty("ClientPreferences.compareValue." + s.getID(), "-1");
 			retVal = new Integer(Integer.parseInt(prop));
 			skillRanks.put(s.getID(), retVal);
 		}
-		return retVal.intValue();
 
+		return retVal.intValue();
 	}
 }

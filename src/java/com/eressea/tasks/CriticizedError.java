@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -22,11 +22,27 @@ import com.eressea.HasRegion;
  * @version $Revision$
  */
 public class CriticizedError extends AbstractProblem implements Problem {
-
+	/**
+	 * Creates a new CriticizedError object.
+	 *
+	 * @param s TODO: DOCUMENT ME!
+	 * @param o TODO: DOCUMENT ME!
+	 * @param i TODO: DOCUMENT ME!
+	 * @param m TODO: DOCUMENT ME!
+	 */
 	public CriticizedError(Object s, HasRegion o, Inspector i, String m) {
 		super(s, o, i, m);
 	}
 
+	/**
+	 * Creates a new CriticizedError object.
+	 *
+	 * @param s TODO: DOCUMENT ME!
+	 * @param o TODO: DOCUMENT ME!
+	 * @param i TODO: DOCUMENT ME!
+	 * @param m TODO: DOCUMENT ME!
+	 * @param l TODO: DOCUMENT ME!
+	 */
 	public CriticizedError(Object s, HasRegion o, Inspector i, String m, int l) {
 		super(s, o, i, m, l);
 	}

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -73,7 +73,7 @@ public class RegionIslandComparator implements Comparator {
 		if(r1.getIsland() == null) {
 			if(r2.getIsland() == null) {
 				// r1.getIsland == null, r2.getIsland == null
-				return noIslandSubCmp != null ? noIslandSubCmp.compare(o1, o2) : 0;
+				return (noIslandSubCmp != null) ? noIslandSubCmp.compare(o1, o2) : 0;
 			} else {
 				// r1.getIsland == null, r2.getIsland != null
 				return 1;
@@ -85,17 +85,19 @@ public class RegionIslandComparator implements Comparator {
 			} else {
 				// r1.getIsland != null, r2.getIsland != null
 				int retVal = 0;
+
 				if(islandCmp != null) {
 					retVal = islandCmp.compare(r1.getIsland(), r2.getIsland());
 				} else {
 					retVal = r1.getIsland().compareTo(r2.getIsland());
 				}
-				
+
 				if(retVal == 0) {
 					if(sameIslandSubCmp != null) {
 						retVal = sameIslandSubCmp.compare(o1, o2);
 					}
 				}
+
 				return retVal;
 			}
 		}
@@ -104,29 +106,29 @@ public class RegionIslandComparator implements Comparator {
 		int retVal = 0;
 
 		if((r1.getIsland() == null) && (r2.getIsland() != null)) {
-			retVal = Integer.MAX_VALUE;
+		    retVal = Integer.MAX_VALUE;
 		} else if((r1.getIsland() != null) && (r2.getIsland() == null)) {
-			retVal = Integer.MIN_VALUE;
+		    retVal = Integer.MIN_VALUE;
 		} else if((r1.getIsland() == null) && (r2.getIsland() == null)) {
-			if(noIslandSubCmp != null) {
-				retVal = noIslandSubCmp.compare(o1, o2);
-			} else {
-				retVal = 0;
-			}
+		    if(noIslandSubCmp != null) {
+		        retVal = noIslandSubCmp.compare(o1, o2);
+		    } else {
+		        retVal = 0;
+		    }
 		} else {
-			if(islandCmp != null) {
-				retVal = islandCmp.compare(r1.getIsland(), r2.getIsland());
-			} else {
-				retVal = r1.getIsland().compareTo(r2.getIsland());
-			}
+		    if(islandCmp != null) {
+		        retVal = islandCmp.compare(r1.getIsland(), r2.getIsland());
+		    } else {
+		        retVal = r1.getIsland().compareTo(r2.getIsland());
+		    }
 
-			if(retVal == 0) {
-				if(sameIslandSubCmp != null) {
-					retVal = sameIslandSubCmp.compare(o1, o2);
-				} else {
-					retVal = 0;
-				}
-			}
+		    if(retVal == 0) {
+		        if(sameIslandSubCmp != null) {
+		            retVal = sameIslandSubCmp.compare(o1, o2);
+		        } else {
+		            retVal = 0;
+		        }
+		    }
 		}
 
 		return retVal;

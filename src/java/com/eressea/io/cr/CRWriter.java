@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -1078,9 +1078,11 @@ public class CRWriter extends BufferedWriter {
 	 */
 	public void writeSkill(Skill skill, int persons) throws IOException {
 		write(skill.getPoints() + " " + skill.getRealLevel());
+
 		if(!getServerConformance() && skill.isLevelChanged()) {
 			write(" " + skill.getChangeLevel());
 		}
+
 		write(";" + skill.getSkillType().getID());
 
 		newLine();

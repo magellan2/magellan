@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -123,6 +123,11 @@ public abstract class MenuAction extends AbstractAction {
 		this.putValue(Action.SMALL_ICON, icon);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getIconName() {
 		// String className = this.getClass().getName().toLowerCase();
 		// int pos = className.lastIndexOf(".");

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -47,7 +47,7 @@ public abstract class UnitRelation {
 	 */
 	public String toString() {
 		return this.getClass().getName() + "@ORIGIN=" + origin + "@SOURCE=" + source + "@line=" +
-			line;
+			   line;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -150,14 +150,15 @@ public class InfoDlg extends InternationalizedDialog {
 		}
 
 		jTextArea1.setWrapStyleWord(true);
+
 		//jTextArea1.setPreferredSize(new java.awt.Dimension(160, 250));
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setEditable(false);
 		jTextArea1.setText(text);
 		jTextArea1.setBackground(new Color(213, 169, 131));
+
 		//jTextArea1.setMinimumSize(new java.awt.Dimension(400, 200));
 		//jScrollPane1.setViewportView(jTextArea1);
-
 		gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 0;
 		gridBagConstraints2.gridy = 1;

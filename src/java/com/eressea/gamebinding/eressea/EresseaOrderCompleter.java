@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -2032,14 +2032,12 @@ public class EresseaOrderCompleter implements Completer {
 			} else if(o1 instanceof Completion && o2 instanceof Completion) {
 				Completion c1 = (Completion) o1;
 				Completion c2 = (Completion) o2;
+
 				if(c1.getName() == null) {
-					return c1.getName() == null 
-						? 0 
-						: 1;
+					return (c1.getName() == null) ? 0 : 1;
 				} else {
-					return c2.getName() == null 
-						? -1 :
-						c1.getName().compareToIgnoreCase(c2.getName());
+					return (c2.getName() == null) ? (-1)
+												  : c1.getName().compareToIgnoreCase(c2.getName());
 				}
 			} else if(o1 instanceof Completion && o2 instanceof String) {
 				String s1 = ((Completion) o1).getName();

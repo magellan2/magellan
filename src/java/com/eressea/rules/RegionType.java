@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -28,12 +28,8 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class RegionType extends UnitContainerType {
-
-	/**
-	 * A static instance of the unknown region type
-	 */
+	/** A static instance of the unknown region type */
 	public static RegionType unknown = new RegionType(StringID.create("unbekannt"));
-
 	private int inhabitants = -1;
 
 	/**
@@ -150,11 +146,18 @@ public class RegionType extends UnitContainerType {
 		this.isOcean = isOcean;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String toString() {
 		String s = getName();
-		if (s == null) {
+
+		if(s == null) {
 			s = id.toString();
 		}
+
 		return s;
 	}
 

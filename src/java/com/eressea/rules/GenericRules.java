@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -522,7 +522,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public AllianceCategory getAllianceCategory(ID id, boolean add) {
-		AllianceCategory r = (AllianceCategory) getObjectType(mapAllianceCategory, mapAllianceCategoryNames, id.toString());
+		AllianceCategory r = (AllianceCategory) getObjectType(mapAllianceCategory,
+															  mapAllianceCategoryNames,
+															  id.toString());
+
 		if((r == null) && add) {
 			r = (AllianceCategory) addObject(new AllianceCategory(id), mapAllianceCategory,
 											 mapAllianceCategoryNames);
@@ -588,7 +591,8 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public OptionCategory getOptionCategory(ID id, boolean add) {
-		OptionCategory r = (OptionCategory) getObjectType(mapOptionCategory, mapOptionCategoryNames, id.toString());
+		OptionCategory r = (OptionCategory) getObjectType(mapOptionCategory,
+														  mapOptionCategoryNames, id.toString());
 
 		if((r == null) && add) {
 			r = (OptionCategory) addObject(new OptionCategory(id), mapOptionCategory,
@@ -655,7 +659,8 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public SkillCategory getSkillCategory(ID id, boolean add) {
-		SkillCategory r = (SkillCategory) getObjectType(mapSkillCategory, mapSkillCategoryNames, id.toString());
+		SkillCategory r = (SkillCategory) getObjectType(mapSkillCategory, mapSkillCategoryNames,
+														id.toString());
 
 		if((r == null) && add) {
 			r = (SkillCategory) addObject(new SkillCategory(id), mapSkillCategory,
@@ -722,7 +727,8 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ItemCategory getItemCategory(ID id, boolean add) {
-		ItemCategory r = (ItemCategory) getObjectType(mapItemCategory, mapItemCategoryNames, id.toString());
+		ItemCategory r = (ItemCategory) getObjectType(mapItemCategory, mapItemCategoryNames,
+													  id.toString());
 
 		if((r == null) && add) {
 			r = (ItemCategory) addObject(new ItemCategory(id), mapItemCategory, mapItemCategoryNames);
@@ -855,53 +861,58 @@ public class GenericRules implements Rules {
 	 */
 	private ObjectType changeName(ID id, String name) {
 		ObjectType ot = null;
-		
+
 		ot = changeName(id, name, mapUnitContainerType, mapUnitContainerTypeNames);
+
 		if(ot != null) {
 			return ot;
 		}
 
 		ot = changeName(id, name, mapItemType, mapItemTypeNames);
+
 		if(ot != null) {
 			return ot;
 		}
 
-// pavkovic 2004.03.17: Don't change the name of alliance and option category
-// 		ot = changeName(id, name, mapAllianceCategory, mapAllianceCategoryNames);
-// 		if(ot != null) {
-// 			return ot;
-// 		}
-		
-// 		ot = changeName(id, name, mapOptionCategory, mapOptionCategoryNames);
-// 		if(ot != null) {
-// 			return ot;
-// 		}
-		
+		// pavkovic 2004.03.17: Don't change the name of alliance and option category
+		// 		ot = changeName(id, name, mapAllianceCategory, mapAllianceCategoryNames);
+		// 		if(ot != null) {
+		// 			return ot;
+		// 		}
+		// 		ot = changeName(id, name, mapOptionCategory, mapOptionCategoryNames);
+		// 		if(ot != null) {
+		// 			return ot;
+		// 		}
 		ot = changeName(id, name, mapItemCategory, mapItemCategoryNames);
+
 		if(ot != null) {
 			return ot;
 		}
-		
+
 		ot = changeName(id, name, mapSkillCategory, mapSkillCategoryNames);
+
 		if(ot != null) {
 			return ot;
 		}
 
 		ot = changeName(id, name, mapSkillType, mapSkillTypeNames);
+
 		if(ot != null) {
 			return ot;
 		}
-		
+
 		return null;
 	}
 
 	protected ObjectType changeName(ID id, String name, Map mapObjectType, Map mapObjectTypeNames) {
 		ObjectType ot = (ObjectType) mapObjectType.get(id);
+
 		if(ot != null) {
 			mapObjectTypeNames.remove(Umlaut.normalize(ot.getName()));
 			ot.setName(name);
-	        addObject(ot, mapObjectType, mapObjectTypeNames);
+			addObject(ot, mapObjectType, mapObjectTypeNames);
 		}
+
 		return null;
 	}
 
@@ -909,8 +920,8 @@ public class GenericRules implements Rules {
 	 * Adds the specified object to the specified map by id and by name.
 	 *
 	 * @param o TODO: DOCUMENT ME!
-	 * @param m TODO: DOCUMENT ME!
-	 * @param n TODO: DOCUMENT ME!
+	 * @param mapObjectType TODO: DOCUMENT ME!
+	 * @param mapObjectTypeNames TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -961,24 +972,35 @@ public class GenericRules implements Rules {
 		return (ObjectType) objects.get(StringID.create(normName));
 	}
 
-	
 	private String gameSpecificStuffClassName;
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param className TODO: DOCUMENT ME!
+	 */
 	public void setGameSpecificStuffClassName(String className) {
 		gameSpecificStuffClassName = className;
 	}
 
 	private GameSpecificStuff gameSpecificStuff;
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public GameSpecificStuff getGameSpecificStuff() {
 		if(gameSpecificStuff == null) {
 			gameSpecificStuff = new GameSpecificStuffProvider().getGameSpecificStuff(gameSpecificStuffClassName);
 		}
+
 		return gameSpecificStuff;
 	}
 
-	/** 
-	 * An iterator implementation to iterate a Map of objects and return only 
-	 * returns object instances of the given Class.
+	/**
+	 * An iterator implementation to iterate a Map of objects and return only  returns object
+	 * instances of the given Class.
 	 */
 	private static class ClassIterator implements Iterator {
 		private Class givenClass;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -61,7 +61,6 @@ public class Logger {
 	}
 
 	private static Logger DEFAULT = new Logger("");
-	
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -77,6 +76,7 @@ public class Logger {
 		if(aClass == null) {
 			throw new NullPointerException();
 		}
+
 		return getInstance(aClass.getName());
 	}
 
@@ -86,6 +86,8 @@ public class Logger {
 	 * @param aBase TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws NullPointerException TODO: DOCUMENT ME!
 	 */
 	public static Logger getInstance(String aBase) {
 		// be fail-fast

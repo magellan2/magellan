@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -367,12 +367,11 @@ public class Region extends UnitContainer {
 			this.resources.put(resource.getType().getID(), resource);
 		}
 
-// 		if(log.isDebugEnabled()) {
-// 			log.debug("Region.addResource:" + this);
-// 			log.debug("Region.addResource:" + resource);
-// 			log.debug("Region.addResource:" + resources);
-// 		}
-
+		// 		if(log.isDebugEnabled()) {
+		// 			log.debug("Region.addResource:" + this);
+		// 			log.debug("Region.addResource:" + resource);
+		// 			log.debug("Region.addResource:" + resources);
+		// 		}
 		return resource;
 	}
 
@@ -413,18 +412,15 @@ public class Region extends UnitContainer {
 			this.resourceCollection = null;
 		}
 
-// 		if(log.isDebugEnabled()) {
-// 			log.debug("Region.removeResource:" + this);
-// 			log.debug("Region.removeResource:" + ret);
-
-// 			if(ret != null) {
-// 				log.debug("Region.removeResource:" + ret.getID());
-// 				log.debug("Region.removeResource:" + ret.getType().getID());
-// 			}
-
-// 			log.debug("Region.removeResource:" + resources);
-// 		}
-
+		// 		if(log.isDebugEnabled()) {
+		// 			log.debug("Region.removeResource:" + this);
+		// 			log.debug("Region.removeResource:" + ret);
+		// 			if(ret != null) {
+		// 				log.debug("Region.removeResource:" + ret.getID());
+		// 				log.debug("Region.removeResource:" + ret.getType().getID());
+		// 			}
+		// 			log.debug("Region.removeResource:" + resources);
+		// 		}
 		return ret;
 	}
 

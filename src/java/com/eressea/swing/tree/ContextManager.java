@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -40,8 +40,7 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class ContextManager extends MouseAdapter {
-	private final static Logger log = Logger.getInstance(ContextManager.class);
-
+	private static final Logger log = Logger.getInstance(ContextManager.class);
 	private Collection listeners = null;
 	private JTree source;
 	private Collection selection = null;

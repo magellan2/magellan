@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -83,7 +83,8 @@ public class TempUnit extends Unit {
 	 * @param newTemp TODO: DOCUMENT ME!
 	 * @param sameRound notifies if both game data objects have been from the same round
 	 */
-	public static void merge(GameData curGD, TempUnit curTemp, GameData newGD, TempUnit newTemp, boolean sameRound) {
+	public static void merge(GameData curGD, TempUnit curTemp, GameData newGD, TempUnit newTemp,
+							 boolean sameRound) {
 		Unit.merge(curGD, curTemp, newGD, newTemp, sameRound);
 
 		if(curTemp.getParent() != null) {

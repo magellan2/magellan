@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -102,8 +102,9 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 
 					if(line.indexOf(SaveSelectionAction.COMMENT) != -1) {
 						// remove trailing comment
-						line = line.substring(0,line.indexOf(SaveSelectionAction.COMMENT));
+						line = line.substring(0, line.indexOf(SaveSelectionAction.COMMENT));
 					}
+
 					coordinates.add(Coordinate.parse(line, SaveSelectionAction.DELIMITER));
 				}
 

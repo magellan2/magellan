@@ -90,7 +90,7 @@
         <showErrorStackTrace>true</showErrorStackTrace>
     </messages>
     <misc>
-        <threadCount>2</threadCount>
+        <threadCount>4</threadCount>
     </misc>
     <printer>
         <alignment>
@@ -230,7 +230,7 @@
         <header>
             <keys>Eressea Java Code Base</keys>
             <smartMode>5</smartMode>
-            <text>/*| *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,| *                          Stefan Goetz, Sebastian Pappert,| *                          Klaas Prause, Enno Rehling,| *                          Sebastian Tusk, Ulrich Kuester,| *                          Ilja Pavkovic| *| * This file is part of the Eressea Java Code Base, see the| * file LICENSING for the licensing information applying to| * this file.| *| */</text>
+            <text>/*| *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,| *                          Stefan Goetz, Sebastian Pappert,| *                          Klaas Prause, Enno Rehling,| *                          Sebastian Tusk, Ulrich Kuester,| *                          Ilja Pavkovic| *| * This file is part of the Eressea Java Code Base, see the| * file LICENSING for the licensing information applying to| * this file.| *| */</text>
             <use>true</use>
         </header>
         <history>
@@ -238,8 +238,8 @@
         </history>
         <imports>
             <grouping>
-                <defaultDepth>3</defaultDepth>
-                <packages>java:2|javax:2|*:0</packages>
+                <defaultDepth>2</defaultDepth>
+                <packages>java:1|javax:1|*:0</packages>
             </grouping>
             <policy>disabled</policy>
             <sort>true</sort>

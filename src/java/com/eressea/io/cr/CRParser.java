@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -272,7 +272,6 @@ public class CRParser implements RulesIO, GameDataIO {
 
 			if(msgs.contains(msg)) {
 				// log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
-
 				if(log.isDebugEnabled()) {
 					log.debug("List: " + msgs);
 					log.debug("new entry:" + msg);
@@ -841,7 +840,7 @@ public class CRParser implements RulesIO, GameDataIO {
 		sc.getNextToken(); // skip MAGELLAN
 
 		while(!sc.eof) {
-			if(sc.argc == 2 && sc.argv[1].equalsIgnoreCase("class")) {
+			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("class")) {
 				rules.setGameSpecificStuffClassName(sc.argv[0]);
 				sc.getNextToken();
 			} else if(sc.isBlock) {
@@ -1928,14 +1927,17 @@ public class CRParser implements RulesIO, GameDataIO {
 						  (sc.argv[1].equalsIgnoreCase("verkleidung") ||
 						  sc.argv[1].equalsIgnoreCase("anderepartei"))) {
 				ID fid = EntityID.createEntityID(sc.argv[0], 10);
+
 				/* currently (2004-02) the cr is inconsistent with nr. There may
 				 * be a situation where the corresponding faction of this tag
 				 * does not exist in the game data so add it automagically
 				 * (bugzilla bug 794). */
 				Faction faction = world.getFaction(fid);
+
 				if(faction == null) {
 					faction = new Faction(fid, world);
 				}
+
 				unit.setGuiseFaction(faction);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("typprefix")) {
@@ -2619,8 +2621,9 @@ public class CRParser implements RulesIO, GameDataIO {
 				break;
 			}
 		}
+
 		// add scheme region as a normal region with unknown region type
-		if (world.getRegion(c) == null) {
+		if(world.getRegion(c) == null) {
 			Region newRegion = new Region(c, world);
 			newRegion.setType(RegionType.unknown);
 			newRegion.setName(scheme.getName());
