@@ -29,7 +29,7 @@ import java.io.Writer;
 
 /**
  * A FileType represents a file for reading and writing data Special care will
- * be taken in the corresponding child objects  for gzip, bzip2 and zip files.
+ * be taken for compressed files in the corresponding child objects.
  */
 public class FileType {
 	// basically identified file types
@@ -46,100 +46,107 @@ public class FileType {
 	/** The file this file type identifies. */
 	protected String filename;
 
-	/** true if file will opened for writing. */
-	protected boolean writeFile;
+	/** true iff file is readonly. */
+	protected boolean readonly = false;
 
-	FileType(String aFile) throws IOException {
-		this(aFile, false);
-	}
-
-	FileType(String aFile, boolean writeFile) throws IOException {
+	FileType(String aFile, boolean readonly) throws IOException {
 		if(aFile == null) {
 			throw new IOException();
 		}
 
 		filename = aFile;
 
-		this.writeFile = writeFile;
+		this.readonly = readonly;
 	}
 
 	/**
 	 * Tests if an InputStream can be opened for this FileType.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return <code>this</code>
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
 	public FileType checkConnection() throws IOException {
 		try {
 			createInputStream().close();
 		} catch(FileNotFoundException e) {
-			// it may be ok, if file does not exist 
+			// if file is readonly, this will be a problem
+			// if not, it may be ok that the file does not exist 
+			if(readonly) {
+				throw e;
+			}
 		}
-
 		return this;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the underlying file.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a File object
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException if file cannot be determined, e.g. for 
+	 * an url pointing to an InputStream.
 	 */
 	public File getFile() throws IOException {
 		return new File(getName());
 	}
 
 	/**
-	 * return the most inner name of the FileType. Will be overwritten in
+	 * Returns the most inner name of the FileType. Will be overwritten in
 	 * ZipFileType
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the most inner name of a FileType.
 	 */
 	public String getInnerName() {
-		return getName();
+		return null;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the name of the FileType.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the name of the FileType
 	 */
 	public String getName() {
 		return filename;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns a String representation of the FileType.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a String representation of the FileType.
 	 */
 	public String toString() {
-		return getName();
+		if(getInnerName() == null) {
+			return getName();
+		} else {
+			return getName() + " (" + getInnerName() + ")";
+		}
 	}
 
 	/**
 	 * Creates a Reader for this FileType.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a Reader of the underlying File.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
 	public Reader createReader() throws IOException {
 		return new BufferedReader(FileType.createEncodingReader(createInputStream()));
 	}
 
 	/**
-	 * Creates a backup of the underlying file and creates a Writer for this
-	 * FileType.
+	 * Creates a backup of the underlying file and returns 
+	 * a Writer for this.
+	 * 
+	 * @return a Writer of the underlying File.
 	 *
-	 * @return TODO: DOCUMENT ME!
-	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException If file is marked as readonly or 
+	 * another IOException occured.
 	 */
 	public Writer createWriter() throws IOException {
-		// TODO if(!writeFile) throw new IOException("File may not be opened in write mode!");
+		if(readonly) {
+			throw new ReadOnlyException();
+		}
 		FileBackup.create(new File(filename));
 
 		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream()));
@@ -148,9 +155,9 @@ public class FileType {
 	/**
 	 * Creates an InputStream for the underlying file.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return an InputStream of the underlying file.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException
 	 */
 	protected InputStream createInputStream() throws IOException {
 		return new FileInputStream(new File(filename));
@@ -159,22 +166,22 @@ public class FileType {
 	/**
 	 * Creates an OutputStream for the underlying file.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return an OutputStream of the underlying file.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException
 	 */
 	protected OutputStream createOutputStream() throws IOException {
 		return new FileOutputStream(new File(filename));
 	}
 
 	/**
-	 * Creates a Reader with the default encoding iso-8859-1
+	 * Creates a Reader with the default encoding iso-8859-1.
 	 *
-	 * @param is TODO: DOCUMENT ME!
+	 * @param is the InputStream 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a Reader for the given InputStream
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException
 	 */
 	public static Reader createEncodingReader(InputStream is)
 									   throws IOException
@@ -183,13 +190,13 @@ public class FileType {
 	}
 
 	/**
-	 * Creates a Writer with the default encoding specified in
+	 * Creates a Writer with the default encoding iso-8859-1.
 	 *
-	 * @param os TODO: DOCUMENT ME!
+	 * @param is the OutputStream 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a Writer for the given OutputStream
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException
 	 */
 	public static Writer createEncodingWriter(OutputStream os)
 									   throws IOException
@@ -197,6 +204,9 @@ public class FileType {
 		return new OutputStreamWriter(os, DEFAULT_ENCODING);
 	}
 
-	/** TODO: DOCUMENT ME! */
+	/** A String representation of the default encoding.  */
 	public static final String DEFAULT_ENCODING = "iso-8859-1";
+
+	public static class ReadOnlyException extends IOException {
+	}
 }

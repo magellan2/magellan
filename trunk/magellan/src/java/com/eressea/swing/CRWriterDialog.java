@@ -197,7 +197,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 					try {
 						write(FileTypeFactory.singleton()
-											 .createFileType(outputFile)
+											 .createFileType(outputFile, false)
 											 .createWriter());
 						quit();
 					} catch(IOException ioe) {

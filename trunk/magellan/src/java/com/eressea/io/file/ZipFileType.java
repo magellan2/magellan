@@ -36,29 +36,21 @@ public class ZipFileType extends FileType {
 	// TODO: ZipEntry may also be a "normal" FileType
 	protected ZipEntry zipentry = null;
 
-	ZipFileType(String aFile, ZipEntry aEntry) throws IOException {
-		super(aFile);
+	ZipFileType(String aFile, boolean readonly, ZipEntry aEntry) throws IOException {
+		super(aFile, readonly);
 
 		if(aEntry == null) {
-			throw new IOException("ZipEntry is null in ZipFileType");
+			throw new FileTypeFactory.NoValidEntryException();
 		}
 
 		zipentry = new ZipEntry(aEntry);
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the most inner name of the FileType. Will be overwritten in
+	 * ZipFileType
 	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public String toString() {
-		return super.toString() + " (" + zipentry.getName() + ")";
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the most inner name of a FileType.
 	 */
 	public String getInnerName() {
 		return zipentry.getName();
@@ -68,10 +60,10 @@ public class ZipFileType extends FileType {
 	 * Returns all files inside the zip ending with one of  the given endings
 	 * case insensitive
 	 *
-	 * @param zip TODO: DOCUMENT ME!
-	 * @param endings TODO: DOCUMENT ME!
+	 * @param zip a ZipFile to inspect
+	 * @param endings an array of valid file name endings.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return an array of valid zip file entries
 	 */
 	public static ZipEntry[] getZipEntries(ZipFile zip, String endings[]) {
 		Collection ret = new ArrayList();

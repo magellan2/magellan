@@ -127,7 +127,6 @@ import com.eressea.extern.ExternalModule;
 import com.eressea.extern.ExternalModule2;
 
 import com.eressea.io.GameDataReader;
-import com.eressea.io.MissingInputException;
 import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileTypeFactory;
 
@@ -1020,23 +1019,12 @@ public class Client extends JFrame implements ShortcutListener,
 
 				File crFile = new File(report);
 
-				if(crFile.exists() == true) {
-					c.dataFile = crFile;
-
-					// load new data
-					c.data = c.loadCR(crFile.getAbsolutePath());
-					c.postProcessLoadedCR(c.data);
-				} else {
-					JOptionPane.showMessageDialog(c,
-												  "The specified report (" +
-												  report +
-												  ") could not be loaded.",
-												  "Error loading report",
-												  JOptionPane.ERROR_MESSAGE);
-				}
+				c.dataFile = crFile;
+				
+				// load new data
+				c.setData(c.loadCR(crFile.getAbsolutePath()));
 			}
 
-			c.updatedGameData();
 			c.setReportChanged(false);
 
 			startWindow.progress(5,
@@ -1088,7 +1076,7 @@ public class Client extends JFrame implements ShortcutListener,
 				out = "A fatal error occured: " + exc.toString();
 			}
 
-			log.error(out);
+			log.error(out, exc);
 			JOptionPane.showMessageDialog(new JFrame(), out);
 			System.exit(1);
 		}
@@ -1206,10 +1194,11 @@ public class Client extends JFrame implements ShortcutListener,
 
 		try {
 			d = new GameDataReader().readGameData(FileTypeFactory.singleton()
-																 .createFileType(fileName,
+																 .createFileType(fileName, 
+																				 true,
 																				 new ClientFileTypeChooser(this)));
 			everLoadedReport = true;
-		} catch(MissingInputException e) {
+		} catch(FileTypeFactory.NoValidEntryException e) {
 			JOptionPane.showMessageDialog(this,
 										  getString("msg.loadcr.missingcr.text.1") +
 										  fileName +
@@ -1243,7 +1232,7 @@ public class Client extends JFrame implements ShortcutListener,
 		/**
 		 * Creates a new ClientFileTypeChooser object.
 		 *
-		 * @param client TODO: DOCUMENT ME!
+		 * @param client the parent Client object
 		 */
 		public ClientFileTypeChooser(Client client) {
 			this.client = client;
@@ -1634,8 +1623,8 @@ public class Client extends JFrame implements ShortcutListener,
 	 * @param data TODO: DOCUMENT ME!
 	 */
 	public void setData(GameData data) {
-		postProcessLoadedCR(data);
 		this.data = data;
+		postProcessLoadedCR(data);
 		updatedGameData();
 	}
 

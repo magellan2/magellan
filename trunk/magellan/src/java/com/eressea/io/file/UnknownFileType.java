@@ -20,7 +20,7 @@ import java.io.IOException;
  * treated equal to cr files.
  */
 public class UnknownFileType extends FileType {
-	UnknownFileType(String aFile) throws IOException {
-		super(aFile);
+	UnknownFileType(String aFile, boolean readonly) throws IOException {
+		super(aFile, readonly);
 	}
 }
