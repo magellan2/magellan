@@ -51,7 +51,7 @@ public class Umlaut {
 	 * 		   the corresponding     element in the <tt>values</tt> array.
 	 */
 	public static String recode(String string, char keys[], String values[]) {
-		// recoding is kind of expensive, so store recoded strings 
+		// recoding is kind of expensive, so store recoded strings
 		String s = (String) recodedStrings.get(string);
 
 		if(s == null) {
@@ -104,6 +104,11 @@ public class Umlaut {
 	 * @return the uppercase version of <tt>str</tt> with all umlauts expanded.
 	 */
 	public static String normalize(String str) {
-		return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str).toUpperCase());
+		if (str == null) {
+			return null;
+		} else {
+			return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str).
+				toUpperCase());
+		}
 	}
 }
