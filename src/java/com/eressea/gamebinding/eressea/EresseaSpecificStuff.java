@@ -44,7 +44,7 @@ public class EresseaSpecificStuff implements GameSpecificStuff {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public GameData createGameData(Rules rules, String name) {
-		return new CompleteData(rules, name, this);
+		return new CompleteData(rules, name);
 	}
 
 	/**

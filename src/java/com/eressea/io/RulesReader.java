@@ -49,8 +49,21 @@ public class RulesReader {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Rules readRules(String gameName) {
-		return loadRules(gameName);
+	public Rules readRules(String name) throws IOException {
+		try {
+			return loadRules(name);
+		} catch(IOException e) {
+			/* The desired rule file doesn't exist. Fallback to default, if
+			   we haven't tried that yet. */
+			if(name.equalsIgnoreCase("eressea")) {
+				/* This is bad. We don't even have the default rules. */
+				log.warn("The default ruleset couldn't be found! Operating with an empty ruleset.",
+						 e);
+				return new GenericRules();
+			} else {
+				return readRules("eressea");
+			}
+		}
 	}
 
 	/**
@@ -60,31 +73,17 @@ public class RulesReader {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static Rules loadRules(String name) {
+	private Rules loadRules(String name) throws IOException {
 		String ending = new File("XML").exists() ? ".xml" : ".cr";
 
 		if(log.isDebugEnabled()) {
 			log.debug("loading rules for \"" + name + "\" (ending: " + ending + ")");
 		}
 
-		try {
-			FileType filetype = FileTypeFactory.singleton().createInputStreamSourceFileType("rules/" +
-																							name +
-																							ending);
-
-			return new CRParser().readRules(filetype);
-		} catch(IOException e) {
-			/* The desired rule file doesn't exist. Fallback to default, if
-			   we haven't tried that yet. */
-			if(name.equalsIgnoreCase("eressea")) {
-				/* This is bad. We don't even have the default rules. */
-				log.warn("The default ruleset couldn't be found! Operating with an empty ruleset.",
-						 e);
-
-				return new GenericRules();
-			} else {
-				return loadRules("eressea");
-			}
-		}
+		FileType filetype = FileTypeFactory.singleton().createInputStreamSourceFileType("rules/" +
+																						name +
+																						ending);
+		
+		return new CRParser().readRules(filetype);
 	}
 }

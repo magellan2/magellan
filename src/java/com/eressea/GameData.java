@@ -21,7 +21,6 @@ import java.util.Map;
 import com.eressea.cr.Loader;
 
 import com.eressea.gamebinding.GameSpecificStuff;
-import com.eressea.gamebinding.GameSpecificStuffProvider;
 
 import com.eressea.io.file.FileType;
 
@@ -225,20 +224,9 @@ public abstract class GameData implements Cloneable {
 	 * @param _name TODO: DOCUMENT ME!
 	 */
 	public GameData(Rules _rules, String _name) {
-		this(_rules, _name, new GameSpecificStuffProvider().getGameSpecificStuff(_name));
-	}
-
-	/**
-	 * Creates a new GameData object.
-	 *
-	 * @param _rules TODO: DOCUMENT ME!
-	 * @param _name TODO: DOCUMENT ME!
-	 * @param _gameSpecificStuff TODO: DOCUMENT ME!
-	 */
-	public GameData(Rules _rules, String _name, GameSpecificStuff _gameSpecificStuff) {
+		if(_rules == null) throw new NullPointerException();
 		rules = _rules;
 		name = _name;
-		gameSpecificStuff = _gameSpecificStuff;
 	}
 
 	/**
@@ -1403,15 +1391,13 @@ public abstract class GameData implements Cloneable {
 		return new Loader().cloneGameData(this);
 	}
 
-	private final GameSpecificStuff gameSpecificStuff;
-
 	/**
 	 * Provides the encapsulating of game specific stuff
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public GameSpecificStuff getGameSpecificStuff() {
-		return gameSpecificStuff;
+		return rules.getGameSpecificStuff();
 	}
 
 	/** Post processes the game data (if necessary)  once */

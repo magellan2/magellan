@@ -1,3 +1,8 @@
+2004-02-17  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Rules.java: added block GAMESPECIFIC to
+	rules to support dynamic GameSpecificStuff class.
+
 2004-02-14  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/swing/completion/MultiEditorOrderEditorList.java: 

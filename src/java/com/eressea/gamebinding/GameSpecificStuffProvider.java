@@ -13,6 +13,8 @@
 
 package com.eressea.gamebinding;
 
+import com.eressea.Rules;
+
 import com.eressea.gamebinding.eressea.EresseaSpecificStuff;
 
 import com.eressea.util.logging.Logger;
@@ -27,20 +29,41 @@ public class GameSpecificStuffProvider {
 	private static final Logger log = Logger.getInstance(GameSpecificStuffProvider.class);
 
 	/**
-	 * Returns the GameSpecificStuff object for the given game name
+	 * Returns the GameSpecificStuff object for the given class name
 	 *
-	 * @param aName the name of the game to load
+	 * @param aName the classname of the game to load
 	 *
 	 * @return a GameSpecificStuff object based on the given game name
 	 */
-	public GameSpecificStuff getGameSpecificStuff(String aName) {
-		if("eressea".equalsIgnoreCase(aName)) {
-			return new EresseaSpecificStuff();
+	public GameSpecificStuff getGameSpecificStuff(String className) {
+		GameSpecificStuff gameSpecificStuff = loadGameSpecificStuff(className);
+		if(className == null || gameSpecificStuff == null) {
+			gameSpecificStuff = new EresseaSpecificStuff();
+			log.warn("Unable to determine GameSpecificStuff. Falling back to EresseaSpecificStuff.");
 		}
+		return gameSpecificStuff;
+	}
 
-		log.warn("Unable to determine GameSpecificStuff for name '" + aName +
-				 "'. Falling back to eressea");
-
-		return new EresseaSpecificStuff();
+	private GameSpecificStuff loadGameSpecificStuff(String className) {
+		if(className==null) {
+			return null;
+		}
+		try {
+			// TODO: perhaps use ResourcePathClassLoader instead?
+			Class clazz = Class.forName(className);
+			Object result = clazz.newInstance();
+			if(result instanceof GameSpecificStuff) {
+				return (GameSpecificStuff) result;
+			}
+		} catch(ClassNotFoundException e) {
+			log.warn("Class '"+className+"' not found.",e);
+		} catch(Exception e) {
+			// IllegalAccessException - if the class or its nullary constructor is not accessible. 
+			// InstantiationException - if this Class represents an abstract class, an interface, an array class, a primitive type, or void; or if the class has no nullary constructor; or if the instantiation fails for some other reason. 
+			// ExceptionInInitializerError - if the initialization provoked by this method fails. 
+			// SecurityException - if there is no permission to create a new
+			log.warn("Class '"+className+"' cannot be instantiated.",e);
+		} 
+		return null;
 	}
 }

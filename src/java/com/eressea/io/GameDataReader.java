@@ -19,8 +19,6 @@ import java.io.Reader;
 import com.eressea.GameData;
 import com.eressea.Rules;
 
-import com.eressea.gamebinding.GameSpecificStuffProvider;
-
 import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
 
@@ -125,8 +123,7 @@ public class GameDataReader {
 			throw new IOException("No Rules for game '" + aGameName + "' readable!");
 		}
 
-		return new GameSpecificStuffProvider().getGameSpecificStuff(aGameName).createGameData(rules,
-																							  aGameName);
+		return rules.getGameSpecificStuff().createGameData(rules, aGameName);
 	}
 
 	private boolean isXMLFile(FileType aFileType) throws IOException {

@@ -841,6 +841,21 @@ public class CRParser implements RulesIO, GameDataIO {
 		}
 	}
 
+	private void parseMagellan(Rules rules) throws IOException {
+		sc.getNextToken(); // skip MAGELLAN
+		
+		while(!sc.eof) {
+			if(sc.argc == 2 && sc.argv[1].equalsIgnoreCase("class")) {
+				rules.setGameSpecificStuffClassName(sc.argv[0]);
+				sc.getNextToken();
+			} else if(sc.isBlock) {
+				break;
+			} else {
+				unknown("MAGELLAN", true);
+			}
+		}
+	}
+
 	private void parseRace(Rules rules) throws IOException {
 		int f = sc.argv[0].indexOf("\"", 0);
 		int t = sc.argv[0].indexOf("\"", f + 1);
@@ -1318,7 +1333,9 @@ public class CRParser implements RulesIO, GameDataIO {
 		sc.getNextToken(); // skip "RULES"
 
 		while(!sc.eof) {
-			if(sc.argv[0].startsWith("RACE ")) {
+			if(sc.argv[0].startsWith("MAGELLAN")) {
+				parseMagellan(rules);
+			} else if(sc.argv[0].startsWith("RACE ")) {
 				parseRace(rules);
 			} else if(sc.argv[0].startsWith("ITEM ") || sc.argv[0].startsWith("HERB ")) {
 				parseItemType(rules);
