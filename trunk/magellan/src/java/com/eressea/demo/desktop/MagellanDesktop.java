@@ -38,6 +38,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -99,10 +100,7 @@ import com.eressea.util.logging.Logger;
  * @author Andreas
  * @version
  */
-public class MagellanDesktop extends javax.swing.JPanel
-	implements java.awt.event.WindowListener, ActionListener,
-			   PreferencesFactory
-{
+public class MagellanDesktop extends JPanel implements WindowListener, ActionListener, PreferencesFactory {
 	private static final Logger log = Logger.getInstance(MagellanDesktop.class);
 
 	// mode possibilities
@@ -870,10 +868,9 @@ public class MagellanDesktop extends javax.swing.JPanel
 				continue;
 			}
 
-			String					   cName = sdef.substring(0,
-															  sdef.indexOf('='));
-			String					   definition = sdef.substring(sdef.indexOf('=') +
-																   1);
+			String cName = sdef.substring(0, sdef.indexOf('='));
+			String definition = sdef.substring(sdef.indexOf('=') + 1);
+
 			DesktopLayoutManager.CPref cPref = lManager.parseCPref(definition);
 
 			if(cPref != null) {
@@ -889,8 +886,7 @@ public class MagellanDesktop extends javax.swing.JPanel
 			layoutComponents.put(lName, lMap);
 			log.info(msg + "Successful!");
 		} else {
-			log.info(msg +
-					 "Unable to resolve! Please rework/remove this layout.");
+			log.info(msg + "Unable to resolve! Please rework/remove this layout.");
 		}
 	}
 
@@ -985,10 +981,10 @@ public class MagellanDesktop extends javax.swing.JPanel
 	 * default splitted screen:
 	 * 
 	 * <p>
-	 * |---1/3---|----1/3---|-1/3------| 1/3        |          |Name&    1/3 |
-	 * Overview| Map      |Descript. | |---------|          |----------| 1/3
-	 * History|          |Details  1/3 |---------|----------|----------| 1/3
-	 * Minimap| Messages |Commands 1/3 |---------|----------|----------|
+	 * |---1/3---|----1/3---|-1/3------   | 1/3     |          |Name&    1/3 |
+	 * Overview  | Map      |Descript.    |         |----------|          |----------| 1/3
+	 * History   |          |Details  1/3 |---------|----------|----------| 1/3
+	 * Minimap   | Messages |Commands 1/3 |---------|----------|----------|
 	 * </p>
 	 *
 	 * @return TODO: DOCUMENT ME!

@@ -16,6 +16,7 @@ package com.eressea.demo.actions;
 import java.awt.event.ActionEvent;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -38,23 +39,35 @@ public class FileHistoryAction extends AbstractAction {
 	 * @param history TODO: DOCUMENT ME!
 	 * @param cr TODO: DOCUMENT ME!
 	 */
-	public FileHistoryAction(FileHistory history, File cr) {
-		file		 = cr;
-		this.history = history;
+	public FileHistoryAction(FileHistory hist, File cr) {
+		file	= cr;
+		history = hist;
+		init(); 
+	}
 
+	private void init() {
 		// format the text
 		StringBuffer path = new StringBuffer();
-		path.append("...").append(File.separatorChar).append(cr.getName());
-		cr = cr.getParentFile();
+		path.append("...").append(File.separatorChar).append(file.getName());
 
-		while((cr != null) && ((path.length() + cr.getName().length()) < 30)) {
-			path.insert(4, File.separatorChar).insert(4, cr.getName());
-			cr = cr.getParentFile();
+		File parent = file.getParentFile();
+		while((parent != null) && ((path.length() + parent.getName().length()) < 30)) {
+			path.insert(4, File.separatorChar).insert(4, parent.getName());
+			parent = parent.getParentFile();
 		}
 
 		putValue(Action.NAME, path.toString());
+		
+		// tool tip text
+		try {
+			putValue(Action.SHORT_DESCRIPTION, file.getCanonicalPath());
+		} catch(IOException e) {
+			putValue(Action.SHORT_DESCRIPTION, path.toString());
+		}
 	}
 
+
+	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

@@ -410,14 +410,14 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		activeObject = null;
 		lastExpanded.clear();
 
-		if((data != null) && (data.regions() != null)) {
-			// preprocess regions to have relations
-			// pavkovic 2003.09.24: TODO: this takes ages
-			for(Iterator iter = data.regions().values().iterator();
-					iter.hasNext();) {
-				((Region) iter.next()).refreshUnitRelations();
-			}
-		}
+		//if((data != null) && (data.regions() != null)) {
+		// preprocess regions to have relations
+		// pavkovic 2003.12.21: moved to RegionNodeWrapper, perhaps this helps
+		//for(Iterator iter = data.regions().values().iterator();
+		//		iter.hasNext();) {
+		//	((Region) iter.next()).refreshUnitRelations();
+		//}
+		//}
 
 		// initialize variables used in while loop
 		boolean createIslandNodes = ((new Boolean(settings.getProperty("EMapOverviewPanel.displayIslands",
@@ -3548,6 +3548,56 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	public String getSuperMenuTitle() {
 		return getString("menu.supertitle");
 	}
+
+	
+	/*
+	public String getComponentConfiguration() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("EMapOverviewPanel.treeHistorySplit");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.treeHistorySplit", "100"));
+
+		sb.append("_");
+
+		sb.append("EMapOverviewPanel.displayIslands");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.displayIslands", "true"));
+
+		sb.append("_");
+
+		sb.append("EMapOverviewPanel.sortRegions");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.sortRegions", "true"));
+
+		sb.append("_");
+
+		sb.append("EMapOverviewPanel.sortRegionsCriteria");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates"));
+
+		sb.append("_");
+
+		sb.append("EMapOverviewPanel.sortUnitsCriteria");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills"));
+
+		sb.append("_");
+
+		sb.append("EMapOverviewPanel.useBestSkill");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.useBestSkill", "true"));
+
+		sb.append("_");
+
+		sb.append("EMapOverviewPanel.treeStructure");
+		sb.append("=");
+		sb.append(settings.getProperty("EMapOverviewPanel.treeStructure",
+									   " " + TreeHelper.FACTION + " " + TreeHelper.GROUP));
+
+		return sb.toString();
+	}
+	*/
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,

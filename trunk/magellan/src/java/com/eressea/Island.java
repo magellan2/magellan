@@ -55,11 +55,7 @@ public class Island extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Island) {
-			return this.getID().equals(((Island) o).getID());
-		} else {
-			return false;
-		}
+		return (o instanceof Island) && this.getID().equals(((Island) o).getID());
 	}
 
 	/**
@@ -154,20 +150,17 @@ public class Island extends DescribedObject {
 	 * regionsInvalidated variable is true.
 	 */
 	private void refreshRegions() {
-		if(regions != null) {
+		if(regions == null) {
+			regions = CollectionFactory.createHashtable();
+		} else {
 			regions.clear();
 		}
-
+		
 		if(data.regions() != null) {
-			for(Iterator iter = data.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.regions().values().iterator(); iter.hasNext(); ) {
 				Region r = (Region) iter.next();
 
 				if(this.equals(r.getIsland())) {
-					if(regions == null) {
-						regions = CollectionFactory.createHashtable();
-					}
-
 					regions.put(r.getID(), r);
 				}
 			}
@@ -195,5 +188,40 @@ public class Island extends DescribedObject {
 		}
 
 		newIsland.invalidateRegions();
+	}
+
+
+	/** 
+	 * Sets the Map of regions. This shall solely called by GameData.postProcess.
+	 */
+	private void setRegions(Map r) {
+		this.regions = r;
+		regionsInvalidated = false;
+	} 
+
+	/**  
+	 * Postprocess of Island objects. The Regions of the GameData are attached to their Island.
+	 */
+	public static void postProcess(GameData data) {
+		// create a map of region maps for every Island
+		Map islandMap = CollectionFactory.createHashtable();
+		for(Iterator iter = data.regions().values().iterator(); iter.hasNext(); ) {
+			Region r = (Region) iter.next();
+			if(r.getIsland() != null) {
+				Map actRegionMap = (Map) islandMap.get(r.getIsland());
+				if(actRegionMap == null) {
+					actRegionMap = CollectionFactory.createHashtable();
+					islandMap.put(r.getIsland(), actRegionMap);
+				}
+				actRegionMap.put(r.getID(), r);
+			}
+		}
+		
+		// setRegions for every Island in the map of region maps.
+		for(Iterator iter = islandMap.keySet().iterator(); iter.hasNext(); ) {
+			Island island = (Island) iter.next();
+			Map actRegionMap = (Map) islandMap.get(island);
+			island.setRegions(actRegionMap);
+		}
 	}
 }

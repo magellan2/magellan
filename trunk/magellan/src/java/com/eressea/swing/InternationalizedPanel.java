@@ -23,7 +23,7 @@ import com.eressea.util.Translations;
  * @author $author$
  * @version $Revision$
  */
-public class InternationalizedPanel extends JPanel {
+public abstract class InternationalizedPanel extends JPanel {
 	/**
 	 * Creates a new InternationalizedPanel object.
 	 */

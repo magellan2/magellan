@@ -5,7 +5,7 @@
   help
 -->
 
-<project name="magellan" default="help">
+<project name="magellan" default="release">
   <!--  <property name="build.compiler"  value="jikes"/>-->
 
   <property name="VERSION.MAJOR"         value="1"/>

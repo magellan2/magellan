@@ -127,6 +127,7 @@ ITEMCATEGORY "luxuries"
 
 ITEMCATEGORY "herbs"
 "Kräuter";name
+"kraeuter";iconname
 4;naturalorder
 
 ITEMCATEGORY "potions"
@@ -174,127 +175,106 @@ HERB "Flachwurz"
 "Flachwurz";name
 "Ebene";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Würziger Wagemut"
 "Würziger Wagemut";name
 "Ebene";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Eulenauge"
 "Eulenauge";name
 "Ebene";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Grüner Spinnerich"
 "Grüner Spinnerich";name
 "Wald";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Blauer Baumringel"
 "Blauer Baumringel";name
 "Wald";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Elfenlieb"
 "Elfenlieb";name
 "Wald";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Gurgelkraut"
 "Gurgelkraut";name
 "Sumpf";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Knotiger Saugwurz"
 "Knotiger Saugwurz";name
 "Sumpf";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Blasenmorchel"
 "Blasenmorchel";name
 "Sumpf";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Wasserfinder"
 "Wasserfinder";name
 "Wüste";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Kakteenschwitz"
 "Kakteenschwitz";name
 "Wüste";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Sandfäule"
 "Sandfäule";name
 "Wüste";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Windbeutel"
 "Windbeutel";name
 "Hochland";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Fjordwuchs"
 "Fjordwuchs";name
 "Hochland";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Alraune"
 "Alraune";name
 "Hochland";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Steinbeißer"
 "Steinbeißer";name
 "Gebirge";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Spaltwachs"
 "Spaltwachs";name
 "Gebirge";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Höhlenglimm"
 "Höhlenglimm";name
 "Gebirge";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Eisblume"
 "Eisblume";name
 "Gletscher";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Weißer Wüterich"
 "Weißer Wüterich";name
 "Gletscher";region
 "herbs";category
-"kraeuter";iconname
 
 HERB "Schneekristall"
 "Schneekristall";name
 "Gletscher";region
 "herbs";category
-"kraeuter";iconname
 
 
 

@@ -1,3 +1,23 @@
+2004-01-02  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/io/cr/CRParser.java: Tag "Rekruten" will
+	now always be interpreted.
+
+2003-12-30  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/MapSaverUI.java: removed redundant code.
+
+	* src/java/com/eressea/rules/ItemCategory.java: added icon name
+	information.
+
+2003-12-25  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/actions/FileHistoryAction.java: added
+	tooltip with canonical path name.
+
+	* src/release/lib/README: added informations of used
+	libraries and their licenses.
+
 2003-12-15  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/io/cr/CRParser.java: removed class Herb.

@@ -13,6 +13,7 @@
 
 package com.eressea;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -1468,8 +1469,55 @@ public abstract class GameData implements Cloneable {
 			return;
 		}
 
+		// attach Regions to Islands
+		Island.postProcess(this);
+
+		// remove double messages
+		postProcessMessages();
+
+
 		getGameSpecificStuff().postProcess(this);
 		postProcessed = true;
+	}
+
+	/** 
+	 * This function post processes the message blocks to remove duplicate messages.
+	 * In former times this has been done while loading the game data but 
+	 * this had a negative time tradeoff (O(n^2)). This functions needs about O(n log n).
+	 */	
+	private void postProcessMessages() {
+		// faction.messages
+		for(Iterator iter = factions().values().iterator(); iter.hasNext(); ) {
+			Faction o = (Faction) iter.next();
+			postProcessMessages(o.messages);
+		}
+		// region.messages
+		for(Iterator iter = regions().values().iterator(); iter.hasNext(); ) {
+			Region o = (Region) iter.next();
+			postProcessMessages(o.messages);
+		}
+	}
+
+	/** 
+	 * Postprocess a given list of messages. To remove duplicate messages 
+	 * we put all messages in an ordered hashtable and put them back into
+	 * the messages collection.
+	 */
+	private void postProcessMessages(Collection messages) {
+		if(messages == null) {
+			return;
+		}
+		Map ht = CollectionFactory.createOrderedHashtable();
+		for(Iterator iter = messages.iterator(); iter.hasNext();) {
+			Message msg = (Message) iter.next();
+			if(ht.put(msg, msg) != null) {
+				log.warn("Duplicate message \"" + msg.getText() +
+						 "\" found, removing it.");
+				
+			}
+		}
+		messages.clear();
+		messages.addAll(ht.values());
 	}
 
 	/**

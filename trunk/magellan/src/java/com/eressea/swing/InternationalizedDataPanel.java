@@ -27,7 +27,7 @@ import com.eressea.event.GameDataListener;
  * @author $author$
  * @version $Revision$
  */
-public class InternationalizedDataPanel extends InternationalizedPanel
+public abstract class InternationalizedDataPanel extends InternationalizedPanel
 	implements GameDataListener
 {
 	protected GameData		  data		 = null;

@@ -18,6 +18,7 @@ import java.util.Map;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.IDBaseConverter;
+import com.eressea.util.Translations;
 
 /**
  * A class for identifying unit objects through an integer. This class makes
@@ -30,7 +31,7 @@ public class UnitID extends EntityID {
 	 * Constructs a new UnitID object based on an Integer object created from
 	 * the specified int.
 	 *
-	 * @param i TODO: DOCUMENT ME!
+	 * @param i id as integer form
 	 */
 	protected UnitID(int i) {
 		super(i);
@@ -46,11 +47,11 @@ public class UnitID extends EntityID {
 	/**
 	 * Constructs a new UnitID object based on the specified Integer.
 	 *
-	 * @param o TODO: DOCUMENT ME!
+	 * @param o  unitid as Integer
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return UnitID of the given int
 	 *
-	 * @throws NullPointerException TODO: DOCUMENT ME!
+	 * @throws NullPointerException if o is null
 	 */
 	public static UnitID createUnitID(Integer o) {
 		if(o == null) {
@@ -68,11 +69,12 @@ public class UnitID extends EntityID {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Constructs a new UnitID object based on the specified Integer.
 	 *
-	 * @param i TODO: DOCUMENT ME!
+	 * @param o  unitid as Integer
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return UnitID of the given int
+	 *
 	 */
 	public static UnitID createUnitID(int i) {
 		return createUnitID(new Integer(i));
@@ -82,21 +84,22 @@ public class UnitID extends EntityID {
 	 * Constructs a new UnitID object by parsing the specified string for an
 	 * integer in the default representation of class IDBaseConverter.
 	 *
-	 * @param s TODO: DOCUMENT ME!
+	 * @param s  unitid as String
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return UnitID of the given string
 	 */
 	public static UnitID createUnitID(String s) {
 		return createUnitID(s, IDBaseConverter.getBase());
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Constructs a new UnitID object by parsing the specified string for an
+	 * integer in the default representation of class IDBaseConverter.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param radix TODO: DOCUMENT ME!
+	 * @param s     unitid as String
+	 * @param radix radix as base for transforming string to int
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return UnitID of the given string
 	 */
 	public static UnitID createUnitID(String s, int radix) {
 		return createUnitID(valueOf(s, radix));
@@ -108,7 +111,7 @@ public class UnitID extends EntityID {
 	 * not TEMP id aware, i.e. negative ids are returned as the string
 	 * representation of the absolute value but without a 'TEMP' prefix.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return String representation of this UnitID
 	 */
 	public String toString() {
 		return IDBaseConverter.toString(Math.abs(this.intValue()));
@@ -117,7 +120,7 @@ public class UnitID extends EntityID {
 	/**
 	 * Indicates that this UnitID is equal to some other object.
 	 *
-	 * @param o TODO: DOCUMENT ME!
+	 * @param o object to compare
 	 *
 	 * @return true, if o is an instance of UnitID and the integer values of
 	 * 		   this and the specfied object o are equal.
@@ -131,9 +134,9 @@ public class UnitID extends EntityID {
 	 * Imposes a natural ordering on UnitID objects based on the natural
 	 * ordering of the absolute values of the underlying integers.
 	 *
-	 * @param o TODO: DOCUMENT ME!
+	 * @param o object to compare
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return int based on comparability
 	 */
 	public int compareTo(Object o) {
 		return Math.abs(this.intValue()) - Math.abs(((EntityID) o).intValue());
@@ -144,12 +147,12 @@ public class UnitID extends EntityID {
 	 * radix. This method is TEMP id aware, i.e. the string "TEMP 909" would
 	 * return an Integer object with the numerical value -909.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param radix TODO: DOCUMENT ME!
+	 * @param s string represenation of the unit id
+	 * @param radix radix to parse integer
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return integer representation of the given string based on given radix
 	 *
-	 * @throws NumberFormatException TODO: DOCUMENT ME!
+	 * @throws NumberFormatException if unit id is not parseable
 	 */
 	private static Integer valueOf(String s, int radix) {
 		s = s.trim().replace('\t', ' ');
@@ -161,12 +164,10 @@ public class UnitID extends EntityID {
 		} else {
 			String part1 = s.substring(0, blankPos);
 
-			if(part1.equalsIgnoreCase(com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_TEMP))) {
-				return new Integer(-1 * Integer.parseInt(s.substring(blankPos)
-														  .trim(), radix));
+			if(part1.equalsIgnoreCase(Translations.getOrderTranslation(EresseaOrderConstants.O_TEMP))) {
+				return new Integer(-1 * Integer.parseInt(s.substring(blankPos).trim(), radix));
 			} else {
-				throw new NumberFormatException("UnitID: unable to parse id " +
-												s);
+				throw new NumberFormatException("UnitID: unable to parse id " +	s);
 			}
 		}
 	}

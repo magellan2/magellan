@@ -11,11 +11,6 @@
  *
  */
 
-/*
- * Initializable.java
- *
- * Created on 17. Oktober 2001, 17:01
- */
 package com.eressea.demo.desktop;
 
 /**

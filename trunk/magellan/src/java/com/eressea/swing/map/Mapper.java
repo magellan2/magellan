@@ -13,6 +13,7 @@
 
 package com.eressea.swing.map;
 
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -892,9 +894,9 @@ public class Mapper extends InternationalizedDataPanel
 					buffer = null;
 				}
 
-				buffer = new java.awt.image.BufferedImage(clipBounds.width,
-														  clipBounds.height,
-														  java.awt.image.BufferedImage.TYPE_INT_ARGB);
+				buffer = new BufferedImage(clipBounds.width,
+										   clipBounds.height,
+										   BufferedImage.TYPE_INT_ARGB);
 			}
 
 			Graphics bg = buffer.getGraphics();
@@ -1624,7 +1626,7 @@ public class Mapper extends InternationalizedDataPanel
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.lang.String getComponentConfiguration() {
+	public String getComponentConfiguration() {
 		Iterator     it  = getPlanes().iterator();
 		StringBuffer buf = new StringBuffer();
 		buf.append(getScaleFactor());
@@ -1663,11 +1665,12 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Implemented for interface Initializable to set configuration data to 
+	 * this component.
 	 *
-	 * @param p1 TODO: DOCUMENT ME!
+	 * @param p1 the configuration string from magellan_desktop.ini
 	 */
-	public void initComponent(java.lang.String p1) {
+	public void initComponent(String p1) {
 		if((p1 == null) || (p1.length() == 0)) {
 			return;
 		}

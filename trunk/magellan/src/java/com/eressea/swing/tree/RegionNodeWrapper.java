@@ -109,10 +109,14 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getIconNames() {
+
 		Object key		 = region.getType().getID();
 		List   iconNames = (List) iconNamesLists.get(key);
 
 		if(iconNames == null) {
+			// in this situation init the region
+			region.refreshUnitRelations();
+
 			iconNames = Collections.singletonList(StringFactory.getFactory()
 															   .intern(key.toString()));
 			iconNamesLists.put(key, iconNames);
@@ -159,7 +163,10 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getGraphicsElements() {
+
 		if(GEs == null) {
+			// in this situation init the region
+			region.refreshUnitRelations();
 			GraphicsElement ge = new RegionGraphicsElement(toString(), null,
 														   null,
 														   region.getType()

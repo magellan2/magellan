@@ -15,6 +15,8 @@ package com.eressea.demo.desktop;
 
 import java.util.Iterator;
 
+import javax.swing.KeyStroke;
+
 /**
  * DOCUMENT ME!
  *
@@ -24,16 +26,16 @@ import java.util.Iterator;
 public interface ShortcutListener {
 	/**
 	 * Should return all short cuts this class want to be informed. The
-	 * elements should be of type javax.swing.KeyStroke
+	 * elements have to be of type javax.swing.KeyStroke
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return Iterator over all short
 	 */
 	public Iterator getShortCuts();
 
 	/**
 	 * This method is called when a shortcut from getShortCuts() is recognized.
 	 */
-	public void shortCut(javax.swing.KeyStroke shortcut);
+	public void shortCut(KeyStroke shortcut);
 
 	/**
 	 * TODO: DOCUMENT ME!
