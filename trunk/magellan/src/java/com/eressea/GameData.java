@@ -37,7 +37,7 @@ import com.eressea.util.logging.Logger;
 
 /**
  * This is the central class for collecting all the data representing one computer report.
- * 
+ *
  * <p>
  * The maps units, regions and so on are declared as abstract methods and the getX and addX provide
  * access to them. This allows for subclasses that implicitely represent only a certain part of
@@ -115,11 +115,18 @@ public abstract class GameData implements Cloneable {
 	/**
 	 * A collection of all units. The keys are <tt>Integer</tt> objects containg the unit's ids.
 	 * The values consist of objects of class <tt>Unit</tt>. TEMP units are not included, they are
-	 * only stored in the unit collection of their parents and their regions.
+	 * only stored in the unit collection of their parents and their regions and in the tempUnits map.
 	 *
 	 * @return returns the units map
 	 */
 	public abstract Map units();
+
+	/**
+	 * A collection of tempUnits. The keys are <tt>Integer</tt> objects containg the unit's ids.
+	 * The values consist of objects of class <tt>TempUnit</tt>.
+	 * @return returns the tempunits map
+	 */
+	public abstract Map tempUnits();
 
 	/**
 	 * All regions in this game data. The keys are <tt>Coordinate</tt> objects containg the id of
@@ -674,7 +681,7 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @return the new merged game data object
 	 *
-	 * @throws IllegalArgumentException if first and second game data 
+	 * @throws IllegalArgumentException if first and second game data
 	 * object are from different game types.
 	 */
 	public static GameData merge(GameData gd1, GameData gd2) {
@@ -1084,8 +1091,8 @@ public abstract class GameData implements Cloneable {
 
 					// temp units are not deleted, assume that the
 					// old game data is thrown away anyway
-					// FIXME(pavkovic): this is NOT the case if we 
-					// use export cr for exporting 
+					// FIXME(pavkovic): this is NOT the case if we
+					// use export cr for exporting
 				}
 			}
 		}
@@ -1420,7 +1427,7 @@ public abstract class GameData implements Cloneable {
 
 		// enforce locale to be non-null
 		postProcessLocale();
-		
+
 		// attach Regions to Islands
 		Island.postProcess(this);
 
@@ -1431,9 +1438,9 @@ public abstract class GameData implements Cloneable {
 		postProcessed = true;
 	}
 
-	/** 
+	/**
 	 * Adds the order locale of Magellan if locale is null.
-	 * This should prevent some NPE with the sideeffect to 
+	 * This should prevent some NPE with the sideeffect to
 	 * store a locale in a locale-less game data object.
 	 */
 	private void postProcessLocale() {

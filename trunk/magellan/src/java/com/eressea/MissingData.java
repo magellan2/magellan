@@ -29,6 +29,7 @@ import com.eressea.util.CollectionFactory;
 public class MissingData extends GameData {
 	protected Map regions = CollectionFactory.createOrderedHashtable();
 	protected Map units = CollectionFactory.createHashtable();
+	protected Map tempUnits = CollectionFactory.createHashtable();
 	protected Map factions = CollectionFactory.createOrderedHashtable();
 	protected Map ships = CollectionFactory.createOrderedHashtable();
 	protected Map buildings = CollectionFactory.createOrderedHashtable();
@@ -65,6 +66,10 @@ public class MissingData extends GameData {
 	 */
 	public Map units() {
 		return units;
+	}
+
+	public Map tempUnits() {
+		return tempUnits;
 	}
 
 	/**
