@@ -16,7 +16,6 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.border.EtchedBorder;
 
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -90,7 +89,6 @@ public class SkillChartPanel extends InternationalizedDataPanel implements Selec
 		setLayout(grid);
 		GridBagConstraints c = new GridBagConstraints(0, 0, 2, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 2, 2);
 		add(chartPanel, c);
-		EtchedBorder border = new EtchedBorder();
 
 		c = new GridBagConstraints(0, 1, 1, 1, 0.1, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(6, 6, 6, 6), 2, 2);
 		skills = new JComboBox();
