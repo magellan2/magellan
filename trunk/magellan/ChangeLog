@@ -1,4 +1,11 @@
+2003-12-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/res/images/gui/actions: Added some icons from the
+	Eclipse project.
+
 2003-12-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* build.sh (LOCALCLASSPATH): added optional-1.5.3.jar
 
 	* src/java/com/eressea/util/ImageFactory.java: refactored
 	functions; added support for game specific sub directory.

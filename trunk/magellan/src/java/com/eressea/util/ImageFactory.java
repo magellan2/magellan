@@ -133,7 +133,6 @@ public class ImageFactory implements GameDataListener {
 		if(url == null) {
 			url = ResourcePathClassLoader.getResourceStatically(imageName +
 																".gif");
-
 			if(url != null) {
 				alphaURL = ResourcePathClassLoader.getResourceStatically(imageName +
 																		 "-alpha.gif");
@@ -151,9 +150,9 @@ public class ImageFactory implements GameDataListener {
 
 		Image img = Toolkit.getDefaultToolkit().getImage(url);
 
+		
 		return (alphaURL == null) ? img
-								  : merge(img,
-										  Toolkit.getDefaultToolkit().getImage(url));
+								  : merge(img,Toolkit.getDefaultToolkit().getImage(alphaURL));
 	}
 
 	/**
@@ -168,10 +167,8 @@ public class ImageFactory implements GameDataListener {
 	 * 		   were not of equal size.
 	 */
 	public Image merge(Image rgb, Image alpha) {
-		Image result = null;
-
 		if((rgb == null) || (alpha == null)) {
-			return result;
+			return null;
 		}
 
 		// pavkovic 2002.06.05: change way to wait for image data. This should dramatically
@@ -209,13 +206,11 @@ public class ImageFactory implements GameDataListener {
 			0x00FFFFFF);
 		}
 
-		result = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(w,
-																			   h,
-																			   pixelsRGB,
-																			   0,
-																			   w));
-
-		return result;
+		return  Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(w,
+																			  h,
+																			  pixelsRGB,
+																			  0,
+																			  w));
 	}
 
 	/**

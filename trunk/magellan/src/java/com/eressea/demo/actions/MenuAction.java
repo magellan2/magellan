@@ -116,7 +116,7 @@ public abstract class MenuAction extends AbstractAction {
 		if(aName != null) {
 			String name		 = "images/gui/actions/" + aName;
 			Image  imageIcon = ImageFactory.getFactory().loadImage(name);
-
+			
 			if(imageIcon != null) {
 				icon = new ImageIcon(imageIcon);
 			}
@@ -126,12 +126,12 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-						 *
-						 */
+	 *
+	 */
 	public String getIconName() {
-		//String className = this.getClass().getName().toLowerCase();
-		//int pos = className.lastIndexOf(".");
-		//return pos == -1 ? className : className.substring(pos+1);
+		// String className = this.getClass().getName().toLowerCase();
+		// int pos = className.lastIndexOf(".");
+		// return pos == -1 ? className : className.substring(pos+1);
 		return null;
 	}
 

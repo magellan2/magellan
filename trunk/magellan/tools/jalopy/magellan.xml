@@ -261,7 +261,7 @@
                 <braceRight>0</braceRight>
                 <braceRightAfter>1</braceRightAfter>
                 <continuation>4</continuation>
-                <deep>55</deep>
+                <deep>75</deep>
                 <extends>-1</extends>
                 <general>4</general>
                 <implements>-1</implements>
@@ -363,7 +363,7 @@
             <general>
                 <beforeOperator>false</beforeOperator>
                 <enable>true</enable>
-                <lineLength>80</lineLength>
+                <lineLength>100</lineLength>
             </general>
             <ondemand>
                 <after>
