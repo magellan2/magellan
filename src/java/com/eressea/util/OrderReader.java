@@ -111,7 +111,7 @@ public class OrderReader {
 					token = tokenizer.nextToken();
 
 					try {
-						ID fID = EntityID.createEntityID(token);
+						ID fID = EntityID.createEntityID(token,data.base);
 						Faction f = data.getFaction(fID);
 
 						if(f != null) {
@@ -223,7 +223,7 @@ public class OrderReader {
 				ID unitID = null;
 
 				try {
-					unitID = UnitID.createUnitID(token);
+					unitID = UnitID.createUnitID(token,data.base);
 				} catch(NumberFormatException e) {
 					log.error("OrderReader.readFaction(): " + e.toString() + " at line " +
 							  stream.getLineNumber(), e);

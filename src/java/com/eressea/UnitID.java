@@ -33,12 +33,12 @@ public class UnitID extends EntityID {
 	 *
 	 * @param i id as integer form
 	 */
-	protected UnitID(int i) {
-		super(i);
+	protected UnitID(int i, int radix) {
+		super(i,radix);
 	}
 
-	protected UnitID(Integer i) {
-		super(i);
+	protected UnitID(Integer i, int radix) {
+		super(i,radix);
 	}
 
 	/** a static cache to use this class as flyweight factory */
@@ -53,7 +53,7 @@ public class UnitID extends EntityID {
 	 *
 	 * @throws NullPointerException if o is null
 	 */
-	public static UnitID createUnitID(Integer o) {
+	public static UnitID createUnitID(Integer o,int radix) {
 		if(o == null) {
 			throw new NullPointerException();
 		}
@@ -61,7 +61,7 @@ public class UnitID extends EntityID {
 		UnitID id = (UnitID) idMap.get(o);
 
 		if(id == null) {
-			id = new UnitID(o);
+			id = new UnitID(o, radix);
 			idMap.put(o, id);
 		}
 
@@ -75,23 +75,11 @@ public class UnitID extends EntityID {
 	 *
 	 * @return UnitID of the given int
 	 */
-	public static UnitID createUnitID(int i) {
-		return createUnitID(new Integer(i));
+	public static UnitID createUnitID(int i, int radix) {
+		return createUnitID(new Integer(i), radix);
 	}
 
-	/**
-	 * Constructs a new UnitID object by parsing the specified string for an integer in the default
-	 * representation of class IDBaseConverter.
-	 *
-	 * @param s unitid as String
-	 *
-	 * @return UnitID of the given string
-	 */
-	public static UnitID createUnitID(String s) {
-		return createUnitID(s, IDBaseConverter.getBase());
-	}
-
-	/**
+    /**
 	 * Constructs a new UnitID object by parsing the specified string for an integer in the default
 	 * representation of class IDBaseConverter.
 	 *
@@ -101,7 +89,7 @@ public class UnitID extends EntityID {
 	 * @return UnitID of the given string
 	 */
 	public static UnitID createUnitID(String s, int radix) {
-		return createUnitID(valueOf(s, radix));
+		return createUnitID(valueOf(s, radix),radix);
 	}
 
 	/**
@@ -131,21 +119,21 @@ public class UnitID extends EntityID {
 
 			int i = id.intValue();
 
-			while(data.tempUnits().get(UnitID.createUnitID(-i)) != null) {
-				i = getNextDecimalID(i, true);
+			while(data.tempUnits().get(UnitID.createUnitID(-i,data.base)) != null) {
+				i = getNextDecimalID(i, data.base, true);
 			}
 
-			id = UnitID.createUnitID(i);
+			id = UnitID.createUnitID(i,data.base);
 		} else {
 			int i = data.getCurTempID();
-			UnitID checkID = UnitID.createUnitID(-i);
+			UnitID checkID = UnitID.createUnitID(-i,data.base);
 
 			while(data.tempUnits().get(checkID) != null) {
 				boolean ascending = settings.getProperty("ClientPreferences.ascendingOrder", "true")
 											.equalsIgnoreCase("true");
 
 				if(settings.getProperty("ClientPreferences.countDecimal", "true").equalsIgnoreCase("true")) {
-					i = getNextDecimalID(i, ascending);
+					i = getNextDecimalID(i, data.base, ascending);
 				} else {
 					if(ascending) {
 						i++;
@@ -164,11 +152,11 @@ public class UnitID extends EntityID {
 					}
 				}
 
-				checkID = UnitID.createUnitID(-i);
+				checkID = UnitID.createUnitID(-i,data.base);
 			}
 
 			data.setCurTempID(i);
-			id = UnitID.createUnitID(-checkID.intValue());
+			id = UnitID.createUnitID(-checkID.intValue(),data.base);
 		}
 
 		return id;
@@ -183,8 +171,8 @@ public class UnitID extends EntityID {
 	 * @return the next int, that is bigger than the given one but consists only out of decimal
 	 * 		   digits (interpreted in the current base) if the given int did so also.
 	 */
-	private static int getNextDecimalID(int i, boolean ascending) {
-		int base = IDBaseConverter.getBase();
+	private static int getNextDecimalID(int i, int radix, boolean ascending) {
+		int base = radix;
 
 		if(ascending) {
 			i++;
@@ -201,7 +189,7 @@ public class UnitID extends EntityID {
 				i += ((base - 10) * base * base * base);
 			}
 
-			if(i > IDBaseConverter.getMaxId()) {
+			if(i > IDBaseConverter.getMaxId(base)) {
 				i = 1;
 			}
 		} else {
@@ -224,7 +212,7 @@ public class UnitID extends EntityID {
 			i--;
 
 			if(i <= 0) {
-				i = IDBaseConverter.getMaxId();
+				i = IDBaseConverter.getMaxId(base);
 			}
 		}
 
@@ -240,7 +228,7 @@ public class UnitID extends EntityID {
 	 * @return String representation of this UnitID
 	 */
 	public String toString() {
-		return IDBaseConverter.toString(Math.abs(this.intValue()));
+		return IDBaseConverter.toString(Math.abs(this.intValue()),radix);
 	}
 
 	/**

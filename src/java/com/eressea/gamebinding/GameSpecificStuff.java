@@ -80,7 +80,7 @@ public interface GameSpecificStuff {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public OrderParser getOrderParser(Rules rules);
+	public OrderParser getOrderParser(GameData data);
 
 	/**
 	 * Delivers a game specific Completer

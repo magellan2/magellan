@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
@@ -26,15 +27,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class VorlageAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new VorlageAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public VorlageAction(Client parent) {
-		client = parent;
+	public VorlageAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -42,8 +42,8 @@ public class VorlageAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
-		JVorlage v = new JVorlage(client, true, client.getSettings());
+	public void actionPerformed(ActionEvent e) {
+		JVorlage v = new JVorlage(client, true, client.getProperties());
 		v.setVisible(true);
 	}
 

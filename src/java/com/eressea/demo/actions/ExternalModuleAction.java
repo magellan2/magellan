@@ -65,7 +65,7 @@ public class ExternalModuleAction extends AbstractAction {
 
 		if(external instanceof ExternalModule) {
 			ExternalModule extModule = (ExternalModule) external;
-			extModule.start(client.getData(), client.getDispatcher(), client.getSettings());
+			extModule.start(client.getData(), client.getDispatcher(), client.getProperties());
 		}
 
 		if(external instanceof ExternalModule2) {

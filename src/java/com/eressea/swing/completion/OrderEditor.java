@@ -121,7 +121,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		setEditorKit(new OrderEditorKit());
 		this.settings = settings;
 
-		this.parser = (data != null) ? data.getGameSpecificStuff().getOrderParser(data.rules) : null;
+		this.parser = (data != null) ? data.getGameSpecificStuff().getOrderParser(data) : null;
 
 		this.undoMgr = _undoMgr;
 

@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
@@ -62,8 +63,8 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public TextCellRenderer(CellGeometry geo, java.util.Properties settings) {
-		super(geo, settings);
+	public TextCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 
 		if(settings != null) {
 			try {

@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.UnitID;
 import com.eressea.completion.OrderParser;
@@ -47,15 +48,15 @@ public class EresseaOrderParser implements OrderParser {
 	private TokenBucket tokenBucket = null;
 	private Iterator tokens = null;
 	private EresseaOrderCompleter completer = null;
-	private Rules rules = null;
+	private GameData data = null;
 
 	/**
 	 * Creates a new <tt>EresseaOrderParser</tt> object.
 	 *
-	 * @param rules TODO: DOCUMENT ME!
+	 * @param data TODO: DOCUMENT ME!
 	 */
-	public EresseaOrderParser(Rules rules) {
-		this(rules, null);
+	public EresseaOrderParser(GameData data) {
+		this(data, null);
 	}
 
 	/**
@@ -66,10 +67,10 @@ public class EresseaOrderParser implements OrderParser {
 	 * @param rules TODO: DOCUMENT ME!
 	 * @param cc TODO: DOCUMENT ME!
 	 */
-	public EresseaOrderParser(Rules rules, EresseaOrderCompleter cc) {
+	public EresseaOrderParser(GameData data, EresseaOrderCompleter cc) {
 		tokenBucket = new TokenBucket();
 		completer = cc;
-		this.rules = rules;
+		this.data = data;
 	}
 
 	/**
@@ -103,7 +104,7 @@ public class EresseaOrderParser implements OrderParser {
 	public boolean read(Reader in) {
 		errMsg = null;
 		tokenBucket.read(in);
-		tokenBucket.mergeTempTokens();
+		tokenBucket.mergeTempTokens(data.base);
 		tokens = tokenBucket.iterator();
 
 		boolean retVal = true;
@@ -1039,7 +1040,7 @@ public class EresseaOrderParser implements OrderParser {
 		boolean retVal = false;
 		token.ttype = OrderToken.TT_ID;
 
-		UnitID uid = UnitID.createUnitID(token.getText());
+		UnitID uid = UnitID.createUnitID(token.getText(),data.base);
 		OrderToken t = (OrderToken) tokens.next();
 
 		if(isNumeric(t.getText()) == true) {
@@ -1341,14 +1342,14 @@ public class EresseaOrderParser implements OrderParser {
 	private boolean readKaufeAmount(OrderToken token) {
 		boolean retVal = false;
 		ItemType type = null;
-		ItemCategory luxuryCategory = (rules != null)
-									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
+		ItemCategory luxuryCategory = (data != null)
+									  ? data.rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
 		token.ttype = OrderToken.TT_NUMBER;
 
 		OrderToken t = (OrderToken) tokens.next();
 
 		// 
-		if((rules != null) && ((type = rules.getItemType(t.getText())) != null) &&
+		if((data.rules != null) && ((type = data.rules.getItemType(t.getText())) != null) &&
 			   (luxuryCategory != null) && luxuryCategory.equals(type.getCategory())) {
 			retVal = readFinalString(t);
 		} else {
@@ -1434,7 +1435,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		OrderToken t = (OrderToken) tokens.next();
 
-		if((rules != null) && (rules.getSkillType(t.getText()) != null)) {
+		if((data.rules != null) && (data.rules.getSkillType(t.getText()) != null)) {
 			t.ttype = OrderToken.TT_STRING;
 			t = (OrderToken) tokens.next();
 
@@ -1490,11 +1491,11 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readMacheTempID(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CASTLE))) {
 			retVal = readMacheBurg(t);
-		} else if((rules != null) && ((type = rules.getBuildingType(t.getText())) != null) &&
+		} else if((data.rules != null) && ((type = data.rules.getBuildingType(t.getText())) != null) &&
 					  (!(type instanceof CastleType) ||
 					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CASTLE)))) {
 			retVal = readMacheBuilding(t);
-		} else if((rules != null) && (rules.getShipType(t.getText()) != null)) {
+		} else if((data.rules != null) && (data.rules.getShipType(t.getText()) != null)) {
 			retVal = readMacheShip(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_SHIP))) {
 			retVal = readMacheSchiff(t);
@@ -1524,10 +1525,10 @@ public class EresseaOrderParser implements OrderParser {
 
 		if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CASTLE))) {
 			retVal = readMacheBurg(t);
-		} else if((rules != null) && ((type = rules.getBuildingType(t.getText())) != null) &&
+		} else if((data.rules != null) && ((type = data.rules.getBuildingType(t.getText())) != null) &&
 					  !(type instanceof CastleType)) {
 			retVal = readMacheBuilding(t);
-		} else if((rules != null) && (rules.getShipType(t.getText()) != null)) {
+		} else if((data.rules != null) && (data.rules.getShipType(t.getText()) != null)) {
 			retVal = readMacheShip(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_SHIP))) {
 			retVal = readMacheSchiff(t);
@@ -2189,7 +2190,7 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readFinalNumber(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_FACTION))) {
 			retVal = readTarnePartei(t);
-		} else if((rules != null) && (rules.getRace(t.getText()) != null)) {
+		} else if((data.rules != null) && (data.rules.getRace(t.getText()) != null)) {
 			retVal = readFinalString(t);
 		} else {
 			if(completer != null) {
@@ -2332,7 +2333,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		OrderToken t = (OrderToken) tokens.next();
 
-		if((rules != null) && (rules.getSkillType(t.getText()) != null)) {
+		if((data.rules != null) && (data.rules.getSkillType(t.getText()) != null)) {
 			retVal = readFinalString(t);
 		} else {
 			if(completer != null) {
@@ -2370,13 +2371,13 @@ public class EresseaOrderParser implements OrderParser {
 	private boolean readVerkaufeAmount(OrderToken token) {
 		boolean retVal = false;
 		ItemType type = null;
-		ItemCategory luxuryCategory = (rules != null)
-									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
+		ItemCategory luxuryCategory = (data.rules != null)
+									  ? data.rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
 		token.ttype = OrderToken.TT_NUMBER;
 
 		OrderToken t = (OrderToken) tokens.next();
 
-		if((rules != null) && ((type = rules.getItemType(t.getText())) != null) &&
+		if((data.rules != null) && ((type = data.rules.getItemType(t.getText())) != null) &&
 			   (luxuryCategory != null) && type.getCategory().equals(luxuryCategory)) {
 			retVal = readFinalString(t);
 		} else {
@@ -2393,13 +2394,13 @@ public class EresseaOrderParser implements OrderParser {
 	private boolean readVerkaufeAlles(OrderToken token) {
 		boolean retVal = false;
 		ItemType type = null;
-		ItemCategory luxuryCategory = (rules != null)
-									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
+		ItemCategory luxuryCategory = (data.rules != null)
+									  ? data.rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
 		token.ttype = OrderToken.TT_KEYWORD;
 
 		OrderToken t = (OrderToken) tokens.next();
 
-		if((rules != null) && ((type = rules.getItemType(t.getText())) != null) && (type != null) &&
+		if((data.rules != null) && ((type = data.rules.getItemType(t.getText())) != null) && (type != null) &&
 			   (luxuryCategory != null) && luxuryCategory.equals(type.getCategory())) {
 			retVal = readFinalString(t);
 		} else {
@@ -2737,7 +2738,7 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean isID(String txt) {
-		boolean retVal = isNumeric(txt, IDBaseConverter.getBase(), 0, MAX_UID);
+		boolean retVal = isNumeric(txt, data.base, 0, MAX_UID);
 
 		if(retVal == false) {
 			retVal = isTempID(txt);
@@ -2758,7 +2759,7 @@ public class EresseaOrderParser implements OrderParser {
 			String temp = txt.substring(0, blankPos);
 			String nr = txt.substring(blankPos + 1);
 			retVal = (temp.equalsIgnoreCase("TEMP"));
-			retVal = retVal && isNumeric(nr, IDBaseConverter.getBase(), 0, MAX_UID);
+			retVal = retVal && isNumeric(nr, data.base, 0, MAX_UID);
 		}
 
 		return retVal;
@@ -2908,7 +2909,7 @@ class TokenBucket extends Vector {
 	 *
 	 * @return the number of remaining tokens.
 	 */
-	public int mergeTempTokens() {
+	public int mergeTempTokens(int base) {
 		if(size() > 1) {
 			for(int i = 0; i < (size() - 1); i++) {
 				OrderToken tempToken = tokenAt(i);
@@ -2918,7 +2919,7 @@ class TokenBucket extends Vector {
 					try {
 						OrderToken nrToken = tokenAt(i + 1);
 						String nrText = nrToken.getText();
-						int nr = IDBaseConverter.parse(nrText);
+						int nr = IDBaseConverter.parse(nrText,base);
 
 						if((nr >= 0) && (nr <= MAX_TEMP_NR)) {
 							tempToken.setText("TEMP " + nrText);

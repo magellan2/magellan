@@ -24,13 +24,16 @@ import com.eressea.util.IDBaseConverter;
  * class.
  */
 public class EntityID extends IntegerID {
+    protected int radix = 10;
+    
 	/**
 	 * Constructs a new entity id based on the specified integer object.
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 */
-	protected EntityID(Integer i) {
+	protected EntityID(Integer i, int radix) {
 		super(i);
+        this.radix = radix;
 	}
 
 	/**
@@ -38,18 +41,9 @@ public class EntityID extends IntegerID {
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 */
-	protected EntityID(int i) {
+	protected EntityID(int i, int radix) {
 		super(i);
-	}
-
-	/**
-	 * Constructs a new entity id parsing the specified string for an integer using the default
-	 * radix of the IDBaseConverter class.
-	 *
-	 * @param s TODO: DOCUMENT ME!
-	 */
-	protected EntityID(String s) {
-		super(IDBaseConverter.parse(s));
+        this.radix = radix;
 	}
 
 	/**
@@ -60,7 +54,8 @@ public class EntityID extends IntegerID {
 	 * @param radix TODO: DOCUMENT ME!
 	 */
 	protected EntityID(String s, int radix) {
-		super(Integer.parseInt(s, radix));
+		super(IDBaseConverter.parse(s, radix));
+        this.radix = radix;
 	}
 
 	/** a static cache to use this class as flyweight factory */
@@ -75,15 +70,15 @@ public class EntityID extends IntegerID {
 	 *
 	 * @throws NullPointerException TODO: DOCUMENT ME!
 	 */
-	public static EntityID createEntityID(Integer o) {
+	public static EntityID createEntityID(Integer o, int radix) {
 		if(o == null) {
 			throw new NullPointerException();
 		}
-
+        
 		EntityID id = (EntityID) idMap.get(o);
 
 		if(id == null) {
-			id = new EntityID(o);
+			id = new EntityID(o, radix);
 			idMap.put(o, id);
 		}
 
@@ -97,20 +92,8 @@ public class EntityID extends IntegerID {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static EntityID createEntityID(int i) {
-		return createEntityID(new Integer(i));
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param radix TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public static EntityID createEntityID(String s, int radix) {
-		return createEntityID(Integer.parseInt(s, radix));
+	public static EntityID createEntityID(int i, int radix) {
+		return createEntityID(new Integer(i),radix);
 	}
 
 	/**
@@ -121,8 +104,8 @@ public class EntityID extends IntegerID {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static EntityID createEntityID(String s) {
-		return createEntityID(IDBaseConverter.parse(s));
+	public static EntityID createEntityID(String s, int radix) {
+		return createEntityID(IDBaseConverter.parse(s,radix),radix);
 	}
 
 	/**
@@ -132,7 +115,7 @@ public class EntityID extends IntegerID {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return IDBaseConverter.toString(this.intValue());
+		return IDBaseConverter.toString(this.intValue(),radix);
 	}
 
 	/**
@@ -160,6 +143,8 @@ public class EntityID extends IntegerID {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int compareTo(Object o) {
-		return intValue() - ((EntityID) o).intValue();
+        int thisInt = intValue();
+        int oInt = ((EntityID) o).intValue();
+        return thisInt > oInt ? 1 : thisInt == oInt ? 0 : -1;
 	}
 }

@@ -15,6 +15,7 @@ package com.eressea.demo.actions;
 
 import java.util.Map;
 
+import com.eressea.demo.Client;
 import com.eressea.swing.MapperPanel;
 import com.eressea.util.CollectionFactory;
 
@@ -32,7 +33,8 @@ public class TileSetAction extends MenuAction {
 	 *
 	 * @param m TODO: DOCUMENT ME!
 	 */
-	public TileSetAction(MapperPanel m) {
+	public TileSetAction(Client client, MapperPanel m) {
+        super(client);
 		map = m;
 	}
 

@@ -21,13 +21,14 @@ import java.awt.Rectangle;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.main.MagellanContext;
 
 /**
  * Abstract base class for renderers that want to paint regions as a colored polygon.
  */
 public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
-	protected AbstractRegionShapeCellRenderer(CellGeometry geo, java.util.Properties settings) {
-		super(geo, settings);
+	protected AbstractRegionShapeCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	protected abstract Color getSingleColor(Region r);

@@ -26,15 +26,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class QuitAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates new OpenCRAction
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public QuitAction(Client parent) {
-		client = parent;
+	public QuitAction(Client client) {
+        super(client);
 	}
 
 	/**

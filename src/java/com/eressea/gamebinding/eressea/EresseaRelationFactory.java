@@ -111,7 +111,7 @@ public class EresseaRelationFactory implements RelationFactory {
 		}
 
 		// 4. parse the orders and create new relations
-		EresseaOrderParser parser = new EresseaOrderParser(data.rules);
+		EresseaOrderParser parser = new EresseaOrderParser(data);
 		boolean tempOrders = false;
 		int line = 0;
 
@@ -381,10 +381,10 @@ public class EresseaRelationFactory implements RelationFactory {
 
 				if(t.equalsToken(getOrder(EresseaConstants.O_CASTLE))) {
 					t = (OrderToken) tokens.get(2);
-					uc = u.getRegion().getBuilding(EntityID.createEntityID(t.getText()));
+					uc = u.getRegion().getBuilding(EntityID.createEntityID(t.getText(),data.base));
 				} else if(t.equalsToken(getOrder(EresseaConstants.O_SHIP))) {
 					t = (OrderToken) tokens.get(2);
-					uc = u.getRegion().getShip(EntityID.createEntityID(t.getText()));
+					uc = u.getRegion().getShip(EntityID.createEntityID(t.getText(),data.base));
 				}
 
 				if(uc != null) {
@@ -470,7 +470,7 @@ public class EresseaRelationFactory implements RelationFactory {
 
 	private Unit getTargetUnit(OrderToken t, Region r) {
 		try {
-			UnitID id = UnitID.createUnitID(t.getText());
+			UnitID id = UnitID.createUnitID(t.getText(),r.getData().base);
 
 			return r.getUnit(id);
 		} catch(NumberFormatException e) {

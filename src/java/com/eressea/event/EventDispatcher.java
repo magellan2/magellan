@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
@@ -77,6 +78,18 @@ public class EventDispatcher {
 	}
 	*/
 
+    /**
+     * @deprecated: don't use, will be thrown away soon 
+     */
+    public MagellanContext getMagellanContext() {
+        return context;
+    }
+    private MagellanContext context;
+    public void setMagellanContext(MagellanContext context) {
+        this.context = context;
+    }
+    
+    
 	/**
 	 * Clones the List (and remove WeakReference objects with null target)
 	 *

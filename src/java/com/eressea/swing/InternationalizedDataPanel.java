@@ -19,6 +19,7 @@ import com.eressea.GameData;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.main.MagellanContext;
 
 /**
  * TODO: DOCUMENT ME!
@@ -32,11 +33,12 @@ public abstract class InternationalizedDataPanel extends InternationalizedPanel
 	protected GameData data = null;
 	protected Properties settings = null;
 	protected EventDispatcher dispatcher = null;
-
+    private MagellanContext context;
+    
 	/**
 	 * Creates a new InternationalizedDataPanel object.
 	 *
-	 * @param ed TODO: DOCUMENT ME!
+	 * @deprecated
 	 */
 	public InternationalizedDataPanel(EventDispatcher ed) {
 		this(ed, new Properties());
@@ -45,8 +47,7 @@ public abstract class InternationalizedDataPanel extends InternationalizedPanel
 	/**
 	 * Creates a new InternationalizedDataPanel object.
 	 *
-	 * @param ed TODO: DOCUMENT ME!
-	 * @param p TODO: DOCUMENT ME!
+	 * @deprecated
 	 */
 	public InternationalizedDataPanel(EventDispatcher ed, Properties p) {
 		this(ed, null, p);
@@ -55,22 +56,31 @@ public abstract class InternationalizedDataPanel extends InternationalizedPanel
 	/**
 	 * Creates a new InternationalizedDataPanel object.
 	 *
-	 * @param ed TODO: DOCUMENT ME!
-	 * @param initData TODO: DOCUMENT ME!
-	 * @param p TODO: DOCUMENT ME!
+	 * @deprecated
 	 */
 	public InternationalizedDataPanel(EventDispatcher ed, GameData initData, Properties p) {
-		super();
-		this.dispatcher = ed;
+        this(ed.getMagellanContext());
+    }
+    
+    public InternationalizedDataPanel(MagellanContext context) {
+        this.context = context;
+		this.dispatcher = context.getEventDispatcher();
 
 		if(this.dispatcher != null) {
 			this.dispatcher.addGameDataListener(this);
 		}
 
-		this.data = initData;
-		this.settings = p;
+		this.data = context.getGameData();
+		this.settings = context.getProperties();
 	}
 
+    /** 
+     * @return the current MagellanContext
+     */
+    public MagellanContext getMagellanContext() {
+       return context; 
+    }
+    
 	/**
 	 * TODO: DOCUMENT ME!
 	 */

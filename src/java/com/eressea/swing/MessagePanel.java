@@ -577,7 +577,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 			if(value != null) {
 				try {
 					int i = Integer.parseInt(value);
-					Unit u = data.getUnit(UnitID.createUnitID(i));
+					Unit u = data.getUnit(UnitID.createUnitID(i,data.base));
 
 					if(u != null) {
 						subNode = new DefaultMutableTreeNode(nodeFactory.createUnitNodeWrapper(u));
@@ -690,7 +690,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 		lineRenderer.setLineWrap(settings.getProperty("MessagePanel.LineWrap", "true").equals("true"));
 		lineRenderer.registerTree(tree);
 
-		CellRenderer cr = new CellRenderer(settings);
+		CellRenderer cr = new CellRenderer(getMagellanContext());
 
 		MixedTreeCellRenderer mixed = new MixedTreeCellRenderer(lineRenderer);
 		mixed.putRenderer(UnitNodeWrapper.class, cr);

@@ -13,6 +13,10 @@
 
 package com.eressea.swing.map;
 
+import java.awt.Graphics;
+import java.awt.Point;
+
+import com.eressea.GameData;
 import com.eressea.swing.preferences.PreferencesAdapter;
 
 /**
@@ -55,7 +59,7 @@ public interface MapCellRenderer {
 	 * Initializes the renderer for one rendering pass. All supplied informations stays constant
 	 * during a pass and is therefore not transferred with each render() call.
 	 */
-	public void init(com.eressea.GameData data, java.awt.Graphics g, java.awt.Point offset);
+	public void init(GameData data, Graphics g, Point offset);
 
 	/**
 	 * Tells the renderer that it should re-adjust the scale factor it uses for rendering.

@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ImageFactory;
 
@@ -39,8 +40,8 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public ImageCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public ImageCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 			if(tracker != null) {
 				tracker.addImage(scaled, (int) (Math.random() * Integer.MAX_VALUE));
 			} else {
-				ImageFactory.getFactory().waitForImage(img);
+				context.getImageFactory().waitForImage(img);
 			}
 
 			return scaled;
@@ -114,7 +115,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	}
 
 	protected Image loadFile(String fileName) {
-		return ImageFactory.getFactory().loadMapImage(fileName);
+		return context.getImageFactory().loadMapImage(fileName);
 	}
 
 	/**

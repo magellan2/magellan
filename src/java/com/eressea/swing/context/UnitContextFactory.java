@@ -13,6 +13,11 @@
 
 package com.eressea.swing.context;
 
+import java.util.Collection;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import com.eressea.GameData;
 import com.eressea.Unit;
 import com.eressea.event.EventDispatcher;
 import com.eressea.swing.tree.UnitNodeWrapper;
@@ -34,15 +39,16 @@ public class UnitContextFactory implements ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
-													java.util.Collection selectedObjects,
-													javax.swing.tree.DefaultMutableTreeNode node) {
+	public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher,
+            GameData data, Object argument,
+            Collection selectedObjects,
+            DefaultMutableTreeNode node) {
 		if(argument instanceof Unit) {
 			return new UnitContextMenu((Unit) argument, selectedObjects,
-									   EventDispatcher.getDispatcher(), data);
+									   dispatcher, data);
 		} else if(argument instanceof UnitNodeWrapper) {
 			return new UnitContextMenu(((UnitNodeWrapper) argument).getUnit(), selectedObjects,
-									   EventDispatcher.getDispatcher(), data);
+									   dispatcher, data);
 		}
 
 		return null;

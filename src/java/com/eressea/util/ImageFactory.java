@@ -39,15 +39,14 @@ import com.eressea.util.logging.Logger;
  */
 public class ImageFactory implements GameDataListener {
 	private static final Logger log = Logger.getInstance(ImageFactory.class);
-	private static final ImageFactory factory = new ImageFactory();
 	private String gamename = "eressea";
 
-	private ImageFactory() {
-		EventDispatcher.getDispatcher().addGameDataListener(this);
-	}
-
+	public ImageFactory(EventDispatcher dispatcher) {
+        dispatcher.addGameDataListener(this);
+    }
+    
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Called if Gamedata changes. 
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
@@ -68,9 +67,11 @@ public class ImageFactory implements GameDataListener {
 	 *
 	 * @return the singleton ImageFactory
 	 */
+    /*
 	public static ImageFactory getFactory() {
 		return factory;
 	}
+    */
 
 	private Map images = CollectionFactory.createHashMap();
 

@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -33,7 +34,6 @@ import com.eressea.util.CollectionFactory;
 public class InvertSelectionAction extends MenuAction implements GameDataListener,
 																 SelectionListener
 {
-	private Client client;
 	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
@@ -41,8 +41,8 @@ public class InvertSelectionAction extends MenuAction implements GameDataListene
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public InvertSelectionAction(Client parent) {
-		client = parent;
+	public InvertSelectionAction(Client client) {
+        super(client);
 		client.getDispatcher().addSelectionListener(this);
 		client.getDispatcher().addGameDataListener(this);
 	}
@@ -85,7 +85,7 @@ public class InvertSelectionAction extends MenuAction implements GameDataListene
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		Map newSelectedRegions = CollectionFactory.createHashtable();
 
 		// add all regions that belong to the active level XOR were selected befor

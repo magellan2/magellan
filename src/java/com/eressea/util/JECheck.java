@@ -533,7 +533,7 @@ public class JECheck extends Reader {
 
 					if(unitOrder.startsWith(token)) {
 						try {
-							ID id = UnitID.createUnitID(tokenizer.nextToken());
+							ID id = UnitID.createUnitID(tokenizer.nextToken(),data.base);
 							Unit u = data.getUnit(id);
 
 							if(u != null) {

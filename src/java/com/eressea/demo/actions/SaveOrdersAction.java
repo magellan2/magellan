@@ -15,6 +15,7 @@ package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,6 @@ import com.eressea.util.Translations;
  * @version
  */
 public class SaveOrdersAction extends MenuAction implements ShortcutListener {
-	private Client client;
 	private List shortCuts;
 
 	/**
@@ -42,8 +42,8 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public SaveOrdersAction(Client parent) {
-		client = parent;
+	public SaveOrdersAction(Client client) {
+        super(client);
 
 		shortCuts = CollectionFactory.createArrayList(2);
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK |
@@ -60,7 +60,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		OrderWriterDialog d = new OrderWriterDialog(client, true, client.getData(),
-													client.getSettings(),
+													client.getProperties(),
 													client.getSelectedRegions().values());
 		d.setVisible(true);
 	}
@@ -70,19 +70,19 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 *
 	 * @param shortcut TODO: DOCUMENT ME!
 	 */
-	public void shortCut(javax.swing.KeyStroke shortcut) {
+	public void shortCut(KeyStroke shortcut) {
 		int index = shortCuts.indexOf(shortcut);
 
 		if((index >= 0) && (index < 3)) {
 			switch(index) {
 			case 0:
-				new OrderWriterDialog(client, true, client.getData(), client.getSettings(),
+				new OrderWriterDialog(client, true, client.getData(), client.getProperties(),
 									  client.getSelectedRegions().values()).runClipboard();
 
 				break;
 
 			case 1:
-				new OrderWriterDialog(client, true, client.getData(), client.getSettings(),
+				new OrderWriterDialog(client, true, client.getData(), client.getProperties(),
 									  client.getSelectedRegions().values()).runMail();
 
 				break;
@@ -96,7 +96,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.util.Iterator getShortCuts() {
+	public Iterator getShortCuts() {
 		return shortCuts.iterator();
 	}
 
@@ -107,7 +107,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.lang.String getShortcutDescription(java.lang.Object obj) {
+	public String getShortcutDescription(java.lang.Object obj) {
 		int index = shortCuts.indexOf(obj);
 
 		return Translations.getTranslation(this, "shortcuts.description." + String.valueOf(index));

@@ -28,6 +28,7 @@ import com.eressea.ID;
 import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
+import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.FactionTrustComparator;
 import com.sun.rsasign.s;
@@ -45,8 +46,8 @@ public class ShipCellRenderer extends ImageCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public ShipCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public ShipCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 	}
 
 	/**

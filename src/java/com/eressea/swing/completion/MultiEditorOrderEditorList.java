@@ -2122,12 +2122,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			if(!settings.getProperty("MultiEditorOrderEditorList.ButtonPanel.ShowTempUnitDialog",
 										 "true").equalsIgnoreCase("true")) {
 				// don't show any dialogs, simply create the tempunit and finish.
-				TempUnit tempUnit = parentUnit.createTemp(UnitID.createUnitID(-newIDInt));
+				TempUnit tempUnit = parentUnit.createTemp(UnitID.createUnitID(-newIDInt,data.base));
 				dispatcher.fire(new TempUnitEvent(this, tempUnit, TempUnitEvent.CREATED));
 				//dispatcher.fire(new SelectionEvent(this, null, tempUnit));
 			} else {
 				// do all the tempunit-dialog-stuff
-				newID = UnitID.createUnitID(newIDInt);
+				newID = UnitID.createUnitID(newIDInt,data.base);
 
 				if(dialog == null) {
 					dialog = new TempUnitDialog((Frame) this.getTopLevelAncestor(), this, settings);
@@ -2154,8 +2154,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						}
 
 						try {
-							int realNewIDInt = IDBaseConverter.parse(tempID);
-							UnitID checkID = UnitID.createUnitID(-realNewIDInt);
+							int realNewIDInt = IDBaseConverter.parse(tempID,data.base);
+							UnitID checkID = UnitID.createUnitID(-realNewIDInt,data.base);
 
 							if(data.tempUnits().get(checkID) == null) {
 								TempUnit tempUnit = parentUnit.createTemp(checkID);

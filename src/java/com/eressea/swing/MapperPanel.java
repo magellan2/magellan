@@ -75,6 +75,7 @@ import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.SelectionEvent;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.map.CellGeometry;
 import com.eressea.swing.map.HexCellRenderer;
 import com.eressea.swing.map.Mapper;
@@ -121,9 +122,10 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	protected float lastScale = 1;
 
 	//shortcuts
-	private java.util.List shortcuts;
+	private List shortcuts;
 	private TooltipShortcut tooltipShortcut;
 
+    protected MagellanContext context;
 	/**
 	 * GameData event handler.
 	 *
@@ -342,14 +344,15 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geo TODO: DOCUMENT ME!
 	 */
-	public MapperPanel(EventDispatcher ed, Properties p, Collection customRenderers,
+	public MapperPanel(MagellanContext context, Collection customRenderers,
 					   CellGeometry geo) {
-		super(ed, p);
-
+		super(context.getEventDispatcher(), context.getProperties());
+        this.context = context;
+            
 		//final MapperPanel thisMapperPanel = this;
 		initMinimap();
 
-		ed.addSelectionListener(this);
+		context.getEventDispatcher().addSelectionListener(this);
 
 		setLayout(new BorderLayout());
 		add(getMainPane(customRenderers, geo), BorderLayout.CENTER);
@@ -435,7 +438,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	}
 
 	protected void initMinimap() {
-		minimap = new Minimapper(dispatcher, settings);
+		minimap = new Minimapper(context);
 		minimapGeometry = minimap.getCellGeometry();
 
 		Dimension d = minimapGeometry.getCellSize();
@@ -800,7 +803,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	}
 
 	private Container getMainPane(Collection renderers, CellGeometry geo) {
-		mapper = new Mapper(dispatcher, settings, renderers, geo);
+		mapper = new Mapper(context, renderers, geo);
 		scpMapper = new JScrollPane(mapper);
 
 		// ClearLook suggests to remove border 

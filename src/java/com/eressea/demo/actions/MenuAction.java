@@ -21,6 +21,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import com.eressea.demo.Client;
 import com.eressea.util.ImageFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
@@ -31,12 +32,15 @@ import com.eressea.util.logging.Logger;
  */
 public abstract class MenuAction extends AbstractAction {
 	private static final Logger log = Logger.getInstance(MenuAction.class);
+    
+    protected Client client;
 
 	/**
 	 * Creates a new MenuAction object reading its name, mnemonic and accelerator from the
 	 * dictionary.
 	 */
-	public MenuAction() {
+	public MenuAction(Client client) {
+        this.client = client;
 		this.setName(getNameTranslated());
 
 		this.setIcon(getIconName());
@@ -113,7 +117,7 @@ public abstract class MenuAction extends AbstractAction {
 
 		if(aName != null) {
 			String name = "images/gui/actions/" + aName;
-			Image imageIcon = ImageFactory.getFactory().loadImage(name);
+			Image imageIcon = client.getMagellanContext().getImageFactory().loadImage(name);
 
 			if(imageIcon != null) {
 				icon = new ImageIcon(imageIcon);

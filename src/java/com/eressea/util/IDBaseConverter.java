@@ -21,8 +21,8 @@ import com.eressea.event.GameDataListener;
  * A class for handling the input and output of ids at certain bases.
  */
 public class IDBaseConverter {
-	private static int base = 10;
-	private static int lDigit = Character.digit('l', base);
+	//private static int base = 10;
+	//private static int lDigit = Character.digit('l', base);
 
 	/**
 	 * Sets the base to use when interpreting ids. The default value is 10.
@@ -32,7 +32,8 @@ public class IDBaseConverter {
 	 *
 	 * @throws IllegalArgumentException
 	 */
-	public static void setBase(int b) {
+/*
+    public static void setBase(int b) {
 		if((b >= Character.MIN_RADIX) && (b <= Character.MAX_RADIX)) {
 			base = b;
 			lDigit = Character.digit('l', base);
@@ -40,16 +41,17 @@ public class IDBaseConverter {
 			throw new IllegalArgumentException("IDBaseConverter.setBase(): invalid base specified!");
 		}
 	}
-
+*/
 	/**
 	 * Returns the base that is currently set for id interpretation.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static int getBase() {
+/*
+    public static int getBase() {
 		return base;
 	}
-
+*/
 	/**
 	 * Parses a String and interprets it as a number in the base that is currently set.
 	 *
@@ -60,10 +62,15 @@ public class IDBaseConverter {
 	 *
 	 * @throws NumberFormatException
 	 */
-	public static int parse(String str) throws NumberFormatException {
-		return Integer.parseInt(str, base);
+/*
+    public static int parse(String str) throws NumberFormatException {
+		return parse(str, base);
 	}
-
+*/
+    
+    public static int parse(String str, int base) throws NumberFormatException {
+        return Integer.parseInt(str,base);
+    }
 	/**
 	 * Returns a string representation of id in the currently set base. For clarity lowercase 'l's
 	 * are converted to uppercase.
@@ -72,25 +79,25 @@ public class IDBaseConverter {
 	 *
 	 * @return the String representation of id.
 	 */
-	public static String toString(int id) {
-		String str = Integer.toString(id, base);
+/*
+    public static String toString(int id) {
+        return toString(id,base);
+        }
 
-		if(lDigit != -1) {
-			str = str.replace('l', 'L');
-		}
-
-		return str;
+        */
+    public static String toString(int id, int base) {
+		return Integer.toString(id, base).replace('l' , 'L');
 	}
-
 	/**
 	 * Returns the largest integer representing a valid id.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static int getMaxId() {
+/*
+    public static int getMaxId() {
 		return getMaxId(base);
 	}
-
+*/
 	/**
 	 * Returns the largest integer representing a valid id by the given base.
 	 *
@@ -110,9 +117,11 @@ public class IDBaseConverter {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
+    /*
 	public static String toString(Integer id) {
 		return toString(id.intValue());
 	}
+*/
 
 	private static GameDataListener listener = null;
 
@@ -122,7 +131,7 @@ public class IDBaseConverter {
 	public static void init() {
 		if(listener == null) {
 			listener = new IDBaseConverterListener();
-			EventDispatcher.getDispatcher().addGameDataListener(listener);
+			// TODO!!!!!!! EventDispatcher.getDispatcher().addGameDataListener(listener);
 		}
 	}
 
@@ -139,10 +148,10 @@ public class IDBaseConverter {
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void gameDataChanged(GameDataEvent e) {
-			IDBaseConverter.getBase();
+			//IDBaseConverter.getBase();
 
 			try {
-				IDBaseConverter.setBase(e.getGameData().base);
+				//IDBaseConverter.setBase(e.getGameData().base);
 			} catch(IllegalArgumentException iae) {
 			}
 		}

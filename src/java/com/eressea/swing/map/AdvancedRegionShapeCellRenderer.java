@@ -80,6 +80,7 @@ import com.eressea.Region;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -117,7 +118,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 	protected String mapperTooltip;
 	protected Color oceanColor;
 	protected Color unknownColor;
-	protected JMenu context;
+	protected JMenu contextMenu;
 	protected ContextObserver obs = null;
 	protected Mapper mapper = null;
 	protected String lastMapperDef = null;
@@ -128,14 +129,14 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public AdvancedRegionShapeCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public AdvancedRegionShapeCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 
 		cTable = new ColorTable();
 		vMapping = new ValueMapping();
-		context = new JMenu(getName());
+		contextMenu = new JMenu(getName());
 
-		EventDispatcher.getDispatcher().addGameDataListener(this);
+		context.getEventDispatcher().addGameDataListener(this);
 
 		loadSettings();
 	}
@@ -891,7 +892,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 	}
 
 	protected void reprocessMenu() {
-		context.removeAll();
+		contextMenu.removeAll();
 
 		StringTokenizer s = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer.Sets",
 																	 ""), ",");
@@ -905,7 +906,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 				item.setEnabled(false);
 			}
 
-			context.add(item);
+			contextMenu.add(item);
 		}
 	}
 
@@ -928,7 +929,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public JMenuItem getContextAdapter() {
-		return context;
+		return contextMenu;
 	}
 
 	/**

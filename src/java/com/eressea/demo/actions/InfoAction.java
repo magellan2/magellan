@@ -13,6 +13,7 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
@@ -26,15 +27,14 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class InfoAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new InfoAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public InfoAction(Client parent) {
-		client = parent;
+	public InfoAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class InfoAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		new InfoDlg(client).show();
 	}
 

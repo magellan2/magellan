@@ -72,6 +72,7 @@ import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -108,9 +109,9 @@ public class AdvancedTextCellRenderer extends TextCellRenderer implements Extend
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public AdvancedTextCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
-		EventDispatcher.getDispatcher().addGameDataListener(this);
+	public AdvancedTextCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
+		context.getEventDispatcher().addGameDataListener(this);
 
 		if(buffer == null) {
 			buffer = CollectionFactory.createLinkedList();

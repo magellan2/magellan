@@ -33,7 +33,6 @@ import com.eressea.util.Translations;
  * @version
  */
 public class ECheckAction extends MenuAction implements ShortcutListener {
-	private Client client;
 	private KeyStroke imStroke;
 
 	/**
@@ -41,8 +40,8 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public ECheckAction(Client parent) {
-		client = parent;
+	public ECheckAction(Client client) {
+        super(client);
 		imStroke = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
 		DesktopEnvironment.registerShortcutListener(imStroke, this);
 	}
@@ -54,7 +53,7 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		ECheckDialog d = new ECheckDialog(client, false, client.getDispatcher(), client.getData(),
-										  client.getSettings(), client.getSelectedRegions().values());
+										  client.getProperties(), client.getSelectedRegions().values());
 		d.setVisible(true);
 	}
 
@@ -65,7 +64,7 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	 */
 	public void shortCut(javax.swing.KeyStroke shortcut) {
 		ECheckDialog d = new ECheckDialog(client, false, client.getDispatcher(), client.getData(),
-										  client.getSettings(), client.getSelectedRegions().values());
+										  client.getProperties(), client.getSelectedRegions().values());
 		d.setVisible(true);
 		d.exec();
 	}

@@ -13,7 +13,13 @@
 
 package com.eressea.swing.context;
 
+import java.util.Collection;
+
 import javax.swing.JPopupMenu;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import com.eressea.GameData;
+import com.eressea.event.EventDispatcher;
 
 /**
  * Interface for automated context menu creation.
@@ -32,7 +38,9 @@ public interface ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
-										java.util.Collection selectedObjects,
-										javax.swing.tree.DefaultMutableTreeNode node);
+	public JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+                                        GameData data, 
+                                        Object argument,
+										Collection selectedObjects,
+										DefaultMutableTreeNode node);
 }

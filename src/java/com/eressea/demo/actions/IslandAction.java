@@ -30,15 +30,14 @@ import com.eressea.util.Islands;
  * @version
  */
 public class IslandAction extends MenuAction {
-	private Client client;
 
 	/**
 	 * Creates a new IslandAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public IslandAction(Client parent) {
-		client = parent;
+	public IslandAction(Client client) {
+        super(client);
 	}
 
 	/**

@@ -52,12 +52,12 @@ public class TrustLevels {
 					f.trustLevel = Faction.TL_PRIVILEGED;
 				}
 
-				if(f.getID().equals(EntityID.createEntityID(-1))) { // monster
+				if(f.getID().equals(EntityID.createEntityID(-1,data.base))) { // monster
 
 					if(!f.trustLevelSetByUser) {
 						f.trustLevel = -20;
 					}
-				} else if(f.getID().equals(EntityID.createEntityID(0))) { // faction disguised
+				} else if(f.getID().equals(EntityID.createEntityID(0,data.base))) { // faction disguised
 
 					if(!f.trustLevelSetByUser) {
 						f.trustLevel = -100;

@@ -58,6 +58,7 @@ import com.eressea.demo.desktop.Initializable;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.main.MagellanContext;
 import com.eressea.rules.RegionType;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
@@ -160,8 +161,8 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 	 * @param geo The CellGeometry to be used
 	 * @param settings The Properties to be used
 	 */
-	public RegionShapeCellRenderer(CellGeometry geo, Properties settings) {
-		this(geo, settings, DEFAULT_FACTION_KEY, DEFAULT_REGION_KEY, DEFAULT_PAINTMODE_KEY);
+	public RegionShapeCellRenderer(CellGeometry geo, MagellanContext context) {
+		this(geo, context, DEFAULT_FACTION_KEY, DEFAULT_REGION_KEY, DEFAULT_PAINTMODE_KEY);
 	}
 
 	/**
@@ -175,9 +176,9 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 	 * @param rKey The regionKey value for settings operations
 	 * @param pKey The paintKey value for settings operations
 	 */
-	public RegionShapeCellRenderer(CellGeometry geo, Properties settings, String fKey, String rKey,
+	public RegionShapeCellRenderer(CellGeometry geo, MagellanContext context, String fKey, String rKey,
 								   String pKey) {
-		super(geo, settings);
+		super(geo, context);
 
 		factionColors = CollectionFactory.createHashMap();
 		regionColors = CollectionFactory.createHashMap();
@@ -204,7 +205,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 
 		initContextMenu();
 
-		EventDispatcher.getDispatcher().addGameDataListener(this);
+		context.getEventDispatcher().addGameDataListener(this);
 	}
 
 	/**

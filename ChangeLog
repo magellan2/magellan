@@ -1,5 +1,14 @@
+2005-03-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea: major code refactoring. Things may be broken 
+	now. 
+
 2005-03-30  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src\java\com\eressea\demo\Client.java (getProperties): renamed 
+	getSettings to getProperties. Also removed dependency to 
+	EventDispatcher.
+	
 	* src\java\com\eressea\swing\desktop: Some more documentation.
 	 
 	* src/java/com/eressea/util/logging: Added some helper classes for

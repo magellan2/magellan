@@ -38,6 +38,7 @@ import com.eressea.Message;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.UnitID;
+import com.eressea.main.MagellanContext;
 import com.eressea.rules.MessageType;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.Cache;
@@ -73,8 +74,8 @@ public class PathCellRenderer extends ImageCellRenderer {
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public PathCellRenderer(CellGeometry geo, Properties settings) {
-		super(geo, settings);
+	public PathCellRenderer(CellGeometry geo, MagellanContext context) {
+		super(geo, context);
 		drawPassivePath = (Boolean.valueOf(settings.getProperty("PathCellRenderer.drawPassivePath",
 															"true"))).booleanValue();
 		drawPastPath = (Boolean.valueOf(settings.getProperty("PathCellRenderer.drawPastPath", "true"))).booleanValue();

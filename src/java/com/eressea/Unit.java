@@ -2686,7 +2686,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 							token = ct.getNextToken();
 
 							try {
-								UnitID id = new UnitID(IDBaseConverter.parse(token.getText()) * -1);
+                                int base = this.getRegion().getData().base;
+                                int idInt = IDBaseConverter.parse(token.getText(), base);
+								UnitID id = UnitID.createUnitID(idInt * -1, base);
 
 								if(this.getRegion().getUnit(id) == null) {
 									tempUnit = this.createTemp(id);

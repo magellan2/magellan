@@ -15,6 +15,7 @@ package com.eressea.main;
 
 import java.util.Properties;
 
+import com.eressea.GameData;
 import com.eressea.event.EventDispatcher;
 import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.util.IDBaseConverter;
@@ -22,16 +23,18 @@ import com.eressea.util.ImageFactory;
 import com.eressea.util.Locales;
 import com.eressea.util.NameGenerator;
 import com.eressea.util.Translations;
+import com.eressea.util.replacers.ReplacerHelp;
 
 /**
  * This class keeps all anchors to global resources e.g. EventDispatcher, Properties...<br>
  */
 public class MagellanContext implements MagellanEnvironment {
+    private Properties settings;
+    private EventDispatcher dispatcher;
+    private GameData data;
 
 	public MagellanContext() {
 	}
-
-	private Properties settings;
 
 	/** 
 	 * Returns the properties of Magellan.
@@ -49,24 +52,42 @@ public class MagellanContext implements MagellanEnvironment {
 		settings = p;
 	}
 
-	private EventDispatcher dispatcher;
-
 	/** 
 	 * Returns the EventDispatcher of Magellan.
 	 */
 	public EventDispatcher getEventDispatcher() {
 		return dispatcher;
-
 	}
 
 	public void setEventDispatcher(EventDispatcher d) {
 		dispatcher = d;
+        dispatcher.setMagellanContext(this);
 	}
 
-	/** 
+    /** 
+     * Returns the current GameData.
+     */
+    public GameData getGameData() {
+        return data;
+    }
+
+    public void setGameData(GameData d) {
+        data = d;
+    }
+
+    ImageFactory imageFactory = null;
+    public ImageFactory getImageFactory() {
+        return imageFactory;
+    }
+
+    private ReplacerHelp replacerHelp;
+    public ReplacerHelp getReplacerHelp() {
+        return replacerHelp;
+    }
+    /** 
 	 * Initializes global resources.
 	 */
-	public void init() {
+	public synchronized void init() {
 		ResourcePathClassLoader.init(settings); // init resource class with new settings
 		
 		Locales.init(settings); // init the locales with new settings
@@ -80,6 +101,10 @@ public class MagellanContext implements MagellanEnvironment {
 		NameGenerator.init(settings);
 
 		// inits ImageFactory
-		ImageFactory.getFactory();
+        imageFactory = new ImageFactory(getEventDispatcher());
+        
+        // inits ReplacerHelp
+        replacerHelp = new ReplacerHelp(getEventDispatcher(),getGameData());
+
 	}
 }

@@ -26,15 +26,14 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class EresseaOptionsAction extends MenuAction {
-	private Client client = null;
 
 	/**
 	 * Creates a new EresseaOptionsAction object.
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	public EresseaOptionsAction(Client parent) {
-		this.client = parent;
+	public EresseaOptionsAction(Client client) {
+        super(client);
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class EresseaOptionsAction extends MenuAction {
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		FactionStatsDialog d = new FactionStatsDialog(client, false, client.getDispatcher(),
-													  client.getData(), client.getSettings());
+													  client.getData(), client.getProperties());
 
 		//		d.showEresseaOptions();
 		d.setVisible(true);
