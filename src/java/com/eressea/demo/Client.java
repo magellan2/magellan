@@ -261,9 +261,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 												   : "Creating desktop environment...");
 		desktop = new MagellanDesktop(this, settings, components, settingsDirectory);
 
-		workSpace = new WorkSpace(desktop.getButtonGroup());
-		workSpace.setContent(desktop);
-		setContentPane(workSpace);
+		setContentPane(desktop);
 
 		// do it here because we need the desktop menu
 		setJMenuBar(createMenuBar(topLevelComponents));
