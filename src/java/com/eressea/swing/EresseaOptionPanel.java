@@ -37,6 +37,7 @@ import com.eressea.event.SelectionListener;
 import com.eressea.rules.EresseaOption;
 import com.eressea.rules.Options;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.Locales;
 import com.eressea.util.Translations;
 
@@ -44,7 +45,7 @@ import com.eressea.util.Translations;
  * A component providing a GUI for the standard options available to
  * any faction in Eressea.
  */
-public class EresseaOptionPanel extends InternationalizedPanel implements SelectionListener, com.eressea.util.EresseaOrderConstants {
+public class EresseaOptionPanel extends InternationalizedPanel implements SelectionListener {
 	private boolean isEnabled = true;
 	private Faction currentFaction = null;
 	private JTextArea txtInfo = null;
@@ -278,7 +279,7 @@ public class EresseaOptionPanel extends InternationalizedPanel implements Select
 				if (blankPos > 0) {
 					order = order.substring(0, blankPos);
 				}
-				if (Translations.getOrderTranslation(O_OPTION, loc).startsWith(order)) {
+				if (Translations.getOrderTranslation(EresseaOrderConstants.O_OPTION, loc).startsWith(order)) {
 					// FIXME(pavkovic): PROBLEM HIER!
 					iter.remove();
 				}
@@ -287,9 +288,9 @@ public class EresseaOptionPanel extends InternationalizedPanel implements Select
 			for (Iterator iter = options.options().iterator(); iter.hasNext();) {
 				EresseaOption o = (EresseaOption)iter.next();
 				if (o.isOrder() && (faction.options == null || o.isActive() != faction.options.isActive(o.getID()))) {
-					String newOrder = Translations.getOrderTranslation(O_OPTION, loc) + " " + o.getID();
+					String newOrder = Translations.getOrderTranslation(EresseaOrderConstants.O_OPTION, loc) + " " + o.getID();
 					if (!o.isActive()) {
-						newOrder += " " + Translations.getOrderTranslation(O_NOT, loc);
+						newOrder += " " + Translations.getOrderTranslation(EresseaOrderConstants.O_NOT, loc);
 					}
 					unit.addOrders(newOrder);
 				}
@@ -300,37 +301,37 @@ public class EresseaOptionPanel extends InternationalizedPanel implements Select
 	}
 
 	private void setOptions(Options options) {
-		chkComputerReport.setSelected(options.isActive(StringID.create(O_COMPUTER)));
-		chkNormalReport.setSelected(options.isActive(StringID.create(O_REPORT)));
-		chkAddresses.setSelected(options.isActive(StringID.create(O_ADDRESSES)));
-		chkStatistics.setSelected(options.isActive(StringID.create(O_STATISTICS)));
-		chkTemplate.setSelected(options.isActive(StringID.create(O_TEMPLATE)));
-		chkCompressReport.setSelected(options.isActive(StringID.create(O_ZIPPED)) || options.isActive(StringID.create(O_BZIP2)));
+		chkComputerReport.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_COMPUTER)));
+		chkNormalReport.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_REPORT)));
+		chkAddresses.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_ADDRESSES)));
+		chkStatistics.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_STATISTICS)));
+		chkTemplate.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_TEMPLATE)));
+		chkCompressReport.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_ZIPPED)) || options.isActive(StringID.create(EresseaOrderConstants.O_BZIP2)));
 		if (chkCompressReport.isSelected()) {
-			rdbZIPCompression.setSelected(options.isActive(StringID.create(O_ZIPPED)));
-			rdbBZIP2Compression.setSelected(options.isActive(StringID.create(O_BZIP2)));
+			rdbZIPCompression.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_ZIPPED)));
+			rdbBZIP2Compression.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_BZIP2)));
 		}
-		chkSilverPool.setSelected(options.isActive(StringID.create(O_SILVERPOOL)));
-		chkItemPool.setSelected(options.isActive(StringID.create(O_ITEMPOOL)));
+		chkSilverPool.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_SILVERPOOL)));
+		chkItemPool.setSelected(options.isActive(StringID.create(EresseaOrderConstants.O_ITEMPOOL)));
 	}
 
 	private Options getOptions() {
 		Options options = new Options();
 
-		options.setActive(StringID.create(O_COMPUTER), chkComputerReport.isSelected());
-		options.setActive(StringID.create(O_REPORT), chkNormalReport.isSelected());
-		options.setActive(StringID.create(O_ADDRESSES), chkAddresses.isSelected());
-		options.setActive(StringID.create(O_STATISTICS), chkStatistics.isSelected());
-		options.setActive(StringID.create(O_TEMPLATE), chkTemplate.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_COMPUTER), chkComputerReport.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_REPORT), chkNormalReport.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_ADDRESSES), chkAddresses.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_STATISTICS), chkStatistics.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_TEMPLATE), chkTemplate.isSelected());
 		if (chkCompressReport.isSelected()) {
-			options.setActive(StringID.create(O_ZIPPED), rdbZIPCompression.isSelected());
-			options.setActive(StringID.create(O_BZIP2), rdbBZIP2Compression.isSelected());
+			options.setActive(StringID.create(EresseaOrderConstants.O_ZIPPED), rdbZIPCompression.isSelected());
+			options.setActive(StringID.create(EresseaOrderConstants.O_BZIP2), rdbBZIP2Compression.isSelected());
 		} else {
-			options.setActive(StringID.create(O_ZIPPED), false);
-			options.setActive(StringID.create(O_BZIP2), false);
+			options.setActive(StringID.create(EresseaOrderConstants.O_ZIPPED), false);
+			options.setActive(StringID.create(EresseaOrderConstants.O_BZIP2), false);
 		}
-		options.setActive(StringID.create(O_SILVERPOOL), chkSilverPool.isSelected());
-		options.setActive(StringID.create(O_ITEMPOOL), chkItemPool.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_SILVERPOOL), chkSilverPool.isSelected());
+		options.setActive(StringID.create(EresseaOrderConstants.O_ITEMPOOL), chkItemPool.isSelected());
 
 		return options;
 	}

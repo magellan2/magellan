@@ -9,12 +9,10 @@ package com.eressea.util.replacers;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import com.eressea.util.CollectionFactory;
-
 
 import com.eressea.Region;
 import com.eressea.Unit;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.filters.UnitFilter;
 
 /**

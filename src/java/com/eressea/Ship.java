@@ -15,24 +15,31 @@ import com.eressea.util.logging.Logger;
 
 public class Ship extends UnitContainer implements HasRegion {
 	private final static Logger log = Logger.getInstance(Ship.class);
-	
+
+	/** 
+	 * The shore the ship is lying.
+	 */
 	public int shoreId = -1;	 // 0 = northwest, 1 = northeast, etc.
 								 // -1 = every direction
+
 	/**
 	 * The size of this ship. While the ship is being built, size &lt;=
 	 * getType().getMaxSize() is true. After the ship is finished, 
 	 * size equals getType().getMaxSize().
 	 */
 	public int size = -1;
+
 	/**
 	 * The ratio to which degree this ship is damaged. Values range
 	 * from 0 to 100.
 	 */
 	public int damageRatio = 0;
+
 	/**
 	 * The weight of the units and items on this ship in GE.
 	 */
 	public int load = -1;
+
 	/**
 	 * The maximum payload of this ship in GE. 0 &lt;= capacity &lt;=
 	 * getType().getCapacity() if the ship is damaged.
@@ -42,8 +49,6 @@ public class Ship extends UnitContainer implements HasRegion {
 	public Ship(ID id, GameData data) {
 		super(id, data);
 	}
-	
-	
 	
 	/**
 	 * The region this ship is in.
@@ -55,7 +60,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	 */
 	public void setRegion(Region region) {
 		if (this.region != null) {
-			this.region.removeShip(this.getID());
+			this.region.removeShip(this);
 		}
 		this.region = region;
 		if (this.region != null) {
@@ -70,14 +75,18 @@ public class Ship extends UnitContainer implements HasRegion {
 		return region;
 	}
 
+
+	public ShipType getShipType() {
+		return (ShipType) getType();
+	}
+
 	/** 
 	 * Returns the maximum capacity with respect to 
 	 * damages of the ship
 	 */
 	public int getMaxCapacity() {
-		return this.capacity != -1 ? this.capacity : ((ShipType)this.getType()).getCapacity();
+		return capacity != -1 ? capacity : getShipType().getCapacity();
 	}
-
 
 	/**
 	 * Returns the weight of all units of this ship that are not
@@ -107,13 +116,16 @@ public class Ship extends UnitContainer implements HasRegion {
 		return toString(true);
 	}
 	
+	/** 
+	 * Returns the string representation of this 
+	 */
 	public String toString(boolean printExtended) {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(getName()).append(" (").append(this.getID().toString()).append(")");
 		if(printExtended) {
 			sb.append(", ").append(getType());
-			int nominalShipSize = ((com.eressea.rules.ShipType)getType()).getMaxSize();
+			int nominalShipSize = getShipType().getMaxSize();
 			if (size != nominalShipSize) {
 				sb.append(" (").append(size).append("/").append(nominalShipSize).append(")");
 			}
@@ -134,11 +146,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	 * Ship object.
 	 */
 	public boolean equals(Object o) {
-		if (o instanceof Ship) {
-			return this.getID().equals(((Ship)o).getID());
-		} else {
-			return false;
-		}
+		return this == o || (o instanceof Ship && this.getID().equals(((Ship)o).getID()));
 	}
 	
 	/**

@@ -57,7 +57,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	}
 
 	private void initGUI() {
-		model = new TaskTableModel();
+		model = new TaskTableModel(getHeaderTitles());
 		// table = new JTable(model);
 		
 		TableSorter sorter = new TableSorter(model);
@@ -71,12 +71,17 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		// Row 0 ("I"): smallest possible, not resizeable
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(0).setMaxWidth(table.getColumnModel().getColumn(0).getMinWidth());
+		table.getColumnModel().getColumn(TaskTableModel.IMAGE_POS).setResizable(false);
+		table.getColumnModel().getColumn(TaskTableModel.IMAGE_POS).setMaxWidth(table.getColumnModel().getColumn(TaskTableModel.IMAGE_POS).getMinWidth());
 
 		// Row 1 ("!"): smallest possible, not resizeable
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(1).setMaxWidth(table.getColumnModel().getColumn(1).getMinWidth());
+		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setResizable(false);
+		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setMaxWidth(table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).getMinWidth());
+
+		// Row 2 ("Line"): smallest possible, not resizeable
+		table.getColumnModel().getColumn(TaskTableModel.LINE_POS).setResizable(true);
+		table.getColumnModel().getColumn(TaskTableModel.LINE_POS).setMaxWidth(table.getColumnModel().getColumn(TaskTableModel.LINE_POS).getMinWidth());
+
 
 		// react on double clicks on a row
 		table.addMouseListener(new MouseAdapter() {
@@ -84,12 +89,15 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 					if(e.getClickCount() == 2) {
 						JTable target = (JTable)e.getSource();
 						int row = target.getSelectedRow();
-						log.debug("TaskTablePanel: Double click on row "+row);
+						if(log.isDebugEnabled()) {
+							log.debug("TaskTablePanel: Double click on row "+row);
+						}
 						selectObjectOnRow(row);
 					}
              }
 			});
 
+		// layout component
 		this.setLayout(new BorderLayout());
 		this.add(new JScrollPane(table),BorderLayout.CENTER);
 
@@ -245,26 +253,26 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 			}
 		}
 	}
+	
+	private Vector getHeaderTitles() {
+		Vector v = new Vector(6);
+		v.add("I");
+		v.add("!");
+		v.add(getString("header.description"));
+		v.add(getString("header.object"));
+		v.add(getString("header.line"));
+		v.add(getString("header.region"));
+		return v;
+	}
 
 	private static class TaskTableModel extends DefaultTableModel {
-		public TaskTableModel() {
-			super(getHeaderTitles(),0);
+		public TaskTableModel(Vector header) {
+			super(header,0);
 			init();
 		}
 		
 		private void init() {
 
-		}
-
-		private static Vector getHeaderTitles() {
-			Vector v = new Vector(6);
-			v.add("I");
-			v.add("!");
-			v.add("Description");
-			v.add("Object");
-			v.add("Line");
-			v.add("Region");
-			return v;
 		}
 
 		// no cell is editable right now
@@ -287,8 +295,12 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		}
 
 			
+		private final static int IMAGE_POS   = 0;
+		private final static int UNKNOWN_POS = 1;
 		private final static int PROBLEM_POS = 2;
-		private final static int OBJECT_POS = 3;
+		private final static int OBJECT_POS  = 3;
+		private final static int LINE_POS    = 4;
+		private final static int REGION_POS  = 5;
 		public void addProblem(Problem p) {
 			
 			Vector v = new Vector(6);
@@ -305,7 +317,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		// TODO : find better solution!
 		public void removeProblems(Inspector inspector, Object source) {
 			Vector dataVector = getDataVector();
-			for(int i=getRowCount()-1 ;i>=0;i--) {
+			for(int i=getRowCount()-1 ;i>=0; i--) {
 				Vector v = (Vector) dataVector.get(i);
 				Problem p= (Problem) v.get(PROBLEM_POS);
 				// Inspector and region: only non unit objects will be removed
@@ -315,5 +327,24 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 			}
 		}
     }
+
+	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
+	// it is called by reflection (we could force the implementation of an interface,
+	// this way it is more flexible.)
+	// Pls use this mechanism, so the translation files can be created automagically
+	// by inspecting all classes.
+	private static Map defaultTranslations;
+	public synchronized static Map getDefaultTranslations() {
+		if(defaultTranslations == null) {
+			defaultTranslations = CollectionFactory.createHashtable();
+
+			defaultTranslations.put("header.description" , "Description");
+			defaultTranslations.put("header.object", "Object");
+			defaultTranslations.put("header.line", "Line");
+			defaultTranslations.put("header.region", "Region");
+		}
+		return defaultTranslations;
+	}
+
 }
 

@@ -8,7 +8,6 @@
 
 package com.eressea;
 
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,6 +16,7 @@ import java.util.Map;
 
 import com.eressea.rules.CastleType;
 import com.eressea.rules.ItemType;
+import com.eressea.rules.RegionType;
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ROCollection;
@@ -65,6 +65,14 @@ public class Region extends UnitContainer {
 	// pavkovic 2002.05.13: for eressea CR-Version >= 64 we do interpret the recruits tag
 	public int recruits = -1;
 	public int oldRecruits = -1;
+
+	/**
+	 * Constructs a new Region object uniquely identifiable by the
+	 * specified id.
+	 */
+	public Region(ID id, GameData data) {
+		super(id, data);
+	}
 
 	// pavkovic 2003.09.10: moved from Cache to this object to remove 
 	// Cache objects for empty/ocean regions
@@ -173,8 +181,6 @@ public class Region extends UnitContainer {
 		this.visibility = vis;
 	}
 
-
-
 	/**
 	 * The prices for luxury goods in this region. The map contains
 	 * the name of the luxury good as instance of class <tt>StringID</tt> as key
@@ -182,52 +188,53 @@ public class Region extends UnitContainer {
 	 * <tt>LuxuryPrice</tt> as values.
 	 */
 	public Map prices = null;
+
 	/**
 	 * The prices of luxury goods of the last turn.
 	 */
 	public Map oldPrices = null;
+
 	/**
 	 * The messages for this region. The list consists of objects of
 	 * class <tt>Message</tt>.
 	 */
 	public List messages = null;
+
 	/**
 	 * Special messages related to this region. The list contains
 	 * instances of class <tt>Message</tt> with type -1 and only the
 	 * text set.
 	 */
 	public List events = null;
-	/**
-	 * Special messages related to this region. The list contains
-	 * instances of class <tt>Message</tt> with type -1 and only the
-	 * text set.
-	 */
-	// removed because seemingly useless and overriden by UnitContainer.comments
-	//public List comments = null;
+
 	/**
 	 * Special messages related to this region. The list contains
 	 * instances of class <tt>Message</tt> with type -1 and only the
 	 * text set.
 	 */
 	public List playerMessages = null;
+
 	/**
 	 * Special messages related to this region. The list contains
 	 * instances of class <tt>Message</tt> with type -1 and only the
 	 * text set.
 	 */
 	public List surroundings = null;
+
 	/**
 	 * Special messages related to this region. The list contains
 	 * instances of class <tt>Message</tt> with type -1 and only the
 	 * text set.
 	 */
 	public List travelThru = null;
+
 	/**
 	 * Special messages related to this region. The list contains
 	 * instances of class <tt>Message</tt> with type -1 and only the
 	 * text set.
 	 */
 	public List travelThruShips = null;
+
 	/**
 	 * RegionResources in this region. The keys in this map are
 	 * instances of class <tt>ID</tt> identifying the item type of the
@@ -235,10 +242,12 @@ public class Region extends UnitContainer {
 	 * <tt>RegionResource</tt>.
 	 */
 	private Map resources = null;
+
 	/**
 	 * A collection view of the resources.
 	 */
 	private Collection resourceCollection = null;
+
 	/**
 	 * Returns all resources of this region.
 	 */
@@ -290,30 +299,35 @@ public class Region extends UnitContainer {
 	 * @returns the removed resource or null if no resource with the
 	 * specified id exists in this region.
 	 */
+	public RegionResource removeResource(RegionResource r) {
+		return this.removeResource(r.getID());
+	}
+
+
+	// TODO: remove this method
 	public RegionResource removeResource(ID id) {
-		if (this.resources != null) {
-			RegionResource r = (RegionResource)this.resources.remove(id);
-			if(r != null) {
-				this.resources.remove(r.getID());
-				this.resources.remove(r.getType().getID());
-			}
-			if (this.resources.isEmpty()) {
-				this.resources = null;
-				this.resourceCollection = null;
-			}
-			if(log.isDebugEnabled()) {
-				log.debug("Region.removeResource:"+this);
-				log.debug("Region.removeResource:"+r);
-				if(r != null) {
-					log.debug("Region.removeResource:"+r.getID());
-					log.debug("Region.removeResource:"+r.getType().getID());
-				}
-				log.debug("Region.removeResource:"+resources);
-			}
-			return r;
-		} else {
+		if (this.resources == null) {
 			return null;
 		}
+		RegionResource ret = (RegionResource)this.resources.remove(id);
+		if(ret != null) {
+			this.resources.remove(ret.getID());
+			this.resources.remove(ret.getType().getID());
+		}
+		if (this.resources.isEmpty()) {
+			this.resources = null;
+			this.resourceCollection = null;
+		}
+		if(log.isDebugEnabled()) {
+			log.debug("Region.removeResource:"+this);
+			log.debug("Region.removeResource:"+ret);
+			if(ret != null) {
+				log.debug("Region.removeResource:"+ret.getID());
+				log.debug("Region.removeResource:"+ret.getType().getID());
+			}
+			log.debug("Region.removeResource:"+resources);
+		}
+		return ret;
 	}
 
 	/**
@@ -335,14 +349,8 @@ public class Region extends UnitContainer {
 	 * specified ID exists in this region.
 	 */
 	public RegionResource getResource(ID id) {
-		if (this.resources != null) {
-			return (RegionResource)this.resources.get(id);
-		} else {
-			return null;
-		}
+		return this.resources != null ? (RegionResource)this.resources.get(id) : null;
 	}
-
-
 
 	/**
 	 * Schemes in this region. The keys in this map are
@@ -351,10 +359,12 @@ public class Region extends UnitContainer {
 	 * <tt>Scheme</tt>.
 	 */
 	private Map schemes = null;
+
 	/**
 	 * A collection view of the schemes.
 	 */
 	private Collection schemeCollection = null;
+
 	/**
 	 * Returns all schemes of this region.
 	 */
@@ -393,17 +403,16 @@ public class Region extends UnitContainer {
 	 * @returns the removed scheme or null if no scheme with the
 	 * specified id exists in this region.
 	 */
-	public Scheme removeScheme(ID id) {
-		if (this.schemes != null) {
-			Scheme r = (Scheme)this.schemes.remove(id);
-			if (this.schemes.isEmpty()) {
-				this.schemes = null;
-				this.schemeCollection = null;
-			}
-			return r;
-		} else {
+	public Scheme removeScheme(Scheme s) {
+		if (this.schemes == null) {
 			return null;
 		}
+		Scheme ret = (Scheme)this.schemes.remove(id);
+		if (this.schemes.isEmpty()) {
+			this.schemes = null;
+			this.schemeCollection = null;
+		}
+		return ret;
 	}
 
 	/**
@@ -424,24 +433,20 @@ public class Region extends UnitContainer {
 	 * specified ID exists in this region.
 	 */
 	public Scheme getScheme(ID id) {
-		if (this.schemes != null) {
-			return (Scheme)this.schemes.get(id);
-		} else {
-			return null;
-		}
+		return this.schemes != null ? (Scheme)this.schemes.get(id) : null;
 	}
-
-
-
+	
 	/**
 	 * Border elements of this region. The list contains
 	 * instances of class <tt>Border</tt>.
 	 */
 	private Map borders = null;
+	
 	/**
 	 * A collection view of the borders.
 	 */
 	private Collection borderCollection = null;
+
 	/**
 	 * Returns all borders of this region.
 	 */
@@ -454,7 +459,7 @@ public class Region extends UnitContainer {
 		}
 		return this.borderCollection;
 	}
-
+	
 	/**
 	 * Adds a border to this region.
 	 */
@@ -462,35 +467,34 @@ public class Region extends UnitContainer {
 		if (border == null) {
 			throw new NullPointerException();
 		}
-
+		
 		if (this.borders == null) {
 			this.borders = CollectionFactory.createOrderedHashtable();
 			// enforce the creation of a new collection view
 			// AG: Since we just create if the scheme map is non-null not necessary
 			// this.borderCollection = null;
 		}
-
+		
 		this.borders.put(border.getID(), border);
 		return border;
 	}
-
+	
 	/**
 	 * Removes the border with the specified id from this region.
 	 *
 	 * @returns the removed border or null if no border with the
 	 * specified id exists in this region.
 	 */
-	public Border removeBorder(ID id) {
-		if (this.borders != null) {
-			Border b = (Border)this.borders.remove(id);
-			if (this.borders.isEmpty()) {
-				this.borders = null;
-				this.borderCollection = null;
-			}
-			return b;
-		} else {
+	public Border removeBorder(Border b) {
+		if (this.borders == null) {
 			return null;
 		}
+		Border ret = (Border)this.borders.remove(id);
+		if (this.borders.isEmpty()) {
+			this.borders = null;
+			this.borderCollection = null;
+		}
+		return ret;
 	}
 
 	/**
@@ -511,23 +515,19 @@ public class Region extends UnitContainer {
 	 * specified id exists in this region.
 	 */
 	public Border getBorder(ID id) {
-		if (borders != null) {
-			return (Border)this.borders.get(id);
-		} else {
-			return null;
-		}
+		return this.borders != null ? (Border)this.borders.get(id) : null;
 	}
-
-
 
 	/**
 	 * All ships that are in this container.
 	 */
 	private Map ships = null;
+
 	/**
 	 * Provides a collection view of the ship map.
 	 */
 	private Collection shipCollection = null;
+
 	/**
 	 * Returns an unmodifiable collection of all the ships in this
 	 * container.
@@ -546,54 +546,50 @@ public class Region extends UnitContainer {
 	 * Retrieve a ship in this container by id.
 	 */
 	public Ship getShip(ID id) {
-		if (this.ships != null) {
-			return (Ship)this.ships.get(id);
-		} else {
-			return null;
-		}
+		return ships != null ? (Ship)this.ships.get(id): null;
 	}
 
 	/**
 	 * Adds a ship to this container. This method should only be
 	 * invoked by Ship.setXXX() methods.
 	 */
-	void addShip(Ship u) {
+	public void addShip(Ship s) {
 		if (this.ships == null) {
 			this.ships = CollectionFactory.createHashtable();
 			// enforce the creation of a new collection view
 			// AG: Since we just create if the ship map is non-null not necessary
 			// this.shipCollection = null;
 		}
-		this.ships.put(u.getID(), u);
+		this.ships.put(s.getID(), s);
 	}
 
 	/**
 	 * Removes a ship from this container. This method should only be
 	 * invoked by Ship.setXXX() methods.
 	 */
-	Ship removeShip(ID id) {
-		if (this.ships != null) {
-			Ship s = (Ship)this.ships.remove(id);
-			if (this.ships.isEmpty()) {
-				this.ships = null;
-				this.shipCollection = null;
-			}
-			return s;
-		} else {
+	public Ship removeShip(Ship s) {
+		if(this.ships == null) {
 			return null;
 		}
+		Ship ret = (Ship)this.ships.remove(s.getID());
+		if (this.ships.isEmpty()) {
+			this.ships = null;
+			this.shipCollection = null;
+		}
+		return ret;
 	}
-
-
 
 	/**
 	 * All buildings that are in this container.
 	 */
 	private Map buildings = null;
+
 	/**
 	 * Provides a collection view of the building map.
 	 */
+
 	private Collection buildingCollection = null;
+
 	/**
 	 * Returns an unmodifiable collection of all the buildings in this
 	 * container.
@@ -612,11 +608,7 @@ public class Region extends UnitContainer {
 	 * Retrieve a building in this container by id.
 	 */
 	public Building getBuilding(ID id) {
-		if (this.buildings != null) {
-			return (Building)this.buildings.get(id);
-		} else {
-			return null;
-		}
+		return buildings != null ? (Building)this.buildings.get(id) : null;
 	}
 
 	/**
@@ -637,17 +629,16 @@ public class Region extends UnitContainer {
 	 * Removes a building from this container. This method should only be
 	 * invoked by Building.setXXX() methods.
 	 */
-	Building removeBuilding(ID id) {
-		if (this.buildings != null) {
-			Building b = (Building)this.buildings.remove(id);
-			if (this.buildings.isEmpty()) {
-				this.buildings = null;
-				this.buildingCollection = null;
-			}
-			return b;
-		} else {
+	Building removeBuilding(Building b) {
+		if(this.buildings == null) {
 			return null;
 		}
+		Building ret = (Building)this.buildings.remove(b.getID());
+		if (this.buildings.isEmpty()) {
+			this.buildings = null;
+			this.buildingCollection = null;
+		}
+		return ret;
 	}
 
 	/**
@@ -669,14 +660,12 @@ public class Region extends UnitContainer {
 	 * by the item type.
 	 */
 	public Item getItem(ItemType type) {
-		Item i = null;
 		if (cache == null || cache.regionItems == null) {
 			refreshItems();
 		}
-		if (cache != null && cache.regionItems != null) {
-			i = (Item)cache.regionItems.get(type.getID());
-		}
-		return i;
+		return (cache != null && cache.regionItems != null) ? 
+			(Item)cache.regionItems.get(type.getID()) : 
+			null;
 	}
 
 	/**
@@ -789,10 +778,7 @@ public class Region extends UnitContainer {
 	 * of peasants.
 	 */
 	private int maxLuxuries(int peasants) {
-		if (peasants >= 0) {
-			return peasants / 100;
-		}
-		return -1;
+		return peasants >= 0 ? peasants / 100 : -1;
 	}
 
 	/**
@@ -824,11 +810,7 @@ public class Region extends UnitContainer {
 	 * Region object.
 	 */
 	public boolean equals(Object o) {
-		if (o instanceof Region) {
-			return this.getID().equals(((Region)o).getID());
-		} else {
-			return false;
-		}
+		return this == o || (o instanceof Region && this.getID().equals(((Region)o).getID()));
 	}
 
 	/**
@@ -837,14 +819,6 @@ public class Region extends UnitContainer {
 	 */
 	public int compareTo(Object o) {
 		return this.getID().compareTo(((Region)o).getID());
-	}
-
-	/**
-	 * Constructs a new Region object uniquely identifiable by the
-	 * specified id.
-	 */
-	public Region(ID id, GameData data) {
-		super(id, data);
 	}
 
 	/**
@@ -875,6 +849,15 @@ public class Region extends UnitContainer {
 	}
 
 	/**
+	 * Returns the RegionType of this region. This method is only a
+	 * type-safe short cut for retrieving and converting the RegionType
+	 * of this region.
+	 */
+	public RegionType getRegionType() {
+		return (RegionType) this.getType();
+	}
+
+	/**
 	 * Refreshes all the relations of all units in this region. It is
 	 * preferrable to call this method instead of refreshing the unit
 	 * relations 'manually'.
@@ -894,14 +877,13 @@ public class Region extends UnitContainer {
 	 * Guarding units of this region. The list contains
 	 * instances of class <tt>Unit</tt>.
 	 */
-	List guards;
+	private List guards;
 
 	/**
 	 * add guarding Unit to region
 	 */
 
-	public void addGuard(Unit u)
-	{
+	public void addGuard(Unit u) {
 		if (guards == null)
 			guards = CollectionFactory.createArrayList();
 		if (!guards.contains(u)) {

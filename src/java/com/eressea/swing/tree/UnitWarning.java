@@ -93,7 +93,7 @@ public class UnitWarning {
 				if (ship != null) {
 					// only if captain, else use other case 
 					if (u == ship.getOwnerUnit()) {
-						ShipType stype = (ShipType)ship.getType();
+						ShipType stype = ship.getShipType();
 						if (stype != null) {
 							Iterator it = ship.units().iterator();
 							while(it.hasNext()) {
@@ -141,7 +141,7 @@ public class UnitWarning {
 				if (ship != null) {
 					// only if captain, else use other case 
 					if (u == ship.getOwnerUnit()) {
-						ShipType stype = (ShipType)ship.getType();
+						ShipType stype = ship.getShipType();
 						if (stype != null) {
 							int mod = 0;
 							if (u.race != null && u.race.getID().equals(EresseaRaceConstants.R_MEERMENSCHEN)) {
@@ -196,7 +196,7 @@ public class UnitWarning {
 					Iterator it = c.iterator();
 					while(it.hasNext()) {
 						Building b = (Building)it.next();
-						BuildingType bt = (BuildingType)b.getType();
+						BuildingType bt = b.getBuildingType();
 						if (bt != null && (bt instanceof CastleType)) {
 							if (((CastleType)bt).getMinSize()>=2) {
 								return false;

@@ -8,20 +8,60 @@
 
 package com.eressea.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import com.eressea.*;
-import com.eressea.event.*;
-import com.eressea.util.*;
-import com.eressea.util.comparator.*;
-import com.eressea.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+
+import com.eressea.GameData;
+import com.eressea.ID;
+import com.eressea.Item;
+import com.eressea.LuxuryPrice;
+import com.eressea.Region;
+import com.eressea.StringID;
+import com.eressea.Unit;
+import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataEvent;
+import com.eressea.event.SelectionEvent;
+import com.eressea.event.SelectionListener;
 import com.eressea.rules.ItemType;
+import com.eressea.util.CollectionFactory;
+import com.eressea.util.comparator.FactionTrustComparator;
+import com.eressea.util.comparator.NameComparator;
 
 
 /**

@@ -51,22 +51,53 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 		List problems = CollectionFactory.createArrayList(2);
 		for(Iterator iter = r.ships().iterator(); iter.hasNext(); ) {
 			Ship s = (Ship) iter.next();
-			problems.addAll(reviewShip(r,s));
+			problems.addAll(reviewShip(s));
 		}
 		return problems;
 	}
 	
-	private List reviewShip(Region r, Ship s) {
-		int nominalShipSize = ((ShipType)s.getType()).getMaxSize();
+	private List reviewShip(Ship s) {
+		int nominalShipSize = s.getShipType().getMaxSize();
 		if (s.size != nominalShipSize) {
 			// ship will be build, so dont review ship
 			return Collections.EMPTY_LIST;
 		}
 		if(s.modifiedUnits().isEmpty()) {
-			return Collections.singletonList(new CriticizedError(r, s,this,"Ship has no crew!"));
+			return Collections.singletonList(new CriticizedError(s.getRegion(), s,this,"Ship has no crew!"));
 		}
 		if(s.getModifiedLoad() > s.getMaxCapacity()*100) {
-			return Collections.singletonList(new CriticizedError(r, s,this,"Ship is overloaded!"));
+			return Collections.singletonList(new CriticizedError(s.getRegion(), s,this,"Ship is overloaded!"));
+		}
+		return reviewMovingShip(s);
+	}
+
+	private List reviewMovingShip(Ship s) {
+		if(s.getOwnerUnit() == null) {
+			return Collections.EMPTY_LIST;			
+		};
+		List modifiedMovement = s.getOwnerUnit().getModifiedMovement();
+		if(modifiedMovement.isEmpty()) {
+			return Collections.EMPTY_LIST;
+		}
+		
+		Coordinate nextRegionCoord = (Coordinate) modifiedMovement.get(1);
+		Region nextRegion = s.getRegion().getData().getRegion(nextRegionCoord);
+		if(nextRegion != null) {
+			if(nextRegion.getData().rules.getRegionType(StringID.create("Ozean")).equals(nextRegion.getRegionType()) == false) {
+				return Collections.singletonList(new CriticizedError(s.getRegion(), s,this,"Ship cannot move to this direction."));
+			}
+
+		}
+
+		
+		if(s.shoreId != -1) {
+			Direction d = (Direction) Regions.getDirectionObjectsOfCoordinates(modifiedMovement).get(0);
+			if(((6+s.shoreId-d.getDir()) % 6) > 1) {
+				//if(log.isDebugEnabled()) {
+				//log.debug("ShipInspector.reviewShip("+s+"):"+s.shoreId+" to "+d.getDir()+" ("+((6+s.shoreId-d.getDir()) % 6)+")");
+				//}
+				return Collections.singletonList(new CriticizedError(s.getRegion(), s,this,"Ship cannot move to this direction!"));
+			}
 		}
 		return Collections.EMPTY_LIST;
 	}

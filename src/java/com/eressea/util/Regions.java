@@ -366,7 +366,7 @@ public class Regions {
 			// land to all directions)
 			List startregions = CollectionFactory.createLinkedList();
 			Unit shipOwner = ship.getOwnerUnit();
-			int shipRange = ((ShipType)ship.getType()).getRange();
+			int shipRange = ship.getShipType().getRange();
 			shipRange += speedBonus;
 			Region curRegion = ship.getRegion();
 			if (ship.shoreId == Direction.DIR_INVALID || containsHarbour(curRegion, harbour)) {

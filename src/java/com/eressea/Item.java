@@ -46,8 +46,13 @@ public class Item {
 		return type.toString();
 	}
 
-	public ItemType getType() {
+	public ItemType getItemType() {
 		return type;
+	}
+
+	/** @deprecated */
+	public ItemType getType() {
+		return getItemType();
 	}
 
 	/**
