@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,26 +44,39 @@ public class FileType {
 	// basically identified compression types with multiple entries
 	static final String ZIP = ".zip";
 
-	/** The file this file type identifies */
+	/** The file this file type identifies. */
 	protected String filename;
 
+	/** true if file will opened for writing. */
+	protected boolean writeFile;
+
 	FileType(String aFile) throws IOException {
+		this(aFile,false);
+	}
+	
+	FileType(String aFile, boolean writeFile) throws IOException {
 		if(aFile == null) {
 			throw new IOException();
 		}
 
 		filename = aFile;
+
+		this.writeFile = writeFile;
 	}
 
 	/**
-	 * Tests if an InputStream can be opened for this FileType
+	 * Tests if an InputStream can be opened for this FileType.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public FileType checkConnection() throws IOException {
-		createInputStream().close();
+		try {
+			createInputStream().close();
+		} catch (FileNotFoundException e) {
+			// it may be ok, if file does not exist 
+		}
 
 		return this;
 	}
@@ -126,6 +140,7 @@ public class FileType {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public Writer createWriter() throws IOException {
+		// TODO if(!writeFile) throw new IOException("File may not be opened in write mode!");
 		FileBackup.create(new File(filename));
 
 		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream()));

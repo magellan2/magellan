@@ -32,9 +32,9 @@ public class FileTypeFactory {
 	private static FileTypeFactory singleton = new FileTypeFactory();
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the sole FileTypeFactory (with respect to singleton pattern).
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the sole <code>FileTypeFactory</code>
 	 */
 	public static FileTypeFactory singleton() {
 		return singleton;

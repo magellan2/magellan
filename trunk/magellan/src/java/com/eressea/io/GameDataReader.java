@@ -51,11 +51,19 @@ public class GameDataReader {
 		}
 
 		if(isXMLFile(aFileType)) {
-			return readGameDataXML(aFileType, gameName);
+			GameData data = readGameDataXML(aFileType, gameName);
+			if(data != null) { 
+				data.postProcess();
+			}
+			return data;
 		}
 
 		if(isCRFile(aFileType)) {
-			return readGameDataCR(aFileType, gameName);
+			GameData data = readGameDataCR(aFileType, gameName);
+			if(data != null) { 
+				data.postProcess();
+			}
+			return data;
 		}
 
 		throw new IOException("Don't know how to read unknown file format in " +

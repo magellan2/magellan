@@ -17,6 +17,7 @@
 
   <property name="SRC.RELEASE"           value="${basedir}/src/release"/>
   <property name="SRC.MAGELLAN"          value="${basedir}/src/java"/>
+  <property name="SRC.TEST"              value="${basedir}/src/test/java"/>
   <property name="SRC.RES"               value="${basedir}/src/res"/>
   <property name="SRC.PATCHER"           value="${basedir}/src/patcher"/>
   <property name="SRC.CHART"             value="${basedir}/src/chart"/>
@@ -27,10 +28,11 @@
   <property name="LIB.JFLAP"             value="${SRC.RELEASE}/lib/jflap4_0b7.jar"/>
   <property name="LIB.FORMS"             value="${SRC.RELEASE}/lib/forms-1.0.2.jar"/>
   <property name="LIB.JAXP"              value="${SRC.RELEASE}/lib/xml-apis.jar"/>
+  <property name="LIB.JUNIT"             value="${basedir}/tools/junit/junit.jar"/>
 
-  <property name="TEST"                  value="${basedir}/test"/>
   <property name="BUILD"                 value="${basedir}/build"/>
   <property name="CLASSES.MAGELLAN"      value="${BUILD}/build/magellan/classes"/>
+  <property name="CLASSES.TEST"          value="${BUILD}/build/test/magellan/classes"/>
   <property name="CLASSES.MAGELLAN.JRAT" value="${BUILD}/build/jrat/magellan/classes"/>
 
   <property name="CLASSES.PATCHER"       value="${BUILD}/build/patcher/classes"/>
@@ -107,6 +109,38 @@
       </filterset>
     </copy>
   </target>
+
+  <target name="compile.test" depends="compile.magellan">
+    <mkdir dir="${CLASSES.TEST}"/>
+    <javac srcdir  = "${SRC.TEST}"
+           destdir = "${CLASSES.TEST}"
+           deprecation = "${JAVAC.DEPRECATION}"
+           target = "${JAVAC.TARGET}"
+           debug  = "${JAVAC.DEBUG}">
+	  <classpath> 
+        <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${LIB.FORMS}"/>
+        <pathelement location="${LIB.JAXP}"/>
+        <pathelement location="${LIB.JUNIT}"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="run.test" depends="compile.test">
+
+    <java classname="com.eressea.test.MagellanTestSuite" fork="yes" failonerror="true">
+      <classpath>
+        <pathelement location="${CLASSES.TEST}"/>
+        <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${LIB.FORMS}"/>
+        <pathelement location="${LIB.JAXP}"/>
+        <pathelement location="${LIB.JUNIT}"/>
+      </classpath>
+	  <arg value="text"/>
+    </java>
+
+  </target> <!-- test.junit -->
+
 
   <target name="compile.magellan.jrat" depends="compile.magellan">
     <echo message="JRat injection (with classpath ${JRAT.CLASSPATH}) "/>
@@ -354,16 +388,6 @@
   <target name="tagVersion" depends="distribution">
     <cvs command='tag -R "v${VERSION}"'/>
     <cvs command='tag -R "v${VERSION} ${SRC.HELP}"'/>
-  </target>
-
-  <target name="test" depends="compile.magellan">
-	<java classname="junit.textui.TestRunner" fork="yes">
-	  <arg value="com.eressea.util.OrderedHashtableTest"/>
-      <classpath>
-        <pathelement location="${CLASSES.MAGELLAN}"/>
-        <pathelement location="${TEST}/lib/junit.jar"/>
-      </classpath>
-	</java>
   </target>
 
   <target name="update" depends="init, format">
