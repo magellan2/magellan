@@ -24,7 +24,7 @@
 
   <property name="SRC.HELP"              value="${basedir}/../magellan-help"/>
 
-  <property name="LIB.JFREECHART"        value="${SRC.RELEASE}/lib/jfreechart-0.9.8.jar"/>
+  <property name="LIB.JFREECHART"        value="${SRC.RELEASE}/lib/jfreechart.jar"/>
   <property name="LIB.JFLAP"             value="${SRC.RELEASE}/lib/jflap4_0b7.jar"/>
   <property name="LIB.FORMS"             value="${SRC.RELEASE}/lib/forms-1.0.2.jar"/>
   <property name="LIB.JAXP"              value="${SRC.RELEASE}/lib/xml-apis.jar"/>
@@ -100,6 +100,7 @@
 	  <classpath>
         <pathelement location="${LIB.FORMS}"/>
         <pathelement location="${LIB.JAXP}"/>
+        <pathelement location="${LIB.JFREECHART}"/>
       </classpath>
     </javac>
 	<!-- notify VERSION information in an accessable file -->
@@ -132,6 +133,7 @@
       <classpath>
         <pathelement location="${CLASSES.TEST}"/>
         <pathelement location="${CLASSES.MAGELLAN}"/>
+        <pathelement location="${SRC.RES}"/>
         <pathelement location="${LIB.FORMS}"/>
         <pathelement location="${LIB.JAXP}"/>
         <pathelement location="${LIB.JUNIT}"/>
@@ -184,7 +186,6 @@
 		   debug   = "${JAVAC.DEBUG}">
 	 <classpath>
         <pathelement location="${CLASSES.MAGELLAN}"/>
-        <pathelement location="${LIB.JFREECHART}"/>
       </classpath>
 
     </javac>
@@ -199,7 +200,6 @@
            debug   = "${JAVAC.DEBUG}">
 	 <classpath>
         <pathelement location="${CLASSES.MAGELLAN}"/>
-        <pathelement location="${LIB.JFREECHART}"/>
       </classpath>
     </javac>
 <!--    <checksum>
@@ -298,8 +298,6 @@
 		<fileset dir="${SRC.RELEASE}">
           <!-- pavkovic 2003.11.12: ignore jflap for now -->
           <exclude name="**/lib/jflap*.*"/>
-          <!-- pavkovic 2003.11.12: ignore jfreechart for now -->
-          <exclude name="**/lib/jfreechart*.*"/>
         </fileset>
 		<fileset dir="${basedir}">
           <include name="COPYING"/>
@@ -344,8 +342,6 @@
       <fileset dir="${basedir}">
         <!-- pavkovic 2003.11.12: ignore jflap for now -->
         <exclude name="**/lib/jflap*.*"/>
-        <!-- pavkovic 2003.11.12: ignore jfreechart for now -->
-        <exclude name="**/lib/jfreechart*.*"/>
         <exclude name="build/**"/>
         <!-- pavkovic 2003.11.13: ignore buildlib for now -->
         <exclude name="buildlib/**"/>
