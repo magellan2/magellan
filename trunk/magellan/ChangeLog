@@ -1,3 +1,8 @@
+2003-12-12  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/rules/GenericRules.java: added some more
+	restrictive type checks (parsing of "MACHEN Karavelle" was broken).
+
 2003-12-11  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/src/com/eressea/io/GameDataReader.java: set readonly to

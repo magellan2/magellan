@@ -92,6 +92,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public RegionType getRegionType(ID id, boolean add) {
+		Object uct = mapUnitContainerType.get(id);
+		if(uct != null && ! (uct instanceof RegionType)) {
+			return null;
+		}
 		RegionType r = (RegionType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
@@ -160,6 +164,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ShipType getShipType(ID id, boolean add) {
+		Object uct = mapUnitContainerType.get(id);
+		if(uct != null && ! (uct instanceof ShipType)) {
+			return null;
+		}
 		ShipType r = (ShipType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
@@ -227,6 +235,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public BuildingType getBuildingType(ID id, boolean add) {
+		Object uct = mapUnitContainerType.get(id);
+		if(uct != null && ! (uct instanceof BuildingType)) {
+			return null;
+		}
 		BuildingType r = (BuildingType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
@@ -295,6 +307,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public CastleType getCastleType(ID id, boolean add) {
+		Object uct = mapUnitContainerType.get(id);
+		if(uct != null && ! (uct instanceof CastleType)) {
+			return null;
+		}
 		CastleType r = (CastleType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
@@ -363,6 +379,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Race getRace(ID id, boolean add) {
+		Object uct = mapUnitContainerType.get(id);
+		if(uct != null && ! (uct instanceof Race)) {
+			return null;
+		}
 		Race r = (Race) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
@@ -497,6 +517,10 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Herb getHerb(ID id, boolean add) {
+		Object uct = mapItemType.get(id);
+		if(uct != null && ! (uct instanceof Herb)) {
+			return null;
+		}
 		Herb r = (Herb) mapItemType.get(id);
 
 		if((r == null) && add) {
