@@ -36,6 +36,10 @@ import com.eressea.Named;
 public class NameComparator implements Comparator {
 	protected Comparator sameNameSubCmp = null;
 
+
+	/** The default NameComparator without a subComparator */
+	public static final Comparator DEFAULT = new NameComparator(null);
+
 	/**
 	 * Creates a new NameComparator object.
 	 *
@@ -66,9 +70,9 @@ public class NameComparator implements Comparator {
 		if((n1 == null) && (n2 == null)) {
 			retVal = 0;
 		} else if((n1 != null) && (n2 == null)) {
-			retVal = Integer.MIN_VALUE;
+			retVal = -1;
 		} else if((n1 == null) && (n2 != null)) {
-			retVal = Integer.MAX_VALUE;
+			retVal = 1;
 		} else if((n1 != null) && (n1 != null)) {
 			retVal = n1.compareToIgnoreCase(n2);
 		}

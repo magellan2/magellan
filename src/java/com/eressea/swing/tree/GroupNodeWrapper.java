@@ -17,6 +17,7 @@ import java.awt.Image;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.Icon;
 import javax.swing.UIManager;
@@ -145,7 +146,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.lang.String toString() {
+	public String toString() {
 		if(this.amount == -1) {
 			return group.toString();
 		} else {
@@ -206,7 +207,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(java.util.Properties settings,
+	public NodeWrapperDrawPolicy init(Properties settings,
 									  NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
@@ -220,7 +221,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(java.util.Properties settings,
+	public NodeWrapperDrawPolicy init(Properties settings,
 									  String prefix,
 									  NodeWrapperDrawPolicy adapter) {
 		return null;

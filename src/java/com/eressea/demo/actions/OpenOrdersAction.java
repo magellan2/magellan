@@ -26,7 +26,11 @@ import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
 
+import com.eressea.event.GameDataEvent;
+
+import com.eressea.swing.EresseaFileFilter;
 import com.eressea.swing.OpenOrdersAccessory;
+
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.OrderReader;
@@ -60,7 +64,7 @@ public class OpenOrdersAction extends MenuAction {
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc		  = new JFileChooser();
 		Properties   settings = client.getSettings();
-		fc.addChoosableFileFilter(new com.eressea.swing.EresseaFileFilter(com.eressea.swing.EresseaFileFilter.TXT_FILTER));
+		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.TXT_FILTER));
 		fc.setSelectedFile(new File(settings.getProperty("Client.lastOrdersOpened",
 														 "")));
 
@@ -100,8 +104,7 @@ public class OpenOrdersAction extends MenuAction {
 											  JOptionPane.ERROR_MESSAGE);
 			}
 
-			client.getDispatcher().fire(new com.eressea.event.GameDataEvent(client,
-																			client.getData()));
+			client.getDispatcher().fire(new GameDataEvent(client, client.getData()));
 		}
 
 		// repaint since command confirmation status may have changed

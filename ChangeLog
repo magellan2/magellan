@@ -1,3 +1,13 @@
+2004-01-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Group.java (toString): removed id information.
+
+	* src/java/com/eressea/swing/completion/MultiEditorOrderEditorList.java: 
+	Added border for single editor mode just like in multi editor mode.
+
+	* src/java/com/eressea/demo/Client.java: Also count temp units in
+	window title.
+
 2004-01-02  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/io/cr/CRParser.java: Tag "Rekruten" will

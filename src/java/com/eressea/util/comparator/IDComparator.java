@@ -28,6 +28,9 @@ public class IDComparator implements Comparator {
 	public IDComparator() {
 	}
 
+	/** The default IDComparator */
+	public static final Comparator DEFAULT = new IDComparator();
+	
 	/**
 	 * Compares its two arguments for order according to their ids.
 	 *

@@ -67,12 +67,14 @@ import javax.swing.KeyStroke;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.JTextComponent;
+import javax.swing.undo.UndoManager;
 
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -120,27 +122,25 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	implements OrderEditorList, KeyListener, SelectionListener,
 			   TempUnitListener, FocusListener, CacheHandler
 {
-	private static final Logger					   log					    = Logger.getInstance(MultiEditorOrderEditorList.class);
-	private boolean								   multiEditorLayout	    = false;
-	private boolean								   hideButtons			    = false;
-	private List								   units				    = CollectionFactory.createLinkedList();
-	private Unit								   currentUnit			    = null;
-	private Region								   currentRegion		    = null;
-	private int									   currentUnitIndex		    = -1;
-	private Color								   standardBgColor		    = null;
-	private Color								   activeBgColor		    = null;
-	private Color								   standardBgColorConfirmed = null;
-	private Color								   activeBgColorConfirmed   = null;
-	private OrderEditor							   editor				    = null;
-	private static final javax.swing.border.Border standardBorder		    = new LineBorder(Color.lightGray,
-																							 2);
-	private static final javax.swing.border.Border activeBorder = new LineBorder(Color.darkGray,
-																				 2);
-	private UpdateThread						   updateThread		 = new UpdateThread();
-	private SwingGlitchThread					   swingGlitchThread = new SwingGlitchThread();
+	private static final Logger			 log					  = Logger.getInstance(MultiEditorOrderEditorList.class);
+	private boolean						 multiEditorLayout	      = false;
+	private boolean						 hideButtons			  = false;
+	private List						 units				      = CollectionFactory.createLinkedList();
+	private Unit						 currentUnit			  = null;
+	private Region						 currentRegion		      = null;
+	private int							 currentUnitIndex		  = -1;
+	private Color						 standardBgColor		  = null;
+	private Color						 activeBgColor		      = null;
+	private Color						 standardBgColorConfirmed = null;
+	private Color						 activeBgColorConfirmed   = null;
+	private OrderEditor					 editor				      = null;
+	private static final Border          standardBorder		      = new LineBorder(Color.lightGray, 2);
+	private static final Border          activeBorder             = new LineBorder(Color.darkGray, 2);
+	private UpdateThread				 updateThread		 = new UpdateThread();
+	private SwingGlitchThread			 swingGlitchThread = new SwingGlitchThread();
 
 	// undo listener
-	private javax.swing.undo.UndoManager undoMgr	    = null;
+	private UndoManager undoMgr	    = null;
 	protected List						 keyListeners   = CollectionFactory.createLinkedList();
 	protected MEKeyAdapter				 keyAdapter;
 	protected List						 caretListeners = CollectionFactory.createLinkedList();
@@ -174,7 +174,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public MultiEditorOrderEditorList(EventDispatcher d, GameData initData,
 									  Properties settings,
-									  javax.swing.undo.UndoManager _undoMgr) {
+									  UndoManager _undoMgr) {
 		super(d, initData, settings);
 
 		loadListProperty();
@@ -411,6 +411,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			// make the UI component refresh itself - necessary at least under Windows
 			revalidate();
 		} else {
+			// single editor mode
 			Object activeObject = se.getActiveObject();
 
 			if(activeObject instanceof Unit &&
@@ -423,6 +424,17 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 				}
 
 				currentUnit.cache.orderEditor = editor;
+
+				currentUnit.cache.orderEditor.setBorder(new TitledBorder(activeBorder,
+																		 currentUnit.toString() +
+																		 ": " +
+																		 currentUnit.persons));
+				
+				if(currentUnit.ordersConfirmed) {
+					currentUnit.cache.orderEditor.setBackground(activeBgColorConfirmed);
+				} else {
+					currentUnit.cache.orderEditor.setBackground(activeBgColor);
+				}
 				editor.setEditable(true);
 			} else {
 				if(currentUnit != null) {
@@ -464,10 +476,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		if((currentUnit != null) && multiEditorLayout) {
 			loadEditors(currentRegion);
 			this.revalidate();
-			log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
-					  e.getTempUnit().cache);
-			log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
-					  e.getTempUnit().cache.orderEditor);
+			if(log.isDebugEnabled()) {
+				log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
+						  e.getTempUnit().cache);
+				log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
+						  e.getTempUnit().cache.orderEditor);
+			}
 
 			if((e.getTempUnit().cache != null) &&
 				   (e.getTempUnit().cache.orderEditor != null)) {

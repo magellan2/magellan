@@ -193,7 +193,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	// keys: FactionIDs, values: Alliance-objects
 	private Map activeAlliances = CollectionFactory.createHashtable();
 
-	// This flag is added out of performance reasons
+	// This flag is added for performance reasons
 	// to avoid unnecessary updates to the activeAlliances map
 	private boolean activeAlliancesAreDefault = false;
 
@@ -495,7 +495,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				break;
 
 			case TreeHelper.GROUP:
-				help = new UnitGroupComparator(idCmp, cmp, cmp);
+				// pavkovic 2004.01.04: we dont want to sort groups by group id but name;
+				// if they are sorted by id this would make tree hierarchy 
+				// (trustlevel, group) somehow uninteresting
+				// Side effect: Groups are sorted by name
+				help = new UnitGroupComparator(new NameComparator(null), cmp, cmp);
 
 				break;
 

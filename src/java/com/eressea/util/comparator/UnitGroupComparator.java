@@ -62,8 +62,8 @@ public class UnitGroupComparator implements Comparator {
 	 * Compares its two arguments for order according to the groups they belong
 	 * to.
 	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 * @param o2 TODO: DOCUMENT ME!
+	 * @param o1 the 1st object to compare
+	 * @param o2 the 2nd object to compare
 	 *
 	 * @return the difference of <tt>o1</tt>'s and <tt>o2</tt>'s     group ids.
 	 * 		   If both belong to the same group and a     sub-comparator was
@@ -73,29 +73,24 @@ public class UnitGroupComparator implements Comparator {
 	 * 		   sub-comparator's comparison is returned.
 	 */
 	public int compare(Object o1, Object o2) {
-		int   retVal = 0;
 		Group g1 = ((Unit) o1).getGroup();
 		Group g2 = ((Unit) o2).getGroup();
 
-		if((g1 == null) && (g2 == null)) {
-			if(noGroupSubCmp != null) {
-				retVal = noGroupSubCmp.compare(o1, o2);
+		if(g1 == null) {
+			if(g2 == null) {
+				return noGroupSubCmp != null ? noGroupSubCmp.compare(o1, o2) : 0;
 			} else {
-				retVal = 0;
+				// g2 != null
+				return 1;
 			}
-		} else if((g1 != null) && (g2 == null)) {
-			retVal = Integer.MIN_VALUE;
-		} else if((g1 == null) && (g2 != null)) {
-			retVal = Integer.MAX_VALUE;
-		} else if((g1 != null) && (g1 != null)) {
-			retVal = groupCmp.compare(g1, g2);
-
-			if((retVal == 0) && (sameGroupSubCmp != null)) {
-				retVal = sameGroupSubCmp.compare(o1, o2);
+		} else {
+			if(g2 == null) {
+				return -1;
+			} else {
+				int retVal = groupCmp.compare(g1, g2);
+				return ((retVal == 0) && (sameGroupSubCmp != null)) ? sameGroupSubCmp.compare(o1, o2) : retVal;
 			}
 		}
-
-		return retVal;
 	}
 
 	/**
