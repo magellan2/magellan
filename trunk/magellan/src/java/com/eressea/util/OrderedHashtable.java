@@ -9,6 +9,7 @@
 package com.eressea.util;
 
 import java.util.AbstractCollection;
+import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A Hashtable implementation maintaining the values in the order
@@ -91,6 +93,30 @@ public class OrderedHashtable extends Hashtable {
 		keyList.clear();
 	}
 	
+
+	public Set keySet() {
+		return new KeySet();
+	}
+
+    private class KeySet extends AbstractSet {
+        public Iterator iterator() {
+			return new OHIterator(KEYS);
+        }
+        public int size() {
+            return OrderedHashtable.this.size();
+        }
+        public boolean contains(Object o) {
+            return containsKey(o);
+        }
+        public boolean remove(Object o) {
+            return OrderedHashtable.this.remove(o) != null;
+        }
+        public void clear() {
+            OrderedHashtable.this.clear();
+        }
+    }
+
+
 	/**
 	 * Creates a shallow copy of this hashtable. All the structure of
 	 * the hashtable itself is copied, but the keys and values are 
@@ -109,7 +135,7 @@ public class OrderedHashtable extends Hashtable {
 	 * @return  an enumeration of the values in this hashtable.
 	 */
 	public synchronized Enumeration elements() {
-		return new OHIterator();
+		return new OHIterator(VALUES);
 	}
 	
     /**
@@ -234,7 +260,7 @@ public class OrderedHashtable extends Hashtable {
 	
     private class ValueCollection extends AbstractCollection {
         public Iterator iterator() {
-			return new OHIterator();
+			return new OHIterator(VALUES);
         }
         public int size() {
             return OrderedHashtable.this.size();
@@ -247,12 +273,16 @@ public class OrderedHashtable extends Hashtable {
         }
     }
 	
+	private final static int KEYS = 0;
+	private final static int VALUES = 1;
 	private class OHIterator implements Iterator, Enumeration {
 		Iterator base;
 		Object last = null;
-		public OHIterator() {
+		int mode = 0;
+		public OHIterator(int mode) {
 			// we use the keys iterator as base for value iterator
 			base = OrderedHashtable.this.keyList.iterator();
+			this.mode = mode;
 		}
 		
 		// Enumeration methods
@@ -269,10 +299,12 @@ public class OrderedHashtable extends Hashtable {
 		}
 		public Object next() {
 			last = base.next();
-			return OrderedHashtable.this.get(last);
+			return mode == KEYS ? last : OrderedHashtable.this.get(last);
 		}
 		public void remove() {
-			OrderedHashtable.this.remove(base.next());
+			if(last == null) throw new IllegalStateException();
+			OrderedHashtable.this.remove(last);
+			last = null;
 		}
 	}
 	

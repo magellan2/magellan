@@ -34,6 +34,7 @@ import com.eressea.Coordinate;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
+import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Item;
 import com.eressea.Message;
@@ -365,7 +366,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 						String value = (String)msg.attributes.get("region");
 						if (value != null) {
 							String regionCoordinate = value;
-							Coordinate coordinate = Coordinate.parse(regionCoordinate, ",");
+							ID coordinate = Coordinate.parse(regionCoordinate, ",");
 							if (coordinate == null) {
 								coordinate = Coordinate.parse(regionCoordinate, " ");
 							}
@@ -572,7 +573,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					if (msg.attributes != null) {
 						String regionCoordinate = (String)msg.attributes.get("region");
 						if (regionCoordinate != null) {
-							Coordinate coordinate = Coordinate.parse(regionCoordinate, ",");
+							ID coordinate = Coordinate.parse(regionCoordinate, ",");
 							if (coordinate == null) {
 								coordinate = Coordinate.parse(regionCoordinate, " ");
 							}

@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.ID;
+import com.eressea.Rules;
 import com.eressea.StringID;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.EresseaOrderConstants;
@@ -23,8 +24,9 @@ import com.eressea.util.logging.Logger;
 public class Options {
 	private final static Logger log = Logger.getInstance(Options.class);
 	private Map options = null;
+
 	
-	public void initOptions() {
+	private void initOptions() {
 		options = CollectionFactory.createOrderedHashtable();
 		
 		EresseaOption o = null;
@@ -90,13 +92,28 @@ public class Options {
 		options.put(o.getID(), o);
 	}
 
-	public Options() {
-		initOptions();
-	}
+	///** @deprecated */
+	//	public Options() {
+	//	initOptions();
+	//}
 	
-	public Options(int bitMap) {
-		initOptions();
-		setValues(bitMap);
+
+	///** @deprecated */
+	//public Options(int bitMap) {
+	//	initOptions();
+	//	setValues(bitMap);
+	//}
+
+	Rules rules;
+	public Options(Rules rules) {
+		this.rules = rules;
+		initOptions(rules);
+	}
+
+	/** copy constructor */
+	public Options(Options orig) {
+		this(orig.rules);
+		setValues(orig.getBitMap());
 	}
 	
 	public int getBitMap() {
@@ -104,7 +121,7 @@ public class Options {
 		int i = 0;
 		
 		for (Iterator iter = options.values().iterator(); iter.hasNext();) {
-			EresseaOption o = (EresseaOption)iter.next();
+			OptionCategory o = (OptionCategory)iter.next();
 			if (o.isActive()) {
 				bitMap = bitMap | o.getBitMask();
 			}
@@ -115,7 +132,7 @@ public class Options {
 	
 	public void setValues(int bitMap) {
 		for (Iterator iter = options.values().iterator(); iter.hasNext();) {
-			EresseaOption o = (EresseaOption)iter.next();
+			OptionCategory o = (OptionCategory)iter.next();
 			o.setActive((bitMap & o.getBitMask()) != 0);
 		}
 		if (bitMap != getBitMap()) {
@@ -124,9 +141,20 @@ public class Options {
 	}
 	
 	public Collection options() {
+		if(options== null) {
+			initOptions(rules);
+		}
 		return new ROCollection(options);
 	}
 	
+
+	private void initOptions(Rules rules) {
+		options = CollectionFactory.createOrderedHashtable();
+		for(Iterator iter = rules.getOptionCategories(); iter.hasNext(); ) {
+			OptionCategory orig = (OptionCategory) iter.next();
+			options.put(orig.getID(), new OptionCategory(orig));
+		}
+	}
 	public boolean isActive(ID id) {
 		EresseaOption o = (EresseaOption)options.get(id);
 		return o != null && o.isActive();
@@ -148,3 +176,4 @@ public class Options {
 		return sb.toString();
 	}
 }
+

@@ -16,7 +16,6 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.eressea.Coordinate;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
@@ -152,13 +151,7 @@ public class OrderWriter {
 				name = "Ozean";
 			}
 			stream.write(Translations.getOrderTranslation(EresseaOrderConstants.O_REGION));
-			Coordinate c = r.getCoordinate();
-			if (c.z == 0) {
-				stream.write(" " + c.x + "," + c.y);
-			} else {
-				stream.write(" " + c.x + "," + c.y + "," + c.z);
-			}
-			writeln(stream, " ; " + r.getName());
+			writeln(stream, " " +r.getID().toString(",")+" ; " + r.getName());
 			writeln(stream, "; ECheck Lohn " + r.wage);
 		}
 

@@ -69,7 +69,7 @@ import java.io.OutputStream;
  *
  * @author <a href="mailto:keiron@aftexsw.com">Keiron Liddle</a>
  *
- * TODO:    Update to BZip2 1.0.1
+ * open task:    Update to BZip2 1.0.1
  */
 public class CBZip2OutputStream extends OutputStream implements BZip2Constants {
     protected static final int SETMASK = (1 << 21);

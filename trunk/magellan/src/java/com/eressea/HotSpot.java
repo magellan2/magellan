@@ -14,7 +14,7 @@ package com.eressea;
  * interest on the map.
  */
 public class HotSpot extends NamedObject {
-	private Coordinate center = null;
+	private ID center = null;
 	
 	/**
 	 * Create a new HotSpot object with the specified unique id.
@@ -24,18 +24,18 @@ public class HotSpot extends NamedObject {
 	}
 	
 	/**
-	 * Returns the coordinate in the center of the region of interest
+	 * Returns the ID in the center of the region of interest
 	 * this HotSpot points to.
 	 */
-	public Coordinate getCenter() {
+	public ID getCenter() {
 		return center;
 	}
 	
 	/**
-	 * Set the coordinate the is at the center of the region of
+	 * Set the ID the is at the center of the region of
 	 * interest this HotSpot object should point to.
 	 */
-	public void setCenter(Coordinate center) {
+	public void setCenter(ID center) {
 		this.center = center;
 	}
 	
@@ -73,7 +73,11 @@ public class HotSpot extends NamedObject {
 			newHS.setName(curHS.getName());
 		}
 		if (curHS.getCenter() != null) {
-			newHS.setCenter(new Coordinate(curHS.getCenter()));
+			try {
+				newHS.setCenter((ID) curHS.getCenter().clone());
+			} catch(CloneNotSupportedException e) {
+				// impossible position, should throw a runtime exception here
+			}
 		}
 	}
 }

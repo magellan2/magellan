@@ -21,21 +21,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import com.eressea.Coordinate;
-import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.HotSpot;
 import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Region;
-import com.eressea.crtonr.RegionWriter;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
@@ -63,7 +58,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 	private final static String RKEY = "MAGELLAN.RENDERER";
 	private final static String TKEY = "MAGELLAN.TOOLTIP";
 	
-	protected JMenuItem name, changeSelState, copyNameID, setOrigin, changeHotSpot, printNR, armystats;
+	protected JMenuItem name, changeSelState, copyNameID, setOrigin, changeHotSpot, armystats;
 	protected JMenu renderer, tooltips;
 	protected ActionListener rListener, tListener;
 	
@@ -117,16 +112,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 			}
 		});
 		add(changeHotSpot);
-		
-		printNR = new JMenuItem(getString("menu.shownr"));
-		printNR.setEnabled(false);
-		printNR.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				printNROfRegion();
-			}
-		});
-		add(printNR);
-		
+				
 		armystats = new JMenuItem(getString("menu.armystats"));
 		armystats.setEnabled(false);
 		final EventDispatcher ed = dispatcher;
@@ -164,7 +150,6 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 		copyNameID.setEnabled(true);
 		setOrigin.setEnabled(true);
 		changeHotSpot.setEnabled(true);
-		printNR.setEnabled(true);
 		armystats.setEnabled(true);
 	}
 	
@@ -176,7 +161,6 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 		copyNameID.setEnabled(false);
 		setOrigin.setEnabled(false);
 		changeHotSpot.setEnabled(false);
-		printNR.setEnabled(false);
 		armystats.setEnabled(false);
 	}
 	
@@ -317,7 +301,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 				}
 			}
 			HotSpot h = new HotSpot(id);
-			h.setCenter(region.getCoordinate());
+			h.setCenter(region.getID());
 			h.setName(region.toString());
 			data.hotSpots().put(id, h);
 		}
@@ -325,22 +309,6 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 		setCursor(Cursor.getDefaultCursor());
 	}
 	
-	/**
-	 * Shows an NR-representation of the region
-	 */
-	private void printNROfRegion() {
-		Faction f = null;
-		for (Iterator iter = data.factions().values().iterator(); iter.hasNext(); ) {
-			Faction faction = (Faction)iter.next();
-			if (f == null || f.trustLevel < faction.trustLevel) {
-				f = faction;
-			}
-		}
-		java.io.ByteArrayOutputStream stream = new java.io.ByteArrayOutputStream();
-		java.io.PrintStream p = new java.io.PrintStream(stream);
-		new RegionWriter(data, p, region, f);
-		new NRDialog("NR für \"" + f.getName() + "\" für \"" + region.toString() +"\"", stream.toString());
-	}
 	
 	private String getString(String key) {
 		return com.eressea.util.Translations.getTranslation(this,key);
@@ -360,7 +328,6 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 			defaultTranslations.put("menu.setorigin" , "Set origin to this region");
 			defaultTranslations.put("menu.changehotspot" , "Set or delete hotspot");
 			defaultTranslations.put("menu.tooltips" , "Tooltips");
-			defaultTranslations.put("menu.shownr" , "Show NR for this region (in German only)");
 			defaultTranslations.put("menu.armystats" , "Army statistics...");
 			defaultTranslations.put("menu.renderer.none" , "Off");
 			defaultTranslations.put("menu.noregion" , "No region");
@@ -412,19 +379,5 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver{
 			}
 		}
 	}
-	
-	private class NRDialog extends JDialog {
-		private NRDialog(String title, String text) {
-			this.setTitle(title);
-			this.setModal(true);
-			this.setSize(new java.awt.Dimension(600, 600));
-			JTextArea textArea = new JTextArea(text);
-			textArea.setCaretPosition(0);
-			JScrollPane pane = new JScrollPane(textArea);
-			this.getContentPane().add(pane);
-			this.setLocationRelativeTo(MapContextMenu.this);
-			this.show();
-		}
-	}
-	
+		
 }

@@ -19,6 +19,7 @@ import java.util.Map;
 import com.eressea.Building;
 import com.eressea.Coordinate;
 import com.eressea.GameData;
+import com.eressea.ID;
 import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
@@ -41,12 +42,33 @@ public class Regions {
 	 * @param radius the maximum distance between center and any
 	 * 	region to be regarded as a neighbour within radius.
 	 * @param excludedRegionTypes region types that disqualify regions
+	 *  as valid neighbours. This also may be null
+	 * @return a map with all neighbours that were found, including
+	 *	region center. The keys are instances of class ID, 
+	 *	values are objects of class Region.
+	 */
+	public static Map getAllNeighbours(Map regions, ID center, int radius, Map excludedRegionTypes) {
+		if(center instanceof Coordinate) {
+			return getAllNeighbours(regions, (Coordinate) center, radius, excludedRegionTypes);
+		} else {
+			throw new IllegalArgumentException("center is not an eressea coordinate. Support for e2 incomplete!");
+		}
+	}
+	
+	/**
+	 * Retrieve the regions within radius around region center.
+	 *
+	 * @param regions a map containing the existing regions.
+	 * @param center the region the neighbours of which are retrieved.
+	 * @param radius the maximum distance between center and any
+	 * 	region to be regarded as a neighbour within radius.
+	 * @param excludedRegionTypes region types that disqualify regions
 	 *  as valid neighbours.
 	 * @return a map with all neighbours that were found, including
 	 *	region center. The keys are instances of class Coordinate, 
 	 *	values are objects of class Region.
 	 */
-	public static Map getAllNeighbours(Map regions, Coordinate center, int radius, Map excludedRegionTypes) {
+	private static Map getAllNeighbours(Map regions, Coordinate center, int radius, Map excludedRegionTypes) {
 		Map neighbours = CollectionFactory.createHashtable();
 		Coordinate c = new Coordinate(0, 0, center.z);
 		
@@ -78,8 +100,21 @@ public class Regions {
 	 *	region center. The keys are instances of class Coordinate, 
 	 *	values are objects of class Region.
 	 */
-	public static Map getAllNeighbours(Map regions, Coordinate center, Map excludedRegionTypes) {
+	public static Map getAllNeighbours(Map regions, ID center, Map excludedRegionTypes) {
 		return getAllNeighbours(regions,center,1,excludedRegionTypes);
+	}
+
+	/**
+	 * Find a way from one region to another region and 
+	 * get the directions in which to move to follow a sequence of
+	 * regions. This is virtually the same as
+     * <pre>getDirections(getPath(regions, start, dest, excludedRegionTypes));</pre>
+	 *
+	 * @return a String telling the direction statements necessary
+	 *	to follow the sequence of regions contained in regions.
+	 */
+	public static String getDirections(Map regions, ID start, ID dest, Map excludedRegionTypes) {
+		return getDirections(getPath(regions, start, dest, excludedRegionTypes));
 	}
 
 	/**
@@ -162,7 +197,22 @@ public class Regions {
 	 * order to get from the one to the other specified region,
 	 * including both of them.
 	 */
-	public static List getPath(Map regions, Coordinate start, Coordinate dest, Map excludedRegionTypes) {
+	public static List getPath(Map regions, ID start, ID dest, Map excludedRegionTypes) {
+		if(start instanceof Coordinate && dest instanceof Coordinate) {
+			return getPath(regions, (Coordinate) start, (Coordinate) dest, excludedRegionTypes);
+		} else {
+			throw new IllegalArgumentException("start of dest is not an eressea coordinate. Support for e2 incomplete!");
+		}
+	}
+
+	/**
+	 * Find a way from one region to another region.
+	 *
+	 * @return a Collection of regions that have to be trespassed in 
+	 * order to get from the one to the other specified region,
+	 * including both of them.
+	 */
+	private static List getPath(Map regions, Coordinate start, Coordinate dest, Map excludedRegionTypes) {
 		if (regions == null || start == null || dest == null) {
 			log.warn("Regions.getPath(): invalid argument");
 			return new LinkedList();

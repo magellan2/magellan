@@ -315,6 +315,9 @@ public class EresseaOptionPanel extends InternationalizedPanel implements Select
 	}
 
 	private Options getOptions() {
+		return null;
+		// TODO(pavkovic): currently this is broken I deactivated EresseaOptionPanel it in Client
+		/*
 		Options options = new Options();
 
 		options.setActive(StringID.create(EresseaOrderConstants.O_COMPUTER), chkComputerReport.isSelected());
@@ -333,6 +336,7 @@ public class EresseaOptionPanel extends InternationalizedPanel implements Select
 		options.setActive(StringID.create(EresseaOrderConstants.O_ITEMPOOL), chkItemPool.isSelected());
 
 		return options;
+		*/
 	}
 
 	public void setEnabled(boolean bool) {

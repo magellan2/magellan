@@ -572,15 +572,15 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		
 		// switch planes
 		if (mapper.getActiveRegion() == null || 
-			mapper.getActiveRegion().getCoordinate().z != h.getCenter().z) {
+			mapper.getActiveRegion().getCoordinate().z != (((Coordinate) h.getCenter()).z)) {
 
 			if (cmbLevel.isVisible()) {
-				cmbLevel.setSelectedItem(new Integer(h.getCenter().z));
+				cmbLevel.setSelectedItem(new Integer(((Coordinate) h.getCenter()).z));
 			}
 		}
 		
 		// re-center mapper
-		Point viewPos = mapper.getCenteredViewPosition(scpMapper.getSize(), h.getCenter());
+		Point viewPos = mapper.getCenteredViewPosition(scpMapper.getSize(), (Coordinate) h.getCenter());
 		if (viewPos != null) {
 			scpMapper.getViewport().setViewPosition(viewPos);
 			mapper.requestFocus();

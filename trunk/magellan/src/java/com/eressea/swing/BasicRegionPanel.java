@@ -241,30 +241,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel implements Sele
 			//text pane
 			defText = new JTextPane();
 			defText.setText(getDefinition());
-			// TODO: Layout ist noch irgendwie komisch
-			//defText.setMinimumSize(new Dimension(0,0));
 			this.add(new JScrollPane(defText),BorderLayout.CENTER);
-			/*			this.setLayout(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-
-			// title
-            GridBagHelper.setConstraints(
-                c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
-			this.add(new JLabel(getString("prefs.label")),c);
-
-            GridBagHelper.setConstraints(
-                c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, // different weighty!
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, c.insets, 0, 0);
-
-			defText = new JTextPane();
-			defText.setText(getDefinition());
-			// TODO: 
-			defText.setPreferredSize(new Dimension(500, 300));
-			JScrollPane scroller = new JScrollPane();
-			scroller.add(defText);
-			this.add(scroller,c);
-		*/
 		}
 		
 		public void applyPreferences() {

@@ -1,4 +1,4 @@
-VERSION 39
+VERSION 40
 RULES "$Id$"
 
 SKILLCATEGORY "war"
@@ -1569,3 +1569,63 @@ REGIONTYPE "Ozean"
 
 REGIONTYPE "Feuerwand"
 "Feuerwand";name
+
+OPTIONCATEGORY "REPORT"
+"REPORT";name
+"true";order
+0;bitmask
+
+OPTIONCATEGORY "COMPUTER"
+"COMPUTER";name
+"true";order
+1;bitmask
+
+OPTIONCATEGORY "ZUGVORLAGE"
+"ZUGVORLAGE";name
+"true";order
+2;bitmask
+
+OPTIONCATEGORY "SILBERPOOL"
+"SILBERPOOL";name
+"true";order
+3;bitmask
+
+OPTIONCATEGORY "STATISTIK"
+"STATISTIK";name
+"true";order
+4;bitmask
+
+OPTIONCATEGORY "DEBUG"
+"DEBUG";name
+"false";order
+5;bitmask
+
+OPTIONCATEGORY "ZIPPED"
+"ZIPPED";name
+"true";order
+6;bitmask
+
+OPTIONCATEGORY "ZEITUNG"
+"ZEITUNG";name
+"false";order
+7;bitmask
+
+OPTIONCATEGORY "MATERIALPOOL"
+"MATERIALPOOL";name
+"true";order
+8;bitmask
+
+OPTIONCATEGORY "ADRESSEN"
+"ADRESSEN";name
+"true";order
+9;bitmask
+
+OPTIONCATEGORY "BZIP2"
+"BZIP2";name
+"true";order
+10;bitmask
+
+OPTIONCATEGORY "PUNKTE"
+"PUNKTE";name
+"false";order
+11;bitmask

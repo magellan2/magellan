@@ -14,8 +14,6 @@ import com.eressea.util.Direction;
 import com.eressea.util.Regions;
 
 /** 
- * A Inspector inspects the given resource (TODO: Unit, region or whole gamedata?) 
- * and returns a list of problems;
  */
 public class ShipInspector extends AbstractInspector implements Inspector {
 	public final static ShipInspector INSPECTOR = new ShipInspector();

@@ -52,18 +52,9 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard, Suppor
 	}
 
 	public String toString() {
-		String text;
-		if (this.region.getName() != null) {
-			text = region.getName();
-		} else {
-			text = region.getType().toString();
-		}
-		text +=  " (" + region.getCoordinate().toString(", ") + ")";
-		if (amount > Integer.MIN_VALUE) {
-			text += ": " + amount;
-		}
-
-		return text;
+		return  amount > Integer.MIN_VALUE ? 
+			region.toString()+": " + amount : 
+			region.toString();
 	}
 
 	// pavkovic 2003.10.01: prevent multiple Lists to be generated for nearly static code

@@ -25,7 +25,6 @@ import com.eressea.relation.RecruitmentRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
-import com.eressea.rules.Eressea;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.util.CollectionFactory;
@@ -206,7 +205,10 @@ public class EresseaRelationFactory implements RelationFactory {
 										// update the modified person amount
 										modPersons = Math.max(0, modPersons - rel.amount);
 									} else if (itemName.length() > 0) {
-										ItemType iType = ((Eressea)data.rules).getItemType(itemName);
+										// TODO(pavkovic): korrigieren!!! Hier soll eigentlich das Item über den 
+										// übersetzten Namen gefunden werden!!!
+										// ItemType iType = ((Eressea)data.rules).getItemType(itemName);
+										ItemType iType = data.rules.getItemType(StringID.create(itemName));
 										if (iType != null) {
 											// get the item from the list of modified items
 											Item i = (Item)modItems.get(iType.getID());

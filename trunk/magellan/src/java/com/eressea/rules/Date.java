@@ -39,8 +39,8 @@ abstract public class Date extends Object implements ID {
 	}
 
 	public boolean equals(Object o) {
-		if (!(o instanceof Date)) return false;
-		return iDate == ((Date)o).iDate;
+		return this == o ||
+			(o instanceof Date && iDate == ((Date)o).iDate);
 	}
 
 	public int hashCode() {
@@ -51,12 +51,17 @@ abstract public class Date extends Object implements ID {
 		return toString(TYPE_SHORT);
 	}
 
+	public String toString(String delim) {
+		return toString();
+	}
+
 	/**
 	 * Imposes a natural ordering on date objects based on the
 	 * numeric ordering of the integer date value.
 	 */
 	public int compareTo(Object o) {
-		return iDate - ((Date)o).iDate;
+		Date d = (Date) o;
+		return iDate > d.iDate ? 1 : (iDate == d.iDate ? 0 : -1);
 	}
 
 	/**

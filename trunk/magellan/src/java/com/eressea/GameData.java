@@ -42,6 +42,7 @@ abstract public class GameData implements Cloneable {
 	public final Rules rules;
 	/** The name of the game. */
 	public final String name;
+
 	/**
 	 * The current TempUnit-ID. This means, if a new TempUnit is
 	 * created, it's suggested ID is usually curTempID and if this
@@ -440,9 +441,14 @@ abstract public class GameData implements Cloneable {
 	 * @param key a language independent key.
 	 * @param value the language dependent translation of key.
 	 */
-	public void addTranslation(String key, String value) {
+	public void addTranslation(String from, String to) {
 		if (translations() != null) {
-			translations().put(key, value);
+			translations().put(from, to);
+			if(rules != null) {
+				// dynamically add translation key to rules to access object by name
+				rules.changeName(from,to);
+			}
+			
 		}
 	}
 
@@ -1176,7 +1182,7 @@ abstract public class GameData implements Cloneable {
 					}
 				}
 			} else {
-				Map m = Regions.getAllNeighbours(regions(), newRegion.getCoordinate(), 3, null);
+				Map m = Regions.getAllNeighbours(regions(), newRegion.getID(), 3, null);
 				if (m != null) {
 					Iterator it = m.values().iterator();
 					while(it.hasNext()) {
@@ -1224,7 +1230,7 @@ abstract public class GameData implements Cloneable {
 	 * trick encapsulated in Loader)
 	 */
 	public Object clone() throws CloneNotSupportedException {
-		return Loader.cloneGameData(this);
+		return new Loader().doCloneGameData(this);
 	}
 
 
@@ -1241,5 +1247,14 @@ abstract public class GameData implements Cloneable {
 	}
 
 
+	/** Post processes the game data (if necessary)  once */
+	private boolean postProcessed = false;
+	public void postProcess() {
+		if(postProcessed) {
+			return;
+		}
+		getGameSpecificStuff().postProcess(this);
+		postProcessed = true;
+	}
 
 }

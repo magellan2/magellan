@@ -8,8 +8,6 @@ import com.eressea.Unit;
 import com.eressea.util.CollectionFactory;
 
 /** 
- * A Inspector inspects the given resource (TODO: Unit, region or whole gamedata?) 
- * and returns a list of problems;
  */
 public class MovementInspector extends AbstractInspector implements Inspector {
 	public final static MovementInspector INSPECTOR = new MovementInspector();

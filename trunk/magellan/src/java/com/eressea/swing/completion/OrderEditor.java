@@ -43,6 +43,7 @@ import javax.swing.undo.UndoManager;
 
 import com.eressea.GameData;
 import com.eressea.Unit;
+import com.eressea.completion.OrderParser;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
@@ -50,7 +51,6 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-import com.eressea.completion.OrderParser;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.MergeLineReader;

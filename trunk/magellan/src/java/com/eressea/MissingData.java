@@ -11,7 +11,7 @@ package com.eressea;
 import java.util.Locale;
 import java.util.Map;
 
-import com.eressea.rules.Eressea;
+import com.eressea.rules.GenericRules;
 import com.eressea.util.CollectionFactory;
 
 /**
@@ -87,6 +87,6 @@ public class MissingData extends GameData {
 	}
 
 	public MissingData() {
-		super(new Eressea(),"void");
+		super(new GenericRules(),"void");
 	}
 }

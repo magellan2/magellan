@@ -238,48 +238,49 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				int code = e.getKeyCode();
-				if (activeRegion != null && (code == KeyEvent.VK_UP || code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_NUMPAD1 || code == KeyEvent.VK_NUMPAD2 || code == KeyEvent.VK_NUMPAD3 || code == KeyEvent.VK_NUMPAD4 || code == KeyEvent.VK_NUMPAD6 || code == KeyEvent.VK_NUMPAD7 || code == KeyEvent.VK_NUMPAD8 || code == KeyEvent.VK_NUMPAD9)) {
-					Coordinate translationCoord = null;
-					switch (code) {
-						case KeyEvent.VK_UP:
-						case KeyEvent.VK_NUMPAD9:
-							translationCoord = new Coordinate(0, 1);
-							break;
-						case KeyEvent.VK_RIGHT:
-						case KeyEvent.VK_NUMPAD6:
-							translationCoord = new Coordinate(1, 0);
-							break;
-						case KeyEvent.VK_DOWN:
-						case KeyEvent.VK_NUMPAD1:
-							translationCoord = new Coordinate(0, -1);
-							break;
-						case KeyEvent.VK_LEFT:
-						case KeyEvent.VK_NUMPAD4:
-							translationCoord = new Coordinate(-1, 0);
-							break;
-						case KeyEvent.VK_NUMPAD3:
-							translationCoord = new Coordinate(1, -1);
-							break;
-						case KeyEvent.VK_NUMPAD7:
-							translationCoord = new Coordinate(-1, 1);
-							break;
-						case KeyEvent.VK_NUMPAD2:
-							translationCoord = new Coordinate(1, -2);
-							break;
-						case KeyEvent.VK_NUMPAD8:
-							translationCoord = new Coordinate(-1, 2);
-							break;
-					}
-					if (translationCoord != null) {
-						Coordinate c = new Coordinate(activeRegion.getCoordinate());
-						activeRegion = data.getRegion(c.translate(translationCoord));
-						dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null, activeRegion, SelectionEvent.ST_REGIONS));
-						repaint();
-					}
+				if (activeRegion == null) {
+					return;
+				}
+				Coordinate translationCoord = null;
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_UP:
+				case KeyEvent.VK_NUMPAD9:
+					translationCoord = new Coordinate(0, 1);
+					break;
+				case KeyEvent.VK_RIGHT:
+				case KeyEvent.VK_NUMPAD6:
+					translationCoord = new Coordinate(1, 0);
+					break;
+				case KeyEvent.VK_DOWN:
+				case KeyEvent.VK_NUMPAD1:
+					translationCoord = new Coordinate(0, -1);
+					break;
+				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_NUMPAD4:
+					translationCoord = new Coordinate(-1, 0);
+					break;
+				case KeyEvent.VK_NUMPAD3:
+					translationCoord = new Coordinate(1, -1);
+					break;
+				case KeyEvent.VK_NUMPAD7:
+					translationCoord = new Coordinate(-1, 1);
+					break;
+				case KeyEvent.VK_NUMPAD2:
+					translationCoord = new Coordinate(1, -2);
+					break;
+				case KeyEvent.VK_NUMPAD8:
+					translationCoord = new Coordinate(-1, 2);
+					break;
+				default: break;
+				}
+				if (translationCoord != null) {
+					Coordinate c = new Coordinate(activeRegion.getCoordinate());
+					activeRegion = data.getRegion(c.translate(translationCoord));
+					dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null, activeRegion, SelectionEvent.ST_REGIONS));
+					repaint();
 				}
 			}
-		});
+			});
 		
 		this.dispatcher.addSelectionListener(this);
 		this.dispatcher.addUnitOrdersListener(this);

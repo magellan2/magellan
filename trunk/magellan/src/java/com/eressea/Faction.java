@@ -196,7 +196,7 @@ public class Faction extends UnitContainer {
 			newFaction.maxMigrants = curFaction.maxMigrants;
 		}
 		if (curFaction.options != null) {
-			newFaction.options = new Options(curFaction.options.getBitMap());
+			newFaction.options = new Options(curFaction.options);
 		}
 		if (curFaction.password != null) {
 			newFaction.password = curFaction.password;
