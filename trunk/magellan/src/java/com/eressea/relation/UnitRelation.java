@@ -18,7 +18,7 @@ import com.eressea.Unit;
 /**
  * A (possibly abstract) relation originating from a source unit.
  */
-public class UnitRelation {
+public abstract class UnitRelation {
 	/** the origin of this relation, normally the same as source */
 	public Unit origin;
 
@@ -47,7 +47,7 @@ public class UnitRelation {
 	 */
 	public String toString() {
 		return this.getClass().getName() + "@ORIGIN=" + origin + "@SOURCE=" + source + "@line=" +
-			   line;
+			line;
 	}
 
 	/**

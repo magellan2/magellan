@@ -31,4 +31,6 @@ public interface RelationFactory {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List createRelations(Unit u, int from);
+
+	public List createRelations(Unit u, List orders);
 }

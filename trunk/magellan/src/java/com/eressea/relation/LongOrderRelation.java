@@ -14,7 +14,7 @@
 package com.eressea.relation;
 
 /**
- * TODO: DOCUMENT ME!
+ * A marker interface for long orders.
  *
  * @author $author$
  * @version $Revision$
