@@ -521,6 +521,12 @@
     </xmlvalidate>
   </target>
 
+  <!-- target for validating XML rules -->
+  <target name="gui" depends="compile">
+    <java classname="com.eressea.swing.desktop.Desktop"
+      classpath="${CLASSES.MAGELLAN}" fork="yes"/>
+  </target>
+
 </project>
 
 

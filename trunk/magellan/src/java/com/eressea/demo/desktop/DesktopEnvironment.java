@@ -29,7 +29,7 @@ import com.eressea.util.CollectionFactory;
  */
 public class DesktopEnvironment extends Object {
 	/** TODO: DOCUMENT ME! */
-	public static MagellanDesktop desktop;
+	private static MagellanDesktop desktop;
 
 	/** TODO: DOCUMENT ME! */
 	public static final int SPLIT = MagellanDesktop.MODE_SPLIT;

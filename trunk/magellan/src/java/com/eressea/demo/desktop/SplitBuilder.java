@@ -106,14 +106,11 @@ public class SplitBuilder extends Object {
 
 	protected JComponent createSplit(FrameTreeNode current, Map components, Rectangle sourceRect) {
 		int orient = current.getOrientation();
-		JSplitPane jsp = new JSplitPane(orient);
+		JSplitPane jsp = com.eressea.swing.ui.UIFactory.createBorderlessJSplitPane(orient);
 		Rectangle left = new Rectangle();
 		Rectangle right = new Rectangle();
 		left.x = sourceRect.x;
 		left.y = sourceRect.y;
-
-		// remove border for less space waste
-		jsp.setBorder(null);
 
 		if(current.isAbsolute()) {
 			int divider = (int) Math.round(current.getPercentage());
@@ -125,9 +122,8 @@ public class SplitBuilder extends Object {
 			jsp.setDividerLocation(divider);
 		}
 
-		// pavkovic 2003.06.04: reduce divider size, remove one touch expander
+		// pavkovic 2004.04.02: remove one touch expander
 		jsp.setOneTouchExpandable(false);
-		//jsp.setDividerSize(3);
 
 		// connect the split pane and the node
 		current.connectToSplitPane(jsp);
@@ -140,13 +136,22 @@ public class SplitBuilder extends Object {
 			}
 
 			jc.setMinimumSize(minSize);
-			jsp.setTopComponent(jc);
+			if(current.getChild(0).getName() == null) {
+				jsp.setTopComponent(jc);
+			}  else {
+				jsp.setTopComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(0).getName(),jc));
+			}
 
 			if(!componentsUsed.contains(jc)) {
 				componentsUsed.add(jc);
 			}
 		} else {
-			jsp.setTopComponent(createSplit(current.getChild(0), components, left));
+			JComponent jc = createSplit(current.getChild(0), components, left);
+			if(current.getChild(0).getName() == null) {
+				jsp.setTopComponent(jc);
+			}  else {
+				jsp.setTopComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(0).getName(),jc));
+			}
 		}
 
 		if(current.getChild(1).isLeaf()) {
@@ -157,13 +162,24 @@ public class SplitBuilder extends Object {
 			}
 
 			jc.setMinimumSize(minSize);
-			jsp.setBottomComponent(jc);
+
+			if(current.getChild(1).getName() == null) {
+				jsp.setBottomComponent(jc);
+			}  else {
+				jsp.setBottomComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(1).getName(),jc));
+			}
 
 			if(!componentsUsed.contains(jc)) {
 				componentsUsed.add(jc);
 			}
 		} else {
-			jsp.setBottomComponent(createSplit(current.getChild(1), components, right));
+			// jsp.setBottomComponent(createSplit(current.getChild(1), components, right));
+			JComponent jc = createSplit(current.getChild(1), components, right);
+			if(current.getChild(1).getName() == null) {
+				jsp.setBottomComponent(jc);
+			}  else {
+				jsp.setBottomComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(1).getName(),jc));
+			}
 		}
 
 		return jsp;
