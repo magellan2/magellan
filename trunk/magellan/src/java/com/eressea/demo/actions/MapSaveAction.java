@@ -1,37 +1,56 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.demo.actions;
 
 import java.util.Map;
 
 import com.eressea.demo.Client;
+
 import com.eressea.swing.MapSaverUI;
 import com.eressea.swing.MapperPanel;
+
 import com.eressea.util.CollectionFactory;
 
 /**
+ * DOCUMENT ME!
  *
- * @author  Andreas
+ * @author Andreas
  * @version
  */
 public class MapSaveAction extends MenuAction {
-
-	private Client client;
+	private Client	    client;
 	private MapperPanel map;
 
-	public MapSaveAction(Client parent,MapperPanel m) {
-		client=parent;
-		map=m;
+	/**
+	 * Creates a new MapSaveAction object.
+	 *
+	 * @param parent TODO: DOCUMENT ME!
+	 * @param m TODO: DOCUMENT ME!
+	 */
+	public MapSaveAction(Client parent, MapperPanel m) {
+		client = parent;
+		map    = m;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		new MapSaverUI( client, true, map.getView() ).show();
+		new MapSaverUI(client, true, map.getView()).show();
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -40,14 +59,21 @@ public class MapSaveAction extends MenuAction {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name"       , "Save as image...");
-			defaultTranslations.put("mnemonic"   , "s");
+			defaultTranslations.put("name", "Save as image...");
+			defaultTranslations.put("mnemonic", "s");
 			defaultTranslations.put("accelerator", "");
-			defaultTranslations.put("tooltip"    , "");
+			defaultTranslations.put("tooltip", "");
 		}
+
 		return defaultTranslations;
 	}
 }

@@ -1,17 +1,24 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.demo.actions;
 
-
 import java.awt.event.ActionEvent;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.util.Map;
 import java.util.Properties;
 
@@ -19,31 +26,45 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
+
 import com.eressea.io.cr.CRWriter;
 import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
+
 import com.eressea.swing.EresseaFileFilter;
+
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
+ * DOCUMENT ME!
  *
- * @author  Andreas
+ * @author Andreas
  * @version
  */
 public class FileSaveAsAction extends MenuAction {
-	private final static Logger log = Logger.getInstance(FileSaveAsAction.class);
+	private static final Logger log    = Logger.getInstance(FileSaveAsAction.class);
+	protected Client		    client;
 
-	protected Client  client;
-
+	/**
+	 * Creates a new FileSaveAsAction object.
+	 *
+	 * @param parent TODO: DOCUMENT ME!
+	 */
 	public FileSaveAsAction(Client parent) {
-		client=parent;
+		client = parent;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void actionPerformed(ActionEvent e) {
 		FileType file = getFile();
+
 		if(file != null) {
 			doSaveAction(file);
 		} else {
@@ -52,39 +73,48 @@ public class FileSaveAsAction extends MenuAction {
 	}
 
 	protected void doSaveAsAction() {
-		Properties settings=client.getSettings();
+		Properties   settings = client.getSettings();
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
-        EresseaFileFilter crFilter = new EresseaFileFilter(EresseaFileFilter.CR_FILTER);
+
+		EresseaFileFilter crFilter = new EresseaFileFilter(EresseaFileFilter.CR_FILTER);
 		fc.addChoosableFileFilter(crFilter);
-        EresseaFileFilter gzFilter = new EresseaFileFilter(EresseaFileFilter.GZ_FILTER);
+
+		EresseaFileFilter gzFilter = new EresseaFileFilter(EresseaFileFilter.GZ_FILTER);
 		fc.addChoosableFileFilter(gzFilter);
-        EresseaFileFilter bz2Filter = new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER);
+
+		EresseaFileFilter bz2Filter = new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER);
 		fc.addChoosableFileFilter(bz2Filter);
-        File selectedFile = new File(settings.getProperty("Client.lastCRSaved", ""));
+
+		File selectedFile = new File(settings.getProperty("Client.lastCRSaved",
+														  ""));
 		fc.setSelectedFile(selectedFile);
-        // select an active file filter
-        if (selectedFile != null) {
-            if (crFilter.accept(selectedFile)) {
-                fc.setFileFilter(crFilter);
-            } else if (gzFilter.accept(selectedFile)) {
-                fc.setFileFilter(gzFilter);
-            } else if (bz2Filter.accept(selectedFile)) {
-                fc.setFileFilter(bz2Filter);
-            }
-        }
+
+		// select an active file filter
+		if(selectedFile != null) {
+			if(crFilter.accept(selectedFile)) {
+				fc.setFileFilter(crFilter);
+			} else if(gzFilter.accept(selectedFile)) {
+				fc.setFileFilter(gzFilter);
+			} else if(bz2Filter.accept(selectedFile)) {
+				fc.setFileFilter(bz2Filter);
+			}
+		}
 
 		fc.setAccessory(new com.eressea.swing.HistoryAccessory(settings, fc));
 		fc.setDialogTitle(getString("title"));
 
-		if (fc.showSaveDialog(client) == JFileChooser.APPROVE_OPTION) {
+		if(fc.showSaveDialog(client) == JFileChooser.APPROVE_OPTION) {
+			boolean bOpenEqualsSave = Boolean.valueOf(settings.getProperty("Client.openEqualsSave",
+																		   "false"))
+											 .booleanValue();
 
-			boolean bOpenEqualsSave = Boolean.valueOf( settings.getProperty("Client.openEqualsSave", "false" )).booleanValue();
+			if(bOpenEqualsSave) {
+				settings.setProperty("Client.lastCROpened",
+									 fc.getSelectedFile().getAbsolutePath());
+			}
 
-			if (bOpenEqualsSave)
-				settings.setProperty("Client.lastCROpened", fc.getSelectedFile().getAbsolutePath());
-
-			File dataFile = fc.getSelectedFile();
+			File			  dataFile  = fc.getSelectedFile();
 			EresseaFileFilter actFilter = (EresseaFileFilter) fc.getFileFilter();
 			dataFile = actFilter.addExtension(dataFile);
 
@@ -93,12 +123,13 @@ public class FileSaveAsAction extends MenuAction {
 				// stop execution of saveaction if necessary
 				try {
 					File backup = FileBackup.create(dataFile);
-					log.info("Created backupfile "+backup);
+					log.info("Created backupfile " + backup);
 				} catch(IOException ie) {
-					log.warn("Could not create backupfile for file "+dataFile);
+					log.warn("Could not create backupfile for file " +
+							 dataFile);
 				}
 			}
-			
+
 			doSaveAction(dataFile);
 		}
 	}
@@ -106,11 +137,11 @@ public class FileSaveAsAction extends MenuAction {
 	protected void doSaveAction(File file) {
 		try {
 			doSaveAction(FileTypeFactory.singleton().createFileType(file));
-		} catch (IOException exc) {
+		} catch(IOException exc) {
 			log.error(exc);
-			JOptionPane.showMessageDialog(client,
-										  exc.toString(),
-										  Translations.getTranslation(FileSaveAction.class,"msg.filesave.error.title"),
+			JOptionPane.showMessageDialog(client, exc.toString(),
+										  Translations.getTranslation(FileSaveAction.class,
+																	  "msg.filesave.error.title"),
 										  JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -119,7 +150,7 @@ public class FileSaveAsAction extends MenuAction {
 		try {
 			// create backup file
 			File backup = FileBackup.create(filetype.getFile());
-			log.info("Created backupfile "+backup);
+			log.info("Created backupfile " + backup);
 
 			// write cr to file
 			CRWriter crw = new CRWriter(filetype);
@@ -130,21 +161,25 @@ public class FileSaveAsAction extends MenuAction {
 			client.setReportChanged(false);
 			client.getData().filetype = filetype;
 			client.getData().resetToUnchanged();
-			client.getSettings().setProperty("Client.lastCRSaved", filetype.getName());
-
-		} catch (IOException exc) {
+			client.getSettings().setProperty("Client.lastCRSaved",
+											 filetype.getName());
+		} catch(IOException exc) {
 			log.error(exc);
-			JOptionPane.showMessageDialog(client,
-										  exc.toString(),
-										  Translations.getTranslation(FileSaveAction.class,"msg.filesave.error.title"),
+			JOptionPane.showMessageDialog(client, exc.toString(),
+										  Translations.getTranslation(FileSaveAction.class,
+																	  "msg.filesave.error.title"),
 										  JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	/** this function delivers overwriteable FileType. In FileSaveAsAction it shall deliver null,
-	 * in FileSaveAction the file type of the gamedata if exists.
+	/**
+	 * this function delivers overwriteable FileType. In FileSaveAsAction it
+	 * shall deliver null, in FileSaveAction the file type of the gamedata if
+	 * exists.
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
- 	protected FileType getFile() {
+	protected FileType getFile() {
 		return null;
 	}
 
@@ -154,18 +189,24 @@ public class FileSaveAsAction extends MenuAction {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name"       , "Save as...");
-			defaultTranslations.put("mnemonic"   , "a");
+			defaultTranslations.put("name", "Save as...");
+			defaultTranslations.put("mnemonic", "a");
 			defaultTranslations.put("accelerator", "ctrl shift S");
-			defaultTranslations.put("tooltip"    , "");
+			defaultTranslations.put("tooltip", "");
 
-			defaultTranslations.put("msg.filesave.error.title",
-									"Error on save");
+			defaultTranslations.put("msg.filesave.error.title", "Error on save");
 			defaultTranslations.put("title", "save cr file as");
 		}
+
 		return defaultTranslations;
 	}
 }

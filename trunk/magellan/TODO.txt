@@ -1,0 +1,59 @@
+-- technical todo:
+
+- remove src/java/com/eressea/crtonr
+- remove src/java/com/eressea/rules/Eressea
+
+
+
+-------------------------------------------------------------------------------
+Noch n Featurewunsch via Mail. Nicht böse sein, sitze im Zug. Kannst du die
+Nummer von Einheiten, Gebäuden und Schiffen in die Details aufnehmen?
+Oftmals steht die Nummer einer Einheit im Baum so weit rechts, dass sie nur
+durch ausgiebiges scrollen sichtbar wird. Danach muss man dann auch noch
+wieder zurückscrollen.
+
+
+
+
+-------------------------------------------------------------------------------
+move eressea specific stuff to com.eressea.gamebinding.eressea
+- Eressea*Constants
+- com.eressea.cr.* to com.eressea.gamebinding.eressea.io? think about it first
+
+
+-------------------------------------------------------------------------------
+remove german localisation
+- rename image files (but keep a mapping for old themes / other games)
+
+
+-------------------------------------------------------------------------------
+Extend Inspectors with following logic:
+* Einheiten, die sich nur ein Feld bewegen könnten, 
+  aber zwei oder mehr Felder fahren wollen.
+* Lehrer, die mehr als das zehnfache ihrer eigenen
+  Stärke unterrichten wollen
+* Schiffe, die in die falsche Richtung auslaufen 
+  wollen.
+* Schiffe, die sich zu weit bewegen wollen
+* Einheiten, die MACHE gesetzt haben, obwohl es den
+  angegebenen Rohstoff in der Region (scheinbar) 
+  nicht gibt, oder aber die Stufe der Einheit nicht
+  hoch genug ist (Eisen, Steine, Laen).
+* Händler, die KAUFE oder VERKAUFE gesetzt haben,
+  obwohl es in der Region keine Burg gibt.
+* Einheiten, die einen Verbündeten attackieren 
+  wollen.
+
+-Verteilung von:
+   -Silber (z.B zu Rekrutierungs und Versorgungszwecken (in Abhängigkeit ob 
+            Silberpool eingeschaltet ist kann auf die Gesammtmenge des in der 
+            Region vorhandenen Silbers abgeprueft werden)) 
+   -Rohstoffen (z.B. ist zur Produktion der angegeben Stueckzahl eines Gutes 
+                genuegend Rohmaterial da?)
+   -Guetern (z.B. hat eine Kampfeinheit mehr/weniger Waffen als sie benoetigt)
+   -sowie anderer Ressourcen. 
+-Auramenge im Verhältnis zu verwendeten Zaubern (z.B. Kampfzauber sollten nur in
+      Verbindung mit dem Attakiere-Befehl abgeprueft werden)
+-Ueberbelegung von Gebaeuden (Kennzeichnung der "aussenstehenden" Einheiten)
+-usw.
+

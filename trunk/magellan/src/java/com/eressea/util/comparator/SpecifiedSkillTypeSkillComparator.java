@@ -1,10 +1,16 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Ulrich Küster, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.util.comparator;
 
@@ -13,67 +19,83 @@ import java.util.Map;
 
 import com.eressea.ID;
 import com.eressea.Skill;
+
 import com.eressea.rules.SkillType;
 
 /**
- * A comparator imposing an ordering on collections of Skill objects
- * by comparing the skills of the given SkillType available in each set.
- * <p>Note: this comparator imposes orderings that are inconsistent with
- * equals.</p>
- * <p>In order to overcome the inconsistency with equals this comparator
- * allows the introduction of a sub-comparator which is applied in cases
- * of equality.</p>
+ * A comparator imposing an ordering on collections of Skill objects by
+ * comparing the skills of the given SkillType available in each set.
+ * 
+ * <p>
+ * Note: this comparator imposes orderings that are inconsistent with equals.
+ * </p>
+ * 
+ * <p>
+ * In order to overcome the inconsistency with equals this comparator allows
+ * the introduction of a sub-comparator which is applied in cases of equality.
+ * </p>
  */
 public class SpecifiedSkillTypeSkillComparator implements Comparator {
 	private final Comparator skillCmp;
 	private final Comparator subCmp;
-	private ID skillTypeID;
+	private ID				 skillTypeID;
 
 	/**
 	 * Creates a new BestSkillComparator object.
-	 * @param skillComparator used to determine the best skill in each
-	 * of the two collections of skills to be compared.
+	 *
+	 * @param skillComparator used to determine the best skill in each of the
+	 * 		  two collections of skills to be compared.
 	 * @param skillComparator used to compare the two best skills.
-	 * @param subComparator applied when the best skills are equal or
-	 * cannot be determined.
+	 * @param subComparator applied when the best skills are equal or cannot be
+	 * 		  determined.
 	 */
-	public SpecifiedSkillTypeSkillComparator(SkillType skillType, Comparator skillComparator, Comparator subComparator) {
+	public SpecifiedSkillTypeSkillComparator(SkillType skillType,
+											 Comparator skillComparator,
+											 Comparator subComparator) {
 		this.skillTypeID = skillType.getID();
-		this.skillCmp = skillComparator;
-		this.subCmp = subComparator;
+		this.skillCmp    = skillComparator;
+		this.subCmp		 = subComparator;
 	}
 
 	/**
 	 * Compares its two arguments for order according to their skills.
 	 *
-	 * @returns the result of the skill comparator applied to the
-	 * - according to the given skilltype - smallest skills in o1 and
-	 * o2.
+	 * @param o1 TODO: DOCUMENT ME!
+	 * @param o2 TODO: DOCUMENT ME!
+	 *
+	 * @return the result of the skill comparator applied to the - according to
+	 * 		   the given skilltype - smallest skills in o1 and o2.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = 0;
-		Skill s1 = (Skill)((Map)o1).get(skillTypeID);
-		Skill s2 = (Skill)((Map)o2).get(skillTypeID);
-		if (s1 == null && s2 != null) {
+		int   retVal = 0;
+		Skill s1 = (Skill) ((Map) o1).get(skillTypeID);
+		Skill s2 = (Skill) ((Map) o2).get(skillTypeID);
+
+		if((s1 == null) && (s2 != null)) {
 			retVal = Integer.MIN_VALUE;
-		} else if (s1 != null && s2 == null) {
+		} else if((s1 != null) && (s2 == null)) {
 			retVal = Integer.MAX_VALUE;
-		} else if (s1 == null && s2 == null) {
-			if (subCmp != null) {
+		} else if((s1 == null) && (s2 == null)) {
+			if(subCmp != null) {
 				retVal = subCmp.compare(o1, o2);
 			}
 		} else {
 			retVal = skillCmp.compare(s1, s2);
-			if (retVal == 0 && subCmp != null) {
+
+			if((retVal == 0) && (subCmp != null)) {
 				retVal = subCmp.compare(o1, o2);
 			}
 		}
+
 		return retVal;
 	}
 
 	/**
 	 * Checks the Object <tt>o</tt> for equality.
-	 * @returns <tt>false</tt>
+	 *
+	 * @param o1 TODO: DOCUMENT ME!
+	 *
+	 * @return <tt>false</tt>
 	 */
 	public boolean equals(Object o1) {
 		return false;

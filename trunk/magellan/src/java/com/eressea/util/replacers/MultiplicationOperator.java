@@ -1,28 +1,46 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.util.replacers;
 
 import java.util.Map;
 
 import com.eressea.util.CollectionFactory;
+
 /**
  * An multiplication operator.
  *
- * @author  Andreas
- * @version 
+ * @author Andreas
+ * @version
  */
 public class MultiplicationOperator extends AbstractOperator {
-
+	/**
+	 * Creates a new MultiplicationOperator object.
+	 */
 	public MultiplicationOperator() {
 		super(2);
 	}
-	
-	public Object compute(Object[] numbers) {
-		return new Float(((Number)numbers[0]).floatValue()*((Number)numbers[1]).floatValue());
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param numbers TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public Object compute(Object numbers[]) {
+		return new Float(((Number) numbers[0]).floatValue() * ((Number) numbers[1]).floatValue());
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -31,13 +49,21 @@ public class MultiplicationOperator extends AbstractOperator {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
+
 			// FIXME(pavkovic)
-			defaultTranslations.put("description","Multipliziert die zwei folgenden Definitionselemente(entwickelt dabei andere Operatoren).");
+			defaultTranslations.put("description",
+									"Multipliziert die zwei folgenden Definitionselemente(entwickelt dabei andere Operatoren).");
 		}
+
 		return defaultTranslations;
 	}
-	
 }

@@ -1,0 +1,22 @@
+2003-11-29  Ilja Pavkovic  <noeskadu@gmx.de>
+
+	* src/java/com/eressea/util/Translations.java: removed obsolete
+	deprecated methods.
+
+	* src/res/VERSION.template: added for storing version information.
+
+	* build.xml (update): added dependency to target format.
+	
+	* src/java/com/eressea/Alliance.java: removed dependency with Rules.
+
+	* src/res/about: moved to src/res/images/about
+	
+	* src/java: installed use of jalopy to get well-formatted Java
+	source files.
+
+	* build.xml (format): changed to dos file type.
+
+	
+
+
+	

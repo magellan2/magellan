@@ -1,9 +1,22 @@
 /*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
+
+/*
  * ColorAwareCellObject.java
  *
  * Created on 30. August 2001, 16:54
  */
-
 package com.eressea.swing.tree;
 
 import com.eressea.Group;
@@ -11,39 +24,62 @@ import com.eressea.Unit;
 import com.eressea.UnitContainer;
 
 /**
+ * DOCUMENT ME!
  *
- * @author  Andreas
- * @version 
+ * @author Andreas
+ * @version
  */
 public class Tag2Element {
-	
-	protected static String lastStyle=null;
-	
-	protected final static String STYLE_TAG="magStyle";
-	
+	protected static String		  lastStyle = null;
+	protected static final String STYLE_TAG = "magStyle";
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param u TODO: DOCUMENT ME!
+	 */
 	public static void start(Unit u) {
-		lastStyle=null;
-		if (u.containsTag(STYLE_TAG)) {
-			lastStyle=u.getTag(STYLE_TAG);
+		lastStyle = null;
+
+		if(u.containsTag(STYLE_TAG)) {
+			lastStyle = u.getTag(STYLE_TAG);
 		}
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param u TODO: DOCUMENT ME!
+	 */
 	public static void start(UnitContainer u) {
-		lastStyle=null;
-		if (u.containsTag(STYLE_TAG)) {
-			lastStyle=u.getTag(STYLE_TAG);
+		lastStyle = null;
+
+		if(u.containsTag(STYLE_TAG)) {
+			lastStyle = u.getTag(STYLE_TAG);
 		}
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param g TODO: DOCUMENT ME!
+	 */
 	public static void start(Group g) {
-		lastStyle=null;
-		if (g.containsTag(STYLE_TAG)) {
-			lastStyle=g.getTag(STYLE_TAG);
-		}		
+		lastStyle = null;
+
+		if(g.containsTag(STYLE_TAG)) {
+			lastStyle = g.getTag(STYLE_TAG);
+		}
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param ge TODO: DOCUMENT ME!
+	 */
 	public static void apply(GraphicsElement ge) {
-		if (ge.getStyleset()==null || lastStyle!=null)
-			ge.setStyleset(lastStyle);		
+		if((ge.getStyleset() == null) || (lastStyle != null)) {
+			ge.setStyleset(lastStyle);
+		}
 	}
 }

@@ -1,76 +1,111 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.swing.map;
 
-
 import java.awt.Image;
 import java.awt.Rectangle;
+
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
+
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
+/**
+ * TODO: DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
 public class MarkingsImageCellRenderer extends ImageCellRenderer {
-	private final static Logger log = Logger.getInstance(MarkingsImageCellRenderer.class);
+	private static final Logger log = Logger.getInstance(MarkingsImageCellRenderer.class);
 
-	public final static String ICON_TAG="regionicon";
-	
-	private StringBuffer buf;
-	
+	/** TODO: DOCUMENT ME! */
+	public static final String ICON_TAG = "regionicon";
+	private StringBuffer	   buf;
+
+	/**
+	 * Creates a new MarkingsImageCellRenderer object.
+	 *
+	 * @param geo TODO: DOCUMENT ME!
+	 * @param settings TODO: DOCUMENT ME!
+	 */
 	public MarkingsImageCellRenderer(CellGeometry geo, Properties settings) {
 		super(geo, settings);
 		buf = new StringBuffer();
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param obj TODO: DOCUMENT ME!
+	 * @param active TODO: DOCUMENT ME!
+	 * @param selected TODO: DOCUMENT ME!
+	 */
 	public void render(Object obj, boolean active, boolean selected) {
-		if (obj instanceof Region && ((Region)obj).hasTags()) {
-			
-			Region r = (Region)obj;
+		if(obj instanceof Region && ((Region) obj).hasTags()) {
+			Region     r = (Region) obj;
 			Coordinate c = r.getCoordinate();
-				
-			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
+
+			Rectangle  rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);
-			
+
 			int i = 1;
-			
+
 			buf.setLength(0);
 			buf.append(ICON_TAG);
-			
+
 			String key = null;
-			
-			do{
+
+			do {
 				key = buf.toString();
-				if (r.containsTag(key)) {
-					StringTokenizer st=new StringTokenizer(r.getTag(key)," ");
-			
+
+				if(r.containsTag(key)) {
+					StringTokenizer st = new StringTokenizer(r.getTag(key), " ");
+
 					while(st.hasMoreTokens()) {
-						Image img=getImage(st.nextToken());
-				
-						if (img!=null)
-							graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
-						else
+						Image img = getImage(st.nextToken());
+
+						if(img != null) {
+							graphics.drawImage(img, rect.x, rect.y, rect.width,
+											   rect.height, null);
+						} else {
 							log.warn("MarkingsImageCellRenderer.render(): marking image is null!");
+						}
 					}
 				}
-				if (i>1) {
+
+				if(i > 1) {
 					buf.setLength(buf.length() - 1);
 				}
+
 				buf.append(i);
 				i++;
-			}while(i<=10);						
+			} while(i <= 10);
 		}
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public int getPlaneIndex() {
 		return Mapper.PLANE_MARKINGS;
 	}
@@ -81,12 +116,18 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name","Additional icons");
+			defaultTranslations.put("name", "Additional icons");
 		}
+
 		return defaultTranslations;
 	}
-
 }
