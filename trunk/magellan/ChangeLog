@@ -1,3 +1,11 @@
+2004-02-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/context/UnitContextMenu.java: added
+	ShipRoutePlanner to shipowner context menu (bugzilla bug 793).
+
+	* src/java/com/eressea/util/Regions.java: use of isOcean instead
+	of regiontype compare to reactivate ShipRoutePlanner (bugzilla bug 792).
+
 2004-02-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/Ship.java: getMaxCapacity evaluates 

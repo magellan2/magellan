@@ -26,31 +26,23 @@ import java.awt.LayoutManager;
  * @version
  */
 public class CenterLayout implements LayoutManager {
-	/** TODO: DOCUMENT ME! */
-	public static final Dimension NULL = new Dimension(0, 0);
+	private static final Dimension NULL = new Dimension(0, 0);
 
-	/** TODO: DOCUMENT ME! */
-	public static final int SPAN_X = 1;
+	private static final int SPAN_X = 1;
+	private static final int SPAN_Y = 2;
 
-	/** TODO: DOCUMENT ME! */
-	public static final int SPAN_Y = 2;
 	protected int mode = 0;
 
-	/** TODO: DOCUMENT ME! */
+	/** A layout that spans the x axis. */
 	public static final CenterLayout SPAN_X_LAYOUT = new CenterLayout(SPAN_X);
 
-	/** TODO: DOCUMENT ME! */
+	/** A layout that spans the y axis. */
 	public static final CenterLayout SPAN_Y_LAYOUT = new CenterLayout(SPAN_Y);
 
-	/** TODO: DOCUMENT ME! */
+	/** A layout that spans the x and y axis. */
 	public static final CenterLayout SPAN_BOTH_LAYOUT = new CenterLayout(SPAN_X | SPAN_Y);
 
-	/**
-	 * Creates a new CenterLayout object.
-	 *
-	 * @param mode TODO: DOCUMENT ME!
-	 */
-	public CenterLayout(int mode) {
+	private CenterLayout(int mode) {
 		this.mode = mode;
 	}
 
@@ -144,7 +136,7 @@ public class CenterLayout implements LayoutManager {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.awt.Dimension preferredLayoutSize(Container container) {
+	public Dimension preferredLayoutSize(Container container) {
 		if(container.getComponentCount() > 0) {
 			return container.getComponent(0).getPreferredSize();
 		}
