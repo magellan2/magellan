@@ -737,14 +737,11 @@ public class ReportMerger extends java.lang.Object {
 
 			if((data.getDate() == null) || (report.data.getDate() == null)) {
 				report.data.placeOrigin(new Coordinate(iDX, iDY));
-				report.data.placeOrigin(bestAstralTranslation);
 			} else {
 				if(data.getDate().getDate() < report.data.getDate().getDate()) {
 					data.placeOrigin(new Coordinate(-iDX, -iDY));
-					data.placeOrigin(new Coordinate(-bestAstralTranslation.x, -bestAstralTranslation.y, bestAstralTranslation.z));
 				} else {
 					report.data.placeOrigin(new Coordinate(iDX, iDY));
-					report.data.placeOrigin(bestAstralTranslation);
 				}
 			}
 
