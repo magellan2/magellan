@@ -26,8 +26,7 @@ import java.util.Set;
 import com.eressea.util.logging.Logger;
 
 /**
- * Helper class for centrally managing translation tables (resource bundles)
- * for components.
+ * Helper class for centrally managing translation tables (resource bundles) for components.
  */
 public class Translations {
 	private static final Logger log = Logger.getInstance(Translations.class);
@@ -35,9 +34,7 @@ public class Translations {
 	/** Associates bundle names with translation bundles for caching. */
 	private static Map bundles = CollectionFactory.createHashMap();
 
-	/**
-	 * Associates bundle names with translations found in classes for caching.
-	 */
+	/** Associates bundle names with translations found in classes for caching. */
 	private static Map classBundles = CollectionFactory.createHashMap();
 
 	/** The class loader used to find the resource bundles. */
@@ -53,9 +50,9 @@ public class Translations {
 	}
 
 	/**
-	 * Returns the translated string for the specified class and string using
-	 * the GUI locale. The corresponding properties file must be named like
-	 * the class c with all '.' (periods) replaced bu '-' (dashes).
+	 * Returns the translated string for the specified class and string using the GUI locale. The
+	 * corresponding properties file must be named like the class c with all '.' (periods)
+	 * replaced bu '-' (dashes).
 	 *
 	 * @param o for which the translation is searched
 	 * @param key the key to translate
@@ -67,9 +64,9 @@ public class Translations {
 	}
 
 	/**
-	 * Returns the translated string for the specified class and string using
-	 * the GUI locale. The corresponding properties file must be named like
-	 * the class c with all '.' (periods) replaced bu '-' (dashes).
+	 * Returns the translated string for the specified class and string using the GUI locale. The
+	 * corresponding properties file must be named like the class c with all '.' (periods)
+	 * replaced bu '-' (dashes).
 	 *
 	 * @param c for which the translation is searched
 	 * @param key the key to translate
@@ -89,19 +86,16 @@ public class Translations {
 				//
 				if(!Locale.ENGLISH.equals(Locales.getGUILocale())) {
 					if(!key.endsWith(".tooltip") &&
-						   !isInstanceOf(c,
-											 "com.eressea.demo.actions.MenuAction")) {
-						log.error("Translations.getTranslation(" + c + "," +
-								  key + "): no translation found for Locale " +
-								  Locales.getGUILocale() +
+						   !isInstanceOf(c, "com.eressea.demo.actions.MenuAction")) {
+						log.error("Translations.getTranslation(" + c + "," + key +
+								  "): no translation found for Locale " + Locales.getGUILocale() +
 								  ", calling getDefaultTranslationFromClass");
 					}
 				}
 
 				if(log.isDebugEnabled()) {
 					log.debug("Translations.getTranslation(" + c + "," + key +
-							  "): no translation found for Locale " +
-							  Locales.getGUILocale() +
+							  "): no translation found for Locale " + Locales.getGUILocale() +
 							  ", calling getDefaultTranslationFromClass");
 				}
 
@@ -110,8 +104,8 @@ public class Translations {
 			}
 
 			if(log.isDebugEnabled()) {
-				log.debug("Translations.getTranslation(" + c + "," + key +
-						  ") RESULT: \"" + result + "\")");
+				log.debug("Translations.getTranslation(" + c + "," + key + ") RESULT: \"" + result +
+						  "\")");
 			}
 		}
 
@@ -146,8 +140,7 @@ public class Translations {
 	}
 
 	/**
-	 * Returns the translated string for the specified class and string using
-	 * the GUI locale.
+	 * Returns the translated string for the specified class and string using the GUI locale.
 	 *
 	 * @param c the name of the class
 	 * @param key the key to translate
@@ -165,9 +158,8 @@ public class Translations {
 			// we now ascend to the parent object, but only if this object had a translation map
 			if(c.getSuperclass() != null) {
 				if(log.isDebugEnabled()) {
-					log.debug("Translations.getTranslationFromClass(" + c +
-							  "," + key + "): climbing to super class " +
-							  c.getSuperclass());
+					log.debug("Translations.getTranslationFromClass(" + c + "," + key +
+							  "): climbing to super class " + c.getSuperclass());
 				}
 
 				return getTranslationFromClass(c.getSuperclass(), key);
@@ -178,9 +170,9 @@ public class Translations {
 	}
 
 	/**
-	 * Returns the translated string for the specified bundle and string using
-	 * the GUI locale. The corresponding properties file must be named like
-	 * the class c with all '.' (periods) replaced bu '-' (dashes).
+	 * Returns the translated string for the specified bundle and string using the GUI locale. The
+	 * corresponding properties file must be named like the class c with all '.' (periods)
+	 * replaced bu '-' (dashes).
 	 *
 	 * @param c the name of the bundle
 	 * @param key the key to translate
@@ -203,9 +195,8 @@ public class Translations {
 			// we now ascend to the parent object, but only if this object had a resource bundle
 			if(c.getSuperclass() != null) {
 				if(log.isDebugEnabled()) {
-					log.debug("Translations.getBundleTranslation(" + c + "," +
-							  key + "): climbing to super class " +
-							  c.getSuperclass());
+					log.debug("Translations.getBundleTranslation(" + c + "," + key +
+							  "): climbing to super class " + c.getSuperclass());
 				}
 
 				return getBundleTranslation(c.getSuperclass(), key);
@@ -216,9 +207,9 @@ public class Translations {
 	}
 
 	/**
-	 * Returns the translated string for the specified class and string using
-	 * the order locale. The corresponding properties file must be named like
-	 * the class c with all '.' (periods) replaced by '-' (dashes).
+	 * Returns the translated string for the specified class and string using the order locale. The
+	 * corresponding properties file must be named like the class c with all '.' (periods)
+	 * replaced by '-' (dashes).
 	 *
 	 * @param key the key to translate
 	 *
@@ -229,9 +220,9 @@ public class Translations {
 	}
 
 	/**
-	 * Returns the translated string for the specified class and string using
-	 * the order locale. The corresponding properties file must be named like
-	 * the class c with all '.' (periods) replaced by '-' (dashes).
+	 * Returns the translated string for the specified class and string using the order locale. The
+	 * corresponding properties file must be named like the class c with all '.' (periods)
+	 * replaced by '-' (dashes).
 	 */
 	private static Set loggedOrderTranslations = CollectionFactory.createHashSet();
 
@@ -251,10 +242,9 @@ public class Translations {
 				String translation = rb.getString(key);
 
 				if(translation != null) {
-					if(log.isDebugEnabled() &&
-						   !loggedOrderTranslations.contains(key)) {
-						log.debug("Translations.getOrderTranslation(" + key +
-								  "," + l + "): \"" + translation + "\"");
+					if(log.isDebugEnabled() && !loggedOrderTranslations.contains(key)) {
+						log.debug("Translations.getOrderTranslation(" + key + "," + l + "): \"" +
+								  translation + "\"");
 						loggedOrderTranslations.add(key);
 					}
 
@@ -266,8 +256,7 @@ public class Translations {
 
 		// no translation found, give back key
 		if(log.isDebugEnabled() && !loggedOrderTranslations.contains(key)) {
-			log.debug("Translations.getOrderTranslation(" + key + "," + l +
-					  "): \"" + key + "\"");
+			log.debug("Translations.getOrderTranslation(" + key + "," + l + "): \"" + key + "\"");
 			loggedOrderTranslations.add(key);
 		}
 
@@ -281,8 +270,7 @@ public class Translations {
 	}
 
 	/**
-	 * Loads a resource bundle with the specified name and locale from a 'lang'
-	 * subdirectory.
+	 * Loads a resource bundle with the specified name and locale from a 'lang' subdirectory.
 	 *
 	 * @param c TODO: DOCUMENT ME!
 	 * @param l TODO: DOCUMENT ME!
@@ -291,8 +279,7 @@ public class Translations {
 	 */
 	private static ResourceBundle getBundle(Class c, Locale l) {
 		// c == null indicates orders bundle
-		String name = (c == null) ? "orders"
-								  : c.getName().replace('.', '-').toLowerCase();
+		String name = (c == null) ? "orders" : c.getName().replace('.', '-').toLowerCase();
 
 		// lower casing the name is required as all resources are
 		// supposed to be in lower case
@@ -331,9 +318,8 @@ public class Translations {
 
 	/**
 	 * Loads a resource bundle from a file. This method behaves like
-	 * java.util.ResourceBundle.getBundle() but it ignores the default locale
-	 * and it only loads PropertyResourceBundle objects requiring appropriate
-	 * .properties files.
+	 * java.util.ResourceBundle.getBundle() but it ignores the default locale and it only loads
+	 * PropertyResourceBundle objects requiring appropriate .properties files.
 	 *
 	 * @param name TODO: DOCUMENT ME!
 	 * @param l TODO: DOCUMENT ME!
@@ -341,16 +327,15 @@ public class Translations {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static PropertyResourceBundle loadResourceBundle(final String name,
-															Locale l,
+	public static PropertyResourceBundle loadResourceBundle(final String name, Locale l,
 															ClassLoader loader) {
-		String	    fileName = null;
+		String fileName = null;
 		InputStream in = null;
 
 		try {
 			// baseclass + "_" + language1 + "_" + country1 + "_" + variant1
-			fileName = name + "_" + l.getLanguage() + "_" + l.getCountry() +
-					   "_" + l.getVariant() + ".properties";
+			fileName = name + "_" + l.getLanguage() + "_" + l.getCountry() + "_" + l.getVariant() +
+					   ".properties";
 			in = loader.getResourceAsStream(fileName);
 
 			if(in != null) {
@@ -358,8 +343,7 @@ public class Translations {
 			}
 
 			// baseclass + "_" + language1 + "_" + country1
-			fileName = name + "_" + l.getLanguage() + "_" + l.getCountry() +
-					   ".properties";
+			fileName = name + "_" + l.getLanguage() + "_" + l.getCountry() + ".properties";
 			in = loader.getResourceAsStream(fileName);
 
 			if(in != null) {
@@ -368,7 +352,7 @@ public class Translations {
 
 			// baseclass + "_" + language1
 			fileName = name + "_" + l.getLanguage() + ".properties";
-			in		 = loader.getResourceAsStream(fileName);
+			in = loader.getResourceAsStream(fileName);
 
 			if(in != null) {
 				return new PropertyResourceBundle(in);
@@ -382,7 +366,7 @@ public class Translations {
 			//
 			// baseclass + "_" + language1 + "_2" (for shitty cvs!!!)
 			fileName = name + "_" + l.getLanguage() + "_2" + ".properties";
-			in		 = loader.getResourceAsStream(fileName);
+			in = loader.getResourceAsStream(fileName);
 
 			if(in != null) {
 				return new PropertyResourceBundle(in);
@@ -390,7 +374,7 @@ public class Translations {
 
 			// baseclass
 			fileName = name + ".properties";
-			in		 = loader.getResourceAsStream(fileName);
+			in = loader.getResourceAsStream(fileName);
 
 			if(in != null) {
 				return new PropertyResourceBundle(in);
@@ -421,8 +405,7 @@ public class Translations {
 
 		try {
 			//try to call the static method getDefaultTranslations() on the given class
-			java.lang.reflect.Method method = c.getMethod("getDefaultTranslations",
-														  new Class[] {  });
+			java.lang.reflect.Method method = c.getMethod("getDefaultTranslations", new Class[] {  });
 
 			if(method != null) {
 				Object result = method.invoke(null, new Object[] {  });

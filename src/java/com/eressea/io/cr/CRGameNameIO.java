@@ -65,8 +65,7 @@ public class CRGameNameIO implements GameNameIO {
 				return (String) headerMap.get("Spiel");
 			}
 		} catch(IOException e) {
-			log.error("Loader.getGameName(): unable to determine game's name of report " +
-					  report, e);
+			log.error("Loader.getGameName(): unable to determine game's name of report " + report, e);
 		} finally {
 			report.close();
 		}

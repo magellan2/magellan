@@ -32,8 +32,8 @@ public class RegionFieldReplacer extends AbstractRegionReplacer {
 
 	/** TODO: DOCUMENT ME! */
 	public static final int MODE_POSITIVE = 2;
-	protected Field		    field;
-	protected int		    mode;
+	protected Field field;
+	protected int mode;
 
 	/**
 	 * Creates a new RegionFieldReplacer object.
@@ -47,8 +47,7 @@ public class RegionFieldReplacer extends AbstractRegionReplacer {
 		try {
 			this.field = Class.forName("com.eressea.Region").getField(field);
 		} catch(Exception exc) {
-			throw new RuntimeException("Error retrieving region field " +
-									   field);
+			throw new RuntimeException("Error retrieving region field " + field);
 		}
 
 		this.mode = mode;

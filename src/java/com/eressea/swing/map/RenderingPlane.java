@@ -16,24 +16,19 @@ package com.eressea.swing.map;
 import com.eressea.util.logging.Logger;
 
 /**
- * A class representing a rendering plane in the mapper. A rendering plane
- * forms a part of the map that all information of one kind is drawn on
- * completely and independantly of other planes. Planes are drawn on top of
- * each according to their index, i.e. plane 1 is painted on top of plane 0,
- * therefore higher indexed planes should contain less graphical content than
- * lower ones to maintain visibility of the lower planes.
+ * A class representing a rendering plane in the mapper. A rendering plane forms a part of the map
+ * that all information of one kind is drawn on completely and independantly of other planes.
+ * Planes are drawn on top of each according to their index, i.e. plane 1 is painted on top of
+ * plane 0, therefore higher indexed planes should contain less graphical content than lower ones
+ * to maintain visibility of the lower planes.
  */
 public class RenderingPlane {
 	private static final Logger log = Logger.getInstance(RenderingPlane.class);
 
+	/** If non of the following is set then the renderer should paint all regions. */
 	/**
-	 * If non of the following is set then the renderer should paint all
-	 * regions.
-	 */
-	/**
-	 * Indicates that all visible (on screen) regions should be painted. If set
-	 * together with the following only visible selected regions etc. should
-	 * be painted.
+	 * Indicates that all visible (on screen) regions should be painted. If set together with the
+	 * following only visible selected regions etc. should be painted.
 	 */
 	public static final int VISIBLE_REGIONS = 1;
 
@@ -51,21 +46,21 @@ public class RenderingPlane {
 
 	/** Indicates that the renderer will determine the regions itself. */
 	public static final int ACTIVE_OBJECT = 32;
-	private int			    index	    = -1;
-	private String		    name	    = null;
-	private MapCellRenderer renderer    = null;
-	protected int		    regionTypes = VISIBLE_REGIONS;
+	private int index = -1;
+	private String name = null;
+	private MapCellRenderer renderer = null;
+	protected int regionTypes = VISIBLE_REGIONS;
 
 	/**
-	 * Creates a new RenderingPlane object representing the plane at the
-	 * specified index and with the specified name.
+	 * Creates a new RenderingPlane object representing the plane at the specified index and with
+	 * the specified name.
 	 *
 	 * @param index TODO: DOCUMENT ME!
 	 * @param name TODO: DOCUMENT ME!
 	 */
 	public RenderingPlane(int index, String name) {
 		this.index = index;
-		this.name  = name;
+		this.name = name;
 	}
 
 	/**
@@ -108,8 +103,7 @@ public class RenderingPlane {
 	}
 
 	/**
-	 * Returns the renderer that is currently used to draw on this rendering
-	 * plane.
+	 * Returns the renderer that is currently used to draw on this rendering plane.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -118,10 +112,9 @@ public class RenderingPlane {
 	}
 
 	/**
-	 * Sets the renderer to be used to paint this rendering plane. Since
-	 * renderers have a default rendering plane, a warning is issued if the
-	 * default rendering plane of the specified renderer differs from the
-	 * index of this rendering plane.
+	 * Sets the renderer to be used to paint this rendering plane. Since renderers have a default
+	 * rendering plane, a warning is issued if the default rendering plane of the specified
+	 * renderer differs from the index of this rendering plane.
 	 *
 	 * @param renderer TODO: DOCUMENT ME!
 	 */
@@ -129,10 +122,9 @@ public class RenderingPlane {
 		this.renderer = renderer;
 
 		if((renderer != null) && (renderer.getPlaneIndex() != getIndex())) {
-			log.warn("RenderingPlane.setRenderer: the non-conforming renderer " +
-					 renderer + " (" + renderer.getPlaneIndex() +
-					 ") has been set for rendering plane " + toString() + " (" +
-					 getIndex() + ")!");
+			log.warn("RenderingPlane.setRenderer: the non-conforming renderer " + renderer + " (" +
+					 renderer.getPlaneIndex() + ") has been set for rendering plane " + toString() +
+					 " (" + getIndex() + ")!");
 		}
 	}
 

@@ -16,8 +16,7 @@ package com.eressea.event;
 import java.util.Collection;
 
 /**
- * An event indicating that the order confirmation status of one or more units
- * has changed.
+ * An event indicating that the order confirmation status of one or more units has changed.
  *
  * @see OrderConfirmListener
  * @see EventDispatcher

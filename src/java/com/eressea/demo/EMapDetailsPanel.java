@@ -173,27 +173,31 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class EMapDetailsPanel extends InternationalizedDataPanel
-	implements SelectionListener, TreeSelectionListener, ShortcutListener,
-			   ActionListener, TreeUpdate, PreferencesFactory, MenuProvider
+public class EMapDetailsPanel extends InternationalizedDataPanel implements SelectionListener,
+																			TreeSelectionListener,
+																			ShortcutListener,
+																			ActionListener,
+																			TreeUpdate,
+																			PreferencesFactory,
+																			MenuProvider
 {
 	private static final Logger log = Logger.getInstance(EMapDetailsPanel.class);
 
 	// GUI elements
-	private JTextArea				   name						 = null;
-	private JTextArea				   description				 = null;
-	private DefaultTreeModel		   treeModel				 = null;
-	private DefaultMutableTreeNode     rootNode					 = null;
-	private CopyTree				   tree						 = null;
-	private AutoCompletion			   orders					 = null;
+	private JTextArea name = null;
+	private JTextArea description = null;
+	private DefaultTreeModel treeModel = null;
+	private DefaultMutableTreeNode rootNode = null;
+	private CopyTree tree = null;
+	private AutoCompletion orders = null;
 	private MultiEditorOrderEditorList editor;
-	private Region					   lastRegion				 = null;
-	private boolean					   showFactionItemCategories = true;
-	private Units					   unitsTools				 = null;
+	private Region lastRegion = null;
+	private boolean showFactionItemCategories = true;
+	private Units unitsTools = null;
 
 	/**
-	 * A list containing nodewrapper objects, the expansion state of nodes
-	 * contained in this list can be automatically stored and restored
+	 * A list containing nodewrapper objects, the expansion state of nodes contained in this list
+	 * can be automatically stored and restored
 	 */
 	private Collection myExpandableNodes = CollectionFactory.createLinkedList();
 
@@ -204,33 +208,33 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	JSplitPane topSplitPane;
 
 	/** split pane */
-	JSplitPane						    bottomSplitPane;
-	private static final NumberFormat   weightNumberFormat = NumberFormat.getNumberInstance();
-	protected NodeWrapperFactory	    nodeWrapperFactory;
-	private List					    shortCuts;
-	protected Collection			    excludeTags		   = CollectionFactory.createLinkedList();
-	protected AbstractButton		    addTag;
-	protected AbstractButton		    removeTag;
-	protected Container				    tagContainer;
-	protected Container				    treeContainer;
-	protected boolean				    showTagButtons     = false;
-	protected ContextManager		    contextManager;
-	protected StealthContextFactory     stealthContext;
+	JSplitPane bottomSplitPane;
+	private static final NumberFormat weightNumberFormat = NumberFormat.getNumberInstance();
+	protected NodeWrapperFactory nodeWrapperFactory;
+	private List shortCuts;
+	protected Collection excludeTags = CollectionFactory.createLinkedList();
+	protected AbstractButton addTag;
+	protected AbstractButton removeTag;
+	protected Container tagContainer;
+	protected Container treeContainer;
+	protected boolean showTagButtons = false;
+	protected ContextManager contextManager;
+	protected StealthContextFactory stealthContext;
 	protected CombatStateContextFactory combatContext;
-	protected CommentContextFactory     commentContext;
+	protected CommentContextFactory commentContext;
 	protected DetailsUnitContextFactory unitContext;
-	protected UndoManager			    undoMgr;
-	protected BasicRegionPanel		    regionPanel;
+	protected UndoManager undoMgr;
+	protected BasicRegionPanel regionPanel;
 
 	// pre-initialize this comparator so it is not created over and
 	// over again when needed
 	private Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
-	private final ID   ironID    = StringID.create("Eisen");
-	private final ID   laenID    = StringID.create("Laen");
-	private final ID   treesID   = StringID.create("Baeume");
-	private final ID   mallornID = StringID.create("Mallorn");
-	private final ID   sproutsID = StringID.create("Schoesslinge");
-	private final ID   stonesID  = StringID.create("Steine");
+	private final ID ironID = StringID.create("Eisen");
+	private final ID laenID = StringID.create("Laen");
+	private final ID treesID = StringID.create("Baeume");
+	private final ID mallornID = StringID.create("Mallorn");
+	private final ID sproutsID = StringID.create("Schoesslinge");
+	private final ID stonesID = StringID.create("Steine");
 
 	/**
 	 * Creates a new EMapDetailsPanel object.
@@ -240,8 +244,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	 * @param p TODO: DOCUMENT ME!
 	 * @param _undoMgr TODO: DOCUMENT ME!
 	 */
-	public EMapDetailsPanel(EventDispatcher d, GameData data, Properties p,
-							UndoManager _undoMgr) {
+	public EMapDetailsPanel(EventDispatcher d, GameData data, Properties p, UndoManager _undoMgr) {
 		super(d, data, p);
 		initGUI(_undoMgr);
 	}
@@ -250,8 +253,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		// store undomanager
 		undoMgr = _undoMgr;
 
-		nodeWrapperFactory = new NodeWrapperFactory(settings,
-													"EMapDetailsPanel",
+		nodeWrapperFactory = new NodeWrapperFactory(settings, "EMapDetailsPanel",
 													getString("wrapperfactory.title"));
 		nodeWrapperFactory.setSource(this);
 
@@ -260,10 +262,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		nodeWrapperFactory.createUnitNodeWrapper(temp);
 		nodeWrapperFactory.createSkillNodeWrapper(temp,
 												  new Skill(new SkillType(StringID.create("Test")),
-															0, 0, 0, false),
-												  null);
-		nodeWrapperFactory.createItemNodeWrapper(new Item(new ItemType(StringID.create("Test")),
-														  0));
+															0, 0, 0, false), null);
+		nodeWrapperFactory.createItemNodeWrapper(new Item(new ItemType(StringID.create("Test")), 0));
 		nodeWrapperFactory.createSimpleNodeWrapper(null, null);
 
 		//?final EMapDetailsPanel emdp = this;
@@ -286,23 +286,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		name.getDocument().addUndoableEditListener(_undoMgr);
 		name.addFocusListener(new FocusAdapter() {
 				public void focusLost(FocusEvent e) {
-					if((name.isEditable() == false) ||
-						   (displayedObject == null)) {
+					if((name.isEditable() == false) || (displayedObject == null)) {
 						return;
 					}
 
 					if(displayedObject instanceof Unit) {
 						Unit u = (Unit) displayedObject;
 
-						if((((u.getName() == null) &&
-							   (name.getText().equals("") == false)) ||
+						if((((u.getName() == null) && (name.getText().equals("") == false)) ||
 							   ((u.getName() != null) &&
 							   (name.getText().equals(u.getName()) == false))) &&
 							   isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
 							// the following code only changes the name
 							// right now it is not necessary to refresh the relations; are we sure??
-							data.getGameSpecificStuff().getOrderChanger()
-								.addNamingOrder(u, name.getText());
+							data.getGameSpecificStuff().getOrderChanger().addNamingOrder(u,
+																						 name.getText());
 							dispatcher.fire(new UnitOrdersEvent(this, u));
 
 							//if (u.cache != null && u.cache.orderEditor != null) {
@@ -310,8 +308,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 							//}
 						}
 					} else if(displayedObject instanceof UnitContainer) {
-						UnitContainer uc	  = (UnitContainer) displayedObject;
-						Unit		  modUnit = null;
+						UnitContainer uc = (UnitContainer) displayedObject;
+						Unit modUnit = null;
 
 						if(uc instanceof Faction) {
 							modUnit = (Unit) uc.units().iterator().next();
@@ -319,16 +317,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 							modUnit = uc.getOwnerUnit();
 						}
 
-						if(isPrivilegedAndNoSpy(modUnit) &&
-							   !modUnit.ordersAreNull()) {
-							if(((uc.getName() == null) &&
-								   (name.getText().equals("") == false)) ||
+						if(isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
+							if(((uc.getName() == null) && (name.getText().equals("") == false)) ||
 								   ((uc.getName() != null) &&
 								   (name.getText().equals(uc.getName()) == false))) {
-								data.getGameSpecificStuff().getOrderChanger()
-									.addNamingOrder(modUnit, uc, name.getText());
-								dispatcher.fire(new UnitOrdersEvent(this,
-																	modUnit));
+								data.getGameSpecificStuff().getOrderChanger().addNamingOrder(modUnit,
+																							 uc,
+																							 name.getText());
+								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
 
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -351,15 +347,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		description = new JTextArea();
 		description.setLineWrap(true);
 		description.setWrapStyleWord(true);
-		description.setFont(new Font("SansSerif", Font.PLAIN,
-									 description.getFont().getSize()));
+		description.setFont(new Font("SansSerif", Font.PLAIN, description.getFont().getSize()));
 		description.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		description.setEditable(false);
 		description.getDocument().addUndoableEditListener(_undoMgr);
 		description.addFocusListener(new FocusAdapter() {
 				public void focusLost(FocusEvent e) {
-					if((description.isEditable() == false) ||
-						   (displayedObject == null)) {
+					if((description.isEditable() == false) || (displayedObject == null)) {
 						return;
 					}
 
@@ -371,14 +365,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 							   ((u.getDescription() != null) &&
 							   (description.getText().equals(u.getDescription()) == false))) &&
 							   isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
-							String descr  = getDescriptionPart(description.getText());
+							String descr = getDescriptionPart(description.getText());
 							String privat = getPrivatePart(description.getText());
-							data.getGameSpecificStuff().getOrderChanger()
-								.addDescribeUnitOrder(u, descr);
+							data.getGameSpecificStuff().getOrderChanger().addDescribeUnitOrder(u,
+																							   descr);
 
 							if(((u.privDesc == null) && (privat.length() > 0)) ||
-								   ((u.privDesc != null) &&
-								   !privat.equals(u.privDesc))) {
+								   ((u.privDesc != null) && !privat.equals(u.privDesc))) {
 								data.getGameSpecificStuff().getOrderChanger()
 									.addDescribeUnitPrivateOrder(u, privat);
 								u.privDesc = privat;
@@ -391,8 +384,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 							//}
 						}
 					} else if(displayedObject instanceof UnitContainer) {
-						UnitContainer uc	  = (UnitContainer) displayedObject;
-						Unit		  modUnit = null;
+						UnitContainer uc = (UnitContainer) displayedObject;
+						Unit modUnit = null;
 
 						if(uc instanceof Faction) {
 							modUnit = (Unit) uc.units().iterator().next();
@@ -400,8 +393,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 							modUnit = uc.getOwnerUnit();
 						}
 
-						if(isPrivilegedAndNoSpy(modUnit) &&
-							   !modUnit.ordersAreNull()) {
+						if(isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
 							if(((uc.getDescription() == null) &&
 								   (description.getText().equals("") == false)) ||
 								   ((uc.getDescription() != null) &&
@@ -409,8 +401,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 								data.getGameSpecificStuff().getOrderChanger()
 									.addDescribeUnitContainerOrder(modUnit, uc,
 																   normalizeDescription(description.getText()));
-								dispatcher.fire(new UnitOrdersEvent(this,
-																	modUnit));
+								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
 
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -440,9 +431,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		nameDescPanel.setPreferredSize(new Dimension(100, 100));
 
 		// tree
-		rootNode  = new DefaultMutableTreeNode(null);
+		rootNode = new DefaultMutableTreeNode(null);
 		treeModel = new DefaultTreeModel(rootNode);
-		tree	  = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel, dispatcher);
 		tree.addTreeSelectionListener(this);
 		tree.setRootVisible(false);
 		tree.setEditable(true);
@@ -454,16 +445,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				public void editingStopped(ChangeEvent e) {
 					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
-					if((selectedNode != null) &&
-						   selectedNode instanceof CommentNode) {
-						CommentNode			   cn     = (CommentNode) selectedNode;
+					if((selectedNode != null) && selectedNode instanceof CommentNode) {
+						CommentNode cn = (CommentNode) selectedNode;
 						DefaultMutableTreeNode parent = (DefaultMutableTreeNode) cn.getParent();
-						UnitContainer		   uc     = cn.getUnitContainer();
+						UnitContainer uc = cn.getUnitContainer();
 
 						if((uc != null) && (uc.comments != null)) {
 							uc.comments.set(parent.getIndex(cn),
-											tree.getCellEditor()
-												.getCellEditorValue());
+											tree.getCellEditor().getCellEditorValue());
 						}
 					}
 				}
@@ -471,22 +460,20 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		contextManager = new ContextManager(tree);
 		stealthContext = new StealthContextFactory();
-		combatContext  = new CombatStateContextFactory();
+		combatContext = new CombatStateContextFactory();
 		commentContext = new CommentContextFactory();
-		unitContext    = new DetailsUnitContextFactory();
+		unitContext = new DetailsUnitContextFactory();
 		contextManager.putSimpleObject(CommentListNode.class, commentContext);
 		contextManager.putSimpleObject(CommentNode.class, commentContext);
 		contextManager.putSimpleObject(UnitNodeWrapper.class, unitContext);
 		contextManager.putSimpleObject(UnitListNodeWrapper.class, unitContext);
 
-		JScrollPane treeScrollPane = new JScrollPane(tree,
-													 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane treeScrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 													 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		// panel combining the region info and the tree
 		JPanel pnlRegionInfoTree = new JPanel(new BorderLayout());
-		pnlRegionInfoTree.add(regionPanel = new BasicRegionPanel(dispatcher,
-																 settings),
+		pnlRegionInfoTree.add(regionPanel = new BasicRegionPanel(dispatcher, settings),
 							  BorderLayout.NORTH);
 		pnlRegionInfoTree.add(treeScrollPane, BorderLayout.CENTER);
 
@@ -504,19 +491,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		removeTag.setEnabled(false);
 		tagContainer.add(removeTag);
 
-		showTagButtons = settings.getProperty("EMapDetailsPanel.ShowTagButtons",
-											  "false").equals("true");
+		showTagButtons = settings.getProperty("EMapDetailsPanel.ShowTagButtons", "false").equals("true");
 
 		if(showTagButtons) {
 			pnlRegionInfoTree.add(tagContainer, BorderLayout.SOUTH);
 		}
 
 		// split pane combining name, desc & tree
-		topSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nameDescPanel,
-									  pnlRegionInfoTree);
+		topSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nameDescPanel, pnlRegionInfoTree);
 		topSplitPane.setOneTouchExpandable(true);
-		editor = new MultiEditorOrderEditorList(dispatcher, data, settings,
-												_undoMgr);
+		editor = new MultiEditorOrderEditorList(dispatcher, data, settings, _undoMgr);
 
 		// build auto completion structure
 		orders = new AutoCompletion(settings, dispatcher);
@@ -529,8 +513,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
 
 		// split pane combining top split pane and orders
-		bottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-										 topSplitPane, editor);
+		bottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplitPane, editor);
 		bottomSplitPane.setOneTouchExpandable(true);
 		setLayout(new GridLayout(1, 0));
 		add(bottomSplitPane);
@@ -591,8 +574,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		StringBuffer ret = new StringBuffer(s.length());
 
-		for(StringTokenizer st = new StringTokenizer(s, "\n\r");
-				st.hasMoreTokens();) {
+		for(StringTokenizer st = new StringTokenizer(s, "\n\r"); st.hasMoreTokens();) {
 			ret.append(st.nextToken());
 
 			if(st.hasMoreTokens()) {
@@ -610,8 +592,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			return normalizeDescription(s);
 		}
 
-		return normalizeDescription(s.substring(0,
-												s.indexOf(DESCRIPTION_SEPARATOR)));
+		return normalizeDescription(s.substring(0, s.indexOf(DESCRIPTION_SEPARATOR)));
 	}
 
 	protected String getPrivatePart(String s) {
@@ -674,9 +655,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 	private void showRegion(Region r) {
 		// make editable for privileged units
-		setNameAndDescription(r,
-							  (r != null) &&
-							  isPrivilegedAndNoSpy(r.getOwnerUnit()));
+		setNameAndDescription(r, (r != null) && isPrivilegedAndNoSpy(r.getOwnerUnit()));
 
 		// build tree
 		appendRegionInfo(r, rootNode, myExpandableNodes);
@@ -687,9 +666,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * shows a tree: Terrain  : region.type Coordinates  : region.coordinates
-	 * guarding units (Orc Infestination) (resources) (peasants) (luxuries)
-	 * (schemes) (comments) (tags)
+	 * shows a tree: Terrain  : region.type Coordinates  : region.coordinates guarding units (Orc
+	 * Infestination) (resources) (peasants) (luxuries) (schemes) (comments) (tags)
 	 *
 	 * @param r TODO: DOCUMENT ME!
 	 * @param parent TODO: DOCUMENT ME!
@@ -698,21 +676,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	private void appendRegionInfo(Region r, DefaultMutableTreeNode parent,
 								  Collection expandableNodes) {
 		// terrain type
-		parent.add(createSimpleNode(getString("node.terrain") + ": " +
-									r.getType().getName(),
+		parent.add(createSimpleNode(getString("node.terrain") + ": " + r.getType().getName(),
 									r.getType().getID() + "-detail"));
 
 		// terrain coordinates
-		parent.add(createSimpleNode(getString("node.coordinates") + ": " +
-									r.getID(), "koordinaten"));
+		parent.add(createSimpleNode(getString("node.coordinates") + ": " + r.getID(), "koordinaten"));
 
 		// region guards
 		appendRegionGuardInfo(r, parent, expandableNodes);
 
 		// orc infestation
 		if(r.orcInfested) {
-			parent.add(createSimpleNode(getString("node.orcinfestation"),
-										"orkinfest"));
+			parent.add(createSimpleNode(getString("node.orcinfestation"), "orkinfest"));
 		}
 
 		// resources
@@ -735,15 +710,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * this function adds a node with subnodes to given parent - Luxuries:
-	 * amount luxury item 1: price 1 ... luxury item n: price n
+	 * this function adds a node with subnodes to given parent - Luxuries: amount luxury item 1:
+	 * price 1 ... luxury item n: price n
 	 *
 	 * @param r TODO: DOCUMENT ME!
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param expandableNodes TODO: DOCUMENT ME!
 	 */
-	private void appendRegionLuxuriesInfo(Region r,
-										  DefaultMutableTreeNode parent,
+	private void appendRegionLuxuriesInfo(Region r, DefaultMutableTreeNode parent,
 										  Collection expandableNodes) {
 		if((r == null) || (r.prices == null) || r.prices.values().isEmpty()) {
 			return;
@@ -754,17 +728,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 																		 getDiffString(r.maxLuxuries(),
 																					   r.maxOldLuxuries()));
 		parent.add(luxuriesNode);
-		expandableNodes.add(new NodeWrapper(luxuriesNode,
-											"EMapDetailsPanel.RegionLuxuriesExpanded"));
+		expandableNodes.add(new NodeWrapper(luxuriesNode, "EMapDetailsPanel.RegionLuxuriesExpanded"));
 
-		for(Iterator luxuries = r.prices.values().iterator();
-				luxuries.hasNext();) {
-			LuxuryPrice p		 = (LuxuryPrice) luxuries.next();
-			int		    oldPrice = -1;
+		for(Iterator luxuries = r.prices.values().iterator(); luxuries.hasNext();) {
+			LuxuryPrice p = (LuxuryPrice) luxuries.next();
+			int oldPrice = -1;
 
 			if(r.oldPrices != null) {
-				LuxuryPrice old = (LuxuryPrice) r.oldPrices.get(p.getItemType()
-																 .getID());
+				LuxuryPrice old = (LuxuryPrice) r.oldPrices.get(p.getItemType().getID());
 
 				if(old != null) {
 					oldPrice = old.getPrice();
@@ -772,35 +743,30 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			}
 
 			luxuriesNode.add(createSimpleNode(p.getItemType().getName() + ": " +
-											  getDiffString(p.getPrice(),
-															oldPrice),
-											  "items/" +
-											  p.getItemType().getIconName()));
+											  getDiffString(p.getPrice(), oldPrice),
+											  "items/" + p.getItemType().getIconName()));
 		}
 	}
 
 	/**
-	 * this function adds a node with subnodes to given parent - Peasants:
-	 * amount / max amount recruit: recruit amount of recruit amount silver:
-	 * silver surplus: surplus wage: entertain:
+	 * this function adds a node with subnodes to given parent - Peasants: amount / max amount
+	 * recruit: recruit amount of recruit amount silver: silver surplus: surplus wage: entertain:
 	 *
 	 * @param r TODO: DOCUMENT ME!
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param expandableNodes TODO: DOCUMENT ME!
 	 */
-	private void appendRegionPeasantInfo(Region r,
-										 DefaultMutableTreeNode parent,
+	private void appendRegionPeasantInfo(Region r, DefaultMutableTreeNode parent,
 										 Collection expandableNodes) {
 		if(r.peasants <= 0) {
 			return;
 		}
 
 		// peasants
-		int maxWorkers = r.getRegionType().getInhabitants() -
-						 (Math.max(r.trees, 0) * 8) -
+		int maxWorkers = r.getRegionType().getInhabitants() - (Math.max(r.trees, 0) * 8) -
 						 (Math.max(r.sprouts, 0) * 4);
-		int workers    = Math.min(maxWorkers, r.peasants);
-		int surplus    = (workers * r.getPeasantWage()) - (r.peasants * 10);
+		int workers = Math.min(maxWorkers, r.peasants);
+		int surplus = (workers * r.getPeasantWage()) - (r.peasants * 10);
 		int oldWorkers = Math.min(maxWorkers, r.oldPeasants);
 		int oldSurplus = -1;
 
@@ -808,35 +774,28 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			oldSurplus = (oldWorkers * (r.oldWage + 1)) - (r.oldPeasants * 10);
 		}
 
-		String peasantsInfo = getDiffString(r.peasants, r.oldPeasants,
-											r.getModifiedPeasants()).toString();
+		String peasantsInfo = getDiffString(r.peasants, r.oldPeasants, r.getModifiedPeasants())
+								  .toString();
 		peasantsInfo += (" / " + maxWorkers);
 
-		DefaultMutableTreeNode peasantsNode = createSimpleNode(getString("node.peasants") +
-															   ": " +
-															   peasantsInfo,
-															   "bauern");
+		DefaultMutableTreeNode peasantsNode = createSimpleNode(getString("node.peasants") + ": " +
+															   peasantsInfo, "bauern");
 		parent.add(peasantsNode);
-		expandableNodes.add(new NodeWrapper(peasantsNode,
-											"EMapDetailsPanel.RegionPeasantsExpanded"));
+		expandableNodes.add(new NodeWrapper(peasantsNode, "EMapDetailsPanel.RegionPeasantsExpanded"));
 
 		// recruit
 		peasantsNode.add(createSimpleNode(getString("node.recruit") + ": " +
-										  getDiffString(r.maxRecruit(),
-														r.maxRecruit(),
-														r.modifiedRecruit()) +
-										  " " + getString("node.of") +
-										  r.maxRecruit(), "rekruten"));
+										  getDiffString(r.maxRecruit(), r.maxRecruit(),
+														r.modifiedRecruit()) + " " +
+										  getString("node.of") + r.maxRecruit(), "rekruten"));
 
 		// silver
 		peasantsNode.add(createSimpleNode(getString("node.silver") + ": " +
-										  getDiffString(r.silver, r.oldSilver),
-										  "items/silber"));
+										  getDiffString(r.silver, r.oldSilver), "items/silber"));
 
 		// surplus
 		peasantsNode.add(createSimpleNode(getString("node.surplus") + ": " +
-										  getDiffString(surplus, oldSurplus),
-										  "items/silber"));
+										  getDiffString(surplus, oldSurplus), "items/silber"));
 
 		// wage
 		int wage = r.getPeasantWage() - 1;
@@ -847,41 +806,33 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			wage = r.wage;
 		}
 
-		StringBuffer nodeText = new StringBuffer(getString("node.wage")).append(": ")
-																		.append(getDiffString(getWage(wage,
-																									  false),
-																							  getWage(r.oldWage,
-																									  false)));
+		StringBuffer nodeText = new StringBuffer(getString("node.wage")).append(": ").append(getDiffString(getWage(wage,
+																												   false),
+																										   getWage(r.oldWage,
+																												   false)));
 
 		if(data.rules.getRace(EresseaRaceConstants.R_ORKS) != null) {
-			nodeText.append(", ")
-					.append(data.rules.getRace(EresseaRaceConstants.R_ORKS)
-									  .getName()).append(": ").append(getDiffString(getWage(wage,
-																							true),
-																					getWage(r.oldWage,
-																							true)));
+			nodeText.append(", ").append(data.rules.getRace(EresseaRaceConstants.R_ORKS).getName())
+					.append(": ").append(getDiffString(getWage(wage, true), getWage(r.oldWage, true)));
 		}
 
 		peasantsNode.add(createSimpleNode(nodeText.toString(), "lohn"));
 
 		// entertain
-		peasantsNode.add(createSimpleNode(getString("node.enterainment") +
-										  ": " +
-										  getDiffString(r.maxEntertain(),
-														r.maxOldEntertain()),
+		peasantsNode.add(createSimpleNode(getString("node.enterainment") + ": " +
+										  getDiffString(r.maxEntertain(), r.maxOldEntertain()),
 										  "items/silber"));
 	}
 
-	private void appendRegionResourceInfo(Region r,
-										  DefaultMutableTreeNode parent,
+	private void appendRegionResourceInfo(Region r, DefaultMutableTreeNode parent,
 										  Collection expandableNodes) {
 		DefaultMutableTreeNode resourceNode = new DefaultMutableTreeNode(getString("node.resources"));
 
 		if(!r.resources().isEmpty()) {
 			// resources of region
 			for(Iterator iter = r.resources().iterator(); iter.hasNext();) {
-				RegionResource res	    = (RegionResource) iter.next();
-				int			   oldValue = findOldValueByResourceType(r, res);
+				RegionResource res = (RegionResource) iter.next();
+				int oldValue = findOldValueByResourceType(r, res);
 				appendResource(res, resourceNode, oldValue);
 			}
 		} else {
@@ -890,15 +841,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				DefaultMutableTreeNode treeNode;
 
 				if(r.mallorn) {
-					treeNode = createSimpleNode(getString("node.mallorntrees") +
-												": " +
-												getDiffString(r.trees,
-															  r.oldTrees),
+					treeNode = createSimpleNode(getString("node.mallorntrees") + ": " +
+												getDiffString(r.trees, r.oldTrees),
 												"items/" + mallornID);
 				} else {
 					treeNode = createSimpleNode(getString("node.trees") + ": " +
-												getDiffString(r.trees,
-															  r.oldTrees),
+												getDiffString(r.trees, r.oldTrees),
 												"items/" + treesID);
 				}
 
@@ -908,16 +856,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			if((r.iron > 0) || (r.oldIron > 0)) {
 				resourceNode.add(createSimpleNode(data.rules.getItemType(StringID.create("Eisen"))
 															.getName() + ": " +
-												  getDiffString(r.iron,
-																r.oldIron),
-												  "items/Eisen"));
+												  getDiffString(r.iron, r.oldIron), "items/Eisen"));
 			}
 
 			if((r.laen > 0) || (r.oldLaen > 0)) {
-				resourceNode.add(createSimpleNode(getString("node.laen") +
-												  ": " +
-												  getDiffString(r.laen,
-																r.oldLaen),
+				resourceNode.add(createSimpleNode(getString("node.laen") + ": " +
+												  getDiffString(r.laen, r.oldLaen),
 												  "items/" + laenID));
 			}
 		}
@@ -925,15 +869,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		// horse
 		if((r.horses > 0) || (r.oldHorses > 0)) {
 			resourceNode.add(createSimpleNode(getString("node.horses") + ": " +
-											  getDiffString(r.horses,
-															r.oldHorses),
-											  "items/pferd"));
+											  getDiffString(r.horses, r.oldHorses), "items/pferd"));
 		}
 
 		// herb
 		if(r.herb != null) {
-			StringBuffer sb = new StringBuffer(getString("node.herbs")).append(": ")
-																	   .append(r.herb.getName());
+			StringBuffer sb = new StringBuffer(getString("node.herbs")).append(": ").append(r.herb.getName());
 
 			if(r.herbAmount != null) {
 				sb.append(" (").append(r.herbAmount).append(")");
@@ -970,8 +911,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			return r.oldLaen;
 		}
 
-		if(res.getType().getID().equals(treesID) ||
-			   res.getType().getID().equals(mallornID)) {
+		if(res.getType().getID().equals(treesID) || res.getType().getID().equals(mallornID)) {
 			return r.oldTrees;
 		}
 
@@ -986,8 +926,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		return -1;
 	}
 
-	private void appendMultipleRegionInfo(Collection r,
-										  DefaultMutableTreeNode parent,
+	private void appendMultipleRegionInfo(Collection r, DefaultMutableTreeNode parent,
 										  Collection expandableNodes) {
 		// collect the data
 		// Sort regions for types. Key: RegionType; Value: LinkedList containing the region-objects
@@ -1035,11 +974,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			list.add(region);
 
 			if(!region.resources().isEmpty()) {
-				for(Iterator iterator = region.resources().iterator();
-						iterator.hasNext();) {
-					RegionResource res    = (RegionResource) iterator.next();
-					Integer		   amount = (Integer) resources.get(res.getType());
-					int			   i	  = res.getAmount();
+				for(Iterator iterator = region.resources().iterator(); iterator.hasNext();) {
+					RegionResource res = (RegionResource) iterator.next();
+					Integer amount = (Integer) resources.get(res.getType());
+					int i = res.getAmount();
 
 					if(amount != null) {
 						i += amount.intValue();
@@ -1050,9 +988,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			}
 
 			if(region.horses > 0) {
-				ItemType iType  = data.rules.getItemType(StringID.create("Pferd"));
-				Integer  amount = (Integer) resources.get(iType);
-				int		 i	    = region.horses;
+				ItemType iType = data.rules.getItemType(StringID.create("Pferd"));
+				Integer amount = (Integer) resources.get(iType);
+				int i = region.horses;
 
 				if(amount != null) {
 					i += amount.intValue();
@@ -1064,40 +1002,34 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		// Now the data is prepared. Build the tree:
 		// peasants
-		parent.add(createSimpleNode(getString("node.peasants") + ": " +
-									peasants, "bauern"));
+		parent.add(createSimpleNode(getString("node.peasants") + ": " + peasants, "bauern"));
 
 		// silver
-		parent.add(createSimpleNode(getString("node.silver") + ": " + silver,
-									"items/silber"));
+		parent.add(createSimpleNode(getString("node.silver") + ": " + silver, "items/silber"));
 
 		// terrains sorted by region type
 		DefaultMutableTreeNode terrainsNode = new DefaultMutableTreeNode(getString("node.terrains"));
 		parent.add(terrainsNode);
-		expandableNodes.add(new NodeWrapper(terrainsNode,
-											"EMapDetailsPanel.RegionTerrainsExpanded"));
+		expandableNodes.add(new NodeWrapper(terrainsNode, "EMapDetailsPanel.RegionTerrainsExpanded"));
 
 		List sortedList = CollectionFactory.createLinkedList(regions.keySet());
 		Collections.sort(sortedList, new NameComparator(new IDComparator()));
 
 		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
 			UnitContainerType rType = (UnitContainerType) iter.next();
-			List			  list = (List) regions.get(rType);
+			List list = (List) regions.get(rType);
 			Collections.sort(list, new NameComparator(new IDComparator()));
 
-			DefaultMutableTreeNode regionsNode = createSimpleNode(rType.getName() +
-																  ": " +
+			DefaultMutableTreeNode regionsNode = createSimpleNode(rType.getName() + ": " +
 																  list.size(),
-																  rType.getID()
-																	   .toString());
+																  rType.getID().toString());
 			terrainsNode.add(regionsNode);
 
 			for(Iterator iter2 = list.iterator(); iter2.hasNext();) {
-				Region region  = (Region) iter2.next();
-				int    persons = 0;
+				Region region = (Region) iter2.next();
+				int persons = 0;
 
-				for(Iterator iter3 = region.units().iterator();
-						iter3.hasNext();) {
+				for(Iterator iter3 = region.units().iterator(); iter3.hasNext();) {
 					persons += ((Unit) iter3.next()).getPersons();
 				}
 
@@ -1113,13 +1045,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
 			ItemType resType = (ItemType) iter.next();
-			int		 amount = ((Integer) resources.get(resType)).intValue();
+			int amount = ((Integer) resources.get(resType)).intValue();
 
 			if(amount > 0) {
-				resourcesNode.add(createSimpleNode(resType.getName() + ": " +
-												   amount,
-												   "items/" +
-												   resType.getIconName()));
+				resourcesNode.add(createSimpleNode(resType.getName() + ": " + amount,
+												   "items/" + resType.getIconName()));
 			}
 		}
 
@@ -1135,20 +1065,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		Collections.sort(sortedList, new NameComparator(new IDComparator()));
 
 		for(ListIterator iter = sortedList.listIterator(); iter.hasNext();) {
-			ItemType			   herbType    = (ItemType) iter.next();
-			List				   regionList  = (List) herbs.get(herbType);
-			int					   i		   = regionList.size();
+			ItemType herbType = (ItemType) iter.next();
+			List regionList = (List) herbs.get(herbType);
+			int i = regionList.size();
 			DefaultMutableTreeNode regionsNode = new DefaultMutableTreeNode(herbType.getName() +
-																			": " +
-																			i,
-																			true);
+																			": " + i, true);
 
 			// m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(herbType.getName() + ": " + i, herbType.getIconName()));
 			herbsNode.add(regionsNode);
 			Collections.sort(regionList, new NameComparator(new IDComparator()));
 
-			for(ListIterator iter2 = regionList.listIterator();
-					iter2.hasNext();) {
+			for(ListIterator iter2 = regionList.listIterator(); iter2.hasNext();) {
 				Region myRegion = (Region) iter2.next();
 				regionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createRegionNodeWrapper(myRegion)));
 			}
@@ -1156,8 +1083,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		if(herbsNode.getChildCount() > 0) {
 			parent.add(herbsNode);
-			expandableNodes.add(new NodeWrapper(herbsNode,
-												"EMapDetailsPanel.HerbStatisticExpanded"));
+			expandableNodes.add(new NodeWrapper(herbsNode, "EMapDetailsPanel.HerbStatisticExpanded"));
 		}
 	}
 
@@ -1170,14 +1096,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private DefaultMutableTreeNode createSimpleNode(Object obj, String icons) {
-		return new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj,
-																					 icons));
+		return new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj, icons));
 	}
 
 	/**
-	 * Return a string showing the signed difference of the two int values in
-	 * the form "<tt>current</tt> [&lt;sign&gt;&lt;number&gt;]". If the two
-	 * values are equal or if one of them is -1, an empty string is returned.
+	 * Return a string showing the signed difference of the two int values in the form
+	 * "<tt>current</tt> [&lt;sign&gt;&lt;number&gt;]". If the two values are equal or if one of
+	 * them is -1, an empty string is returned.
 	 *
 	 * @param current TODO: DOCUMENT ME!
 	 * @param old TODO: DOCUMENT ME!
@@ -1189,10 +1114,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Return a string showing the signed difference of the three int values in
-	 * the form "<tt>current</tt> (future) [&lt;sign&gt;&lt;change&gt;]". e.g.
-	 * (1,2,1) returns 1 [-1] e.g. (1,2,2) returns 1 (2) [-1] e.g. (1,1,2)
-	 * returns 1 (2) e.g. (1,1,1) returns 1 If future == -1, then ignore
+	 * Return a string showing the signed difference of the three int values in the form
+	 * "<tt>current</tt> (future) [&lt;sign&gt;&lt;change&gt;]". e.g. (1,2,1) returns 1 [-1] e.g.
+	 * (1,2,2) returns 1 (2) [-1] e.g. (1,1,2) returns 1 (2) e.g. (1,1,1) returns 1 If future ==
+	 * -1, then ignore
 	 *
 	 * @param current TODO: DOCUMENT ME!
 	 * @param old TODO: DOCUMENT ME!
@@ -1261,14 +1186,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			DefaultMutableTreeNode guardRoot = new DefaultMutableTreeNode(getString("node.guarded") +
 																		  ": ");
 			parent.add(guardRoot);
-			expandableNodes.add(new NodeWrapper(guardRoot,
-												"EMapDetailsPanel.RegionGuardExpanded"));
+			expandableNodes.add(new NodeWrapper(guardRoot, "EMapDetailsPanel.RegionGuardExpanded"));
 
 			for(Iterator iter = parties.iterator(); iter.hasNext();) {
-				Faction				   faction     = (Faction) iter.next();
-				int					   iGuardFlags = 0;
-				StringBuffer		   strFaction  = new StringBuffer();
-				DefaultMutableTreeNode guardParty  = new DefaultMutableTreeNode(strFaction);
+				Faction faction = (Faction) iter.next();
+				int iGuardFlags = 0;
+				StringBuffer strFaction = new StringBuffer();
+				DefaultMutableTreeNode guardParty = new DefaultMutableTreeNode(strFaction);
 				guardRoot.add(guardParty);
 
 				Iterator iterUnits = units.iterator();
@@ -1289,8 +1213,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 	}
 
-	private void appendResource(RegionResource res,
-								DefaultMutableTreeNode parent, int oldValue) {
+	private void appendResource(RegionResource res, DefaultMutableTreeNode parent, int oldValue) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(res.getType().getName());
 
@@ -1320,15 +1243,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Appends a folder with the schemes in the specified region to the
-	 * specified parent node.
+	 * Appends a folder with the schemes in the specified region to the specified parent node.
 	 *
 	 * @param region TODO: DOCUMENT ME!
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param expandableNodes TODO: DOCUMENT ME!
 	 */
-	private void appendRegionSchemes(Region region,
-									 DefaultMutableTreeNode parent,
+	private void appendRegionSchemes(Region region, DefaultMutableTreeNode parent,
 									 Collection expandableNodes) {
 		if(region.schemes().isEmpty()) {
 			return;
@@ -1336,8 +1257,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		DefaultMutableTreeNode schemeNode = new DefaultMutableTreeNode(getString("node.schemes"));
 		parent.add(schemeNode);
-		expandableNodes.add(new NodeWrapper(schemeNode,
-											"EMapDetailsPanel.RegionSchemesExpanded"));
+		expandableNodes.add(new NodeWrapper(schemeNode, "EMapDetailsPanel.RegionSchemesExpanded"));
 
 		for(Iterator iter = region.schemes().iterator(); iter.hasNext();) {
 			Scheme s = (Scheme) iter.next();
@@ -1357,8 +1277,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	 */
 	private void appendTags(UnitContainer uc, DefaultMutableTreeNode parent,
 							Collection expandableNodes) {
-		appendTags(uc, parent, expandableNodes,
-				   uc.getType().getID().toString() + "TagsExpanded");
+		appendTags(uc, parent, expandableNodes, uc.getType().getID().toString() + "TagsExpanded");
 	}
 
 	/**
@@ -1368,13 +1287,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	 * @param parent TODO: DOCUMENT ME!
 	 * @param expandableNodes TODO: DOCUMENT ME!
 	 */
-	private void appendTags(Unit uc, DefaultMutableTreeNode parent,
-							Collection expandableNodes) {
+	private void appendTags(Unit uc, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		appendTags(uc, parent, expandableNodes, "UnitTagsExpanded");
 	}
 
-	private void appendTags(Taggable uc, DefaultMutableTreeNode parent,
-							Collection expandableNodes, String nodeInfo) {
+	private void appendTags(Taggable uc, DefaultMutableTreeNode parent, Collection expandableNodes,
+							String nodeInfo) {
 		if(!uc.hasTags()) {
 			return;
 		}
@@ -1382,14 +1300,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		DefaultMutableTreeNode tags = new DefaultMutableTreeNode(getString("node.tags"));
 
 		for(Iterator iter = uc.getTagMap().keySet().iterator(); iter.hasNext();) {
-			String name  = (String) iter.next();
+			String name = (String) iter.next();
 			String value = uc.getTag(name);
 			tags.add(new DefaultMutableTreeNode(name + ": " + value));
 		}
 
 		parent.add(tags);
-		expandableNodes.add(new NodeWrapper(tags, "EMapDetailsPanel." +
-											nodeInfo));
+		expandableNodes.add(new NodeWrapper(tags, "EMapDetailsPanel." + nodeInfo));
 	}
 
 	private void showFaction(Faction f) {
@@ -1397,24 +1314,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		appendFactionsInfo(Collections.singleton(f), rootNode, myExpandableNodes);
 	}
 
-	private void appendFactionsInfo(Collection factions,
-									DefaultMutableTreeNode parent,
+	private void appendFactionsInfo(Collection factions, DefaultMutableTreeNode parent,
 									Collection expandableNodes) {
 		if(lastRegion != null) {
 			Map skills = CollectionFactory.createHashtable();
 
 			// key: racename (string), Value: Integer-Object containing number of persons of that race
-			Map		   races	   = CollectionFactory.createHashtable();
-			Iterator   units	   = lastRegion.units().iterator();
+			Map races = CollectionFactory.createHashtable();
+			Iterator units = lastRegion.units().iterator();
 			Collection regionUnits = CollectionFactory.createLinkedList();
 
 			while(units.hasNext() == true) {
 				Unit u = (Unit) units.next();
 
-				if((u.getFaction() != null) &&
-					   factions.contains(u.getFaction())) {
-					Integer number	    = (Integer) races.get(u.getRaceName(data));
-					int     personCount = u.getPersons();
+				if((u.getFaction() != null) && factions.contains(u.getFaction())) {
+					Integer number = (Integer) races.get(u.getRaceName(data));
+					int personCount = u.getPersons();
 
 					if(number != null) {
 						personCount += number.intValue();
@@ -1424,7 +1339,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					regionUnits.add(u);
 
 					for(Iterator i = u.getSkills().iterator(); i.hasNext();) {
-						Skill		  skill  = (Skill) i.next();
+						Skill skill = (Skill) i.next();
 						SkillStatItem stored = (SkillStatItem) skills.get(skill.getName() +
 																		  skill.getLevel());
 
@@ -1434,8 +1349,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 						} else {
 							stored = new SkillStatItem(skill, u.getPersons());
 							stored.units.add(u);
-							skills.put(skill.getName() + skill.getLevel(),
-									   stored);
+							skills.put(skill.getName() + skill.getLevel(), stored);
 						}
 					}
 				}
@@ -1443,22 +1357,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 			for(Iterator iter = races.keySet().iterator(); iter.hasNext();) {
 				String race = (String) iter.next();
-				int    i = ((Integer) races.get(race)).intValue();
+				int i = ((Integer) races.get(race)).intValue();
 				parent.add(createSimpleNode(i + " " + race, "person"));
 			}
 
 			if(showFactionItemCategories) {
-				Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits,
-																		 parent,
-																		 null,
-																		 null,
-																		 true,
+				Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits, parent, null,
+																		 null, true,
 																		 nodeWrapperFactory);
 
 				for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
-					Object				   o   = node.getUserObject();
-					ItemCategory		   cat = null;
+					Object o = node.getUserObject();
+					ItemCategory cat = null;
 
 					if(o instanceof ItemCategoryNodeWrapper) {
 						cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
@@ -1468,16 +1379,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 					expandableNodes.add(new NodeWrapper(node,
 														"EMapDetailsPanel." +
-														cat.getID().toString() +
-														"Expanded"));
+														cat.getID().toString() + "Expanded"));
 				}
 			} else {
 				DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(getString("node.items"));
 				expandableNodes.add(new NodeWrapper(itemsNode,
 													"EMapDetailsPanel.FactionItemsExpanded"));
 				parent.add(itemsNode);
-				unitsTools.addUnitItems(regionUnits, itemsNode, null, null,
-										true, nodeWrapperFactory);
+				unitsTools.addUnitItems(regionUnits, itemsNode, null, null, true, nodeWrapperFactory);
 			}
 
 			if(skills.size() > 0) {
@@ -1499,26 +1408,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					//							bonus += f.getRace().getSkillBonus(item.skill.getType(), lastRegion.getRegionType());
 					//						}
 					//					}
-					DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.getName() +
-																		" " +
+					DefaultMutableTreeNode skillNode = createSimpleNode(item.skill.getName() + " " +
 																		item.skill.getLevel() +
-																		": " +
-																		item.unitCounter,
+																		": " + item.unitCounter,
 																		item.skill.getSkillType()
-																				  .getID()
-																				  .toString());
+																				  .getID().toString());
 					skillsNode.add(skillNode);
 
-					Comparator idCmp   = new IDComparator();
+					Comparator idCmp = new IDComparator();
 					Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(item.skill.getSkillType(),
 																									   new SkillComparator(),
 																									   null),
 																 idCmp);
 					Collections.sort(item.units, unitCmp);
 
-					for(Iterator uIter = item.units.iterator();
-							uIter.hasNext();) {
-						Unit		 u  = (Unit) uIter.next();
+					for(Iterator uIter = item.units.iterator(); uIter.hasNext();) {
+						Unit u = (Unit) uIter.next();
 						StringBuffer sb = new StringBuffer();
 						sb.append(u.toString());
 
@@ -1530,8 +1435,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 						sb.append(": " + u.getPersons());
 
 						if(u.getPersons() != u.getModifiedPersons()) {
-							sb.append(" (").append(u.getModifiedPersons())
-							  .append(")");
+							sb.append(" (").append(u.getModifiedPersons()).append(")");
 						}
 
 						skillNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u,
@@ -1553,12 +1457,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		appendGroupInfo(g, rootNode, myExpandableNodes);
 	}
 
-	private void appendGroupInfo(Group g, DefaultMutableTreeNode parent,
-								 Collection expandableNodes) {
+	private void appendGroupInfo(Group g, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		if(lastRegion != null) {
-			int		   personCount = 0;
-			Map		   skills	   = CollectionFactory.createHashtable();
-			Iterator   units	   = lastRegion.units().iterator();
+			int personCount = 0;
+			Map skills = CollectionFactory.createHashtable();
+			Iterator units = lastRegion.units().iterator();
 			Collection regionUnits = CollectionFactory.createLinkedList();
 
 			while(units.hasNext() == true) {
@@ -1569,7 +1472,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					regionUnits.add(u);
 
 					for(Iterator i = u.getSkills().iterator(); i.hasNext();) {
-						Skill		  skill  = (Skill) i.next();
+						Skill skill = (Skill) i.next();
 						SkillStatItem stored = (SkillStatItem) skills.get(skill.getName() +
 																		  skill.getLevel());
 
@@ -1579,26 +1482,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 						} else {
 							stored = new SkillStatItem(skill, u.getPersons());
 							stored.units.add(u);
-							skills.put(skill.getName() + skill.getLevel(),
-									   stored);
+							skills.put(skill.getName() + skill.getLevel(), stored);
 						}
 					}
 				}
 			}
 
-			DefaultMutableTreeNode n = new DefaultMutableTreeNode(personCount +
-																  " " +
+			DefaultMutableTreeNode n = new DefaultMutableTreeNode(personCount + " " +
 																  getString("node.persons"));
 			parent.add(n);
 
 			if((g.allies() != null) && (g.allies().values().size() > 0)) {
 				n = new DefaultMutableTreeNode(getString("node.alliances"));
 				parent.add(n);
-				expandableNodes.add(new NodeWrapper(n,
-													"EMapDetailsPanel.AlliancesExpanded"));
+				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.AlliancesExpanded"));
 
-				List sortedAllies = CollectionFactory.createLinkedList(g.allies()
-																		.values());
+				List sortedAllies = CollectionFactory.createLinkedList(g.allies().values());
 				Collections.sort(sortedAllies,
 								 new AllianceFactionComparator(new NameComparator(new IDComparator())));
 
@@ -1609,11 +1508,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			}
 
 			if(showFactionItemCategories) {
-				Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits,
-																		 parent,
-																		 null,
-																		 null,
-																		 true,
+				Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits, parent, null,
+																		 null, true,
 																		 nodeWrapperFactory);
 
 				for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
@@ -1621,11 +1517,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 					if(log.isDebugEnabled()) {
 						log.debug("EmapDetailPanel.appendGroupInfo: found class " +
-								  node.getUserObject().getClass() +
-								  " (expected ItemCategory)");
+								  node.getUserObject().getClass() + " (expected ItemCategory)");
 					}
 
-					Object		 o   = node.getUserObject();
+					Object o = node.getUserObject();
 					ItemCategory cat = null;
 
 					if(o instanceof ItemCategoryNodeWrapper) {
@@ -1636,31 +1531,27 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 					expandableNodes.add(new NodeWrapper(node,
 														"EMapDetailsPanel." +
-														cat.getID().toString() +
-														"Expanded"));
+														cat.getID().toString() + "Expanded"));
 				}
 			} else {
 				n = new DefaultMutableTreeNode(getString("node.items"));
-				expandableNodes.add(new NodeWrapper(n,
-													"EMapDetailsPanel.RegionItemsExpanded"));
+				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.RegionItemsExpanded"));
 				parent.add(n);
-				unitsTools.addUnitItems(regionUnits, n, null, null, true,
-										nodeWrapperFactory);
+				unitsTools.addUnitItems(regionUnits, n, null, null, true, nodeWrapperFactory);
 			}
 
 			if(skills.size() > 0) {
 				n = new DefaultMutableTreeNode(getString("node.skills"));
 				parent.add(n);
-				expandableNodes.add(new NodeWrapper(n,
-													"EMapDetailsPanel.RegionSkillsExpanded"));
+				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.RegionSkillsExpanded"));
 
 				List sortedSkills = CollectionFactory.createLinkedList(skills.values());
 				Collections.sort(sortedSkills, new SkillStatItemComparator());
 
 				for(Iterator iter = sortedSkills.iterator(); iter.hasNext();) {
-					SkillStatItem item  = (SkillStatItem) iter.next();
-					int			  bonus = 0;
-					Faction		  f     = null;
+					SkillStatItem item = (SkillStatItem) iter.next();
+					int bonus = 0;
+					Faction f = null;
 
 					if(((f = g.getFaction()) != null) && (f.getType() != null)) {
 						bonus = f.getRace().getSkillBonus(item.skill.getSkillType());
@@ -1681,7 +1572,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 																										  .toString()));
 					n.add(m);
 
-					Comparator idCmp   = new IDComparator();
+					Comparator idCmp = new IDComparator();
 					Comparator unitCmp = new UnitSkillComparator(new BestSkillComparator(new SkillComparator(),
 																						 new SkillTypeComparator(new SkillTypeRankComparator(new NameComparator(idCmp),
 																																			 settings),
@@ -1690,27 +1581,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 																 idCmp);
 					Collections.sort(item.units, unitCmp);
 
-					for(Iterator uIter = item.units.iterator();
-							uIter.hasNext();) {
-						Unit		 u  = (Unit) uIter.next();
+					for(Iterator uIter = item.units.iterator(); uIter.hasNext();) {
+						Unit u = (Unit) uIter.next();
 						StringBuffer sb = new StringBuffer();
 						sb.append(u.toString());
 
 						Skill skill = u.getSkill(item.skill.getSkillType());
 
 						if(skill != null) {
-							sb.append(": [").append(skill.getPointsPerPerson())
-							  .append(" -> ")
-							  .append(Skill.getPointsAtLevel((item.skill.getLevel() -
-															 bonus) + 1))
+							sb.append(": [").append(skill.getPointsPerPerson()).append(" -> ")
+							  .append(Skill.getPointsAtLevel((item.skill.getLevel() - bonus) + 1))
 							  .append("]");
 						}
 
 						sb.append(", ").append(u.getPersons());
 
 						if(u.getPersons() != u.getModifiedPersons()) {
-							sb.append(" (").append(u.getModifiedPersons())
-							  .append(")");
+							sb.append(" (").append(u.getModifiedPersons()).append(")");
 						}
 
 						UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
@@ -1742,8 +1629,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		removeTag.setEnabled(false);
 	}
 
-	private void appendUnitInfo(Unit u, DefaultMutableTreeNode parent,
-								Collection expandableNodes) {
+	private void appendUnitInfo(Unit u, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		/* make sure that all unit relations have been established */
 		if(u.getRegion() != null) {
 			u.getRegion().refreshUnitRelations();
@@ -1772,8 +1658,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		// Race
 		if(u.race != null) {
-			StringBuffer nodeText = new StringBuffer(getString("node.race")).append(": ")
-																			.append(u.getRaceName(this.data));
+			StringBuffer nodeText = new StringBuffer(getString("node.race")).append(": ").append(u.getRaceName(this.data));
 
 			if(u.realRace != null) {
 				nodeText.append(" (").append(u.realRace.getName()).append(")");
@@ -1784,14 +1669,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		// Group
 		if(u.getGroup() != null) {
-			Group				   group     = u.getGroup();
+			Group group = u.getGroup();
 			DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(getString("node.group") +
-																		  ": \"" +
-																		  group.getName() +
+																		  ": \"" + group.getName() +
 																		  "\"");
 			parent.add(groupNode);
-			expandableNodes.add(new NodeWrapper(groupNode,
-												"EMapDetailsPanel.UnitGroupExpanded"));
+			expandableNodes.add(new NodeWrapper(groupNode, "EMapDetailsPanel.UnitGroupExpanded"));
 			appendAlliances(group.allies(), groupNode);
 		}
 
@@ -1815,7 +1698,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		// health state
 		if(u.health != null) {
-			String verw  = data.getTranslation("verwundet");
+			String verw = data.getTranslation("verwundet");
 			String sverw = data.getTranslation("schwer verwundet");
 			String ersch = data.getTranslation("erschöpft");
 			String hicon = "gesundheit";
@@ -1828,21 +1711,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				hicon = "erschoepft";
 			}
 
-			parent.add(createSimpleNode(getString("node.health") + ": " +
-										u.health, hicon));
+			parent.add(createSimpleNode(getString("node.health") + ": " + u.health, hicon));
 		}
 
 		// guard state
 		if(u.guard != 0) {
 			parent.add(createSimpleNode(getString("node.guards") + ": " +
-										Unit.guardFlagsToString(u.guard),
-										"bewacht"));
+										Unit.guardFlagsToString(u.guard), "bewacht"));
 		}
 
 		// faction hidden, stealth level
-		Skill stealth = u.getSkill(data.rules.getSkillType(EresseaSkillConstants.S_TARNUNG,
-														   true));
-		int   stealthLevel = 0;
+		Skill stealth = u.getSkill(data.rules.getSkillType(EresseaSkillConstants.S_TARNUNG, true));
+		int stealthLevel = 0;
 
 		if(stealth != null) {
 			stealthLevel = stealth.getLevel();
@@ -1875,8 +1755,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				icon = "tarnung";
 			}
 
-			SimpleNodeWrapper wrapper = nodeWrapperFactory.createSimpleNodeWrapper(strHide,
-																				   icon);
+			SimpleNodeWrapper wrapper = nodeWrapperFactory.createSimpleNodeWrapper(strHide, icon);
 
 			if((stealthLevel > 0) && isPrivileged(u.getFaction())) {
 				wrapper.setContextFactory(stealthContext);
@@ -1888,11 +1767,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		// disguise
 		if(u.getGuiseFaction() != null) {
-			parent.add(createSimpleNode(getString("node.disguisedas") +
-										u.getGuiseFaction(),
+			parent.add(createSimpleNode(getString("node.disguisedas") + u.getGuiseFaction(),
 										((stealth != null)
-										 ? stealth.getSkillType().getID()
-												  .toString() : "tarnung")));
+										 ? stealth.getSkillType().getID().toString() : "tarnung")));
 		}
 
 		// spy
@@ -1911,22 +1788,20 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 
 		// wenn Schiff gewechselt: neues Schiff anzeigen!
-		if((u.getModifiedShip() != null) &&
-			   !(u.getModifiedShip().equals(u.getShip()))) {
+		if((u.getModifiedShip() != null) && !(u.getModifiedShip().equals(u.getShip()))) {
 			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getModifiedShip())));
 		}
 
 		// magic aura
 		if(u.aura != -1) {
-			parent.add(createSimpleNode(getString("node.aura") + ": " + u.aura +
-										" / " + u.auraMax, "aura"));
+			parent.add(createSimpleNode(getString("node.aura") + ": " + u.aura + " / " + u.auraMax,
+										"aura"));
 		}
 
 		// weight
-		Float  uWeight    = new Float(u.getWeight() / 100.0F);
-		Float  modUWeight = new Float(u.getModifiedWeight() / 100.0F);
-		String text		  = getString("node.totalweight") + ": " +
-							weightNumberFormat.format(uWeight);
+		Float uWeight = new Float(u.getWeight() / 100.0F);
+		Float modUWeight = new Float(u.getModifiedWeight() / 100.0F);
+		String text = getString("node.totalweight") + ": " + weightNumberFormat.format(uWeight);
 
 		if(!uWeight.equals(modUWeight)) {
 			text += (" (" + weightNumberFormat.format(modUWeight) + ")");
@@ -1936,8 +1811,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		parent.add(createSimpleNode(text, "gewicht"));
 
 		// load
-		int load	   = u.getLoad();
-		int modLoad    = u.getModifiedLoad();
+		int load = u.getLoad();
+		int modLoad = u.getModifiedLoad();
 		Map passengers = u.getPassengers();
 
 		// pavkovic 2003.10.02: moved to Unit.getModifiedLoad
@@ -1953,8 +1828,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				   weightNumberFormat.format(new Float(load / 100.0F));
 
 			if(load != modLoad) {
-				text += (" (" +
-				weightNumberFormat.format(new Float(modLoad / 100.0F)) + ")");
+				text += (" (" + weightNumberFormat.format(new Float(modLoad / 100.0F)) + ")");
 			}
 
 			text += (" " + getString("node.weightunits"));
@@ -1965,13 +1839,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		int maxOnFoot = u.getPayloadOnFoot();
 
 		if(maxOnFoot == Unit.CAP_UNSKILLED) {
-			parent.add(createSimpleNode(getString("node.capacityonfoot") +
-										": " + getString("node.toomanyhorses"),
-										"warnung"));
+			parent.add(createSimpleNode(getString("node.capacityonfoot") + ": " +
+										getString("node.toomanyhorses"), "warnung"));
 		} else {
-			Float				   max  = new Float(maxOnFoot / 100.0F);
-			Float				   free = new Float(Math.abs(maxOnFoot -
-															 modLoad) / 100.0F);
+			Float max = new Float(maxOnFoot / 100.0F);
+			Float free = new Float(Math.abs(maxOnFoot - modLoad) / 100.0F);
 			DefaultMutableTreeNode capacityNode;
 
 			if((maxOnFoot - modLoad) < 0) {
@@ -2005,14 +1877,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		int maxOnHorse = u.getPayloadOnHorse();
 
 		if(maxOnHorse == Unit.CAP_UNSKILLED) {
-			parent.add(createSimpleNode(getString("node.capacityonhorse") +
-										": " + getString("node.toomanyhorses"),
-										"warnung"));
+			parent.add(createSimpleNode(getString("node.capacityonhorse") + ": " +
+										getString("node.toomanyhorses"), "warnung"));
 		} else if(maxOnHorse == Unit.CAP_NO_HORSES) {
 		} else {
-			Float				   max  = new Float(maxOnHorse / 100.0F);
-			Float				   free = new Float(Math.abs(maxOnHorse -
-															 modLoad) / 100.0F);
+			Float max = new Float(maxOnHorse / 100.0F);
+			Float free = new Float(Math.abs(maxOnHorse - modLoad) / 100.0F);
 			DefaultMutableTreeNode capacityNode;
 
 			if((maxOnHorse - modLoad) < 0) {
@@ -2032,8 +1902,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 																									 " " +
 																									 getString("node.weightunits"),
 																									 "reiten"));
-				appendUnitCapacityByItems(capacityNode, u, maxOnHorse -
-										  modLoad);
+				appendUnitCapacityByItems(capacityNode, u, maxOnHorse - modLoad);
 
 				if(capacityNode.getChildCount() > 0) {
 					expandableNodes.add(new NodeWrapper(capacityNode,
@@ -2048,12 +1917,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		if(u.getModifiedItems().size() > 0) {
 			DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(getString("node.items"));
 			parent.add(itemsNode);
-			expandableNodes.add(new NodeWrapper(itemsNode,
-												"EMapDetailsPanel.UnitItemsExpanded"));
+			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.UnitItemsExpanded"));
 
-			for(Iterator items = u.getModifiedItems().iterator();
-					items.hasNext();) {
-				Item				   modItem  = (Item) items.next();
+			for(Iterator items = u.getModifiedItems().iterator(); items.hasNext();) {
+				Item modItem = (Item) items.next();
 				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(nodeWrapperFactory.createItemNodeWrapper(u,
 																													  modItem));
 
@@ -2062,24 +1929,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				expandableNodes.add(new NodeWrapper(itemNode,
 													"EMapDetailsPanel.UnitItemsRelationsExpanded"));
 
-				for(Iterator iter = u.getItemTransferRelations(modItem)
-									 .iterator(); iter.hasNext();) {
-					ItemTransferRelation itr    = (ItemTransferRelation) iter.next();
-					String				 prefix = String.valueOf(itr.amount) +
-												  " ";
-					String				 addIcon = null;
-					Unit				 u2		 = null;
+				for(Iterator iter = u.getItemTransferRelations(modItem).iterator(); iter.hasNext();) {
+					ItemTransferRelation itr = (ItemTransferRelation) iter.next();
+					String prefix = String.valueOf(itr.amount) + " ";
+					String addIcon = null;
+					Unit u2 = null;
 
 					if(itr.source == u) {
 						addIcon = "get";
-						u2	    = itr.target;
+						u2 = itr.target;
 					} else if(itr.target == u) {
 						addIcon = "give";
-						u2	    = itr.source;
+						u2 = itr.source;
 					}
 
-					UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2,
-																				   prefix,
+					UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2, prefix,
 																				   u2.getPersons(),
 																				   u2.getModifiedPersons());
 					unw.setAdditionalIcon(addIcon);
@@ -2094,16 +1958,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 
 		// skills
-		boolean		  isTrader   = false;
-		SkillCategory tradeCat   = data.rules.getSkillCategory(StringID.create("trade"));
-		SkillType     tradeSkill = null;
+		boolean isTrader = false;
+		SkillCategory tradeCat = data.rules.getSkillCategory(StringID.create("trade"));
+		SkillType tradeSkill = null;
 
 		if(tradeCat == null) {
 			tradeSkill = data.rules.getSkillType(StringID.create("Handeln"));
 		}
 
-		Collection modSkills    = u.getModifiedSkills();
-		List	   sortedSkills = null;
+		Collection modSkills = u.getModifiedSkills();
+		List sortedSkills = null;
 
 		if((modSkills != null) && (modSkills.size() > 0)) {
 			sortedSkills = CollectionFactory.createLinkedList(modSkills);
@@ -2116,8 +1980,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		if(!sortedSkills.isEmpty()) {
 			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
 			parent.add(skillsNode);
-			expandableNodes.add(new NodeWrapper(skillsNode,
-												"EMapDetailsPanel.UnitSkillsExpanded"));
+			expandableNodes.add(new NodeWrapper(skillsNode, "EMapDetailsPanel.UnitSkillsExpanded"));
 
 			for(Iterator iter = sortedSkills.iterator(); iter.hasNext();) {
 				Skill os = null;
@@ -2134,11 +1997,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 				if(!isTrader && (os != null)) { // check for trader
 
-					if((tradeCat != null) &&
-						   tradeCat.isInstance(os.getSkillType())) {
+					if((tradeCat != null) && tradeCat.isInstance(os.getSkillType())) {
 						isTrader = true;
-					} else if((tradeSkill != null) &&
-								  tradeSkill.equals(os.getSkillType())) {
+					} else if((tradeSkill != null) && tradeSkill.equals(os.getSkillType())) {
 						isTrader = true;
 					}
 				}
@@ -2150,7 +2011,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 
 		// teacher pupil relations
-		Collection pupils   = CollectionFactory.createLinkedList();
+		Collection pupils = CollectionFactory.createLinkedList();
 		Collection teachers = CollectionFactory.createLinkedList();
 
 		for(Iterator iter = u.getRelations().iterator(); iter.hasNext();) {
@@ -2188,22 +2049,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				teachersNode.add(teacherNode);
 			}
 
-			teachersNode.setUserObject(new UnitListNodeWrapper(getString("node.teacher") +
-															   ": " +
-															   teacherCounter +
-															   " / " +
+			teachersNode.setUserObject(new UnitListNodeWrapper(getString("node.teacher") + ": " +
+															   teacherCounter + " / " +
 															   (((u.getModifiedPersons() % 10) == 0)
 																? (u.getModifiedPersons() / 10)
 																: ((u.getModifiedPersons() / 10) +
-																1)), null,
-															   teachers));
+																1)), null, teachers));
 		}
 
 		if(pupils.size() > 0) {
 			DefaultMutableTreeNode pupilsNode = new DefaultMutableTreeNode("");
 			parent.add(pupilsNode);
-			expandableNodes.add(new NodeWrapper(pupilsNode,
-												"EMapDetailsPanel.UnitPupilsExpanded"));
+			expandableNodes.add(new NodeWrapper(pupilsNode, "EMapDetailsPanel.UnitPupilsExpanded"));
 
 			int pupilCounter = 0;
 
@@ -2218,12 +2075,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				pupilsNode.add(pupilNode);
 			}
 
-			pupilsNode.setUserObject(new UnitListNodeWrapper(getString("node.pupils") +
-															 ": " +
-															 pupilCounter +
-															 " / " +
-															 (u.getModifiedPersons() * 10),
-															 null, pupils));
+			pupilsNode.setUserObject(new UnitListNodeWrapper(getString("node.pupils") + ": " +
+															 pupilCounter + " / " +
+															 (u.getModifiedPersons() * 10), null,
+															 pupils));
 		}
 
 		// transportation relations
@@ -2238,7 +2093,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 												"EMapDetailsPanel.UnitCarriersExpanded"));
 
 			for(Iterator iter = carriers.values().iterator(); iter.hasNext();) {
-				Unit		    carrier = (Unit) iter.next();
+				Unit carrier = (Unit) iter.next();
 				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(carrier,
 																			 carrier.getPersons(),
 																			 carrier.getModifiedPersons());
@@ -2255,7 +2110,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 												"EMapDetailsPanel.UnitPassengersExpanded"));
 
 			for(Iterator iter = passengers.values().iterator(); iter.hasNext();) {
-				Unit   passenger = (Unit) iter.next();
+				Unit passenger = (Unit) iter.next();
 				String str = passenger.toString() + ": " +
 							 weightNumberFormat.format(new Float(passenger.getWeight() / 100.0f)) +
 							 " " + getString("node.weightunits");
@@ -2266,8 +2121,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					" " + getString("node.weightunits") + ")");
 				}
 
-				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(passenger,
-																			 str);
+				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(passenger, str);
 				passengersNode.add(new DefaultMutableTreeNode(w));
 			}
 		}
@@ -2285,7 +2139,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 													"EMapDetailsPanel.UnitAttacksExpanded"));
 
 				for(Iterator iter = attacks.iterator(); iter.hasNext();) {
-					Unit		    victim = (Unit) iter.next();
+					Unit victim = (Unit) iter.next();
 					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(victim,
 																				 victim.getPersons(),
 																				 victim.getModifiedPersons());
@@ -2304,7 +2158,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 													"EMapDetailsPanel.UnitAttackedByExpanded"));
 
 				for(Iterator iter = attackedBy.iterator(); iter.hasNext();) {
-					Unit		    victim = (Unit) iter.next();
+					Unit victim = (Unit) iter.next();
 					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(victim,
 																				 victim.getPersons(),
 																				 victim.getModifiedPersons());
@@ -2317,12 +2171,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		if((u.spells != null) && (u.spells.size() > 0)) {
 			DefaultMutableTreeNode spellsNode = new DefaultMutableTreeNode(getString("node.spells"));
 			parent.add(spellsNode);
-			expandableNodes.add(new NodeWrapper(spellsNode,
-												"EMapDetailsPanel.UnitSpellsExpanded"));
+			expandableNodes.add(new NodeWrapper(spellsNode, "EMapDetailsPanel.UnitSpellsExpanded"));
 
 			List sortedSpells = CollectionFactory.createLinkedList(u.spells.values());
-			Collections.sort(sortedSpells,
-							 new SpellLevelComparator(new NameComparator(null)));
+			Collections.sort(sortedSpells, new SpellLevelComparator(new NameComparator(null)));
 
 			for(Iterator iter = sortedSpells.iterator(); iter.hasNext();) {
 				Spell spell = (Spell) iter.next();
@@ -2337,11 +2189,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		if((data.potions() != null) && (u.skills != null) &&
 			   u.skills.containsKey(EresseaSkillConstants.S_ALCHEMIE)) {
 			DefaultMutableTreeNode potionsNode = new DefaultMutableTreeNode(getString("node.potions"));
-			Skill				   alchSkill = (Skill) u.skills.get(EresseaSkillConstants.S_ALCHEMIE);
-			List				   potions   = CollectionFactory.createLinkedList(data.potions()
-																					  .values());
-			Collections.sort(potions,
-							 new PotionLevelComparator(new NameComparator(null)));
+			Skill alchSkill = (Skill) u.skills.get(EresseaSkillConstants.S_ALCHEMIE);
+			List potions = CollectionFactory.createLinkedList(data.potions().values());
+			Collections.sort(potions, new PotionLevelComparator(new NameComparator(null)));
 
 			for(Iterator iter = potions.iterator(); iter.hasNext();) {
 				Potion p = (Potion) iter.next();
@@ -2376,29 +2226,25 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			strPersons += (" (" + u.getModifiedPersons() + ")");
 		}
 
-		DefaultMutableTreeNode personNode = createSimpleNode(strPersons,
-															 "person");
+		DefaultMutableTreeNode personNode = createSimpleNode(strPersons, "person");
 		parent.add(personNode);
-		expandableNodes.add(new NodeWrapper(personNode,
-											"EMapDetailsPanel.PersonsExpanded"));
+		expandableNodes.add(new NodeWrapper(personNode, "EMapDetailsPanel.PersonsExpanded"));
 
-		for(Iterator iter = u.getPersonTransferRelations().iterator();
-				iter.hasNext();) {
-			PersonTransferRelation itr     = (PersonTransferRelation) iter.next();
-			String				   prefix  = String.valueOf(itr.amount) + " ";
-			String				   addIcon = null;
-			Unit				   u2	   = null;
+		for(Iterator iter = u.getPersonTransferRelations().iterator(); iter.hasNext();) {
+			PersonTransferRelation itr = (PersonTransferRelation) iter.next();
+			String prefix = String.valueOf(itr.amount) + " ";
+			String addIcon = null;
+			Unit u2 = null;
 
 			if(itr.source == u) {
 				addIcon = "get";
-				u2	    = itr.target;
+				u2 = itr.target;
 			} else if(itr.target == u) {
 				addIcon = "give";
-				u2	    = itr.source;
+				u2 = itr.source;
 			}
 
-			UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2,
-																		   prefix,
+			UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2, prefix,
 																		   u2.getPersons(),
 																		   u2.getModifiedPersons());
 			unw.setAdditionalIcon(addIcon);
@@ -2407,8 +2253,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 	}
 
-	private void appendUnitCombatSpells(Map spells,
-										DefaultMutableTreeNode parent,
+	private void appendUnitCombatSpells(Map spells, DefaultMutableTreeNode parent,
 										Collection expandableNodes) {
 		if((spells == null) || spells.isEmpty()) {
 			return;
@@ -2425,29 +2270,27 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 	}
 
-	private void appendUnitCapacityByItems(DefaultMutableTreeNode parent,
-										   Unit u, int freeCapacity) {
+	private void appendUnitCapacityByItems(DefaultMutableTreeNode parent, Unit u, int freeCapacity) {
 		ItemType horses = data.rules.getItemType(StringID.create("Pferd"));
-		ItemType carts  = data.rules.getItemType(StringID.create("Wagen"));
+		ItemType carts = data.rules.getItemType(StringID.create("Wagen"));
 		ItemType silver = data.rules.getItemType(StringID.create("Silber"));
 
 		for(Iterator iter = u.getRegion().items().iterator(); iter.hasNext();) {
-			Item     item = (Item) iter.next();
+			Item item = (Item) iter.next();
 			ItemType type = item.getItemType();
 
-			if((type.getWeight() > 0.0) && !type.equals(horses) &&
-				   !type.equals(carts) && !type.equals(silver)) {
+			if((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
+				   !type.equals(silver)) {
 				int weight = (int) (type.getWeight() * 100);
 				parent.add(createSimpleNode("Max. " + type.getName() + ": " +
-											(freeCapacity / weight),
-											"items/" + type.getIconName()));
+											(freeCapacity / weight), "items/" + type.getIconName()));
 			}
 		}
 	}
 
 	/**
-	 * Determines how many potions potion can be brewed from the herbs owned by
-	 * privileged factions in the specified region.
+	 * Determines how many potions potion can be brewed from the herbs owned by privileged factions
+	 * in the specified region.
 	 *
 	 * @param rules TODO: DOCUMENT ME!
 	 * @param potion TODO: DOCUMENT ME!
@@ -2490,10 +2333,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 	private void appendBuildingInfo(Building b, DefaultMutableTreeNode parent,
 									Collection expandableNodes) {
-		int		   inmates    = 0; // the number of persons currently on the ship
-		int		   modInmates = 0; // the number of persons on the ship in the next turn
-		List	   units	  = null; // the list of units currently on the ship
-		Collection modUnits   = null; // the collection of units on the ship in the next turn
+		int inmates = 0; // the number of persons currently on the ship
+		int modInmates = 0; // the number of persons on the ship in the next turn
+		List units = null; // the list of units currently on the ship
+		Collection modUnits = null; // the collection of units on the ship in the next turn
 
 		/* make sure that all unit relations have been established
 		 (necessary for enter-/leave relations) */
@@ -2505,8 +2348,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		DefaultMutableTreeNode m = null;
 
 		// Typ
-		n = createSimpleNode(getString("node.type") + ": " +
-							 b.getType().getName(),
+		n = createSimpleNode(getString("node.type") + ": " + b.getType().getName(),
 							 b.getType().getID().toString());
 		parent.add(n);
 
@@ -2527,8 +2369,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 									 getString("node.unknownfaction"), "faction");
 			} else {
 				n = createSimpleNode(getString("node.faction") + ": " +
-									 b.getOwnerUnit().getFaction().toString(),
-									 "faction");
+									 b.getOwnerUnit().getFaction().toString(), "faction");
 			}
 		}
 
@@ -2544,15 +2385,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		allInmates.addAll(modUnits);
 
 		if((units.size() > 0) || (modUnits.size() > 0)) {
-			n = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.inmates"),
-																   null,
+			n = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.inmates"), null,
 																   allInmates));
 			parent.add(n);
-			expandableNodes.add(new NodeWrapper(n,
-												"EMapDetailsPanel.BuildingInmatesExpanded"));
+			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingInmatesExpanded"));
 
 			for(Iterator iter = units.iterator(); iter.hasNext();) {
-				Unit		 u    = (Unit) iter.next();
+				Unit u = (Unit) iter.next();
 				StringBuffer text = new StringBuffer();
 
 				if(b.getModifiedUnit(u.getID()) == null) {
@@ -2561,8 +2400,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 				text.append(u.toString()).append(": ").append(u.getModifiedPersons());
 
-				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
-																			 text.toString());
+				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u, text.toString());
 				m = new DefaultMutableTreeNode(w);
 				n.add(m);
 				inmates += u.getPersons();
@@ -2577,8 +2415,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					text.append("-> ");
 					text.append(u.toString()).append(": ").append(u.getModifiedPersons());
 
-					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
-																				 text.toString());
+					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u, text.toString());
 					m = new DefaultMutableTreeNode(w);
 					n.add(m);
 				}
@@ -2587,22 +2424,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			if(inmates == modInmates) {
 				n.setUserObject(getString("node.inmates") + ": " + inmates);
 			} else {
-				n.setUserObject(getString("node.inmates") + ": " + inmates +
-								" (" + modInmates + ")");
+				n.setUserObject(getString("node.inmates") + ": " + inmates + " (" + modInmates +
+								")");
 			}
 		}
 
 		n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(((inmates == modInmates)
 																				   ? (getString("node.size") +
-																				   ": " +
-																				   inmates)
+																				   ": " + inmates)
 																				   : (getString("node.size") +
-																				   ": " +
-																				   inmates +
+																				   ": " + inmates +
 																				   " (" +
 																				   modInmates +
-																				   ")")) +
-																				  " / " +
+																				   ")")) + " / " +
 																				  b.getSize(),
 																				  "build_size"));
 		parent.insert(n, 0);
@@ -2613,18 +2447,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		if(iter.hasNext()) {
 			n = new DefaultMutableTreeNode(getString("node.upkeep"));
 			parent.add(n);
-			expandableNodes.add(new NodeWrapper(n,
-												"EMapDetailsPanel.BuildingMaintenanceExpanded"));
+			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingMaintenanceExpanded"));
 		}
 
 		while(iter.hasNext()) {
-			Item   i    = (Item) iter.next();
+			Item i = (Item) iter.next();
 			String text = i.getName();
 
 			if(text.endsWith(" pro Größenpunkt")) {
-				int    amount  = b.getSize() * i.getAmount();
-				String newText = text.substring(0,
-												text.indexOf(" pro Größenpunkt"));
+				int amount = b.getSize() * i.getAmount();
+				String newText = text.substring(0, text.indexOf(" pro Größenpunkt"));
 				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(amount +
 																						  " " +
 																						  newText,
@@ -2651,16 +2483,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		if(iter.hasNext()) {
 			n = new DefaultMutableTreeNode(getString("node.buildingcost"));
 			parent.add(n);
-			expandableNodes.add(new NodeWrapper(n,
-												"EMapDetailsPanel.BuildingCostExpanded"));
+			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingCostExpanded"));
 		}
 
 		while(iter.hasNext()) {
-			Item   i    = (Item) iter.next();
+			Item i = (Item) iter.next();
 			String text = i.getName();
 			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() +
-																					  " " +
-																					  text,
+																					  " " + text,
 																					  "items/" +
 																					  i.getItemType()
 																					   .getID()
@@ -2674,10 +2504,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * sets the ship name        editable sets the ship description editable
-	 * shows a tree: (Type  : ship.type) (Completion : x % (y/z)) (Coast :
-	 * ship.direction)  (if completed) (Range : node.range      (- components)
-	 * Back - ingredients: 1.name ... n.name
+	 * sets the ship name        editable sets the ship description editable shows a tree: (Type  :
+	 * ship.type) (Completion : x % (y/z)) (Coast : ship.direction)  (if completed) (Range :
+	 * node.range      (- components) Back - ingredients: 1.name ... n.name
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 */
@@ -2687,19 +2516,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		appendShipInfo(s, rootNode, myExpandableNodes);
 	}
 
-	private void appendShipInfo(Ship s, DefaultMutableTreeNode parent,
-								Collection expandableNodes) {
+	private void appendShipInfo(Ship s, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		int load = 0;
 
 		//int modLoad = 0;
-		DefaultMutableTreeNode loadNode			  = null;
-		DefaultMutableTreeNode n				  = null;
-		DefaultMutableTreeNode m				  = null;
-		int					   sailingSkillAmount = 0;
-		List				   units			  = null; // the list of units currently on the ship
-		Collection			   modUnits			  = null; // the collection of units on the ship in the next turn
-		int					   inmates			  = 0; // the number of persons currently on the ship
-		int					   modInmates		  = 0; // the number of persons on the ship in the next turn
+		DefaultMutableTreeNode loadNode = null;
+		DefaultMutableTreeNode n = null;
+		DefaultMutableTreeNode m = null;
+		int sailingSkillAmount = 0;
+		List units = null; // the list of units currently on the ship
+		Collection modUnits = null; // the collection of units on the ship in the next turn
+		int inmates = 0; // the number of persons currently on the ship
+		int modInmates = 0; // the number of persons on the ship in the next turn
 
 		/* make sure that all unit relations have been established
 		 (necessary for enter-/leave relations) */
@@ -2709,8 +2537,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		// Schiffstyp
 		if((s.getName() != null) && (s.getType().getName() != null)) {
-			parent.add(createSimpleNode(getString("node.type") + ": " +
-										s.getType().getName(),
+			parent.add(createSimpleNode(getString("node.type") + ": " + s.getType().getName(),
 										s.getType().getID().toString()));
 		}
 
@@ -2723,34 +2550,28 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				ratio = (s.size * 100) / nominalShipSize;
 			}
 
-			parent.add(new DefaultMutableTreeNode(getString("node.completion") +
-												  ": " + ratio + "% (" +
-												  s.size + "/" +
-												  nominalShipSize + ")"));
+			parent.add(new DefaultMutableTreeNode(getString("node.completion") + ": " + ratio +
+												  "% (" + s.size + "/" + nominalShipSize + ")"));
 		} else {
 			// Kueste
 			if(s.shoreId > -1) {
 				parent.add(createSimpleNode(getString("node.shore") + ": " +
 											Direction.toString(s.shoreId),
-											"shore_" +
-											String.valueOf(s.shoreId)));
+											"shore_" + String.valueOf(s.shoreId)));
 			}
 
 			// Reichweite (bei Schaden aufrunden)
 			int rad = s.getShipType().getRange();
 
 			// rad = rad*(100.0-damageRatio)/100.0
-			rad = new BigDecimal(rad).multiply(new BigDecimal(100 -
-															  s.damageRatio))
-									 .divide(new BigDecimal(100),
-											 BigDecimal.ROUND_UP).intValue();
+			rad = new BigDecimal(rad).multiply(new BigDecimal(100 - s.damageRatio))
+									 .divide(new BigDecimal(100), BigDecimal.ROUND_UP).intValue();
 
 			String rangeString = getString("node.range") + ": " + rad;
 
 			if((s.getOwnerUnit() != null) && (s.getOwnerUnit().race != null) &&
 				   s.getOwnerUnit().race.getID().equals(EresseaRaceConstants.R_MEERMENSCHEN)) {
-				rangeString += (" + 1 (" + s.getOwnerUnit().race.getName() +
-				")");
+				rangeString += (" + 1 (" + s.getOwnerUnit().race.getName() + ")");
 			}
 
 			parent.add(createSimpleNode(rangeString, "radius"));
@@ -2761,15 +2582,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				int absolute = new BigDecimal(s.damageRatio * s.size).divide(new BigDecimal(100),
 																			 BigDecimal.ROUND_UP)
 																	 .intValue();
-				parent.add(createSimpleNode(getString("node.damage") + ": " +
-											s.damageRatio + "% / " +
-											String.valueOf(absolute), "damage"));
+				parent.add(createSimpleNode(getString("node.damage") + ": " + s.damageRatio +
+											"% / " + String.valueOf(absolute), "damage"));
 			}
 		}
 
 		// Besitzer
-		SkillType sailingSkillType = data.rules.getSkillType(StringID.create("Segeln"),
-															 true);
+		SkillType sailingSkillType = data.rules.getSkillType(StringID.create("Segeln"), true);
 
 		if(s.getOwnerUnit() != null) {
 			UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(s.getOwnerUnit(),
@@ -2799,8 +2618,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			parent.add(n);
 
 			Skill sailingSkill = s.getOwnerUnit().getModifiedSkill(sailingSkillType);
-			sailingSkillAmount = (sailingSkill == null) ? 0
-														: sailingSkill.getLevel();
+			sailingSkillAmount = (sailingSkill == null) ? 0 : sailingSkill.getLevel();
 			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.captainskill") +
 																					  ": " +
 																					  sailingSkillAmount +
@@ -2818,7 +2636,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		modUnits = s.modifiedUnits(); // the collection of units on the ship in the next turn
 
 		for(Iterator sailors = modUnits.iterator(); sailors.hasNext();) {
-			Unit  u			   = (Unit) sailors.next();
+			Unit u = (Unit) sailors.next();
 			Skill sailingSkill = u.getModifiedSkill(sailingSkillType);
 
 			if(sailingSkill != null) {
@@ -2844,18 +2662,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		allInmates.addAll(modUnits);
 
 		if((units.size() > 0) || (modUnits.size() > 0)) {
-			n = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.inmates"),
-																   null,
+			n = new DefaultMutableTreeNode(new UnitListNodeWrapper(getString("node.inmates"), null,
 																   allInmates));
 			parent.add(n);
-			expandableNodes.add(new NodeWrapper(n,
-												"EMapDetailsPanel.ShipInmatesExpanded"));
+			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.ShipInmatesExpanded"));
 
 			for(Iterator iter = units.iterator(); iter.hasNext();) {
-				Unit		 u		   = (Unit) iter.next();
-				StringBuffer text	   = new StringBuffer();
-				Float		 weight    = new Float(u.getWeight() / 100.0F);
-				Float		 modWeight = new Float(u.getModifiedWeight() / 100.0F);
+				Unit u = (Unit) iter.next();
+				StringBuffer text = new StringBuffer();
+				Float weight = new Float(u.getWeight() / 100.0F);
+				Float modWeight = new Float(u.getModifiedWeight() / 100.0F);
 
 				if(s.getModifiedUnit(u.getID()) == null) {
 					text.append("<- ");
@@ -2867,14 +2683,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				text.append(u.toString()).append(": ").append(weightNumberFormat.format(weight));
 
 				if(weight.equals(modWeight) == false) {
-					text.append(" (")
-						.append(weightNumberFormat.format(modWeight)).append(")");
+					text.append(" (").append(weightNumberFormat.format(modWeight)).append(")");
 				}
 
 				text.append(" " + getString("node.weightunits"));
 
-				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
-																			 text.toString());
+				UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u, text.toString());
 				m = new DefaultMutableTreeNode(w);
 				n.add(m);
 				inmates += u.getPersons();
@@ -2885,24 +2699,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				modInmates += u.getModifiedPersons();
 
 				if(s.getUnit(u.getID()) == null) {
-					StringBuffer text	   = new StringBuffer();
-					Float		 weight    = new Float(u.getWeight() / 100.0F);
-					Float		 modWeight = new Float(u.getModifiedWeight() / 100.0F);
+					StringBuffer text = new StringBuffer();
+					Float weight = new Float(u.getWeight() / 100.0F);
+					Float modWeight = new Float(u.getModifiedWeight() / 100.0F);
 
 					// modLoad += u.getModifiedWeight();
 					text.append("-> ");
 					text.append(u.toString()).append(": ").append(weightNumberFormat.format(weight));
 
 					if(weight.equals(modWeight) == false) {
-						text.append(" (")
-							.append(weightNumberFormat.format(modWeight))
-							.append(")");
+						text.append(" (").append(weightNumberFormat.format(modWeight)).append(")");
 					}
 
 					text.append(" " + getString("node.weightunits"));
 
-					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
-																				 text.toString());
+					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u, text.toString());
 					m = new DefaultMutableTreeNode(w);
 					n.add(m);
 				}
@@ -2911,8 +2722,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			if(inmates == modInmates) {
 				n.setUserObject(getString("node.inmates") + ": " + inmates);
 			} else {
-				n.setUserObject(getString("node.inmates") + ": " + inmates +
-								" (" + modInmates + ")");
+				n.setUserObject(getString("node.inmates") + ": " + inmates + " (" + modInmates +
+								")");
 			}
 
 			if(ShipRoutePlanner.canPlan(s)) { // add a link to the ship route planer
@@ -2927,27 +2738,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 			// String strModLoad = weightNumberFormat.format(new Float(modLoad / 100.0F));
 			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
-			int    intCap = s.getMaxCapacity();
-			intCap = new BigDecimal(intCap).multiply(new BigDecimal(100 -
-																	s.damageRatio))
-										   .divide(new BigDecimal(100),
-												   BigDecimal.ROUND_DOWN)
+			int intCap = s.getMaxCapacity();
+			intCap = new BigDecimal(intCap).multiply(new BigDecimal(100 - s.damageRatio))
+										   .divide(new BigDecimal(100), BigDecimal.ROUND_DOWN)
 										   .intValue();
 
 			String strCap = Integer.toString(intCap);
 
 			if(log.isDebugEnabled()) {
-				log.debug("outer ship state: " + s.getShipType().getCapacity() +
-						  "(intCap " + intCap + ")");
+				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(intCap " +
+						  intCap + ")");
 			}
 
 			loadNode.setUserObject(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +
-																			  ": " +
-																			  strLoad +
-																			  " (" +
-																			  strModLoad +
-																			  ") / " +
-																			  strCap +
+																			  ": " + strLoad +
+																			  " (" + strModLoad +
+																			  ") / " + strCap +
 																			  " " +
 																			  getString("node.weightunits"),
 																			  "beladung"));
@@ -2958,9 +2764,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * sets the border name        not editable sets the border description not
-	 * editable shows a tree: Type  : border.type Direction : border.direction
-	 * (Completion: border.buildration % (needed stones of all stones)
+	 * sets the border name        not editable sets the border description not editable shows a
+	 * tree: Type  : border.type Direction : border.direction (Completion: border.buildration %
+	 * (needed stones of all stones)
 	 *
 	 * @param b TODO: DOCUMENT ME!
 	 */
@@ -2972,22 +2778,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 	private void appendBorderInfo(Border b, DefaultMutableTreeNode parent,
 								  Collection expandableNodes) {
-		parent.add(createSimpleNode(getString("node.type") + ": " + b.type,
-									b.type));
+		parent.add(createSimpleNode(getString("node.type") + ": " + b.type, b.type));
 		parent.add(createSimpleNode(getString("node.direction") + ": " +
 									Direction.toString(b.direction),
 									"border_" + String.valueOf(b.direction)));
 
 		if((b.buildRatio > -1) && (b.buildRatio != 100)) {
-			String str = getString("node.completion") + ": " + b.buildRatio +
-						 " %";
+			String str = getString("node.completion") + ": " + b.buildRatio + " %";
 
 			if(Umlaut.normalize(b.type).equals("STRASSE")) {
 				int stones = lastRegion.getRegionType().getRoadStones();
-				str += (" (" + ((b.buildRatio * stones) / 100) + " / " +
-				stones + " " +
-				data.rules.getItemType(StringID.create("Stein")).getName() +
-				")");
+				str += (" (" + ((b.buildRatio * stones) / 100) + " / " + stones + " " +
+				data.rules.getItemType(StringID.create("Stein")).getName() + ")");
 			}
 
 			parent.add(new DefaultMutableTreeNode(str));
@@ -2995,10 +2797,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * sets the spells name        not editable sets the spells description not
-	 * editable shows a tree: Type  : spell.type Level : spell.level Rank  :
-	 * spell.rank (Ship spells) (Distance spells) (Distance spells) (-
-	 * components) Back - ingredients: 1.name ... n.name
+	 * sets the spells name        not editable sets the spells description not editable shows a
+	 * tree: Type  : spell.type Level : spell.level Rank  : spell.rank (Ship spells) (Distance
+	 * spells) (Distance spells) (- components) Back - ingredients: 1.name ... n.name
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 * @param backTarget TODO: DOCUMENT ME!
@@ -3011,12 +2812,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 	private void appendSpellInfo(Spell s, DefaultMutableTreeNode parent,
 								 Collection expandableNodes, Object backTarget) {
-		parent.add(new DefaultMutableTreeNode(getString("node.type") + ": " +
-											  s.getTypeName()));
-		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " +
-											  s.getLevel()));
-		parent.add(new DefaultMutableTreeNode(getString("node.rank") + ": " +
-											  s.getRank()));
+		parent.add(new DefaultMutableTreeNode(getString("node.type") + ": " + s.getTypeName()));
+		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " + s.getLevel()));
+		parent.add(new DefaultMutableTreeNode(getString("node.rank") + ": " + s.getRank()));
 
 		if(s.getOnShip()) {
 			parent.add(new DefaultMutableTreeNode(getString("node.spell.ship")));
@@ -3032,45 +2830,33 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			expandableNodes.add(new NodeWrapper(componentsNode,
 												"EMapDetailsPanel.SpellComponentsExpanded"));
 
-			for(Iterator iter = s.getComponents().keySet().iterator();
-					iter.hasNext();) {
-				String				   key	    = (String) iter.next();
-				String				   val	    = (String) s.getComponents()
-															.get(key);
+			for(Iterator iter = s.getComponents().keySet().iterator(); iter.hasNext();) {
+				String key = (String) iter.next();
+				String val = (String) s.getComponents().get(key);
 				DefaultMutableTreeNode compNode;
 
 				if(key.equalsIgnoreCase("Aura")) {
 					int blankPos = val.indexOf(" ");
 
 					if((blankPos > 0) && (blankPos < val.length())) {
-						String aura			  = val.substring(0, blankPos);
-						String getLevelAtDays = val.substring(blankPos + 1,
-															  val.length());
+						String aura = val.substring(0, blankPos);
+						String getLevelAtDays = val.substring(blankPos + 1, val.length());
 
 						if(getLevelAtDays.equals("0")) {
-							compNode = createSimpleNode(aura + " " +
-														getString("node.aura"),
-														"aura");
+							compNode = createSimpleNode(aura + " " + getString("node.aura"), "aura");
 						} else if(getLevelAtDays.equals("1")) {
-							compNode = createSimpleNode(aura + " " +
-														getString("node.aura") +
-														" * " +
-														getString("node.level"),
-														"aura");
+							compNode = createSimpleNode(aura + " " + getString("node.aura") +
+														" * " + getString("node.level"), "aura");
 						} else {
-							compNode = createSimpleNode(aura + " " +
-														getString("node.aura") +
-														" * " + getLevelAtDays +
-														" * " +
-														getString("node.level"),
-														"aura");
+							compNode = createSimpleNode(aura + " " + getString("node.aura") +
+														" * " + getLevelAtDays + " * " +
+														getString("node.level"), "aura");
 						}
 					} else {
 						compNode = createSimpleNode(key + ": " + val, "aura");
 					}
 				} else {
-					compNode = createSimpleNode(key + ": " + val, "items/" +
-												key);
+					compNode = createSimpleNode(key + ": " + val, "items/" + key);
 				}
 
 				componentsNode.add(compNode);
@@ -3081,9 +2867,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * sets the potions name        not editable sets the potions description
-	 * not editable shows a tree: Level : potion.level + ingredients (only if
-	 * |potion.ingredients| &gt; 0) Back - ingredients: 1.name ... n.name
+	 * sets the potions name        not editable sets the potions description not editable shows a
+	 * tree: Level : potion.level + ingredients (only if |potion.ingredients| &gt; 0) Back -
+	 * ingredients: 1.name ... n.name
 	 *
 	 * @param p TODO: DOCUMENT ME!
 	 * @param backTarget TODO: DOCUMENT ME!
@@ -3096,8 +2882,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 	private void appendPotionInfo(Potion p, DefaultMutableTreeNode parent,
 								  Collection expandableNodes, Object backTarget) {
-		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " +
-											  p.getLevel()));
+		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " + p.getLevel()));
 
 		if(p.ingredients().size() > 0) {
 			DefaultMutableTreeNode ingredientsNode = new DefaultMutableTreeNode(getString("node.ingredients"));
@@ -3107,15 +2892,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				Item ingredient = (Item) iter.next();
 				ingredientsNode.add(createSimpleNode(ingredient.getItemType(),
 													 "items/" +
-													 ingredient.getItemType()
-															   .getIconName()));
+													 ingredient.getItemType().getIconName()));
 			}
 		}
 	}
 
 	/**
-	 * sets the island name        editable sets the island description
-	 * editable shows an empty tree
+	 * sets the island name        editable sets the island description editable shows an empty
+	 * tree
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 */
@@ -3125,8 +2909,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * sets the name ""            not editable sets the description ""     not
-	 * editable shows an empty tree
+	 * sets the name ""            not editable sets the description ""     not editable shows an
+	 * empty tree
 	 */
 	private void showNothing() {
 		setNameAndDescription("", "", false);
@@ -3142,7 +2926,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		orders.gameDataChanged(e);
 		unitsTools.setRules(e.getGameData().rules);
 		showNothing();
-		lastRegion	    = null;
+		lastRegion = null;
 		displayedObject = null;
 		contextManager.setGameData(data);
 	}
@@ -3155,8 +2939,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 				DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) nw.getNode()
 																			   .getFirstChild();
 				settings.setProperty(nw.getDesc(),
-									 tree.isVisible(new TreePath(firstChild.getPath()))
-									 ? "1" : "0");
+									 tree.isVisible(new TreePath(firstChild.getPath())) ? "1" : "0");
 			}
 		}
 	}
@@ -3183,8 +2966,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Selection event handler, update all elements in this panel with the
-	 * appropriate data.
+	 * Selection event handler, update all elements in this panel with the appropriate data.
 	 *
 	 * @param se TODO: DOCUMENT ME!
 	 */
@@ -3193,10 +2975,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		removeTag.setEnabled(false);
 
 		/**
-		 * Decide whether to show a single object (activeObject) or a
-		 * collection of objects (selectedObjects). The display for collection
-		 * is at the moment limited to collections of regions. Other
-		 * implementations should be added.
+		 * Decide whether to show a single object (activeObject) or a collection of objects
+		 * (selectedObjects). The display for collection is at the moment limited to collections
+		 * of regions. Other implementations should be added.
 		 */
 		Collection c = se.getSelectedObjects();
 
@@ -3207,8 +2988,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 
 		/**
-		 * No collection of objects could be displayd. Show the (single) active
-		 * object.
+		 * No collection of objects could be displayd. Show the (single) active object.
 		 */
 		show(se.getActiveObject());
 	}
@@ -3218,19 +2998,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Tries to show the given collection. If no implementation applies, false
-	 * is returned, otherwise true.
+	 * Tries to show the given collection. If no implementation applies, false is returned,
+	 * otherwise true.
 	 *
 	 * @param c TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	protected boolean showMultiple(Collection c) {
-		boolean regions  = true;
+		boolean regions = true;
 		boolean factions = true;
 
-		for(Iterator iter = c.iterator();
-				iter.hasNext() && (regions || factions);) {
+		for(Iterator iter = c.iterator(); iter.hasNext() && (regions || factions);) {
 			Object o = iter.next();
 
 			if(regions && !(o instanceof Region)) {
@@ -3275,8 +3054,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			Object oldDisplayedObject = displayedObject;
 			displayedObject = o;
 
-			if((displayedObject != null) &&
-				   displayedObject instanceof SimpleNodeWrapper) {
+			if((displayedObject != null) && displayedObject instanceof SimpleNodeWrapper) {
 				displayedObject = ((SimpleNodeWrapper) displayedObject).getText();
 			}
 
@@ -3320,8 +3098,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			} else if(displayedObject instanceof Potion) {
 				showPotion((Potion) displayedObject, oldDisplayedObject);
 			} else if(displayedObject instanceof PotionNodeWrapper) {
-				showPotion(((PotionNodeWrapper) displayedObject).getPotion(),
-						   oldDisplayedObject);
+				showPotion(((PotionNodeWrapper) displayedObject).getPotion(), oldDisplayedObject);
 			} else if(displayedObject instanceof Island) {
 				showIsland((Island) displayedObject);
 			}
@@ -3338,8 +3115,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Calculates the wage for the units of a certain faction in the specified
-	 * region.
+	 * Calculates the wage for the units of a certain faction in the specified region.
 	 *
 	 * @param wage TODO: DOCUMENT ME!
 	 * @param isOrkRace TODO: DOCUMENT ME!
@@ -3375,8 +3151,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * TreeSelection event handler, notifies unit-listeners, if a unit has been
-	 * selected.
+	 * TreeSelection event handler, notifies unit-listeners, if a unit has been selected.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
@@ -3393,6 +3168,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		if(o instanceof ActionListener) {
 			((ActionListener) o).actionPerformed(null);
+
 			return;
 		}
 
@@ -3426,12 +3202,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			if(s.indexOf(": ") > 0) {
 				TreeNode node2 = node.getParent();
 
-				if((node2 != null) &&
-					   (node2 instanceof DefaultMutableTreeNode)) {
+				if((node2 != null) && (node2 instanceof DefaultMutableTreeNode)) {
 					Object o2 = ((DefaultMutableTreeNode) node2).getUserObject();
 
-					if((o2 instanceof String) &&
-						   ((String) o2).equals(getString("node.tags"))) {
+					if((o2 instanceof String) && ((String) o2).equals(getString("node.tags"))) {
 						removeTag.setEnabled(true);
 					}
 				}
@@ -3441,8 +3215,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		// TODO: valueChanged is the worst selection event to change objects
 		// dont know how to mimic it. Double click would be nice
 		if(fireObj != null) {
-			dispatcher.fire(new com.eressea.event.SelectionEvent(this, null,
-																 fireObj));
+			dispatcher.fire(new com.eressea.event.SelectionEvent(this, null, fireObj));
 		}
 	}
 
@@ -3452,27 +3225,24 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 
 		for(Iterator iter = allies.values().iterator(); iter.hasNext();) {
-			Alliance			   alliance = (Alliance) iter.next();
+			Alliance alliance = (Alliance) iter.next();
 			DefaultMutableTreeNode n = new DefaultMutableTreeNode(alliance.getFaction());
 			parent.add(n);
 			n.add(new DefaultMutableTreeNode(alliance.stateToString()));
 		}
 	}
 
-	private void appendComments(UnitContainer uc,
-								DefaultMutableTreeNode parent,
+	private void appendComments(UnitContainer uc, DefaultMutableTreeNode parent,
 								Collection expandableNodes) {
 		if((uc.comments != null) && (uc.comments.size() > 0)) {
-			CommentListNode commentNode = new CommentListNode(uc,
-															  getString("node.comments"));
+			CommentListNode commentNode = new CommentListNode(uc, getString("node.comments"));
 			parent.add(commentNode);
-			expandableNodes.add(new NodeWrapper(commentNode,
-												"EMapDetailsPanel.CommentsExpanded"));
+			expandableNodes.add(new NodeWrapper(commentNode, "EMapDetailsPanel.CommentsExpanded"));
 
 			int i = 0;
 
-			for(Iterator iter = uc.comments.iterator();
-					iter.hasNext() && (i < uc.comments.size()); i++) {
+			for(Iterator iter = uc.comments.iterator(); iter.hasNext() && (i < uc.comments.size());
+					i++) {
 				commentNode.add(new CommentNode(uc, (String) iter.next()));
 			}
 		}
@@ -3488,9 +3258,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}*/
 
 	/**
-	 * When showing a faction this controls whether the items of all units of
-	 * this faction in the previously selected region are displayed as a flat
-	 * collection or below an additional node level of item categories.
+	 * When showing a faction this controls whether the items of all units of this faction in the
+	 * previously selected region are displayed as a flat collection or below an additional node
+	 * level of item categories.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
@@ -3503,9 +3273,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns whether the items of all units of the selected faction in the
-	 * previously selected region are displayed as a flat collection or below
-	 * an additional node level of item categories.
+	 * Returns whether the items of all units of the selected faction in the previously selected
+	 * region are displayed as a flat collection or below an additional node level of item
+	 * categories.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -3514,8 +3284,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Should return all short cuts this class want to be informed. The
-	 * elements should be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The elements should be of type
+	 * javax.swing.KeyStroke
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -3566,8 +3336,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
 		if(actionEvent.getSource() == addTag) {
-			String key = JOptionPane.showInputDialog(tree,
-													 getString("addtag.tagname.message"));
+			String key = JOptionPane.showInputDialog(tree, getString("addtag.tagname.message"));
 
 			if((key != null) && (key.length() > 0)) {
 				String value = JOptionPane.showInputDialog(tree,
@@ -3635,8 +3404,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	public void setShowTagButtons(boolean bool) {
 		if(bool != isShowingTagButtons()) {
 			showTagButtons = bool;
-			settings.setProperty("EMapDetailsPanel.ShowTagButtons",
-								 bool ? "true" : "false");
+			settings.setProperty("EMapDetailsPanel.ShowTagButtons", bool ? "true" : "false");
 
 			if(bool) {
 				treeContainer.add(tagContainer, BorderLayout.SOUTH);
@@ -3668,7 +3436,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
 			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
-			int								   i = ui2.getLeftChildIndent();
+			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
 		}
@@ -3701,7 +3469,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 	private class NodeWrapper {
 		private DefaultMutableTreeNode node = null;
-		private String				   desc = "";
+		private String desc = "";
 
 		/**
 		 * Creates a new NodeWrapper object.
@@ -3750,7 +3518,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 * @param unitCounter TODO: DOCUMENT ME!
 		 */
 		public SkillStatItem(Skill skill, int unitCounter) {
-			this.skill		 = skill;
+			this.skill = skill;
 			this.unitCounter = unitCounter;
 		}
 	}
@@ -3787,15 +3555,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		}
 	}
 
-	class EMapDetailsPreferences extends JPanel
-		implements ExtendedPreferencesAdapter
-	{
-		private Properties		   settings					    = null;
-		private EMapDetailsPanel   source					    = null;
-		private List			   subAdapters;
+	class EMapDetailsPreferences extends JPanel implements ExtendedPreferencesAdapter {
+		private Properties settings = null;
+		private EMapDetailsPanel source = null;
+		private List subAdapters;
 		private PreferencesAdapter regionPref;
-		private JCheckBox		   chkshowFactionItemCategories = null;
-		private JCheckBox		   chkShowTagButtons;
+		private JCheckBox chkshowFactionItemCategories = null;
+		private JCheckBox chkShowTagButtons;
 
 		/**
 		 * Creates a new EMapDetailsPreferences object.
@@ -3803,10 +3569,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 * @param settings TODO: DOCUMENT ME!
 		 * @param source TODO: DOCUMENT ME!
 		 */
-		public EMapDetailsPreferences(Properties settings,
-									  EMapDetailsPanel source) {
+		public EMapDetailsPreferences(Properties settings, EMapDetailsPanel source) {
 			this.settings = settings;
-			this.source   = source;
+			this.source = source;
 
 			subAdapters = CollectionFactory.createArrayList(2);
 			subAdapters.add(editor.getPreferencesAdapter());
@@ -3851,15 +3616,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1.0, 0,
 														  GridBagConstraints.NORTH,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(3, 3, 3, 3),
-														  0, 0);
+														  new Insets(3, 3, 3, 3), 0, 0);
 
 			chkshowFactionItemCategories = new JCheckBox(getString("prefs.factionItemCategories"),
 														 source.isShowingFactionItemCategories());
-			c.anchor  = GridBagConstraints.WEST;
-			c.gridx   = 0;
-			c.gridy   = 0;
-			c.fill    = GridBagConstraints.HORIZONTAL;
+			c.anchor = GridBagConstraints.WEST;
+			c.gridx = 0;
+			c.gridy = 0;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			c.weightx = 0.1;
 			help.add(chkshowFactionItemCategories, c);
 			chkShowTagButtons = new JCheckBox(getString("prefs.showTagButtons"),
@@ -3908,10 +3672,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	/**
 	 * A class that can be used to interpret a tree entry as a button
 	 */
-	private abstract class SimpleActionObject implements CellObject,
-														 ActionListener
-	{
-		protected List		 icons;
+	private abstract class SimpleActionObject implements CellObject, ActionListener {
+		protected List icons;
 		private final String key;
 
 		SimpleActionObject(String key) {
@@ -3973,8 +3735,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public NodeWrapperDrawPolicy init(Properties settings,
-										  NodeWrapperDrawPolicy adapter) {
+		public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 			return null;
 		}
 	}
@@ -4007,8 +3768,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
-			dispatcher.fire(new com.eressea.event.SelectionEvent(EMapDetailsPanel.this,
-																 null, target));
+			dispatcher.fire(new com.eressea.event.SelectionEvent(EMapDetailsPanel.this, null, target));
 		}
 	}
 
@@ -4021,7 +3781,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		ShipRoutingPlanerButton(Ship s) {
 			super("shipplaner.text");
 			target = s;
-			icons  = CollectionFactory.createArrayList(1);
+			icons = CollectionFactory.createArrayList(1);
 			icons.add("koordinaten");
 		}
 
@@ -4031,8 +3791,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
-			Unit unit = ShipRoutePlanner.planShipRoute(target, data,
-													   EMapDetailsPanel.this);
+			Unit unit = ShipRoutePlanner.planShipRoute(target, data, EMapDetailsPanel.this);
 
 			if(unit != null) {
 				dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));
@@ -4051,8 +3810,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data,
-														Object argument,
+		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
 														Collection selectedObjects,
 														javax.swing.tree.DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
@@ -4065,9 +3823,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			return null;
 		}
 
-		private class StealthContextMenu extends JPopupMenu
-			implements ActionListener
-		{
+		private class StealthContextMenu extends JPopupMenu implements ActionListener {
 			private Unit unit;
 
 			/**
@@ -4115,17 +3871,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					 *                  Andreas
 					 */
 					//dispatcher.fire(new GameDataEvent(EMapDetailsPanel.this, data));
-					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this,
-														unit));
+					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));
 				}
 			}
 		}
 	}
 
 	private class CombatStateContextFactory implements ContextFactory {
-		private class CombatStateContextMenu extends JPopupMenu
-			implements ActionListener
-		{
+		private class CombatStateContextMenu extends JPopupMenu implements ActionListener {
 			private Unit unit;
 
 			/**
@@ -4163,13 +3916,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 					unit.combatStatus = newState;
 
 					EMapDetailsPanel.this.show(unit, false);
-					data.getGameSpecificStuff().getOrderChanger()
-						.addCombatOrder(unit, newState);
+					data.getGameSpecificStuff().getOrderChanger().addCombatOrder(unit, newState);
 
 					// Note: Same as in StealthContextMenu
 					//dispatcher.fire(new GameDataEvent(EMapDetailsPanel.this, data));
-					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this,
-														unit));
+					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));
 				}
 			}
 		}
@@ -4184,8 +3935,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(GameData data,
-														Object argument,
+		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
@@ -4244,33 +3994,29 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data,
-														Object argument,
+		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof UnitContainer) {
-				return new CommentContextMenu((UnitContainer) argument, node,
-											  false);
+				return new CommentContextMenu((UnitContainer) argument, node, false);
 			} else if(argument instanceof CommentListNode) {
 				return new CommentContextMenu(((CommentListNode) argument).getUnitContainer(),
 											  node, true);
 			} else if(argument instanceof CommentNode) {
-				return new CommentContextMenu(((CommentNode) argument).getUnitContainer(),
-											  node, false);
+				return new CommentContextMenu(((CommentNode) argument).getUnitContainer(), node,
+											  false);
 			}
 
 			return null;
 		}
 
-		private class CommentContextMenu extends JPopupMenu
-			implements ActionListener
-		{
-			private UnitContainer uc			    = null;
-			private CommentNode   node			    = null;
-			private JMenuItem     addComment;
-			private JMenuItem     removeComment;
-			private JMenuItem     modifyComment;
-			private JMenuItem     removeAllComments;
+		private class CommentContextMenu extends JPopupMenu implements ActionListener {
+			private UnitContainer uc = null;
+			private CommentNode node = null;
+			private JMenuItem addComment;
+			private JMenuItem removeComment;
+			private JMenuItem modifyComment;
+			private JMenuItem removeAllComments;
 
 			/**
 			 * Creates a new CommentContextMenu object.
@@ -4279,8 +4025,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			 * @param node TODO: DOCUMENT ME!
 			 * @param removeAll TODO: DOCUMENT ME!
 			 */
-			public CommentContextMenu(UnitContainer container,
-									  DefaultMutableTreeNode node,
+			public CommentContextMenu(UnitContainer container, DefaultMutableTreeNode node,
 									  boolean removeAll) {
 				uc = container;
 
@@ -4314,10 +4059,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			private void addComment() {
 				DefaultMutableTreeNode parent = null;
 
-				for(Enumeration enum = rootNode.children();
-						enum.hasMoreElements();) {
-					DefaultMutableTreeNode n   = (DefaultMutableTreeNode) enum.nextElement();
-					Object				   obj = n.getUserObject();
+				for(Enumeration enum = rootNode.children(); enum.hasMoreElements();) {
+					DefaultMutableTreeNode n = (DefaultMutableTreeNode) enum.nextElement();
+					Object obj = n.getUserObject();
 
 					if((obj != null) && obj instanceof String &&
 						   obj.equals(getString("node.comments"))) {
@@ -4354,8 +4098,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			}
 
 			private void modifyComment() {
-				if((node.getUnitContainer() != null) &&
-					   (node.getUnitContainer().comments != null)) {
+				if((node.getUnitContainer() != null) && (node.getUnitContainer().comments != null)) {
 					tree.startEditingAtPath(new TreePath(node.getPath()));
 				}
 			}
@@ -4409,8 +4152,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * We need a special factory for the normal UnitContextMenu since we have
-	 * to take care of unit lists.
+	 * We need a special factory for the normal UnitContextMenu since we have to take care of unit
+	 * lists.
 	 */
 	private class DetailsUnitContextFactory implements ContextFactory {
 		/**
@@ -4423,22 +4166,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(GameData data,
-														Object argument,
+		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
-				return new UnitContextMenu((Unit) argument, selectedObjects,
-										   dispatcher, data);
+				return new UnitContextMenu((Unit) argument, selectedObjects, dispatcher, data);
 			} else if(argument instanceof UnitNodeWrapper) {
-				return new UnitContextMenu(((UnitNodeWrapper) argument).getUnit(),
-										   selectedObjects, dispatcher, data);
+				return new UnitContextMenu(((UnitNodeWrapper) argument).getUnit(), selectedObjects,
+										   dispatcher, data);
 			} else if(argument instanceof UnitListNodeWrapper) {
 				Collection col = ((UnitListNodeWrapper) argument).getUnits();
 
 				if((col != null) && (col.size() > 0)) {
-					return new UnitContextMenu((Unit) col.iterator().next(),
-											   col, dispatcher, data);
+					return new UnitContextMenu((Unit) col.iterator().next(), col, dispatcher, data);
 				}
 			}
 
@@ -4480,15 +4220,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			defaultTranslations.put("node.faction", "Faction");
 			defaultTranslations.put("node.completion", "Completion");
 			defaultTranslations.put("node.shore", "Shore");
-			defaultTranslations.put("shortcuts.description.2",
-									"Change \"Limit make completion\"");
-			defaultTranslations.put("shortcuts.description.1",
-									"Request focus for orders");
-			defaultTranslations.put("shortcuts.description.0",
-									"Request focus for orders");
+			defaultTranslations.put("shortcuts.description.2", "Change \"Limit make completion\"");
+			defaultTranslations.put("shortcuts.description.1", "Request focus for orders");
+			defaultTranslations.put("shortcuts.description.0", "Request focus for orders");
 			defaultTranslations.put("shortcuts.title", "Details");
-			defaultTranslations.put("menu.removecomment.all",
-									"Remove all comments");
+			defaultTranslations.put("menu.removecomment.all", "Remove all comments");
 			defaultTranslations.put("node.range", "Range");
 			defaultTranslations.put("node.damage", "Damage");
 			defaultTranslations.put("node.captainskill", "Captain-skill");
@@ -4536,10 +4272,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			defaultTranslations.put("node.alliances", "Alliances");
 			defaultTranslations.put("shipplaner.text", "Ship route scheduler");
 			defaultTranslations.put("prefs.showTagButtons", "Show Tag Buttons");
-			defaultTranslations.put("addtag.tagvalue.message",
-									"Please enter tag value");
-			defaultTranslations.put("addtag.tagname.message",
-									"Please enter tag name");
+			defaultTranslations.put("addtag.tagvalue.message", "Please enter tag value");
+			defaultTranslations.put("addtag.tagname.message", "Please enter tag name");
 			defaultTranslations.put("addtag.caption", "Add tag");
 			defaultTranslations.put("node.tags", "Tags");
 			defaultTranslations.put("node.terrain", "Terrain");
@@ -4550,8 +4284,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 			defaultTranslations.put("menu.changecomment", "Change comment");
 			defaultTranslations.put("menu.removecomment", "Remove comment");
 			defaultTranslations.put("menu.copyid.caption", "Copy ID");
-			defaultTranslations.put("menu.copyidandname.caption",
-									"Copy ID and name");
+			defaultTranslations.put("menu.copyidandname.caption", "Copy ID and name");
 			defaultTranslations.put("menu.confirm.caption", "Confirm");
 			defaultTranslations.put("menu.addorder.caption", "Add order");
 			defaultTranslations.put("menu.units", "Units");
@@ -4563,11 +4296,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 									"Show the number of points required to reach the next skill level with units");
 			defaultTranslations.put("prefs.showNextSkillLevelLearnTurns",
 									"Show the number of turns to learn in order to reach the next skill level");
-			defaultTranslations.put("prefs.showRegionItemAmount",
-									"Show a total with unit items");
+			defaultTranslations.put("prefs.showRegionItemAmount", "Show a total with unit items");
 			defaultTranslations.put("prefs.datadisplay", "Data display");
-			defaultTranslations.put("prefs.showskillicons",
-									"Show skill icons with units");
+			defaultTranslations.put("prefs.showskillicons", "Show skill icons with units");
 			defaultTranslations.put("prefs.showcontainericons",
 									"Show building and ship icons with units");
 			defaultTranslations.put("wrapperfactory.title", "Detail Entries");

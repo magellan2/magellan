@@ -14,10 +14,9 @@
 package com.eressea.event;
 
 /**
- * The listener interface for receiving events when the orders of one or more
- * units are confirmed or disconfirmed. A class interested in order confirm
- * events implements this interface and registers with an instance of the
- * EventDispatcher class to receive order confirm events.
+ * The listener interface for receiving events when the orders of one or more units are confirmed
+ * or disconfirmed. A class interested in order confirm events implements this interface and
+ * registers with an instance of the EventDispatcher class to receive order confirm events.
  *
  * @see OrderConfirmEvent
  * @see EventDispatcher

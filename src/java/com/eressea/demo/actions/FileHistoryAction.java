@@ -30,19 +30,19 @@ import com.eressea.util.FileHistory;
  * @version
  */
 public class FileHistoryAction extends AbstractAction {
-	private File	    file;
+	private File file;
 	private FileHistory history;
 
 	/**
 	 * Creates a new FileHistoryAction object.
 	 *
-	 * @param history TODO: DOCUMENT ME!
+	 * @param hist TODO: DOCUMENT ME!
 	 * @param cr TODO: DOCUMENT ME!
 	 */
 	public FileHistoryAction(FileHistory hist, File cr) {
-		file	= cr;
+		file = cr;
 		history = hist;
-		init(); 
+		init();
 	}
 
 	private void init() {
@@ -51,13 +51,14 @@ public class FileHistoryAction extends AbstractAction {
 		path.append("...").append(File.separatorChar).append(file.getName());
 
 		File parent = file.getParentFile();
+
 		while((parent != null) && ((path.length() + parent.getName().length()) < 30)) {
 			path.insert(4, File.separatorChar).insert(4, parent.getName());
 			parent = parent.getParentFile();
 		}
 
 		putValue(Action.NAME, path.toString());
-		
+
 		// tool tip text
 		try {
 			putValue(Action.SHORT_DESCRIPTION, file.getCanonicalPath());
@@ -66,8 +67,6 @@ public class FileHistoryAction extends AbstractAction {
 		}
 	}
 
-
-	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

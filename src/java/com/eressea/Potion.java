@@ -20,16 +20,12 @@ import java.util.Map;
 import com.eressea.util.CollectionFactory;
 
 /**
- * Container class for a potion based on its representation in a cr version >=
- * 42.
+ * Container class for a potion based on its representation in a cr version >= 42.
  */
 public class Potion extends DescribedObject {
 	private int level = -1;
 
-	/**
-	 * The ingredients needed for this potion. The list contains
-	 * <tt>String</tt> objects.
-	 */
+	/** The ingredients needed for this potion. The list contains <tt>String</tt> objects. */
 	private Map ingredients = null;
 
 	/**
@@ -60,8 +56,7 @@ public class Potion extends DescribedObject {
 	}
 
 	/**
-	 * Returns the ingredients required for this potion. The elements are
-	 * instances of class Item.
+	 * Returns the ingredients required for this potion. The elements are instances of class Item.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -85,8 +80,7 @@ public class Potion extends DescribedObject {
 	}
 
 	/**
-	 * Puts a new element into the list of ingredients required to brew this
-	 * potion.
+	 * Puts a new element into the list of ingredients required to brew this potion.
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 *
@@ -103,8 +97,7 @@ public class Potion extends DescribedObject {
 	}
 
 	/**
-	 * Removes an item from the list of ingredients required to brew this
-	 * potion.
+	 * Removes an item from the list of ingredients required to brew this potion.
 	 *
 	 * @param id the id of the item's item type to be removed.
 	 *
@@ -129,9 +122,9 @@ public class Potion extends DescribedObject {
 	}
 
 	/**
-	 * Indicates whether this Potion object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Potion and o's id
-	 * is equal to the id of this  Potion object.
+	 * Indicates whether this Potion object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Potion and o's id is equal to the id of this  Potion
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -146,8 +139,8 @@ public class Potion extends DescribedObject {
 	}
 
 	/**
-	 * Imposes a natural ordering on Potion objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Potion objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -165,8 +158,7 @@ public class Potion extends DescribedObject {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newPotion TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Potion curPotion, GameData newGD,
-							 Potion newPotion) {
+	public static void merge(GameData curGD, Potion curPotion, GameData newGD, Potion newPotion) {
 		if(curPotion.getName() != null) {
 			newPotion.setName(curPotion.getName());
 		}
@@ -182,11 +174,9 @@ public class Potion extends DescribedObject {
 		if(!curPotion.ingredients().isEmpty()) {
 			newPotion.clearIngredients();
 
-			for(Iterator iter = curPotion.ingredients().iterator();
-					iter.hasNext();) {
-				Item					   i  = (Item) iter.next();
-				com.eressea.rules.ItemType it = newGD.rules.getItemType(i.getItemType()
-																		 .getID(),
+			for(Iterator iter = curPotion.ingredients().iterator(); iter.hasNext();) {
+				Item i = (Item) iter.next();
+				com.eressea.rules.ItemType it = newGD.rules.getItemType(i.getItemType().getID(),
 																		true);
 				newPotion.addIngredient(new Item(it, i.getAmount()));
 			}

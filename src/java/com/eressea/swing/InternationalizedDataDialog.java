@@ -32,8 +32,8 @@ import com.eressea.event.GameDataListener;
 public abstract class InternationalizedDataDialog extends InternationalizedDialog
 	implements GameDataListener
 {
-	protected GameData		  data		 = null;
-	protected Properties	  settings   = null;
+	protected GameData data = null;
+	protected Properties settings = null;
 	protected EventDispatcher dispatcher = null;
 
 	/**
@@ -45,9 +45,8 @@ public abstract class InternationalizedDataDialog extends InternationalizedDialo
 	 * @param initData TODO: DOCUMENT ME!
 	 * @param p TODO: DOCUMENT ME!
 	 */
-	public InternationalizedDataDialog(Frame owner, boolean modal,
-									   EventDispatcher ed, GameData initData,
-									   Properties p) {
+	public InternationalizedDataDialog(Frame owner, boolean modal, EventDispatcher ed,
+									   GameData initData, Properties p) {
 		super(owner, modal);
 		this.dispatcher = ed;
 
@@ -55,7 +54,7 @@ public abstract class InternationalizedDataDialog extends InternationalizedDialo
 			this.dispatcher.addGameDataListener(this);
 		}
 
-		this.data     = initData;
+		this.data = initData;
 		this.settings = p;
 	}
 
@@ -76,8 +75,6 @@ public abstract class InternationalizedDataDialog extends InternationalizedDialo
 
 			// remove stale listeners
 			dispatcher.removeAllListeners(this);
-
-
 		}
 	}
 }

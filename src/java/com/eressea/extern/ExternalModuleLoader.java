@@ -36,8 +36,8 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
 /**
- * Loads all external modules that can be found. Please see
- * com.eressea.extern.ExternalModule for documentation.
+ * Loads all external modules that can be found. Please see com.eressea.extern.ExternalModule for
+ * documentation.
  *
  * @author Ulrich Küster
  */
@@ -46,8 +46,7 @@ public class ExternalModuleLoader {
 
 	/**
 	 * Searches the resource paths for classes that implement the interface
-	 * com.eressea.extern.ExternalModule. Returns them as Collection of Class
-	 * objects.
+	 * com.eressea.extern.ExternalModule. Returns them as Collection of Class objects.
 	 *
 	 * @param settings TODO: DOCUMENT ME!
 	 *
@@ -74,9 +73,8 @@ public class ExternalModuleLoader {
 		// pavkovic 200307.18: deactivated, does not work properly right now
 		//Collections.sort(returnClasses);
 		long end = System.currentTimeMillis();
-		log.info("Searching for external modules done. Found " +
-				 returnClasses.size() + " instances in " +
-				 String.valueOf((end - start)) + " msecs");
+		log.info("Searching for external modules done. Found " + returnClasses.size() +
+				 " instances in " + String.valueOf((end - start)) + " msecs");
 
 		return returnClasses;
 	}
@@ -86,7 +84,7 @@ public class ExternalModuleLoader {
 		Collection paths = CollectionFactory.createArrayList();
 
 		for(Iterator iter = resLoader.getPaths().iterator(); iter.hasNext();) {
-			URL    url = (URL) iter.next();
+			URL url = (URL) iter.next();
 			String s = url.getFile();
 
 			if(s.startsWith("file:/")) {
@@ -119,18 +117,15 @@ public class ExternalModuleLoader {
 	}
 
 	private static Collection getClassesFromPath(ResourcePathClassLoader resLoader,
-												 Class externalModuleClass,
-												 String path) {
+												 Class externalModuleClass, String path) {
 		return getClassesFromPath(resLoader, externalModuleClass, path, "",
 								  getLastCapitalizedString(externalModuleClass.getName())
 									  .toLowerCase() + ".class");
 	}
 
 	private static Collection getClassesFromPath(ResourcePathClassLoader resLoader,
-												 Class externalModuleClass,
-												 String path,
-												 String packagePrefix,
-												 String postfix) {
+												 Class externalModuleClass, String path,
+												 String packagePrefix, String postfix) {
 		Collection classes = CollectionFactory.createArrayList();
 
 		try {
@@ -147,10 +142,9 @@ public class ExternalModuleLoader {
 						// add in first position
 						String newPrefix = packagePrefix + file.getName() +
 										   ((packagePrefix == "") ? "" : ".");
-						classes.addAll(getClassesFromPath(resLoader,
-														  externalModuleClass,
-														  newPaths[i].getAbsolutePath(),
-														  newPrefix, postfix));
+						classes.addAll(getClassesFromPath(resLoader, externalModuleClass,
+														  newPaths[i].getAbsolutePath(), newPrefix,
+														  postfix));
 					}
 				} else if(file.getName().toLowerCase().endsWith(".jar") ||
 							  file.getName().toLowerCase().endsWith(".zip")) {
@@ -161,20 +155,18 @@ public class ExternalModuleLoader {
 					for(Enumeration e = zip.entries(); e.hasMoreElements();) {
 						ZipEntry entry = (ZipEntry) e.nextElement();
 
-						if(!entry.isDirectory() &&
-							   entry.getName().toLowerCase().endsWith(postfix)) {
+						if(!entry.isDirectory() && entry.getName().toLowerCase().endsWith(postfix)) {
 							// class file found!
 							// check whether it implements ExternalModule
 							String name = entry.getName();
-							name = name.substring(0, name.indexOf(".class"))
-									   .replace('\\', '.').replace('/', '.');
+							name = name.substring(0, name.indexOf(".class")).replace('\\', '.')
+									   .replace('/', '.');
 
-							Class     foundClass   = resLoader.loadClass(name);
-							Class     interfaces[] = foundClass.getInterfaces();
-							boolean   found		   = false;
+							Class foundClass = resLoader.loadClass(name);
+							Class interfaces[] = foundClass.getInterfaces();
+							boolean found = false;
 
-							for(int i = 0; (i < interfaces.length) && !found;
-									i++) {
+							for(int i = 0; (i < interfaces.length) && !found; i++) {
 								if(interfaces[i].equals(externalModuleClass)) {
 									found = true;
 								}
@@ -189,8 +181,8 @@ public class ExternalModuleLoader {
 					}
 				} else if(file.getName().toLowerCase().endsWith(postfix)) {
 					String name = file.getName();
-					name = name.substring(0, name.indexOf(".class"))
-							   .replace('\\', '.').replace('/', '.');
+					name = name.substring(0, name.indexOf(".class")).replace('\\', '.').replace('/',
+																								'.');
 
 					Class foundClass;
 
@@ -198,7 +190,7 @@ public class ExternalModuleLoader {
 						foundClass = resLoader.loadClass(name);
 					} catch(ClassNotFoundException e) {
 						// pavkovic 2003.07.09: now retry with prefix
-						name	   = packagePrefix + name;
+						name = packagePrefix + name;
 						foundClass = resLoader.loadClass(name);
 					}
 
@@ -230,7 +222,7 @@ public class ExternalModuleLoader {
 
 	private static Collection getExternalModuleClasses(Properties settings,
 													   Class externalModuleClass) {
-		Collection			    classes = CollectionFactory.createHashSet();
+		Collection classes = CollectionFactory.createHashSet();
 
 		ResourcePathClassLoader resLoader = new ResourcePathClassLoader(settings);
 
@@ -239,28 +231,26 @@ public class ExternalModuleLoader {
 
 		// a) read possible paths from ResourcePathClassLoader
 		// b) read property java.class.path and iterate over the entries
-		if(settings.getProperty("ExternalModuleLoader.searchResourcePathClassLoader",
-									"true").equals("true")) {
+		if(settings.getProperty("ExternalModuleLoader.searchResourcePathClassLoader", "true")
+					   .equals("true")) {
 			paths.addAll(getPathsFromResourcePathClassLoader(resLoader, settings));
 		}
 
-		if(settings.getProperty("ExternalModuleLoader.searchClassPath", "true")
-					   .equals("true")) {
+		if(settings.getProperty("ExternalModuleLoader.searchClassPath", "true").equals("true")) {
 			paths.addAll(getPathsFromClassPath());
 		}
 
 		for(Iterator iter = paths.iterator(); iter.hasNext();) {
 			String path = (String) iter.next();
-			classes.addAll(getClassesFromPath(resLoader, externalModuleClass,
-											  path));
+			classes.addAll(getClassesFromPath(resLoader, externalModuleClass, path));
 		}
 
 		return classes;
 	}
 
 	/**
-	 * delivers last capitalized String, e.g.: for input "StringBuffer.class"
-	 * this function returns "Buffer.class"
+	 * delivers last capitalized String, e.g.: for input "StringBuffer.class" this function returns
+	 * "Buffer.class"
 	 *
 	 * @param aString TODO: DOCUMENT ME!
 	 *
@@ -269,12 +259,10 @@ public class ExternalModuleLoader {
 	private static String getLastCapitalizedString(String aString) {
 		StringCharacterIterator iter = new StringCharacterIterator(aString);
 
-		for(char c = iter.last(); c != CharacterIterator.DONE;
-				c = iter.previous()) {
+		for(char c = iter.last(); c != CharacterIterator.DONE; c = iter.previous()) {
 			if((c >= 'A') && (c <= 'Z')) {
 				if(log.isDebugEnabled()) {
-					log.debug("ExternalModuleLoader.getLastCapitalizedString(" +
-							  aString + "): " +
+					log.debug("ExternalModuleLoader.getLastCapitalizedString(" + aString + "): " +
 							  aString.substring(iter.getIndex()));
 				}
 

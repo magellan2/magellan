@@ -86,26 +86,27 @@ import com.eressea.util.replacers.ReplacerHelp;
 import com.eressea.util.replacers.ReplacerSystem;
 
 /**
- * A slightly improved text cell renderer using the replacer engine of Magellan
- * to create region dependent output. <i>Caches a lot to improve performance,
- * so let the interpreter allocate more memory!</i>
+ * A slightly improved text cell renderer using the replacer engine of Magellan to create region
+ * dependent output. <i>Caches a lot to improve performance, so let the interpreter allocate more
+ * memory!</i>
  *
  * @author Andreas
  * @version 1.1
  */
-public class AdvancedTextCellRenderer extends TextCellRenderer
-	implements ExtendedShortcutListener, GameDataListener, ContextChangeable,
-			   ActionListener
+public class AdvancedTextCellRenderer extends TextCellRenderer implements ExtendedShortcutListener,
+																		  GameDataListener,
+																		  ContextChangeable,
+																		  ActionListener
 {
-	protected static final String BLANK		  = "";
-	protected boolean			  breakLines; // Line break style
-	protected static List		  buffer; // breaking buffer		
-	protected float				  lastScale   = -1; // last scale factor, for broken lines cache
-	protected ATRSet			  set;
-	protected ATRPreferences	  adapter;
-	protected ShortcutListener    deflistener; // Shortcutlistener at depth 1 (after STRG-A)
-	protected JMenu				  contextMenu;
-	protected ContextObserver     obs;
+	protected static final String BLANK = "";
+	protected boolean breakLines; // Line break style
+	protected static List buffer; // breaking buffer		
+	protected float lastScale = -1; // last scale factor, for broken lines cache
+	protected ATRSet set;
+	protected ATRPreferences adapter;
+	protected ShortcutListener deflistener; // Shortcutlistener at depth 1 (after STRG-A)
+	protected JMenu contextMenu;
+	protected ContextObserver obs;
 
 	/**
 	 * Creates new AdvancedTextCellRenderer
@@ -131,8 +132,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		}
 
 		try {
-			setHAlign(Integer.parseInt(settings.getProperty("ATR.horizontalAlign",
-															"0")));
+			setHAlign(Integer.parseInt(settings.getProperty("ATR.horizontalAlign", "0")));
 		} catch(Exception exc) {
 			setHAlign(CENTER);
 		}
@@ -140,8 +140,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		// create shortcut structure
 		DesktopEnvironment.registerShortcutListener(KeyStroke.getKeyStroke(KeyEvent.VK_T,
 																		   KeyEvent.CTRL_MASK |
-																		   KeyEvent.ALT_MASK),
-													this);
+																		   KeyEvent.ALT_MASK), this);
 		deflistener = new DefListener();
 
 		// create the context menu as needed
@@ -190,8 +189,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 
 		if(!exists(set.getName(), settings)) {
 			settings.setProperty("ATR.Sets",
-								 settings.getProperty("ATR.Sets", "") + ";" +
-								 set.getName());
+								 settings.getProperty("ATR.Sets", "") + ";" + set.getName());
 		}
 	}
 
@@ -216,8 +214,8 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 	 */
 	public boolean exists(String name, Properties settings) {
 		String allSets = settings.getProperty("ATR.Sets", "");
-		int    sindex = 0;
-		int    i	  = -1;
+		int sindex = 0;
+		int i = -1;
 
 		do {
 			i = allSets.indexOf(name, sindex);
@@ -254,10 +252,8 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 
 	// a collection of set names
 	public Collection getAllSets() {
-		Collection	    c  = CollectionFactory.createLinkedList();
-		StringTokenizer st = new StringTokenizer(settings.getProperty("ATR.Sets",
-																	  "Standard"),
-												 ";");
+		Collection c = CollectionFactory.createLinkedList();
+		StringTokenizer st = new StringTokenizer(settings.getProperty("ATR.Sets", "Standard"), ";");
 
 		while(st.hasMoreTokens()) {
 			c.add(st.nextToken());
@@ -276,10 +272,8 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		settings.remove(key + "Def");
 		settings.remove(key + "Unknown");
 
-		StringTokenizer st = new StringTokenizer(settings.getProperty("ATR.Sets",
-																	  "Standard"),
-												 ";");
-		StringBuffer    b = new StringBuffer();
+		StringTokenizer st = new StringTokenizer(settings.getProperty("ATR.Sets", "Standard"), ";");
+		StringBuffer b = new StringBuffer();
 
 		while(st.hasMoreTokens()) {
 			String s = st.nextToken();
@@ -388,8 +382,8 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 	}
 
 	/**
-	 * Should return all short cuts this class want to be informed. The
-	 * elements should be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The elements should be of type
+	 * javax.swing.KeyStroke
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -462,8 +456,8 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 	protected void fillDefItems() {
 		contextMenu.removeAll();
 
-		Collection c  = getAllSets();
-		Iterator   it = c.iterator();
+		Collection c = getAllSets();
+		Iterator it = c.iterator();
 
 		while(it.hasNext()) {
 			JMenuItem item = new JMenuItem((String) it.next());
@@ -534,8 +528,8 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		do {
 			changed = false;
 
-			Iterator it    = buffer.iterator();
-			int		 index = 0;
+			Iterator it = buffer.iterator();
+			int index = 0;
 
 			while(it.hasNext() && !changed) {
 				String part = (String) it.next();
@@ -558,10 +552,9 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		return strbuf;
 	}
 
-	private void breakStringImpl(String part, List buffer, FontMetrics fm,
-								 int mw, int index) {
-		char  chr[] = part.toCharArray();
-		int   len = chr.length;
+	private void breakStringImpl(String part, List buffer, FontMetrics fm, int mw, int index) {
+		char chr[] = part.toCharArray();
+		int len = chr.length;
 
 		while(fm.charsWidth(chr, 0, len) > mw) {
 			len--;
@@ -614,12 +607,9 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			defaultTranslations.put("prefs.export", "Export...");
 			defaultTranslations.put("prefs.import", "Import...");
 			defaultTranslations.put("prefs.remove", "Remove");
-			defaultTranslations.put("prefs.nameexits2",
-									"This name already exists: ");
-			defaultTranslations.put("prefs.nameexists",
-									"This name already exists.");
-			defaultTranslations.put("prefs.rename.text",
-									"Please enter a new name");
+			defaultTranslations.put("prefs.nameexits2", "This name already exists: ");
+			defaultTranslations.put("prefs.nameexists", "This name already exists.");
+			defaultTranslations.put("prefs.rename.text", "Please enter a new name");
 			defaultTranslations.put("prefs.add.text", "Please enter a name");
 			defaultTranslations.put("prefs.def", "Def.");
 			defaultTranslations.put("prefs.rename", "Rename...");
@@ -632,15 +622,14 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 	}
 
 	/**
-	 * Encapsulates one setting containing a name, a definition string and a
-	 * cache object.
+	 * Encapsulates one setting containing a name, a definition string and a cache object.
 	 */
 	protected class ATRSet {
-		protected String		 name;
-		protected String		 def;
-		protected String		 unknown  = "-?-";
+		protected String name;
+		protected String def;
+		protected String unknown = "-?-";
 		protected ReplacerSystem replacer = null;
-		protected Map			 cache;
+		protected Map cache;
 
 		/**
 		 * Creates a new ATRSet object.
@@ -649,7 +638,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		 */
 		public ATRSet(String name) {
 			this.name = name;
-			cache     = CollectionFactory.createHashMap();
+			cache = CollectionFactory.createHashMap();
 		}
 
 		/**
@@ -675,8 +664,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public String[] getReplacement(Region r, CellGeometry geo,
-									   FontMetrics fm) {
+		public String[] getReplacement(Region r, CellGeometry geo, FontMetrics fm) {
 			if(cache.containsKey(r)) {
 				return (String[]) cache.get(r);
 			}
@@ -818,7 +806,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 
 				if(c.size() > i) {
 					Iterator it = c.iterator();
-					int		 j = 0;
+					int j = 0;
 
 					while(it.hasNext()) {
 						String s = (String) it.next();
@@ -857,28 +845,27 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		}
 	}
 
-	protected class ATRPreferences extends JPanel implements ActionListener,
-															 PreferencesAdapter,
+	protected class ATRPreferences extends JPanel implements ActionListener, PreferencesAdapter,
 															 ListSelectionListener
 	{
 		protected AdvancedTextCellRenderer s;
 
 		// global properties
-		protected JCheckBox    linebreak;
+		protected JCheckBox linebreak;
 		protected JRadioButton align[];
 
 		// set-local properties
 		protected JTextField replace;
-		protected JTextArea  def;
+		protected JTextArea def;
 
 		// ui things
-		protected JList			   list;
+		protected JList list;
 		protected DefaultListModel listModel;
-		protected AbstractButton   add;
-		protected AbstractButton   remove;
-		protected AbstractButton   rename;
-		protected AbstractButton   importB;
-		protected AbstractButton   export;
+		protected AbstractButton add;
+		protected AbstractButton remove;
+		protected AbstractButton rename;
+		protected AbstractButton importB;
+		protected AbstractButton export;
 
 		/**
 		 * Creates a new ATRPreferences object.
@@ -892,10 +879,9 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			GridBagConstraints c = new GridBagConstraints(0, 0, 2, 1, 1.0, 1.0,
 														  GridBagConstraints.CENTER,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(1, 1, 1, 1),
-														  0, 0);
+														  new Insets(1, 1, 1, 1), 0, 0);
 
-			JTextArea		   fontHelp = new JTextArea(getString("prefs.fonthelp"));
+			JTextArea fontHelp = new JTextArea(getString("prefs.fonthelp"));
 			fontHelp.setEditable(false);
 			fontHelp.setBorder(null);
 			fontHelp.setBackground(this.getBackground());
@@ -908,7 +894,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			this.add(new JSeparator(JSeparator.HORIZONTAL), c);
 
 			c.gridwidth = 1;
-			c.fill	    = GridBagConstraints.NONE;
+			c.fill = GridBagConstraints.NONE;
 			c.gridy++;
 
 			linebreak = new JCheckBox(getString("prefs.breakline"), s.breakLines);
@@ -920,7 +906,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			c.gridx = 0;
 			c.gridy++;
 			c.gridwidth = 2;
-			c.fill	    = GridBagConstraints.HORIZONTAL;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			this.add(new JSeparator(JSeparator.HORIZONTAL), c);
 
 			c.gridwidth = 2;
@@ -951,16 +937,15 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			export.addActionListener(this);
 
 			listModel = new DefaultListModel();
-			list	  = new JList(listModel);
+			list = new JList(listModel);
 			list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			fillList(set.getName());
 
-			JPanel			   p = new JPanel(new GridBagLayout());
+			JPanel p = new JPanel(new GridBagLayout());
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(0, 1, 1, 1),
-														  0, 0);
+														  new Insets(0, 1, 1, 1), 0, 0);
 
 			p.add(add, c);
 			c.gridy++;
@@ -1007,8 +992,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			align = new JRadioButton[3];
 
 			for(int i = 0; i < 3; i++) {
-				align[i] = new JRadioButton(getString("prefs.align" +
-													  String.valueOf(i)),
+				align[i] = new JRadioButton(getString("prefs.align" + String.valueOf(i)),
 											i == s.getHAlign());
 				group.add(align[i]);
 				box.add(align[i]);
@@ -1127,13 +1111,11 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		}
 
 		protected void addSet() {
-			String name = JOptionPane.showInputDialog(this,
-													  getString("prefs.add.text"));
+			String name = JOptionPane.showInputDialog(this, getString("prefs.add.text"));
 
 			if((name != null) && !name.trim().equals("")) {
 				if(exists(name)) {
-					JOptionPane.showMessageDialog(this,
-												  getString("prefs.nameexists"));
+					JOptionPane.showMessageDialog(this, getString("prefs.nameexists"));
 				} else {
 					saveSettings();
 					loadSet(name);
@@ -1143,13 +1125,11 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 		}
 
 		protected void renameSet() {
-			String newName = JOptionPane.showInputDialog(this,
-														 getString("prefs.rename.text"));
+			String newName = JOptionPane.showInputDialog(this, getString("prefs.rename.text"));
 
 			if((newName != null) && !newName.trim().equals("")) {
 				if(exists(newName)) {
-					JOptionPane.showMessageDialog(this,
-												  getString("prefs.nameexists"));
+					JOptionPane.showMessageDialog(this, getString("prefs.nameexists"));
 				} else {
 					s.removeSet(set.getName());
 					set.setName(newName);
@@ -1177,17 +1157,17 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 
 		protected void importSet() {
 			JFileChooser jfc = new JFileChooser(com.eressea.demo.Client.getMagellanDirectory());
-			int			 ret = jfc.showOpenDialog(this);
+			int ret = jfc.showOpenDialog(this);
 
 			if(ret == JFileChooser.APPROVE_OPTION) {
-				java.io.File f		  = jfc.getSelectedFile();
-				String		 lastName = set.getName();
+				java.io.File f = jfc.getSelectedFile();
+				String lastName = set.getName();
 
 				try {
 					Properties prop = new Properties();
 					prop.load(new java.io.FileInputStream(f));
 
-					String		    sets = prop.getProperty("ATR.Sets", "");
+					String sets = prop.getProperty("ATR.Sets", "");
 					StringTokenizer st = new StringTokenizer(sets, ";");
 
 					while(st.hasMoreTokens()) {
@@ -1208,9 +1188,7 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 			String oldName = name;
 
 			while((name != null) && exists(name)) {
-				name = JOptionPane.showInputDialog(this,
-												   getString("prefs.nameexists2") +
-												   name);
+				name = JOptionPane.showInputDialog(this, getString("prefs.nameexists2") + name);
 			}
 
 			if(name == null) {
@@ -1228,13 +1206,13 @@ public class AdvancedTextCellRenderer extends TextCellRenderer
 
 		protected void exportSet() {
 			JFileChooser jfc = new JFileChooser(com.eressea.demo.Client.getMagellanDirectory());
-			int			 ret = jfc.showSaveDialog(this);
+			int ret = jfc.showSaveDialog(this);
 
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				try {
-					java.io.File     f    = jfc.getSelectedFile();
-					FileOutputStream out  = new FileOutputStream(f);
-					Properties		 prop = new Properties();
+					java.io.File f = jfc.getSelectedFile();
+					FileOutputStream out = new FileOutputStream(f);
+					Properties prop = new Properties();
 					saveSet(prop);
 					prop.store(out, "ATR exported settings");
 					out.close();

@@ -35,16 +35,14 @@ import com.eressea.util.Regions;
 import com.eressea.util.logging.Logger;
 
 /**
- * This is the central class for collecting all the data representing one
- * computer report.
+ * This is the central class for collecting all the data representing one computer report.
  * 
  * <p>
- * The maps units, regions and so on are declared as abstract methods and the
- * getX and addX provide access to them. This allows for subclasses that
- * implicitely represent only a certain part of the game data by declaring
- * certain maps as <tt>null</tt> and returning <tt>null</tt> on the
- * corresponding getX() methods. This concept has so far not been applied and
- * you usually operate on the <tt>CompleteData</tt> subclass.
+ * The maps units, regions and so on are declared as abstract methods and the getX and addX provide
+ * access to them. This allows for subclasses that implicitely represent only a certain part of
+ * the game data by declaring certain maps as <tt>null</tt> and returning <tt>null</tt> on the
+ * corresponding getX() methods. This concept has so far not been applied and you usually operate
+ * on the <tt>CompleteData</tt> subclass.
  * </p>
  */
 public abstract class GameData implements Cloneable {
@@ -57,26 +55,23 @@ public abstract class GameData implements Cloneable {
 	public final String name;
 
 	/**
-	 * The current TempUnit-ID. This means, if a new TempUnit is created, it's
-	 * suggested ID is usually curTempID and if this suggestion is accepted by
-	 * the user (which means, that a TempUnit with this id was created)
-	 * curTempID is increased. A value of -1 indicates, that the variable is
-	 * uninitialized and a value of 0 that the old system shall be used (which
-	 * means, that the suggested temp id shall be calculated out of the id of
-	 * the parent unit of the tempunit).
+	 * The current TempUnit-ID. This means, if a new TempUnit is created, it's suggested ID is
+	 * usually curTempID and if this suggestion is accepted by the user (which means, that a
+	 * TempUnit with this id was created) curTempID is increased. A value of -1 indicates, that
+	 * the variable is uninitialized and a value of 0 that the old system shall be used (which
+	 * means, that the suggested temp id shall be calculated out of the id of the parent unit of
+	 * the tempunit).
 	 */
 	protected int curTempID = -1;
 
 	/**
-	 * This method sets the current temp id with respect to the possible  max
-	 * value of the current base. The value also has to be >= -1
+	 * This method sets the current temp id with respect to the possible  max value of the current
+	 * base. The value also has to be >= -1
 	 *
 	 * @param newTempID temp id
 	 */
 	public void setCurTempID(int newTempID) {
-		curTempID = Math.max(-1,
-							 Math.min(newTempID,
-									  IDBaseConverter.getMaxId(this.base)));
+		curTempID = Math.max(-1, Math.min(newTempID, IDBaseConverter.getMaxId(this.base)));
 	}
 
 	/**
@@ -98,16 +93,15 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * The current file attached to the game data. If it is null, the  save as
-	 * dialog shall be opened.
+	 * The current file attached to the game data. If it is null, the  save as dialog shall be
+	 * opened.
 	 */
 	public FileType filetype = null;
 
 	/**
-	 * The 'round' this game data belongs to. Note that this imposes a
-	 * restriction on how fine-grained date information can be applied to game
-	 * data or certain parts of it. This will probably have to be changed the
-	 * one or the other way.
+	 * The 'round' this game data belongs to. Note that this imposes a restriction on how
+	 * fine-grained date information can be applied to game data or certain parts of it. This will
+	 * probably have to be changed the one or the other way.
 	 */
 	protected Date date = null;
 
@@ -118,92 +112,83 @@ public abstract class GameData implements Cloneable {
 	public String mailSubject = null;
 
 	/**
-	 * A collection of all units. The keys are <tt>Integer</tt> objects
-	 * containg the unit's ids. The values consist of objects of class
-	 * <tt>Unit</tt>. TEMP units are not included, they are only stored in the
-	 * unit collection of their parents and their regions.
+	 * A collection of all units. The keys are <tt>Integer</tt> objects containg the unit's ids.
+	 * The values consist of objects of class <tt>Unit</tt>. TEMP units are not included, they are
+	 * only stored in the unit collection of their parents and their regions.
 	 *
 	 * @return returns the units map
 	 */
 	public abstract Map units();
 
 	/**
-	 * All regions in this game data. The keys are <tt>Coordinate</tt> objects
-	 * containg the id of each region. The values consist of objects of class
-	 * <tt>Region</tt>.
+	 * All regions in this game data. The keys are <tt>Coordinate</tt> objects containg the id of
+	 * each region. The values consist of objects of class <tt>Region</tt>.
 	 *
 	 * @return returns the regions map
 	 */
 	public abstract Map regions();
 
 	/**
-	 * All factions in this game data. The keys are <tt>Integer</tt> objects
-	 * containg the id of each faction. The values consist of objects of class
-	 * <tt>Faction</tt>. One of these factions can be referenced by the
-	 * ownerFaction attribute.
+	 * All factions in this game data. The keys are <tt>Integer</tt> objects containg the id of
+	 * each faction. The values consist of objects of class <tt>Faction</tt>. One of these
+	 * factions can be referenced by the ownerFaction attribute.
 	 *
 	 * @return returns the factions map
 	 */
 	public abstract Map factions();
 
 	/**
-	 * All buildings in this game data. The keys are <tt>Integer</tt> objects
-	 * containg the id of each building. The values consist of objects of
-	 * class <tt>Building</tt>.
+	 * All buildings in this game data. The keys are <tt>Integer</tt> objects containg the id of
+	 * each building. The values consist of objects of class <tt>Building</tt>.
 	 *
 	 * @return returns the buildings map
 	 */
 	public abstract Map buildings();
 
 	/**
-	 * All ships in this game data. The keys are <tt>Integer</tt> objects
-	 * containg the id of each ship. The values consist of objects of class
-	 * <tt>Ship</tt>.
+	 * All ships in this game data. The keys are <tt>Integer</tt> objects containg the id of each
+	 * ship. The values consist of objects of class <tt>Ship</tt>.
 	 *
 	 * @return returns the ships map
 	 */
 	public abstract Map ships();
 
 	/**
-	 * All message types in this game data. The keys are <tt>Integer</tt>
-	 * objects containg the id of each message type. The values consist of
-	 * <tt>MessageType</tt> objects.
+	 * All message types in this game data. The keys are <tt>Integer</tt> objects containg the id
+	 * of each message type. The values consist of <tt>MessageType</tt> objects.
 	 *
 	 * @return returns the messageType map
 	 */
 	public abstract Map msgTypes();
 
 	/**
-	 * All magic spells in this game data. The keys are <tt>Integer</tt>
-	 * objects containg the id of each spell. The values consist of objects of
-	 * class <tt>Spell</tt>.
+	 * All magic spells in this game data. The keys are <tt>Integer</tt> objects containg the id of
+	 * each spell. The values consist of objects of class <tt>Spell</tt>.
 	 *
 	 * @return returns the spells map
 	 */
 	public abstract Map spells();
 
 	/**
-	 * All potions in this game data. The keys are <tt>Integer</tt> objects
-	 * containg the id of each potion. The values consist of objects of class
-	 * <tt>Potion</tt>.
+	 * All potions in this game data. The keys are <tt>Integer</tt> objects containg the id of each
+	 * potion. The values consist of objects of class <tt>Potion</tt>.
 	 *
 	 * @return returns the potions map
 	 */
 	public abstract Map potions();
 
 	/**
-	 * All islands in this game data. The keys are <tt>Integer</tt> objects
-	 * containing the id of each island. The values consist of objects of
-	 * class <tt>Island</tt>.
+	 * All islands in this game data. The keys are <tt>Integer</tt> objects containing the id of
+	 * each island. The values consist of objects of class <tt>Island</tt>.
 	 *
 	 * @return returns the islands map
 	 */
 	public abstract Map islands();
 
 	/**
-	 * All HotSpots existing for this game data. Hot spots are used to quickly
-	 * access regions of interest on the map. The keys are Integer
-	 * representations of the hot spot id, the values are Coordinate objects.
+	 * All HotSpots existing for this game data. Hot spots are used to quickly access regions of
+	 * interest on the map. The keys are Integer representations of the hot spot id, the values
+	 * are Coordinate objects.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -232,8 +217,7 @@ public abstract class GameData implements Cloneable {
 	 * @param _name TODO: DOCUMENT ME!
 	 */
 	public GameData(Rules _rules, String _name) {
-		this(_rules, _name,
-			 new GameSpecificStuffProvider().getGameSpecificStuff(_name));
+		this(_rules, _name, new GameSpecificStuffProvider().getGameSpecificStuff(_name));
 	}
 
 	/**
@@ -243,10 +227,9 @@ public abstract class GameData implements Cloneable {
 	 * @param _name TODO: DOCUMENT ME!
 	 * @param _gameSpecificStuff TODO: DOCUMENT ME!
 	 */
-	public GameData(Rules _rules, String _name,
-					GameSpecificStuff _gameSpecificStuff) {
-		rules			  = _rules;
-		name			  = _name;
+	public GameData(Rules _rules, String _name, GameSpecificStuff _gameSpecificStuff) {
+		rules = _rules;
+		name = _name;
 		gameSpecificStuff = _gameSpecificStuff;
 	}
 
@@ -255,9 +238,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the building to be retrieved.
 	 *
-	 * @return an instance of class <tt>Building</tt> or <tt>null</tt> if there
-	 * 		   is no building with the specified id or if buildings() is
-	 * 		   <tt>null</tt>.
+	 * @return an instance of class <tt>Building</tt> or <tt>null</tt> if there is no building with
+	 * 		   the specified id or if buildings() is <tt>null</tt>.
 	 */
 	public Building getBuilding(ID id) {
 		return (buildings() == null) ? null : (Building) buildings().get(id);
@@ -268,8 +250,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the ship to be retrieved.
 	 *
-	 * @return an instance of class <tt>Ship</tt> or <tt>null</tt> if there is
-	 * 		   no ship with the specified id or if ships() is <tt>null</tt>.
+	 * @return an instance of class <tt>Ship</tt> or <tt>null</tt> if there is no ship with the
+	 * 		   specified id or if ships() is <tt>null</tt>.
 	 */
 	public Ship getShip(ID id) {
 		return (ships() == null) ? null : (Ship) ships().get(id);
@@ -280,9 +262,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the faction to be retrieved.
 	 *
-	 * @return an instance of class <tt>Faction</tt> or <tt>null</tt> if there
-	 * 		   is no faction with the specified id or if factions() is
-	 * 		   <tt>null</tt>.
+	 * @return an instance of class <tt>Faction</tt> or <tt>null</tt> if there is no faction with
+	 * 		   the specified id or if factions() is <tt>null</tt>.
 	 */
 	public Faction getFaction(ID id) {
 		return (factions() == null) ? null : (Faction) factions().get(id);
@@ -293,8 +274,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the unit to be retrieved.
 	 *
-	 * @return an instance of class <tt>Unit</tt> or <tt>null</tt> if there is
-	 * 		   no unit with the specified id or if units() is <tt>null</tt>.
+	 * @return an instance of class <tt>Unit</tt> or <tt>null</tt> if there is no unit with the
+	 * 		   specified id or if units() is <tt>null</tt>.
 	 */
 	public Unit getUnit(ID id) {
 		return (units() == null) ? null : (Unit) units().get(id);
@@ -305,9 +286,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id region coordinate
 	 *
-	 * @return an instance of class <tt>Region</tt> or <tt>null</tt> if there
-	 * 		   is no region with the specified coordinates or if regions() is
-	 * 		   <tt>null</tt>.
+	 * @return an instance of class <tt>Region</tt> or <tt>null</tt> if there is no region with the
+	 * 		   specified coordinates or if regions() is <tt>null</tt>.
 	 */
 	public Region getRegion(ID id) {
 		return (regions() == null) ? null : (Region) regions().get(id);
@@ -318,9 +298,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the message type to be retrieved.
 	 *
-	 * @return an instance of class <tt>MessageType</tt> or <tt>null</tt> if
-	 * 		   there is no message type with the specified id or if msgTypes()
-	 * 		   is <tt>null</tt>.
+	 * @return an instance of class <tt>MessageType</tt> or <tt>null</tt> if there is no message
+	 * 		   type with the specified id or if msgTypes() is <tt>null</tt>.
 	 */
 	public MessageType getMsgType(ID id) {
 		return (msgTypes() == null) ? null : (MessageType) msgTypes().get(id);
@@ -331,8 +310,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the spell to be retrieved.
 	 *
-	 * @return an instance of class <tt>Spell</tt> or <tt>null</tt> if there is
-	 * 		   no spell with the specified id or if spells() is <tt>null</tt>.
+	 * @return an instance of class <tt>Spell</tt> or <tt>null</tt> if there is no spell with the
+	 * 		   specified id or if spells() is <tt>null</tt>.
 	 */
 	public Spell getSpell(ID id) {
 		return (spells() == null) ? null : (Spell) spells().get(id);
@@ -343,9 +322,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the potion to be retrieved.
 	 *
-	 * @return an instance of class <tt>Potion</tt> or <tt>null</tt> if there
-	 * 		   is no potion with the specified id or if potions() is
-	 * 		   <tt>null</tt>.
+	 * @return an instance of class <tt>Potion</tt> or <tt>null</tt> if there is no potion with the
+	 * 		   specified id or if potions() is <tt>null</tt>.
 	 */
 	public Potion getPotion(ID id) {
 		return (potions() == null) ? null : (Potion) potions().get(id);
@@ -356,17 +334,16 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the island to be retrieved.
 	 *
-	 * @return an instance of class <tt>Island</tt> or <tt>null</tt> if there
-	 * 		   is no island with the specified id or if islands() is
-	 * 		   <tt>null</tt>.
+	 * @return an instance of class <tt>Island</tt> or <tt>null</tt> if there is no island with the
+	 * 		   specified id or if islands() is <tt>null</tt>.
 	 */
 	public Island getIsland(ID id) {
 		return (islands() == null) ? null : (Island) islands().get(id);
 	}
 
 	/**
-	 * Add a faction to the specified game data. If factions() is
-	 * <tt>null</tt>, this method has no effect.
+	 * Add a faction to the specified game data. If factions() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param f the faction to be added.
 	 */
@@ -377,8 +354,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a unit to the specified game data. If units() is <tt>null</tt>, this
-	 * method has no effect.
+	 * Add a unit to the specified game data. If units() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param u the unit to be added.
 	 */
@@ -389,8 +366,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a region to the specified game data. If regions() is <tt>null</tt>,
-	 * this method has no effect.
+	 * Add a region to the specified game data. If regions() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param r the region to be added.
 	 */
@@ -401,8 +378,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a ship to the specified game data. If ships() is <tt>null</tt>, this
-	 * method has no effect.
+	 * Add a ship to the specified game data. If ships() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param s the ship to be added.
 	 */
@@ -413,8 +390,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a building to the specified game data. If buildings() is
-	 * <tt>null</tt>, this method has no effect.
+	 * Add a building to the specified game data. If buildings() is <tt>null</tt>, this method has
+	 * no effect.
 	 *
 	 * @param b the building to be added.
 	 */
@@ -425,8 +402,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a message type to the specified game data. If msgTypes() is
-	 * <tt>null</tt>, this method has no effect.
+	 * Add a message type to the specified game data. If msgTypes() is <tt>null</tt>, this method
+	 * has no effect.
 	 *
 	 * @param type the message type to be added.
 	 */
@@ -437,8 +414,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a spell to the specified game data. If spells() is <tt>null</tt>,
-	 * this method has no effect.
+	 * Add a spell to the specified game data. If spells() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param s the spells to be added.
 	 */
@@ -449,8 +426,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add a pption to the specified game data. If potions() is <tt>null</tt>,
-	 * this method has no effect.
+	 * Add a pption to the specified game data. If potions() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param p the potion to be added.
 	 */
@@ -461,8 +438,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add an island to the specified game data. If islands() is <tt>null</tt>,
-	 * this method has no effect.
+	 * Add an island to the specified game data. If islands() is <tt>null</tt>, this method has no
+	 * effect.
 	 *
 	 * @param i the island to be added.
 	 */
@@ -473,8 +450,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Add or set a hot spot to the specified game data. If hotSpots() is
-	 * <tt>null</tt>, this method has no effect.
+	 * Add or set a hot spot to the specified game data. If hotSpots() is <tt>null</tt>, this
+	 * method has no effect.
 	 *
 	 * @param h the hot spot to be added.
 	 */
@@ -489,9 +466,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param id the id of the hot spot to be retrieved.
 	 *
-	 * @return an instance of class <tt>HotSpot</tt> or <tt>null</tt> if there
-	 * 		   is no hot spot with the specified id or if hotSpots() is
-	 * 		   <tt>null</tt>.
+	 * @return an instance of class <tt>HotSpot</tt> or <tt>null</tt> if there is no hot spot with
+	 * 		   the specified id or if hotSpots() is <tt>null</tt>.
 	 */
 	public HotSpot getHotSpot(ID id) {
 		return (hotSpots() == null) ? null : (HotSpot) hotSpots().get(id);
@@ -530,9 +506,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param key the key of the translation to be retrieved.
 	 *
-	 * @return an instance of class <tt>String</tt> or <tt>null</tt> if there
-	 * 		   is no value mapping to the specified key of if translations()
-	 * 		   is <tt>null</tt>.
+	 * @return an instance of class <tt>String</tt> or <tt>null</tt> if there is no value mapping
+	 * 		   to the specified key of if translations() is <tt>null</tt>.
 	 */
 	public String getTranslation(String key) {
 		return (translations() == null) ? null : (String) translations().get(key);
@@ -543,8 +518,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param key TODO: DOCUMENT ME!
 	 *
-	 * @return an instance of class <tt>String</tt>. If no translation could be
-	 * 		   found, the key is returned.
+	 * @return an instance of class <tt>String</tt>. If no translation could be found, the key is
+	 * 		   returned.
 	 */
 	public String getTranslationOrKeyIfNull(String key) {
 		String retVal = getTranslation(key);
@@ -575,21 +550,20 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * The base (radix) in which ids are interpreted. The default value is 10.
-	 * Note that all internal and cr representation is always decimal.
+	 * The base (radix) in which ids are interpreted. The default value is 10. Note that all
+	 * internal and cr representation is always decimal.
 	 */
 	public int base = 10;
 
 	/**
-	 * Indicates whether in this report skill points are to be expected or
-	 * whether they are meaningful, respecitively.
+	 * Indicates whether in this report skill points are to be expected or whether they are
+	 * meaningful, respecitively.
 	 */
 	public boolean noSkillPoints = false;
 
 	/**
-	 * Sets the region at origin as the map origin. (e.g. an origin of (1,0,0)
-	 * moves all regions in level 0 one step to the west using eressea
-	 * coordinates)
+	 * Sets the region at origin as the map origin. (e.g. an origin of (1,0,0) moves all regions in
+	 * level 0 one step to the west using eressea coordinates)
 	 *
 	 * @param origin translation vector as coordinate object
 	 */
@@ -632,17 +606,15 @@ public abstract class GameData implements Cloneable {
 
 			// all messages
 			if(f.messages != null) {
-				for(Iterator msgIter = f.messages.iterator();
-						msgIter.hasNext();) {
+				for(Iterator msgIter = f.messages.iterator(); msgIter.hasNext();) {
 					Message msg = (Message) msgIter.next();
 
 					if(msg.attributes != null) {
-						for(Iterator attrIter = msg.attributes.keySet()
-															  .iterator();
+						for(Iterator attrIter = msg.attributes.keySet().iterator();
 								attrIter.hasNext();) {
-							Object     key	    = attrIter.next();
-							String     strCoord = (String) msg.attributes.get(key);
-							Coordinate coord    = Coordinate.parse(strCoord, ",");
+							Object key = attrIter.next();
+							String strCoord = (String) msg.attributes.get(key);
+							Coordinate coord = Coordinate.parse(strCoord, ",");
 
 							if((coord != null) && (coord.z == origin.z)) {
 								coord.x -= origin.x;
@@ -654,8 +626,7 @@ public abstract class GameData implements Cloneable {
 								if((coord != null) && (coord.z == origin.z)) {
 									coord.x -= origin.x;
 									coord.y -= origin.y;
-									msg.attributes.put(key,
-													   coord.toString(" ", true));
+									msg.attributes.put(key, coord.toString(" ", true));
 								}
 							}
 						}
@@ -681,14 +652,14 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Sets the valid locale for this report. Currently, this is only used to
-	 * remember this setting and write it back into the cr.
+	 * Sets the valid locale for this report. Currently, this is only used to remember this setting
+	 * and write it back into the cr.
 	 */
 	public abstract void setLocale(Locale l);
 
 	/**
-	 * Returns the locale of this report. Currently, this is only used to
-	 * remember this setting and write it back into the cr.
+	 * Returns the locale of this report. Currently, this is only used to remember this setting and
+	 * write it back into the cr.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -711,8 +682,7 @@ public abstract class GameData implements Cloneable {
 		// make sure, the game types are the same.
 		if(!o1.name.equalsIgnoreCase(o2.name)) {
 			throw new java.lang.IllegalArgumentException("GameData.merge(): Can't merge different game types. (" +
-														 o1.name + " via " +
-														 o2.name + ")");
+														 o1.name + " via " + o2.name + ")");
 		}
 
 		// make sure that a date object is available
@@ -732,9 +702,9 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Merges the two game data containers yielding a third one. By convention,
-	 * o1 must not be newer than o2. The resulting game data container
-	 * inherits the rules and name from <b>o2</b>.
+	 * Merges the two game data containers yielding a third one. By convention, o1 must not be
+	 * newer than o2. The resulting game data container inherits the rules and name from
+	 * <b>o2</b>.
 	 */
 	public static final boolean IP_NEW_MERGE = true;
 
@@ -794,7 +764,7 @@ public abstract class GameData implements Cloneable {
 		// MESSAGETYPES
 		// simple objects, created and merged in one step
 		for(Iterator iter = o1.msgTypes().values().iterator(); iter.hasNext();) {
-			MessageType mt    = (MessageType) iter.next();
+			MessageType mt = (MessageType) iter.next();
 			MessageType newMT = null;
 
 			try {
@@ -808,7 +778,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		for(Iterator iter = o2.msgTypes().values().iterator(); iter.hasNext();) {
-			MessageType mt    = (MessageType) iter.next();
+			MessageType mt = (MessageType) iter.next();
 			MessageType newMT = newGD.getMsgType(mt.getID());
 
 			if(newMT == null) {
@@ -826,7 +796,7 @@ public abstract class GameData implements Cloneable {
 		// SPELLS
 		// simple objects, created and merged in one step
 		for(Iterator iter = o1.spells().values().iterator(); iter.hasNext();) {
-			Spell spell    = (Spell) iter.next();
+			Spell spell = (Spell) iter.next();
 			Spell newSpell = null;
 
 			try {
@@ -840,7 +810,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		for(Iterator iter = o2.spells().values().iterator(); iter.hasNext();) {
-			Spell spell    = (Spell) iter.next();
+			Spell spell = (Spell) iter.next();
 			Spell newSpell = newGD.getSpell(spell.getID());
 
 			if(newSpell == null) {
@@ -858,7 +828,7 @@ public abstract class GameData implements Cloneable {
 		// POTIONS
 		// simple objects, created and merged in one step
 		for(Iterator iter = o1.potions().values().iterator(); iter.hasNext();) {
-			Potion potion    = (Potion) iter.next();
+			Potion potion = (Potion) iter.next();
 			Potion newPotion = null;
 
 			try {
@@ -872,7 +842,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		for(Iterator iter = o2.potions().values().iterator(); iter.hasNext();) {
-			Potion potion    = (Potion) iter.next();
+			Potion potion = (Potion) iter.next();
 			Potion newPotion = newGD.getPotion(potion.getID());
 
 			if(newPotion == null) {
@@ -894,16 +864,14 @@ public abstract class GameData implements Cloneable {
 				newGD.translations().putAll(o1.translations());
 			}
 
-			if((o2.translations() != null) &&
-				   o1.getLocale().equals(o2.getLocale())) {
+			if((o2.translations() != null) && o1.getLocale().equals(o2.getLocale())) {
 				newGD.translations().putAll(o2.translations());
 			}
 		}
 
 		// FACTIONS
 		if(o1.factions() != null) {
-			for(Iterator iter = o1.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				try {
@@ -915,14 +883,12 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.factions() != null) {
-			for(Iterator iter = o2.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				if(newGD.getFaction(f.getID()) == null) {
 					try {
-						newGD.addFaction(new Faction((ID) f.getID().clone(),
-													 newGD));
+						newGD.addFaction(new Faction((ID) f.getID().clone(), newGD));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -932,8 +898,7 @@ public abstract class GameData implements Cloneable {
 
 		// REGIONS
 		if(o1.regions() != null) {
-			for(Iterator iter = o1.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
 				try {
@@ -945,8 +910,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.regions() != null) {
-			for(Iterator iter = o2.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
 				if(newGD.getRegion(r.getID()) == null) {
@@ -961,8 +925,7 @@ public abstract class GameData implements Cloneable {
 
 		// ISLANDS
 		if(o1.islands() != null) {
-			for(Iterator iter = o1.islands().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.islands().values().iterator(); iter.hasNext();) {
 				Island i = (Island) iter.next();
 
 				try {
@@ -974,8 +937,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.islands() != null) {
-			for(Iterator iter = o2.islands().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.islands().values().iterator(); iter.hasNext();) {
 				Island i = (Island) iter.next();
 
 				if(o1.getIsland(i.getID()) == null) {
@@ -990,8 +952,7 @@ public abstract class GameData implements Cloneable {
 
 		// HOTSPOTS
 		if(o1.hotSpots() != null) {
-			for(Iterator iter = o1.hotSpots().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot h = (HotSpot) iter.next();
 
 				try {
@@ -1003,8 +964,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.hotSpots() != null) {
-			for(Iterator iter = o2.hotSpots().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot h = (HotSpot) iter.next();
 
 				if(newGD.getHotSpot(h.getID()) == null) {
@@ -1019,8 +979,7 @@ public abstract class GameData implements Cloneable {
 
 		// BUILDINGS
 		if(o2.buildings() != null) {
-			for(Iterator iter = o2.buildings().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.buildings().values().iterator(); iter.hasNext();) {
 				Building b = (Building) iter.next();
 
 				try {
@@ -1034,9 +993,8 @@ public abstract class GameData implements Cloneable {
 		if(o1.buildings() != null) {
 			// accept old buildings not occuring in the new report
 			// only if there are no units in that region
-			for(Iterator iter = o1.buildings().values().iterator();
-					iter.hasNext();) {
-				Building b			 = (Building) iter.next();
+			for(Iterator iter = o1.buildings().values().iterator(); iter.hasNext();) {
+				Building b = (Building) iter.next();
 				Building curBuilding = o2.getBuilding(b.getID());
 
 				if(curBuilding == null) {
@@ -1048,8 +1006,7 @@ public abstract class GameData implements Cloneable {
 
 					if((curRegion == null) || curRegion.units().isEmpty()) {
 						try {
-							newGD.addBuilding(new Building((ID) b.getID().clone(),
-														   newGD));
+							newGD.addBuilding(new Building((ID) b.getID().clone(), newGD));
 						} catch(CloneNotSupportedException e) {
 							log.error(e);
 						}
@@ -1155,8 +1112,7 @@ public abstract class GameData implements Cloneable {
 
 		// MERGE FACTIONS
 		if(o1.factions() != null) {
-			for(Iterator iter = o1.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.factions().values().iterator(); iter.hasNext();) {
 				Faction curFaction = (Faction) iter.next();
 				Faction newFaction = newGD.getFaction(curFaction.getID());
 				Faction.merge(o1, curFaction, newGD, newFaction);
@@ -1164,8 +1120,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.factions() != null) {
-			for(Iterator iter = o2.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.factions().values().iterator(); iter.hasNext();) {
 				Faction curFaction = (Faction) iter.next();
 				Faction newFaction = newGD.getFaction(curFaction.getID());
 				Faction.merge(o2, curFaction, newGD, newFaction);
@@ -1174,8 +1129,7 @@ public abstract class GameData implements Cloneable {
 
 		// MERGE REGIONS
 		if(o1.regions() != null) {
-			for(Iterator iter = o1.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
 				Region newRegion = newGD.getRegion(curRegion.getID());
 				Region.merge(o1, curRegion, newGD, newRegion, dateEqual);
@@ -1183,8 +1137,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.regions() != null) {
-			for(Iterator iter = o2.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
 				Region newRegion = newGD.getRegion(curRegion.getID());
 				Region.merge(o2, curRegion, newGD, newRegion, true);
@@ -1193,8 +1146,7 @@ public abstract class GameData implements Cloneable {
 
 		// MERGE ISLANDS
 		if(o1.islands() != null) {
-			for(Iterator iter = o1.islands().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.islands().values().iterator(); iter.hasNext();) {
 				Island curIsland = (Island) iter.next();
 				Island newIsland = newGD.getIsland(curIsland.getID());
 				Island.merge(o1, curIsland, newGD, newIsland);
@@ -1202,8 +1154,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.islands() != null) {
-			for(Iterator iter = o2.islands().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.islands().values().iterator(); iter.hasNext();) {
 				Island curIsland = (Island) iter.next();
 				Island newIsland = newGD.getIsland(curIsland.getID());
 				Island.merge(o2, curIsland, newGD, newIsland);
@@ -1212,8 +1163,7 @@ public abstract class GameData implements Cloneable {
 
 		// MERGE HOTSPOTS
 		if(o1.hotSpots() != null) {
-			for(Iterator iter = o1.hotSpots().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot curHotSpot = (HotSpot) iter.next();
 				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
 				HotSpot.merge(o1, curHotSpot, newGD, newHotSpot);
@@ -1221,8 +1171,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.hotSpots() != null) {
-			for(Iterator iter = o2.hotSpots().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot curHotSpot = (HotSpot) iter.next();
 				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
 				HotSpot.merge(o2, curHotSpot, newGD, newHotSpot);
@@ -1231,8 +1180,7 @@ public abstract class GameData implements Cloneable {
 
 		// MERGE BUILDINGS
 		if(o1.buildings() != null) {
-			for(Iterator iter = o1.buildings().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o1.buildings().values().iterator(); iter.hasNext();) {
 				Building curBuilding = (Building) iter.next();
 				Building newBuilding = newGD.getBuilding(curBuilding.getID());
 
@@ -1243,8 +1191,7 @@ public abstract class GameData implements Cloneable {
 		}
 
 		if(o2.buildings() != null) {
-			for(Iterator iter = o2.buildings().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = o2.buildings().values().iterator(); iter.hasNext();) {
 				Building curBuilding = (Building) iter.next();
 				Building newBuilding = newGD.getBuilding(curBuilding.getID());
 
@@ -1262,8 +1209,7 @@ public abstract class GameData implements Cloneable {
 
 				if(newShip == null) {
 					if(log.isWarnEnabled()) {
-						log.warn("unexp ship in o1 " +
-								 ((EntityID) curShip.getID()).intValue());
+						log.warn("unexp ship in o1 " + ((EntityID) curShip.getID()).intValue());
 					}
 				}
 
@@ -1278,8 +1224,7 @@ public abstract class GameData implements Cloneable {
 
 				if(newShip == null) {
 					if(log.isWarnEnabled()) {
-						log.warn("unexp ship in o2 " +
-								 ((EntityID) curShip.getID()).intValue());
+						log.warn("unexp ship in o2 " + ((EntityID) curShip.getID()).intValue());
 					}
 				}
 
@@ -1302,7 +1247,7 @@ public abstract class GameData implements Cloneable {
 			Unit curUnit2 = o2.findUnit(newUnit.getID(), null, null);
 
 			// find a temp ID to gather information out of the temp unit
-			ID     tempID    = null;
+			ID tempID = null;
 			Region newRegion = null;
 
 			if((curUnit2 != null) && !dateEqual) { // only use temp ID if reports have different date
@@ -1323,8 +1268,7 @@ public abstract class GameData implements Cloneable {
 					Unit.merge(o1, curUnit1, newGD, newUnit);
 				} else { // only copy the skills to get change-level base
 
-					if((curUnit2.skills != null) ||
-						   (curUnit1.getFaction().isPrivileged())) {
+					if((curUnit2.skills != null) || (curUnit1.getFaction().isPrivileged())) {
 						Unit.copySkills(curUnit1, newUnit);
 					}
 				}
@@ -1371,7 +1315,7 @@ public abstract class GameData implements Cloneable {
 				Iterator it = units().values().iterator();
 
 				while(it.hasNext()) {
-					Unit u  = (Unit) it.next();
+					Unit u = (Unit) it.next();
 					Unit u2 = u.getTempUnit(tempID);
 
 					if(u2 != null) {
@@ -1379,15 +1323,14 @@ public abstract class GameData implements Cloneable {
 					}
 				}
 			} else {
-				Map m = Regions.getAllNeighbours(regions(), newRegion.getID(),
-												 3, null);
+				Map m = Regions.getAllNeighbours(regions(), newRegion.getID(), 3, null);
 
 				if(m != null) {
 					Iterator it = m.values().iterator();
 
 					while(it.hasNext()) {
-						Region r  = (Region) it.next();
-						Unit   u2 = r.getUnit(tempID);
+						Region r = (Region) it.next();
+						Unit u2 = r.getUnit(tempID);
 
 						if(u2 != null) {
 							return u2;
@@ -1402,8 +1345,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * This function checks if the game data have been manipulated somehow
-	 * (merge will lead to a filetype null).
+	 * This function checks if the game data have been manipulated somehow (merge will lead to a
+	 * filetype null).
 	 *
 	 * @param g TODO: DOCUMENT ME!
 	 *
@@ -1436,8 +1379,7 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * returns a clone of the game data (using CRWriter/CRParser  trick
-	 * encapsulated in Loader)
+	 * returns a clone of the game data (using CRWriter/CRParser  trick encapsulated in Loader)
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
@@ -1475,47 +1417,50 @@ public abstract class GameData implements Cloneable {
 		// remove double messages
 		postProcessMessages();
 
-
 		getGameSpecificStuff().postProcess(this);
 		postProcessed = true;
 	}
 
-	/** 
-	 * This function post processes the message blocks to remove duplicate messages.
-	 * In former times this has been done while loading the game data but 
-	 * this had a negative time tradeoff (O(n^2)). This functions needs about O(n log n).
-	 */	
+	/**
+	 * This function post processes the message blocks to remove duplicate messages. In former
+	 * times this has been done while loading the game data but  this had a negative time tradeoff
+	 * (O(n^2)). This functions needs about O(n log n).
+	 */
 	private void postProcessMessages() {
 		// faction.messages
-		for(Iterator iter = factions().values().iterator(); iter.hasNext(); ) {
+		for(Iterator iter = factions().values().iterator(); iter.hasNext();) {
 			Faction o = (Faction) iter.next();
 			postProcessMessages(o.messages);
 		}
+
 		// region.messages
-		for(Iterator iter = regions().values().iterator(); iter.hasNext(); ) {
+		for(Iterator iter = regions().values().iterator(); iter.hasNext();) {
 			Region o = (Region) iter.next();
 			postProcessMessages(o.messages);
 		}
 	}
 
-	/** 
-	 * Postprocess a given list of messages. To remove duplicate messages 
-	 * we put all messages in an ordered hashtable and put them back into
-	 * the messages collection.
+	/**
+	 * Postprocess a given list of messages. To remove duplicate messages  we put all messages in
+	 * an ordered hashtable and put them back into the messages collection.
+	 *
+	 * @param messages TODO: DOCUMENT ME!
 	 */
 	private void postProcessMessages(Collection messages) {
 		if(messages == null) {
 			return;
 		}
+
 		Map ht = CollectionFactory.createOrderedHashtable();
+
 		for(Iterator iter = messages.iterator(); iter.hasNext();) {
 			Message msg = (Message) iter.next();
+
 			if(ht.put(msg, msg) != null) {
-				log.warn("Duplicate message \"" + msg.getText() +
-						 "\" found, removing it.");
-				
+				log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
 			}
 		}
+
 		messages.clear();
 		messages.addAll(ht.values());
 	}

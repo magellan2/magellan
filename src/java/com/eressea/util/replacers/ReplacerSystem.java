@@ -21,7 +21,7 @@ package com.eressea.util.replacers;
  */
 public class ReplacerSystem {
 	protected ReplacerEnvironment environment;
-	protected Replacer			  base;
+	protected Replacer base;
 
 	/**
 	 * TODO: DOCUMENT ME!

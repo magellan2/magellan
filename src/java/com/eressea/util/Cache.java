@@ -19,10 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A class for caching data that is time consuming to compute or wasteful to
- * allocate but frequently needed. Objects of this type are available in units
- * and in all UnitContainer subclasses. If fields are added, please comment on
- * where the field is used and with wich scope!
+ * A class for caching data that is time consuming to compute or wasteful to allocate but
+ * frequently needed. Objects of this type are available in units and in all UnitContainer
+ * subclasses. If fields are added, please comment on where the field is used and with wich scope!
  */
 public class Cache {
 	private Collection handlers = null;
@@ -131,9 +130,9 @@ public class Cache {
 			modifiedItems = null;
 		}
 
-		unitWeight			   = -1;
-		modifiedUnitWeight     = -1;
-		modifiedPersons		   = -1;
+		unitWeight = -1;
+		modifiedUnitWeight = -1;
+		modifiedPersons = -1;
 		modifiedContainerUnits = null;
 
 		if(regionItems != null) {
@@ -141,7 +140,7 @@ public class Cache {
 			regionItems = null;
 		}
 
-		movementPath		  = null;
+		movementPath = null;
 		movementPathIsPassive = null;
 	}
 }

@@ -19,67 +19,60 @@ import com.eressea.EntityID;
 import com.eressea.Unit;
 
 /**
- * A comparator sorting units according to whether they belong to a specified
- * faction or not.
+ * A comparator sorting units according to whether they belong to a specified faction or not.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals
  * </p>
  * 
  * <p>
- * This class allows to introduce sub-comparators in order to create a sorting
- * hierarchy.
+ * This class allows to introduce sub-comparators in order to create a sorting hierarchy.
  * </p>
  * 
  * <p>
- * This comparator does not impose a strict ordering on the compared units,
- * since either two units may be of the same faction or the may be of
- * different factions, where neither of them belongs to the specified faction.
- * In these cases the units remain "unsorted".
+ * This comparator does not impose a strict ordering on the compared units, since either two units
+ * may be of the same faction or the may be of different factions, where neither of them belongs
+ * to the specified faction. In these cases the units remain "unsorted".
  * </p>
  * 
  * <p>
- * In order to have these units sorted, one sub-comparator for each of the two
- * cases above my be introduced, that may or, again, may not impose a strict
- * order on the compared elements.
+ * In order to have these units sorted, one sub-comparator for each of the two cases above my be
+ * introduced, that may or, again, may not impose a strict order on the compared elements.
  * </p>
  */
 public class UnitPreferredFactionComparator implements Comparator {
 	protected Comparator preferredFactionSubCmp = null;
 	protected Comparator otherFactionSubCmp = null;
-	protected int		 factionID		    = 0;
+	protected int factionID = 0;
 
 	/**
-	 * Creates a new <tt>UnitPreferredFactionComparator</tt> object with the
-	 * specified sub-comparators and the specified faction id.
+	 * Creates a new <tt>UnitPreferredFactionComparator</tt> object with the specified
+	 * sub-comparators and the specified faction id.
 	 *
-	 * @param preferredFactionSubComparator a <tt>Comparator</tt>     applied
-	 * 		  if both compared units are in the preferred faction.
-	 * @param otherFactionSubComparator a <tt>Comparator</tt>     applied if
-	 * 		  both compared units are not in the preferred faction.
+	 * @param preferredFactionSubComparator a <tt>Comparator</tt>     applied if both compared
+	 * 		  units are in the preferred faction.
+	 * @param otherFactionSubComparator a <tt>Comparator</tt>     applied if both compared units
+	 * 		  are not in the preferred faction.
 	 * @param fID TODO: DOCUMENT ME!
 	 */
 	public UnitPreferredFactionComparator(Comparator preferredFactionSubComparator,
-										  Comparator otherFactionSubComparator,
-										  int fID) {
+										  Comparator otherFactionSubComparator, int fID) {
 		preferredFactionSubCmp = preferredFactionSubComparator;
-		otherFactionSubCmp     = otherFactionSubComparator;
-		factionID			   = fID;
+		otherFactionSubCmp = otherFactionSubComparator;
+		factionID = fID;
 	}
 
 	/**
-	 * Compares two units, where unit one is regarded less than unit two if
-	 * unit one belongs to the preferred faction, whereas unit two does not.
-	 * Cases of equality are handled by sub-comparators, if specified, or
-	 * returned as such.
+	 * Compares two units, where unit one is regarded less than unit two if unit one belongs to the
+	 * preferred faction, whereas unit two does not. Cases of equality are handled by
+	 * sub-comparators, if specified, or returned as such.
 	 *
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return -1 if o1 belongs to the preferred faction and o2 does not, 1 if
-	 * 		   o2 belongs to the preferred faction and o1 does not. The return
-	 * 		   value in the other cases (both or neither of them belong to the
-	 * 		   preferred faction) depends on the sub-comparators.
+	 * @return -1 if o1 belongs to the preferred faction and o2 does not, 1 if o2 belongs to the
+	 * 		   preferred faction and o1 does not. The return value in the other cases (both or
+	 * 		   neither of them belong to the preferred faction) depends on the sub-comparators.
 	 */
 	public int compare(Object o1, Object o2) {
 		int retVal = 0;

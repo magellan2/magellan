@@ -17,11 +17,11 @@ package com.eressea.completion;
  * A class representing a possible completion of an incomplete order.
  */
 public class Completion {
-	private String name		    = null;
-	private String value	    = null;
-	private String postfix	    = null;
-	private int    priority     = 9;
-	private int    cursorOffset = 0;
+	private String name = null;
+	private String value = null;
+	private String postfix = null;
+	private int priority = 9;
+	private int cursorOffset = 0;
 
 	/**
 	 * Creates a new Completion object.
@@ -95,12 +95,11 @@ public class Completion {
 	 * @param prio TODO: DOCUMENT ME!
 	 * @param cursorOffset TODO: DOCUMENT ME!
 	 */
-	public Completion(String name, String value, String postfix, int prio,
-					  int cursorOffset) {
-		this.name		  = name;
-		this.value		  = value;
-		this.postfix	  = postfix;
-		this.priority     = prio;
+	public Completion(String name, String value, String postfix, int prio, int cursorOffset) {
+		this.name = name;
+		this.value = value;
+		this.postfix = postfix;
+		this.priority = prio;
 		this.cursorOffset = cursorOffset;
 	}
 
@@ -110,9 +109,9 @@ public class Completion {
 	 * @param c TODO: DOCUMENT ME!
 	 */
 	public Completion(Completion c) {
-		this.name     = c.getName();
-		this.value    = c.getValue();
-		this.postfix  = c.getPostfix();
+		this.name = c.getName();
+		this.value = c.getValue();
+		this.postfix = c.getPostfix();
 		this.priority = c.getPriority();
 	}
 

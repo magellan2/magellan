@@ -28,16 +28,16 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * A FileType represents a file for reading and writing data Special care will
- * be taken for compressed files in the corresponding child objects.
+ * A FileType represents a file for reading and writing data Special care will be taken for
+ * compressed files in the corresponding child objects.
  */
 public class FileType {
 	// basically identified file types
-	static final String CR  = ".cr";
+	static final String CR = ".cr";
 	static final String XML = ".xml";
 
 	// basically identified compression types with single entry
-	static final String GZIP  = ".gz";
+	static final String GZIP = ".gz";
 	static final String BZIP2 = ".bz2";
 
 	// basically identified compression types with multiple entries
@@ -59,9 +59,10 @@ public class FileType {
 		this.readonly = readonly;
 	}
 
-
-	/** 
+	/**
 	 * Sets if file is readonly
+	 *
+	 * @param readonly TODO: DOCUMENT ME!
 	 */
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
@@ -93,16 +94,15 @@ public class FileType {
 	 *
 	 * @return a File object
 	 *
-	 * @throws IOException if file cannot be determined, e.g. for  an url
-	 * 		   pointing to an InputStream.
+	 * @throws IOException if file cannot be determined, e.g. for  an url pointing to an
+	 * 		   InputStream.
 	 */
 	public File getFile() throws IOException {
 		return new File(getName());
 	}
 
 	/**
-	 * Returns the most inner name of the FileType. Will be overwritten in
-	 * ZipFileType
+	 * Returns the most inner name of the FileType. Will be overwritten in ZipFileType
 	 *
 	 * @return the most inner name of a FileType.
 	 */
@@ -148,8 +148,7 @@ public class FileType {
 	 *
 	 * @return a Writer of the underlying File.
 	 *
-	 * @throws IOException If file is marked as readonly or  another
-	 * 		   IOException occured.
+	 * @throws IOException If file is marked as readonly or  another IOException occured.
 	 * @throws ReadOnlyException TODO: DOCUMENT ME!
 	 */
 	public Writer createWriter() throws IOException {
@@ -193,9 +192,7 @@ public class FileType {
 	 *
 	 * @throws IOException
 	 */
-	public static Reader createEncodingReader(InputStream is)
-									   throws IOException
-	{
+	public static Reader createEncodingReader(InputStream is) throws IOException {
 		return new InputStreamReader(is, DEFAULT_ENCODING);
 	}
 
@@ -208,9 +205,7 @@ public class FileType {
 	 *
 	 * @throws IOException
 	 */
-	public static Writer createEncodingWriter(OutputStream os)
-									   throws IOException
-	{
+	public static Writer createEncodingWriter(OutputStream os) throws IOException {
 		return new OutputStreamWriter(os, DEFAULT_ENCODING);
 	}
 

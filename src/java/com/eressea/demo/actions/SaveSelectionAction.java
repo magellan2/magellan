@@ -44,9 +44,7 @@ import com.eressea.util.logging.Logger;
  *
  * @author Ilja Pavkovic
  */
-public class SaveSelectionAction extends MenuAction implements SelectionListener,
-															   GameDataListener
-{
+public class SaveSelectionAction extends MenuAction implements SelectionListener, GameDataListener {
 	private static final Logger log = Logger.getInstance(SaveSelectionAction.class);
 
 	// FIXME: 
@@ -62,7 +60,7 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 
 	/** TODO: DOCUMENT ME! */
 	public static final String DELIMITER = " ";
-	private Client			   client;
+	private Client client;
 
 	// pavkovic 2002.12.21: use TreeMap instead of Hashtable, to make the output being sorted
 	private Map selectedRegions = CollectionFactory.createTreeMap();
@@ -88,12 +86,10 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -125,20 +121,17 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(new EresseaFileFilter(EXTENSION, DESCRIPTION));
-		fc.setSelectedFile(new File(client.getSettings().getProperty(getPropertyName(),
-																	 "")));
+		fc.setSelectedFile(new File(client.getSettings().getProperty(getPropertyName(), "")));
 		fc.setDialogTitle(getString("title"));
 
 		if(fc.showSaveDialog(client) == JFileChooser.APPROVE_OPTION) {
 			try {
 				client.getSettings().setProperty(getPropertyName(),
-												 fc.getSelectedFile()
-												   .getAbsolutePath());
+												 fc.getSelectedFile().getAbsolutePath());
 
 				BufferedWriter bw = new BufferedWriter(new FileWriter(fc.getSelectedFile()));
 
-				for(Iterator iter = selectedRegions.keySet().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
 					bw.write(((Coordinate) iter.next()).toString(DELIMITER));
 					bw.newLine();
 				}

@@ -84,15 +84,16 @@ import com.eressea.util.comparator.MessageTypeComparator;
 /**
  * A class for displaying Eressea messages for regions or factions.
  */
-public class MessagePanel extends InternationalizedDataPanel
-	implements SelectionListener, TreeSelectionListener, PreferencesFactory,
-			   MenuProvider
+public class MessagePanel extends InternationalizedDataPanel implements SelectionListener,
+																		TreeSelectionListener,
+																		PreferencesFactory,
+																		MenuProvider
 {
 	// tree elements
-	private CopyTree			   tree		    = null;
-	private DefaultTreeModel	   treeModel    = null;
-	private DefaultMutableTreeNode rootNode     = null;
-	protected NodeWrapperFactory   nodeFactory;
+	private CopyTree tree = null;
+	private DefaultTreeModel treeModel = null;
+	private DefaultMutableTreeNode rootNode = null;
+	protected NodeWrapperFactory nodeFactory;
 	protected LineWrapCellRenderer lineRenderer;
 
 	/**
@@ -105,8 +106,7 @@ public class MessagePanel extends InternationalizedDataPanel
 	public MessagePanel(EventDispatcher d, GameData gd, Properties p) {
 		super(d, gd, p);
 
-		nodeFactory = new NodeWrapperFactory(p, "MessagePanel.Nodes",
-											 getString("nodeFactory.title"));
+		nodeFactory = new NodeWrapperFactory(p, "MessagePanel.Nodes", getString("nodeFactory.title"));
 
 		// create dummies to have a valid pref adapter
 		nodeFactory.createUnitNodeWrapper(null, null);
@@ -149,8 +149,7 @@ public class MessagePanel extends InternationalizedDataPanel
 			show((Region) activeObject, rootNode);
 		} else if(activeObject instanceof Faction) {
 			show((Faction) activeObject, rootNode);
-		} else if(activeObject instanceof Building ||
-					  activeObject instanceof Ship) {
+		} else if(activeObject instanceof Building || activeObject instanceof Ship) {
 			show((UnitContainer) activeObject, rootNode);
 		} else if(activeObject instanceof Unit) {
 			show((Unit) activeObject, rootNode);
@@ -197,7 +196,7 @@ public class MessagePanel extends InternationalizedDataPanel
 						Iterator iter = msg.attributes.values().iterator();
 
 						while(iter.hasNext()) {
-							String     attribute = (String) iter.next();
+							String attribute = (String) iter.next();
 							Coordinate c = Coordinate.parse(attribute, ",");
 
 							if(c == null) {
@@ -326,8 +325,7 @@ public class MessagePanel extends InternationalizedDataPanel
 		if(data.factions() != null) {
 			List sortedMessages = CollectionFactory.createLinkedList();
 
-			for(Iterator fac = data.factions().values().iterator();
-					fac.hasNext();) {
+			for(Iterator fac = data.factions().values().iterator(); fac.hasNext();) {
 				Faction f = (Faction) fac.next();
 
 				if(f.messages != null) {
@@ -340,7 +338,7 @@ public class MessagePanel extends InternationalizedDataPanel
 							Iterator iter = msg.attributes.values().iterator();
 
 							while(iter.hasNext()) {
-								String     attribute = (String) iter.next();
+								String attribute = (String) iter.next();
 								Coordinate c = Coordinate.parse(attribute, ",");
 
 								if(c == null) {
@@ -485,11 +483,11 @@ public class MessagePanel extends InternationalizedDataPanel
 			return;
 		}
 
-		DefaultMutableTreeNode node    = null;
+		DefaultMutableTreeNode node = null;
 		DefaultMutableTreeNode subNode = null;
 
-		Coordinate			   c = (Coordinate) b.getID();
-		Region				   r = data.getRegion(c);
+		Coordinate c = (Coordinate) b.getID();
+		Region r = data.getRegion(c);
 
 		if(r != null) {
 			node = new DefaultMutableTreeNode(nodeFactory.createRegionNodeWrapper(r));
@@ -519,8 +517,8 @@ public class MessagePanel extends InternationalizedDataPanel
 			return;
 		}
 
-		DefaultMutableTreeNode node			  = null;
-		List				   sortedMessages = CollectionFactory.createLinkedList();
+		DefaultMutableTreeNode node = null;
+		List sortedMessages = CollectionFactory.createLinkedList();
 
 		if((uc.effects != null) && (uc.effects.size() > 0)) {
 			node = new DefaultMutableTreeNode(getString("node.effects"));
@@ -534,8 +532,7 @@ public class MessagePanel extends InternationalizedDataPanel
 		}
 
 		if(data.factions() != null) {
-			for(Iterator factions = data.factions().values().iterator();
-					factions.hasNext();) {
+			for(Iterator factions = data.factions().values().iterator(); factions.hasNext();) {
 				Faction f = (Faction) factions.next();
 
 				if(f.messages != null) {
@@ -575,7 +572,7 @@ public class MessagePanel extends InternationalizedDataPanel
 	 * @param parent TODO: DOCUMENT ME!
 	 */
 	private void show(Message m, DefaultMutableTreeNode parent) {
-		DefaultMutableTreeNode node    = null;
+		DefaultMutableTreeNode node = null;
 		DefaultMutableTreeNode subNode = null;
 
 		node = new DefaultMutableTreeNode(m.getText());
@@ -586,7 +583,7 @@ public class MessagePanel extends InternationalizedDataPanel
 
 			if(value != null) {
 				try {
-					int  i = Integer.parseInt(value);
+					int i = Integer.parseInt(value);
 					Unit u = data.getUnit(UnitID.createUnitID(i));
 
 					if(u != null) {
@@ -597,9 +594,8 @@ public class MessagePanel extends InternationalizedDataPanel
 				}
 			}
 
-			for(Iterator attributes = m.attributes.values().iterator();
-					attributes.hasNext();) {
-				String     val = (String) attributes.next();
+			for(Iterator attributes = m.attributes.values().iterator(); attributes.hasNext();) {
+				String val = (String) attributes.next();
 				Coordinate c = Coordinate.parse(val, ",");
 
 				if(c == null) {
@@ -657,15 +653,14 @@ public class MessagePanel extends InternationalizedDataPanel
 	}
 
 	private void initTree() {
-		rootNode  = new DefaultMutableTreeNode("Rootnode");
+		rootNode = new DefaultMutableTreeNode("Rootnode");
 		treeModel = new DefaultTreeModel(rootNode);
-		tree	  = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel, dispatcher);
 		tree.setRootVisible(false);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(this);
 
-		JScrollPane treeScrollPane = new JScrollPane(tree,
-													 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane treeScrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 													 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setLayout(new GridLayout(1, 0));
 		add(treeScrollPane);
@@ -689,11 +684,10 @@ public class MessagePanel extends InternationalizedDataPanel
 		}
 
 		lineRenderer = new LineWrapCellRenderer((DefaultTreeCellRenderer) tree.getCellRenderer());
-		lineRenderer.setLineWrap(settings.getProperty("MessagePanel.LineWrap",
-													  "true").equals("true"));
+		lineRenderer.setLineWrap(settings.getProperty("MessagePanel.LineWrap", "true").equals("true"));
 		lineRenderer.registerTree(tree);
 
-		CellRenderer		  cr = new CellRenderer(settings);
+		CellRenderer cr = new CellRenderer(settings);
 
 		MixedTreeCellRenderer mixed = new MixedTreeCellRenderer(lineRenderer);
 		mixed.putRenderer(UnitNodeWrapper.class, cr);
@@ -730,20 +724,19 @@ public class MessagePanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Adds the given messages to the parent node, categorized by the section
-	 * of the messagetypes and then sorted by messagetypes.
+	 * Adds the given messages to the parent node, categorized by the section of the messagetypes
+	 * and then sorted by messagetypes.
 	 *
 	 * @param messages TODO: DOCUMENT ME!
 	 * @param parent TODO: DOCUMENT ME!
 	 */
-	private void addCategorizedMessages(Collection messages,
-										DefaultMutableTreeNode parent) {
+	private void addCategorizedMessages(Collection messages, DefaultMutableTreeNode parent) {
 		Map categories = CollectionFactory.createHashtable();
 
 		// categorize messages
 		for(Iterator iter = messages.iterator(); iter.hasNext();) {
 			Message message = (Message) iter.next();
-			String  section = null;
+			String section = null;
 
 			if(message.getMessageType() != null) {
 				section = message.getMessageType().getSection();
@@ -824,8 +817,7 @@ public class MessagePanel extends InternationalizedDataPanel
 			defaultTranslations.put("prefs.border.title", "Line Wrapping");
 			defaultTranslations.put("prefs.title", "Messages");
 			defaultTranslations.put("nodeFactory.title", "Message Entries");
-			defaultTranslations.put("section.production",
-									"Resources and Production");
+			defaultTranslations.put("section.production", "Resources and Production");
 			defaultTranslations.put("section.errors", "Warnings and Errors");
 
 			defaultTranslations.put("menu.caption", "Messages");
@@ -878,7 +870,7 @@ public class MessagePanel extends InternationalizedDataPanel
 
 	protected class Pref extends JPanel implements PreferencesAdapter {
 		protected MessagePanel src;
-		protected JCheckBox    lineWrap;
+		protected JCheckBox lineWrap;
 
 		/**
 		 * Creates a new Pref object.
@@ -892,21 +884,19 @@ public class MessagePanel extends InternationalizedDataPanel
 			JPanel help = new JPanel(new FlowLayout(FlowLayout.LEADING));
 			help.setBorder(BorderFactory.createTitledBorder(getString("prefs.border.title")));
 
-			lineWrap = new JCheckBox(getString("prefs.linewrap"),
-									 src.isLineWrap());
+			lineWrap = new JCheckBox(getString("prefs.linewrap"), src.isLineWrap());
 			help.add(lineWrap);
 
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 1,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.BOTH,
-														  new Insets(1, 1, 1, 1),
-														  0, 0);
+														  new Insets(1, 1, 1, 1), 0, 0);
 			this.add(new JPanel(), c);
 			c.gridy = 2;
 			this.add(new JPanel(), c);
 
 			c.gridy = 1;
-			c.fill  = GridBagConstraints.HORIZONTAL;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			this.add(help, c);
 		}
 

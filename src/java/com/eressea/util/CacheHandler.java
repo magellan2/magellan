@@ -14,8 +14,7 @@
 package com.eressea.util;
 
 /**
- * An interface to be implemented by all classes that want to be notified about
- * cache clean-up.
+ * An interface to be implemented by all classes that want to be notified about cache clean-up.
  */
 public interface CacheHandler {
 	/**

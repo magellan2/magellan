@@ -52,14 +52,13 @@ import com.eressea.util.UnitRoutePlanner;
  * @version $Revision$
  */
 public class UnitContextMenu extends JPopupMenu {
-	private Unit							  unit;
-	private GameData						  data;
+	private Unit unit;
+	private GameData data;
 	private com.eressea.event.EventDispatcher dispatcher;
 
 	/**
-	 * The selected Units (that are a subset of the selected objects in the
-	 * overview tree). Notice: this.unit does not need to be element of this
-	 * collection!
+	 * The selected Units (that are a subset of the selected objects in the overview tree). Notice:
+	 * this.unit does not need to be element of this collection!
 	 */
 	private Collection selectedUnits = CollectionFactory.createLinkedList();
 
@@ -72,11 +71,10 @@ public class UnitContextMenu extends JPopupMenu {
 	 * @param data TODO: DOCUMENT ME!
 	 */
 	public UnitContextMenu(Unit unit, Collection selectedObjects,
-						   com.eressea.event.EventDispatcher dispatcher,
-						   GameData data) {
+						   com.eressea.event.EventDispatcher dispatcher, GameData data) {
 		super(unit.toString());
-		this.unit	    = unit;
-		this.data	    = data;
+		this.unit = unit;
+		this.data = data;
 		this.dispatcher = dispatcher;
 
 		if(selectedObjects != null) {
@@ -129,10 +127,9 @@ public class UnitContextMenu extends JPopupMenu {
 				TeachRelation tr = (TeachRelation) iter.next();
 
 				if(tr.target == unit) {
-					Unit	  teacher				 = tr.source;
+					Unit teacher = tr.source;
 					JMenuItem removeFromTeachersList = new JMenuItem(getString("menu.removeFromTeachersList") +
-																	 ": " +
-																	 teacher.toString());
+																	 ": " + teacher.toString());
 					add(removeFromTeachersList);
 					removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
 																								  teacher));
@@ -140,8 +137,7 @@ public class UnitContextMenu extends JPopupMenu {
 			}
 		} else {
 			// this part for multiple unit-selections
-			JMenuItem unitString = new JMenuItem(selectedUnits.size() + " " +
-												 getString("units"));
+			JMenuItem unitString = new JMenuItem(selectedUnits.size() + " " + getString("units"));
 			unitString.setEnabled(false);
 			add(unitString);
 
@@ -183,7 +179,7 @@ public class UnitContextMenu extends JPopupMenu {
 
 		// test route planning capability
 		boolean canPlan = UnitRoutePlanner.canPlan(unit);
-		Region  reg = unit.getRegion();
+		Region reg = unit.getRegion();
 
 		if(canPlan && (selectedUnits != null)) {
 			Iterator it = selectedUnits.iterator();
@@ -215,8 +211,7 @@ public class UnitContextMenu extends JPopupMenu {
 	}
 
 	/**
-	 * Gives an order (optional replacing the existing ones) to the selected
-	 * units.
+	 * Gives an order (optional replacing the existing ones) to the selected units.
 	 */
 	private void event_addOrder() {
 		String s[] = (new GiveOrderDialog(JOptionPane.getFrameForComponent(this))).showGiveOrderDialog();
@@ -273,8 +268,7 @@ public class UnitContextMenu extends JPopupMenu {
 
 		java.awt.datatransfer.StringSelection strSel = new java.awt.datatransfer.StringSelection(idString);
 
-		java.awt.datatransfer.Clipboard		  cb = getToolkit()
-													   .getSystemClipboard();
+		java.awt.datatransfer.Clipboard cb = getToolkit().getSystemClipboard();
 
 		cb.setContents(strSel, null);
 
@@ -285,8 +279,7 @@ public class UnitContextMenu extends JPopupMenu {
 	private void event_copyNameID(ActionEvent e) {
 		java.awt.datatransfer.StringSelection strSel = new java.awt.datatransfer.StringSelection(unit.toString());
 
-		java.awt.datatransfer.Clipboard		  cb = getToolkit()
-													   .getSystemClipboard();
+		java.awt.datatransfer.Clipboard cb = getToolkit().getSystemClipboard();
 
 		cb.setContents(strSel, null);
 
@@ -316,7 +309,7 @@ public class UnitContextMenu extends JPopupMenu {
 		}
 
 		StringSelection strSel = new StringSelection(idString);
-		Clipboard	    cb = getToolkit().getSystemClipboard();
+		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 
 		unit = null;
@@ -332,7 +325,7 @@ public class UnitContextMenu extends JPopupMenu {
 		}
 
 		StringSelection strSel = new StringSelection(s);
-		Clipboard	    cb = getToolkit().getSystemClipboard();
+		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 
 		unit = null;
@@ -361,8 +354,8 @@ public class UnitContextMenu extends JPopupMenu {
 	}
 
 	/**
-	 * Checks whether the selectedUnits contain at least one Unit-object, that
-	 * belongs to a privileged faction.
+	 * Checks whether the selectedUnits contain at least one Unit-object, that belongs to a
+	 * privileged faction.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -398,18 +391,15 @@ public class UnitContextMenu extends JPopupMenu {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("menu.copyid.caption", "Copy ID");
-			defaultTranslations.put("menu.copyidandname.caption",
-									"Copy ID and name");
+			defaultTranslations.put("menu.copyidandname.caption", "Copy ID and name");
 			defaultTranslations.put("menu.disguise.caption", "Disguise unit");
 			defaultTranslations.put("units", "units");
 			defaultTranslations.put("menu.addorder.caption", "Add order");
 			defaultTranslations.put("menu.planroute", "Plan route");
 			defaultTranslations.put("menu.confirm.caption", "Confirm");
 			defaultTranslations.put("menu.copyids.caption", "Copy IDs");
-			defaultTranslations.put("menu.copyidsandnames.caption",
-									"Copy IDs and names");
-			defaultTranslations.put("menu.removeFromTeachersList",
-									"Don't be taught any more by");
+			defaultTranslations.put("menu.copyidsandnames.caption", "Copy IDs and names");
+			defaultTranslations.put("menu.removeFromTeachersList", "Don't be taught any more by");
 		}
 
 		return defaultTranslations;
@@ -436,11 +426,11 @@ public class UnitContextMenu extends JPopupMenu {
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
-			String     id     = student.getID().toString();
+			String id = student.getID().toString();
 			Collection orders = teacher.getOrders();
-			int		   i	  = 0;
-			boolean    found  = false;
-			String     order  = null;
+			int i = 0;
+			boolean found = false;
+			String order = null;
 
 			for(Iterator iter = orders.iterator(); iter.hasNext(); i++) {
 				order = (String) iter.next();
@@ -456,10 +446,8 @@ public class UnitContextMenu extends JPopupMenu {
 
 			if(found) {
 				String newOrder = order.substring(0, order.indexOf(id)) +
-								  order.substring(java.lang.Math.min(order.indexOf(id) +
-																	 1 +
-																	 id.length(),
-																	 order.length()),
+								  order.substring(java.lang.Math.min(order.indexOf(id) + 1 +
+																	 id.length(), order.length()),
 												  order.length());
 
 				// FIXME(pavkovic: Problem hier!

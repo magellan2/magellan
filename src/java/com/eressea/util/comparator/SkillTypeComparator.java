@@ -23,16 +23,14 @@ import com.eressea.rules.SkillType;
  * A comparator imposing an ordering on Skill objects by comparing their types.
  * 
  * <p>
- * Note: this comparator can impose orderings that are inconsistent with
- * equals.
+ * Note: this comparator can impose orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
- * I.e. if the two compared objects have the same type and they would be
- * regarded as equal by this comparator, instead of 0 the result of the
- * sub-comparator's comparison is returned.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality. I.e. if the two compared objects have the
+ * same type and they would be regarded as equal by this comparator, instead of 0 the result of
+ * the sub-comparator's comparison is returned.
  * </p>
  *
  * @author Ulrich Küster
@@ -45,14 +43,12 @@ public class SkillTypeComparator implements Comparator {
 	 * Creates a new SkillTypeComparator object.
 	 *
 	 * @param typeComparator used to compare the types of skills.
-	 * @param subComparator if the typeComparator's comparison of the skill
-	 * 		  types yields 0, this sub-comparator is applied to the skill
-	 * 		  objects if it is not <tt>null</tt>.
+	 * @param subComparator if the typeComparator's comparison of the skill types yields 0, this
+	 * 		  sub-comparator is applied to the skill objects if it is not <tt>null</tt>.
 	 */
-	public SkillTypeComparator(Comparator typeComparator,
-							   Comparator subComparator) {
+	public SkillTypeComparator(Comparator typeComparator, Comparator subComparator) {
 		this.typeCmp = typeComparator;
-		this.subCmp  = subComparator;
+		this.subCmp = subComparator;
 	}
 
 	/**
@@ -61,12 +57,12 @@ public class SkillTypeComparator implements Comparator {
 	 * @param o1 an instance of class Skill.
 	 * @param o2 an instance of class Skill.
 	 *
-	 * @return the result of the type comparator's comparison of the skill
-	 * 		   object types. If this result is 0 and a subcomparator is
-	 * 		   specified that subcomparator is applied on the skill objects.
+	 * @return the result of the type comparator's comparison of the skill object types. If this
+	 * 		   result is 0 and a subcomparator is specified that subcomparator is applied on the
+	 * 		   skill objects.
 	 */
 	public int compare(Object o1, Object o2) {
-		int		  retVal = 0;
+		int retVal = 0;
 
 		SkillType s1 = ((Skill) o1).getSkillType();
 		SkillType s2 = ((Skill) o2).getSkillType();

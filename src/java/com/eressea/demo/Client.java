@@ -167,43 +167,40 @@ import com.eressea.util.VersionInfo;
 import com.eressea.util.logging.Logger;
 
 /**
- * This class is the root of all evil. It represents also the main
- * entry point into the application and also the basic frame the
- * application creates.
+ * This class is the root of all evil. It represents also the main entry point into the application
+ * and also the basic frame the application creates.
  *
  * @author $author$
  * @version $Revision$
  */
-public class Client extends JFrame implements ShortcutListener,
-											  PreferencesFactory
-{
-	private static final Logger log			  = Logger.getInstance(Client.class);
-	private GameData		    data		  = null;
-	private List			    panels		  = null;
-	private MapperPanel		    mapPanel	  = null;
-	private EMapOverviewPanel   overviewPanel = null;
-	private EMapDetailsPanel    detailsPanel  = null;
-	private MessagePanel	    messagePanel  = null;
-	private Properties		    settings	  = null;
+public class Client extends JFrame implements ShortcutListener, PreferencesFactory {
+	private static final Logger log = Logger.getInstance(Client.class);
+	private GameData data = null;
+	private List panels = null;
+	private MapperPanel mapPanel = null;
+	private EMapOverviewPanel overviewPanel = null;
+	private EMapDetailsPanel detailsPanel = null;
+	private MessagePanel messagePanel = null;
+	private Properties settings = null;
 
 	/**
 	 * DOCUMENT ME!
 	 *
 	 * @deprecated, use info from GameData
 	 */
-	private File		    dataFile				    = null;
-	private EventDispatcher dispatcher				    = null;
-	private boolean		    everLoadedReport		    = false; // indicates that the user loaded a report at least once in order to decide about showing a save dialog when quitting
-	private FileHistory     fileHistory;
-	private JMenu		    factionOrdersMenu;
-	private JMenu		    factionOrdersMenuNot;
-	private JMenu		    invertAllOrdersConfirmation;
-	private List		    nodeWrapperFactories;
-	private List		    preferencesAdapterList;
-	private MenuAction	    saveAction;
-	private OptionAction    optionAction;
+	private File dataFile = null;
+	private EventDispatcher dispatcher = null;
+	private boolean everLoadedReport = false; // indicates that the user loaded a report at least once in order to decide about showing a save dialog when quitting
+	private FileHistory fileHistory;
+	private JMenu factionOrdersMenu;
+	private JMenu factionOrdersMenuNot;
+	private JMenu invertAllOrdersConfirmation;
+	private List nodeWrapperFactories;
+	private List preferencesAdapterList;
+	private MenuAction saveAction;
+	private OptionAction optionAction;
 	private MagellanDesktop desktop;
-	private ReportObserver  reportState;
+	private ReportObserver reportState;
 
 	/** Manager for setting and activating bookmarks. */
 	private BookmarkManager bookmarkManager;
@@ -212,25 +209,24 @@ public class Client extends JFrame implements ShortcutListener,
 	private MagellanUndoManager undoMgr = null;
 
 	// Directories
-	private static File filesDirectory    = null; // Magellan directory
+	private static File filesDirectory = null; // Magellan directory
 	private static File settingsDirectory = null; // Directory of "magellan.ini"
 
 	// show order status in title
-	protected boolean   showStatus   = false;
+	protected boolean showStatus = false;
 	protected JMenuItem progressItem;
 
 	// start window, disposed after first init
-	protected static StartWindow    startWindow;
+	protected static StartWindow startWindow;
 	protected static ResourceBundle startBundle;
 
 	/**
 	 * Creates a new Client object taking its data from <tt>gd</tt>.
 	 * 
 	 * <p>
-	 * Preferences are read from and stored in a file called
-	 * <tt>client.ini</tt>. This file is usually located in the user's home
-	 * directed, which is the Windows directory in a Microsoft Windows
-	 * environment.
+	 * Preferences are read from and stored in a file called <tt>client.ini</tt>. This file is
+	 * usually located in the user's home directed, which is the Windows directory in a Microsoft
+	 * Windows environment.
 	 * </p>
 	 *
 	 * @param gd TODO: DOCUMENT ME!
@@ -238,8 +234,8 @@ public class Client extends JFrame implements ShortcutListener,
 	 * @param settingsDir TODO: DOCUMENT ME!
 	 */
 	public Client(GameData gd, File fileDir, File settingsDir) {
-		data			  = gd;
-		filesDirectory    = fileDir;
+		data = gd;
+		filesDirectory = fileDir;
 		settingsDirectory = settingsDir;
 
 		// get active event dispatcher (creates a new one if not existing)
@@ -261,26 +257,25 @@ public class Client extends JFrame implements ShortcutListener,
 		// create management and observer objects
 		dispatcher.addSelectionListener(SelectionHistory.getEventHook());
 		bookmarkManager = new BookmarkManager(dispatcher, settings);
-		undoMgr		    = new MagellanUndoManager();
-		reportState     = new ReportObserver();
+		undoMgr = new MagellanUndoManager();
+		reportState = new ReportObserver();
 		com.eressea.util.replacers.ReplacerHelp.init(gd);
 
 		// init components
 		startWindow.progress(2,
 							 (startBundle != null) ? startBundle.getString("2")
 												   : "Initializing components...");
-		panels				 = CollectionFactory.createLinkedList();
+		panels = CollectionFactory.createLinkedList();
 		nodeWrapperFactories = CollectionFactory.createLinkedList();
 
 		List topLevelComponents = new java.util.LinkedList();
-		Map  components = initComponents(topLevelComponents);
+		Map components = initComponents(topLevelComponents);
 
 		// init desktop
 		startWindow.progress(3,
 							 (startBundle != null) ? startBundle.getString("3")
 												   : "Creating desktop environment...");
-		desktop = new MagellanDesktop(this, settings, components,
-									  settingsDirectory);
+		desktop = new MagellanDesktop(this, settings, components, settingsDirectory);
 		DesktopEnvironment.init(desktop);
 		setContentPane(desktop);
 
@@ -316,8 +311,7 @@ public class Client extends JFrame implements ShortcutListener,
 			try {
 				settings.load(new BufferedInputStream(new FileInputStream(settingsFile)));
 			} catch(IOException e) {
-				log.error("Client.Client(GameData gd): Error while loading " +
-						  settingsFile, e);
+				log.error("Client.Client(GameData gd): Error while loading " + settingsFile, e);
 			}
 		} else {
 			log.info("Client.Client(): settings file does not exist, using default values.");
@@ -339,8 +333,7 @@ public class Client extends JFrame implements ShortcutListener,
 			}
 		}
 
-		showStatus = PropertiesHelper.getboolean(settings,
-												 "Client.ShowOrderStatus", false);
+		showStatus = PropertiesHelper.getboolean(settings, "Client.ShowOrderStatus", false);
 	}
 
 	/**
@@ -360,13 +353,12 @@ public class Client extends JFrame implements ShortcutListener,
 			log.debug("Client.getApplicationIcon() iconURL: " + iconURL);
 		}
 
-		return (iconURL == null) ? null
-								 : Toolkit.getDefaultToolkit().createImage(iconURL);
+		return (iconURL == null) ? null : Toolkit.getDefaultToolkit().createImage(iconURL);
 	}
 
 	/**
-	 * Inits base UI things: # frame icon # window event things # fonts     #
-	 * repaint shortcut # L&F
+	 * Inits base UI things: # frame icon # window event things # fonts     # repaint shortcut #
+	 * L&F
 	 */
 	protected void initUI() {
 		Image iconImage = getApplicationIcon();
@@ -385,18 +377,17 @@ public class Client extends JFrame implements ShortcutListener,
 
 		/* setup font size */
 		try {
-			float fScale = PropertiesHelper.getfloat(settings,
-													 "Client.FontScale", 1.0f);
+			float fScale = PropertiesHelper.getfloat(settings, "Client.FontScale", 1.0f);
 
 			if(fScale != 1.0f) {
 				// TODO(pavkovic): the following code bloates the fonts in an undesired way, perhaps
 				// we remove this configuration option?
-				UIDefaults  table = UIManager.getDefaults();
+				UIDefaults table = UIManager.getDefaults();
 				Enumeration eKeys = table.keys();
 
 				while(eKeys.hasMoreElements()) {
-					Object obj  = eKeys.nextElement();
-					Font   font = UIManager.getFont(obj);
+					Object obj = eKeys.nextElement();
+					Font font = UIManager.getFont(obj);
 
 					if(font != null) {
 						font = new javax.swing.plaf.FontUIResource(font.deriveFont(font.getSize2D() * fScale));
@@ -409,9 +400,7 @@ public class Client extends JFrame implements ShortcutListener,
 		}
 
 		// initialize client shortcut - F5 to repaint
-		DesktopEnvironment.registerShortcutListener(KeyStroke.getKeyStroke(KeyEvent.VK_F5,
-																		   0),
-													this);
+		DesktopEnvironment.registerShortcutListener(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), this);
 
 		// init L&F
 		initLookAndFeels();
@@ -422,8 +411,8 @@ public class Client extends JFrame implements ShortcutListener,
 	//////////////////////////////
 
 	/**
-	 * Initializes the Magellan components. The returned hashtable holds all
-	 * components with well-known desktop keywords.
+	 * Initializes the Magellan components. The returned hashtable holds all components with
+	 * well-known desktop keywords.
 	 *
 	 * @param topLevel TODO: DOCUMENT ME!
 	 *
@@ -438,16 +427,13 @@ public class Client extends JFrame implements ShortcutListener,
 
 		// load custom renderers
 		//ForcedFileClassLoader.directory = filesDirectory;
-		RendererLoader rl = new RendererLoader(filesDirectory, ".", geo,
-											   settings);
-		Collection     cR = rl.loadRenderers();
+		RendererLoader rl = new RendererLoader(filesDirectory, ".", geo, settings);
+		Collection cR = rl.loadRenderers();
 
 		// init mapper
 		mapPanel = new MapperPanel(dispatcher, settings, cR, geo);
 		mapPanel.setMinimumSize(new Dimension(100, 10));
-		mapPanel.setScaleFactor(PropertiesHelper.getfloat(settings,
-														  "Map.scaleFactor",
-														  1.0f));
+		mapPanel.setScaleFactor(PropertiesHelper.getfloat(settings, "Map.scaleFactor", 1.0f));
 		panels.add(mapPanel);
 		components.put("MAP", mapPanel);
 		components.put("MINIMAP", mapPanel.getMinimap());
@@ -472,12 +458,10 @@ public class Client extends JFrame implements ShortcutListener,
 		components.put("NAME", c.getComponent(0));
 		components.put("DESCRIPTION", c.getComponent(1));
 		components.put("DETAILS", detailsPanel.topSplitPane.getBottomComponent());
-		components.put("ORDERS",
-					   detailsPanel.bottomSplitPane.getBottomComponent());
+		components.put("ORDERS", detailsPanel.bottomSplitPane.getBottomComponent());
 
 		// this keyword is deprecated
-		components.put("COMMANDS",
-					   detailsPanel.bottomSplitPane.getBottomComponent());
+		components.put("COMMANDS", detailsPanel.bottomSplitPane.getBottomComponent());
 		topLevel.add(detailsPanel);
 
 		// configure and add overview panel
@@ -514,9 +498,9 @@ public class Client extends JFrame implements ShortcutListener,
 		menuBar.add(createMapMenu());
 
 		// create dynamix menus
-		Map		 topLevel  = new java.util.HashMap();
-		List     direction = new java.util.LinkedList();
-		Iterator it		   = components.iterator();
+		Map topLevel = new java.util.HashMap();
+		List direction = new java.util.LinkedList();
+		Iterator it = components.iterator();
 		log.info("Checking for menu-providers...");
 
 		while(it.hasNext()) {
@@ -527,8 +511,7 @@ public class Client extends JFrame implements ShortcutListener,
 
 				if(mp.getSuperMenu() != null) {
 					if(!topLevel.containsKey(mp.getSuperMenu())) {
-						topLevel.put(mp.getSuperMenu(),
-									 new JMenu(mp.getSuperMenuTitle()));
+						topLevel.put(mp.getSuperMenu(), new JMenu(mp.getSuperMenuTitle()));
 						direction.add(topLevel.get(mp.getSuperMenu()));
 					}
 
@@ -600,27 +583,23 @@ public class Client extends JFrame implements ShortcutListener,
 		JMenu ordersMenu = new JMenu(getString("menu.orders.caption"));
 		ordersMenu.setMnemonic(getString("menu.orders.mnemonic").charAt(0));
 		addMenuItem(ordersMenu, new UnconfirmAction(this, overviewPanel));
-		addMenuItem(ordersMenu,
-					new FindPreviousUnconfirmedAction(this, overviewPanel));
+		addMenuItem(ordersMenu, new FindPreviousUnconfirmedAction(this, overviewPanel));
 
 		addMenuItem(ordersMenu, new ConfirmAction(this, overviewPanel));
 
 		// add factionordersmenu to ordersmenu
 		factionOrdersMenu = new JMenu(getString("menu.orders.all.caption"));
-		factionOrdersMenu.setMnemonic(getString("menu.orders.all.mnemonic")
-										  .charAt(0));
+		factionOrdersMenu.setMnemonic(getString("menu.orders.all.mnemonic").charAt(0));
 		ordersMenu.add(factionOrdersMenu);
 
 		// add factionordersmenunot to ordersmenu
 		factionOrdersMenuNot = new JMenu(getString("menu.orders.allnot.caption"));
-		factionOrdersMenuNot.setMnemonic(getString("menu.orders.allnot.mnemonic")
-											 .charAt(0));
+		factionOrdersMenuNot.setMnemonic(getString("menu.orders.allnot.mnemonic").charAt(0));
 		ordersMenu.add(factionOrdersMenuNot);
 
 		// add factionordersmenu to ordersmenu
 		invertAllOrdersConfirmation = new JMenu(getString("menu.orders.invert.caption"));
-		invertAllOrdersConfirmation.setMnemonic(getString("menu.orders.invert.mnemonic")
-													.charAt(0));
+		invertAllOrdersConfirmation.setMnemonic(getString("menu.orders.invert.mnemonic").charAt(0));
 		ordersMenu.add(invertAllOrdersConfirmation);
 
 		updateConfirmMenu();
@@ -628,18 +607,13 @@ public class Client extends JFrame implements ShortcutListener,
 		return ordersMenu;
 	}
 
-	private void refillChangeFactionConfirmation(JMenu aMenu,
-												 int aConfirmationType) {
+	private void refillChangeFactionConfirmation(JMenu aMenu, int aConfirmationType) {
 		if(aMenu.getItemCount() == 0) {
 			// fill basic faction "all units"
 			addMenuItem(aMenu,
-						new ChangeFactionConfirmationAction(this, null,
-															aConfirmationType,
-															false));
+						new ChangeFactionConfirmationAction(this, null, aConfirmationType, false));
 			addMenuItem(aMenu,
-						new ChangeFactionConfirmationAction(this, null,
-															aConfirmationType,
-															true));
+						new ChangeFactionConfirmationAction(this, null, aConfirmationType, true));
 		} else {
 			JMenuItem one = aMenu.getItem(0);
 			JMenuItem two = aMenu.getItem(1);
@@ -650,17 +624,12 @@ public class Client extends JFrame implements ShortcutListener,
 
 		if(data != null) {
 			// add all privileged factions
-			for(Iterator iter = data.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				if((f.isPrivileged()) && !f.units().isEmpty()) {
-					aMenu.add(new ChangeFactionConfirmationAction(this, f,
-																  aConfirmationType,
-																  false));
-					aMenu.add(new ChangeFactionConfirmationAction(this, f,
-																  aConfirmationType,
-																  true));
+					aMenu.add(new ChangeFactionConfirmationAction(this, f, aConfirmationType, false));
+					aMenu.add(new ChangeFactionConfirmationAction(this, f, aConfirmationType, true));
 				}
 			}
 		}
@@ -703,8 +672,7 @@ public class Client extends JFrame implements ShortcutListener,
 		bookmarks.setMnemonic(getString("menu.bookmarks.mnemonic").charAt(0));
 
 		JMenuItem toggle = new JMenuItem(getString("menu.bookmarks.toggle.caption"));
-		toggle.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-													 KeyEvent.CTRL_MASK));
+		toggle.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, KeyEvent.CTRL_MASK));
 		toggle.addActionListener(new ToggleBookmarkAction());
 		bookmarks.add(toggle);
 
@@ -718,8 +686,7 @@ public class Client extends JFrame implements ShortcutListener,
 		bookmarks.add(forward);
 
 		JMenuItem backward = new JMenuItem(getString("menu.bookmarks.backward.caption"));
-		backward.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-													   KeyEvent.SHIFT_MASK));
+		backward.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, KeyEvent.SHIFT_MASK));
 		backward.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					bookmarkManager.jumpBackward();
@@ -728,8 +695,7 @@ public class Client extends JFrame implements ShortcutListener,
 		bookmarks.add(backward);
 
 		JMenuItem show = new JMenuItem(getString("menu.bookmarks.show.caption"));
-		show.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-												   KeyEvent.ALT_MASK));
+		show.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, KeyEvent.ALT_MASK));
 		show.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					bookmarkManager.showDialog(Client.this);
@@ -802,23 +768,23 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * Retrieves the menu items for the external modules. See
-	 * com.eressea.extern.ExternalModule and
+	 * Retrieves the menu items for the external modules. See com.eressea.extern.ExternalModule and
 	 * com.eressea.extern.ExternalModuleLoader for documentation.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private JMenuItem[] getExternalModuleItems() {
-		Collection c		 = com.eressea.extern.ExternalModuleLoader.getExternalModuleClasses(settings);
-		List	   menuItems = CollectionFactory.createArrayList();
+		Collection c = com.eressea.extern.ExternalModuleLoader.getExternalModuleClasses(settings);
+		List menuItems = CollectionFactory.createArrayList();
 
 		for(Iterator iter = c.iterator(); iter.hasNext();) {
 			try {
 				Class foundClass = (Class) iter.next();
 
 				// get it's constructor
-				Object externalModule = foundClass.getConstructor(new Class[] {  })
-												  .newInstance(new Object[] {  });
+				Object externalModule = foundClass.getConstructor(new Class[] {  }).newInstance(new Object[] {
+																									
+																								});
 				String menuString = null;
 
 				if(externalModule instanceof ExternalModule) {
@@ -831,8 +797,7 @@ public class Client extends JFrame implements ShortcutListener,
 					menuString = module.getMenuItemName();
 				}
 
-				JMenuItem item = new JMenuItem(new ExternalModuleAction(this,
-																		menuString,
+				JMenuItem item = new JMenuItem(new ExternalModuleAction(this, menuString,
 																		externalModule));
 				menuItems.add(item);
 			} catch(Exception e) {
@@ -843,9 +808,7 @@ public class Client extends JFrame implements ShortcutListener,
 		return (JMenuItem[]) menuItems.toArray(new JMenuItem[] {  });
 	}
 
-	private class ToggleBookmarkAction implements ActionListener,
-												  SelectionListener
-	{
+	private class ToggleBookmarkAction implements ActionListener, SelectionListener {
 		private Object activeObject;
 
 		/**
@@ -875,9 +838,8 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * Adds a new menu item to the specifie menu associating it with the
-	 * specified action, setting its mnemonic and registers its accelerator if
-	 * it has one.
+	 * Adds a new menu item to the specifie menu associating it with the specified action, setting
+	 * its mnemonic and registers its accelerator if it has one.
 	 *
 	 * @param parentMenu TODO: DOCUMENT ME!
 	 * @param action TODO: DOCUMENT ME!
@@ -889,8 +851,7 @@ public class Client extends JFrame implements ShortcutListener,
 		item.setMnemonic(action.getMnemonic());
 
 		if(action.getAccelerator() != null) {
-			DesktopEnvironment.registerActionListener(action.getAccelerator(),
-													  action);
+			DesktopEnvironment.registerActionListener(action.getAccelerator(), action);
 			item.setAccelerator(action.getAccelerator());
 		}
 
@@ -904,8 +865,8 @@ public class Client extends JFrame implements ShortcutListener,
 	//////////////////////
 	public static void main(String args[]) {
 		try {
-			String report  = null; // the report to be loaded on startup
-			File   fileDir = null; // the directory to store ini files and stuff in
+			String report = null; // the report to be loaded on startup
+			File fileDir = null; // the directory to store ini files and stuff in
 
 			/* set the stderr to stdout while there is no log attached */
 			System.setErr(System.out);
@@ -934,9 +895,8 @@ public class Client extends JFrame implements ShortcutListener,
 			startWindow.setVisible(true);
 
 			startWindow.progress(0,
-								 (startBundle != null)
-								 ? startBundle.getString("0")
-								 : "Initializing Magellan...");
+								 (startBundle != null) ? startBundle.getString("0")
+													   : "Initializing Magellan...");
 
 			/* determine default value for files directory */
 			fileDir = MagellanFinder.findMagellanDirectory();
@@ -950,11 +910,9 @@ public class Client extends JFrame implements ShortcutListener,
 				if(args[i].toLowerCase().startsWith("-log")) {
 					String level = null;
 
-					if(args[i].toLowerCase().startsWith("-log=") &&
-						   (args[i].length() > 5)) {
+					if(args[i].toLowerCase().startsWith("-log=") && (args[i].length() > 5)) {
 						level = new String(args[i].charAt(5) + "");
-					} else if(args[i].equals("-log") &&
-								  (args.length > (i + 1))) {
+					} else if(args[i].equals("-log") && (args.length > (i + 1))) {
 						i++;
 						level = args[i];
 					}
@@ -974,16 +932,14 @@ public class Client extends JFrame implements ShortcutListener,
 					try {
 						File tmpFile = new File(args[i]).getCanonicalFile();
 
-						if(tmpFile.exists() && tmpFile.isDirectory() &&
-							   tmpFile.canWrite()) {
+						if(tmpFile.exists() && tmpFile.isDirectory() && tmpFile.canWrite()) {
 							fileDir = tmpFile;
 						} else {
 							log.info("Client.main(): the specified files directory does not " +
 									 "exist, is not a directory or is not writeable.");
 						}
 					} catch(Exception e) {
-						log.error("Client.main(): the specified files directory is invalid.",
-								  e);
+						log.error("Client.main(): the specified files directory is invalid.", e);
 					}
 				} else {
 					if(args[i].toLowerCase().endsWith(".cr") ||
@@ -996,12 +952,10 @@ public class Client extends JFrame implements ShortcutListener,
 				i++;
 			}
 
-			settFileDir = MagellanFinder.findSettingsDirectory(fileDir,
-															   settFileDir);
+			settFileDir = MagellanFinder.findSettingsDirectory(fileDir, settFileDir);
 
 			// tell the user where we expect ini files and errors.txt
-			log.info("Client.main(): directory used for ini files: " +
-					 settFileDir.toString());
+			log.info("Client.main(): directory used for ini files: " + settFileDir.toString());
 
 			// now redirect stderr through our log
 			System.setErr((new Log(fileDir)).getPrintStream());
@@ -1015,9 +969,8 @@ public class Client extends JFrame implements ShortcutListener,
 
 			if(report != null) {
 				startWindow.progress(4,
-									 (startBundle != null)
-									 ? startBundle.getString("4")
-									 : "Loading game data...");
+									 (startBundle != null) ? startBundle.getString("4")
+														   : "Loading game data...");
 
 				File crFile = new File(report);
 
@@ -1030,19 +983,16 @@ public class Client extends JFrame implements ShortcutListener,
 			c.setReportChanged(false);
 
 			startWindow.progress(5,
-								 (startBundle != null)
-								 ? startBundle.getString("5")
-								 : "Opening work-space...");
+								 (startBundle != null) ? startBundle.getString("5")
+													   : "Opening work-space...");
 			c.setAllVisible(true);
 			startWindow.setVisible(false);
 			startWindow.dispose();
 			startWindow = null;
 
 			// show tip of the day window
-			if(c.getSettings().getProperty("TipOfTheDay.showTips", "true")
-					.equals("true") ||
-				   c.getSettings().getProperty("TipOfTheDay.firstTime", "true")
-						.equals("true")) {
+			if(c.getSettings().getProperty("TipOfTheDay.showTips", "true").equals("true") ||
+				   c.getSettings().getProperty("TipOfTheDay.firstTime", "true").equals("true")) {
 				TipOfTheDay totd = new TipOfTheDay(c, c.getSettings());
 
 				if(totd.doShow()) {
@@ -1067,8 +1017,7 @@ public class Client extends JFrame implements ShortcutListener,
 					}
 
 					if(out == null) {
-						out = startBundle.getString("error") + " " +
-							  exc.toString();
+						out = startBundle.getString("error") + " " + exc.toString();
 					}
 				} catch(Exception exc2) {
 				}
@@ -1085,11 +1034,10 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * Asks the user whether the current report should be saved and does so if
-	 * necessary. Called before open and close actions.
+	 * Asks the user whether the current report should be saved and does so if necessary. Called
+	 * before open and close actions.
 	 *
-	 * @return whether the action shall be continued (user did not press cancel
-	 * 		   button)
+	 * @return whether the action shall be continued (user did not press cancel button)
 	 */
 	public boolean askToSave() {
 		if(reportState.isStateChanged()) {
@@ -1126,11 +1074,11 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * This method should be called before the application is terminated in
-	 * order to store GUI settings etc.
+	 * This method should be called before the application is terminated in order to store GUI
+	 * settings etc.
 	 *
-	 * @param storeSettings store the settings to magellan.ini if
-	 * <code>storeSettings</code> is <code>true</code>.
+	 * @param storeSettings store the settings to magellan.ini if <code>storeSettings</code> is
+	 * 		  <code>true</code>.
 	 */
 	public void quit(boolean storeSettings) {
 		if(reportState.isStateChanged()) {
@@ -1165,8 +1113,7 @@ public class Client extends JFrame implements ShortcutListener,
 						File backup = FileBackup.create(settingsFile);
 						log.info("Created backupfile " + backup);
 					} catch(IOException ie) {
-						log.warn("Could not create backupfile for file " +
-								 settingsFile);
+						log.warn("Could not create backupfile for file " + settingsFile);
 					}
 				}
 
@@ -1196,15 +1143,13 @@ public class Client extends JFrame implements ShortcutListener,
 		GameData d = null;
 
 		try {
-			d = new GameDataReader().readGameData(FileTypeFactory.singleton()
-																 .createFileType(fileName,
-																				 true,
-																				 new ClientFileTypeChooser(this)));
+			d = new GameDataReader().readGameData(FileTypeFactory.singleton().createFileType(fileName,
+																							 true,
+																							 new ClientFileTypeChooser(this)));
 			everLoadedReport = true;
 		} catch(FileTypeFactory.NoValidEntryException e) {
 			JOptionPane.showMessageDialog(this,
-										  getString("msg.loadcr.missingcr.text.1") +
-										  fileName +
+										  getString("msg.loadcr.missingcr.text.1") + fileName +
 										  getString("msg.loadcr.missingcr.text.2"),
 										  getString("msg.loadcr.error.title"),
 										  JOptionPane.ERROR_MESSAGE);
@@ -1212,8 +1157,7 @@ public class Client extends JFrame implements ShortcutListener,
 			// here we also catch RuntimeExceptions on purpose!
 			//		} catch (IOException exc) {
 			JOptionPane.showMessageDialog(this,
-										  getString("msg.loadcr.error.text") +
-										  exc.toString(),
+										  getString("msg.loadcr.error.text") + exc.toString(),
 										  getString("msg.loadcr.error.title"),
 										  JOptionPane.ERROR_MESSAGE);
 			log.error(exc);
@@ -1223,13 +1167,10 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * Callbacks of FileTypeFactory are handled by this object. Right now it
-	 * returns the  first ZipEntry to mimic old cr loading behaviour for zip
-	 * files.
+	 * Callbacks of FileTypeFactory are handled by this object. Right now it returns the  first
+	 * ZipEntry to mimic old cr loading behaviour for zip files.
 	 */
-	private static class ClientFileTypeChooser
-		extends FileTypeFactory.FileTypeChooser
-	{
+	private static class ClientFileTypeChooser extends FileTypeFactory.FileTypeChooser {
 		Client client;
 
 		/**
@@ -1252,9 +1193,8 @@ public class Client extends JFrame implements ShortcutListener,
 			Object selected = JOptionPane.showInputDialog(client.getRootPane(),
 														  client.getString("msg.loadcr.multiplezipentries.text"),
 														  client.getString("msg.loadcr.multiplezipentries.title"),
-														  JOptionPane.QUESTION_MESSAGE,
-														  null, stringEntries,
-														  stringEntries[0]);
+														  JOptionPane.QUESTION_MESSAGE, null,
+														  stringEntries, stringEntries[0]);
 
 			if(selected == null) {
 				return null;
@@ -1273,22 +1213,20 @@ public class Client extends JFrame implements ShortcutListener,
 	/**
 	 * Do some additional checks after loading a report.
 	 *
-	 * @param loadedData the currently loaded game data
+	 * @param aData the currently loaded game data
 	 */
 	private void postProcessLoadedCR(GameData aData) {
 		// show a warning if no password is set for any of the privileged factions
 		boolean privFacsWoPwd = true;
-		
+
 		if((aData != null) && (aData.factions() != null)) {
-			for(Iterator factions = aData.factions().values().iterator();
-				factions.hasNext();) {
+			for(Iterator factions = aData.factions().values().iterator(); factions.hasNext();) {
 				Faction f = (Faction) factions.next();
 
 				if(f.password == null) {
 					// take password from settings but only if it is not an empty string
 					String pwd = settings.getProperty("Faction.password." +
-													  ((EntityID) f.getID()).intValue(),
-													  null);
+													  ((EntityID) f.getID()).intValue(), null);
 
 					if((pwd != null) && !pwd.equals("")) {
 						f.password = pwd;
@@ -1322,8 +1260,7 @@ public class Client extends JFrame implements ShortcutListener,
 								if(value != null) {
 									String password = value;
 
-									if(!password.equals("") &&
-										   !password.equals(f.password)) {
+									if(!password.equals("") && !password.equals(f.password)) {
 										// ask user for confirmation to take new password from message
 										Object msgArgs[] = { f.toString() };
 
@@ -1377,13 +1314,15 @@ public class Client extends JFrame implements ShortcutListener,
 
 		if(data.filetype != null) {
 			String file;
-			try { 
+
+			try {
 				file = data.filetype.getFile().toString();
 			} catch(IOException e) {
 				file = data.filetype.toString();
 			}
-			file = file.substring(file.lastIndexOf(File.separator)+1);
-			title += " [" + file + "]";
+
+			file = file.substring(file.lastIndexOf(File.separator) + 1);
+			title += (" [" + file + "]");
 		}
 
 		if(data.getDate() != null) {
@@ -1394,38 +1333,40 @@ public class Client extends JFrame implements ShortcutListener,
 		}
 
 		if(showStatus) {
-			int		 units = 0;
-			int		 done = 0;
-			for(Iterator iter   = data.units().values().iterator(); iter.hasNext(); ) {
+			int units = 0;
+			int done = 0;
+
+			for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
-				
+
 				if(u.getFaction().isPrivileged()) {
 					units++;
-					
+
 					if(u.ordersConfirmed) {
 						done++;
 					}
 				}
+
 				// also count temp units
-				for(Iterator iter2 = u.tempUnits().iterator(); iter2.hasNext(); ) {
+				for(Iterator iter2 = u.tempUnits().iterator(); iter2.hasNext();) {
 					Unit u2 = (Unit) iter2.next();
+
 					if(u2.getFaction().isPrivileged()) {
 						units++;
-						
+
 						if(u2.ordersConfirmed) {
 							done++;
 						}
 					}
 				}
 			}
-			
+
 			if(units > 0) {
 				BigDecimal percent = (new BigDecimal(((float) done * 100) / ((float) units))).setScale(2,
 																									   BigDecimal.ROUND_DOWN);
-				title += (" (" + units + " " + getString("title.unit") + ", " +
-						  done + " " + getString("title.done") + ", " +
-						  getString("title.thatare") + " " + percent + " " +
-						  getString("title.percent") + ")");
+				title += (" (" + units + " " + getString("title.unit") + ", " + done + " " +
+				getString("title.done") + ", " + getString("title.thatare") + " " + percent + " " +
+				getString("title.percent") + ")");
 			}
 		}
 
@@ -1452,8 +1393,7 @@ public class Client extends JFrame implements ShortcutListener,
 		updateConfirmMenu();
 
 		if(data.getCurTempID() == -1) {
-			String s = settings.getProperty("ClientPreferences.TempIDsInitialValue",
-											"");
+			String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
 
 			try {
 				data.setCurTempID((s == "") ? 0 : Integer.parseInt(s, data.base));
@@ -1465,7 +1405,6 @@ public class Client extends JFrame implements ShortcutListener,
 		// this method behaves at if the gamedata has been loaded by this method.
 		// this is not true at all but true enough for our needs.
 		// dispatcher.fire(new GameDataEvent(this, data));
-
 		dispatcher.fire(new GameDataEvent(this, data, true));
 	}
 
@@ -1482,7 +1421,7 @@ public class Client extends JFrame implements ShortcutListener,
 			lafSet = MagellanLookAndFeel.setLookAndFeel(laf);
 
 			if(!lafSet) {
-				laf    = "Metal";
+				laf = "Metal";
 				lafSet = MagellanLookAndFeel.setLookAndFeel("Metal");
 			}
 		}
@@ -1525,9 +1464,7 @@ public class Client extends JFrame implements ShortcutListener,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String[] getLookAndFeels() {
-		return (String[]) MagellanLookAndFeel.getLookAndFeelNames().toArray(new String[] {
-																				
-																			});
+		return (String[]) MagellanLookAndFeel.getLookAndFeelNames().toArray(new String[] {  });
 	}
 
 	/////////////////////
@@ -1585,32 +1522,27 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * Sets whether the application checks if a new version is available when
-	 * starting.
+	 * Sets whether the application checks if a new version is available when starting.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void checkVersionOnStartup(boolean bool) {
-		settings.setProperty("Client.checkVersionOnStartup",
-							 (new Boolean(bool)).toString());
+		settings.setProperty("Client.checkVersionOnStartup", (new Boolean(bool)).toString());
 	}
 
 	/**
-	 * Returns whether the application checks if a new version is available
-	 * when starting.
+	 * Returns whether the application checks if a new version is available when starting.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isCheckingVersionOnStartup() {
 		return Boolean.valueOf(settings.getProperty("Client.checkVersionOnStartup",
-													Boolean.FALSE.toString()))
-					  .booleanValue();
+													Boolean.FALSE.toString())).booleanValue();
 	}
 
 	/**
-	 * Get the selected Regions. The returned map can be empty but is never
-	 * null. This is a wrapper function so we dont need to give away
-	 * MapperPanel.
+	 * Get the selected Regions. The returned map can be empty but is never null. This is a wrapper
+	 * function so we dont need to give away MapperPanel.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1619,8 +1551,8 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	/**
-	 * Get the Level on the mapper Panel. This is a wrapper function so we dont
-	 * need to give away MapperPanel.
+	 * Get the Level on the mapper Panel. This is a wrapper function so we dont need to give away
+	 * MapperPanel.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1724,8 +1656,7 @@ public class Client extends JFrame implements ShortcutListener,
 	public void setShowStatus(boolean bool) {
 		if(showStatus != bool) {
 			showStatus = bool;
-			settings.setProperty("Client.ShowOrderStatus",
-								 showStatus ? "true" : "false");
+			settings.setProperty("Client.ShowOrderStatus", showStatus ? "true" : "false");
 
 			if(data != null) {
 				updateTitleCaption();
@@ -1787,10 +1718,8 @@ public class Client extends JFrame implements ShortcutListener,
 			defaultTranslations.put("menu.extras.mnemonic", "x");
 			defaultTranslations.put("msg.loadcr.multiplezipentries.text",
 									"Multiple computer reports have been\n" +
-									"found in the comppressed file.\n" +
-									"Please choose one.");
-			defaultTranslations.put("msg.loadcr.multiplezipentries.title",
-									"Choose one");
+									"found in the comppressed file.\n" + "Please choose one.");
+			defaultTranslations.put("msg.loadcr.multiplezipentries.title", "Choose one");
 			defaultTranslations.put("msg.loadcr.missingcr.text.1",
 									"No Computer Report was found in the compressed file \"");
 			defaultTranslations.put("msg.loadcr.missingcr.text.2", "\".");
@@ -1839,16 +1768,12 @@ public class Client extends JFrame implements ShortcutListener,
 									"Version information about Magellan could not be retrieved.\n" +
 									"Make sure that you are online while Magellan tries to\n" +
 									"determine the version information.");
-			defaultTranslations.put("msg.versionunknown.title",
-									"Version unknown");
+			defaultTranslations.put("msg.versionunknown.title", "Version unknown");
 			defaultTranslations.put("menu.bookmarks.caption", "Bookmarks");
 			defaultTranslations.put("menu.bookmarks.mnemonic", "b");
-			defaultTranslations.put("menu.bookmarks.toggle.caption",
-									"Toggle bookmark");
-			defaultTranslations.put("menu.bookmarks.forward.caption",
-									"Jump forward");
-			defaultTranslations.put("menu.bookmarks.backward.caption",
-									"Jump backward");
+			defaultTranslations.put("menu.bookmarks.toggle.caption", "Toggle bookmark");
+			defaultTranslations.put("menu.bookmarks.forward.caption", "Jump forward");
+			defaultTranslations.put("menu.bookmarks.backward.caption", "Jump backward");
 			defaultTranslations.put("menu.bookmarks.show.caption", "Show list");
 			defaultTranslations.put("menu.bookmarks.clear.caption", "Clear all");
 		}
@@ -1870,8 +1795,7 @@ public class Client extends JFrame implements ShortcutListener,
 	}
 
 	private void resetExtendedState() {
-		int state = new Integer(settings.getProperty("Client.extendedState",
-													 "-1")).intValue();
+		int state = new Integer(settings.getProperty("Client.extendedState", "-1")).intValue();
 
 		if(state != -1) {
 			JVMUtilities.setExtendedState(this, state);
@@ -1975,8 +1899,7 @@ public class Client extends JFrame implements ShortcutListener,
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void propertyChange(PropertyChangeEvent e) {
-			if((e.getPropertyName() != null) &&
-				   e.getPropertyName().equals("accelerator")) {
+			if((e.getPropertyName() != null) && e.getPropertyName().equals("accelerator")) {
 				item.setAccelerator((KeyStroke) e.getNewValue());
 			}
 		}
@@ -1993,7 +1916,7 @@ public class Client extends JFrame implements ShortcutListener,
 		 * TODO: DOCUMENT ME!
 		 */
 		public void run() {
-			java.util.Date myDate     = VersionInfo.getBuildDate();
+			java.util.Date myDate = VersionInfo.getBuildDate();
 			java.util.Date serverDate = VersionInfo.getServerBuildDate();
 
 			if((myDate != null) && (serverDate != null)) {
@@ -2011,8 +1934,7 @@ public class Client extends JFrame implements ShortcutListener,
 						if(result == JOptionPane.YES_OPTION) {
 							try {
 								Runtime.getRuntime().exec("java -jar " +
-														  (new File(magDir,
-																	"magellan-patcher.jar")).getAbsolutePath());
+														  (new File(magDir, "magellan-patcher.jar")).getAbsolutePath());
 								System.exit(0);
 							} catch(IOException ioe) {
 								JOptionPane.showMessageDialog(Client.this,
@@ -2030,8 +1952,7 @@ public class Client extends JFrame implements ShortcutListener,
 					}
 				}
 			} else {
-				JOptionPane.showMessageDialog(Client.this,
-											  getString("msg.versionunknown.text"),
+				JOptionPane.showMessageDialog(Client.this, getString("msg.versionunknown.text"),
 											  getString("msg.versionunknown.title"),
 											  JOptionPane.ERROR_MESSAGE);
 			}
@@ -2041,13 +1962,11 @@ public class Client extends JFrame implements ShortcutListener,
 	/**
 	 * Simple class to look for events changing the data.
 	 */
-	protected class ReportObserver implements GameDataListener,
-											  OrderConfirmListener,
-											  TempUnitListener,
-											  UnitOrdersListener
+	protected class ReportObserver implements GameDataListener, OrderConfirmListener,
+											  TempUnitListener, UnitOrdersListener
 	{
 		protected boolean stateChanged = false;
-		protected long    lastClear;
+		protected long lastClear;
 
 		/**
 		 * Creates a new ReportObserver object.

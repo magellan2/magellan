@@ -36,16 +36,14 @@ public class Islands {
 	 *
 	 * @param rules the rules to retrieve the ocean region type from.
 	 * @param regions the regions the islands consist of.
-	 * @param islands islands contained in this map are regarded as already
-	 * 		  existing. They can be expanded or merged, depending on the
-	 * 		  regions supplied. To indicate that no islands are known supply
-	 * 		  an empty map or null.
+	 * @param islands islands contained in this map are regarded as already existing. They can be
+	 * 		  expanded or merged, depending on the regions supplied. To indicate that no islands
+	 * 		  are known supply an empty map or null.
 	 * @param data the game data as required by the Island constructor.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static Map getIslands(Rules rules, Map regions, Map islands,
-								 GameData data) {
+	public static Map getIslands(Rules rules, Map regions, Map islands, GameData data) {
 		if((regions == null) || (regions.size() == 0)) {
 			return CollectionFactory.createHashtable();
 		}
@@ -59,16 +57,14 @@ public class Islands {
 
 		// completely update all known islands
 		for(Iterator iter = islands.values().iterator(); iter.hasNext();) {
-			Island     curIsland  = (Island) iter.next();
+			Island curIsland = (Island) iter.next();
 			Collection oldRegions = curIsland.regions();
 
 			if(oldRegions.size() > 0) {
 				Map islandRegions = getIsland(rules, unassignedPool,
-											  (Region) oldRegions.iterator()
-																 .next());
+											  (Region) oldRegions.iterator().next());
 
-				for(Iterator it = islandRegions.values().iterator();
-						it.hasNext();) {
+				for(Iterator it = islandRegions.values().iterator(); it.hasNext();) {
 					Region curRegion = (Region) it.next();
 					curRegion.setIsland(curIsland);
 					unassignedPool.remove(curRegion.getID());
@@ -80,10 +76,9 @@ public class Islands {
 		IntegerID newID = IntegerID.create(0);
 
 		while(unassignedPool.size() > 0) {
-			Region curRegion = (Region) unassignedPool.remove(unassignedPool.keySet()
-																			.iterator()
+			Region curRegion = (Region) unassignedPool.remove(unassignedPool.keySet().iterator()
 																			.next());
-			Map    islandRegions = getIsland(rules, unassignedPool, curRegion);
+			Map islandRegions = getIsland(rules, unassignedPool, curRegion);
 
 			if(islandRegions.size() > 0) {
 				while(islands.containsKey(newID)) {
@@ -94,8 +89,7 @@ public class Islands {
 				curIsland.setName(newID.toString());
 				islands.put(newID, curIsland);
 
-				for(Iterator it = islandRegions.values().iterator();
-						it.hasNext();) {
+				for(Iterator it = islandRegions.values().iterator(); it.hasNext();) {
 					Region ir = (Region) it.next();
 					ir.setIsland(curIsland);
 					unassignedPool.remove(ir.getID());
@@ -113,8 +107,8 @@ public class Islands {
 	 * @param regions all regions that could possibly belong to the island.
 	 * @param r a region forming an island with its neighbouring regions.
 	 *
-	 * @return a map containing all regions that can be reached from region r
-	 * 		   via any number of regions that are not of type ocean.
+	 * @return a map containing all regions that can be reached from region r via any number of
+	 * 		   regions that are not of type ocean.
 	 */
 	public static Map getIsland(Rules rules, Map regions, Region r) {
 		Map checked = CollectionFactory.createHashtable();
@@ -134,13 +128,10 @@ public class Islands {
 		}
 
 		while(unchecked.size() > 0) {
-			Region currentRegion = (Region) unchecked.remove(unchecked.keySet()
-																	  .iterator()
-																	  .next());
+			Region currentRegion = (Region) unchecked.remove(unchecked.keySet().iterator().next());
 			checked.put(currentRegion.getID(), currentRegion);
 
-			Map neighbours = Regions.getAllNeighbours(regions,
-													  currentRegion.getID(), 1,
+			Map neighbours = Regions.getAllNeighbours(regions, currentRegion.getID(), 1,
 													  excludedRegionTypes);
 
 			for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {

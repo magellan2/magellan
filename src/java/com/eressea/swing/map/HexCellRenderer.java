@@ -27,31 +27,25 @@ import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A class providing implementations of several methods required by a renderer
- * that renders hexagonal cells.
+ * A class providing implementations of several methods required by a renderer that renders
+ * hexagonal cells.
  */
 public abstract class HexCellRenderer implements MapCellRenderer {
 	/** The cell geometry used for rendering. */
 	protected CellGeometry cellGeo = null;
 
-	/**
-	 * A Properties object used to retrieve and store preferences of this
-	 * renderer.
-	 */
+	/** A Properties object used to retrieve and store preferences of this renderer. */
 	protected Properties settings = null;
 
-	/**
-	 * The game data this renderer may use for additional information on what
-	 * and how to render.
-	 */
+	/** The game data this renderer may use for additional information on what and how to render. */
 	protected GameData data = null;
 
 	/** The graphics object set by init() to draw on in the render() method. */
 	protected Graphics graphics = null;
 
 	/**
-	 * The pixel offset used to compensate the difference of axis origins
-	 * between the graphics object and the map.
+	 * The pixel offset used to compensate the difference of axis origins between the graphics
+	 * object and the map.
 	 */
 	protected Point offset = null;
 
@@ -62,22 +56,22 @@ public abstract class HexCellRenderer implements MapCellRenderer {
 	 * @param settings TODO: DOCUMENT ME!
 	 */
 	public HexCellRenderer(CellGeometry geo, Properties settings) {
-		cellGeo		  = geo;
+		cellGeo = geo;
 		this.settings = settings;
 	}
 
 	/**
-	 * Initializes a rendering pass with the specified graphics object g used
-	 * to paint on in subsequent calls to render() and the offset where to
-	 * draw region 0, 0 on the graphics object.
+	 * Initializes a rendering pass with the specified graphics object g used to paint on in
+	 * subsequent calls to render() and the offset where to draw region 0, 0 on the graphics
+	 * object.
 	 *
 	 * @param data TODO: DOCUMENT ME!
 	 * @param g TODO: DOCUMENT ME!
 	 * @param offset TODO: DOCUMENT ME!
 	 */
 	public void init(GameData data, Graphics g, Point offset) {
-		this.data   = data;
-		graphics    = g;
+		this.data = data;
+		graphics = g;
 		this.offset = offset;
 	}
 
@@ -87,8 +81,8 @@ public abstract class HexCellRenderer implements MapCellRenderer {
 	public abstract void render(Object obj, boolean active, boolean selected);
 
 	/**
-	 * Returns a name for this renderer. By default, the key "name" is looked
-	 * up in the component dictionary and returned.
+	 * Returns a name for this renderer. By default, the key "name" is looked up in the component
+	 * dictionary and returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -97,16 +91,16 @@ public abstract class HexCellRenderer implements MapCellRenderer {
 	}
 
 	/**
-	 * Returns the default rendering plane of the renderer. See the constants
-	 * specified in  com.eressea.swing.map.Mapper for possible values.
+	 * Returns the default rendering plane of the renderer. See the constants specified in
+	 * com.eressea.swing.map.Mapper for possible values.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public abstract int getPlaneIndex();
 
 	/**
-	 * Returns a default preferences adapter telling the user that this
-	 * renderer does not have modifiable preferences.
+	 * Returns a default preferences adapter telling the user that this renderer does not have
+	 * modifiable preferences.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -162,12 +156,9 @@ public abstract class HexCellRenderer implements MapCellRenderer {
 	}
 
 	/**
-	 * The default preferences adapter telling the user that there are no
-	 * modifiable preferences.
+	 * The default preferences adapter telling the user that there are no modifiable preferences.
 	 */
-	protected class DefaultRendererPreferencesAdapter
-		implements PreferencesAdapter
-	{
+	protected class DefaultRendererPreferencesAdapter implements PreferencesAdapter {
 		protected MapCellRenderer source = null;
 
 		/**

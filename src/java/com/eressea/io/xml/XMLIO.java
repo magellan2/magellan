@@ -59,7 +59,7 @@ public class XMLIO {
 			//dbf.setValidating(true);
 			DocumentBuilder db = dbf.newDocumentBuilder();
 
-			InputSource     is = new InputSource(reader);
+			InputSource is = new InputSource(reader);
 
 			// FIXME: take care of errors via org.xml.sax.ErrorHandler !!!
 			//URL dtd = ResourcePathClassLoader.getResourceStatically("rules/rules.dtd");

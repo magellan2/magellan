@@ -36,8 +36,8 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class NoneCompletionGUI extends AbstractCompletionGUI {
-	protected Completion last     = null;
-	protected boolean    offering = false;
+	protected Completion last = null;
+	protected boolean offering = false;
 
 	/**
 	 * Creates new NoneCompletionGUI
@@ -106,9 +106,8 @@ public class NoneCompletionGUI extends AbstractCompletionGUI {
 	 * @param str TODO: DOCUMENT ME!
 	 */
 	public void offerCompletion(javax.swing.text.JTextComponent jTextComponent,
-								java.util.Collection collection,
-								java.lang.String str) {
-		last     = (Completion) collection.iterator().next();
+								java.util.Collection collection, java.lang.String str) {
+		last = (Completion) collection.iterator().next();
 		offering = true;
 	}
 
@@ -120,8 +119,8 @@ public class NoneCompletionGUI extends AbstractCompletionGUI {
 	 * @param stub TODO: DOCUMENT ME!
 	 * @param index TODO: DOCUMENT ME!
 	 */
-	public void cycleCompletion(JTextComponent editor, Collection completions,
-								String stub, int index) {
+	public void cycleCompletion(JTextComponent editor, Collection completions, String stub,
+								int index) {
 		Iterator it = completions.iterator();
 
 		for(int i = 0; i <= index; i++) {

@@ -32,9 +32,9 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class ExternalModuleAction extends AbstractAction {
-	private static final Logger log		 = Logger.getInstance(ExternalModuleAction.class);
-	private Client			    client;
-	private Object			    external;
+	private static final Logger log = Logger.getInstance(ExternalModuleAction.class);
+	private Client client;
+	private Object external;
 
 	/**
 	 * Creates a new ExternalModuleAction object.
@@ -44,7 +44,7 @@ public class ExternalModuleAction extends AbstractAction {
 	 * @param o TODO: DOCUMENT ME!
 	 */
 	public ExternalModuleAction(Client c, String name, Object o) {
-		client   = c;
+		client = c;
 		external = o;
 		putValue(Action.NAME, name);
 	}
@@ -56,10 +56,9 @@ public class ExternalModuleAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		try {
-			log.warn("ExternalModuleAction.actionPerformed on " +
-					 external.getClass() + " delivered by " +
-					 external.getClass().getProtectionDomain().getCodeSource()
-							 .getLocation());
+			log.warn("ExternalModuleAction.actionPerformed on " + external.getClass() +
+					 " delivered by " +
+					 external.getClass().getProtectionDomain().getCodeSource().getLocation());
 		} catch(Exception ex) {
 			if(log.isDebugEnabled()) {
 				log.debug(ex);
@@ -68,8 +67,7 @@ public class ExternalModuleAction extends AbstractAction {
 
 		if(external instanceof ExternalModule) {
 			ExternalModule extModule = (ExternalModule) external;
-			extModule.start(client.getData(), client.getDispatcher(),
-							client.getSettings());
+			extModule.start(client.getData(), client.getDispatcher(), client.getSettings());
 		}
 
 		if(external instanceof ExternalModule2) {

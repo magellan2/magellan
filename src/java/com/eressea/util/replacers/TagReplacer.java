@@ -55,7 +55,7 @@ public class TagReplacer extends AbstractParameterReplacer {
 
 			if(obj != null) {
 				Taggable t = (Taggable) o;
-				String   s = obj.toString();
+				String s = obj.toString();
 
 				if(t.containsTag(s)) {
 					return t.getTag(s);
@@ -76,9 +76,7 @@ public class TagReplacer extends AbstractParameterReplacer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getDescription() {
-		return com.eressea.util.Translations.getTranslation(this,
-															"description." +
-															mode);
+		return com.eressea.util.Translations.getTranslation(this, "description." + mode);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

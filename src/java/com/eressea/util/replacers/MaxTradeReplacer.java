@@ -62,8 +62,7 @@ public class MaxTradeReplacer extends AbstractRegionReplacer {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("description",
-									"Return the maximum trade amount of the region.");
+			defaultTranslations.put("description", "Return the maximum trade amount of the region.");
 		}
 
 		return defaultTranslations;

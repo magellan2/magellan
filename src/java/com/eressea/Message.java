@@ -22,41 +22,39 @@ import com.eressea.rules.MessageType;
  * A class for representing a message.
  * 
  * <p>
- * The new format of messages in Eressea CR versions >= 41 made it necessary to
- * reconsider this class. Mainly, messages can now have an id and attributes.
+ * The new format of messages in Eressea CR versions >= 41 made it necessary to reconsider this
+ * class. Mainly, messages can now have an id and attributes.
  * </p>
  * 
  * <p>
- * Two special attributes are available directly via the corresping get/set
- * methods.
+ * Two special attributes are available directly via the corresping get/set methods.
  * </p>
  * 
  * <p>
- * First, this is the type attribte (tag ;type in the cr)  denoting the type of
- * the message. It is transformed into a  <tt>MessageType</tt> object.
+ * First, this is the type attribte (tag ;type in the cr)  denoting the type of the message. It is
+ * transformed into a  <tt>MessageType</tt> object.
  * </p>
  * 
  * <p>
- * Second, there is the text attribute (tag ;rendered in the cr). By design
- * this attribute should actually be created by rendering the message
- * according to the message type's pattern and the other attributes. This
- * class does contain a <tt>render()</tt> method, still, it is too primitive
- * to yield acceptable results, so it is preferrable to take the rendered
- * message text directly from the cr.
+ * Second, there is the text attribute (tag ;rendered in the cr). By design this attribute should
+ * actually be created by rendering the message according to the message type's pattern and the
+ * other attributes. This class does contain a <tt>render()</tt> method, still, it is too
+ * primitive to yield acceptable results, so it is preferrable to take the rendered message text
+ * directly from the cr.
  * </p>
  * 
  * <p>
- * Note, that for historic reasons, a <tt>Message</tt> object might have no
- * type or attributes and an invalid id of -1.
+ * Note, that for historic reasons, a <tt>Message</tt> object might have no type or attributes and
+ * an invalid id of -1.
  * </p>
  */
 public class Message extends Identifiable {
-	private String	    text = null;
+	private String text = null;
 	private MessageType type = null;
 
 	/**
-	 * The attributes of this message. The keys are the keys of the attribute,
-	 * the values object pairs of the attributes' keys and values.
+	 * The attributes of this message. The keys are the keys of the attribute, the values object
+	 * pairs of the attributes' keys and values.
 	 */
 	public Map attributes = null;
 
@@ -193,8 +191,7 @@ public class Message extends Identifiable {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private static String renderAttribute(GameData data, String id,
-										  String attribute) {
+	private static String renderAttribute(GameData data, String id, String attribute) {
 		if(id.equalsIgnoreCase("region")) {
 			ID coord = Coordinate.parse(attribute, ",");
 
@@ -232,21 +229,21 @@ public class Message extends Identifiable {
 			return null;
 		}
 
-		StringBuffer    sb		  = new StringBuffer();
-		String		    token     = "";
-		String		    lastToken = "";
-		StringTokenizer st		  = new StringTokenizer(pattern, "{}", true);
+		StringBuffer sb = new StringBuffer();
+		String token = "";
+		String lastToken = "";
+		StringTokenizer st = new StringTokenizer(pattern, "{}", true);
 
 		while(st.hasMoreTokens()) {
 			lastToken = token;
-			token     = st.nextToken();
+			token = st.nextToken();
 
 			if(lastToken.equals("{")) {
 				StringTokenizer tt = new StringTokenizer(token);
 
 				while(tt.hasMoreTokens()) {
-					String strToken     = tt.nextToken();
-					String value	    = (String) attributes.get(strToken);
+					String strToken = tt.nextToken();
+					String value = (String) attributes.get(strToken);
 					String strAttribute = renderAttribute(data, strToken, value);
 					sb.append(strAttribute);
 				}
@@ -280,11 +277,10 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * Indicates whether this Message object is equal to another object.
-	 * Returns true only if o is not null and an instance of class Message and
-	 * o's id is equal to the id of this  Message object. 2002.02.21 pavkovic:
-	 * Also the message text has to be the same for Messages  with ambiguous
-	 * IntegerID(-1)
+	 * Indicates whether this Message object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Message and o's id is equal to the id of this  Message
+	 * object. 2002.02.21 pavkovic: Also the message text has to be the same for Messages  with
+	 * ambiguous IntegerID(-1)
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -292,9 +288,8 @@ public class Message extends Identifiable {
 	 */
 	public boolean equals(Object o) {
 		if(o instanceof Message) {
-			boolean ret = this.getID().equals(ambiguousID)
-						  ? isPrimitiveEquals((Message) o)
-						  : isComplexEquals((Message) o);
+			boolean ret = this.getID().equals(ambiguousID) ? isPrimitiveEquals((Message) o)
+														   : isComplexEquals((Message) o);
 
 			/*
 			if(ret && log.isDebugEnabled()) {
@@ -311,8 +306,8 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * This checks if Messages are of old style without id. In such a situation
-	 * we have to compare the text
+	 * This checks if Messages are of old style without id. In such a situation we have to compare
+	 * the text
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -321,13 +316,12 @@ public class Message extends Identifiable {
 	private boolean isPrimitiveEquals(Message o) {
 		// we use == for ambiguousID as it is singleton
 		// this is true iff this.ID == o.ID == ambiguousID && this.text == o.text
-		return (this.getID() == o.getID()) &&
-			   equalObjects(this.getText(), o.getText());
+		return (this.getID() == o.getID()) && equalObjects(this.getText(), o.getText());
 	}
 
 	/**
-	 * This checks if Messages are of new style (CR version >= 41 with id. But
-	 * the id is not an identifying characteristica.
+	 * This checks if Messages are of new style (CR version >= 41 with id. But the id is not an
+	 * identifying characteristica.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -346,8 +340,8 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * Imposes a natural ordering on Message objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Message objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -358,16 +352,14 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * Transfers all available information from the current message to the new
-	 * one.
+	 * Transfers all available information from the current message to the new one.
 	 *
 	 * @param curGD fully loaded game data
 	 * @param curMsg a fully initialized and valid message
 	 * @param newGD the game data to be updated
 	 * @param newMsg a message to be updated with the data from curMsg
 	 */
-	public static void merge(GameData curGD, Message curMsg, GameData newGD,
-							 Message newMsg) {
+	public static void merge(GameData curGD, Message curMsg, GameData newGD, Message newMsg) {
 		if((curMsg.attributes != null) && (curMsg.attributes.size() > 0)) {
 			if(newMsg.attributes == null) {
 				newMsg.attributes = new com.eressea.util.OrderedHashtable();
@@ -394,7 +386,7 @@ public class Message extends Identifiable {
 	 */
 	public String toString() {
 		return "Message[" + "id=" + id + "," + "type=" +
-			   ((type == null) ? "null" : (type.getID() + "")) + "," +
-			   "text=\"" + text + "\"," + "attributes=" + attributes + "]";
+			   ((type == null) ? "null" : (type.getID() + "")) + "," + "text=\"" + text + "\"," +
+			   "attributes=" + attributes + "]";
 	}
 }

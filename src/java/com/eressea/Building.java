@@ -25,10 +25,7 @@ public class Building extends UnitContainer implements HasRegion {
 	/** Size of the building. */
 	private int size = 0;
 
-	/**
-	 * Costs for the building. Could depend on size, so don't put it into the
-	 * UnitContType.
-	 */
+	/** Costs for the building. Could depend on size, so don't put it into the UnitContType. */
 	private int cost = 0;
 
 	/**
@@ -80,8 +77,8 @@ public class Building extends UnitContainer implements HasRegion {
 	private Region region = null;
 
 	/**
-	 * Sets the region this building is in. If this building already has a
-	 * region set, this method takes care of removing it from that region.
+	 * Sets the region this building is in. If this building already has a region set, this method
+	 * takes care of removing it from that region.
 	 *
 	 * @param region the region to the the building into.
 	 */
@@ -122,8 +119,8 @@ public class Building extends UnitContainer implements HasRegion {
 	 *
 	 * @param o the Building object to compare with.
 	 *
-	 * @return true only if o is not null and an instance of class Building and
-	 * 		   o's id is equal to the id of this  Building object.
+	 * @return true only if o is not null and an instance of class Building and o's id is equal to
+	 * 		   the id of this  Building object.
 	 */
 	public boolean equals(Object o) {
 		if(o instanceof Building) {
@@ -134,8 +131,8 @@ public class Building extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Imposes a natural ordering on Building objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Building objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o the Building object to compare with.
 	 *
@@ -146,8 +143,8 @@ public class Building extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Merges buildings. The new one get the name, comments etc. from the
-	 * current one, effects etc. are added, not written over.
+	 * Merges buildings. The new one get the name, comments etc. from the current one, effects etc.
+	 * are added, not written over.
 	 *
 	 * @param curGD current GameData
 	 * @param curBuilding the current Building
@@ -156,8 +153,8 @@ public class Building extends UnitContainer implements HasRegion {
 	 *
 	 * @see UnitContainer#merge
 	 */
-	public static void merge(GameData curGD, Building curBuilding,
-							 GameData newGD, Building newBuilding) {
+	public static void merge(GameData curGD, Building curBuilding, GameData newGD,
+							 Building newBuilding) {
 		UnitContainer.merge(curGD, curBuilding, newGD, newBuilding);
 
 		if(curBuilding.getCost() != -1) {
@@ -179,7 +176,6 @@ public class Building extends UnitContainer implements HasRegion {
 	 * @return the Building object as string.
 	 */
 	public String toString() {
-		return name + " (" + id + "), " + this.getType() + " (" +
-			   this.getSize() + ")";
+		return name + " (" + id + "), " + this.getType() + " (" + this.getSize() + ")";
 	}
 }

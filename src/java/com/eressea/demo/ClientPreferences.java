@@ -68,15 +68,13 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class ClientPreferences extends InternationalizedPanel
-	implements ExtendedPreferencesAdapter
-{
-	private static final Logger   log					   = Logger.getInstance(ClientPreferences.class);
-	Properties					  settings				   = null;
-	Client						  source				   = null;
+public class ClientPreferences extends InternationalizedPanel implements ExtendedPreferencesAdapter {
+	private static final Logger log = Logger.getInstance(ClientPreferences.class);
+	Properties settings = null;
+	Client source = null;
 	private javax.swing.JCheckBox chkCheckVersionOnStartup = null;
-	private javax.swing.JComboBox cmbGUILocale			   = null;
-	private javax.swing.JComboBox cmbOrderLocale		   = null;
+	private javax.swing.JComboBox cmbGUILocale = null;
+	private javax.swing.JComboBox cmbOrderLocale = null;
 
 	// The initial value for GameData.curTempID
 
@@ -93,9 +91,9 @@ public class ClientPreferences extends InternationalizedPanel
 	private JRadioButton countDecimal;
 	private JRadioButton ascendingOrder;
 	private JRadioButton descendingOrder;
-	private JCheckBox    showTempUnitDialog;
-	private JCheckBox    showProgress;
-	protected List		 subAdapters;
+	private JCheckBox showTempUnitDialog;
+	private JCheckBox showProgress;
+	protected List subAdapters;
 
 	/**
 	 * Creates a new ClientPreferences object.
@@ -104,7 +102,7 @@ public class ClientPreferences extends InternationalizedPanel
 	 * @param source TODO: DOCUMENT ME!
 	 */
 	public ClientPreferences(Properties p, Client source) {
-		settings    = p;
+		settings = p;
 		this.source = source;
 
 		initGUI();
@@ -136,38 +134,33 @@ public class ClientPreferences extends InternationalizedPanel
 
 		GridBagConstraints c = new GridBagConstraints();
 
-		c.insets.top    = 10;
+		c.insets.top = 10;
 		c.insets.bottom = 10;
-		GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1,
-									 1.0, 0.0, GridBagConstraints.NORTHWEST,
-									 GridBagConstraints.HORIZONTAL, c.insets,
-									 0, 0);
+		GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
+									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+									 c.insets, 0, 0);
 
 		// startup and exit panel
 		add(getStartupExitPanel(), c);
 		c.insets.top = 0;
 
-		GridBagHelper.setConstraints(c, 0, 1, GridBagConstraints.REMAINDER, 1,
-									 1.0, 0.0, GridBagConstraints.NORTHWEST,
-									 GridBagConstraints.HORIZONTAL, c.insets,
-									 0, 0);
+		GridBagHelper.setConstraints(c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
+									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+									 c.insets, 0, 0);
 
 		// locales
 		add(getLocalesPanel(), c);
 
-		GridBagHelper.setConstraints(c, 0, 2, GridBagConstraints.REMAINDER, 1,
-									 1.0, 0.0, GridBagConstraints.NORTHWEST,
-									 GridBagConstraints.HORIZONTAL, c.insets,
-									 0, 0);
+		GridBagHelper.setConstraints(c, 0, 2, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
+									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+									 c.insets, 0, 0);
 
 		// temp unit panel
 		add(getTempUnitPanel(), c);
 
-		GridBagHelper.setConstraints(c, 0, 3, GridBagConstraints.REMAINDER, 1,
-									 1.0, 1.0, /* different weighty!*/
-									 GridBagConstraints.NORTHWEST,
-									 GridBagConstraints.HORIZONTAL, c.insets,
-									 0, 0);
+		GridBagHelper.setConstraints(c, 0, 3, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
+									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+									 c.insets, 0, 0);
 
 		// progress panel
 		add(getProgressPanel(), c);
@@ -178,8 +171,7 @@ public class ClientPreferences extends InternationalizedPanel
 		JPanel progressPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		progressPanel.setBorder(new TitledBorder(getString("border.progress")));
 
-		showProgress = new JCheckBox(getString("progress.caption"),
-									 source.isShowingStatus());
+		showProgress = new JCheckBox(getString("progress.caption"), source.isShowingStatus());
 		progressPanel.add(showProgress);
 
 		return progressPanel;
@@ -187,20 +179,18 @@ public class ClientPreferences extends InternationalizedPanel
 
 	private Component getTempUnitPanel() {
 		// tempUnitIDs
-		JPanel			   tempIDs = new JPanel(new GridBagLayout());
+		JPanel tempIDs = new JPanel(new GridBagLayout());
 		GridBagConstraints c2 = new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 													   GridBagConstraints.WEST,
 													   GridBagConstraints.VERTICAL,
-													   new Insets(4, 4, 4, 4),
-													   0, 0);
+													   new Insets(4, 4, 4, 4), 0, 0);
 		tempIDs.setBorder(new TitledBorder(getString("border.temps")));
 
 		JLabel label = new JLabel(getString("tempids"));
 		tempIDs.add(label, c2);
 		c2.gridy = 1;
 
-		String s = settings.getProperty("ClientPreferences.TempIDsInitialValue",
-										"");
+		String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
 		tempIDsInitialValue = new JTextField(s);
 		tempIDsInitialValue.setPreferredSize(new Dimension(100, 40));
 		tempIDsInitialValue.setBorder(new TitledBorder(getString("tempidsinitialvalue.caption")));
@@ -208,12 +198,9 @@ public class ClientPreferences extends InternationalizedPanel
 		tempIDsInitialValue.setHorizontalAlignment(JTextField.CENTER);
 		tempIDs.add(tempIDsInitialValue, c2);
 
-		Boolean b = Boolean.valueOf(settings.getProperty("ClientPreferences.countDecimal",
-														 "true"));
-		countDecimal = new JRadioButton(getString("tempids.countdecimal.caption"),
-										b.booleanValue());
-		countBase36 = new JRadioButton(getString("tempids.countbase36.caption"),
-									   !b.booleanValue());
+		Boolean b = Boolean.valueOf(settings.getProperty("ClientPreferences.countDecimal", "true"));
+		countDecimal = new JRadioButton(getString("tempids.countdecimal.caption"), b.booleanValue());
+		countBase36 = new JRadioButton(getString("tempids.countbase36.caption"), !b.booleanValue());
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(countDecimal);
@@ -223,7 +210,7 @@ public class ClientPreferences extends InternationalizedPanel
 		c2.gridx = 2;
 		tempIDs.add(countBase36, c2);
 		c2.weightx = 1.0;
-		c2.gridx   = 3;
+		c2.gridx = 3;
 		tempIDs.add(new JPanel(), c2);
 
 		//pavkovic
@@ -245,13 +232,12 @@ public class ClientPreferences extends InternationalizedPanel
 		c2.weightx = 1.0;
 
 		// pavkovic
-		c2.gridy		   = 3;
-		c2.gridx		   = 0;
-		c2.gridwidth	   = 3;
+		c2.gridy = 3;
+		c2.gridx = 0;
+		c2.gridwidth = 3;
 		showTempUnitDialog = new JCheckBox(getString("showtempunitdialog"),
 										   settings.getProperty("MultiEditorOrderEditorList.ButtonPanel.ShowTempUnitDialog",
-																"true")
-												   .equalsIgnoreCase("true"));
+																"true").equalsIgnoreCase("true"));
 		tempIDs.add(showTempUnitDialog, c2);
 
 		// tooltips
@@ -268,18 +254,18 @@ public class ClientPreferences extends InternationalizedPanel
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Component getStartupExitPanel() {
-		GridBagConstraints c   = new GridBagConstraints();
-		JPanel			   pnl = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		JPanel pnl = new JPanel(new GridBagLayout());
 		pnl.setBorder(new javax.swing.border.TitledBorder(BorderFactory.createEtchedBorder(),
 														  getString("border.startupexit")));
 
 		chkCheckVersionOnStartup = new JCheckBox(getString("chk.checkversiononstartup.caption"),
 												 source.isCheckingVersionOnStartup());
 
-		c.gridx   = 0;
-		c.gridy   = 0;
-		c.anchor  = GridBagConstraints.WEST;
-		c.fill    = GridBagConstraints.NONE;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.NONE;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		pnl.add(chkCheckVersionOnStartup, c);
@@ -293,10 +279,7 @@ public class ClientPreferences extends InternationalizedPanel
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Component getLocalesPanel() {
-		Object availLocales[] = {
-									new LocaleWrapper(Locale.GERMAN),
-									new LocaleWrapper(Locale.ENGLISH)
-								};
+		Object availLocales[] = { new LocaleWrapper(Locale.GERMAN), new LocaleWrapper(Locale.ENGLISH) };
 
 		JPanel pnlLocales = new JPanel(new GridBagLayout());
 		pnlLocales.setBorder(new javax.swing.border.TitledBorder(BorderFactory.createEtchedBorder(),
@@ -306,43 +289,41 @@ public class ClientPreferences extends InternationalizedPanel
 		cmbGUILocale.setSelectedItem(new LocaleWrapper(Locales.getGUILocale()));
 
 		JLabel lblGUILocale = new JLabel(getString("lbl.guilocale.caption"));
-		lblGUILocale.setDisplayedMnemonic(getString("lbl.guilocale.mnemonic")
-											  .charAt(0));
+		lblGUILocale.setDisplayedMnemonic(getString("lbl.guilocale.mnemonic").charAt(0));
 		lblGUILocale.setLabelFor(cmbGUILocale);
 
 		cmbOrderLocale = new JComboBox(availLocales);
 		cmbOrderLocale.setSelectedItem(new LocaleWrapper(Locales.getOrderLocale()));
 
 		JLabel lblOrderLocale = new JLabel(getString("lbl.orderlocale.caption"));
-		lblOrderLocale.setDisplayedMnemonic(getString("lbl.orderlocale.mnemonic")
-												.charAt(0));
+		lblOrderLocale.setDisplayedMnemonic(getString("lbl.orderlocale.mnemonic").charAt(0));
 		lblOrderLocale.setLabelFor(cmbOrderLocale);
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets  = new Insets(2, 2, 2, 2);
-		c.gridx   = 0;
-		c.gridy   = 0;
-		c.fill    = GridBagConstraints.HORIZONTAL;
-		c.anchor  = GridBagConstraints.CENTER;
+		c.insets = new Insets(2, 2, 2, 2);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.CENTER;
 		c.weightx = 0.0;
 		pnlLocales.add(lblGUILocale, c);
-		c.gridx   = 1;
-		c.gridy   = 0;
-		c.fill    = GridBagConstraints.NONE;
-		c.anchor  = GridBagConstraints.EAST;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.EAST;
 		c.weightx = 0.1;
 		pnlLocales.add(cmbGUILocale, c);
 
-		c.gridx   = 0;
-		c.gridy   = 1;
-		c.fill    = GridBagConstraints.HORIZONTAL;
-		c.anchor  = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.CENTER;
 		c.weightx = 0.0;
 		pnlLocales.add(lblOrderLocale, c);
-		c.gridx   = 1;
-		c.gridy   = 1;
-		c.fill    = GridBagConstraints.NONE;
-		c.anchor  = GridBagConstraints.EAST;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.EAST;
 		c.weightx = 0.1;
 		pnlLocales.add(cmbOrderLocale, c);
 
@@ -418,8 +399,8 @@ public class ClientPreferences extends InternationalizedPanel
 	}
 
 	/**
-	 * A wrapper for storing Locale objects in a combo box while displaying a
-	 * full name instead of only a language code.
+	 * A wrapper for storing Locale objects in a combo box while displaying a full name instead of
+	 * only a language code.
 	 */
 	private static class LocaleWrapper {
 		private Locale locale = null;
@@ -473,8 +454,7 @@ public class ClientPreferences extends InternationalizedPanel
 		LookAndFeel laf = UIManager.getLookAndFeel();
 
 		if(laf instanceof javax.swing.plaf.metal.MetalLookAndFeel) {
-			Color col = JColorChooser.showDialog(this,
-												 getString("desktopcolor.title"),
+			Color col = JColorChooser.showDialog(this, getString("desktopcolor.title"),
 												 MetalLookAndFeel.getWindowBackground());
 
 			if(col != null) {
@@ -483,11 +463,9 @@ public class ClientPreferences extends InternationalizedPanel
 		}
 	}
 
-	protected class LAndF extends JPanel implements PreferencesAdapter,
-													ActionListener
-	{
+	protected class LAndF extends JPanel implements PreferencesAdapter, ActionListener {
 		protected JTextField editFontSize;
-		protected JList		 jComboBoxLaF;
+		protected JList jComboBoxLaF;
 
 		/**
 		 * Creates a new LAndF object.
@@ -500,23 +478,19 @@ public class ClientPreferences extends InternationalizedPanel
 			this.setLayout(new GridBagLayout());
 
 			GridBagConstraints c = new GridBagConstraints();
-			c.insets.top    = 10;
+			c.insets.top = 10;
 			c.insets.bottom = 10;
-			GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER,
-										 1, 1.0, 0.0,
+			GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
 										 GridBagConstraints.NORTHWEST,
-										 GridBagConstraints.HORIZONTAL,
-										 c.insets, 0, 0);
+										 GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
 
 			// font panel
 			add(createFontPanel(), c);
 			c.insets.top = 0;
 
-			GridBagHelper.setConstraints(c, 0, 1, GridBagConstraints.REMAINDER,
-										 1, 1.0, 1.0, /* different weighty!*/
+			GridBagHelper.setConstraints(c, 0, 1, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
 										 GridBagConstraints.NORTHWEST,
-										 GridBagConstraints.HORIZONTAL,
-										 c.insets, 0, 0);
+										 GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
 
 			// Look And Feel Panel
 			add(createLAndFPanel(), c);
@@ -530,8 +504,7 @@ public class ClientPreferences extends InternationalizedPanel
 			GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 0, 0,
 															GridBagConstraints.WEST,
 															GridBagConstraints.HORIZONTAL,
-															new Insets(3, 3, 3,
-																	   3), 0, 0);
+															new Insets(3, 3, 3, 3), 0, 0);
 
 			panel.add(new JLabel(getString("lbl.relativefontsize.caption")), con);
 
@@ -540,8 +513,7 @@ public class ClientPreferences extends InternationalizedPanel
 			editFontSize.setText("100");
 
 			try {
-				float fScale = Float.valueOf(settings.getProperty("Client.FontScale",
-																  "1.0"))
+				float fScale = Float.valueOf(settings.getProperty("Client.FontScale", "1.0"))
 									.floatValue();
 				fScale *= 100.0f;
 				editFontSize.setText(Float.toString(fScale));
@@ -551,7 +523,7 @@ public class ClientPreferences extends InternationalizedPanel
 			editFontSize.setMinimumSize(new java.awt.Dimension(50, 20));
 
 			con.insets.left = 0;
-			con.gridx	    = 1;
+			con.gridx = 1;
 			panel.add(editFontSize, con);
 
 			con.gridx = 2;
@@ -562,44 +534,40 @@ public class ClientPreferences extends InternationalizedPanel
 			help.setLineWrap(true);
 			help.setWrapStyleWord(true);
 			help.setMinimumSize(new java.awt.Dimension(546, 20));
-			help.setBackground((java.awt.Color) javax.swing.UIManager.getDefaults()
-																	 .get("Label.background"));
-			help.setForeground((java.awt.Color) javax.swing.UIManager.getDefaults()
-																	 .get("Label.foreground"));
+			help.setBackground((java.awt.Color) javax.swing.UIManager.getDefaults().get("Label.background"));
+			help.setForeground((java.awt.Color) javax.swing.UIManager.getDefaults().get("Label.foreground"));
 
-			con.gridx     = 0;
-			con.gridy     = 1;
+			con.gridx = 0;
+			con.gridy = 1;
 			con.gridwidth = 3;
-			con.weightx   = 1;
+			con.weightx = 1;
 			panel.add(help, con);
 
 			return panel;
 		}
 
 		protected Container createLAndFPanel() {
-			JPanel			   panel = new JPanel(new GridBagLayout());
+			JPanel panel = new JPanel(new GridBagLayout());
 
 			GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 0, 0,
 															GridBagConstraints.NORTHWEST,
 															GridBagConstraints.HORIZONTAL,
-															new Insets(3, 3, 3,
-																	   3), 0, 0);
+															new Insets(3, 3, 3, 3), 0, 0);
 
 			panel.add(new JLabel(getString("lbl.lafrenderer.caption")), con);
 
 			String renderer[] = source.getLookAndFeels();
 			jComboBoxLaF = new JList(renderer);
 			jComboBoxLaF.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			jComboBoxLaF.setSelectedValue(settings.getProperty("Client.lookAndFeel",
-															   "Metal"), true);
-			con.gridx   = 1;
+			jComboBoxLaF.setSelectedValue(settings.getProperty("Client.lookAndFeel", "Metal"), true);
+			con.gridx = 1;
 			con.weightx = 0;
 			panel.add(new JScrollPane(jComboBoxLaF), con);
 
 			JButton button = new JButton(getString("desktopcolor.button"));
 			button.addActionListener(this);
-			con.gridx   = 1;
-			con.gridy   = 1;
+			con.gridx = 1;
+			con.gridy = 1;
 			con.weightx = 0;
 			panel.add(button, con);
 
@@ -677,23 +645,18 @@ public class ClientPreferences extends InternationalizedPanel
 
 			JPanel help = new JPanel();
 			help.setBorder(new TitledBorder(new CompoundBorder(BorderFactory.createEtchedBorder(),
-															   new EmptyBorder(0,
-																			   3,
-																			   3,
-																			   3)),
+															   new EmptyBorder(0, 3, 3, 3)),
 											getString("border.filehistory")));
 			help.setLayout(new GridBagLayout());
 
 			GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 0, 0,
 															GridBagConstraints.NORTHWEST,
 															GridBagConstraints.HORIZONTAL,
-															new Insets(0, 0, 0,
-																	   0), 0, 0);
+															new Insets(0, 0, 0, 0), 0, 0);
 
-			help.add(new JLabel(getString("lbl.filehistoryentries.caption")),
-					 con);
-			con.gridx		   = 1;
-			con.weightx		   = 1;
+			help.add(new JLabel(getString("lbl.filehistoryentries.caption")), con);
+			con.gridx = 1;
+			con.weightx = 1;
 			txtFileHistorySize = new JTextField(Integer.toString(source.getMaxFileHistorySize()));
 			txtFileHistorySize.setPreferredSize(new java.awt.Dimension(50, 20));
 
@@ -702,8 +665,8 @@ public class ClientPreferences extends InternationalizedPanel
 
 			help.add(txtFileHistorySize, con);
 
-			con.gridx     = 0;
-			con.gridy     = 1;
+			con.gridx = 0;
+			con.gridy = 1;
 			con.gridwidth = 2;
 
 			JTextArea txtFoo = new JTextArea(getString("txt.filehistorydescription.text"));
@@ -711,8 +674,7 @@ public class ClientPreferences extends InternationalizedPanel
 			txtFoo.setWrapStyleWord(true);
 			txtFoo.setEditable(false);
 			txtFoo.setOpaque(false);
-			txtFoo.setForeground((java.awt.Color) javax.swing.UIManager.getDefaults()
-																	   .get("Label.foreground"));
+			txtFoo.setForeground((java.awt.Color) javax.swing.UIManager.getDefaults().get("Label.foreground"));
 			help.add(txtFoo, con);
 
 			// layout this container
@@ -720,13 +682,11 @@ public class ClientPreferences extends InternationalizedPanel
 
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.insets.top    = 10;
+			c.insets.top = 10;
 			c.insets.bottom = 10;
-			GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER,
-										 1, 1.0, 1.0,
+			GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 1.0,
 										 GridBagConstraints.NORTHWEST,
-										 GridBagConstraints.HORIZONTAL,
-										 c.insets, 0, 0);
+										 GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
 
 			// help panel
 			this.add(help, c);
@@ -759,8 +719,7 @@ public class ClientPreferences extends InternationalizedPanel
 				int i = Integer.parseInt(txtFileHistorySize.getText());
 				source.setMaxFileHistorySize(i);
 			} catch(NumberFormatException e) {
-				log.error("ClientPreferences(): Unable to set maximum file history size",
-						  e);
+				log.error("ClientPreferences(): Unable to set maximum file history size", e);
 			}
 		}
 	}
@@ -782,16 +741,13 @@ public class ClientPreferences extends InternationalizedPanel
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("categorized", "Sort in categories");
 			defaultTranslations.put("border.startupexit", "Startup of Magellan");
-			defaultTranslations.put("chk.checkversiononstartup.caption",
-									"Check for new version");
+			defaultTranslations.put("chk.checkversiononstartup.caption", "Check for new version");
 			defaultTranslations.put("border.fontsize", "Font size");
-			defaultTranslations.put("lbl.relativefontsize.caption",
-									"relative font size");
+			defaultTranslations.put("lbl.relativefontsize.caption", "relative font size");
 			defaultTranslations.put("txt.restartforfontsize.caption",
 									"Magellan has to be restarted to have the new font size setting take effect.");
 			defaultTranslations.put("border.lookandfeel", "Look & Feel");
-			defaultTranslations.put("lbl.lafrenderer.caption",
-									"Look&Feel/Skin: ");
+			defaultTranslations.put("lbl.lafrenderer.caption", "Look&Feel/Skin: ");
 			defaultTranslations.put("border.filehistory", "File history");
 			defaultTranslations.put("lbl.filehistoryentries.caption",
 									"Number of file-history entries: ");
@@ -804,34 +760,25 @@ public class ClientPreferences extends InternationalizedPanel
 			defaultTranslations.put("border.locales", "Locale settings");
 			defaultTranslations.put("lbl.guilocale.caption", "GUI locale: ");
 			defaultTranslations.put("lbl.guilocale.mnemonic", "g");
-			defaultTranslations.put("lbl.orderlocale.caption",
-									"Locale of unit orders: ");
+			defaultTranslations.put("lbl.orderlocale.caption", "Locale of unit orders: ");
 			defaultTranslations.put("lbl.orderlocale.mnemonic", "o");
 			defaultTranslations.put("title", "System");
-			defaultTranslations.put("desktopcolor.button",
-									"Change desktop color...");
+			defaultTranslations.put("desktopcolor.button", "Change desktop color...");
 			defaultTranslations.put("desktopcolor.title", "Desktop color");
 			defaultTranslations.put("progress.caption", "Show progress in title");
 			defaultTranslations.put("border.progress", "Progress display");
 			defaultTranslations.put("border.temps", "Tempunits");
 			defaultTranslations.put("tempids", "IDs of tempunits: ");
-			defaultTranslations.put("tempids.countdecimal.caption",
-									"Count decimal");
-			defaultTranslations.put("tempids.countbase36.caption",
-									"Count base 36");
+			defaultTranslations.put("tempids.countdecimal.caption", "Count decimal");
+			defaultTranslations.put("tempids.countbase36.caption", "Count base 36");
 			defaultTranslations.put("tempids.ascendingorder.caption", "Increase");
-			defaultTranslations.put("tempids.descendingorder.caption",
-									"Decrease");
-			defaultTranslations.put("tempidsinitialvalue.caption",
-									"Initial value");
+			defaultTranslations.put("tempids.descendingorder.caption", "Decrease");
+			defaultTranslations.put("tempidsinitialvalue.caption", "Initial value");
 			defaultTranslations.put("tempidsinitialvalue.tooltip",
 									"Starting with this value the suggested tempunit ids gets counted. The number can be in- or decreased.");
-			defaultTranslations.put("tempids.countdecimal.tooltip",
-									"0, 1, 2, ..., 9, 10, 11, ...");
-			defaultTranslations.put("tempids.countbase36.tooltip",
-									"0, 1, 2, ..., 9, a, b, ...");
-			defaultTranslations.put("showtempunitdialog",
-									"Show dialog on temp unit creation");
+			defaultTranslations.put("tempids.countdecimal.tooltip", "0, 1, 2, ..., 9, 10, 11, ...");
+			defaultTranslations.put("tempids.countbase36.tooltip", "0, 1, 2, ..., 9, a, b, ...");
+			defaultTranslations.put("showtempunitdialog", "Show dialog on temp unit creation");
 		}
 
 		return defaultTranslations;

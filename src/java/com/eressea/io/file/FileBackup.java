@@ -30,11 +30,9 @@ public class FileBackup {
 	}
 
 	/**
-	 * Returns the new backup file for the given file. Uses a backup level of
-	 * <code>5</code>.
+	 * Returns the new backup file for the given file. Uses a backup level of <code>5</code>.
 	 *
-	 * @param file the file to back up. The directory is the parent directory
-	 * 		  of the given file.
+	 * @param file the file to back up. The directory is the parent directory of the given file.
 	 *
 	 * @return the created backup file.
 	 *
@@ -47,36 +45,29 @@ public class FileBackup {
 	/**
 	 * Returns the new backup file for the given file and backup level
 	 *
-	 * @param file the file to back up. The directory is the parent directory
-	 * 		  of the given file.
-	 * @param backuplevel number of revisions to hold, ignored for the{@link
-	 * 		  #SIMPLE} backup type.
+	 * @param file the file to back up. The directory is the parent directory of the given file.
+	 * @param backuplevel number of revisions to hold, ignored for the{@link #SIMPLE} backup type.
 	 *
 	 * @return the created backup file.
 	 *
 	 * @throws IOException if an I/O error occured.
 	 */
-	public static synchronized File create(File file, int backuplevel)
-									throws IOException
-	{
+	public static synchronized File create(File file, int backuplevel) throws IOException {
 		return create(file, file.getParentFile(), backuplevel);
 	}
 
 	/**
-	 * Returns the new backup file for the given file. Uses a backup level of
-	 * <code>5</code>.
+	 * Returns the new backup file for the given file. Uses a backup level of <code>5</code>.
 	 *
 	 * @param file the file to back up.
-	 * @param directory the directory to copy the backup to. If the directory
-	 * 		  doesn't exist, it will be created.
+	 * @param directory the directory to copy the backup to. If the directory doesn't exist, it
+	 * 		  will be created.
 	 *
 	 * @return the created backup file.
 	 *
 	 * @throws IOException if an I/O error occured.
 	 */
-	public static synchronized File create(File file, File directory)
-									throws IOException
-	{
+	public static synchronized File create(File file, File directory) throws IOException {
 		return create(file, directory, DEFAULT_BACKUP_LEVEL);
 	}
 
@@ -84,17 +75,16 @@ public class FileBackup {
 	 * Returns the new backup file for the given file.
 	 *
 	 * @param file the file to back up.
-	 * @param directory the directory to copy the backup to. If the directory
-	 * 		  doesn't exist, it will be created.
-	 * @param backupLevel number of revisions to hold, ignored for the  {@link
-	 * 		  #SIMPLE} backup type.
+	 * @param directory the directory to copy the backup to. If the directory doesn't exist, it
+	 * 		  will be created.
+	 * @param backupLevel number of revisions to hold, ignored for the  {@link #SIMPLE} backup
+	 * 		  type.
 	 *
 	 * @return the created backup file or null if target file does not exist
 	 *
 	 * @throws IOException if an I/O error occured.
 	 */
-	public static synchronized File create(File file, File directory,
-										   int backupLevel)
+	public static synchronized File create(File file, File directory, int backupLevel)
 									throws IOException
 	{
 		// ensure that file exists. If not, stop execution to create backup file
@@ -105,40 +95,37 @@ public class FileBackup {
 		// ensure that target directory exists
 		if(!directory.exists()) {
 			if(!directory.mkdirs()) {
-				throw new IOException("Could not create directory " +
-									  directory);
+				throw new IOException("Could not create directory " + directory);
 			}
 		}
 
 		File backup = null;
 
-		int  highestBackup = getLatestRevision(file.getName(), directory);
+		int highestBackup = getLatestRevision(file.getName(), directory);
 		backup = new File(directory + File.separator +
 						  getVersionName(file.getName(), highestBackup + 1));
 		copy(file, backup);
-		removeObsoleteRevisions(highestBackup + 1, backupLevel, file.getName(),
-								directory);
+		removeObsoleteRevisions(highestBackup + 1, backupLevel, file.getName(), directory);
 
 		return backup;
 	}
 
 	/**
-	 * Returns the revision number of the latest revision found for the given
-	 * filename.
+	 * Returns the revision number of the latest revision found for the given filename.
 	 *
 	 * @param filename filename to check for revision numbers.
 	 * @param dir directory to search.
 	 *
-	 * @return revision number of the latest backup; returns <code>0</code> if
-	 * 		   no backup could be found.
+	 * @return revision number of the latest backup; returns <code>0</code> if no backup could be
+	 * 		   found.
 	 */
 	private static int getLatestRevision(String filename, File dir) {
 		if(dir == null) {
 			return 0;
 		}
 
-		File  files[] = dir.listFiles();
-		int   result = 0;
+		File files[] = dir.listFiles();
+		int result = 0;
 
 		for(int i = 0; i < files.length; i++) {
 			String name = files[i].getName();
@@ -160,18 +147,17 @@ public class FileBackup {
 	 *
 	 * @param filename filename to check for a revision number.
 	 *
-	 * @return the found revision number; returns <code>0</code> if no revision
-	 * 		   number could be found.
+	 * @return the found revision number; returns <code>0</code> if no revision number could be
+	 * 		   found.
 	 */
 	private static int getRevision(String filename) {
 		int startOffset = filename.indexOf('~');
 		int endOffset = filename.indexOf('~', startOffset + 1);
 
-		while((startOffset < endOffset) && (startOffset > -1) &&
-				  (endOffset > -1)) {
+		while((startOffset < endOffset) && (startOffset > -1) && (endOffset > -1)) {
 			String result = filename.substring(startOffset + 1, endOffset);
 			startOffset = filename.indexOf('~', endOffset);
-			endOffset   = filename.indexOf('~', startOffset + 1);
+			endOffset = filename.indexOf('~', startOffset + 1);
 
 			try {
 				int revision = Integer.parseInt(result);
@@ -212,23 +198,19 @@ public class FileBackup {
 	 *
 	 * @throws IOException if an I/O error occured.
 	 */
-	private static void copy(File source, File target)
-					  throws IOException
-	{
+	private static void copy(File source, File target) throws IOException {
 		CopyFile.copy(source, target);
 	}
 
 	/**
-	 * Removes all obsolete revisions for the given filename in the given
-	 * directory.
+	 * Removes all obsolete revisions for the given filename in the given directory.
 	 *
 	 * @param currentRevision revision number of the latest revision.
 	 * @param backupLevel number of revisions to hold.
 	 * @param filename filename to check for revision numbers.
 	 * @param directory directory which holds the backups.
 	 */
-	private static void removeObsoleteRevisions(int currentRevision,
-												int backupLevel,
+	private static void removeObsoleteRevisions(int currentRevision, int backupLevel,
 												String filename, File directory) {
 		File files[] = directory.listFiles();
 

@@ -19,9 +19,9 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 
 /**
- * A class used to uniquely identify such objects as regions, ships or
- * buildings by an integer. The representation of the integer  depends on the
- * system default defined in the IDBaseConverter class.
+ * A class used to uniquely identify such objects as regions, ships or buildings by an integer. The
+ * representation of the integer  depends on the system default defined in the IDBaseConverter
+ * class.
  */
 public class EntityID extends IntegerID {
 	/**
@@ -34,8 +34,7 @@ public class EntityID extends IntegerID {
 	}
 
 	/**
-	 * Constructs a new entity id based on a new Integer object created from
-	 * the specified int.
+	 * Constructs a new entity id based on a new Integer object created from the specified int.
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 */
@@ -44,8 +43,8 @@ public class EntityID extends IntegerID {
 	}
 
 	/**
-	 * Constructs a new entity id parsing the specified string for an integer
-	 * using the default radix of the IDBaseConverter class.
+	 * Constructs a new entity id parsing the specified string for an integer using the default
+	 * radix of the IDBaseConverter class.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 */
@@ -54,8 +53,8 @@ public class EntityID extends IntegerID {
 	}
 
 	/**
-	 * Constructs a new entity id parsing the specified string for an integer
-	 * using the specified radix.
+	 * Constructs a new entity id parsing the specified string for an integer using the specified
+	 * radix.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 * @param radix TODO: DOCUMENT ME!
@@ -115,8 +114,8 @@ public class EntityID extends IntegerID {
 	}
 
 	/**
-	 * Constructs a new entity id parsing the specified string for an integer
-	 * using the default radix of the IDBaseConverter class.
+	 * Constructs a new entity id parsing the specified string for an integer using the default
+	 * radix of the IDBaseConverter class.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 *
@@ -127,8 +126,8 @@ public class EntityID extends IntegerID {
 	}
 
 	/**
-	 * Returns a string representation of this id which depends on the output
-	 * of the IDBaseConverter class.
+	 * Returns a string representation of this id which depends on the output of the
+	 * IDBaseConverter class.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -141,17 +140,16 @@ public class EntityID extends IntegerID {
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
-	 * @return true, if o is an instance of class EntityID and the numerical
-	 * 		   values of this object and o match.
+	 * @return true, if o is an instance of class EntityID and the numerical values of this object
+	 * 		   and o match.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof EntityID && (id == ((EntityID) o).id));
+		return (this == o) || (o instanceof EntityID && (id == ((EntityID) o).id));
 	}
 
 	/**
-	 * Imposes a natural ordering on EntityID objects which is based on the
-	 * natural ordering of the integers they are constructed from.
+	 * Imposes a natural ordering on EntityID objects which is based on the natural ordering of the
+	 * integers they are constructed from.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

@@ -21,24 +21,24 @@ import com.eressea.gamebinding.GameSpecificStuff;
 import com.eressea.util.CollectionFactory;
 
 /**
- * An implementation of the <tt>GameData</tt> supporting all of the attributes
- * defined there. No maps are defined as <tt>null</tt>.
+ * An implementation of the <tt>GameData</tt> supporting all of the attributes defined there. No
+ * maps are defined as <tt>null</tt>.
  *
  * @see com.eressea.GameData
  */
 public class CompleteData extends GameData {
-	protected Map    regions	  = CollectionFactory.createOrderedHashtable();
-	protected Map    units		  = CollectionFactory.createHashtable();
-	protected Map    factions     = CollectionFactory.createOrderedHashtable();
-	protected Map    ships		  = CollectionFactory.createOrderedHashtable();
-	protected Map    buildings    = CollectionFactory.createOrderedHashtable();
-	protected Map    islands	  = CollectionFactory.createOrderedHashtable();
-	protected Map    msgTypes     = CollectionFactory.createOrderedHashtable();
-	protected Map    spells		  = CollectionFactory.createOrderedHashtable();
-	protected Map    potions	  = CollectionFactory.createOrderedHashtable();
-	protected Map    hotSpots     = CollectionFactory.createOrderedHashtable();
-	protected Map    translations = CollectionFactory.createOrderedHashtable();
-	protected Locale locale		  = null;
+	protected Map regions = CollectionFactory.createOrderedHashtable();
+	protected Map units = CollectionFactory.createHashtable();
+	protected Map factions = CollectionFactory.createOrderedHashtable();
+	protected Map ships = CollectionFactory.createOrderedHashtable();
+	protected Map buildings = CollectionFactory.createOrderedHashtable();
+	protected Map islands = CollectionFactory.createOrderedHashtable();
+	protected Map msgTypes = CollectionFactory.createOrderedHashtable();
+	protected Map spells = CollectionFactory.createOrderedHashtable();
+	protected Map potions = CollectionFactory.createOrderedHashtable();
+	protected Map hotSpots = CollectionFactory.createOrderedHashtable();
+	protected Map translations = CollectionFactory.createOrderedHashtable();
+	protected Locale locale = null;
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -183,8 +183,7 @@ public class CompleteData extends GameData {
 	 * @param name TODO: DOCUMENT ME!
 	 * @param gameSpecificStuff TODO: DOCUMENT ME!
 	 */
-	public CompleteData(Rules rules, String name,
-						GameSpecificStuff gameSpecificStuff) {
+	public CompleteData(Rules rules, String name, GameSpecificStuff gameSpecificStuff) {
 		super(rules, name, gameSpecificStuff);
 	}
 }

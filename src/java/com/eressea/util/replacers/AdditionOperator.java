@@ -39,8 +39,7 @@ public class AdditionOperator extends AbstractOperator {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Object compute(Object numbers[]) {
-		return new Float(((Number) numbers[0]).floatValue() +
-						 ((Number) numbers[1]).floatValue());
+		return new Float(((Number) numbers[0]).floatValue() + ((Number) numbers[1]).floatValue());
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

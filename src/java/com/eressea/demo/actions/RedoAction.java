@@ -31,7 +31,7 @@ import com.eressea.util.CollectionFactory;
  */
 public class RedoAction extends MenuAction implements PropertyChangeListener {
 	private MagellanUndoManager undo;
-	private String			    name = null;
+	private String name = null;
 
 	/**
 	 * Creates a new RedoAction object.
@@ -50,6 +50,11 @@ public class RedoAction extends MenuAction implements PropertyChangeListener {
 		undo.addPropertyChangeListener(MagellanUndoManager.REDO, this);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getIconName() {
 		return "redo_edit";
 	}

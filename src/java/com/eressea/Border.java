@@ -18,15 +18,14 @@ import java.util.List;
 import com.eressea.util.Direction;
 
 /**
- * Container class for a region border based on its representation in a cr
- * version > 45.
+ * Container class for a region border based on its representation in a cr version > 45.
  *
  * @see com.eressea.Region#getBorders()
  */
 public class Border extends Identifiable {
 	/**
-	 * The direction in which the border lies. The value must  be one of the
-	 * DIR_XXX constants in class Direction.
+	 * The direction in which the border lies. The value must  be one of the DIR_XXX constants in
+	 * class Direction.
 	 */
 	public int direction;
 
@@ -34,15 +33,12 @@ public class Border extends Identifiable {
 	public String type;
 
 	/**
-	 * Indicates, to what extend this border type is completed. Values may
-	 * range from 0 to 100, or -1 standing for an uninitialized/invalid value.
+	 * Indicates, to what extend this border type is completed. Values may range from 0 to 100, or
+	 * -1 standing for an uninitialized/invalid value.
 	 */
 	public int buildRatio;
 
-	/**
-	 * A list containing <tt>String</tt> objects, specifying  effects on this
-	 * border.
-	 */
+	/** A list containing <tt>String</tt> objects, specifying  effects on this border. */
 	public List effects;
 
 	/**
@@ -60,13 +56,12 @@ public class Border extends Identifiable {
 	 * @param id the id of the border
 	 * @param direction the direction of the border
 	 * @param type the type of the border
-	 * @param buildRatio indicates, to what extend this border type is
-	 * 		  completed (e.g. street)
+	 * @param buildRatio indicates, to what extend this border type is completed (e.g. street)
 	 */
 	public Border(ID id, int direction, String type, int buildRatio) {
 		super(id);
-		this.direction  = direction;
-		this.type	    = type;
+		this.direction = direction;
+		this.type = type;
 		this.buildRatio = buildRatio;
 	}
 
@@ -79,8 +74,7 @@ public class Border extends Identifiable {
 		if(buildRatio == 100) {
 			return type + ": " + Direction.toString(direction);
 		} else {
-			return type + ": " + Direction.toString(direction) + " (" +
-				   buildRatio + "%)";
+			return type + ": " + Direction.toString(direction) + " (" + buildRatio + "%)";
 		}
 	}
 
@@ -89,8 +83,8 @@ public class Border extends Identifiable {
 	 *
 	 * @param o the Border object to compare with.
 	 *
-	 * @return true only if o is not null and an instance of class Battle and
-	 * 		   o's id is equal to the id of this  Border object.
+	 * @return true only if o is not null and an instance of class Battle and o's id is equal to
+	 * 		   the id of this  Border object.
 	 */
 	public boolean equals(Object o) {
 		if(o instanceof Border) {
@@ -101,8 +95,8 @@ public class Border extends Identifiable {
 	}
 
 	/**
-	 * Imposes a natural ordering on Border objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Border objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o the Border object to compare with.
 	 *

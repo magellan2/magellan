@@ -18,16 +18,15 @@ import java.util.Comparator;
 import com.eressea.Unit;
 
 /**
- * A comparator imposing an ordering on Unit objects by comparing their combat
- * status
+ * A comparator imposing an ordering on Unit objects by comparing their combat status
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality.
  * </p>
  *
  * @author Ulrich Küster
@@ -38,8 +37,8 @@ public class UnitCombatStatusComparator implements Comparator {
 	/**
 	 * Creates a new UnitCombatStautsComparator object.
 	 *
-	 * @param subComparator if two units have the same combat-status, this
-	 * 		  sub-comparator is applied if it is not <tt>null</tt>.
+	 * @param subComparator if two units have the same combat-status, this sub-comparator is
+	 * 		  applied if it is not <tt>null</tt>.
 	 */
 	public UnitCombatStatusComparator(Comparator subComparator) {
 		subCmp = subComparator;
@@ -54,7 +53,7 @@ public class UnitCombatStatusComparator implements Comparator {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int compare(Object o1, Object o2) {
-		int  retVal = 0;
+		int retVal = 0;
 		Unit u1 = (Unit) o1;
 		Unit u2 = (Unit) o2;
 		retVal = u1.combatStatus - u2.combatStatus;

@@ -30,8 +30,7 @@ public interface ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data,
-													Object argument,
+	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
 													java.util.Collection selectedObjects,
 													javax.swing.tree.DefaultMutableTreeNode node);
 }

@@ -47,10 +47,10 @@ import com.eressea.util.Colors;
  * @version $Revision$
  */
 public class HighlightShapeCellRenderer extends HexCellRenderer {
-	private static final int ALPHALEVEL    = 100;
-	private Color			 selectedColor = Color.white;
-	private Color			 activeColor   = Color.red;
-	private boolean			 drawFilled    = true;
+	private static final int ALPHALEVEL = 100;
+	private Color selectedColor = Color.white;
+	private Color activeColor = Color.red;
+	private boolean drawFilled = true;
 
 	/**
 	 * Creates a new HighlightShapeCellRenderer object.
@@ -103,7 +103,7 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 	private void drawAndPossiblyFillPolygon(Region r, Color col) {
 		Coordinate c = r.getCoordinate();
 
-		Rectangle  rect = cellGeo.getCellRect(c.x, c.y);
+		Rectangle rect = cellGeo.getCellRect(c.x, c.y);
 		rect.translate(-offset.x, -offset.y);
 
 		Polygon p = cellGeo.getScaledPolygon();
@@ -113,8 +113,7 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 		p.translate(rect.x, rect.y);
 
 		if(drawFilled) {
-			Color newCol = new Color(col.getRed(), col.getGreen(),
-									 col.getBlue(), ALPHALEVEL);
+			Color newCol = new Color(col.getRed(), col.getGreen(), col.getBlue(), ALPHALEVEL);
 			graphics.setColor(newCol);
 			graphics.fillPolygon(p);
 		}
@@ -220,10 +219,8 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 			defaultTranslations.put("textcolor", "text color");
 			defaultTranslations.put("drawfilled", "fill with border color");
 
-			defaultTranslations.put("lblselectedcolor",
-									"border color of selected regions: ");
-			defaultTranslations.put("lblactivecolor",
-									"border color of active regions: ");
+			defaultTranslations.put("lblselectedcolor", "border color of selected regions: ");
+			defaultTranslations.put("lblactivecolor", "border color of active regions: ");
 		}
 
 		return defaultTranslations;
@@ -234,9 +231,9 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 		protected HighlightShapeCellRenderer source = null;
 
 		// GUI elements
-		private JPanel    pnlSelectedColor = null;
-		private JPanel    pnlActiveColor = null;
-		private JCheckBox chkDrawFilled  = null;
+		private JPanel pnlSelectedColor = null;
+		private JPanel pnlActiveColor = null;
+		private JCheckBox chkDrawFilled = null;
 
 		/**
 		 * Creates a new Preferences object.
@@ -285,15 +282,14 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 			JLabel lblActiveColor = new JLabel(getString("lblactivecolor"));
 			lblActiveColor.setLabelFor(pnlActiveColor);
 
-			chkDrawFilled = new JCheckBox(getString("drawfilled"),
-										  source.getDrawFilled());
+			chkDrawFilled = new JCheckBox(getString("drawfilled"), source.getDrawFilled());
 
 			this.setLayout(new GridBagLayout());
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.anchor = GridBagConstraints.WEST;
-			c.gridx  = 0;
-			c.gridy  = 0;
+			c.gridx = 0;
+			c.gridy = 0;
 			this.add(lblSelectedColor, c);
 			c.gridx = 1;
 			c.gridy = 0;

@@ -37,13 +37,13 @@ import com.eressea.util.StringFactory;
  */
 public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	// Achtung: Das modifizierte Item!
-	protected Item   modItem;
-	protected Unit   unit;
+	protected Item modItem;
+	protected Unit unit;
 	protected String text;
 
 	//protected ItemNodeWrapperPreferencesAdapter adapter=null;
-	protected boolean							  showRegionItemAmount = false;
-	protected DetailsNodeWrapperDrawPolicy		  adapter;
+	protected boolean showRegionItemAmount = false;
+	protected DetailsNodeWrapperDrawPolicy adapter;
 	protected static final java.text.NumberFormat weightNumberFormat = java.text.NumberFormat.getNumberInstance();
 
 	/**
@@ -53,7 +53,7 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	 * @param item TODO: DOCUMENT ME!
 	 */
 	public ItemNodeWrapper(Unit unit, Item item) {
-		this.unit    = unit;
+		this.unit = unit;
 		this.modItem = item;
 	}
 
@@ -85,7 +85,7 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	 * @param b TODO: DOCUMENT ME!
 	 */
 	public void setShowRegionItemAmount(boolean b) {
-		adapter				 = null;
+		adapter = null;
 		showRegionItemAmount = b;
 		propertiesChanged();
 	}
@@ -99,13 +99,12 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getIconNames() {
-		Object key		 = modItem.getItemType().getIconName();
-		List   iconNames = (List) iconNamesLists.get(key);
+		Object key = modItem.getItemType().getIconName();
+		List iconNames = (List) iconNamesLists.get(key);
 
 		if(iconNames == null) {
-			iconNames = CollectionFactory.singletonList(StringFactory.getFactory()
-																	 .intern("items/" +
-																			 key));
+			iconNames = CollectionFactory.singletonList(StringFactory.getFactory().intern("items/" +
+																						  key));
 			iconNamesLists.put(key, iconNames);
 		}
 
@@ -129,8 +128,7 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 			boolean showRegion = isShowingRegionItemAmount();
 
 			// do not show region amounts if faction is not priviliged
-			if((unit == null) ||
-				   (unit.getFaction().trustLevel < Faction.TL_PRIVILEGED)) {
+			if((unit == null) || (unit.getFaction().trustLevel < Faction.TL_PRIVILEGED)) {
 				showRegion = false;
 			}
 
@@ -153,8 +151,8 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 					Item ri = unit.getRegion().getItem(modItem.getItemType());
 
 					if(ri != null) {
-						nodeText.append(getString("node.of")).append(' ')
-								.append(ri.getAmount()).append(' ');
+						nodeText.append(getString("node.of")).append(' ').append(ri.getAmount())
+								.append(' ');
 					}
 				}
 
@@ -176,8 +174,8 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 					Item ri = unit.getRegion().getItem(modItem.getItemType());
 
 					if(ri != null) {
-						nodeText.append(getString("node.of")).append(' ')
-								.append(ri.getAmount()).append(' ');
+						nodeText.append(getString("node.of")).append(' ').append(ri.getAmount())
+								.append(' ');
 					}
 				}
 
@@ -189,11 +187,9 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 						nodeText.append(": ").append(weightNumberFormat.format(new Float(weight)));
 
 						if(modItem.getAmount() != item.getAmount()) {
-							float modWeight = (((int) (modItem.getItemType()
-															  .getWeight() * 100)) * modItem.getAmount()) / 100.0f;
+							float modWeight = (((int) (modItem.getItemType().getWeight() * 100)) * modItem.getAmount()) / 100.0f;
 							nodeText.append(" (")
-									.append(weightNumberFormat.format(new Float(modWeight)))
-									.append(")");
+									.append(weightNumberFormat.format(new Float(modWeight))).append(")");
 						}
 
 						nodeText.append(" " + getString("node.weightunits"));
@@ -207,18 +203,12 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 		return text;
 	}
 
-	protected NodeWrapperDrawPolicy createItemDrawPolicy(Properties settings,
-														 String prefix) {
+	protected NodeWrapperDrawPolicy createItemDrawPolicy(Properties settings, String prefix) {
 		return new DetailsNodeWrapperDrawPolicy(1, null, settings, prefix,
 												new String[][] {
-													{
-														"units.showRegionItemAmount",
-														"true"
-													}
-												},
-												new String[] { "prefs.region.text" },
-												0, getClass(),
-												getDefaultTranslations());
+													{ "units.showRegionItemAmount", "true" }
+												}, new String[] { "prefs.region.text" }, 0,
+												getClass(), getDefaultTranslations());
 	}
 
 	/**
@@ -276,8 +266,7 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return init(settings, "ItemNodeWrapper", adapter);
 	}
 

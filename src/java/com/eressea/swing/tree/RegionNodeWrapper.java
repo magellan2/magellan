@@ -35,13 +35,11 @@ import com.eressea.util.StringFactory;
  * @author $author$
  * @version $Revision$
  */
-public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
-										  SupportsEmphasizing
-{
-	private Region region			    = null;
-	private List   GEs				    = null;
-	private int    amount			    = Integer.MIN_VALUE;
-	private List   subordinatedElements = new LinkedList();
+public class RegionNodeWrapper implements CellObject2, SupportsClipboard, SupportsEmphasizing {
+	private Region region = null;
+	private List GEs = null;
+	private int amount = Integer.MIN_VALUE;
+	private List subordinatedElements = new LinkedList();
 
 	/**
 	 * Creates a new RegionNodeWrapper object.
@@ -96,8 +94,7 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return (amount > Integer.MIN_VALUE) ? (region.toString() + ": " +
-											amount) : region.toString();
+		return (amount > Integer.MIN_VALUE) ? (region.toString() + ": " + amount) : region.toString();
 	}
 
 	// pavkovic 2003.10.01: prevent multiple Lists to be generated for nearly static code
@@ -109,16 +106,14 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getIconNames() {
-
-		Object key		 = region.getType().getID();
-		List   iconNames = (List) iconNamesLists.get(key);
+		Object key = region.getType().getID();
+		List iconNames = (List) iconNamesLists.get(key);
 
 		if(iconNames == null) {
 			// in this situation init the region
 			region.refreshUnitRelations();
 
-			iconNames = Collections.singletonList(StringFactory.getFactory()
-															   .intern(key.toString()));
+			iconNames = Collections.singletonList(StringFactory.getFactory().intern(key.toString()));
 			iconNamesLists.put(key, iconNames);
 		}
 
@@ -163,15 +158,12 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getGraphicsElements() {
-
 		if(GEs == null) {
 			// in this situation init the region
 			region.refreshUnitRelations();
-			GraphicsElement ge = new RegionGraphicsElement(toString(), null,
-														   null,
-														   region.getType()
-																 .getID()
-																 .toString());
+
+			GraphicsElement ge = new RegionGraphicsElement(toString(), null, null,
+														   region.getType().getID().toString());
 			ge.setTooltip(region.getType().getName());
 			ge.setType(GraphicsElement.MAIN);
 
@@ -235,8 +227,7 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 

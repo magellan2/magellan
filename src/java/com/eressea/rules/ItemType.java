@@ -30,12 +30,12 @@ import com.eressea.util.Umlaut;
  * @version $Revision$
  */
 public class ItemType extends ObjectType {
-	private float		 weight    = 0;
-	private String		 iconName  = null;
-	private Skill		 makeSkill = null;
-	private Skill		 useSkill  = null;
-	private ItemCategory category  = null;
-	private Map			 resources = null;
+	private float weight = 0;
+	private String iconName = null;
+	private Skill makeSkill = null;
+	private Skill useSkill = null;
+	private ItemCategory category = null;
+	private Map resources = null;
 
 	/**
 	 * Creates a new ItemType object.
@@ -160,9 +160,9 @@ public class ItemType extends ObjectType {
 	}
 
 	/**
-	 * Indicates whether this ItemType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class ItemType
-	 * and o's id is equal to the id of this ItemType object.
+	 * Indicates whether this ItemType object is equal to another object. Returns true only if o is
+	 * not null and an instance of class ItemType and o's id is equal to the id of this ItemType
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -170,13 +170,12 @@ public class ItemType extends ObjectType {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof ItemType &&
-			   this.getID().equals(((ItemType) o).getID()));
+			   (o instanceof ItemType && this.getID().equals(((ItemType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on ItemType objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on ItemType objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -192,16 +191,19 @@ public class ItemType extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getIconName() {
-		if(!iconNameEvaluated && iconName == null) {
+		if(!iconNameEvaluated && (iconName == null)) {
 			if(category != null) {
 				iconName = category.getIconName();
 			}
+
 			if(iconName == null) {
 				iconName = getID().toString();
 			}
+
 			iconName = Umlaut.convertUmlauts(iconName.toLowerCase());
 			iconNameEvaluated = true;
 		}
+
 		return iconName;
 	}
 

@@ -27,8 +27,8 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class BorderNodeWrapper implements CellObject, SupportsClipboard {
-	private Border border    = null;
-	private List   iconNames = null;
+	private Border border = null;
+	private List iconNames = null;
 
 	/**
 	 * Creates a new BorderNodeWrapper object.
@@ -93,8 +93,7 @@ public class BorderNodeWrapper implements CellObject, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 

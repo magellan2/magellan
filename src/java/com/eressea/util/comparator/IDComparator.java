@@ -18,8 +18,7 @@ import java.util.Comparator;
 import com.eressea.Unique;
 
 /**
- * A comparator imposing a total ordering on identifiable objects by comparing
- * their ids.
+ * A comparator imposing a total ordering on identifiable objects by comparing their ids.
  */
 public class IDComparator implements Comparator {
 	/**
@@ -30,7 +29,7 @@ public class IDComparator implements Comparator {
 
 	/** The default IDComparator */
 	public static final Comparator DEFAULT = new IDComparator();
-	
+
 	/**
 	 * Compares its two arguments for order according to their ids.
 	 *

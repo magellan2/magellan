@@ -42,11 +42,10 @@ public interface GameSpecificStuff {
 	// for GameData
 
 	/**
-	 * Processes a GameData object augmenting objects with additional
-	 * information from messages, simplifying the GameData structure, creating
-	 * temp units as distinct objects etc. Note that this method requires the
-	 * classes Locales and Translations to be set up properly so the order
-	 * translations can be found.
+	 * Processes a GameData object augmenting objects with additional information from messages,
+	 * simplifying the GameData structure, creating temp units as distinct objects etc. Note that
+	 * this method requires the classes Locales and Translations to be set up properly so the
+	 * order translations can be found.
 	 *
 	 * @param data the GameData object to process.
 	 */

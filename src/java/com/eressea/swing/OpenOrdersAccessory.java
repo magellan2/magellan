@@ -30,7 +30,7 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class OpenOrdersAccessory extends HistoryAccessory {
-	private JCheckBox chkAutoConfirm			 = null;
+	private JCheckBox chkAutoConfirm = null;
 	private JCheckBox chkIgnoreSemicolonComments = null;
 
 	/**
@@ -50,24 +50,24 @@ public class OpenOrdersAccessory extends HistoryAccessory {
 		chkIgnoreSemicolonComments = new JCheckBox(getString("chk.ignoresemicoloncomments.caption"));
 		chkIgnoreSemicolonComments.setToolTipText(getString("chk.ignoresemicoloncomments.tooltip"));
 
-		c.anchor     = GridBagConstraints.NORTHWEST;
-		c.gridx		 = 0;
-		c.gridy		 = 2;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		this.add(chkAutoConfirm, c);
 
-		c.anchor     = GridBagConstraints.NORTHWEST;
-		c.gridx		 = 0;
-		c.gridy		 = 3;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		this.add(chkIgnoreSemicolonComments, c);
 	}
 
@@ -126,12 +126,10 @@ public class OpenOrdersAccessory extends HistoryAccessory {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("chk.autoconfirmation.caption",
-									"Auto order confirmation");
+			defaultTranslations.put("chk.autoconfirmation.caption", "Auto order confirmation");
 			defaultTranslations.put("chk.autoconfirmation.tooltip",
 									"Confirms the orders of all units that can be found in the file to open.");
-			defaultTranslations.put("chk.ignoresemicoloncomments.caption",
-									"Ignore ';' comments");
+			defaultTranslations.put("chk.ignoresemicoloncomments.caption", "Ignore ';' comments");
 			defaultTranslations.put("chk.ignoresemicoloncomments.tooltip",
 									"When reading the orders from the file to open all comments starting with a semicolon are ignored. Make sure to turn this off if you want to take on the confirmation status of the orders in the file to open.");
 		}

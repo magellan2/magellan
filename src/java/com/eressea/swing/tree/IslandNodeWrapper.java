@@ -77,8 +77,7 @@ public class IslandNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean emphasized() {
-		for(Iterator regionIter = island.regions().iterator();
-				regionIter.hasNext();) {
+		for(Iterator regionIter = island.regions().iterator(); regionIter.hasNext();) {
 			Iterator it = ((Region) regionIter.next()).units().iterator();
 
 			if(it != null) {
@@ -93,6 +92,7 @@ public class IslandNodeWrapper implements CellObject, SupportsClipboard {
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -108,7 +108,7 @@ public class IslandNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getClipboardValue() {
-		return island != null ? island.getName() : toString();
+		return (island != null) ? island.getName() : toString();
 	}
 
 	/**
@@ -119,8 +119,7 @@ public class IslandNodeWrapper implements CellObject, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 

@@ -26,41 +26,40 @@ import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
 /**
- * A class implementing Eressea specific rules. Primarily, this class collects
- * all the well-known object-types which in turn provide information about
- * their properties as they are defined in the rules of Eressea. In fact,
- * there is nothing eressea specific in Rules anymore, so this is the generic
- * rules object.
+ * A class implementing Eressea specific rules. Primarily, this class collects all the well-known
+ * object-types which in turn provide information about their properties as they are defined in
+ * the rules of Eressea. In fact, there is nothing eressea specific in Rules anymore, so this is
+ * the generic rules object.
  */
 public class GenericRules implements Rules {
 	private static final Logger log = Logger.getInstance(GenericRules.class);
 
 	// Map consisting of Race, RegionType, ShipType, BuildingType, CastleType
-	private Map mapUnitContainerType	  = CollectionFactory.createOrderedHashtable();
+	private Map mapUnitContainerType = CollectionFactory.createOrderedHashtable();
 	private Map mapUnitContainerTypeNames = CollectionFactory.createOrderedHashtable();
 
 	// Map consisting of ItemType
-	private Map mapItemType		 = CollectionFactory.createOrderedHashtable();
+	private Map mapItemType = CollectionFactory.createOrderedHashtable();
 	private Map mapItemTypeNames = CollectionFactory.createOrderedHashtable();
 
 	// Map consisting of AllianceCategory
-	private Map mapAllianceCategory		 = CollectionFactory.createOrderedHashtable();
+	private Map mapAllianceCategory = CollectionFactory.createOrderedHashtable();
 	private Map mapAllianceCategoryNames = CollectionFactory.createOrderedHashtable();
 
 	// Map consisting of OptionCategory
-	private Map mapOptionCategory	   = CollectionFactory.createOrderedHashtable();
+	private Map mapOptionCategory = CollectionFactory.createOrderedHashtable();
 	private Map mapOptionCategoryNames = CollectionFactory.createOrderedHashtable();
 
 	// Map consisting of ItemCategory
-	private Map mapItemCategory		 = CollectionFactory.createOrderedHashtable();
+	private Map mapItemCategory = CollectionFactory.createOrderedHashtable();
 	private Map mapItemCategoryNames = CollectionFactory.createOrderedHashtable();
 
 	// Map consisting of SkillCategory
-	private Map mapSkillCategory	  = CollectionFactory.createOrderedHashtable();
+	private Map mapSkillCategory = CollectionFactory.createOrderedHashtable();
 	private Map mapSkillCategoryNames = CollectionFactory.createOrderedHashtable();
 
 	// Map consisting of SkillType
-	private Map mapSkillType	  = CollectionFactory.createOrderedHashtable();
+	private Map mapSkillType = CollectionFactory.createOrderedHashtable();
 	private Map mapSkillTypeNames = CollectionFactory.createOrderedHashtable();
 
 	/**
@@ -93,14 +92,15 @@ public class GenericRules implements Rules {
 	 */
 	public RegionType getRegionType(ID id, boolean add) {
 		Object uct = mapUnitContainerType.get(id);
-		if(uct != null && ! (uct instanceof RegionType)) {
+
+		if((uct != null) && !(uct instanceof RegionType)) {
 			return null;
 		}
+
 		RegionType r = (RegionType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
-			r = (RegionType) addObject(new RegionType(id),
-									   mapUnitContainerType,
+			r = (RegionType) addObject(new RegionType(id), mapUnitContainerType,
 									   mapUnitContainerTypeNames);
 			r.setName(id.toString());
 		}
@@ -165,9 +165,11 @@ public class GenericRules implements Rules {
 	 */
 	public ShipType getShipType(ID id, boolean add) {
 		Object uct = mapUnitContainerType.get(id);
-		if(uct != null && ! (uct instanceof ShipType)) {
+
+		if((uct != null) && !(uct instanceof ShipType)) {
 			return null;
 		}
+
 		ShipType r = (ShipType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
@@ -236,14 +238,15 @@ public class GenericRules implements Rules {
 	 */
 	public BuildingType getBuildingType(ID id, boolean add) {
 		Object uct = mapUnitContainerType.get(id);
-		if(uct != null && ! (uct instanceof BuildingType)) {
+
+		if((uct != null) && !(uct instanceof BuildingType)) {
 			return null;
 		}
+
 		BuildingType r = (BuildingType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
-			r = (BuildingType) addObject(new BuildingType(id),
-										 mapUnitContainerType,
+			r = (BuildingType) addObject(new BuildingType(id), mapUnitContainerType,
 										 mapUnitContainerTypeNames);
 			r.setName(id.toString());
 		}
@@ -308,14 +311,15 @@ public class GenericRules implements Rules {
 	 */
 	public CastleType getCastleType(ID id, boolean add) {
 		Object uct = mapUnitContainerType.get(id);
-		if(uct != null && ! (uct instanceof CastleType)) {
+
+		if((uct != null) && !(uct instanceof CastleType)) {
 			return null;
 		}
+
 		CastleType r = (CastleType) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
-			r = (CastleType) addObject(new CastleType(id),
-									   mapUnitContainerType,
+			r = (CastleType) addObject(new CastleType(id), mapUnitContainerType,
 									   mapUnitContainerTypeNames);
 			r.setName(id.toString());
 		}
@@ -380,14 +384,15 @@ public class GenericRules implements Rules {
 	 */
 	public Race getRace(ID id, boolean add) {
 		Object uct = mapUnitContainerType.get(id);
-		if(uct != null && ! (uct instanceof Race)) {
+
+		if((uct != null) && !(uct instanceof Race)) {
 			return null;
 		}
+
 		Race r = (Race) mapUnitContainerType.get(id);
 
 		if((r == null) && add) {
-			r = (Race) addObject(new Race(id), mapUnitContainerType,
-								 mapUnitContainerTypeNames);
+			r = (Race) addObject(new Race(id), mapUnitContainerType, mapUnitContainerTypeNames);
 			r.setName(id.toString());
 		}
 
@@ -453,8 +458,7 @@ public class GenericRules implements Rules {
 		ItemType r = (ItemType) mapItemType.get(id);
 
 		if((r == null) && add) {
-			r = (ItemType) addObject(new ItemType(id), mapItemType,
-									 mapItemTypeNames);
+			r = (ItemType) addObject(new ItemType(id), mapItemType, mapItemTypeNames);
 			r.setName(id.toString());
 		}
 
@@ -520,8 +524,7 @@ public class GenericRules implements Rules {
 		AllianceCategory r = (AllianceCategory) mapAllianceCategory.get(id);
 
 		if((r == null) && add) {
-			r = (AllianceCategory) addObject(new AllianceCategory(id),
-											 mapAllianceCategory,
+			r = (AllianceCategory) addObject(new AllianceCategory(id), mapAllianceCategory,
 											 mapAllianceCategoryNames);
 			r.setName(id.toString());
 		}
@@ -588,8 +591,7 @@ public class GenericRules implements Rules {
 		OptionCategory r = (OptionCategory) mapOptionCategory.get(id);
 
 		if((r == null) && add) {
-			r = (OptionCategory) addObject(new OptionCategory(id),
-										   mapOptionCategory,
+			r = (OptionCategory) addObject(new OptionCategory(id), mapOptionCategory,
 										   mapOptionCategoryNames);
 			r.setName(id.toString());
 		}
@@ -656,8 +658,7 @@ public class GenericRules implements Rules {
 		SkillCategory r = (SkillCategory) mapSkillCategory.get(id);
 
 		if((r == null) && add) {
-			r = (SkillCategory) addObject(new SkillCategory(id),
-										  mapSkillCategory,
+			r = (SkillCategory) addObject(new SkillCategory(id), mapSkillCategory,
 										  mapSkillCategoryNames);
 			r.setName(id.toString());
 		}
@@ -724,8 +725,7 @@ public class GenericRules implements Rules {
 		ItemCategory r = (ItemCategory) mapItemCategory.get(id);
 
 		if((r == null) && add) {
-			r = (ItemCategory) addObject(new ItemCategory(id), mapItemCategory,
-										 mapItemCategoryNames);
+			r = (ItemCategory) addObject(new ItemCategory(id), mapItemCategory, mapItemCategoryNames);
 			r.setName(id.toString());
 		}
 
@@ -791,8 +791,7 @@ public class GenericRules implements Rules {
 		SkillType r = (SkillType) mapSkillType.get(id);
 
 		if((r == null) && add) {
-			r = (SkillType) addObject(new SkillType(id), mapSkillType,
-									  mapSkillTypeNames);
+			r = (SkillType) addObject(new SkillType(id), mapSkillType, mapSkillTypeNames);
 			r.setName(id.toString());
 		}
 
@@ -843,12 +842,11 @@ public class GenericRules implements Rules {
 	}
 
 	/**
-	 * Changes the name of an object identified by the specified id.  This
-	 * method serves as a convenience as it relieves the implementor of the
-	 * arduous task of determining the kind of object type (ItemType,
-	 * SkillType etc.) and accessing the corresponding data structures. It
-	 * also ensures that the object is also accessible by calling the getXXX
-	 * methods with the new name.
+	 * Changes the name of an object identified by the specified id.  This method serves as a
+	 * convenience as it relieves the implementor of the arduous task of determining the kind of
+	 * object type (ItemType, SkillType etc.) and accessing the corresponding data structures. It
+	 * also ensures that the object is also accessible by calling the getXXX methods with the new
+	 * name.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 * @param name TODO: DOCUMENT ME!
@@ -916,8 +914,7 @@ public class GenericRules implements Rules {
 	 */
 	private ObjectType addObject(ObjectType o, Map m, Map n) {
 		if(log.isDebugEnabled()) {
-			log.debug("GenericRules.addObject(" + o.getClass().toString() +
-					  "," + o.getID() + ")");
+			log.debug("GenericRules.addObject(" + o.getClass().toString() + "," + o.getID() + ")");
 		}
 
 		m.put(o.getID(), o);
@@ -930,10 +927,9 @@ public class GenericRules implements Rules {
 	}
 
 	/**
-	 * Tries to retrieve an object type form the specified map by its name. If
-	 * the name is not used as a key in the map but an object with the
-	 * specified name exists, the object is put into the map with the name as
-	 * its key for speeding up future look-ups.
+	 * Tries to retrieve an object type form the specified map by its name. If the name is not used
+	 * as a key in the map but an object with the specified name exists, the object is put into
+	 * the map with the name as its key for speeding up future look-ups.
 	 *
 	 * @param objects TODO: DOCUMENT ME!
 	 * @param names TODO: DOCUMENT ME!
@@ -962,9 +958,9 @@ public class GenericRules implements Rules {
 	}
 
 	private static class ClassIterator implements Iterator {
-		private Class    givenClass;
+		private Class givenClass;
 		private Iterator givenIterator;
-		private Object   currentObject;
+		private Object currentObject;
 
 		/**
 		 * Creates a new ClassIterator object.
@@ -983,7 +979,7 @@ public class GenericRules implements Rules {
 				throw new NullPointerException();
 			}
 
-			givenClass    = c;
+			givenClass = c;
 			givenIterator = i;
 		}
 

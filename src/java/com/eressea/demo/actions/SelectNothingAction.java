@@ -33,11 +33,9 @@ import com.eressea.util.CollectionFactory;
  *
  * @author Ulrich Küster
  */
-public class SelectNothingAction extends MenuAction implements SelectionListener,
-															   GameDataListener
-{
+public class SelectNothingAction extends MenuAction implements SelectionListener, GameDataListener {
 	private Client client;
-	private Map    selectedRegions = CollectionFactory.createHashtable();
+	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
 	 * Creates a new SelectNothingAction object.
@@ -60,12 +58,10 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -91,8 +87,7 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		for(Iterator iter = selectedRegions.keySet().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
 			Coordinate c = (Coordinate) iter.next();
 
 			if(c.z == client.getLevel()) {
@@ -100,9 +95,7 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 			}
 		}
 
-		client.getDispatcher().fire(new SelectionEvent(this,
-													   selectedRegions.values(),
-													   null,
+		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}
 

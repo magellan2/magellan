@@ -18,19 +18,18 @@ import java.util.Map;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A Switch that compares the following to elements by their String
- * replacement. Possible replacers are evaluated by forwarding the Switch
- * object and iterator. If these two are not evaluatable(list too short) or
- * only on of them is <i>null</i> the Switch stays active. <i>Note that if
- * both are null the switch is inactive!</i>
+ * A Switch that compares the following to elements by their String replacement. Possible replacers
+ * are evaluated by forwarding the Switch object and iterator. If these two are not
+ * evaluatable(list too short) or only on of them is <i>null</i> the Switch stays active. <i>Note
+ * that if both are null the switch is inactive!</i>
  *
  * @author Andreas
  * @version
  */
 public class StringIndexReplacer extends AbstractParameterSwitch {
 	/**
-	 * If the String comparism should be done with regarding to the case this
-	 * property is <i>false</i>, else <i>true</i>.
+	 * If the String comparism should be done with regarding to the case this property is
+	 * <i>false</i>, else <i>true</i>.
 	 */
 	protected boolean ignoreCase = false;
 
@@ -52,9 +51,8 @@ public class StringIndexReplacer extends AbstractParameterSwitch {
 	}
 
 	/**
-	 * Checks the following two elements and evaluates their replacements. They
-	 * are treated as Strings through <i>toString()</i> and compared for
-	 * equality.
+	 * Checks the following two elements and evaluates their replacements. They are treated as
+	 * Strings through <i>toString()</i> and compared for equality.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -68,8 +66,7 @@ public class StringIndexReplacer extends AbstractParameterSwitch {
 			int i = -1;
 
 			if(ignoreCase) {
-				i = o1.toString().toUpperCase().indexOf(o2.toString()
-														  .toUpperCase());
+				i = o1.toString().toUpperCase().indexOf(o2.toString().toUpperCase());
 			} else {
 				i = o1.toString().indexOf(o2.toString());
 			}
@@ -86,9 +83,7 @@ public class StringIndexReplacer extends AbstractParameterSwitch {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getDescription() {
-		return com.eressea.util.Translations.getTranslation(this,
-															"description" +
-															ignoreCase);
+		return com.eressea.util.Translations.getTranslation(this, "description" + ignoreCase);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

@@ -49,23 +49,21 @@ import com.eressea.util.comparator.SkillTypeRankComparator;
  * @author $author$
  * @version $Revision$
  */
-public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
-										SupportsEmphasizing
-{
+public class UnitNodeWrapper implements CellObject2, SupportsClipboard, SupportsEmphasizing {
 	private static final Comparator skillComparator = new SkillComparator();
-	private static Comparator	    rankComparator = null;
+	private static Comparator rankComparator = null;
 
 	// just so that we can return an empty List without creating
 	// all the time a new one (for implementation of SupportsEmphasizing)
-	private List					  subordinatedElements	    = null;
-	private static final String		  SKILL_CHANGE_STYLE_PREFIX = "Talent";
-	private Unit					  unit					    = null;
-	private int						  amount				    = -1;
-	private String					  text					    = null;
-	private boolean					  iconNamesCreated		    = false;
-	private List					  iconNames				    = null;
-	private Boolean					  reverse;
-	private String					  additionalIcon		    = null;
+	private List subordinatedElements = null;
+	private static final String SKILL_CHANGE_STYLE_PREFIX = "Talent";
+	private Unit unit = null;
+	private int amount = -1;
+	private String text = null;
+	private boolean iconNamesCreated = false;
+	private List iconNames = null;
+	private Boolean reverse;
+	private String additionalIcon = null;
 	private UnitNodeWrapperDrawPolicy adapter;
 
 	/**
@@ -77,9 +75,9 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @param mod TODO: DOCUMENT ME!
 	 */
 	public UnitNodeWrapper(Unit u, String prfx, int num, int mod) {
-		this.unit   = u;
+		this.unit = u;
 		this.amount = num;
-		this.text   = getText(u, prfx, num, mod);
+		this.text = getText(u, prfx, num, mod);
 	}
 
 	/**
@@ -89,7 +87,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @param text TODO: DOCUMENT ME!
 	 */
 	public UnitNodeWrapper(Unit u, String text) {
-		unit	  = u;
+		unit = u;
 		this.text = text;
 	}
 
@@ -161,8 +159,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 			}
 
 			if(subordinatedElements != null) {
-				for(Iterator iter = subordinatedElements.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = subordinatedElements.iterator(); iter.hasNext();) {
 					SupportsEmphasizing se = (SupportsEmphasizing) iter.next();
 
 					if(se.emphasized()) {
@@ -190,8 +187,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isShowingContainerIcons() {
-		return isShowingAdditional() &&
-			   adapter.properties[adapter.SHOW_CONTAINER];
+		return isShowingAdditional() && adapter.properties[adapter.SHOW_CONTAINER];
 	}
 
 	/**
@@ -227,8 +223,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isShowingSkillsLessThanOne() {
-		return isShowingAdditional() &&
-			   adapter.properties[adapter.SHOW_SKILL_LESS_ONE];
+		return isShowingAdditional() && adapter.properties[adapter.SHOW_SKILL_LESS_ONE];
 	}
 
 	/**
@@ -237,8 +232,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isShowingExpectedOnly() {
-		return isShowingAdditional() &&
-			   adapter.properties[adapter.SHOW_EXPECTED_ONLY];
+		return isShowingAdditional() && adapter.properties[adapter.SHOW_EXPECTED_ONLY];
 	}
 
 	/**
@@ -256,8 +250,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isShowingChangesStyled() {
-		return isShowingChanges() &&
-			   adapter.properties[adapter.SHOW_CHANGE_STYLED];
+		return isShowingChanges() && adapter.properties[adapter.SHOW_CHANGE_STYLED];
 	}
 
 	/**
@@ -266,8 +259,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isShowingChangesText() {
-		return isShowingChanges() &&
-			   adapter.properties[adapter.SHOW_CHANGE_TEXT];
+		return isShowingChanges() && adapter.properties[adapter.SHOW_CHANGE_TEXT];
 	}
 
 	/**
@@ -290,8 +282,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 		return adapter.properties[adapter.CATEGORIZE_START + type];
 	}
 
-	private static String getText(Unit u, String prefix, int amount1,
-								  int amount2) {
+	private static String getText(Unit u, String prefix, int amount1, int amount2) {
 		StringBuffer sb = new StringBuffer();
 
 		if(prefix != null) {
@@ -334,8 +325,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 				}
 			}
 
-			if(adapter.getSettings()
-						  .getProperty("EMapOverviewPanel.useBestSkill", "true")
+			if(adapter.getSettings().getProperty("EMapOverviewPanel.useBestSkill", "true")
 						  .equalsIgnoreCase("true")) {
 				// use best skill to sort icons
 				Collections.sort(skills, skillComparator);
@@ -367,18 +357,14 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 
 		if(isShowingContainerIcons()) {
 			if(unit.getBuilding() != null) {
-				ge = new GraphicsElement(null, null,
-										 unit.getBuilding().getType().getID()
-											 .toString());
+				ge = new GraphicsElement(null, null, unit.getBuilding().getType().getID().toString());
 				ge.setTooltip(unit.getBuilding().getName());
 				ge.setType(GraphicsElement.ADDITIONAL);
 				names.add(ge);
 			}
 
 			if(unit.getShip() != null) {
-				ge = new GraphicsElement(null, null,
-										 unit.getShip().getType().getID()
-											 .toString());
+				ge = new GraphicsElement(null, null, unit.getShip().getType().getID().toString());
 				ge.setTooltip(unit.getShip().getName());
 				ge.setType(GraphicsElement.ADDITIONAL);
 				names.add(ge);
@@ -397,8 +383,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 					ge.setObject("-");
 				}
 			} else {
-				ge = new GraphicsElement(null, null,
-										 s.getSkillType().getID().toString());
+				ge = new GraphicsElement(null, null, s.getSkillType().getID().toString());
 			}
 
 			ge.setTooltip(s.getSkillType().getName());
@@ -408,8 +393,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 				if(isShowingChangesStyled()) {
 					ge.setStyleset(SKILL_CHANGE_STYLE_PREFIX +
 								   ((s.getChangeLevel() >= 0) ? ">." : "<.") +
-								   SKILL_CHANGE_STYLE_PREFIX +
-								   String.valueOf(s.getChangeLevel()));
+								   SKILL_CHANGE_STYLE_PREFIX + String.valueOf(s.getChangeLevel()));
 				}
 
 				if(isShowingChangesText() && isShowingIconText()) {
@@ -426,13 +410,13 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 
 		if(others != null) {
 			if(isShowingCategorized()) {
-				List	  categories[] = new List[7];
-				boolean   anything = false;
+				List categories[] = new List[7];
+				boolean anything = false;
 
 				for(int i = 0; i < 7; i++) {
 					if(isShowingCatagorized(i)) {
 						categories[i] = CollectionFactory.createLinkedList();
-						anything	  = true;
+						anything = true;
 					}
 				}
 
@@ -443,14 +427,12 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 						Item item = (Item) it.next();
 
 						try {
-							String cat = item.getItemType().getCategory().getID()
-											 .toString();
+							String cat = item.getItemType().getCategory().getID().toString();
 
-							int    j = -1;
+							int j = -1;
 
 							for(int i = 0; i < 7; i++) {
-								if(adapter.categories[i].equals(cat) &&
-									   isShowingCatagorized(i)) {
+								if(adapter.categories[i].equals(cat) && isShowingCatagorized(i)) {
 									j = i;
 								}
 							}
@@ -489,16 +471,13 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 
 							if(count > 0) {
 								if(isShowingIconText()) {
-									ge = new GraphicsElement(new Integer(count),
-															 null, null,
+									ge = new GraphicsElement(new Integer(count), null, null,
 															 "items/" +
-															 item.getItemType()
-																 .getIconName());
+															 item.getItemType().getIconName());
 								} else {
 									ge = new GraphicsElement(null, null,
 															 "items/" +
-															 item.getItemType()
-																 .getIconName());
+															 item.getItemType().getIconName());
 								}
 
 								ge.setTooltip(buffer.toString());
@@ -531,11 +510,10 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 
 				if(isShowingIconText()) {
 					ge = new GraphicsElement(null, null, null,
-											 "items/" +
-											 s.getItemType().getIconName());
+											 "items/" + s.getItemType().getIconName());
 
-					Item oldItem   = u.getItem(s.getItemType());
-					int  oldAmount = 0;
+					Item oldItem = u.getItem(s.getItemType());
+					int oldAmount = 0;
 
 					if(oldItem != null) {
 						oldAmount = oldItem.getAmount();
@@ -557,9 +535,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 						ge.setObject(new Integer(oldAmount));
 					}
 				} else {
-					ge = new GraphicsElement(null, null,
-											 "items/" +
-											 s.getItemType().getIconName());
+					ge = new GraphicsElement(null, null, "items/" + s.getItemType().getIconName());
 				}
 
 				ge.setTooltip(s.getName());
@@ -636,8 +612,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return init(settings, "UnitNodeWrapper", adapter);
 	}
 
@@ -654,16 +629,14 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 									  NodeWrapperDrawPolicy adapter) {
 		// return the adapter
 		if(adapter == null) {
-			adapter = new UnitNodeWrapperDrawPolicy(settings, prefix,
-													getDefaultTranslations());
+			adapter = new UnitNodeWrapperDrawPolicy(settings, prefix, getDefaultTranslations());
 		}
 
 		adapter.addCellObject(this);
 		this.adapter = (UnitNodeWrapperDrawPolicy) adapter;
 
 		if(rankComparator == null) {
-			rankComparator = new SkillTypeComparator(new SkillTypeRankComparator(null,
-																				 settings),
+			rankComparator = new SkillTypeComparator(new SkillTypeRankComparator(null, settings),
 													 null);
 		}
 
@@ -677,7 +650,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 	 */
 	public List getGraphicsElements() {
 		if(!iconNamesCreated) {
-			this.iconNames   = createGraphicsElements(this.unit, iconNames);
+			this.iconNames = createGraphicsElements(this.unit, iconNames);
 			iconNamesCreated = true;
 		}
 
@@ -729,14 +702,13 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 		/** TODO: DOCUMENT ME! */
 		public final int SHOW_WARNINGS = 19;
 		protected String categories[] = {
-											"weapons", "armour", "resources",
-											"luxuries", "herbs", "potions",
-											"misc"
+											"weapons", "armour", "resources", "luxuries", "herbs",
+											"potions", "misc"
 										};
 
 		// for menu use
-		protected ContextObserver   obs;
-		protected JMenu			    contextMenu;
+		protected ContextObserver obs;
+		protected JMenu contextMenu;
 		protected JCheckBoxMenuItem itemItem;
 		protected JCheckBoxMenuItem skillItem;
 
@@ -747,8 +719,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 		 * @param prefix TODO: DOCUMENT ME!
 		 * @param defaultTrans TODO: DOCUMENT ME!
 		 */
-		public UnitNodeWrapperDrawPolicy(Properties settings, String prefix,
-										 Map defaultTrans) {
+		public UnitNodeWrapperDrawPolicy(Properties settings, String prefix, Map defaultTrans) {
 			// super(5, new int[] {6, 2, 7, -1, -1}, settings, prefix,new String[][] {
 			super(4, new int[] { 7, 2, 7, 0 }, settings, prefix,
 				  new String[][] {
@@ -777,17 +748,14 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 			{ "showWarnings", "false" }
 				  },
 				  new String[] {
-					  "prefs.additional.text", "prefs.container.text",
-					  "prefs.skill.text", "prefs.skilllessthanone.text",
-					  "prefs.other.text", "prefs.icontext.text",
+					  "prefs.additional.text", "prefs.container.text", "prefs.skill.text",
+					  "prefs.skilllessthanone.text", "prefs.other.text", "prefs.icontext.text",
 					  "prefs.nfirst.text", "prefs.showExpectedOnly",
 					  
-			"prefs.changes.text", "prefs.changes.mode0.text",
-					  "prefs.changes.mode1.text",
+			"prefs.changes.text", "prefs.changes.mode0.text", "prefs.changes.mode1.text",
 					  
-			"prefs.categorized.text", "prefs.categorized.0",
-					  "prefs.categorized.1", "prefs.categorized.2",
-					  "prefs.categorized.3", "prefs.categorized.4",
+			"prefs.categorized.text", "prefs.categorized.0", "prefs.categorized.1",
+					  "prefs.categorized.2", "prefs.categorized.3", "prefs.categorized.4",
 					  "prefs.categorized.5", "prefs.categorized.6",
 					  
 			"prefs.showWarnings"
@@ -795,12 +763,10 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 
 			// context menu
 			contextMenu = new JMenu(getString("prefs.title"));
-			itemItem    = new JCheckBoxMenuItem(getString("prefs.other.text"),
-												properties[SHOW_OTHER]);
+			itemItem = new JCheckBoxMenuItem(getString("prefs.other.text"), properties[SHOW_OTHER]);
 			itemItem.addActionListener(this);
 			contextMenu.add(itemItem);
-			skillItem = new JCheckBoxMenuItem(getString("prefs.skill.text"),
-											  properties[SHOW_SKILL]);
+			skillItem = new JCheckBoxMenuItem(getString("prefs.skill.text"), properties[SHOW_SKILL]);
 			skillItem.addActionListener(this);
 			contextMenu.add(skillItem);
 		}
@@ -848,8 +814,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 				properties[SHOW_SKILL] = skillItem.isSelected();
 
 				if((properties[SHOW_SKILL] && sK[SHOW_SKILL][1].equals("true")) ||
-					   (!properties[SHOW_SKILL] &&
-					   sK[SHOW_SKILL][1].equals("false"))) {
+					   (!properties[SHOW_SKILL] && sK[SHOW_SKILL][1].equals("false"))) {
 					settings.remove(prefix + "." + sK[SHOW_SKILL][0]);
 				} else {
 					settings.setProperty(prefix + "." + sK[SHOW_SKILL][0],
@@ -863,8 +828,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 				properties[SHOW_OTHER] = skillItem.isSelected();
 
 				if((properties[SHOW_OTHER] && sK[SHOW_OTHER][1].equals("true")) ||
-					   (!properties[SHOW_OTHER] &&
-					   sK[SHOW_OTHER][1].equals("false"))) {
+					   (!properties[SHOW_OTHER] && sK[SHOW_OTHER][1].equals("false"))) {
 					settings.remove(prefix + "." + sK[SHOW_OTHER][0]);
 				} else {
 					settings.setProperty(prefix + "." + sK[SHOW_OTHER][0],
@@ -970,8 +934,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 		defaultTranslations.put("prefs.categorized.0", "Weapons");
 		defaultTranslations.put("prefs.categorized.text", "Categorize items");
 		defaultTranslations.put("prefs.nfirst.text", "Show name first");
-		defaultTranslations.put("prefs.container.text",
-								"Show building and ship icons");
+		defaultTranslations.put("prefs.container.text", "Show building and ship icons");
 		defaultTranslations.put("prefs.other.text", "Show inventory icons");
 		defaultTranslations.put("prefs.icontext.text", "Display text");
 		defaultTranslations.put("prefs.changes.mode1.text", "Via Text");
@@ -982,8 +945,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 								"Shows the difference in brackets behind the current value.");
 		defaultTranslations.put("prefs.changes.mode0.text.tooltip",
 								"Uses a customizable styleset for display. You may change the text font, fore- and background color.");
-		defaultTranslations.put("prefs.changes.text.tooltip",
-								"Makes skill changes visible");
+		defaultTranslations.put("prefs.changes.text.tooltip", "Makes skill changes visible");
 		defaultTranslations.put("prefs.categorized.text.tooltip",
 								"Put items of same category together.");
 		defaultTranslations.put("prefs.dialogs.2.help",
@@ -994,18 +956,15 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard,
 								"You may choose the type of content that will be displayed left (or right) of the unit's name.");
 		defaultTranslations.put("prefs.dialogs.2.title", "Categorize items...");
 		defaultTranslations.put("prefs.dialogs.1.title", "Skill changes...");
-		defaultTranslations.put("prefs.dialogs.0.title",
-								"Additional icons and texts...");
+		defaultTranslations.put("prefs.dialogs.0.title", "Additional icons and texts...");
 		defaultTranslations.put("prefs.details", "Details...");
-		defaultTranslations.put("prefs.additional.text",
-								"Show additional icon and texts");
+		defaultTranslations.put("prefs.additional.text", "Show additional icon and texts");
 		defaultTranslations.put("prefs.changes.text", "Show skill changes");
 		defaultTranslations.put("prefs.title", "Units");
 
 		defaultTranslations.put("prefs.showWarnings", "Show warning");
 
-		defaultTranslations.put("prefs.showExpectedOnly",
-								"Show expected items only");
+		defaultTranslations.put("prefs.showExpectedOnly", "Show expected items only");
 
 		defaultTranslations.put("prefs.dialogs.3.title", "Error warning");
 

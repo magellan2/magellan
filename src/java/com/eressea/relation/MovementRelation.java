@@ -21,10 +21,7 @@ import com.eressea.Unit;
  * A relation indicating a movement of a unit.
  */
 public class MovementRelation extends UnitRelation implements LongOrderRelation {
-	/**
-	 * This list consists of the reached coordinates (starting with the current
-	 * region)
-	 */
+	/** This list consists of the reached coordinates (starting with the current region) */
 	public final List movement;
 
 	/**

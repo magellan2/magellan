@@ -16,8 +16,8 @@ package com.eressea.demo.desktop;
 import javax.swing.KeyStroke;
 
 /**
- * An interface for extended short-cut tasks. An extended short-cut is one that
- * redirects the following short-cut to a given listener.
+ * An interface for extended short-cut tasks. An extended short-cut is one that redirects the
+ * following short-cut to a given listener.
  *
  * @author Andreas
  * @version

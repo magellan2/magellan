@@ -29,7 +29,7 @@ public class ReplacerEnvironment {
 
 	/** TODO: DOCUMENT ME! */
 	public static final String UNITSELECTION_PART = "Unit";
-	private Map				   parts;
+	private Map parts;
 
 	/**
 	 * Creates new ReplacerEnvironment

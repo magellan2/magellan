@@ -29,20 +29,20 @@ import com.eressea.util.CollectionFactory;
  * @author $author$
  * @version $Revision$
  */
-public class SimpleNodeWrapper implements CellObject, SupportsClipboard,
-										  Changeable, SupportsEmphasizing
+public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changeable,
+										  SupportsEmphasizing
 {
-	protected static final List			   defaultIcon		    = CollectionFactory.singletonList("simpledefault");
-	private List						   subordinatedElements = null;
-	protected List						   icons;
-	protected List						   returnIcons;
-	protected Object					   text;
-	protected String					   clipboardValue	    = null;
+	protected static final List defaultIcon = CollectionFactory.singletonList("simpledefault");
+	private List subordinatedElements = null;
+	protected List icons;
+	protected List returnIcons;
+	protected Object text;
+	protected String clipboardValue = null;
 	protected DetailsNodeWrapperDrawPolicy adapter;
-	protected boolean					   showIcons		    = true;
-	protected ContextFactory			   contextFactory	    = null;
-	protected Object					   contextArgument	    = null;
-	protected int						   amount			    = -1;
+	protected boolean showIcons = true;
+	protected ContextFactory contextFactory = null;
+	protected Object contextArgument = null;
+	protected int amount = -1;
 
 	/**
 	 * Creates new SimpleNodeWrapper
@@ -63,7 +63,7 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard,
 	 * @param icons TODO: DOCUMENT ME!
 	 */
 	public SimpleNodeWrapper(Object text, Object icons) {
-		this.text  = text;
+		this.text = text;
 		this.icons = null;
 
 		if(icons != null) {
@@ -84,15 +84,14 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard,
 	}
 
 	/**
-	 * Controls whether the tree cell renderer should display this item more
-	 * noticeably than other nodes.
+	 * Controls whether the tree cell renderer should display this item more noticeably than other
+	 * nodes.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean emphasized() {
 		if(subordinatedElements != null) {
-			for(Iterator iter = subordinatedElements.iterator();
-					iter.hasNext();) {
+			for(Iterator iter = subordinatedElements.iterator(); iter.hasNext();) {
 				SupportsEmphasizing se = (SupportsEmphasizing) iter.next();
 
 				if(se.emphasized()) {
@@ -216,14 +215,11 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard,
 		}
 	}
 
-	protected NodeWrapperDrawPolicy createSimpleDrawPolicy(Properties settings,
-														   String prefix) {
+	protected NodeWrapperDrawPolicy createSimpleDrawPolicy(Properties settings, String prefix) {
 		return new DetailsNodeWrapperDrawPolicy(1, null, settings, prefix,
 												new String[][] {
 													{ "simple.showIcon", "true" }
-												},
-												new String[] { "icons.text" },
-												0, getClass(),
+												}, new String[] { "icons.text" }, 0, getClass(),
 												getDefaultTranslations());
 	}
 
@@ -312,8 +308,7 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return init(settings, "SimpleNodeWrapper", adapter);
 	}
 

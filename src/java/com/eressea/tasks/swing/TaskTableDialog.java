@@ -44,8 +44,8 @@ public class TaskTableDialog extends InternationalizedDataDialog {
 	 * @param initData TODO: DOCUMENT ME!
 	 * @param p TODO: DOCUMENT ME!
 	 */
-	public TaskTableDialog(Frame owner, boolean modal, EventDispatcher ed,
-						   GameData initData, Properties p) {
+	public TaskTableDialog(Frame owner, boolean modal, EventDispatcher ed, GameData initData,
+						   Properties p) {
 		super(owner, modal, ed, initData, p);
 		init();
 
@@ -56,20 +56,15 @@ public class TaskTableDialog extends InternationalizedDataDialog {
 		setContentPane(getMainPane());
 		setTitle(getString("window.title"));
 
-		int width = Integer.parseInt(settings.getProperty("TaskTableDialog.width",
-														  "500"));
-		int height = Integer.parseInt(settings.getProperty("TaskTableDialog.height",
-														   "300"));
+		int width = Integer.parseInt(settings.getProperty("TaskTableDialog.width", "500"));
+		int height = Integer.parseInt(settings.getProperty("TaskTableDialog.height", "300"));
 		this.setSize(width, height);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int		  x = Integer.parseInt(settings.getProperty("TaskTableDialog.x",
-															((screen.width -
-															getWidth()) / 2) +
-															""));
+		int x = Integer.parseInt(settings.getProperty("TaskTableDialog.x",
+													  ((screen.width - getWidth()) / 2) + ""));
 		int y = Integer.parseInt(settings.getProperty("TaskTableDialog.y",
-													  ((screen.height -
-													  getHeight()) / 2) + ""));
+													  ((screen.height - getHeight()) / 2) + ""));
 		this.setLocation(x, y);
 	}
 

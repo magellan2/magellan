@@ -29,7 +29,7 @@ import com.eressea.UnitContainer;
  * @version
  */
 public class Tag2Element {
-	protected static String		  lastStyle = null;
+	protected static String lastStyle = null;
 	protected static final String STYLE_TAG = "magStyle";
 
 	/**

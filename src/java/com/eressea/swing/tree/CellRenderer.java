@@ -59,33 +59,33 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class CellRenderer extends JPanel implements TreeCellRenderer {
-	private static final Logger			   log			   = Logger.getInstance(CellRenderer.class);
+	private static final Logger log = Logger.getInstance(CellRenderer.class);
 	private static DefaultTreeCellRenderer defaultRenderer = null;
-	private static Border				   focusedBorder   = null;
-	private static Border				   selectedBorder  = null;
-	private static Border				   plainBorder     = null;
-	private static Border				   emptyBorder     = null;
-	private static Icon					   missingIcon     = null;
-	private JLabel						   label		   = null;
-	private JLabel						   iconLabels[]    = new JLabel[10];
-	private static Map					   mapIcons		   = new HashMap();
-	private static Map					   boldFonts	   = new HashMap();
-	private static Map					   stylesets	   = null;
+	private static Border focusedBorder = null;
+	private static Border selectedBorder = null;
+	private static Border plainBorder = null;
+	private static Border emptyBorder = null;
+	private static Icon missingIcon = null;
+	private JLabel label = null;
+	private JLabel iconLabels[] = new JLabel[10];
+	private static Map mapIcons = new HashMap();
+	private static Map boldFonts = new HashMap();
+	private static Map stylesets = null;
 
 	/** TODO: DOCUMENT ME! */
 	public static Map colorMap;
 
 	/** TODO: DOCUMENT ME! */
-	public static boolean  showTooltips;
+	public static boolean showTooltips;
 	private static boolean initialized = false;
-	private CellObject     cellObj     = null;
-	private CellObject2    cellObj2    = null;
+	private CellObject cellObj = null;
+	private CellObject2 cellObj2 = null;
 
 	// default stylesets for GraphicsElement types + fallback styleset(last in array)
 	protected static GraphicsStyleset typeSets[] = null;
 
 	// stores joined data that comes out of getStyleset
-	private GraphicsStyleset  styleset = new GraphicsStyleset("swap");
+	private GraphicsStyleset styleset = new GraphicsStyleset("swap");
 	private static Properties settings;
 
 	/** TODO: DOCUMENT ME! */
@@ -160,7 +160,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 * Loads the display values out of the settings.
 	 */
 	protected void loadAdditionalValueProperties() {
-		Map     cMap = null;
+		Map cMap = null;
 		boolean tTip = true;
 
 		// Text -> color mapping
@@ -168,18 +168,17 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 
 		try {
 			StringTokenizer st = new StringTokenizer(cMapS, ";");
-			int			    c = st.countTokens() / 4;
+			int c = st.countTokens() / 4;
 			cMap = new HashMap();
 
 			for(int i = 0; i < c; i++) {
-				String value  = st.nextToken();
-				String redS   = st.nextToken();
+				String value = st.nextToken();
+				String redS = st.nextToken();
 				String greenS = st.nextToken();
-				String blueS  = st.nextToken();
+				String blueS = st.nextToken();
 
 				try {
-					cMap.put(value,
-							 Colors.decode(redS + "," + greenS + "," + blueS));
+					cMap.put(value, Colors.decode(redS + "," + greenS + "," + blueS));
 				} catch(Exception inner) {
 				}
 			}
@@ -191,7 +190,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		tTip = ((tTipS != null) && tTipS.equals("true"));
 
 		// now give the renderer our values
-		colorMap     = cMap;
+		colorMap = cMap;
 		showTooltips = tTip;
 	}
 
@@ -228,8 +227,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		if(sChange == 0) {
 			settings.remove("CellRenderer.Emphasize.Style");
 		} else {
-			settings.setProperty("CellRenderer.Emphasize.Style",
-								 String.valueOf(sChange));
+			settings.setProperty("CellRenderer.Emphasize.Style", String.valueOf(sChange));
 		}
 
 		emphasizeColor = sColor;
@@ -237,8 +235,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		if(sColor == null) {
 			settings.remove("CellRenderer.Emphasize.Color");
 		} else {
-			settings.setProperty("CellRenderer.Emphasize.Color",
-								 encodeColor(sColor));
+			settings.setProperty("CellRenderer.Emphasize.Color", encodeColor(sColor));
 		}
 	}
 
@@ -250,8 +247,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 */
 	public static void setAdditionalValueProperties(Map colorM, boolean sTip) {
 		showTooltips = sTip;
-		settings.setProperty("CellRenderer.ShowToolTips",
-							 sTip ? "true" : "false");
+		settings.setProperty("CellRenderer.ShowToolTips", sTip ? "true" : "false");
 
 		setColorMap(colorM);
 	}
@@ -268,11 +264,10 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 			colorMap = colorM;
 
 			if(colorMap == null) {
-				settings.setProperty("CellRenderer.SkillIconTextColorMap",
-									 "none");
+				settings.setProperty("CellRenderer.SkillIconTextColorMap", "none");
 			} else {
 				StringBuffer str = new StringBuffer();
-				Iterator     it = colorMap.keySet().iterator();
+				Iterator it = colorMap.keySet().iterator();
 
 				while(it.hasNext()) {
 					if(str.length() > 0) {
@@ -288,11 +283,9 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 				}
 
 				if(str.length() > 0) {
-					settings.setProperty("CellRenderer.SkillIconTextColorMap",
-										 str.toString());
+					settings.setProperty("CellRenderer.SkillIconTextColorMap", str.toString());
 				} else {
-					settings.setProperty("CellRenderer.SkillIconTextColorMap",
-										 "none");
+					settings.setProperty("CellRenderer.SkillIconTextColorMap", "none");
 				}
 			}
 		}
@@ -310,10 +303,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		typeSets[3].setSelectedBackground((Color) UIManager.getDefaults().get("Tree.selectionBackground"));
 
 		// pavkovic 2003.10.17: prevent jvm 1.4.2_01 bug
-		focusedBorder = new MatteBorder(1, 1, 1, 1,
-										JVMUtilities.getTreeSelectionBorderColor());
-		selectedBorder = new MatteBorder(1, 1, 1, 1,
-										 typeSets[3].getSelectedBackground());
+		focusedBorder = new MatteBorder(1, 1, 1, 1, JVMUtilities.getTreeSelectionBorderColor());
+		selectedBorder = new MatteBorder(1, 1, 1, 1, typeSets[3].getSelectedBackground());
 		plainBorder = new EmptyBorder(1, 1, 1, 1);
 
 		this.setOpaque(false);
@@ -347,14 +338,10 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.awt.Component getTreeCellRendererComponent(JTree tree,
-														   Object value,
-														   boolean selected,
-														   boolean expanded,
-														   boolean leaf,
-														   int row,
-														   boolean hasFocus) {
-		cellObj  = null;
+	public java.awt.Component getTreeCellRendererComponent(JTree tree, Object value,
+														   boolean selected, boolean expanded,
+														   boolean leaf, int row, boolean hasFocus) {
+		cellObj = null;
 		cellObj2 = null;
 
 		if(value instanceof DefaultMutableTreeNode) {
@@ -378,21 +365,19 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 
 			return this;
 		} else {
-			return defaultRenderer.getTreeCellRendererComponent(tree, value,
-																selected,
-																expanded, leaf,
-																row, hasFocus);
+			return defaultRenderer.getTreeCellRendererComponent(tree, value, selected, expanded,
+																leaf, row, hasFocus);
 		}
 	}
 
 	protected void layoutComponent2(boolean isSelected, boolean hasFocus) {
-		Collection iconNames     = cellObj2.getGraphicsElements();
-		int		   iconNamesSize = iconNames.size() - 1;
+		Collection iconNames = cellObj2.getGraphicsElements();
+		int iconNamesSize = iconNames.size() - 1;
 
-		Iterator   it = iconNames.iterator();
+		Iterator it = iconNames.iterator();
 
 		// construct the full information for MAIN
-		GraphicsElement  ge  = (GraphicsElement) it.next();
+		GraphicsElement ge = (GraphicsElement) it.next();
 		GraphicsStyleset set = getStyleset(ge);
 
 		if(cellObj2.reverseOrder()) {
@@ -402,8 +387,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 				last = it.next();
 			}
 
-			it  = iconNames.iterator();
-			ge  = (GraphicsElement) last;
+			it = iconNames.iterator();
+			ge = (GraphicsElement) last;
 			set = getStyleset(ge);
 			formatLabel(label, set, false, false);
 			fillLabel(label, ge);
@@ -440,8 +425,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		if(iconNamesSize < iconLabelCount) {
 			for(int i = iconLabelCount - 1; i >= iconNamesSize; i--) {
 				if(this.getComponent(i) == label) {
-					log.info("iconLabelCount: " + iconLabelCount +
-							 ", iconNamesSize: " + iconNamesSize);
+					log.info("iconLabelCount: " + iconLabelCount + ", iconNamesSize: " +
+							 iconNamesSize);
 				}
 
 				this.remove(i);
@@ -455,7 +440,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		// load icons and put them into the icon labels
 		if(cellObj2.reverseOrder()) {
 			if(iconNames.size() > 1) {
-				ge  = (GraphicsElement) it.next();
+				ge = (GraphicsElement) it.next();
 				set = getStyleset(ge);
 				formatLabel(iconLabels[0], set, isSelected, hasFocus);
 				fillLabel(iconLabels[0], ge);
@@ -464,7 +449,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 				int i = 1;
 
 				while(it.hasNext()) {
-					ge  = (GraphicsElement) it.next();
+					ge = (GraphicsElement) it.next();
 					set = getStyleset(ge);
 					formatLabel(iconLabels[iconNamesSize - i], set, false, false);
 					fillLabel(iconLabels[iconNamesSize - i], ge);
@@ -475,7 +460,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 			int i = 0;
 
 			while(it.hasNext()) {
-				ge  = (GraphicsElement) it.next();
+				ge = (GraphicsElement) it.next();
 				set = getStyleset(ge);
 				formatLabel(iconLabels[i], set, false, false);
 				fillLabel(iconLabels[i], ge);
@@ -485,8 +470,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	private void layoutComponent(boolean isSelected, boolean hasFocus) {
-		Collection iconNames     = cellObj.getIconNames();
-		int		   iconNamesSize = 0;
+		Collection iconNames = cellObj.getIconNames();
+		int iconNamesSize = 0;
 
 		if(iconNames != null) {
 			iconNamesSize = iconNames.size();
@@ -535,8 +520,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		if(iconNamesSize < iconLabelCount) {
 			for(int i = iconLabelCount - 1; i >= iconNamesSize; i--) {
 				if(this.getComponent(i) == label) {
-					log.info("iconLabelCount: " + iconLabelCount +
-							 ", iconNamesSize: " + iconNamesSize);
+					log.info("iconLabelCount: " + iconLabelCount + ", iconNamesSize: " +
+							 iconNamesSize);
 				}
 
 				this.remove(i);
@@ -552,7 +537,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 			int i = 0;
 
 			for(Iterator iter = iconNames.iterator(); iter.hasNext(); i++) {
-				Object o	    = iter.next();
+				Object o = iter.next();
 				String iconName = null;
 
 				if(o instanceof String) {
@@ -636,13 +621,12 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 * If given object is an image, construct an ImageIcon and return.
 	 * </li>
 	 * <li>
-	 * If given object is a String, search an image with that name and
-	 * construct an ImageIcon.
+	 * If given object is a String, search an image with that name and construct an ImageIcon.
 	 * </li>
 	 * </ol>
 	 * 
-	 * All icons are cached(except (1)). Non-found images of (3) are replaced
-	 * with missingIcon. All unparseable objects return missingIcon.
+	 * All icons are cached(except (1)). Non-found images of (3) are replaced with missingIcon. All
+	 * unparseable objects return missingIcon.
 	 * </p>
 	 *
 	 * @param icon TODO: DOCUMENT ME!
@@ -666,11 +650,10 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		}
 
 		if(icon instanceof String) {
-			String iconName			  = (String) icon;
-			String normalizedIconName = Umlaut.convertUmlauts(iconName)
-											  .toLowerCase();
+			String iconName = (String) icon;
+			String normalizedIconName = Umlaut.convertUmlauts(iconName).toLowerCase();
 
-			Icon   ic = ImageFactory.getFactory().loadImageIcon(normalizedIconName);
+			Icon ic = ImageFactory.getFactory().loadImageIcon(normalizedIconName);
 
 			if(ic == null) {
 				ic = missingIcon;
@@ -685,13 +668,12 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Returns the bold font of the given font. These fonts are stored in
-	 * boldFonts. If the given font is bold it's returned directly. If there's
-	 * no bold font yet, a new one is created and placed into boldFonts.
+	 * Returns the bold font of the given font. These fonts are stored in boldFonts. If the given
+	 * font is bold it's returned directly. If there's no bold font yet, a new one is created and
+	 * placed into boldFonts.
 	 * 
 	 * <p>
-	 * In this implementation all other style features(only italic yet) are
-	 * save.
+	 * In this implementation all other style features(only italic yet) are save.
 	 * </p>
 	 *
 	 * @param f TODO: DOCUMENT ME!
@@ -699,8 +681,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	protected Font getBoldFont(Font f) {
-		if((emphasizeStyleChange == 0) ||
-			   ((f.getStyle() & emphasizeStyleChange) != 0)) {
+		if((emphasizeStyleChange == 0) || ((f.getStyle() & emphasizeStyleChange) != 0)) {
 			return f;
 		}
 
@@ -712,8 +693,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Formats a label using the given styleset. <b>The styleset must be
-	 * complete!</b> Try using getStyleset() to assure a complete set.
+	 * Formats a label using the given styleset. <b>The styleset must be complete!</b> Try using
+	 * getStyleset() to assure a complete set.
 	 * 
 	 * <p>
 	 * The label will also be resetted meaning tooltip, icon text are cleared.
@@ -724,8 +705,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 * @param isSelected TODO: DOCUMENT ME!
 	 * @param hasFocus TODO: DOCUMENT ME!
 	 */
-	protected void formatLabel(JLabel l, GraphicsStyleset set,
-							   boolean isSelected, boolean hasFocus) {
+	protected void formatLabel(JLabel l, GraphicsStyleset set, boolean isSelected, boolean hasFocus) {
 		l.setToolTipText(null);
 		l.setIcon(null);
 		l.setText(null);
@@ -735,8 +715,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 			l.setForeground(set.getSelectedForeground());
 			l.setOpaque(true);
 		} else {
-			if(Color.white.equals(set.getBackground()) ||
-				   (set.getBackground() == null)) {
+			if(Color.white.equals(set.getBackground()) || (set.getBackground() == null)) {
 				l.setOpaque(false);
 			} else {
 				l.setOpaque(true);
@@ -762,9 +741,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Returns a styleset that supplies all variables. This is done with a
-	 * union of the given styleset of the element (if given) and the two
-	 * fallbacks(type set and default set).
+	 * Returns a styleset that supplies all variables. This is done with a union of the given
+	 * styleset of the element (if given) and the two fallbacks(type set and default set).
 	 *
 	 * @param ge TODO: DOCUMENT ME!
 	 *
@@ -789,9 +767,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Returns a styleset that supplies all variables. This is done with a
-	 * union of the given styleset and the two fallbacks(type set[given via
-	 * parameter] and default set).
+	 * Returns a styleset that supplies all variables. This is done with a union of the given
+	 * styleset and the two fallbacks(type set[given via parameter] and default set).
 	 *
 	 * @param set TODO: DOCUMENT ME!
 	 * @param type TODO: DOCUMENT ME!
@@ -894,8 +871,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Adds the given styleset to the styleset table. The name of the set is
-	 * used as a key.
+	 * Adds the given styleset to the styleset table. The name of the set is used as a key.
 	 *
 	 * @param set TODO: DOCUMENT ME!
 	 */
@@ -919,16 +895,16 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		}
 
 		if(!stylesets.containsKey(name)) {
-			GraphicsStyleset set	  = new GraphicsStyleset(name);
-			String			 propName = "CellRenderer.Stylesets." + name;
+			GraphicsStyleset set = new GraphicsStyleset(name);
+			String propName = "CellRenderer.Stylesets." + name;
 
 			if(settings.containsKey(propName)) {
-				String		    def = settings.getProperty(propName);
+				String def = settings.getProperty(propName);
 				StringTokenizer st = new StringTokenizer(def, ",;");
 
 				while(st.hasMoreTokens()) {
 					String defpart = st.nextToken();
-					int    index = defpart.indexOf('=');
+					int index = defpart.indexOf('=');
 
 					if(index == -1) {
 						index = defpart.indexOf(':');
@@ -938,7 +914,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 						continue;
 					}
 
-					String partName  = defpart.substring(0, index);
+					String partName = defpart.substring(0, index);
 					String partValue = defpart.substring(index + 1);
 
 					if(partName.equalsIgnoreCase("foreground")) {
@@ -1007,8 +983,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 				}
 			} else { // Make a random styleset to attract user interest
 
-				if(!name.equals("SIMPLE") && !name.equals("MAIN") &&
-					   !name.equals("ADDITIONAL") && !name.equals("DEFAULT")) {
+				if(!name.equals("SIMPLE") && !name.equals("MAIN") && !name.equals("ADDITIONAL") &&
+					   !name.equals("DEFAULT")) {
 					// Note: With extended Stylesets which have parents do not do this.
 					if(set.getParent() == null) {
 						try {
@@ -1048,9 +1024,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Loads all custom stylesets. Checks the property
-	 * "CellRenderer.CustomStylesets" for names of stylesets and searches the
-	 * given sets.
+	 * Loads all custom stylesets. Checks the property "CellRenderer.CustomStylesets" for names of
+	 * stylesets and searches the given sets.
 	 */
 	public static void loadStylesets() {
 		String custom = settings.getProperty("CellRenderer.CustomStylesets");
@@ -1071,9 +1046,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	 */
 	protected static void saveStyleset(String name) {
 		if((stylesets != null) && stylesets.containsKey(name)) {
-			GraphicsStyleset set    = (GraphicsStyleset) stylesets.get(name);
-			String			 custom = settings.getProperty("CellRenderer.CustomStylesets",
-														   "");
+			GraphicsStyleset set = (GraphicsStyleset) stylesets.get(name);
+			String custom = settings.getProperty("CellRenderer.CustomStylesets", "");
 
 			if(custom.indexOf(name) == -1) {
 				if(custom.length() == 0) {
@@ -1097,12 +1071,12 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		// custom sets
 		if(stylesets != null) {
 			StringBuffer custom = new StringBuffer();
-			Iterator     it = stylesets.keySet().iterator();
+			Iterator it = stylesets.keySet().iterator();
 
 			while(it.hasNext()) {
-				String			 name = (String) it.next();
+				String name = (String) it.next();
 				GraphicsStyleset set = (GraphicsStyleset) stylesets.get(name);
-				String			 def = createDefinitionString(set);
+				String def = createDefinitionString(set);
 				settings.setProperty("CellRenderer.Stylesets." + name, def);
 
 				if(custom.length() > 0) {
@@ -1112,8 +1086,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 				custom.append(name);
 			}
 
-			settings.setProperty("CellRenderer.CustomStylesets",
-								 custom.toString());
+			settings.setProperty("CellRenderer.CustomStylesets", custom.toString());
 		}
 	}
 
@@ -1243,8 +1216,8 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 	}
 
 	/**
-	 * Overrides JComponent.getToolTipText to return the tooltip of the
-	 * underlying label or null, if no label found.
+	 * Overrides JComponent.getToolTipText to return the tooltip of the underlying label or null,
+	 * if no label found.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 *
@@ -1255,7 +1228,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 			// reprocess layout to have the sizes that were displayed
 			doLayout();
 
-			Point     p    = e.getPoint();
+			Point p = e.getPoint();
 			Rectangle rect = new Rectangle();
 
 			for(int i = 0; i < getComponentCount(); i++) {
@@ -1340,7 +1313,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 		 */
 		public void layoutContainer(Container target) {
 			if(target.getComponentCount() > 0) {
-				int x	   = 0;
+				int x = 0;
 				int height = target.getHeight();
 
 				if(height <= 0) {
@@ -1348,7 +1321,7 @@ public class CellRenderer extends JPanel implements TreeCellRenderer {
 				}
 
 				for(int i = 0; i < target.getComponentCount(); i++) {
-					Component c   = target.getComponent(i);
+					Component c = target.getComponent(i);
 					Dimension dim = c.getPreferredSize();
 					c.setBounds(x, 0, dim.width, height);
 					x += dim.width;

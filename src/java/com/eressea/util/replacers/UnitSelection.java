@@ -102,7 +102,7 @@ public class UnitSelection extends EnvironmentPart {
 			return true;
 		}
 
-		Unit     u  = (Unit) o;
+		Unit u = (Unit) o;
 		Iterator it = filters.iterator();
 
 		while(it.hasNext()) {
@@ -125,8 +125,8 @@ public class UnitSelection extends EnvironmentPart {
 	 */
 	public Collection getUnits(Region r) {
 		Collection retList = CollectionFactory.createLinkedList(r.units());
-		Iterator   it = filters.iterator();
-		int		   i  = 0;
+		Iterator it = filters.iterator();
+		int i = 0;
 
 		while(it.hasNext()) {
 			retList = ((UnitFilter) it.next()).acceptUnits(retList, true);

@@ -78,9 +78,9 @@ public class LanguageDialog {
 		Locale sysDefault = Locale.getDefault();
 
 		// collect all jars in the base directory
-		Collection col		 = CollectionFactory.createLinkedList();
-		String     jarSuffix = ".jar";
-		String     magSuffix = "magellan.jar";
+		Collection col = CollectionFactory.createLinkedList();
+		String jarSuffix = ".jar";
+		String magSuffix = "magellan.jar";
 		log.info("Looking for language jar files.");
 
 		try {
@@ -91,12 +91,9 @@ public class LanguageDialog {
 					if(files[i].toString().toLowerCase().endsWith(jarSuffix) &&
 						   !files[i].toString().toLowerCase().endsWith(magSuffix)) {
 						try {
-							URL url = new URL("jar:" +
-											  files[i].toURL().toString() +
-											  "!/");
+							URL url = new URL("jar:" + files[i].toURL().toString() + "!/");
 
-							if(ResourcePathClassLoader.getStaticPaths()
-														  .contains(url)) {
+							if(ResourcePathClassLoader.getStaticPaths().contains(url)) {
 								continue;
 							}
 
@@ -118,8 +115,8 @@ public class LanguageDialog {
 
 		ResourcePathClassLoader loader = new ResourcePathClassLoader(settings);
 
-		String				    langs[] = Locale.getISOLanguages();
-		int					    j	    = 0;
+		String langs[] = Locale.getISOLanguages();
+		int j = 0;
 		languageList = CollectionFactory.createLinkedList();
 
 		if((langs != null) && (langs.length > 0)) {
@@ -129,7 +126,7 @@ public class LanguageDialog {
 
 				Locale locale = new Locale(langs[i], "");
 
-				URL    url = ResourcePathClassLoader.getResourceStatically(name);
+				URL url = ResourcePathClassLoader.getResourceStatically(name);
 
 				if(url != null) {
 					Lang lang = new Lang(locale);
@@ -146,8 +143,7 @@ public class LanguageDialog {
 
 					while(it.hasNext()) {
 						Collection col2 = (Collection) it.next();
-						URL		   url2 = ResourcePathClassLoader.getResourceStatically(name,
-																						col2);
+						URL url2 = ResourcePathClassLoader.getResourceStatically(name, col2);
 
 						if(url2 != null) { // found new language jar, mount it
 
@@ -185,14 +181,10 @@ public class LanguageDialog {
 	public Locale showDialog(Component parent) {
 		if(languagesFound()) {
 			Object ret = JOptionPane.showInputDialog(parent,
-													 Translations.getTranslation(this,
-																				 "choose"),
-													 Translations.getTranslation(this,
-																				 "title"),
-													 JOptionPane.QUESTION_MESSAGE,
-													 null,
-													 languageList.toArray(),
-													 sysDefault);
+													 Translations.getTranslation(this, "choose"),
+													 Translations.getTranslation(this, "title"),
+													 JOptionPane.QUESTION_MESSAGE, null,
+													 languageList.toArray(), sysDefault);
 
 			if(ret != null) {
 				return ((Lang) ret).locale;

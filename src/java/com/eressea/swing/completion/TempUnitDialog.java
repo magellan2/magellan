@@ -47,38 +47,33 @@ import com.eressea.util.JVMUtilities;
 import com.eressea.util.NameGenerator;
 import com.eressea.util.logging.Logger;
 
-
 /**
  * TODO: DOCUMENT ME!
  *
  * @author $author$
  * @version $Revision$
  */
-public class TempUnitDialog extends InternationalizedDialog
-	implements ActionListener
-{
-
-	private final static Logger log = Logger.getInstance(TempUnitDialog.class);
-
-	protected JTextField		 id;
-	protected JTextField		 name;
-	protected JButton			 more;
-	protected JButton			 ok;
-	protected JButton			 cancel;
-	protected JPanel			 bPanel;
-	protected JPanel			 morePanel;
-	protected JTextField		 recruit;
-	protected JTextArea			 descript;
-	protected JTextField		 order;
-	protected JCheckBox			 giveRecruitCost;
-	protected JCheckBox			 giveMaintainCost;
+public class TempUnitDialog extends InternationalizedDialog implements ActionListener {
+	private static final Logger log = Logger.getInstance(TempUnitDialog.class);
+	protected JTextField id;
+	protected JTextField name;
+	protected JButton more;
+	protected JButton ok;
+	protected JButton cancel;
+	protected JPanel bPanel;
+	protected JPanel morePanel;
+	protected JTextField recruit;
+	protected JTextArea descript;
+	protected JTextField order;
+	protected JCheckBox giveRecruitCost;
+	protected JCheckBox giveMaintainCost;
 	protected GridBagConstraints con;
-	protected GridBagLayout		 layout;
-	protected Component			 posC;
-	protected boolean			 approved = false;
-	protected Properties		 settings;
-	protected JButton			 nameGen;
-	protected Container			 nameCon;
+	protected GridBagLayout layout;
+	protected Component posC;
+	protected boolean approved = false;
+	protected Properties settings;
+	protected JButton nameGen;
+	protected Container nameCon;
 
 	/** TODO: DOCUMENT ME! */
 	public static final String SETTINGS_KEY = "TempUnitDialog.ExtendedDialog";
@@ -100,14 +95,14 @@ public class TempUnitDialog extends InternationalizedDialog
 
 		c.setLayout(layout = new GridBagLayout());
 
-		con			   = new GridBagConstraints();
-		con.gridwidth  = 1;
+		con = new GridBagConstraints();
+		con.gridwidth = 1;
 		con.gridheight = 1;
-		con.weightx    = 0;
-		con.anchor     = GridBagConstraints.WEST;
-		con.fill	   = GridBagConstraints.NONE;
+		con.weightx = 0;
+		con.anchor = GridBagConstraints.WEST;
+		con.fill = GridBagConstraints.NONE;
 
-		Insets i	   = new Insets(1, 2, 1, 2);
+		Insets i = new Insets(1, 2, 1, 2);
 
 		con.insets = i;
 
@@ -115,14 +110,14 @@ public class TempUnitDialog extends InternationalizedDialog
 		con.gridy = 1;
 		c.add(new JLabel(getString("name.label")), con);
 
-		con.gridy   = 0;
-		con.gridx   = 1;
+		con.gridy = 0;
+		con.gridx = 1;
 		con.weightx = 1;
-		con.fill    = GridBagConstraints.HORIZONTAL;
+		con.fill = GridBagConstraints.HORIZONTAL;
 		c.add(id = new JTextField(5), con);
 		id.addActionListener(this);
 		con.gridy = 1;
-		nameCon   = new JPanel(new BorderLayout());
+		nameCon = new JPanel(new BorderLayout());
 		((JPanel) nameCon).setPreferredSize(id.getPreferredSize());
 		nameCon.add(name = new JTextField(20), BorderLayout.CENTER);
 		c.add(nameCon, con);
@@ -133,16 +128,16 @@ public class TempUnitDialog extends InternationalizedDialog
 		nameGen.setEnabled(false);
 
 		Insets insets = nameGen.getMargin();
-		insets.left  = 1;
+		insets.left = 1;
 		insets.right = 1;
 		nameGen.setMargin(insets);
 		nameGen.setFocusPainted(false);
 
-		con.gridx     = 0;
-		con.gridy     = 2;
+		con.gridx = 0;
+		con.gridy = 2;
 		con.gridwidth = 3;
 
-		JPanel panel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		panel.add(more = new JButton(getString("more.more")));
 		panel.setOpaque(false);
@@ -150,11 +145,11 @@ public class TempUnitDialog extends InternationalizedDialog
 		bPanel = panel;
 		c.add(panel, con);
 
-		con.gridx	   = 2;
-		con.gridy	   = 0;
-		con.gridwidth  = 1;
+		con.gridx = 2;
+		con.gridy = 0;
+		con.gridwidth = 1;
 		con.gridheight = 2;
-		panel		   = new JPanel(new GridLayout(2, 1));
+		panel = new JPanel(new GridLayout(2, 1));
 		panel.setOpaque(false);
 		panel.add(ok = new JButton(getString("ok")));
 		ok.addActionListener(this);
@@ -165,40 +160,37 @@ public class TempUnitDialog extends InternationalizedDialog
 
 		morePanel = new JPanel(new GridBagLayout());
 		morePanel.setOpaque(false);
-		con.gridx	   = 0;
-		con.gridy	   = 0;
-		con.gridwidth  = 1;
+		con.gridx = 0;
+		con.gridy = 0;
+		con.gridwidth = 1;
 		con.gridheight = 1;
 		morePanel.add(new JLabel(getString("recruit.label")), con);
 		con.gridy = 2;
 		morePanel.add(new JLabel(getString("order.label")), con);
-		con.gridy  = 3;
+		con.gridy = 3;
 		con.anchor = GridBagConstraints.NORTHWEST;
 		morePanel.add(new JLabel(getString("descript.label")), con);
 		con.anchor = GridBagConstraints.CENTER;
-		con.gridy  = 1;
-		con.gridx  = 1;
-		con.fill   = GridBagConstraints.HORIZONTAL;
-		morePanel.add(giveRecruitCost = new JCheckBox(getString("recruitCost.label")),
-					  con);
+		con.gridy = 1;
+		con.gridx = 1;
+		con.fill = GridBagConstraints.HORIZONTAL;
+		morePanel.add(giveRecruitCost = new JCheckBox(getString("recruitCost.label")), con);
 		con.gridx = 2;
-		morePanel.add(giveMaintainCost = new JCheckBox(getString("maintainCost.label")),
-					  con);
-		giveRecruitCost.setSelected(settings.getProperty("TempUnitDialog.AddRecruitCost",
-														 "false").equals("true"));
-		giveMaintainCost.setSelected(settings.getProperty("TempUnitDialog.AddMaintainCost",
-														  "false").equals("true"));
+		morePanel.add(giveMaintainCost = new JCheckBox(getString("maintainCost.label")), con);
+		giveRecruitCost.setSelected(settings.getProperty("TempUnitDialog.AddRecruitCost", "false")
+											.equals("true"));
+		giveMaintainCost.setSelected(settings.getProperty("TempUnitDialog.AddMaintainCost", "false")
+											 .equals("true"));
 
-		con.gridx     = 1;
+		con.gridx = 1;
 		con.gridwidth = 2;
-		con.gridy     = 0;
+		con.gridy = 0;
 		morePanel.add(recruit = new JTextField(5), con);
 		con.gridy = 2;
 		morePanel.add(order = new JTextField(10), con);
 		con.gridy = 3;
-		con.fill  = GridBagConstraints.BOTH;
-		morePanel.add(new JScrollPane(descript = new TablessTextArea(3, 10)),
-					  con);
+		con.fill = GridBagConstraints.BOTH;
+		morePanel.add(new JScrollPane(descript = new TablessTextArea(3, 10)), con);
 		descript.setLineWrap(true);
 		descript.setWrapStyleWord(true);
 
@@ -220,25 +212,28 @@ public class TempUnitDialog extends InternationalizedDialog
 		}
 
 		loadBounds();
-		
+
 		addWindowListener(new WindowAdapter() {
-				public void windowActivated(WindowEvent e){
+				public void windowActivated(WindowEvent e) {
 					// dont look too close on this method. It recalls itself until this.name is 
 					// showing on screen and then it calls requestFocusInWindow on it (via
 					// reflection api to stay compatible with jdk < 1.4
 					SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								if(log.isDebugEnabled()) {
-									log.debug("TempUnitDialog.requestFocusInWindows: "+
+									log.debug("TempUnitDialog.requestFocusInWindows: " +
 											  TempUnitDialog.this.name.isShowing());
 								}
+
 								if(TempUnitDialog.this.name.isShowing()) {
 									JVMUtilities.requestFocusInWindow(TempUnitDialog.this.name);
 								} else {
 									SwingUtilities.invokeLater(this);
 								}
-							}});
-				}});
+							}
+						});
+				}
+			});
 	}
 
 	// overrides InternationalizedDialog.quit()
@@ -261,17 +256,16 @@ public class TempUnitDialog extends InternationalizedDialog
 
 		if(order != null) {
 			settings.setProperty("TempUnitDialog.LastOrderEmpty",
-								 (order.getText().length() == 0) ? "true"
-																 : "false");
+								 (order.getText().length() == 0) ? "true" : "false");
 		}
 	}
 
 	protected void loadBounds() {
 		if(settings.containsKey("TempUnitDialog.bounds")) {
-			int			    x  = 0;
-			int			    y  = 0;
-			int			    w  = 0;
-			int			    h  = 0;
+			int x = 0;
+			int y = 0;
+			int w = 0;
+			int h = 0;
 			StringTokenizer st = new StringTokenizer(settings.getProperty("TempUnitDialog.bounds"),
 													 ",");
 			x = Integer.parseInt(st.nextToken());
@@ -293,6 +287,7 @@ public class TempUnitDialog extends InternationalizedDialog
 
 	protected void setFocusList(boolean extended) {
 		id.setNextFocusableComponent(name);
+
 		if(extended) {
 			name.setNextFocusableComponent(recruit);
 			recruit.setNextFocusableComponent(order);
@@ -301,6 +296,7 @@ public class TempUnitDialog extends InternationalizedDialog
 		} else {
 			name.setNextFocusableComponent(more);
 		}
+
 		more.setNextFocusableComponent(ok);
 		ok.setNextFocusableComponent(cancel);
 		cancel.setNextFocusableComponent(id);
@@ -324,24 +320,22 @@ public class TempUnitDialog extends InternationalizedDialog
 			return;
 		}
 
-		approved = (p1.getSource() instanceof JTextField) ||
-				   (p1.getSource() == ok);
+		approved = (p1.getSource() instanceof JTextField) || (p1.getSource() == ok);
 		saveBounds();
 		setVisible(false);
 	}
-
 
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @param newID TODO: DOCUMENT ME!
+	 * @param newName TODO: DOCUMENT ME!
 	 */
 	public void show(String newID, String newName) {
 		id.setText(newID);
 		recruit.setText(null);
 
-		if(settings.getProperty("TempUnitDialog.LastOrderEmpty", "false")
-					   .equals("true")) {
+		if(settings.getProperty("TempUnitDialog.LastOrderEmpty", "false").equals("true")) {
 			order.setText(null);
 		} else {
 			order.setText(getString("order.default") + " ");
@@ -353,10 +347,13 @@ public class TempUnitDialog extends InternationalizedDialog
 
 	/**
 	 * TODO: DOCUMENT ME!
+	 *
+	 * @param newName TODO: DOCUMENT ME!
 	 */
 	public void show(String newName) {
 		approved = false;
 		name.setText(newName);
+
 		// mark whole name
 		name.getCaret().setDot(0);
 		name.getCaret().moveDot(name.getText().length());
@@ -474,31 +471,31 @@ public class TempUnitDialog extends InternationalizedDialog
 	}
 
 	protected void changeDialog() {
-		Container c     = getContentPane();
-		int		  count = c.getComponentCount();
+		Container c = getContentPane();
+		int count = c.getComponentCount();
 
 		if(count == 6) { // add
-			con.gridx	   = 0;
-			con.gridy	   = 4;
-			con.gridwidth  = 3;
+			con.gridx = 0;
+			con.gridy = 4;
+			con.gridwidth = 3;
 			con.gridheight = 1;
-			con.fill	   = GridBagConstraints.HORIZONTAL;
+			con.fill = GridBagConstraints.HORIZONTAL;
 			layout.setConstraints(bPanel, con);
-			con.gridy	   = 2;
+			con.gridy = 2;
 			con.gridheight = 2;
-			con.gridwidth  = 2;
-			con.fill	   = GridBagConstraints.BOTH;
+			con.gridwidth = 2;
+			con.fill = GridBagConstraints.BOTH;
 			c.add(morePanel, con);
 			more.setText(getString("more.less"));
 			setFocusList(true);
 			settings.setProperty(SETTINGS_KEY, "true");
 		} else { // remove
 			c.remove(morePanel);
-			con.gridx	   = 0;
-			con.gridy	   = 2;
-			con.gridwidth  = 3;
+			con.gridx = 0;
+			con.gridy = 2;
+			con.gridwidth = 3;
 			con.gridheight = 1;
-			con.fill	   = GridBagConstraints.HORIZONTAL;
+			con.fill = GridBagConstraints.HORIZONTAL;
 			layout.setConstraints(bPanel, con);
 			more.setText(getString("more.more"));
 			setFocusList(false);

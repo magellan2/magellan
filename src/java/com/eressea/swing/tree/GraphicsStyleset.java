@@ -228,8 +228,7 @@ public class GraphicsStyleset {
 	}
 
 	/**
-	 * Returns true if the value returned by getParent() is extracted out of
-	 * the name.
+	 * Returns true if the value returned by getParent() is extracted out of the name.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

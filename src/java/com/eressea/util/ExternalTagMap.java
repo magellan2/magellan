@@ -29,7 +29,7 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class ExternalTagMap extends HashMap {
-	private static final Logger log		    = Logger.getInstance(ExternalTagMap.class);
+	private static final Logger log = Logger.getInstance(ExternalTagMap.class);
 	private static final String METHOD_NAME = "getID";
 
 	protected ID getID(Object o) {

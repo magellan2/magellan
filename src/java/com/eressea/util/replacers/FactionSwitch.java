@@ -30,8 +30,8 @@ import com.eressea.util.filters.UnitFactionFilter;
  * @author Andreas
  * @version
  */
-public class FactionSwitch extends AbstractParameterReplacer
-	implements EnvironmentDependent, SwitchOnly
+public class FactionSwitch extends AbstractParameterReplacer implements EnvironmentDependent,
+																		SwitchOnly
 {
 	protected ReplacerEnvironment environment;
 

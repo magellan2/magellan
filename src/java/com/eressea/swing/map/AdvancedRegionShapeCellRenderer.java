@@ -100,33 +100,30 @@ import com.eressea.util.replacers.ReplacerSystem;
  * @author Andreas
  * @version
  */
-public class AdvancedRegionShapeCellRenderer
-	extends AbstractRegionShapeCellRenderer implements GameDataListener,
-													   ContextChangeable,
-													   ActionListener,
-													   MapperAware
+public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
+	implements GameDataListener, ContextChangeable, ActionListener, MapperAware
 {
-	protected String		  currentSet;
-	protected ColorTable	  cTable;
-	protected ValueMapping    vMapping;
-	protected String		  minDef;
-	protected String		  curDef;
-	protected String		  maxDef;
-	protected ReplacerSystem  minList;
-	protected ReplacerSystem  curList;
-	protected ReplacerSystem  maxList;
-	protected boolean		  minEvalfed    = false;
-	protected boolean		  maxEvalfed    = false;
-	protected float			  minEvalf	    = 0f;
-	protected float			  maxEvalf	    = 1f;
-	protected String		  unknownString;
-	protected String		  mapperTooltip;
-	protected Color			  oceanColor;
-	protected Color			  unknownColor;
-	protected JMenu			  context;
-	protected ContextObserver obs		    = null;
-	protected Mapper		  mapper	    = null;
-	protected String		  lastMapperDef = null;
+	protected String currentSet;
+	protected ColorTable cTable;
+	protected ValueMapping vMapping;
+	protected String minDef;
+	protected String curDef;
+	protected String maxDef;
+	protected ReplacerSystem minList;
+	protected ReplacerSystem curList;
+	protected ReplacerSystem maxList;
+	protected boolean minEvalfed = false;
+	protected boolean maxEvalfed = false;
+	protected float minEvalf = 0f;
+	protected float maxEvalf = 1f;
+	protected String unknownString;
+	protected String mapperTooltip;
+	protected Color oceanColor;
+	protected Color unknownColor;
+	protected JMenu context;
+	protected ContextObserver obs = null;
+	protected Mapper mapper = null;
+	protected String lastMapperDef = null;
 
 	/**
 	 * Creates new AdvancedRegionShapeCellRenderer
@@ -137,9 +134,9 @@ public class AdvancedRegionShapeCellRenderer
 	public AdvancedRegionShapeCellRenderer(CellGeometry geo, Properties settings) {
 		super(geo, settings);
 
-		cTable   = new ColorTable();
+		cTable = new ColorTable();
 		vMapping = new ValueMapping();
-		context  = new JMenu(getName());
+		context = new JMenu(getName());
 
 		EventDispatcher.getDispatcher().addGameDataListener(this);
 
@@ -147,11 +144,9 @@ public class AdvancedRegionShapeCellRenderer
 	}
 
 	protected void loadSettings() {
-		loadSettings(settings.getProperty("AdvancedShapeRenderer.CurrentSet",
-										  "Standard"));
+		loadSettings(settings.getProperty("AdvancedShapeRenderer.CurrentSet", "Standard"));
 
-		if(!settings.containsKey("AdvancedShapeRenderer." + currentSet +
-									 ".Colors")) {
+		if(!settings.containsKey("AdvancedShapeRenderer." + currentSet + ".Colors")) {
 			saveSettings();
 		}
 	}
@@ -169,51 +164,44 @@ public class AdvancedRegionShapeCellRenderer
 		reprocessMenu();
 
 		StringTokenizer st = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer." +
-																	  set +
-																	  ".Colors",
+																	  set + ".Colors",
 																	  "0.0;0,0,0;1.0;255,255,255"),
 												 ";");
 		cTable.removeAll();
 
 		while(st.hasMoreTokens()) {
 			try {
-				String key   = st.nextToken();
+				String key = st.nextToken();
 				String value = st.nextToken();
-				float  fl    = Float.parseFloat(key);
+				float fl = Float.parseFloat(key);
 				cTable.addEntry(fl, Colors.decode(value));
 			} catch(RuntimeException exc) {
 			}
 		}
 
-		st = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer." +
-													  set + ".Values",
+		st = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer." + set + ".Values",
 													  "0.0;0.0;1.0;1.0"), ";");
 		vMapping.removeAll();
 
 		while(st.hasMoreTokens()) {
 			try {
-				String key   = st.nextToken();
+				String key = st.nextToken();
 				String value = st.nextToken();
-				float  f1    = Float.parseFloat(key);
-				float  f2    = Float.parseFloat(value);
+				float f1 = Float.parseFloat(key);
+				float f2 = Float.parseFloat(value);
 				vMapping.addEntry(f1, f2);
 			} catch(RuntimeException exc) {
 			}
 		}
 
-		minDef = settings.getProperty("AdvancedShapeRenderer." + set + ".Min",
-									  "0");
-		curDef = settings.getProperty("AdvancedShapeRenderer." + set + ".Cur",
-									  "0.5");
-		maxDef = settings.getProperty("AdvancedShapeRenderer." + set + ".Max",
-									  "1");
+		minDef = settings.getProperty("AdvancedShapeRenderer." + set + ".Min", "0");
+		curDef = settings.getProperty("AdvancedShapeRenderer." + set + ".Cur", "0.5");
+		maxDef = settings.getProperty("AdvancedShapeRenderer." + set + ".Max", "1");
 		this.gameDataChanged(null);
 
-		unknownString = settings.getProperty("AdvancedShapeRenderer." + set +
-											 ".Unknown", "?");
+		unknownString = settings.getProperty("AdvancedShapeRenderer." + set + ".Unknown", "?");
 
-		mapperTooltip = settings.getProperty("AdvancedShapeRenderer." + set +
-											 ".Tooltip");
+		mapperTooltip = settings.getProperty("AdvancedShapeRenderer." + set + ".Tooltip");
 
 		if(mapperTooltip != null) {
 			lastMapperDef = getMapperTooltip();
@@ -235,7 +223,7 @@ public class AdvancedRegionShapeCellRenderer
 
 		settings.setProperty("AdvancedShapeRenderer.CurrentSet", currentSet);
 
-		Collection   entries = cTable.getEntries();
+		Collection entries = cTable.getEntries();
 		StringBuffer buf = new StringBuffer();
 
 		if(entries.size() > 0) {
@@ -252,8 +240,7 @@ public class AdvancedRegionShapeCellRenderer
 				}
 			}
 
-			settings.setProperty("AdvancedShapeRenderer." + currentSet +
-								 ".Colors", buf.toString());
+			settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Colors", buf.toString());
 		} else {
 			settings.remove("AdvancedShapeRenderer." + currentSet + ".Colors");
 		}
@@ -275,31 +262,25 @@ public class AdvancedRegionShapeCellRenderer
 				}
 			}
 
-			settings.setProperty("AdvancedShapeRenderer." + currentSet +
-								 ".Values", buf.toString());
+			settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Values", buf.toString());
 		} else {
 			settings.remove("AdvancedShapeRenderer." + currentSet + ".Values");
 		}
 
-		settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Min",
-							 minDef);
-		settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Max",
-							 maxDef);
-		settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Cur",
-							 curDef);
+		settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Min", minDef);
+		settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Max", maxDef);
+		settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Cur", curDef);
 
 		if(mapperTooltip == null) {
 			settings.remove("AdvancedShapeRenderer." + currentSet + ".Tooltip");
 		} else {
-			settings.setProperty("AdvancedShapeRenderer." + currentSet +
-								 ".Tooltip", mapperTooltip);
+			settings.setProperty("AdvancedShapeRenderer." + currentSet + ".Tooltip", mapperTooltip);
 		}
 
 		// look if this set is registered
 		StringTokenizer tokens = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer.Sets",
-																		  ""),
-													 ",");
-		boolean		    found = false;
+																		  ""), ",");
+		boolean found = false;
 
 		while(!found && tokens.hasMoreTokens()) {
 			found = (currentSet.equals(tokens.nextToken()));
@@ -307,8 +288,8 @@ public class AdvancedRegionShapeCellRenderer
 
 		if(!found) {
 			settings.setProperty("AdvancedShapeRenderer.Sets",
-								 settings.getProperty("AdvancedShapeRenderer.Sets",
-													  "") + "," + currentSet);
+								 settings.getProperty("AdvancedShapeRenderer.Sets", "") + "," +
+								 currentSet);
 		}
 
 		// this is a good point to synchronize colors
@@ -316,17 +297,15 @@ public class AdvancedRegionShapeCellRenderer
 	}
 
 	protected void loadGeomColors() {
-		oceanColor = Colors.decode(settings.getProperty("GeomRenderer.OceanColor",
-														"128,128,255").replace(';',
-																			   ','));
-		unknownColor = Colors.decode(settings.getProperty("GeomRenderer.UnknownColor",
-														  "128,128,128")
+		oceanColor = Colors.decode(settings.getProperty("GeomRenderer.OceanColor", "128,128,255")
+										   .replace(';', ','));
+		unknownColor = Colors.decode(settings.getProperty("GeomRenderer.UnknownColor", "128,128,128")
 											 .replace(';', ','));
 	}
 
 	protected Color getSingleColor(Region r) {
 		boolean nonFound = false;
-		float   minF = 0f;
+		float minF = 0f;
 
 		if(minEvalfed) {
 			minF = minEvalf;
@@ -421,7 +400,7 @@ public class AdvancedRegionShapeCellRenderer
 		curList = ReplacerHelp.createReplacer(curDef, unknownString);
 		maxList = ReplacerHelp.createReplacer(maxDef, unknownString);
 
-		minEvalf   = 0f;
+		minEvalf = 0f;
 		minEvalfed = true;
 
 		if(minList != null) {
@@ -439,7 +418,7 @@ public class AdvancedRegionShapeCellRenderer
 			}
 		}
 
-		maxEvalf   = 1f;
+		maxEvalf = 1f;
 		maxEvalfed = true;
 
 		if(maxList != null) {
@@ -531,21 +510,18 @@ public class AdvancedRegionShapeCellRenderer
 			defaultTranslations.put("prefs.popup.add", "Add color...");
 			defaultTranslations.put("prefs.newcolor", "New color");
 			defaultTranslations.put("prefs.newset", "Name of new set:");
-			defaultTranslations.put("prefs.menu.tooltip.input",
-									"Please enter your desired tooltip.");
+			defaultTranslations.put("prefs.menu.tooltip.input", "Please enter your desired tooltip.");
 			defaultTranslations.put("prefs.menu.tooltip.title", "Choose tooltip");
 			defaultTranslations.put("prefs.menu.tooltip.choose",
 									"Choose the (kind of) tooltip you wish.");
 			defaultTranslations.put("prefs.menu.tooltip.manual", "Direct input");
-			defaultTranslations.put("prefs.menu.tooltip.current",
-									"Value of current field");
+			defaultTranslations.put("prefs.menu.tooltip.current", "Value of current field");
 			defaultTranslations.put("prefs.menu.tooltip.none", "None");
 			defaultTranslations.put("prefs.menu.tlabel.none", "Not set");
 			defaultTranslations.put("prefs.menu.tooltip", "Tooltip");
 			defaultTranslations.put("prefs.changecolor", "New color");
 			defaultTranslations.put("prefs.renameset", "New name of this set:");
-			defaultTranslations.put("prefs.error.already",
-									"A set with this name already exists!");
+			defaultTranslations.put("prefs.error.already", "A set with this name already exists!");
 			defaultTranslations.put("prefs.chooseset", "Choose set");
 			defaultTranslations.put("prefs.menu.import", "Import...");
 			defaultTranslations.put("prefs.menu.choose", "Choose...");
@@ -567,8 +543,7 @@ public class AdvancedRegionShapeCellRenderer
 	}
 
 	/**
-	 * Implementation via SortedMap, maybe inefficient for small number of
-	 * entries
+	 * Implementation via SortedMap, maybe inefficient for small number of entries
 	 */
 	protected class ValueMapping {
 		protected SortedMap values;
@@ -689,7 +664,7 @@ public class AdvancedRegionShapeCellRenderer
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public float interpolate(float f) {
-			Float     fl = new Float(f);
+			Float fl = new Float(f);
 			SortedMap m1 = values.headMap(fl);
 
 			if((m1 == null) || (m1.size() == 0)) {
@@ -708,13 +683,12 @@ public class AdvancedRegionShapeCellRenderer
 				return ((Float) m2.get(fl)).floatValue();
 			}
 
-			Float left		   = (Float) m1.lastKey();
-			Float right		   = (Float) m2.firstKey();
-			Float leftMapping  = (Float) m1.get(left);
+			Float left = (Float) m1.lastKey();
+			Float right = (Float) m2.firstKey();
+			Float leftMapping = (Float) m1.get(left);
 			Float rightMapping = (Float) m2.get(right);
 
-			float percent = (f - left.floatValue()) / (right.floatValue() -
-							left.floatValue());
+			float percent = (f - left.floatValue()) / (right.floatValue() - left.floatValue());
 			float ret = ((leftMapping.floatValue() * (1 - percent)) +
 						(rightMapping.floatValue() * percent));
 
@@ -723,21 +697,20 @@ public class AdvancedRegionShapeCellRenderer
 	}
 
 	/**
-	 * Implementation via SortedMap, maybe inefficient for small number of
-	 * entries
+	 * Implementation via SortedMap, maybe inefficient for small number of entries
 	 */
 	protected class ColorTable {
 		protected SortedMap colors;
-		protected Map	    interpolBuf;
-		protected List	    interpolLookup;
-		private int		    MAX_BUF = 256;
+		protected Map interpolBuf;
+		protected List interpolLookup;
+		private int MAX_BUF = 256;
 
 		/**
 		 * Creates a new ColorTable object.
 		 */
 		public ColorTable() {
-			colors		   = new TreeMap();
-			interpolBuf    = CollectionFactory.createHashMap();
+			colors = new TreeMap();
+			interpolBuf = CollectionFactory.createHashMap();
 			interpolLookup = CollectionFactory.createLinkedList();
 		}
 
@@ -859,7 +832,7 @@ public class AdvancedRegionShapeCellRenderer
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public Color interpolate(float f) {
-			Float     fl = new Float(f);
+			Float fl = new Float(f);
 			SortedMap m1 = colors.headMap(fl);
 
 			if((m1 == null) || (m1.size() == 0)) {
@@ -876,22 +849,19 @@ public class AdvancedRegionShapeCellRenderer
 				return (Color) m2.get(fl);
 			}
 
-			Float left		 = (Float) m1.lastKey();
-			Float right		 = (Float) m2.firstKey();
-			Color leftColor  = (Color) m1.get(left);
+			Float left = (Float) m1.lastKey();
+			Float right = (Float) m2.firstKey();
+			Color leftColor = (Color) m1.get(left);
 			Color rightColor = (Color) m2.get(right);
-			float percent    = (f - left.floatValue()) / (right.floatValue() -
-							   left.floatValue());
-			int   red = (int) ((((float) leftColor.getRed()) * (1 - percent)) +
-						(((float) rightColor.getRed()) * (percent)));
-			int   green = (int) ((((float) leftColor.getGreen()) * (1 -
-						  percent)) +
-						  (((float) rightColor.getGreen()) * (percent)));
-			int     blue = (int) ((((float) leftColor.getBlue()) * (1 -
-						   percent)) +
-						   (((float) rightColor.getBlue()) * (percent)));
-			Integer integer = new Integer(((red & 255) << 16) |
-										  ((green & 255) << 8) | (blue & 255));
+			float percent = (f - left.floatValue()) / (right.floatValue() - left.floatValue());
+			int red = (int) ((((float) leftColor.getRed()) * (1 - percent)) +
+					  (((float) rightColor.getRed()) * (percent)));
+			int green = (int) ((((float) leftColor.getGreen()) * (1 - percent)) +
+						(((float) rightColor.getGreen()) * (percent)));
+			int blue = (int) ((((float) leftColor.getBlue()) * (1 - percent)) +
+					   (((float) rightColor.getBlue()) * (percent)));
+			Integer integer = new Integer(((red & 255) << 16) | ((green & 255) << 8) |
+										  (blue & 255));
 
 			if(interpolBuf.containsKey(integer)) {
 				interpolLookup.remove(integer);
@@ -930,7 +900,7 @@ public class AdvancedRegionShapeCellRenderer
 																	 ""), ",");
 
 		while(s.hasMoreTokens()) {
-			String    str  = s.nextToken();
+			String str = s.nextToken();
 			JMenuItem item = new JMenuItem(str);
 			item.addActionListener(this);
 
@@ -1008,54 +978,48 @@ public class AdvancedRegionShapeCellRenderer
 		this.mapper = mapper;
 	}
 
-	protected class Preferences extends JPanel implements PreferencesAdapter,
-														  ActionListener,
+	protected class Preferences extends JPanel implements PreferencesAdapter, ActionListener,
 														  ListSelectionListener
 	{
-		protected ValueMapping			    myMapping;
-		protected ColorTable			    myTable;
-		protected MappingPanel			    mPanel;
-		protected ColorShowPanel		    cShowPanel;
-		protected ColorPanel			    cPanel;
-		protected JTextField			    minText;
-		protected JTextField			    maxText;
-		protected JTextField			    curText;
-		protected JTextField			    uText;
+		protected ValueMapping myMapping;
+		protected ColorTable myTable;
+		protected MappingPanel mPanel;
+		protected ColorShowPanel cShowPanel;
+		protected ColorPanel cPanel;
+		protected JTextField minText;
+		protected JTextField maxText;
+		protected JTextField curText;
+		protected JTextField uText;
 		protected javax.swing.border.Border selBorder;
 		protected javax.swing.border.Border nonSelBorder;
-		protected SelListener			    selListener;
-		protected JList					    list;
-		protected DefaultListModel		    model;
-		protected AbstractButton		    addSet;
-		protected AbstractButton		    removeSet;
-		protected AbstractButton		    renameSet;
-		protected AbstractButton		    importSet;
-		protected AbstractButton		    exportSet;
-		protected AbstractButton		    setTooltip;
-		protected JLabel				    tooltipLabel;
+		protected SelListener selListener;
+		protected JList list;
+		protected DefaultListModel model;
+		protected AbstractButton addSet;
+		protected AbstractButton removeSet;
+		protected AbstractButton renameSet;
+		protected AbstractButton importSet;
+		protected AbstractButton exportSet;
+		protected AbstractButton setTooltip;
+		protected JLabel tooltipLabel;
 
 		/**
 		 * Creates a new Preferences object.
 		 */
 		public Preferences() {
-			JPanel			   help = new JPanel(new GridBagLayout());
+			JPanel help = new JPanel(new GridBagLayout());
 
 			GridBagConstraints con = new GridBagConstraints(1, 0, 1, 1, 0, 0,
 															GridBagConstraints.NORTH,
 															GridBagConstraints.NONE,
-															new Insets(2, 0, 2,
-																	   0), 0, 0);
+															new Insets(2, 0, 2, 0), 0, 0);
 
 			selBorder = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED),
-														   BorderFactory.createEmptyBorder(2,
-																						   2,
-																						   2,
+														   BorderFactory.createEmptyBorder(2, 2, 2,
 																						   2));
 			nonSelBorder = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED),
-															  BorderFactory.createEmptyBorder(2,
-																							  2,
-																							  2,
-																							  2));
+															  BorderFactory.createEmptyBorder(2, 2,
+																							  2, 2));
 			selListener = new SelListener();
 
 			// copy mappings
@@ -1077,16 +1041,15 @@ public class AdvancedRegionShapeCellRenderer
 				Insets oldInsets = con.insets;
 
 				if(oldInsets != null) {
-					con.insets = new Insets(oldInsets.top,
-											Math.max(oldInsets.left, 5),
+					con.insets = new Insets(oldInsets.top, Math.max(oldInsets.left, 5),
 											oldInsets.bottom, oldInsets.right);
 				} else {
 					con.insets = new Insets(1, 5, 1, 1);
 				}
 
-				con.gridx	   = 2;
-				con.gridy	   = 2;
-				con.fill	   = GridBagConstraints.VERTICAL;
+				con.gridx = 2;
+				con.gridy = 2;
+				con.fill = GridBagConstraints.VERTICAL;
 				con.gridheight = 3;
 				help.add(info, con);
 				con.insets = oldInsets;
@@ -1094,8 +1057,8 @@ public class AdvancedRegionShapeCellRenderer
 			} catch(Exception exc) {
 			}
 
-			con.gridx	   = 1;
-			con.gridy	   = 0;
+			con.gridx = 1;
+			con.gridy = 0;
 			con.gridheight = 1;
 
 			if(infoExists) {
@@ -1111,7 +1074,7 @@ public class AdvancedRegionShapeCellRenderer
 			cPanel = new ColorPanel();
 			cPanel.load();
 
-			con.fill	  = GridBagConstraints.NONE;
+			con.fill = GridBagConstraints.NONE;
 			con.gridwidth = 1;
 			con.gridy++;
 			help.add(cPanel, con);
@@ -1150,17 +1113,17 @@ public class AdvancedRegionShapeCellRenderer
 			con.gridy++;
 			help.add(cShowPanel, con);
 
-			con.fill	   = GridBagConstraints.NONE;
-			con.anchor     = GridBagConstraints.CENTER;
-			con.gridx	   = 0;
-			con.gridy	   = 0;
+			con.fill = GridBagConstraints.NONE;
+			con.anchor = GridBagConstraints.CENTER;
+			con.gridx = 0;
+			con.gridy = 0;
 			con.gridheight = 3;
-			con.insets     = new Insets(1, 1, 1, 10);
+			con.insets = new Insets(1, 1, 1, 10);
 			help.add(createMenu(), con);
 
-			con.gridy	   = 3;
+			con.gridy = 3;
 			con.gridheight = 5;
-			con.fill	   = GridBagConstraints.BOTH;
+			con.fill = GridBagConstraints.BOTH;
 			help.add(createList(), con);
 
 			this.setLayout(new BorderLayout());
@@ -1191,10 +1154,9 @@ public class AdvancedRegionShapeCellRenderer
 		}
 
 		protected void reprocessSets(Object oldSet) {
-			List		    sets = CollectionFactory.createLinkedList();
+			List sets = CollectionFactory.createLinkedList();
 			StringTokenizer s = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer.Sets",
-																		 ""),
-													",");
+																		 ""), ",");
 
 			while(s.hasMoreTokens()) {
 				sets.add(s.nextToken());
@@ -1234,12 +1196,11 @@ public class AdvancedRegionShapeCellRenderer
 			tooltipLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			updateTooltipLabel();
 
-			JPanel			   panel = new JPanel(new GridBagLayout());
+			JPanel panel = new JPanel(new GridBagLayout());
 			GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 															GridBagConstraints.CENTER,
 															GridBagConstraints.HORIZONTAL,
-															new Insets(1, 1, 1,
-																	   1), 0, 0);
+															new Insets(1, 1, 1, 1), 0, 0);
 
 			panel.add(addSet, con);
 			con.gridy++;
@@ -1265,33 +1226,31 @@ public class AdvancedRegionShapeCellRenderer
 		}
 
 		protected Container createTexts() {
-			JPanel			   panel = new JPanel(new GridBagLayout());
+			JPanel panel = new JPanel(new GridBagLayout());
 			GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 0, 0,
 															GridBagConstraints.CENTER,
 															GridBagConstraints.NONE,
-															new Insets(1, 1, 0,
-																	   0), 0, 0);
+															new Insets(1, 1, 0, 0), 0, 0);
 
 			for(int i = 0; i < 4; i++) {
 				con.gridx = (i % 2) * 2;
 				con.gridy = (i / 2);
-				panel.add(new JLabel(getString("prefs.texts." +
-											   String.valueOf(i))), con);
+				panel.add(new JLabel(getString("prefs.texts." + String.valueOf(i))), con);
 			}
 
 			con.gridx = 1;
 			con.gridy = 0;
-			minText   = new JTextField(minDef, 10);
+			minText = new JTextField(minDef, 10);
 			panel.add(minText, con);
 
-			curText   = new JTextField(curDef, 10);
+			curText = new JTextField(curDef, 10);
 			con.gridx = 3;
 			panel.add(curText, con);
-			maxText   = new JTextField(maxDef, 10);
+			maxText = new JTextField(maxDef, 10);
 			con.gridx = 1;
 			con.gridy = 1;
 			panel.add(maxText, con);
-			uText     = new JTextField(unknownString, 10);
+			uText = new JTextField(unknownString, 10);
 			con.gridx = 3;
 			panel.add(uText, con);
 
@@ -1363,13 +1322,11 @@ public class AdvancedRegionShapeCellRenderer
 		}
 
 		protected void addSet() {
-			String name = JOptionPane.showInputDialog(this,
-													  getString("prefs.newset"));
+			String name = JOptionPane.showInputDialog(this, getString("prefs.newset"));
 
 			if((name != null) && !name.trim().equals("")) {
 				if(!checkName(name)) {
-					JOptionPane.showMessageDialog(this,
-												  getString("prefs.error.already"));
+					JOptionPane.showMessageDialog(this, getString("prefs.error.already"));
 
 					return;
 				}
@@ -1381,8 +1338,7 @@ public class AdvancedRegionShapeCellRenderer
 
 		protected boolean checkName(String name) {
 			StringTokenizer s = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer.Sets",
-																		 ""),
-													",");
+																		 ""), ",");
 
 			while(s.hasMoreTokens()) {
 				if(name.equals(s.nextToken())) {
@@ -1414,7 +1370,7 @@ public class AdvancedRegionShapeCellRenderer
 			String set = settings.getProperty("AdvancedShapeRenderer.Sets");
 
 			if(set != null) {
-				StringBuffer    buf = new StringBuffer();
+				StringBuffer buf = new StringBuffer();
 				StringTokenizer s = new StringTokenizer(set, ",");
 
 				while(s.hasMoreTokens()) {
@@ -1430,8 +1386,7 @@ public class AdvancedRegionShapeCellRenderer
 				}
 
 				if(buf.length() > 0) {
-					settings.setProperty("AdvancedShapeRenderer.Sets",
-										 buf.toString());
+					settings.setProperty("AdvancedShapeRenderer.Sets", buf.toString());
 				} else {
 					settings.remove("AdvancedShapeRenderer.Sets");
 				}
@@ -1439,8 +1394,7 @@ public class AdvancedRegionShapeCellRenderer
 
 			if(loadNew) {
 				StringTokenizer s = new StringTokenizer(settings.getProperty("AdvancedShapeRenderer.Sets",
-																			 ""),
-														",");
+																			 ""), ",");
 
 				if(s.hasMoreTokens()) {
 					loadSettings(s.nextToken());
@@ -1456,13 +1410,11 @@ public class AdvancedRegionShapeCellRenderer
 		}
 
 		protected void renameSet() {
-			String newName = JOptionPane.showInputDialog(this,
-														 getString("prefs.renameset"));
+			String newName = JOptionPane.showInputDialog(this, getString("prefs.renameset"));
 
 			if((newName != null) && !newName.trim().equals("")) {
 				if(!checkName(newName)) {
-					JOptionPane.showMessageDialog(this,
-												  getString("prefs.error.already"));
+					JOptionPane.showMessageDialog(this, getString("prefs.error.already"));
 
 					return;
 				}
@@ -1479,7 +1431,7 @@ public class AdvancedRegionShapeCellRenderer
 
 		protected void importSet() {
 			JFileChooser jfc = new JFileChooser();
-			int			 ret = jfc.showOpenDialog(this);
+			int ret = jfc.showOpenDialog(this);
 
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				File files[] = jfc.getSelectedFiles();
@@ -1498,7 +1450,7 @@ public class AdvancedRegionShapeCellRenderer
 
 		protected void importSet(File file) {
 			try {
-				Properties	    prop = new Properties();
+				Properties prop = new Properties();
 				FileInputStream in = new FileInputStream(file);
 				prop.load(in);
 				in.close();
@@ -1512,7 +1464,7 @@ public class AdvancedRegionShapeCellRenderer
 
 		protected void exportSet() {
 			JFileChooser jfc = new JFileChooser();
-			int			 ret = jfc.showSaveDialog(this);
+			int ret = jfc.showSaveDialog(this);
 
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				try {
@@ -1537,8 +1489,8 @@ public class AdvancedRegionShapeCellRenderer
 
 		protected void setTooltip() {
 			// make a list of all available tooltips plus "none" and "current"
-			List list     = CollectionFactory.createLinkedList();
-			int  selIndex = 2;
+			List list = CollectionFactory.createLinkedList();
+			int selIndex = 2;
 			list.add(getString("prefs.menu.tooltip.none"));
 
 			if(mapperTooltip == null) {
@@ -1547,17 +1499,16 @@ public class AdvancedRegionShapeCellRenderer
 
 			list.add(getString("prefs.menu.tooltip.current"));
 
-			if((mapperTooltip != null) &&
-				   mapperTooltip.equals(curText.getText())) {
+			if((mapperTooltip != null) && mapperTooltip.equals(curText.getText())) {
 				selIndex = 1;
 			}
 
 			list.add(getString("prefs.menu.tooltip.manual"));
 
 			if(mapper != null) {
-				java.util.List l  = mapper.getAllTooltipDefinitions();
-				Iterator	   it = l.iterator();
-				int			   i  = 3;
+				java.util.List l = mapper.getAllTooltipDefinitions();
+				Iterator it = l.iterator();
+				int i = 3;
 
 				while(it.hasNext()) {
 					String name = (String) it.next();
@@ -1572,12 +1523,11 @@ public class AdvancedRegionShapeCellRenderer
 				}
 			}
 
-			Object   o[] = list.toArray();
-			Object   ret = JOptionPane.showInputDialog(this,
-													   getString("prefs.menu.tooltip.choose"),
-													   getString("prefs.menu.tooltip.title"),
-													   JOptionPane.QUESTION_MESSAGE,
-													   null, o, o[selIndex]);
+			Object o[] = list.toArray();
+			Object ret = JOptionPane.showInputDialog(this, getString("prefs.menu.tooltip.choose"),
+													 getString("prefs.menu.tooltip.title"),
+													 JOptionPane.QUESTION_MESSAGE, null, o,
+													 o[selIndex]);
 
 			if(ret != null) {
 				if(ret == o[0]) {
@@ -1677,7 +1627,7 @@ public class AdvancedRegionShapeCellRenderer
 			public StringPair(String s1, String s2) {
 				this.s1 = s1;
 				this.s2 = s2;
-				s3	    = s1 + ": " + s2;
+				s3 = s1 + ": " + s2;
 
 				if(s3.length() > 50) {
 					s3 = s3.substring(0, 28) + "...";
@@ -1718,8 +1668,8 @@ public class AdvancedRegionShapeCellRenderer
 			 * @param g TODO: DOCUMENT ME!
 			 */
 			public void paintComponent(Graphics g) {
-				Dimension size    = this.getSize();
-				float     percent = 0;
+				Dimension size = this.getSize();
+				float percent = 0;
 
 				for(int i = 0; i < size.width; i++) {
 					percent = ((float) i) / ((float) size.width);
@@ -1751,26 +1701,25 @@ public class AdvancedRegionShapeCellRenderer
 			}
 		}
 
-		protected class ColorPanel extends JPanel implements MouseListener,
-															 MouseMotionListener,
+		protected class ColorPanel extends JPanel implements MouseListener, MouseMotionListener,
 															 ActionListener
 		{
-			protected int					 moveIndex     = -1;
-			protected int					 lastMoveIndex = -1;
-			protected List					 value;
-			protected List					 mapping;
-			protected Cursor				 normCursor;
-			protected Cursor				 gripCursor;
-			protected Cursor				 moveCursor;
-			protected Cursor				 handCursor;
-			protected ColorShowPanel		 myShow;
-			protected ColorPainter			 mapPainter;
-			protected JPopupMenu			 popup;
-			protected JMenuItem				 addItem;
-			protected JMenuItem				 removeItem;
-			protected JMenuItem				 modifyItem;
-			protected int					 addX		   = -1;
-			protected JTextField			 textValue;
+			protected int moveIndex = -1;
+			protected int lastMoveIndex = -1;
+			protected List value;
+			protected List mapping;
+			protected Cursor normCursor;
+			protected Cursor gripCursor;
+			protected Cursor moveCursor;
+			protected Cursor handCursor;
+			protected ColorShowPanel myShow;
+			protected ColorPainter mapPainter;
+			protected JPopupMenu popup;
+			protected JMenuItem addItem;
+			protected JMenuItem removeItem;
+			protected JMenuItem modifyItem;
+			protected int addX = -1;
+			protected JTextField textValue;
 			protected java.text.NumberFormat number;
 
 			/**
@@ -1814,7 +1763,7 @@ public class AdvancedRegionShapeCellRenderer
 				moveCursor = new Cursor(Cursor.MOVE_CURSOR);
 				handCursor = new Cursor(Cursor.HAND_CURSOR);
 
-				value   = CollectionFactory.createLinkedList();
+				value = CollectionFactory.createLinkedList();
 				mapping = CollectionFactory.createLinkedList();
 
 				createPopup();
@@ -1855,7 +1804,7 @@ public class AdvancedRegionShapeCellRenderer
 
 			protected void load() {
 				Collection col = myTable.getEntries();
-				Iterator   it = col.iterator();
+				Iterator it = col.iterator();
 
 				while(it.hasNext()) {
 					Map.Entry entry = (Map.Entry) it.next();
@@ -1869,8 +1818,7 @@ public class AdvancedRegionShapeCellRenderer
 
 				if(value.size() > 0) {
 					for(int i = 0; i < value.size(); i++) {
-						myTable.addEntry(((Float) value.get(i)).floatValue(),
-										 (Color) mapping.get(i));
+						myTable.addEntry(((Float) value.get(i)).floatValue(), (Color) mapping.get(i));
 					}
 				}
 			}
@@ -1881,7 +1829,7 @@ public class AdvancedRegionShapeCellRenderer
 
 					for(int i = 0; i < value.size(); i++) {
 						Float next = (Float) value.get(i);
-						int   j = (int) (next.floatValue() * width);
+						int j = (int) (next.floatValue() * width);
 
 						if(Math.abs(x - j) <= maxDiff) {
 							return i;
@@ -1983,8 +1931,7 @@ public class AdvancedRegionShapeCellRenderer
 			 * @param mouseEvent TODO: DOCUMENT ME!
 			 */
 			public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
-				if(SwingUtilities.isRightMouseButton(mouseEvent) &&
-					   (moveIndex == -1)) {
+				if(SwingUtilities.isRightMouseButton(mouseEvent) && (moveIndex == -1)) {
 					addX = find(mouseEvent.getX(), mouseEvent.getY(), 5);
 					fillPopup(addX);
 
@@ -2066,7 +2013,7 @@ public class AdvancedRegionShapeCellRenderer
 				if(lastMoveIndex != -1) {
 					try {
 						Number nf = number.parse(textValue.getText());
-						float  fl = nf.floatValue();
+						float fl = nf.floatValue();
 
 						if(fl <= 0) {
 							fl = 0.001f;
@@ -2085,10 +2032,10 @@ public class AdvancedRegionShapeCellRenderer
 			}
 
 			protected void addColor() {
-				int x     = addX;
+				int x = addX;
 				int width = mapPainter.getWidth();
 				int index = -1;
-				int ox    = -1;
+				int ox = -1;
 
 				if(value.size() > 0) {
 					Iterator it = value.iterator();
@@ -2110,9 +2057,7 @@ public class AdvancedRegionShapeCellRenderer
 					index++;
 				}
 
-				Color col = JColorChooser.showDialog(this,
-													 getString("prefs.newcolor"),
-													 Color.white);
+				Color col = JColorChooser.showDialog(this, getString("prefs.newcolor"), Color.white);
 
 				if(col != null) {
 					value.add(index, new Float(((float) x) / ((float) width)));
@@ -2132,8 +2077,7 @@ public class AdvancedRegionShapeCellRenderer
 			}
 
 			protected void changeColor() {
-				Color col = JColorChooser.showDialog(this,
-													 getString("prefs.changecolor"),
+				Color col = JColorChooser.showDialog(this, getString("prefs.changecolor"),
 													 (Color) mapping.get(addX));
 
 				if(col != null) {
@@ -2176,7 +2120,7 @@ public class AdvancedRegionShapeCellRenderer
 
 			protected class ColorPainter extends JPanel {
 				protected Polygon poly;
-				protected String  numbers[];
+				protected String numbers[];
 
 				/**
 				 * Creates a new ColorPainter object.
@@ -2193,9 +2137,9 @@ public class AdvancedRegionShapeCellRenderer
 					number.setMaximumFractionDigits(1);
 					number.setMinimumFractionDigits(0);
 
-					int   x[] = new int[5];
-					int   y[] = new int[5];
-					poly    = new Polygon(x, y, 5);
+					int x[] = new int[5];
+					int y[] = new int[5];
+					poly = new Polygon(x, y, 5);
 					numbers = new String[11];
 
 					for(int i = 0; i < numbers.length; i++) {
@@ -2214,9 +2158,9 @@ public class AdvancedRegionShapeCellRenderer
 					g.fillRect(0, 0, size.width, size.height);
 					g.setColor(Color.black);
 
-					FontMetrics fm     = g.getFontMetrics();
-					int		    y	   = size.height - 1;
-					int		    height = y - fm.getAscent() - 1;
+					FontMetrics fm = g.getFontMetrics();
+					int y = size.height - 1;
+					int height = y - fm.getAscent() - 1;
 
 					for(int i = 0; i <= 10; i++) {
 						int x = ((i * size.width) / 10);
@@ -2230,11 +2174,9 @@ public class AdvancedRegionShapeCellRenderer
 						if(i == 0) {
 							g.drawString(numbers[0], x, y);
 						} else if(i == 10) {
-							g.drawString(numbers[10],
-										 x - fm.stringWidth(numbers[10]), y);
+							g.drawString(numbers[10], x - fm.stringWidth(numbers[10]), y);
 						} else {
-							g.drawString(numbers[i],
-										 x - (fm.stringWidth(numbers[i]) / 2), y);
+							g.drawString(numbers[i], x - (fm.stringWidth(numbers[i]) / 2), y);
 						}
 					}
 
@@ -2271,22 +2213,21 @@ public class AdvancedRegionShapeCellRenderer
 			}
 		}
 
-		protected class MappingPanel extends JPanel implements MouseListener,
-															   MouseMotionListener,
+		protected class MappingPanel extends JPanel implements MouseListener, MouseMotionListener,
 															   ActionListener
 		{
-			protected int		 moveIndex  = -1;
-			protected List		 value;
-			protected List		 mapping;
+			protected int moveIndex = -1;
+			protected List value;
+			protected List mapping;
 			protected PaintPanel mapPainter;
-			protected Cursor     normCursor;
-			protected Cursor     gripCursor;
-			protected Cursor     moveCursor;
+			protected Cursor normCursor;
+			protected Cursor gripCursor;
+			protected Cursor moveCursor;
 			protected JPopupMenu popup;
-			protected JMenuItem  addItem;
-			protected JMenuItem  removeItem;
-			protected int		 addX = -1;
-			protected int		 addY = -1;
+			protected JMenuItem addItem;
+			protected JMenuItem removeItem;
+			protected int addX = -1;
+			protected int addY = -1;
 
 			/**
 			 * Creates a new MappingPanel object.
@@ -2309,7 +2250,7 @@ public class AdvancedRegionShapeCellRenderer
 				help.add(mapPainter);
 				this.add(help, BorderLayout.CENTER);
 
-				value   = CollectionFactory.createLinkedList();
+				value = CollectionFactory.createLinkedList();
 				mapping = CollectionFactory.createLinkedList();
 
 				createPopup();
@@ -2344,7 +2285,7 @@ public class AdvancedRegionShapeCellRenderer
 
 			protected void load() {
 				Collection col = myMapping.getEntries();
-				Iterator   it = col.iterator();
+				Iterator it = col.iterator();
 
 				while(it.hasNext()) {
 					Map.Entry entry = (Map.Entry) it.next();
@@ -2366,16 +2307,16 @@ public class AdvancedRegionShapeCellRenderer
 
 			protected int find(int x, int y, int maxDiff) {
 				if(value.size() > 0) {
-					int width  = mapPainter.getWidth();
+					int width = mapPainter.getWidth();
 					int height = mapPainter.getHeight();
 
 					for(int i = 0; i < value.size(); i++) {
 						Float next = (Float) value.get(i);
-						int   j = (int) (next.floatValue() * width);
+						int j = (int) (next.floatValue() * width);
 
 						if(Math.abs(x - j) <= maxDiff) {
 							Float oheight = (Float) mapping.get(i);
-							int   k = (int) ((1f - oheight.floatValue()) * height);
+							int k = (int) ((1f - oheight.floatValue()) * height);
 
 							if(Math.abs(y - k) <= maxDiff) {
 								return i;
@@ -2397,10 +2338,10 @@ public class AdvancedRegionShapeCellRenderer
 
 			protected void moved(MouseEvent e) {
 				if(moveIndex >= 0) {
-					float width   = mapPainter.getWidth();
-					float height  = mapPainter.getHeight();
-					float oldX    = ((Float) value.get(moveIndex)).floatValue();
-					float oldY    = ((Float) mapping.get(moveIndex)).floatValue();
+					float width = mapPainter.getWidth();
+					float height = mapPainter.getHeight();
+					float oldX = ((Float) value.get(moveIndex)).floatValue();
+					float oldY = ((Float) mapping.get(moveIndex)).floatValue();
 					float newVert = ((float) (height - e.getY())) / height;
 
 					if(newVert < 0) {
@@ -2423,8 +2364,7 @@ public class AdvancedRegionShapeCellRenderer
 
 					if((newVert != oldY) || (newHoriz != oldX)) {
 						// don't move endings horizontally
-						if((moveIndex == 0) ||
-							   (moveIndex == (value.size() - 1))) {
+						if((moveIndex == 0) || (moveIndex == (value.size() - 1))) {
 							if(newVert != oldY) {
 								mapping.set(moveIndex, new Float(newVert));
 							} else {
@@ -2440,8 +2380,7 @@ public class AdvancedRegionShapeCellRenderer
 									newHoriz = ((float) (lx + 1)) / width;
 								}
 
-								float rightX = ((Float) value.get(moveIndex +
-																  1)).floatValue();
+								float rightX = ((Float) value.get(moveIndex + 1)).floatValue();
 
 								if(rightX <= newHoriz) {
 									int rx = (int) (rightX * width);
@@ -2465,7 +2404,7 @@ public class AdvancedRegionShapeCellRenderer
 			protected void addMapping(int x, int y) {
 				int width = mapPainter.getWidth();
 				int index = -1;
-				int ox    = -1;
+				int ox = -1;
 
 				if(value.size() > 0) {
 					Iterator it = value.iterator();
@@ -2509,8 +2448,7 @@ public class AdvancedRegionShapeCellRenderer
 			 * @param mouseEvent TODO: DOCUMENT ME!
 			 */
 			public void mousePressed(java.awt.event.MouseEvent mouseEvent) {
-				if(SwingUtilities.isRightMouseButton(mouseEvent) &&
-					   (moveIndex == -1)) {
+				if(SwingUtilities.isRightMouseButton(mouseEvent) && (moveIndex == -1)) {
 					addX = find(mouseEvent.getX(), mouseEvent.getY(), 5);
 					fillPopup(addX);
 
@@ -2615,9 +2553,8 @@ public class AdvancedRegionShapeCellRenderer
 				 */
 				public PaintPanel() {
 					float dashs[] = { 1f, 4f };
-					stroke = new BasicStroke(0.1f, BasicStroke.CAP_BUTT,
-											 BasicStroke.JOIN_BEVEL, 0.5f,
-											 dashs, 0f);
+					stroke = new BasicStroke(0.1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+											 0.5f, dashs, 0f);
 				}
 
 				/**
@@ -2630,8 +2567,8 @@ public class AdvancedRegionShapeCellRenderer
 					g.setColor(this.getBackground());
 					g.fillRect(0, 0, size.width, size.height);
 
-					float  fWidth    = size.width;
-					float  fHeight   = size.height;
+					float fWidth = size.width;
+					float fHeight = size.height;
 					Stroke oldStroke = null;
 
 					if(g instanceof Graphics2D) {
@@ -2662,8 +2599,7 @@ public class AdvancedRegionShapeCellRenderer
 
 						for(int i = 0; i < value.size(); i++) {
 							int x = (int) (((Float) value.get(i)).floatValue() * fWidth);
-							int y = (int) ((1 -
-									((Float) mapping.get(i)).floatValue()) * fHeight);
+							int y = (int) ((1 - ((Float) mapping.get(i)).floatValue()) * fHeight);
 							g.fillRect(x - 2, y - 2, 5, 5);
 
 							if(lastX >= 0) {

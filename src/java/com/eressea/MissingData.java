@@ -21,24 +21,24 @@ import com.eressea.rules.GenericRules;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A Zero Pattern implementation of the <tt>GameData</tt> supporting all of the
- * attributes defined there. No maps are defined as <tt>null</tt>.
+ * A Zero Pattern implementation of the <tt>GameData</tt> supporting all of the attributes defined
+ * there. No maps are defined as <tt>null</tt>.
  *
  * @see com.eressea.GameData
  */
 public class MissingData extends GameData {
-	protected Map    regions	  = CollectionFactory.createOrderedHashtable();
-	protected Map    units		  = CollectionFactory.createHashtable();
-	protected Map    factions     = CollectionFactory.createOrderedHashtable();
-	protected Map    ships		  = CollectionFactory.createOrderedHashtable();
-	protected Map    buildings    = CollectionFactory.createOrderedHashtable();
-	protected Map    islands	  = CollectionFactory.createOrderedHashtable();
-	protected Map    msgTypes     = CollectionFactory.createOrderedHashtable();
-	protected Map    spells		  = CollectionFactory.createOrderedHashtable();
-	protected Map    potions	  = CollectionFactory.createOrderedHashtable();
-	protected Map    hotSpots     = CollectionFactory.createOrderedHashtable();
-	protected Map    translations = CollectionFactory.createOrderedHashtable();
-	protected Locale locale		  = Locale.getDefault();
+	protected Map regions = CollectionFactory.createOrderedHashtable();
+	protected Map units = CollectionFactory.createHashtable();
+	protected Map factions = CollectionFactory.createOrderedHashtable();
+	protected Map ships = CollectionFactory.createOrderedHashtable();
+	protected Map buildings = CollectionFactory.createOrderedHashtable();
+	protected Map islands = CollectionFactory.createOrderedHashtable();
+	protected Map msgTypes = CollectionFactory.createOrderedHashtable();
+	protected Map spells = CollectionFactory.createOrderedHashtable();
+	protected Map potions = CollectionFactory.createOrderedHashtable();
+	protected Map hotSpots = CollectionFactory.createOrderedHashtable();
+	protected Map translations = CollectionFactory.createOrderedHashtable();
+	protected Locale locale = Locale.getDefault();
 
 	/**
 	 * TODO: DOCUMENT ME!

@@ -41,13 +41,13 @@ import com.eressea.swing.context.ContextFactory;
  * @version
  */
 public class ContextManager extends MouseAdapter {
-	private Collection     listeners     = null;
-	private JTree		   source;
-	private Collection     selection     = null;
-	private GameData	   data			 = null;
-	private ContextFactory failFactory   = null;
-	private Object		   failArgument  = null;
-	private Map			   simpleObjects = null;
+	private Collection listeners = null;
+	private JTree source;
+	private Collection selection = null;
+	private GameData data = null;
+	private ContextFactory failFactory = null;
+	private Object failArgument = null;
+	private Map simpleObjects = null;
 
 	/**
 	 * Creates new ContextManager
@@ -85,7 +85,7 @@ public class ContextManager extends MouseAdapter {
 	 */
 	public void setFailFallback(Object failArgument, ContextFactory failFactory) {
 		this.failArgument = failArgument;
-		this.failFactory  = failFactory;
+		this.failFactory = failFactory;
 	}
 
 	/**
@@ -165,10 +165,9 @@ public class ContextManager extends MouseAdapter {
 	 */
 	public void mouseClicked(MouseEvent e) {
 		if((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-			TreePath			   path = source.getPathForLocation(e.getX(),
-																	e.getY());
-			DefaultMutableTreeNode node  = null;
-			boolean				   found = false;
+			TreePath path = source.getPathForLocation(e.getX(), e.getY());
+			DefaultMutableTreeNode node = null;
+			boolean found = false;
 
 			if(path != null) {
 				Object last = path.getLastPathComponent();
@@ -183,11 +182,10 @@ public class ContextManager extends MouseAdapter {
 
 						if(((change.getChangeModes() & Changeable.CONTEXT_MENU) != 0) &&
 							   (change.getContextFactory() != null)) {
-							JPopupMenu menu = change.getContextFactory()
-													.createContextMenu(data,
-																	   change.getArgument(),
-																	   selection,
-																	   node);
+							JPopupMenu menu = change.getContextFactory().createContextMenu(data,
+																						   change.getArgument(),
+																						   selection,
+																						   node);
 
 							if(menu != null) {
 								showMenu(menu, source, e.getX(), e.getY());
@@ -207,19 +205,15 @@ public class ContextManager extends MouseAdapter {
 					JPopupMenu menu = null;
 
 					if(failArgument != null) {
-						menu = failFactory.createContextMenu(data,
-															 failArgument,
-															 selection, node);
+						menu = failFactory.createContextMenu(data, failArgument, selection, node);
 					} else {
 						if(node != null) {
-							menu = failFactory.createContextMenu(data,
-																 node.getUserObject(),
+							menu = failFactory.createContextMenu(data, node.getUserObject(),
 																 selection, node);
 						}
 
 						if(menu == null) {
-							menu = failFactory.createContextMenu(data, node,
-																 selection, node);
+							menu = failFactory.createContextMenu(data, node, selection, node);
 						}
 					}
 
@@ -235,16 +229,12 @@ public class ContextManager extends MouseAdapter {
 		}
 	}
 
-	protected boolean checkSimpleObjects(MouseEvent e,
-										 DefaultMutableTreeNode node,
-										 Object user) {
+	protected boolean checkSimpleObjects(MouseEvent e, DefaultMutableTreeNode node, Object user) {
 		try {
 			if(simpleObjects != null) {
 				if(simpleObjects.containsKey(user.getClass())) {
 					ContextFactory factory = (ContextFactory) simpleObjects.get(user.getClass());
-					JPopupMenu     menu = factory.createContextMenu(data, user,
-																	selection,
-																	node);
+					JPopupMenu menu = factory.createContextMenu(data, user, selection, node);
 
 					if(menu != null) {
 						showMenu(menu, source, e.getX(), e.getY());
@@ -255,9 +245,7 @@ public class ContextManager extends MouseAdapter {
 
 				if(simpleObjects.containsKey(node.getClass())) {
 					ContextFactory factory = (ContextFactory) simpleObjects.get(node.getClass());
-					JPopupMenu     menu = factory.createContextMenu(data, node,
-																	selection,
-																	node);
+					JPopupMenu menu = factory.createContextMenu(data, node, selection, node);
 
 					if(menu != null) {
 						showMenu(menu, source, e.getX(), e.getY());
@@ -284,9 +272,8 @@ public class ContextManager extends MouseAdapter {
 	}
 
 	/**
-	 * Shows the given menu at position x,y. If there is not enough space on
-	 * the screen, the menu not shown down and right from (x,y) but left or up
-	 * or both of that point.
+	 * Shows the given menu at position x,y. If there is not enough space on the screen, the menu
+	 * not shown down and right from (x,y) but left or up or both of that point.
 	 *
 	 * @param menu TODO: DOCUMENT ME!
 	 * @param c TODO: DOCUMENT ME!
@@ -294,12 +281,11 @@ public class ContextManager extends MouseAdapter {
 	 * @param y TODO: DOCUMENT ME!
 	 */
 	private void showMenu(JPopupMenu menu, Component c, int x, int y) {
-		Dimension screen	  = java.awt.Toolkit.getDefaultToolkit()
-												.getScreenSize();
-		Point     showAtPoint = new Point(x, y);
+		Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		Point showAtPoint = new Point(x, y);
 		javax.swing.SwingUtilities.convertPointToScreen(showAtPoint, c);
 
-		int width  = (int) menu.getPreferredSize().getWidth();
+		int width = (int) menu.getPreferredSize().getWidth();
 		int height = (int) menu.getPreferredSize().getHeight();
 
 		if((screen.width - showAtPoint.x) < width) {

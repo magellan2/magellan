@@ -19,19 +19,18 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 
 /**
- * A comparator imposing an ordering on Unit and TempUnit objects by sorting
- * all temp units behind normal units.
+ * A comparator imposing an ordering on Unit and TempUnit objects by sorting all temp units behind
+ * normal units.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
- * I.e. if the two compared units are either both normal units or both temp
- * units, instead of 0 the result of the unit sub-comparator's comparison is
- * returned.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality. I.e. if the two compared units are either
+ * both normal units or both temp units, instead of 0 the result of the unit sub-comparator's
+ * comparison is returned.
  * </p>
  */
 public class LinearUnitTempUnitComparator implements Comparator {
@@ -40,9 +39,8 @@ public class LinearUnitTempUnitComparator implements Comparator {
 	/**
 	 * Creates a new LinearUnitTempUnitComparator object.
 	 *
-	 * @param unitSubComparator if two units are of the same type (standard or
-	 * 		  temp unit), this sub-comparator is applied if it is not
-	 * 		  <tt>null</tt>.
+	 * @param unitSubComparator if two units are of the same type (standard or temp unit), this
+	 * 		  sub-comparator is applied if it is not <tt>null</tt>.
 	 */
 	public LinearUnitTempUnitComparator(Comparator unitSubComparator) {
 		this.subCmp = unitSubComparator;
@@ -54,13 +52,12 @@ public class LinearUnitTempUnitComparator implements Comparator {
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return a value less than zero if o1 is.an instance of class
-	 * 		   <tt>Unit</tt> and o2 an instance of class <tt>TempUnit</tt>.
-	 * 		   Conversely, if o1 is an instance of class <tt>TempUnit</tt> and
-	 * 		   o2 an instance of class <tt>Unit</tt>, a value greater than
-	 * 		   zero is returned. If o1 and o2 are instances of the same class,
-	 * 		   the comparison either returns zero or, when unitSubComparator
-	 * 		   is not null, that comparator's result.
+	 * @return a value less than zero if o1 is.an instance of class <tt>Unit</tt> and o2 an
+	 * 		   instance of class <tt>TempUnit</tt>. Conversely, if o1 is an instance of class
+	 * 		   <tt>TempUnit</tt> and o2 an instance of class <tt>Unit</tt>, a value greater than
+	 * 		   zero is returned. If o1 and o2 are instances of the same class, the comparison
+	 * 		   either returns zero or, when unitSubComparator is not null, that comparator's
+	 * 		   result.
 	 */
 	public int compare(Object o1, Object o2) {
 		Unit u1 = (Unit) o1;

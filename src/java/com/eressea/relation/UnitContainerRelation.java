@@ -17,8 +17,8 @@ import com.eressea.Unit;
 import com.eressea.UnitContainer;
 
 /**
- * A (possibly abstract) relation indicating that the source unit interacts
- * with the target unit container.
+ * A (possibly abstract) relation indicating that the source unit interacts with the target unit
+ * container.
  */
 public class UnitContainerRelation extends UnitRelation {
 	/** TODO: DOCUMENT ME! */

@@ -52,15 +52,14 @@ public class LuxuryPriceReplacer extends AbstractParameterReplacer {
 				return null;
 			}
 
-			String   luxury = getParameter(0, o).toString();
+			String luxury = getParameter(0, o).toString();
 			Iterator it = r.prices.values().iterator();
 
 			while(it.hasNext()) {
-				LuxuryPrice lp  = (LuxuryPrice) it.next();
-				ItemType    ity = lp.getItemType();
+				LuxuryPrice lp = (LuxuryPrice) it.next();
+				ItemType ity = lp.getItemType();
 
-				if(ity.getName().equals(luxury) ||
-					   ity.getID().toString().equals(luxury)) {
+				if(ity.getName().equals(luxury) || ity.getID().toString().equals(luxury)) {
 					return new Integer(lp.getPrice());
 				}
 			}

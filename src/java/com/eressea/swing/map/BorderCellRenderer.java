@@ -54,25 +54,24 @@ public class BorderCellRenderer extends ImageCellRenderer {
 	 */
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
-			Region     r	   = (Region) obj;
+			Region r = (Region) obj;
 			Collection borders = r.borders();
 
 			if(borders.isEmpty() == false) {
 				// since border objects are rare initialization is
 				// done as late as possible
-				Coordinate c    = null;
-				Point	   pos  = null;
-				Dimension  size = null;
+				Coordinate c = null;
+				Point pos = null;
+				Dimension size = null;
 
 				for(Iterator iter = r.borders().iterator(); iter.hasNext();) {
 					Border b = (Border) iter.next();
 
 					if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
 						   (b.direction != com.eressea.util.Direction.DIR_INVALID)) {
-						Image img = (b.buildRatio == 100)
-									? getImage("Strasse" + b.direction)
-									: getImage("Strasse_incomplete" +
-											   b.direction);
+						Image img = (b.buildRatio == 100) ? getImage("Strasse" + b.direction)
+														  : getImage("Strasse_incomplete" +
+																	 b.direction);
 
 						if(img == null) {
 							img = getImage("Strasse" + b.direction);
@@ -80,15 +79,13 @@ public class BorderCellRenderer extends ImageCellRenderer {
 
 						if(img != null) {
 							if(c == null) {
-								c   = r.getCoordinate();
-								pos = new Point(cellGeo.getImagePosition(c.x,
-																		 c.y));
+								c = r.getCoordinate();
+								pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 								pos.translate(-offset.x, -offset.y);
 								size = cellGeo.getImageSize();
 							}
 
-							graphics.drawImage(img, pos.x, pos.y, size.width,
-											   size.height, null);
+							graphics.drawImage(img, pos.x, pos.y, size.width, size.height, null);
 						}
 					}
 				}

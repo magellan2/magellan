@@ -25,17 +25,15 @@ import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
 
 /**
- * The <code>GameDataReader</code> reads a <code>GameData</code> from a given
- * <code>FileType</code>
+ * The <code>GameDataReader</code> reads a <code>GameData</code> from a given <code>FileType</code>
  *
  * @author $author$
  * @version $Revision$
  */
 public class GameDataReader {
 	/**
-	 * Read a gamedata from a given File. At the beginning the game name is
-	 * read by a <code>GameNameReader</code>. With this  name the
-	 * corresponding rules and game
+	 * Read a gamedata from a given File. At the beginning the game name is read by a
+	 * <code>GameNameReader</code>. With this  name the corresponding rules and game
 	 *
 	 * @param aFileType the filetype representing a cr or xml file.
 	 *
@@ -48,8 +46,7 @@ public class GameDataReader {
 		String gameName = new GameNameReader().getGameName(aFileType);
 
 		if(gameName == null) {
-			throw new IOException("Unable to determine game name of file " +
-								  aFileType);
+			throw new IOException("Unable to determine game name of file " + aFileType);
 		}
 
 		if(isXMLFile(aFileType)) {
@@ -72,8 +69,7 @@ public class GameDataReader {
 			return data;
 		}
 
-		throw new IOException("Don't know how to read unknown file format in " +
-							  aFileType);
+		throw new IOException("Don't know how to read unknown file format in " + aFileType);
 	}
 
 	/**
@@ -86,9 +82,7 @@ public class GameDataReader {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public GameData readGameDataXML(FileType aFileType, String aGameName)
-							 throws IOException
-	{
+	public GameData readGameDataXML(FileType aFileType, String aGameName) throws IOException {
 		throw new IOException("Reading of xml files unfinished");
 	}
 
@@ -102,9 +96,7 @@ public class GameDataReader {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public GameData readGameDataCR(FileType aFileType, String aGameName)
-							throws IOException
-	{
+	public GameData readGameDataCR(FileType aFileType, String aGameName) throws IOException {
 		GameData newData = createGameData(aGameName);
 		newData.filetype = aFileType;
 
@@ -130,12 +122,11 @@ public class GameDataReader {
 
 		if(rules == null) {
 			// This should never happen but who knows
-			throw new IOException("No Rules for game '" + aGameName +
-								  "' readable!");
+			throw new IOException("No Rules for game '" + aGameName + "' readable!");
 		}
 
-		return new GameSpecificStuffProvider().getGameSpecificStuff(aGameName)
-											  .createGameData(rules, aGameName);
+		return new GameSpecificStuffProvider().getGameSpecificStuff(aGameName).createGameData(rules,
+																							  aGameName);
 	}
 
 	private boolean isXMLFile(FileType aFileType) throws IOException {

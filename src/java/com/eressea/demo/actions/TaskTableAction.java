@@ -47,10 +47,8 @@ public class TaskTableAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		TaskTableDialog d = new TaskTableDialog(client, false,
-												client.getDispatcher(),
-												client.getData(),
-												client.getSettings());
+		TaskTableDialog d = new TaskTableDialog(client, false, client.getDispatcher(),
+												client.getData(), client.getSettings());
 		d.setVisible(true);
 	}
 

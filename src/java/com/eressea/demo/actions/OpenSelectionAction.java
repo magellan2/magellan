@@ -44,9 +44,9 @@ import com.eressea.util.logging.Logger;
  * @author Ilja Pavkovic
  */
 public class OpenSelectionAction extends MenuAction implements GameDataListener {
-	private static final Logger log			    = Logger.getInstance(OpenSelectionAction.class);
-	protected Client		    client;
-	protected Map			    selectedRegions = CollectionFactory.createHashtable();
+	private static final Logger log = Logger.getInstance(OpenSelectionAction.class);
+	protected Client client;
+	protected Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
 	 * Creates a new OpenSelectionAction object.
@@ -86,14 +86,12 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 		JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(new EresseaFileFilter(SaveSelectionAction.EXTENSION,
 														SaveSelectionAction.DESCRIPTION));
-		fc.setSelectedFile(new File(client.getSettings().getProperty(getPropertyName(),
-																	 "")));
+		fc.setSelectedFile(new File(client.getSettings().getProperty(getPropertyName(), "")));
 		fc.setDialogTitle(getString("title"));
 
 		if(fc.showOpenDialog(client) == JFileChooser.APPROVE_OPTION) {
 			client.getSettings().setProperty(getPropertyName(),
-											 fc.getSelectedFile()
-											   .getAbsolutePath());
+											 fc.getSelectedFile().getAbsolutePath());
 
 			List coordinates = CollectionFactory.createLinkedList();
 
@@ -107,8 +105,7 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 						break;
 					}
 
-					coordinates.add(Coordinate.parse(line,
-													 SaveSelectionAction.DELIMITER));
+					coordinates.add(Coordinate.parse(line, SaveSelectionAction.DELIMITER));
 				}
 
 				br.close();
@@ -135,9 +132,7 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 			}
 
 			// fire change event
-			client.getDispatcher().fire(new SelectionEvent(this,
-														   selectedRegions.values(),
-														   null,
+			client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 														   SelectionEvent.ST_REGIONS));
 		}
 	}
@@ -163,8 +158,7 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 			defaultTranslations.put("tooltip", "");
 			defaultTranslations.put("msg.fileordersopen.error.text",
 									"While loading the selection the following error occurred:\n");
-			defaultTranslations.put("msg.fileordersopen.error.title",
-									"Error on load");
+			defaultTranslations.put("msg.fileordersopen.error.title", "Error on load");
 			defaultTranslations.put("title", "open selection file");
 		}
 

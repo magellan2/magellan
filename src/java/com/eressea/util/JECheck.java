@@ -38,38 +38,33 @@ import com.eressea.util.logging.Logger;
  * A class for executing ECheck and reading the output returned.
  */
 public class JECheck extends Reader {
-	private static final Logger log			 = Logger.getInstance(JECheck.class);
-	private static String	    FIELD_SEP    = "|";
-	private Reader			    outputReader = null;
-	private File			    tempFile     = null;
+	private static final Logger log = Logger.getInstance(JECheck.class);
+	private static String FIELD_SEP = "|";
+	private Reader outputReader = null;
+	private File tempFile = null;
 
 	/**
-	 * Creates a new JECheck object by executing ECheck with the specified
-	 * parameters and making its output accessible through the Reader
-	 * interface.
+	 * Creates a new JECheck object by executing ECheck with the specified parameters and making
+	 * its output accessible through the Reader interface.
 	 *
-	 * @param eCheckExe a file specifying the ECheck executable. It is assumed
-	 * 		  that the files items.txt and zauber.txt are located in same
-	 * 		  directory as the executable itself.
-	 * @param orders the file containing the orders to be parsed by ECheck. If
-	 * 		  orders is null ECheck is executed without a specified orders
-	 * 		  file.
-	 * @param options additional options to be passed to ECheck to control its
-	 * 		  operation and output.
+	 * @param eCheckExe a file specifying the ECheck executable. It is assumed that the files
+	 * 		  items.txt and zauber.txt are located in same directory as the executable itself.
+	 * @param orders the file containing the orders to be parsed by ECheck. If orders is null
+	 * 		  ECheck is executed without a specified orders file.
+	 * @param options additional options to be passed to ECheck to control its operation and
+	 * 		  output.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public JECheck(File eCheckExe, File orders, String options)
-			throws IOException
-	{
-		List    commandLine = CollectionFactory.createLinkedList();
-		Process p     = null;
-		long    start = 0;
+	public JECheck(File eCheckExe, File orders, String options) throws IOException {
+		List commandLine = CollectionFactory.createLinkedList();
+		Process p = null;
+		long start = 0;
 
 		/* check ECheck executable */
 		if((eCheckExe.exists() == false) || (eCheckExe.canRead() == false)) {
-			throw new IOException("Specified ECheck executable " +
-								  eCheckExe.getAbsolutePath() + " is invalid");
+			throw new IOException("Specified ECheck executable " + eCheckExe.getAbsolutePath() +
+								  " is invalid");
 		}
 
 		/* put the exe into the command line, tell ECheck to use
@@ -81,10 +76,8 @@ public class JECheck extends Reader {
 		try {
 			tempFile = File.createTempFile("JECheck", null);
 		} catch(Exception e) {
-			log.error("JECheck.JECheck(): unable to create temporary file for output",
-					  e);
-			throw new IOException("Unable to create temporary file for output: " +
-								  e);
+			log.error("JECheck.JECheck(): unable to create temporary file for output", e);
+			throw new IOException("Unable to create temporary file for output: " + e);
 		}
 
 		commandLine.add("-O" + tempFile.getAbsolutePath());
@@ -114,9 +107,7 @@ public class JECheck extends Reader {
 		start = System.currentTimeMillis();
 
 		try {
-			p = Runtime.getRuntime().exec((String[]) commandLine.toArray(new String[] {
-																			 
-																		 }));
+			p = Runtime.getRuntime().exec((String[]) commandLine.toArray(new String[] {  }));
 		} catch(Exception e) {
 			log.error("JECheck.JECheck(): exception while executing echeck", e);
 			throw new IOException("Cannot execute ECheck: " + e.toString());
@@ -153,8 +144,7 @@ public class JECheck extends Reader {
 		} catch(Exception e) {
 			log.error("JECheck.JECheck(): cannot create a file reader on the temporary output file",
 					  e);
-			throw new IOException("Cannot create a file reader on the temporary output file: " +
-								  e);
+			throw new IOException("Cannot create a file reader on the temporary output file: " + e);
 		}
 	}
 
@@ -191,16 +181,16 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Mark the present position in the stream. Subsequent calls to reset()
-	 * will attempt to reposition the stream to this point. Not all
-	 * character-input streams support the mark() operation.
+	 * Mark the present position in the stream. Subsequent calls to reset() will attempt to
+	 * reposition the stream to this point. Not all character-input streams support the mark()
+	 * operation.
 	 *
-	 * @param readAheadLimit Limit on the number of characters that may be read
-	 * 		  while still preserving the mark. After reading this many
-	 * 		  characters, attempting to reset the stream may fail.
+	 * @param readAheadLimit Limit on the number of characters that may be read while still
+	 * 		  preserving the mark. After reading this many characters, attempting to reset the
+	 * 		  stream may fail.
 	 *
-	 * @throws IOException If the stream does not support mark(), or if some
-	 * 		   other I/O error occurs.
+	 * @throws IOException If the stream does not support mark(), or if some other I/O error
+	 * 		   occurs.
 	 */
 	public void mark(int readAheadLimit) throws IOException {
 		if(outputReader != null) {
@@ -222,9 +212,8 @@ public class JECheck extends Reader {
 	/**
 	 * Tell whether this stream is ready to be read.
 	 *
-	 * @return True if the next read() is guaranteed not to block for input,
-	 * 		   false otherwise. Note that returning false does not guarantee
-	 * 		   that the next read will block.
+	 * @return True if the next read() is guaranteed not to block for input, false otherwise. Note
+	 * 		   that returning false does not guarantee that the next read will block.
 	 *
 	 * @throws IOException If an I/O error occurs
 	 */
@@ -237,16 +226,14 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Reset the stream. If the stream has been marked, then attempt to
-	 * reposition it at the mark. If the stream has not been marked, then
-	 * attempt to reset it in some way appropriate to the particular stream,
-	 * for example by repositioning it to its starting point. Not all
-	 * character-input streams support the reset() operation, and some support
-	 * reset() without supporting mark().
+	 * Reset the stream. If the stream has been marked, then attempt to reposition it at the mark.
+	 * If the stream has not been marked, then attempt to reset it in some way appropriate to the
+	 * particular stream, for example by repositioning it to its starting point. Not all
+	 * character-input streams support the reset() operation, and some support reset() without
+	 * supporting mark().
 	 *
-	 * @throws IOException If the stream has not been marked, or if the mark
-	 * 		   has been invalidated, or if the stream does not support
-	 * 		   reset(), or if some other I/O error occurs
+	 * @throws IOException If the stream has not been marked, or if the mark has been invalidated,
+	 * 		   or if the stream does not support reset(), or if some other I/O error occurs
 	 */
 	public void reset() throws IOException {
 		if(outputReader != null) {
@@ -257,8 +244,8 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Skip characters. This method will block until some characters are
-	 * available, an I/O error occurs, or the end of the stream is reached.
+	 * Skip characters. This method will block until some characters are available, an I/O error
+	 * occurs, or the end of the stream is reached.
 	 *
 	 * @param n The number of characters to skip
 	 *
@@ -275,10 +262,10 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Runs ECheck with the specified parameters and returns the error and
-	 * warning messages it reported. For reference for the parameters see the
-	 * constructor. This method requires that the specified echeck executable
-	 * not older than the version returned by getRequiredVersion().
+	 * Runs ECheck with the specified parameters and returns the error and warning messages it
+	 * reported. For reference for the parameters see the constructor. This method requires that
+	 * the specified echeck executable not older than the version returned by
+	 * getRequiredVersion().
 	 *
 	 * @param eCheckExe TODO: DOCUMENT ME!
 	 * @param orders TODO: DOCUMENT ME!
@@ -289,18 +276,16 @@ public class JECheck extends Reader {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 * @throws java.text.ParseException TODO: DOCUMENT ME!
 	 */
-	public static Collection getMessages(File eCheckExe, File orders,
-										 String options)
+	public static Collection getMessages(File eCheckExe, File orders, String options)
 								  throws IOException, java.text.ParseException
 	{
 		return getMessages(new JECheck(eCheckExe, orders, options));
 	}
 
 	/**
-	 * Returns a collection containing JECheck.ECheckMessage objects by reading
-	 * from the specified reader. This method requires that the specified
-	 * echeck executable not older than the version returned by
-	 * getRequiredVersion().
+	 * Returns a collection containing JECheck.ECheckMessage objects by reading from the specified
+	 * reader. This method requires that the specified echeck executable not older than the
+	 * version returned by getRequiredVersion().
 	 *
 	 * @param echeckOutput TODO: DOCUMENT ME!
 	 *
@@ -312,13 +297,13 @@ public class JECheck extends Reader {
 	public static Collection getMessages(Reader echeckOutput)
 								  throws IOException, java.text.ParseException
 	{
-		Collection     msgs     = CollectionFactory.createLinkedList();
-		BufferedReader in	    = new LineNumberReader(echeckOutput);
-		String		   line     = null;
-		int			   errors   = -1;
-		int			   warnings = -1;
+		Collection msgs = CollectionFactory.createLinkedList();
+		BufferedReader in = new LineNumberReader(echeckOutput);
+		String line = null;
+		int errors = -1;
+		int warnings = -1;
 
-		boolean		   error = false;
+		boolean error = false;
 
 		line = getLine(in);
 
@@ -376,8 +361,7 @@ public class JECheck extends Reader {
 		}
 
 		if(line == null) {
-			throw new java.text.ParseException("The ECheck output seems to miss a footer",
-											   0);
+			throw new java.text.ParseException("The ECheck output seems to miss a footer", 0);
 		}
 
 		/* parse footer */
@@ -425,7 +409,7 @@ public class JECheck extends Reader {
 											   0);
 		}
 
-		int errorsFound   = 0;
+		int errorsFound = 0;
 		int warningsFound = 0;
 
 		for(Iterator iter = msgs.iterator(); iter.hasNext();) {
@@ -452,8 +436,8 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Returns the next line from the buffered Reader or null iff the the end
-	 * of the stream is reached.
+	 * Returns the next line from the buffered Reader or null iff the the end of the stream is
+	 * reached.
 	 *
 	 * @param in TODO: DOCUMENT ME!
 	 *
@@ -478,24 +462,21 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Determines the Unit or Region referenced in an ECheck message by looking
-	 * at the orders the ECheck messages were generated from.
+	 * Determines the Unit or Region referenced in an ECheck message by looking at the orders the
+	 * ECheck messages were generated from.
 	 *
-	 * @param data the game data the orders belong to and from which the Unit
-	 * 		  or Region can be retrieved.
-	 * @param orderFile a file containing the orders that ECheck was run on
-	 * 		  when it produced the specified message.
+	 * @param data the game data the orders belong to and from which the Unit or Region can be
+	 * 		  retrieved.
+	 * @param orderFile a file containing the orders that ECheck was run on when it produced the
+	 * 		  specified message.
 	 * @param msgs the messages to be processed.
 	 *
-	 * @return the collection of input messages with their affected objects
-	 * 		   fields set if possible.
+	 * @return the collection of input messages with their affected objects fields set if possible.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public static Collection determineAffectedObjects(GameData data,
-													  File orderFile,
-													  Collection msgs)
+	public static Collection determineAffectedObjects(GameData data, File orderFile, Collection msgs)
 											   throws IOException
 	{
 		if(data == null) {
@@ -514,20 +495,19 @@ public class JECheck extends Reader {
 			throw new IllegalArgumentException("JECheck.getAffectedObject(): invalid msgs argument specified.");
 		}
 
-		String			 line   = null;
-		LineNumberReader lnr    = null;
-		List			 orders = CollectionFactory.createLinkedList();
+		String line = null;
+		LineNumberReader lnr = null;
+		List orders = CollectionFactory.createLinkedList();
 
 		/* frequently used strings */
-		String unitOrder   = com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT);
+		String unitOrder = com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT);
 		String regionOrder = com.eressea.util.Translations.getOrderTranslation(EresseaOrderConstants.O_REGION);
 
 		/* first read in all the orders into a list to access them
 		   quickly later */
 		lnr = new LineNumberReader(new FileReader(orderFile));
 
-		for(line = lnr.readLine(); (line != null) && lnr.ready();
-				line = lnr.readLine()) {
+		for(line = lnr.readLine(); (line != null) && lnr.ready(); line = lnr.readLine()) {
 			orders.add(line);
 		}
 
@@ -540,7 +520,7 @@ public class JECheck extends Reader {
 
 			if(msg.getLineNr() > 0) {
 				for(int i = msg.getLineNr() - 1; i > -1; i--) {
-					String		    order     = Umlaut.normalize((String) orders.get(i));
+					String order = Umlaut.normalize((String) orders.get(i));
 					StringTokenizer tokenizer = new StringTokenizer(order, " ;");
 
 					if(tokenizer.countTokens() < 2) {
@@ -551,7 +531,7 @@ public class JECheck extends Reader {
 
 					if(unitOrder.startsWith(token)) {
 						try {
-							ID   id = UnitID.createUnitID(tokenizer.nextToken());
+							ID id = UnitID.createUnitID(tokenizer.nextToken());
 							Unit u = data.getUnit(id);
 
 							if(u != null) {
@@ -564,8 +544,7 @@ public class JECheck extends Reader {
 						}
 					} else if(regionOrder.startsWith(token)) {
 						try {
-							ID     id = Coordinate.parse(tokenizer.nextToken(),
-														 ",");
+							ID id = Coordinate.parse(tokenizer.nextToken(), ",");
 							Region r = data.getRegion(id);
 
 							if(r != null) {
@@ -594,13 +573,13 @@ public class JECheck extends Reader {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public static Version getVersion(File eCheckExe) throws IOException {
-		Version		   v	   = null;
-		String		   version = null;
-		String		   line    = null;
-		BufferedReader br	   = null;
+		Version v = null;
+		String version = null;
+		String line = null;
+		BufferedReader br = null;
 
 		try {
-			br   = new BufferedReader(new JECheck(eCheckExe, null, "-h"));
+			br = new BufferedReader(new JECheck(eCheckExe, null, "-h"));
 			line = br.readLine();
 			br.close();
 
@@ -609,13 +588,12 @@ public class JECheck extends Reader {
 
 			if((verStart > 0) && (verEnd > verStart)) {
 				version = line.substring(verStart, verEnd);
-				v	    = new Version(version, ".");
+				v = new Version(version, ".");
 			}
 		} catch(Exception e) {
 			v = null;
 			log.error(e);
-			throw new IOException("Cannot retrieve version information: " +
-								  e.toString());
+			throw new IOException("Cannot retrieve version information: " + e.toString());
 		}
 
 		if(v == null) {
@@ -626,8 +604,8 @@ public class JECheck extends Reader {
 	}
 
 	/**
-	 * Checks whether the version of the specified ECheck executable is valid
-	 * and its output can be processed.
+	 * Checks whether the version of the specified ECheck executable is valid and its output can be
+	 * processed.
 	 *
 	 * @param eCheckExe TODO: DOCUMENT ME!
 	 *
@@ -635,17 +613,15 @@ public class JECheck extends Reader {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static boolean checkVersion(File eCheckExe)
-								throws IOException
-	{
+	public static boolean checkVersion(File eCheckExe) throws IOException {
 		Version version = JECheck.getVersion(eCheckExe);
 
 		return (version.compareTo(JECheck.getRequiredVersion()) >= 0);
 	}
 
 	/**
-	 * Returns the oldest version of ECheck that is required by this class to
-	 * process the orders correctly.
+	 * Returns the oldest version of ECheck that is required by this class to process the orders
+	 * correctly.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -661,33 +637,32 @@ public class JECheck extends Reader {
 		public static final int ERROR = 1;
 
 		/** A warning message */
-		public static final int WARNING		   = 2;
-		private String		    fileName	   = null;
-		private int			    lineNr		   = 0;
-		private int			    type		   = 0;
-		private int			    warnLevel	   = 0;
-		private String		    msg			   = null;
-		private Object		    affectedObject = null; // the object affected by this message
+		public static final int WARNING = 2;
+		private String fileName = null;
+		private int lineNr = 0;
+		private int type = 0;
+		private int warnLevel = 0;
+		private String msg = null;
+		private Object affectedObject = null; // the object affected by this message
 
 		/**
 		 * Creates a new ECheckMessage object by parsing the specified String.
 		 *
 		 * @param rawMessage TODO: DOCUMENT ME!
 		 *
-		 * @throws java.text.ParseException if the rawMessage String cannot be
-		 * 		   parsed.
+		 * @throws java.text.ParseException if the rawMessage String cannot be parsed.
 		 */
 		public ECheckMessage(String rawMessage) throws java.text.ParseException {
-			String		    delim     = FIELD_SEP;
+			String delim = FIELD_SEP;
 			StringTokenizer tokenizer = new StringTokenizer(rawMessage, delim);
 
 			if(tokenizer.countTokens() >= 4) {
 				try {
 					tokenizer.nextToken(); // skip file name
-					lineNr    = Integer.parseInt(tokenizer.nextToken());
+					lineNr = Integer.parseInt(tokenizer.nextToken());
 					warnLevel = Integer.parseInt(tokenizer.nextToken());
-					type	  = (warnLevel == 0) ? ERROR : WARNING;
-					msg		  = tokenizer.nextToken();
+					type = (warnLevel == 0) ? ERROR : WARNING;
+					msg = tokenizer.nextToken();
 
 					while(tokenizer.hasMoreTokens()) {
 						msg += (delim + tokenizer.nextToken());

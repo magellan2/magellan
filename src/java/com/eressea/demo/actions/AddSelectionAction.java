@@ -30,9 +30,7 @@ import com.eressea.util.CollectionFactory;
  *
  * @author Ilja Pavkovic
  */
-public class AddSelectionAction extends OpenSelectionAction
-	implements SelectionListener
-{
+public class AddSelectionAction extends OpenSelectionAction implements SelectionListener {
 	/**
 	 * Creates a new AddSelectionAction object.
 	 *
@@ -62,12 +60,10 @@ public class AddSelectionAction extends OpenSelectionAction
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {

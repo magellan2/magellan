@@ -71,10 +71,8 @@ import com.eressea.util.logging.Logger;
 /**
  * A text pane for convenient editing and handling of Eressea orders.
  */
-public class OrderEditor extends JTextPane implements DocumentListener,
-													  KeyListener,
-													  SelectionListener,
-													  FocusListener,
+public class OrderEditor extends JTextPane implements DocumentListener, KeyListener,
+													  SelectionListener, FocusListener,
 													  GameDataListener
 {
 	private static final Logger log = Logger.getInstance(OrderEditor.class);
@@ -97,19 +95,19 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	public static final String S_ID = "id";
 
 	/** TODO: DOCUMENT ME! */
-	public static final String     S_COMMENT		   = "comment";
-	private Unit				   unit				   = null;
-	private boolean				   modified			   = false;
-	private List				   orders			   = new LinkedList();
-	private OrderParser			   parser			   = null;
-	private Properties			   settings			   = null;
-	private boolean				   highlightSyntax     = true;
-	private boolean				   ignoreModifications = false;
-	private EventDispatcher		   dispatcher		   = null;
-	private GameData			   data				   = null;
-	private UndoManager			   undoMgr			   = null;
-	private DocumentUpdateRunnable docUpdateThread     = new DocumentUpdateRunnable(null); // keep this udpate runnable instead of re-creating it over and over again
-	private OrderEditorCaret	   myCaret			   = null;
+	public static final String S_COMMENT = "comment";
+	private Unit unit = null;
+	private boolean modified = false;
+	private List orders = new LinkedList();
+	private OrderParser parser = null;
+	private Properties settings = null;
+	private boolean highlightSyntax = true;
+	private boolean ignoreModifications = false;
+	private EventDispatcher dispatcher = null;
+	private GameData data = null;
+	private UndoManager undoMgr = null;
+	private DocumentUpdateRunnable docUpdateThread = new DocumentUpdateRunnable(null); // keep this udpate runnable instead of re-creating it over and over again
+	private OrderEditorCaret myCaret = null;
 
 	/**
 	 * Creates a new OrderEditor object.
@@ -119,8 +117,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	 * @param _undoMgr TODO: DOCUMENT ME!
 	 * @param d TODO: DOCUMENT ME!
 	 */
-	public OrderEditor(GameData data, Properties settings,
-					   UndoManager _undoMgr, EventDispatcher d) {
+	public OrderEditor(GameData data, Properties settings, UndoManager _undoMgr, EventDispatcher d) {
 		super();
 
 		// pavkovic 2002.11.11: use own caret for more logical refreshing
@@ -133,17 +130,14 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		setEditorKit(new OrderEditorKit());
 		this.settings = settings;
 
-		this.parser = (data != null)
-					  ? data.getGameSpecificStuff().getOrderParser(data.rules)
-					  : null;
+		this.parser = (data != null) ? data.getGameSpecificStuff().getOrderParser(data.rules) : null;
 
 		this.undoMgr = _undoMgr;
 
 		this.dispatcher = d;
 		this.dispatcher.addGameDataListener(this);
 
-		highlightSyntax = (new Boolean(settings.getProperty("OrderEditor.highlightSyntax",
-															"true")).booleanValue());
+		highlightSyntax = (new Boolean(settings.getProperty("OrderEditor.highlightSyntax", "true")).booleanValue());
 
 		getDocument().addDocumentListener(this);
 
@@ -240,16 +234,14 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * If the active object in the selection event is a unit it is registered
-	 * with this editor.
+	 * If the active object in the selection event is a unit it is registered with this editor.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		if(log.isDebugEnabled()) {
 			log.debug("OrderEditor.selectionChanged: " + e.getActiveObject());
-			log.debug("OrderEditor.selectionChanged: " +
-					  e.getActiveObject().getClass());
+			log.debug("OrderEditor.selectionChanged: " + e.getActiveObject().getClass());
 		}
 
 		Object activeObject = e.getActiveObject();
@@ -332,9 +324,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * Sets the unit for this editor component. If the orders have been
-	 * modified and there is a previous unit registered with this component,
-	 * its orders are updated.
+	 * Sets the unit for this editor component. If the orders have been modified and there is a
+	 * previous unit registered with this component, its orders are updated.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 */
@@ -342,7 +333,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		setOrdersAndFireEvent();
 
 		ignoreModifications = true;
-		unit			    = u;
+		unit = u;
 
 		if(unit != null) {
 			setOrders(unit.getOrders());
@@ -354,9 +345,9 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * Returns a list of the orders this text pane is currently containing. A
-	 * order extending over more than one line is stripped of the trailing
-	 * backslashes, concatenated and returned as one order.
+	 * Returns a list of the orders this text pane is currently containing. A order extending over
+	 * more than one line is stripped of the trailing backslashes, concatenated and returned as
+	 * one order.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -368,8 +359,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		orders = new LinkedList();
 
 		try {
-			String			 text   = getText();
-			String			 line   = null;
+			String text = getText();
+			String line = null;
 			LineNumberReader stream = new LineNumberReader(new MergeLineReader(new StringReader(text)));
 
 			// note: stream.ready() is not false at end of string
@@ -424,8 +415,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		Document doc = getDocument();
 
 		try {
-			if((doc.getLength() > 0) &&
-				   (doc.getText(doc.getLength(), 1) != "\n")) {
+			if((doc.getLength() > 0) && (doc.getText(doc.getLength(), 1) != "\n")) {
 				doc.insertString(doc.getLength(), "\n", null);
 			}
 
@@ -443,8 +433,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * Allows to change the modified state of this text pane. Setting it to
-	 * <tt>true</tt> currently does not result in an event being fired.
+	 * Allows to change the modified state of this text pane. Setting it to <tt>true</tt> currently
+	 * does not result in an event being fired.
 	 *
 	 * @param isModified TODO: DOCUMENT ME!
 	 */
@@ -477,8 +467,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 			highlightSyntax = bool;
 
 			if(settings != null) {
-				settings.setProperty("OrderEditor.highlightSyntax",
-									 (new Boolean(bool)).toString());
+				settings.setProperty("OrderEditor.highlightSyntax", (new Boolean(bool)).toString());
 			}
 
 			formatTokens();
@@ -486,16 +475,14 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * Return the color of the specified token style used for syntax
-	 * highlighting.
+	 * Return the color of the specified token style used for syntax highlighting.
 	 *
 	 * @param styleName TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Color getTokenColor(String styleName) {
-		return Colors.decode(settings.getProperty("OrderEditor.styles." +
-												  styleName + ".color",
+		return Colors.decode(settings.getProperty("OrderEditor.styles." + styleName + ".color",
 												  getDefaultColor(styleName)));
 	}
 
@@ -506,8 +493,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	 * @param color TODO: DOCUMENT ME!
 	 */
 	public void setTokenColor(String styleName, Color color) {
-		settings.setProperty("OrderEditor.styles." + styleName + ".color",
-							 Colors.encode(color));
+		settings.setProperty("OrderEditor.styles." + styleName + ".color", Colors.encode(color));
 
 		Style s = ((StyledDocument) getDocument()).getStyle(styleName);
 
@@ -529,37 +515,32 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	 * Adds styles to this component with one style for each token type.
 	 */
 	private void initStyles() {
-		Style def     = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+		Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
 		Style regular = addStyle(S_REGULAR, def);
-		Style s		  = addStyle(S_KEYWORD, regular);
+		Style s = addStyle(S_KEYWORD, regular);
 		StyleConstants.setForeground(s,
 									 Colors.decode(settings.getProperty("OrderEditor.styles." +
-																		S_KEYWORD +
-																		".color",
+																		S_KEYWORD + ".color",
 																		getDefaultColor(S_KEYWORD))));
 		s = addStyle(S_STRING, regular);
 		StyleConstants.setForeground(s,
 									 Colors.decode(settings.getProperty("OrderEditor.styles." +
-																		S_STRING +
-																		".color",
+																		S_STRING + ".color",
 																		getDefaultColor(S_STRING))));
 		s = addStyle(S_NUMBER, regular);
 		StyleConstants.setForeground(s,
 									 Colors.decode(settings.getProperty("OrderEditor.styles." +
-																		S_NUMBER +
-																		".color",
+																		S_NUMBER + ".color",
 																		getDefaultColor(S_NUMBER))));
 		s = addStyle(S_ID, regular);
 		StyleConstants.setForeground(s,
 									 Colors.decode(settings.getProperty("OrderEditor.styles." +
-																		S_ID +
-																		".color",
+																		S_ID + ".color",
 																		getDefaultColor(S_ID))));
 		s = addStyle(S_COMMENT, regular);
 		StyleConstants.setForeground(s,
 									 Colors.decode(settings.getProperty("OrderEditor.styles." +
-																		S_COMMENT +
-																		".color",
+																		S_COMMENT + ".color",
 																		getDefaultColor(S_COMMENT))));
 	}
 
@@ -596,8 +577,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Style getTokenStyle(OrderToken t) {
-		StyledDocument doc    = (StyledDocument) getDocument();
-		Style		   retVal = doc.getStyle(S_REGULAR);
+		StyledDocument doc = (StyledDocument) getDocument();
+		Style retVal = doc.getStyle(S_REGULAR);
 
 		switch(t.ttype) {
 		case OrderToken.TT_UNDEF:
@@ -635,9 +616,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * Gives back the text in the text pane. Additionally \r is replaced by
-	 * space. This is a so-called "minor incompatibility" introduced by jdk
-	 * 1.4.
+	 * Gives back the text in the text pane. Additionally \r is replaced by space. This is a
+	 * so-called "minor incompatibility" introduced by jdk 1.4.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -648,8 +628,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 			return text;
 		}
 
-		StringBuffer sb		 = new StringBuffer(text.length());
-		char		 chars[] = text.toCharArray();
+		StringBuffer sb = new StringBuffer(text.length());
+		char chars[] = text.toCharArray();
 
 		for(int i = 0; i < chars.length; i++) {
 			if(chars[i] != '\r') {
@@ -661,22 +641,22 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 	}
 
 	/**
-	 * Format the tokens in the line starting in the document at insertPos,
-	 * with regard to the token type colors.
+	 * Format the tokens in the line starting in the document at insertPos, with regard to the
+	 * token type colors.
 	 *
 	 * @param startPos TODO: DOCUMENT ME!
 	 */
 	private void formatTokens(int startPos) {
 		StyledDocument doc = (StyledDocument) getDocument();
 
-		String		   text = getText();
+		String text = getText();
 
 		if((text == null) || text.equals("")) {
 			return;
 		}
 
-		int   pos[]		  = getLineBorders(text, startPos);
-		int   newStartPos = startPos;
+		int pos[] = getLineBorders(text, startPos);
+		int newStartPos = startPos;
 
 		if(pos[0] == -1) {
 			return;
@@ -685,15 +665,14 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		newStartPos = pos[0];
 
 		if(log.isDebugEnabled()) {
-			log.debug("OrderEditor.formatTokens(" + startPos + "): (" + text +
-					  "," + pos[0] + "," + pos[1] + ")");
+			log.debug("OrderEditor.formatTokens(" + startPos + "): (" + text + "," + pos[0] + "," +
+					  pos[1] + ")");
 		}
 
 		text = text.substring(pos[0], pos[1]);
 
 		if(log.isDebugEnabled()) {
-			log.debug("OrderEditor.formatTokens(" + startPos + "): (" + text +
-					  ")");
+			log.debug("OrderEditor.formatTokens(" + startPos + "): (" + text + ")");
 		}
 
 		parser.read(new StringReader(text));
@@ -711,14 +690,12 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 				if(style != null) {
 					if(log.isDebugEnabled()) {
 						log.debug("OrderEditor.formatTokens setting style from " +
-								  (newStartPos + token.getStart()) +
-								  " length " +
+								  (newStartPos + token.getStart()) + " length " +
 								  (token.getEnd() - token.getStart()));
 					}
 
 					doc.setCharacterAttributes(newStartPos + token.getStart(),
-											   token.getEnd() -
-											   token.getStart(),
+											   token.getEnd() - token.getStart(),
 											   getTokenStyle(token), true);
 				}
 			}
@@ -810,14 +787,13 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 				ret[1] = text.length();
 			}
 		} catch(StringIndexOutOfBoundsException e) {
-			log.error("OrderEditor.getLineBorders(), text: " + text +
-					  ", offset: " + offset + ", ret: (" + ret[0] + ", " +
-					  ret[1] + ")", e);
+			log.error("OrderEditor.getLineBorders(), text: " + text + ", offset: " + offset +
+					  ", ret: (" + ret[0] + ", " + ret[1] + ")", e);
 		}
 
 		if(log.isDebugEnabled()) {
-			log.debug("OrderEditor.getLineBorders:(" + text + "," + offset +
-					  ") " + ret[0] + "," + ret[1]);
+			log.debug("OrderEditor.getLineBorders:(" + text + "," + offset + ") " + ret[0] + "," +
+					  ret[1]);
 		}
 
 		if(ret[0] >= 0) {
@@ -858,8 +834,8 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 
 		protected void adjustVisibility(Rectangle nloc) {
 			if(log.isDebugEnabled()) {
-				log.debug("OrderEditor(" + unit + "): adjustVisibility(" +
-						  keepVis + "," + nloc + ")");
+				log.debug("OrderEditor(" + unit + "): adjustVisibility(" + keepVis + "," + nloc +
+						  ")");
 			}
 
 			if(keepVisible()) {
@@ -874,8 +850,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		 */
 		public void setKeepVisible(boolean mode) {
 			if(log.isDebugEnabled()) {
-				log.debug("OrderEditor: setting caret.setKeepVisible(" + mode +
-						  ")");
+				log.debug("OrderEditor: setting caret.setKeepVisible(" + mode + ")");
 			}
 
 			keepVis = mode;
@@ -916,9 +891,9 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		 * TODO: DOCUMENT ME!
 		 */
 		public void run() {
-			int    offset = e.getOffset();
+			int offset = e.getOffset();
 			String text = getText();
-			int    pos  = getLineBorders(text, offset)[0];
+			int pos = getLineBorders(text, offset)[0];
 
 			if((pos < 0) || (pos > OrderEditor.this.getDocument().getLength())) {
 				return;
@@ -955,11 +930,9 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 		}
 	}
 
-	private class SignificantUndos implements UndoableEditListener,
-											  DocumentListener
-	{
-		boolean						  bSignificant = true;
-		boolean						  bMoreThanOne = false;
+	private class SignificantUndos implements UndoableEditListener, DocumentListener {
+		boolean bSignificant = true;
+		boolean bMoreThanOne = false;
 		javax.swing.undo.CompoundEdit compoundEdit = new javax.swing.undo.CompoundEdit();
 
 		/**
@@ -1003,8 +976,7 @@ public class OrderEditor extends JTextPane implements DocumentListener,
 				if(bMoreThanOne) {
 					compoundEdit.addEdit(e.getEdit());
 					compoundEdit.end();
-					undoMgr.undoableEditHappened(new UndoableEditEvent(e.getSource(),
-																	   compoundEdit));
+					undoMgr.undoableEditHappened(new UndoableEditEvent(e.getSource(), compoundEdit));
 					compoundEdit = new javax.swing.undo.CompoundEdit();
 					bMoreThanOne = false;
 				} else {

@@ -46,7 +46,7 @@ public class TagMap implements Map {
 		 * @param v TODO: DOCUMENT ME!
 		 */
 		public Tag(String k, String v) {
-			key   = k;
+			key = k;
 			value = v;
 		}
 	}
@@ -203,8 +203,7 @@ public class TagMap implements Map {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Object put(Object key, Object value) {
-		if((key == null) ||
-			   !((key instanceof String) && (value instanceof String))) {
+		if((key == null) || !((key instanceof String) && (value instanceof String))) {
 			return null;
 		}
 
@@ -231,7 +230,7 @@ public class TagMap implements Map {
 			}
 
 			temp[0] = new Tag((String) key, (String) value);
-			tags    = temp;
+			tags = temp;
 		}
 
 		return null;
@@ -244,7 +243,7 @@ public class TagMap implements Map {
 	 */
 	public void putAll(Map map) {
 		if(map.size() > 0) {
-			Set		 s  = map.keySet();
+			Set s = map.keySet();
 			Iterator it = s.iterator();
 
 			while(it.hasNext()) {
@@ -273,8 +272,8 @@ public class TagMap implements Map {
 			return old;
 		}
 
-		Tag    temp[] = new Tag[tags.length - 1];
-		int    j   = 0;
+		Tag temp[] = new Tag[tags.length - 1];
+		int j = 0;
 		Object old = null;
 
 		for(int i = 0; i < tags.length; i++) {

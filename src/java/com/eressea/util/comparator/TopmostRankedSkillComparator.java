@@ -24,22 +24,20 @@ import com.eressea.Skill;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A comparator imposing an ordering on collections of Skill objects by
- * comparing the highest ranked skill available in each set with a
- * SkillComparator. In case of equality the second highest ranked skills are
- * compared and so on and so on. In case of total equality (e.g. if there is
- * only one skill oject in both maps and the skilltype and value is the same)
- * the sub-comparator is used for comparison. Note: Skilltype rankings can be
- * defined in the preferences and are available through
- * SkillTypeRankComparator.
+ * A comparator imposing an ordering on collections of Skill objects by comparing the highest
+ * ranked skill available in each set with a SkillComparator. In case of equality the second
+ * highest ranked skills are compared and so on and so on. In case of total equality (e.g. if
+ * there is only one skill oject in both maps and the skilltype and value is the same) the
+ * sub-comparator is used for comparison. Note: Skilltype rankings can be defined in the
+ * preferences and are available through SkillTypeRankComparator.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality.
  * </p>
  */
 public class TopmostRankedSkillComparator implements Comparator {
@@ -52,9 +50,8 @@ public class TopmostRankedSkillComparator implements Comparator {
 	 * @param subComparator TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public TopmostRankedSkillComparator(Comparator subComparator,
-										Properties settings) {
-		rankCmp     = new SkillTypeRankComparator(null, settings);
+	public TopmostRankedSkillComparator(Comparator subComparator, Properties settings) {
+		rankCmp = new SkillTypeRankComparator(null, settings);
 		this.subCmp = subComparator;
 	}
 
@@ -103,8 +100,7 @@ public class TopmostRankedSkillComparator implements Comparator {
 					return retVal;
 				} else {
 					// test if there are more skills available in both sets
-					if((map1.size() > (rank + 1)) ||
-						   (map2.size() > (rank + 1))) {
+					if((map1.size() > (rank + 1)) || (map2.size() > (rank + 1))) {
 						rank++;
 					} else {
 						if(subCmp != null) {
@@ -119,9 +115,9 @@ public class TopmostRankedSkillComparator implements Comparator {
 	}
 
 	/**
-	 * To retrieve the skill with the specified rank in the map. For example
-	 * getRankedSkill(skills, 0) returns the topmost ranked skill in the map.
-	 * If there are less skills than rank in the map, null is returned.
+	 * To retrieve the skill with the specified rank in the map. For example getRankedSkill(skills,
+	 * 0) returns the topmost ranked skill in the map. If there are less skills than rank in the
+	 * map, null is returned.
 	 *
 	 * @param skills TODO: DOCUMENT ME!
 	 * @param rank TODO: DOCUMENT ME!

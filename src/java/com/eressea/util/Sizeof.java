@@ -33,10 +33,10 @@ public class Sizeof {
 		usedMemory();
 
 		// Array to keep strong references to allocated objects
-		final int count     = 100000;
-		Object    objects[] = new Object[count];
+		final int count = 100000;
+		Object objects[] = new Object[count];
 
-		long	  heap1 = 0;
+		long heap1 = 0;
 
 		// Allocate count+1 objects, discard the first one
 		for(int i = -1; i < count; ++i) {
@@ -60,14 +60,12 @@ public class Sizeof {
 
 		runGC();
 
-		long	  heap2 = usedMemory(); // Take an after heap snapshot:
+		long heap2 = usedMemory(); // Take an after heap snapshot:
 
 		final int size = Math.round(((float) (heap2 - heap1)) / count);
-		System.out.println("'before' heap: " + heap1 + ", 'after' heap: " +
-						   heap2);
-		System.out.println("heap delta: " + (heap2 - heap1) + ", {" +
-						   objects[0].getClass() + "} size = " + size +
-						   " bytes");
+		System.out.println("'before' heap: " + heap1 + ", 'after' heap: " + heap2);
+		System.out.println("heap delta: " + (heap2 - heap1) + ", {" + objects[0].getClass() +
+						   "} size = " + size + " bytes");
 
 		for(int i = 0; i < count; ++i) {
 			objects[i] = null;

@@ -14,9 +14,8 @@
 package com.eressea.util.replacers;
 
 /**
- * A replacer that defines a operation with the following definition elements
- * treated as numbers. To support complex formulae it is necessary to use
- * Polish Notation that is Postfix-Notation.
+ * A replacer that defines a operation with the following definition elements treated as numbers.
+ * To support complex formulae it is necessary to use Polish Notation that is Postfix-Notation.
  *
  * @author Andreas
  * @version 1.0
@@ -24,9 +23,9 @@ package com.eressea.util.replacers;
 public abstract class AbstractOperator extends AbstractParameterReplacer
 	implements EnvironmentDependent
 {
-	protected Object			  numbers[];
-	protected Float				  evolved     = null;
-	protected static final Float  ZERO		  = new Float(0);
+	protected Object numbers[];
+	protected Float evolved = null;
+	protected static final Float ZERO = new Float(0);
 	protected ReplacerEnvironment environment;
 
 	protected AbstractOperator(int params) {

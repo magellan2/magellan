@@ -14,8 +14,7 @@
 package com.eressea;
 
 /**
- * An interface for all objects to be uniquely identifiable by a different
- * object.
+ * An interface for all objects to be uniquely identifiable by a different object.
  */
 public interface Unique {
 	/**

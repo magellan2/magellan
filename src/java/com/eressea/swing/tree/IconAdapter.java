@@ -94,20 +94,20 @@ import com.eressea.util.logging.Logger;
  * @author Andreas
  * @version
  */
-public class IconAdapter extends InternationalizedPanel
-	implements ExtendedPreferencesAdapter, ItemListener
+public class IconAdapter extends InternationalizedPanel implements ExtendedPreferencesAdapter,
+																   ItemListener
 {
-	private static final Logger log			 = Logger.getInstance(IconAdapter.class);
-	protected List			    nwfactorys;
-	protected List			    nwadapters;
-	protected Stylesets		    styles;
-	protected ColorMapping	    cmapping;
-	protected EmphasizeStyle    eStyle;
-	protected JCheckBox		    toolTipOn;
-	protected JPanel		    factoryPanel;
-	protected CardLayout	    cards;
-	protected JComboBox		    factoryBox;
-	protected List			    subAdapters;
+	private static final Logger log = Logger.getInstance(IconAdapter.class);
+	protected List nwfactorys;
+	protected List nwadapters;
+	protected Stylesets styles;
+	protected ColorMapping cmapping;
+	protected EmphasizeStyle eStyle;
+	protected JCheckBox toolTipOn;
+	protected JPanel factoryPanel;
+	protected CardLayout cards;
+	protected JComboBox factoryBox;
+	protected List subAdapters;
 
 	/**
 	 * Creates new IconAdapter
@@ -122,14 +122,13 @@ public class IconAdapter extends InternationalizedPanel
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints con = new GridBagConstraints();
-		con.fill	   = GridBagConstraints.NONE;
-		con.anchor     = GridBagConstraints.WEST;
-		con.gridwidth  = 1;
+		con.fill = GridBagConstraints.NONE;
+		con.anchor = GridBagConstraints.WEST;
+		con.gridwidth = 1;
 		con.gridheight = 1;
-		con.gridx	   = 0;
-		con.gridy	   = 0;
-		toolTipOn	   = new JCheckBox(getString("tooltips.show.text"),
-									   CellRenderer.showTooltips);
+		con.gridx = 0;
+		con.gridy = 0;
+		toolTipOn = new JCheckBox(getString("tooltips.show.text"), CellRenderer.showTooltips);
 		add(toolTipOn, con);
 		con.gridx = 1;
 
@@ -138,34 +137,34 @@ public class IconAdapter extends InternationalizedPanel
 		if(con.insets == null) {
 			con.insets = new Insets(1, 1, 1, 1);
 		} else {
-			con.insets = new Insets(con.insets.top, con.insets.left,
-									con.insets.bottom, con.insets.right);
+			con.insets = new Insets(con.insets.top, con.insets.left, con.insets.bottom,
+									con.insets.right);
 		}
 
 		con.insets.left += 20;
 		eStyle = new EmphasizeStyle();
 		add(eStyle, con);
 		con.insets = old;
-		con.gridx  = 0;
+		con.gridx = 0;
 
-		JPanel			   p = new JPanel(new GridBagLayout());
+		JPanel p = new JPanel(new GridBagLayout());
 		GridBagConstraints con2 = new GridBagConstraints();
-		con2.gridwidth  = 1;
+		con2.gridwidth = 1;
 		con2.gridheight = 1;
-		con2.fill	    = GridBagConstraints.HORIZONTAL;
-		con2.anchor     = GridBagConstraints.WEST;
-		con2.weightx    = 1;
-		con2.gridx	    = 0;
-		con2.gridy	    = 0;
+		con2.fill = GridBagConstraints.HORIZONTAL;
+		con2.anchor = GridBagConstraints.WEST;
+		con2.weightx = 1;
+		con2.gridx = 0;
+		con2.gridy = 0;
 
-		Iterator it     = nw.iterator();
+		Iterator it = nw.iterator();
 
 		while(it.hasNext()) {
 			PreferencesAdapter pref = ((PreferencesFactory) it.next()).createPreferencesAdapter();
 			nwadapters.add(pref);
 
 			JComponent comp = null;
-			Component  c = pref.getComponent();
+			Component c = pref.getComponent();
 
 			if(c instanceof JComponent) {
 				comp = (JComponent) c;
@@ -182,9 +181,9 @@ public class IconAdapter extends InternationalizedPanel
 		factoryPanel = p;
 
 		con.gridwidth = 2;
-		con.gridy     = 1;
-		con.fill	  = GridBagConstraints.BOTH;
-		con.weightx   = 1;
+		con.gridy = 1;
+		con.fill = GridBagConstraints.BOTH;
+		con.weightx = 1;
 		add(p, con);
 		con.gridy = 2;
 		add(styles = new Stylesets(), con);
@@ -224,8 +223,7 @@ public class IconAdapter extends InternationalizedPanel
 			((PreferencesAdapter) it.next()).applyPreferences();
 		}
 
-		CellRenderer.setAdditionalValueProperties(CellRenderer.colorMap,
-												  toolTipOn.isSelected());
+		CellRenderer.setAdditionalValueProperties(CellRenderer.colorMap, toolTipOn.isSelected());
 		eStyle.apply();
 	}
 
@@ -233,7 +231,7 @@ public class IconAdapter extends InternationalizedPanel
 		protected JCheckBox bold;
 		protected JCheckBox italic;
 		protected JCheckBox actColor;
-		protected JButton   colButton;
+		protected JButton colButton;
 
 		/**
 		 * Creates a new EmphasizeStyle object.
@@ -250,11 +248,9 @@ public class IconAdapter extends InternationalizedPanel
 
 			Container style = Box.createVerticalBox();
 			style.add(bold = new JCheckBox(getString("emphasize.bold"),
-										   (CellRenderer.emphasizeStyleChange &
-										   Font.BOLD) != 0));
+										   (CellRenderer.emphasizeStyleChange & Font.BOLD) != 0));
 			style.add(italic = new JCheckBox(getString("emphasize.italic"),
-											 (CellRenderer.emphasizeStyleChange &
-											 Font.ITALIC) != 0));
+											 (CellRenderer.emphasizeStyleChange & Font.ITALIC) != 0));
 			this.add(style);
 			this.add(actColor = new JCheckBox(getString("emphasize.color.text"),
 											  CellRenderer.emphasizeColor != null));
@@ -276,9 +272,8 @@ public class IconAdapter extends InternationalizedPanel
 		 */
 		public void actionPerformed(ActionEvent e) {
 			JButton source = (JButton) e.getSource();
-			Color   col = JColorChooser.showDialog(this,
-												   getString("colorchooser.title"),
-												   source.getBackground());
+			Color col = JColorChooser.showDialog(this, getString("colorchooser.title"),
+												 source.getBackground());
 
 			if(col != null) {
 				source.setBackground(col);
@@ -313,24 +308,20 @@ public class IconAdapter extends InternationalizedPanel
 		}
 	}
 
-	protected class ColorMapping extends JPanel implements ActionListener,
-														   PreferencesAdapter,
-														   ListSelectionListener,
-														   KeyListener
+	protected class ColorMapping extends JPanel implements ActionListener, PreferencesAdapter,
+														   ListSelectionListener, KeyListener
 	{
 		protected class MapElement {
 			protected String value;
-			protected Color  color;
+			protected Color color;
 		}
 
-		protected class ColorMappingListCellRenderer extends JLabel
-			implements ListCellRenderer
-		{
+		protected class ColorMappingListCellRenderer extends JLabel implements ListCellRenderer {
 			protected class RoundRectIcon implements Icon {
-				protected Color   color;
+				protected Color color;
 				protected boolean selected;
-				protected int     width;
-				protected int     height;
+				protected int width;
+				protected int height;
 
 				/**
 				 * Creates a new RoundRectIcon object.
@@ -339,7 +330,7 @@ public class IconAdapter extends InternationalizedPanel
 				 * @param h TODO: DOCUMENT ME!
 				 */
 				public RoundRectIcon(int w, int h) {
-					width  = w;
+					width = w;
 					height = h;
 				}
 
@@ -408,8 +399,8 @@ public class IconAdapter extends InternationalizedPanel
 			}
 
 			protected RoundRectIcon icon;
-			protected Border	    border1;
-			protected Border	    border2;
+			protected Border border1;
+			protected Border border2;
 
 			/**
 			 * Creates a new ColorMappingListCellRenderer object.
@@ -420,8 +411,7 @@ public class IconAdapter extends InternationalizedPanel
 				this.setIcon(icon);
 				this.setHorizontalTextPosition(SwingConstants.CENTER);
 				this.setFont(this.getFont().deriveFont(18.0f));
-				this.setBorder(border1 = BorderFactory.createLineBorder(Color.white,
-																		3));
+				this.setBorder(border1 = BorderFactory.createLineBorder(Color.white, 3));
 				border2 = BorderFactory.createLineBorder(Color.blue, 3);
 			}
 
@@ -436,18 +426,14 @@ public class IconAdapter extends InternationalizedPanel
 			 *
 			 * @return TODO: DOCUMENT ME!
 			 */
-			public Component getListCellRendererComponent(JList l,
-														  Object value,
-														  int index,
-														  boolean sel,
-														  boolean foc) {
+			public Component getListCellRendererComponent(JList l, Object value, int index,
+														  boolean sel, boolean foc) {
 				if(value instanceof MapElement) {
 					setText(((MapElement) value).value);
 
 					Color color = ((MapElement) value).color;
 					icon.setColor(color);
-					this.setForeground(new Color(255 - color.getRed(),
-												 255 - color.getGreen(),
+					this.setForeground(new Color(255 - color.getRed(), 255 - color.getGreen(),
 												 255 - color.getBlue()));
 					icon.setSelected(sel);
 					icon.setIconWidth(Math.abs(l.getSize().width - 6));
@@ -519,10 +505,10 @@ public class IconAdapter extends InternationalizedPanel
 			}
 		}
 
-		protected JList			   list;
+		protected JList list;
 		protected DefaultListModel listModel;
-		protected JButton		   buttons[];
-		protected HelpDialog	   dialog;
+		protected JButton buttons[];
+		protected HelpDialog dialog;
 
 		/**
 		 * Creates a new ColorMapping object.
@@ -532,25 +518,23 @@ public class IconAdapter extends InternationalizedPanel
 			this.setBorder(new TitledBorder(getString("colormap.title")));
 
 			GridBagConstraints con = new GridBagConstraints();
-			con.weighty    = 1;
-			con.fill	   = GridBagConstraints.BOTH;
-			con.gridy	   = 0;
-			con.gridx	   = 0;
-			con.weightx    = 1;
-			con.anchor     = GridBagConstraints.CENTER;
-			con.gridwidth  = 1;
+			con.weighty = 1;
+			con.fill = GridBagConstraints.BOTH;
+			con.gridy = 0;
+			con.gridx = 0;
+			con.weightx = 1;
+			con.anchor = GridBagConstraints.CENTER;
+			con.gridwidth = 1;
 			con.gridheight = 3;
-			con.insets     = new Insets(1, 3, 1, 3);
+			con.insets = new Insets(1, 3, 1, 3);
 
 			listModel = createListModel();
-			list	  = new JList(listModel);
+			list = new JList(listModel);
 			list.setCellRenderer(new ColorMappingListCellRenderer());
 			list.addListSelectionListener(this);
 			list.addKeyListener(this);
-			this.add(new JScrollPane(list,
-									 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-									 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
-					 con);
+			this.add(new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+									 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), con);
 
 			JPanel bBox = new JPanel(new GridLayout(0, 1));
 
@@ -587,12 +571,12 @@ public class IconAdapter extends InternationalizedPanel
 			bBox.add(Box.createVerticalStrut(20));
 			bBox.add(buttons[4]);
 
-			con.gridwidth  = 1;
-			con.gridx	   = 1;
-			con.gridy	   = 2;
-			con.fill	   = GridBagConstraints.NONE;
-			con.weightx    = 0;
-			con.weighty    = 0;
+			con.gridwidth = 1;
+			con.gridx = 1;
+			con.gridy = 2;
+			con.fill = GridBagConstraints.NONE;
+			con.weightx = 0;
+			con.weighty = 0;
 			con.gridheight = 1;
 			this.add(bBox, con);
 
@@ -602,14 +586,14 @@ public class IconAdapter extends InternationalizedPanel
 		}
 
 		protected DefaultListModel createListModel() {
-			Map				 m   = CellRenderer.colorMap;
+			Map m = CellRenderer.colorMap;
 			DefaultListModel dlm = new DefaultListModel();
 
 			if((m == null) || (m.size() == 0)) {
 				return dlm;
 			}
 
-			Set  s = m.keySet();
+			Set s = m.keySet();
 			List l = CollectionFactory.createArrayList(s.size());
 			l.addAll(s);
 			Collections.sort(l);
@@ -674,12 +658,11 @@ public class IconAdapter extends InternationalizedPanel
 		}
 
 		protected void createPair() {
-			String  value = null;
+			String value = null;
 			boolean error = false;
 
 			do {
-				value = JOptionPane.showInputDialog(this,
-													getString("colormap.create.value"));
+				value = JOptionPane.showInputDialog(this, getString("colormap.create.value"));
 
 				if(value == null) {
 					return;
@@ -688,15 +671,12 @@ public class IconAdapter extends InternationalizedPanel
 				error = value.equals("") || valueExists(value);
 
 				if(error) {
-					JOptionPane.showMessageDialog(this,
-												  getString("colormap.create.valueExisting"));
+					JOptionPane.showMessageDialog(this, getString("colormap.create.valueExisting"));
 				}
 			} while(error);
 
-			Color col = JColorChooser.showDialog(this,
-												 getString("colormap.create.color"),
-												 CellRenderer.getTypeset(3)
-															 .getForeground());
+			Color col = JColorChooser.showDialog(this, getString("colormap.create.color"),
+												 CellRenderer.getTypeset(3).getForeground());
 
 			if(col != null) {
 				addPair(value, col);
@@ -704,18 +684,16 @@ public class IconAdapter extends InternationalizedPanel
 		}
 
 		protected void changePair() {
-			MapElement elem     = (MapElement) list.getSelectedValue();
-			int		   index    = list.getSelectedIndex();
-			String     newValue = JOptionPane.showInputDialog(this,
-															  getString("colormap.change.value"));
+			MapElement elem = (MapElement) list.getSelectedValue();
+			int index = list.getSelectedIndex();
+			String newValue = JOptionPane.showInputDialog(this, getString("colormap.change.value"));
 
 			if(newValue == null) {
 				return;
 			}
 
 			if(!newValue.equals("") && valueExists(newValue)) {
-				JOptionPane.showMessageDialog(this,
-											  getString("colormap.change.valueExisting"));
+				JOptionPane.showMessageDialog(this, getString("colormap.change.valueExisting"));
 
 				return;
 			}
@@ -724,8 +702,7 @@ public class IconAdapter extends InternationalizedPanel
 				newValue = elem.value;
 			}
 
-			Color col = JColorChooser.showDialog(this,
-												 getString("colormap.change.color"),
+			Color col = JColorChooser.showDialog(this, getString("colormap.change.color"),
 												 elem.color);
 
 			if(col == null) {
@@ -749,8 +726,7 @@ public class IconAdapter extends InternationalizedPanel
 			listModel.clear();
 
 			for(int i = 1; i < 31; i++) {
-				addPair(String.valueOf(i),
-						CellRenderer.getTypeset(3).getForeground());
+				addPair(String.valueOf(i), CellRenderer.getTypeset(3).getForeground());
 			}
 		}
 
@@ -863,30 +839,29 @@ public class IconAdapter extends InternationalizedPanel
 		}
 	}
 
-	protected class Stylesets extends JPanel implements ActionListener,
-														TreeSelectionListener,
+	protected class Stylesets extends JPanel implements ActionListener, TreeSelectionListener,
 														PreferencesAdapter
 	{
-		protected JPanel		   content;
-		protected CardLayout	   contentLayout;
-		protected Map			   subPanels;
-		protected Map			   nodeMap;
-		protected JTree			   stylesets;
-		protected AbstractButton   removeButton;
+		protected JPanel content;
+		protected CardLayout contentLayout;
+		protected Map subPanels;
+		protected Map nodeMap;
+		protected JTree stylesets;
+		protected AbstractButton removeButton;
 		protected DefaultTreeModel treeModel;
 
 		protected class StylesetPanel extends JPanel {
 			protected GraphicsStyleset set;
-			protected DirectionPanel   direction;
-			protected FontPanel		   font;
-			protected ColorPanel	   colors;
-			protected JCheckBox		   fontEnabled;
+			protected DirectionPanel direction;
+			protected FontPanel font;
+			protected ColorPanel colors;
+			protected JCheckBox fontEnabled;
 
 			class DirectionPanel extends JPanel implements ActionListener {
-				protected AbstractButton   buttons[];
-				protected AbstractButton   last;
-				protected int			   horiz;
-				protected int			   vertic;
+				protected AbstractButton buttons[];
+				protected AbstractButton last;
+				protected int horiz;
+				protected int vertic;
 
 				/**
 				 * Creates a new DirectionPanel object.
@@ -939,8 +914,7 @@ public class IconAdapter extends InternationalizedPanel
 
 							JToggleButton button = new JToggleButton();
 							button.addActionListener(this);
-							button.setActionCommand(String.valueOf(iv) + ";" +
-													String.valueOf(jv));
+							button.setActionCommand(String.valueOf(iv) + ";" + String.valueOf(jv));
 							this.add(button);
 							buttons[(j * 3) + i] = button;
 							gr.add(button);
@@ -980,7 +954,7 @@ public class IconAdapter extends InternationalizedPanel
 					}
 
 					buttons[(j * 3) + i].doClick();
-					this.horiz  = set.getHorizontalPos();
+					this.horiz = set.getHorizontalPos();
 					this.vertic = set.getVerticalPos();
 				}
 
@@ -1006,9 +980,8 @@ public class IconAdapter extends InternationalizedPanel
 						last.setText(getString("icontext.position.t"));
 					}
 
-					StringTokenizer st = new StringTokenizer(e.getActionCommand(),
-															 ";");
-					this.horiz  = Integer.parseInt(st.nextToken());
+					StringTokenizer st = new StringTokenizer(e.getActionCommand(), ";");
+					this.horiz = Integer.parseInt(st.nextToken());
 					this.vertic = Integer.parseInt(st.nextToken());
 				}
 
@@ -1021,8 +994,8 @@ public class IconAdapter extends InternationalizedPanel
 					// work-around for corner-bug
 					int i = vertic;
 
-					if((last == buttons[0]) || (last == buttons[2]) ||
-						   (last == buttons[6]) || (last == buttons[8])) {
+					if((last == buttons[0]) || (last == buttons[2]) || (last == buttons[6]) ||
+						   (last == buttons[8])) {
 						if(vertic == SwingConstants.TOP) {
 							i = SwingConstants.BOTTOM;
 						} else {
@@ -1039,9 +1012,9 @@ public class IconAdapter extends InternationalizedPanel
 			 * Displays a panel which shows selections for a font.
 			 */
 			class FontPanel extends JPanel {
-				protected JComboBox   fonts;
-				protected JCheckBox   styles[];
-				protected JComboBox   size;
+				protected JComboBox fonts;
+				protected JCheckBox styles[];
+				protected JComboBox size;
 
 				/**
 				 * Creates a new FontPanel object.
@@ -1050,11 +1023,11 @@ public class IconAdapter extends InternationalizedPanel
 					this.setLayout(new GridBagLayout());
 
 					GridBagConstraints con = new GridBagConstraints();
-					con.gridwidth  = 1;
+					con.gridwidth = 1;
 					con.gridheight = 1;
-					con.fill	   = GridBagConstraints.HORIZONTAL;
-					con.anchor     = GridBagConstraints.CENTER;
-					con.weightx    = 1;
+					con.fill = GridBagConstraints.HORIZONTAL;
+					con.anchor = GridBagConstraints.CENTER;
+					con.weightx = 1;
 
 					// Font-Family box
 					String fontNa[] = null;
@@ -1070,11 +1043,11 @@ public class IconAdapter extends InternationalizedPanel
 
 					fonts = new JComboBox(fontNa);
 					this.add(fonts, con);
-					con.fill  = GridBagConstraints.NONE;
+					con.fill = GridBagConstraints.NONE;
 					con.gridx = 1;
 
 					// Style checkboxes
-					styles    = new JCheckBox[2];
+					styles = new JCheckBox[2];
 					styles[0] = new JCheckBox(getString("icontext.text.font.bold"));
 					styles[0].setFont(styles[0].getFont().deriveFont(Font.BOLD));
 					styles[1] = new JCheckBox(getString("icontext.text.font.italic"));
@@ -1094,7 +1067,7 @@ public class IconAdapter extends InternationalizedPanel
 						sizes[i] = String.valueOf(i + 8);
 					}
 
-					size	  = new JComboBox(sizes);
+					size = new JComboBox(sizes);
 					con.gridx = 2;
 					this.add(size, con);
 				}
@@ -1132,14 +1105,13 @@ public class IconAdapter extends InternationalizedPanel
 
 					int sizeI = Integer.parseInt((String) size.getSelectedItem());
 
-					return new Font((String) fonts.getSelectedItem(), style,
-									sizeI);
+					return new Font((String) fonts.getSelectedItem(), style, sizeI);
 				}
 			}
 
 			protected class ColorPanel extends JPanel implements ActionListener {
 				protected JCheckBox boxes[];
-				protected JButton   buttons[];
+				protected JButton buttons[];
 
 				/**
 				 * Creates a new ColorPanel object.
@@ -1148,19 +1120,18 @@ public class IconAdapter extends InternationalizedPanel
 					this.setLayout(new GridBagLayout());
 
 					GridBagConstraints con = new GridBagConstraints();
-					con.fill	   = GridBagConstraints.NONE;
-					con.anchor     = GridBagConstraints.NORTHWEST;
-					con.gridwidth  = 1;
+					con.fill = GridBagConstraints.NONE;
+					con.anchor = GridBagConstraints.NORTHWEST;
+					con.gridwidth = 1;
 					con.gridheight = 1;
-					boxes		   = new JCheckBox[4];
-					buttons		   = new JButton[4];
+					boxes = new JCheckBox[4];
+					buttons = new JButton[4];
 
 					for(int i = 0; i < 4; i++) {
 						con.gridx = 0;
 						con.gridy = i;
 						this.add(boxes[i] = new JCheckBox(getString("styles.color." +
-																	String.valueOf(i))),
-								 con);
+																	String.valueOf(i))), con);
 						con.gridx = 1;
 						this.add(buttons[i] = new JButton(" "), con);
 						buttons[i].addActionListener(this);
@@ -1241,9 +1212,8 @@ public class IconAdapter extends InternationalizedPanel
 				 */
 				public void actionPerformed(ActionEvent e) {
 					JButton source = (JButton) e.getSource();
-					Color   col = JColorChooser.showDialog(this,
-														   getString("colorchooser.title"),
-														   source.getBackground());
+					Color col = JColorChooser.showDialog(this, getString("colorchooser.title"),
+														 source.getBackground());
 
 					if(col != null) {
 						source.setBackground(col);
@@ -1269,42 +1239,41 @@ public class IconAdapter extends InternationalizedPanel
 				this.setLayout(new GridBagLayout());
 
 				GridBagConstraints con = new GridBagConstraints();
-				con.fill   = GridBagConstraints.BOTH;
+				con.fill = GridBagConstraints.BOTH;
 				con.anchor = GridBagConstraints.CENTER;
 
 				Border border = BorderFactory.createEtchedBorder();
 
 				// font
 				JPanel p = new JPanel(new GridBagLayout());
-				fontEnabled = new JCheckBox(getString("icontext.text.font"),
-											set.getFont() != null);
-				con.fill	   = GridBagConstraints.NONE;
-				con.gridx	   = 0;
-				con.gridwidth  = 1;
+				fontEnabled = new JCheckBox(getString("icontext.text.font"), set.getFont() != null);
+				con.fill = GridBagConstraints.NONE;
+				con.gridx = 0;
+				con.gridwidth = 1;
 				con.gridheight = 1;
 				p.add(fontEnabled, con);
-				con.gridy     = 1;
+				con.gridy = 1;
 				con.gridwidth = 3;
-				font		  = new FontPanel();
+				font = new FontPanel();
 				font.setStyleset(set);
 				p.add(font, con);
-				con.fill	   = GridBagConstraints.BOTH;
-				con.weightx    = 1;
-				con.gridx	   = 0;
-				con.gridy	   = 1;
+				con.fill = GridBagConstraints.BOTH;
+				con.weightx = 1;
+				con.gridx = 0;
+				con.gridy = 1;
 				con.gridheight = 1;
 
 				p.setBorder(border);
 				con.gridwidth = 2;
-				con.anchor    = GridBagConstraints.WEST;
+				con.anchor = GridBagConstraints.WEST;
 				this.add(p, con);
 
 				// direction
 				direction = new DirectionPanel();
 				direction.setStyleset(set);
 				direction.setBorder(border);
-				con.gridx     = 0;
-				con.gridy     = 0;
+				con.gridx = 0;
+				con.gridy = 0;
 				con.gridwidth = 1;
 				this.add(direction, con);
 
@@ -1357,7 +1326,7 @@ public class IconAdapter extends InternationalizedPanel
 			 * @param sName TODO: DOCUMENT ME!
 			 */
 			public TreeObject(String name, String sName) {
-				this.name  = name;
+				this.name = name;
 				this.sName = sName;
 			}
 
@@ -1456,8 +1425,7 @@ public class IconAdapter extends InternationalizedPanel
 			DefaultMutableTreeNode firstNode = node;
 			newRoot.add(node);
 			nodeMap.put("SIMPLE", node);
-			node = new DefaultMutableTreeNode(new TreeObject("MAIN",
-															 getString("styles.main")));
+			node = new DefaultMutableTreeNode(new TreeObject("MAIN", getString("styles.main")));
 			newRoot.add(node);
 			nodeMap.put("MAIN", node);
 			node = new DefaultMutableTreeNode(new TreeObject("ADDITIONAL",
@@ -1465,7 +1433,7 @@ public class IconAdapter extends InternationalizedPanel
 			newRoot.add(node);
 			nodeMap.put("MAIN", node);
 
-			Map  map  = CellRenderer.getStylesets();
+			Map map = CellRenderer.getStylesets();
 			List list = null;
 
 			if(map != null) {
@@ -1537,15 +1505,14 @@ public class IconAdapter extends InternationalizedPanel
 				Iterator it = list.iterator();
 
 				while(it.hasNext()) {
-					Component c    = null;
-					String    name = (String) it.next();
+					Component c = null;
+					String name = (String) it.next();
 
 					if(subPanels.containsKey(name)) {
 						c = (Component) subPanels.get(name);
 						old.remove(name);
 					} else {
-						c = new StylesetPanel((GraphicsStyleset) CellRenderer.getStylesets()
-																			 .get(name));
+						c = new StylesetPanel((GraphicsStyleset) CellRenderer.getStylesets().get(name));
 						subPanels.put(name, c);
 					}
 
@@ -1601,8 +1568,7 @@ public class IconAdapter extends InternationalizedPanel
 		}
 
 		protected void addStyleset() {
-			String name = JOptionPane.showInputDialog(this,
-													  getString("styles.add.text"));
+			String name = JOptionPane.showInputDialog(this, getString("styles.add.text"));
 
 			if(name == null) {
 				return;
@@ -1629,7 +1595,7 @@ public class IconAdapter extends InternationalizedPanel
 			content.add(new StylesetPanel(set), name);
 
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new TreeObject(name));
-			MutableTreeNode		   root = (MutableTreeNode) treeModel.getRoot();
+			MutableTreeNode root = (MutableTreeNode) treeModel.getRoot();
 
 			if(name.indexOf('.') > 0) {
 				String parent = name.substring(0, name.lastIndexOf('.'));
@@ -1653,8 +1619,8 @@ public class IconAdapter extends InternationalizedPanel
 			if(!stylesets.isSelectionEmpty()) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) stylesets.getSelectionPath()
 																				.getLastPathComponent();
-				TreeObject			   obj = (TreeObject) node.getUserObject();
-				Component			   c   = (Component) subPanels.get(obj.name);
+				TreeObject obj = (TreeObject) node.getUserObject();
+				Component c = (Component) subPanels.get(obj.name);
 
 				if(c != null) {
 					content.remove(c);
@@ -1747,8 +1713,7 @@ public class IconAdapter extends InternationalizedPanel
 	}
 
 	/**
-	 * Returns a list of preferences adapters that should be displayed in the
-	 * given order.
+	 * Returns a list of preferences adapters that should be displayed in the given order.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1787,8 +1752,7 @@ public class IconAdapter extends InternationalizedPanel
 								"Special values can be associated with certain colors with the help of this funtion.\n\nWith Add a new Value-Color-Pair is created. First input the value(this must not exist) and than choose the associated color.\n\nWith Change you can change an existing pair. Just select the pair you want(only one at a time) and press Change. You may change the value first or leave the field blank to indicate that you want to use your old value. Than choose the new color.\n\nWith Delete all selected pairs are deleted. Warning: There's no warning message!\n\nWith Default all existing pairs are deleted and values from 1 till 30 are inserted with default color.\n\nThere are also keyboard shortcuts for Change and Delete: \"Enter\" and \"Delete\".");
 		defaultTranslations.put("colormap.help.button", "OK");
 		defaultTranslations.put("colormap.create.value", "New Value:");
-		defaultTranslations.put("colormap.create.valueExisting",
-								"Value empty/existing!");
+		defaultTranslations.put("colormap.create.valueExisting", "Value empty/existing!");
 		defaultTranslations.put("colormap.create.color", "Choose Color");
 		defaultTranslations.put("emphasize.tooltip",
 								"Visual style of strong information, e.g. units with non-confirmed orders.");
@@ -1798,8 +1762,7 @@ public class IconAdapter extends InternationalizedPanel
 		defaultTranslations.put("emphasize.text", "Emphasize:");
 		defaultTranslations.put("colormap.change.value",
 								"Enter new value. Empty field indicates that you want to use your old value.");
-		defaultTranslations.put("colormap.change.valueExisting",
-								"Value existing!");
+		defaultTranslations.put("colormap.change.valueExisting", "Value existing!");
 		defaultTranslations.put("colormap.change.color", "Choose new Color");
 		defaultTranslations.put("styles.color.0", "Foreground");
 		defaultTranslations.put("styles.color.1", "Background");

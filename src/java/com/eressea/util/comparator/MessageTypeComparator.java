@@ -20,12 +20,11 @@ import com.eressea.Message;
 import com.eressea.rules.MessageType;
 
 /**
- * A comparator imposing an ordering on Message objects by comparing their
- * types.
+ * A comparator imposing an ordering on Message objects by comparing their types.
  * 
  * <p>
- * Note: this comparator imposes orderings that are inconsistent with equals.
- * This is the case when neither of the messages has a valid type set.
+ * Note: this comparator imposes orderings that are inconsistent with equals. This is the case when
+ * neither of the messages has a valid type set.
  * </p>
  */
 public class MessageTypeComparator implements Comparator {
@@ -34,8 +33,7 @@ public class MessageTypeComparator implements Comparator {
 	/**
 	 * Creates a new MessageTypeComparator object.
 	 *
-	 * @param typeComparator the comparator applied to compare the message
-	 * 		  types.
+	 * @param typeComparator the comparator applied to compare the message types.
 	 *
 	 * @throws NullPointerException TODO: DOCUMENT ME!
 	 */

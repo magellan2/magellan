@@ -16,37 +16,34 @@ package com.eressea;
 import com.eressea.rules.ItemType;
 
 /**
- * A class representing a resource and its attributes in a region. The id of
- * RegionResource objects is numerical and does not change between reports of
- * different turns, it can therefore be used for merging reports. In order to
- * access a resource in a region this id proves unuseful, though. Instead, the
- * id of the resource's type makes more sense as it also satisfies the
- * uniqueness condition within a region.
+ * A class representing a resource and its attributes in a region. The id of RegionResource objects
+ * is numerical and does not change between reports of different turns, it can therefore be used
+ * for merging reports. In order to access a resource in a region this id proves unuseful, though.
+ * Instead, the id of the resource's type makes more sense as it also satisfies the uniqueness
+ * condition within a region.
  */
 public class RegionResource implements Unique {
-	private ID		 id		    = null; // the numerical id of this resource, also the block id in the cr
-	private int		 skillLevel = -1; // the minimum skill level required to access the resource
-	private ItemType type	    = null; // the type of resource
-	private int		 amount     = -1; // the amount of the resource available
+	private ID id = null; // the numerical id of this resource, also the block id in the cr
+	private int skillLevel = -1; // the minimum skill level required to access the resource
+	private ItemType type = null; // the type of resource
+	private int amount = -1; // the amount of the resource available
 
 	/**
-	 * Constructs a new region resource with the specified id and type. There
-	 * is no default constructor in order to enforce a valid id and type set
-	 * for every RegionResource object.
+	 * Constructs a new region resource with the specified id and type. There is no default
+	 * constructor in order to enforce a valid id and type set for every RegionResource object.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 * @param type TODO: DOCUMENT ME!
 	 */
 	public RegionResource(ID id, ItemType type) {
-		this.id   = id;
+		this.id = id;
 		this.type = type;
 	}
 
 	/**
-	 * This method allows to set the id of this resource even after object
-	 * creation. It should be use with care as ids are often used as map keys
-	 * or similar objects and changing them will have non-obvious side
-	 * effects.
+	 * This method allows to set the id of this resource even after object creation. It should be
+	 * use with care as ids are often used as map keys or similar objects and changing them will
+	 * have non-obvious side effects.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
@@ -70,10 +67,9 @@ public class RegionResource implements Unique {
 	}
 
 	/**
-	 * Specifies the type of the resource. Semantically, only a small range of
-	 * item types are valid for a resource (iron, trees, etc.) Note that the
-	 * type may server as a hash object for this resource and changing it may
-	 * require re-hashing.
+	 * Specifies the type of the resource. Semantically, only a small range of item types are valid
+	 * for a resource (iron, trees, etc.) Note that the type may server as a hash object for this
+	 * resource and changing it may require re-hashing.
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -124,8 +120,7 @@ public class RegionResource implements Unique {
 	}
 
 	/**
-	 * Returns the minimum skill level that is required to access this
-	 * resource.
+	 * Returns the minimum skill level that is required to access this resource.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -152,8 +147,7 @@ public class RegionResource implements Unique {
 	}
 
 	/**
-	 * Indicates whether some other object is "equal to" this one based on the
-	 * ID of this object
+	 * Indicates whether some other object is "equal to" this one based on the ID of this object
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -163,8 +157,7 @@ public class RegionResource implements Unique {
 		if(o instanceof RegionResource) {
 			// pavkovic 2003.01.16: even if the id seems to be unique 
 			// use the item type for uniqueness
-			return this.getType().getID().equals(((RegionResource) o).getType()
-												  .getID());
+			return this.getType().getID().equals(((RegionResource) o).getType().getID());
 
 			// return this.getID().equals(((RegionResource)o).getID());
 		} else {
@@ -194,9 +187,8 @@ public class RegionResource implements Unique {
 	 * @param newRes TODO: DOCUMENT ME!
 	 * @param sameTurn TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, RegionResource curRes,
-							 GameData newGD, RegionResource newRes,
-							 boolean sameTurn) {
+	public static void merge(GameData curGD, RegionResource curRes, GameData newGD,
+							 RegionResource newRes, boolean sameTurn) {
 		/* the constructor enforces a valid id and type, so we do not
 		 need to set them here */
 		if(sameTurn) {

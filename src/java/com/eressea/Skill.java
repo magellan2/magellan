@@ -18,21 +18,19 @@ import com.eressea.rules.RegionType;
 import com.eressea.rules.SkillType;
 
 /**
- * A class representing a certain skill level of a unit for some skill type.
- * Since there is no strict mapping of skill points to skill levels, this
- * class allows to specify points and levels independently of each other but
- * also offers convenience functions for converting the values between each
- * other.
+ * A class representing a certain skill level of a unit for some skill type. Since there is no
+ * strict mapping of skill points to skill levels, this class allows to specify points and levels
+ * independently of each other but also offers convenience functions for converting the values
+ * between each other.
  */
 public class Skill {
 	private final SkillType type;
-	private final boolean   noSkillPoints;
+	private final boolean noSkillPoints;
 
 	/**
-	 * The total of points_per_person  persons as it is found in the report.
-	 * Note, that the report can contain skill point values that are not
-	 * dividable by the unit's number of persons (e.g. 65 skill point with a
-	 * unit of 2 persons)
+	 * The total of points_per_person  persons as it is found in the report. Note, that the report
+	 * can contain skill point values that are not dividable by the unit's number of persons (e.g.
+	 * 65 skill point with a unit of 2 persons)
 	 */
 	private int points = 0;
 	private int level = 0;
@@ -55,12 +53,11 @@ public class Skill {
 	 * @param persons TODO: DOCUMENT ME!
 	 * @param noSkillPoints TODO: DOCUMENT ME!
 	 */
-	public Skill(SkillType type, int points, int level, int persons,
-				 boolean noSkillPoints) {
-		this.type		   = type;
-		this.points		   = points;
-		this.level		   = level;
-		this.persons	   = persons;
+	public Skill(SkillType type, int points, int level, int persons, boolean noSkillPoints) {
+		this.type = type;
+		this.points = points;
+		this.level = level;
+		this.persons = persons;
 		this.noSkillPoints = noSkillPoints;
 	}
 
@@ -103,9 +100,8 @@ public class Skill {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static final int getLevel(int pointsPerPerson, int raceBonus,
-									 int terrainBonus, int buildingBonus,
-									 boolean isStarving) {
+	public static final int getLevel(int pointsPerPerson, int raceBonus, int terrainBonus,
+									 int buildingBonus, boolean isStarving) {
 		int baseLevel = getLevelAtPoints(pointsPerPerson);
 		int level = 0;
 
@@ -134,8 +130,8 @@ public class Skill {
 	 */
 	public int getLevel(Unit unit, boolean includeBuilding) {
 		if((unit != null) && (unit.persons != 0)) {
-			int raceBonus     = 0;
-			int terrainBonus  = 0;
+			int raceBonus = 0;
+			int terrainBonus = 0;
 			int buildingBonus = 0;
 
 			if(unit.realRace != null) {
@@ -147,25 +143,23 @@ public class Skill {
 			}
 
 			if(unit.getRegion() != null) {
-				terrainBonus = unit.race.getSkillBonus(getType(),
-													   unit.getRegion()
-														   .getRegionType());
+				terrainBonus = unit.race.getSkillBonus(getType(), unit.getRegion().getRegionType());
 			}
 
 			if(includeBuilding && (unit.getBuilding() != null)) {
 				buildingBonus = (unit.getBuilding().getBuildingType()).getSkillBonus(getType());
 			}
 
-			return getLevel(getPoints() / unit.persons, raceBonus,
-							terrainBonus, buildingBonus, unit.isStarving);
+			return getLevel(getPoints() / unit.persons, raceBonus, terrainBonus, buildingBonus,
+							unit.isStarving);
 		}
 
 		return 0;
 	}
 
 	/**
-	 * Calculates the skill level for the given modified number of persons in
-	 * the unit and the skill points of this skill.
+	 * Calculates the skill level for the given modified number of persons in the unit and the
+	 * skill points of this skill.
 	 *
 	 * @param unit TODO: DOCUMENT ME!
 	 * @param includeBuilding TODO: DOCUMENT ME!
@@ -174,8 +168,8 @@ public class Skill {
 	 */
 	public int getModifiedLevel(Unit unit, boolean includeBuilding) {
 		if((unit != null) && (unit.getModifiedPersons() != 0)) {
-			int raceBonus     = 0;
-			int terrainBonus  = 0;
+			int raceBonus = 0;
+			int terrainBonus = 0;
 			int buildingBonus = 0;
 
 			if(unit.race != null) {
@@ -183,26 +177,23 @@ public class Skill {
 			}
 
 			if(unit.getRegion() != null) {
-				terrainBonus = unit.race.getSkillBonus(getType(),
-													   unit.getRegion()
-														   .getRegionType());
+				terrainBonus = unit.race.getSkillBonus(getType(), unit.getRegion().getRegionType());
 			}
 
 			if(includeBuilding && (unit.getBuilding() != null)) {
-				buildingBonus = unit.getBuilding().getBuildingType()
-									.getSkillBonus(getType());
+				buildingBonus = unit.getBuilding().getBuildingType().getSkillBonus(getType());
 			}
 
-			return getLevel(getPoints() / unit.getModifiedPersons(), raceBonus,
-							terrainBonus, buildingBonus, unit.isStarving);
+			return getLevel(getPoints() / unit.getModifiedPersons(), raceBonus, terrainBonus,
+							buildingBonus, unit.isStarving);
 		}
 
 		return 0;
 	}
 
 	/**
-	 * Returns the modifier of the specified race has on the specified skill in
-	 * the specified terrain.
+	 * Returns the modifier of the specified race has on the specified skill in the specified
+	 * terrain.
 	 *
 	 * @param skillType TODO: DOCUMENT ME!
 	 * @param race TODO: DOCUMENT ME!
@@ -210,8 +201,7 @@ public class Skill {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static int getModifier(SkillType skillType, Race race,
-								  RegionType terrain) {
+	public static int getModifier(SkillType skillType, Race race, RegionType terrain) {
 		int modifier = 0;
 
 		if(race != null) {
@@ -226,8 +216,8 @@ public class Skill {
 	}
 
 	/**
-	 * Returns the modifier of the specified unit's race has on the specified
-	 * skill in the terrain the specified unit resides in.
+	 * Returns the modifier of the specified unit's race has on the specified skill in the terrain
+	 * the specified unit resides in.
 	 *
 	 * @param skillType TODO: DOCUMENT ME!
 	 * @param unit TODO: DOCUMENT ME!
@@ -235,16 +225,15 @@ public class Skill {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static int getModifier(SkillType skillType, Unit unit) {
-		Race	   race    = (unit.realRace != null) ? unit.realRace : unit.race;
-		RegionType terrain = (unit.getRegion() != null)
-							 ? unit.getRegion().getRegionType() : null;
+		Race race = (unit.realRace != null) ? unit.realRace : unit.race;
+		RegionType terrain = (unit.getRegion() != null) ? unit.getRegion().getRegionType() : null;
 
 		return getModifier(skillType, race, terrain);
 	}
 
 	/**
-	 * Returns the modifier of the specified unit's race has on this skill in
-	 * the terrain the specified unit resides in.
+	 * Returns the modifier of the specified unit's race has on this skill in the terrain the
+	 * specified unit resides in.
 	 *
 	 * @param unit TODO: DOCUMENT ME!
 	 *
@@ -255,9 +244,9 @@ public class Skill {
 	}
 
 	/**
-	 * Indicated whether the skill points value of this Skill object has
-	 * relevance, i.e. was either read from a report or calculated as there
-	 * can be reports with only skill levels and no points.
+	 * Indicated whether the skill points value of this Skill object has relevance, i.e. was either
+	 * read from a report or calculated as there can be reports with only skill levels and no
+	 * points.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -383,8 +372,7 @@ public class Skill {
 		if(this.noSkillPoints()) {
 			return getName() + " " + getLevel();
 		} else {
-			return getName() + " " + getLevel() + " [" + getPointsPerPerson() +
-				   "]";
+			return getName() + " " + getLevel() + " [" + getPointsPerPerson() + "]";
 		}
 	}
 

@@ -36,8 +36,7 @@ import com.eressea.rules.BuildingType;
 import com.eressea.swing.RoutingDialog;
 
 /**
- * Works together with com.eressea.swing.RoutingDialog to calculate the route
- * for a ship.
+ * Works together with com.eressea.swing.RoutingDialog to calculate the route for a ship.
  *
  * @author Ulrich Küster
  * @author Andreas
@@ -55,8 +54,7 @@ public class ShipRoutePlanner {
 			return false;
 		}
 
-		return (ship.getOwnerUnit() != null) &&
-			   ship.getOwnerUnit().getFaction().isPrivileged();
+		return (ship.getOwnerUnit() != null) && ship.getOwnerUnit().getFaction().isPrivileged();
 	}
 
 	/**
@@ -70,19 +68,17 @@ public class ShipRoutePlanner {
 	 */
 	public static Unit planShipRoute(Ship ship, GameData data, Component ui) {
 		// fetch all coast regions
-		Map		   oceans = Regions.getOceanRegionTypes(data.rules);
+		Map oceans = Regions.getOceanRegionTypes(data.rules);
 		Collection coast = CollectionFactory.createLinkedList();
 
 		try {
-			Map		 regionMap = data.regions();
+			Map regionMap = data.regions();
 			Iterator cIt = regionMap.values().iterator();
 
 			while(cIt.hasNext()) {
 				try {
 					Region region = (Region) cIt.next();
-					Map    m = Regions.getAllNeighbours(regionMap,
-														region.getCoordinate(),
-														1, null);
+					Map m = Regions.getAllNeighbours(regionMap, region.getCoordinate(), 1, null);
 					Iterator cIt2 = m.values().iterator();
 
 					while(cIt2.hasNext()) {
@@ -101,17 +97,14 @@ public class ShipRoutePlanner {
 		}
 
 		// get the data:
-		RoutingDialog.RetValue v = (new RoutingDialog(JOptionPane.getFrameForComponent(ui),
-													  data,
-													  (coast.size() == 0)
-													  ? null : coast)).showRoutingDialog();
+		RoutingDialog.RetValue v = (new RoutingDialog(JOptionPane.getFrameForComponent(ui), data,
+													  (coast.size() == 0) ? null : coast)).showRoutingDialog();
 
 		if(v != null) {
 			Unit shipOwner = ship.getOwnerUnit();
 
 			if(shipOwner != null) {
-				if((shipOwner.getFaction() != null) &&
-					   shipOwner.getFaction().isPrivileged()) {
+				if((shipOwner.getFaction() != null) && shipOwner.getFaction().isPrivileged()) {
 					int meerManBonus = 0;
 
 					try {
@@ -124,17 +117,15 @@ public class ShipRoutePlanner {
 					BuildingType harbour = data.rules.getBuildingType(StringID.create("Hafen"));
 
 					//List path = Regions.planShipRoute(ship, v.dest, data.regions(), ocean, harbour, meerManBonus);
-					List path = Regions.planShipRoute(ship, v.dest,
-													  data.regions(), null,
-													  harbour, meerManBonus);
+					List path = Regions.planShipRoute(ship, v.dest, data.regions(), null, harbour,
+													  meerManBonus);
 
 					if(path != null) {
 						// Now try to calculate the orders:
 						int shipRange = 0;
 
 						try {
-							shipRange = ship.getShipType().getRange() +
-										meerManBonus;
+							shipRange = ship.getShipType().getRange() + meerManBonus;
 						} catch(Exception exc) {
 						}
 
@@ -149,9 +140,9 @@ public class ShipRoutePlanner {
 							shipRange = Integer.MAX_VALUE;
 						}
 
-						List   curPath = CollectionFactory.createLinkedList();
-						List   orders = CollectionFactory.createLinkedList();
-						String order  = "";
+						List curPath = CollectionFactory.createLinkedList();
+						List orders = CollectionFactory.createLinkedList();
+						String order = "";
 
 						if(v.makeRoute) {
 							// TODO(pavkovic): move to EresseaOrderChanger
@@ -167,12 +158,11 @@ public class ShipRoutePlanner {
 							order = Translations.getOrderTranslation(EresseaOrderConstants.O_MOVE) +
 									" ";
 
-							int    count = shipRange;
-							int    after = 0;
-							String temp  = ""; // saves whether a closing bracket must be added: "}"
+							int count = shipRange;
+							int after = 0;
+							String temp = ""; // saves whether a closing bracket must be added: "}"
 
-							for(Iterator iter = path.iterator();
-									iter.hasNext();) {
+							for(Iterator iter = path.iterator(); iter.hasNext();) {
 								curPath.add(iter.next());
 
 								if(curPath.size() > 1) {
@@ -189,8 +179,7 @@ public class ShipRoutePlanner {
 											if(v.useVorlage) {
 												order += temp;
 												orders.add(0, order);
-												order = "// #after " + after +
-														" { " +
+												order = "// #after " + after + " { " +
 														Translations.getOrderTranslation(EresseaOrderConstants.O_MOVE) +
 														" ";
 												temp = "}";
@@ -218,35 +207,29 @@ public class ShipRoutePlanner {
 						if(v.replaceOrders) {
 							shipOwner.setOrders(orders);
 						} else {
-							for(ListIterator iter = orders.listIterator();
-									iter.hasNext();) {
-								shipOwner.addOrder((String) iter.next(), false,
-												   0);
+							for(ListIterator iter = orders.listIterator(); iter.hasNext();) {
+								shipOwner.addOrder((String) iter.next(), false, 0);
 							}
 						}
 
 						return shipOwner;
 					} else {
 						// No path could be found from start to destination region.
-						JOptionPane.showMessageDialog(ui,
-													  getString("msg.nopathfound.text"),
+						JOptionPane.showMessageDialog(ui, getString("msg.nopathfound.text"),
 													  getString("msg.title"),
 													  JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
 					// Captain of the ship does not belong to a privileged faction.
 					// No orders can be given.
-					JOptionPane.showMessageDialog(ui,
-												  getString("msg.captainnotprivileged.text"),
+					JOptionPane.showMessageDialog(ui, getString("msg.captainnotprivileged.text"),
 												  getString("msg.title"),
 												  JOptionPane.WARNING_MESSAGE);
 				}
 			} else {
 				// Ship has no captain. No orders will be given.
-				JOptionPane.showMessageDialog(ui,
-											  getString("msg.captainnotfound.text"),
-											  getString("msg.title"),
-											  JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(ui, getString("msg.captainnotfound.text"),
+											  getString("msg.title"), JOptionPane.WARNING_MESSAGE);
 			}
 		}
 
@@ -254,8 +237,7 @@ public class ShipRoutePlanner {
 	}
 
 	private static String getString(String key) {
-		return com.eressea.util.Translations.getTranslation(ShipRoutePlanner.class,
-															key);
+		return com.eressea.util.Translations.getTranslation(ShipRoutePlanner.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -274,10 +256,8 @@ public class ShipRoutePlanner {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("msg.title", "Ship route scheduler");
-			defaultTranslations.put("msg.nopathfound.text",
-									"Error: No valid route found!");
-			defaultTranslations.put("msg.captainnotfound.text",
-									"Error: Captain not found!");
+			defaultTranslations.put("msg.nopathfound.text", "Error: No valid route found!");
+			defaultTranslations.put("msg.captainnotfound.text", "Error: Captain not found!");
 			defaultTranslations.put("msg.captainnotprivileged.text",
 									"Error: Captain does not belong to a privileged faction!");
 			defaultTranslations.put("msg.shiprangeiszero.text",

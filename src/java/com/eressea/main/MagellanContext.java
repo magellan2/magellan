@@ -68,8 +68,8 @@ public class MagellanContext {
 	//private EventDispatcher dispatcher;
 
 	/**
-	 * Returns the shared instance of the event dispatcher. This will create a
-	 * new one if there's no current one. This is the Singleton pattern.
+	 * Returns the shared instance of the event dispatcher. This will create a new one if there's
+	 * no current one. This is the Singleton pattern.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

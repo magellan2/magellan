@@ -18,19 +18,17 @@ import java.util.Comparator;
 import com.eressea.Potion;
 
 /**
- * A comparator imposing an ordering on Potion objects by comparing their
- * levels.
+ * A comparator imposing an ordering on Potion objects by comparing their levels.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
- * I.e. if the two compared potions have the same level and they would be
- * regarded as equal by this comparator, instead of 0 the result of the
- * sub-comparator's comparison is returned.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality. I.e. if the two compared potions have the
+ * same level and they would be regarded as equal by this comparator, instead of 0 the result of
+ * the sub-comparator's comparison is returned.
  * </p>
  */
 public class PotionLevelComparator implements Comparator {
@@ -39,9 +37,8 @@ public class PotionLevelComparator implements Comparator {
 	/**
 	 * Creates a new SpellLevelComparator object.
 	 *
-	 * @param sameLevelSubComparator if two spells with the same level are
-	 * 		  compared, this sub-comparator is applied if it is not
-	 * 		  <tt>null</tt>.
+	 * @param sameLevelSubComparator if two spells with the same level are compared, this
+	 * 		  sub-comparator is applied if it is not <tt>null</tt>.
 	 */
 	public PotionLevelComparator(Comparator sameLevelSubComparator) {
 		sameLevelSubCmp = sameLevelSubComparator;
@@ -53,10 +50,9 @@ public class PotionLevelComparator implements Comparator {
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return the difference of <tt>o1</tt>'s and <tt>o2</tt>'s numerical
-	 * 		   level value. If they are equal and a sub-comparator was
-	 * 		   specified, the result that sub-comparator's comparison is
-	 * 		   returned.
+	 * @return the difference of <tt>o1</tt>'s and <tt>o2</tt>'s numerical level value. If they are
+	 * 		   equal and a sub-comparator was specified, the result that sub-comparator's
+	 * 		   comparison is returned.
 	 */
 	public int compare(Object o1, Object o2) {
 		int l1 = ((Potion) o1).getLevel();

@@ -20,13 +20,12 @@ import com.eressea.util.StringFactory;
 import com.eressea.util.Umlaut;
 
 /**
- * An implementation of the ID interface providing uniqueness and
- * identifiability through strings. The strings used to establish the
- * uniqueness of this id may differ from the strings specified with the
- * constructor of a StringID object. I.e. although with String s1 and s2
- * s1.equals(s2) is false (new StringID(s1)).equals(new StringID(s2)) may be
- * true. Two StringID objects are regarded as equal when s1 differs from s2
- * only in case or the umlaut expansion of s1 equals s2 (or vice versa).
+ * An implementation of the ID interface providing uniqueness and identifiability through strings.
+ * The strings used to establish the uniqueness of this id may differ from the strings specified
+ * with the constructor of a StringID object. I.e. although with String s1 and s2 s1.equals(s2) is
+ * false (new StringID(s1)).equals(new StringID(s2)) may be true. Two StringID objects are
+ * regarded as equal when s1 differs from s2 only in case or the umlaut expansion of s1 equals s2
+ * (or vice versa).
  */
 public class StringID implements ID {
 	/** The string used to establish the uniqueness of this ID. */
@@ -36,8 +35,8 @@ public class StringID implements ID {
 	protected final String originalString;
 
 	/**
-	 * Creates a new StringID object. See the class description on how the
-	 * specified string is used to establish the uniqueness of this id.
+	 * Creates a new StringID object. See the class description on how the specified string is used
+	 * to establish the uniqueness of this id.
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 *
@@ -49,7 +48,7 @@ public class StringID implements ID {
 		}
 
 		this.originalString = StringFactory.getFactory().intern(i);
-		this.id			    = StringFactory.getFactory().intern(Umlaut.normalize(i));
+		this.id = StringFactory.getFactory().intern(Umlaut.normalize(i));
 	}
 
 	/** a static cache to use this class as flyweight factory */
@@ -100,17 +99,15 @@ public class StringID implements ID {
 	}
 
 	/**
-	 * Indicates whether this id is "equal to" some other object. For equality
-	 * rules see the class description, of course o must be an instance of
-	 * StringID.
+	 * Indicates whether this id is "equal to" some other object. For equality rules see the class
+	 * description, of course o must be an instance of StringID.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof StringID && id.equals(((StringID) o).id));
+		return (this == o) || (o instanceof StringID && id.equals(((StringID) o).id));
 	}
 
 	/**
@@ -123,8 +120,8 @@ public class StringID implements ID {
 	}
 
 	/**
-	 * Performs a lexicographical comparision between this object and another
-	 * instance of class StringID.
+	 * Performs a lexicographical comparision between this object and another instance of class
+	 * StringID.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

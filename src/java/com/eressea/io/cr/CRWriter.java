@@ -69,8 +69,7 @@ import com.eressea.util.comparator.SortIndexComparator;
 import com.eressea.util.logging.Logger;
 
 /**
- * A class for writing game data, or parts of it, to a stream in the computer
- * report format.
+ * A class for writing game data, or parts of it, to a stream in the computer report format.
  * 
  * <p>
  * The generated output has platform dependent line breaks.
@@ -81,16 +80,15 @@ import com.eressea.util.logging.Logger;
  * </p>
  * 
  * <p>
- * The basic mechanism of this class is to overload the <tt>write()</tt> method
- * for most of the Eressea base classes. Since many blocks and tags come in
- * bunches there are helper functions for each such sequence handling the
- * collections in which the data objects are stored in.
+ * The basic mechanism of this class is to overload the <tt>write()</tt> method for most of the
+ * Eressea base classes. Since many blocks and tags come in bunches there are helper functions for
+ * each such sequence handling the collections in which the data objects are stored in.
  * </p>
  */
 public class CRWriter extends BufferedWriter {
-	private static final Logger log				    = Logger.getInstance(CRWriter.class);
-	private boolean			    useTildesForQuotes  = false;
-	private Comparator		    sortIndexComparator = new SortIndexComparator(new IDComparator());
+	private static final Logger log = Logger.getInstance(CRWriter.class);
+	private boolean useTildesForQuotes = false;
+	private Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
 
 	// incremented whenever a unit is written, can then be compared
 	// to the total number of units in the game data
@@ -126,8 +124,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Remove quotes from text and replace blanks whithin the quoted section
-	 * with ~ characters. ("a \"b c\"" -> "a b~c")
+	 * Remove quotes from text and replace blanks whithin the quoted section with ~ characters. ("a
+	 * \"b c\"" -> "a b~c")
 	 *
 	 * @param text the string to be modified.
 	 *
@@ -140,8 +138,8 @@ public class CRWriter extends BufferedWriter {
 			return null;
 		}
 
-		StringBuffer sb		 = new StringBuffer(text.length() + 2);
-		boolean		 replace = false;
+		StringBuffer sb = new StringBuffer(text.length() + 2);
+		boolean replace = false;
 
 		for(int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
@@ -159,9 +157,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the String <tt>str</tt> quoted to the underlying stream. If a part
-	 * of <tt>str</tt> is quoted, its quotes are escaped according to the
-	 * current quote escape setting.
+	 * Write the String <tt>str</tt> quoted to the underlying stream. If a part of <tt>str</tt> is
+	 * quoted, its quotes are escaped according to the current quote escape setting.
 	 *
 	 * @param str TODO: DOCUMENT ME!
 	 *
@@ -208,20 +205,16 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the String <tt>str</tt> quoted along with the specified tag to the
-	 * underlying stream. If a part of <tt>str</tt> is quoted, its quotes are
-	 * escaped according to the current quote escape setting.
-	 * writeQuotedTag("a b", "tag") results in writing "\"a b\";tag\n" to the
+	 * Write the String <tt>str</tt> quoted along with the specified tag to the underlying stream.
+	 * If a part of <tt>str</tt> is quoted, its quotes are escaped according to the current quote
+	 * escape setting. writeQuotedTag("a b", "tag") results in writing "\"a b\";tag\n" to the
 	 *
 	 * @param str the string that is to be put in quotes and written to the
-	 * @param tag the tag to be written to the stream, separated from
-	 * 		  <tt>str</tt> by a semicolon.
+	 * @param tag the tag to be written to the stream, separated from <tt>str</tt> by a semicolon.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	private void writeQuotedTag(String str, String tag)
-						 throws IOException
-	{
+	private void writeQuotedTag(String str, String tag) throws IOException {
 		if(str == null) {
 			log.warn("CRWriter.writeQuotedTag(): argument str is null");
 
@@ -246,8 +239,7 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of message blocks to the underlying stream.
 	 *
-	 * @param list a list containing the <tt>Message</tt> objects to be
-	 * 		  written.
+	 * @param list a list containing the <tt>Message</tt> objects to be written.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -262,8 +254,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Message</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Message</tt> object to the underlying stream.
 	 *
 	 * @param msg TODO: DOCUMENT ME!
 	 *
@@ -287,9 +278,8 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if(msg.attributes != null) {
-			for(Iterator iter = msg.attributes.keySet().iterator();
-					iter.hasNext();) {
-				String key   = (String) iter.next();
+			for(Iterator iter = msg.attributes.keySet().iterator(); iter.hasNext();) {
+				String key = (String) iter.next();
 				String value = (String) msg.attributes.get(key);
 
 				try {
@@ -311,19 +301,15 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the data as one block named <tt>blockName</tt> to the underlying
-	 * stream. The data is written as simple cr strings. The block name is
-	 * only written if there is data to follow.
+	 * Write the data as one block named <tt>blockName</tt> to the underlying stream. The data is
+	 * written as simple cr strings. The block name is only written if there is data to follow.
 	 *
-	 * @param blockName the name of the block to be written (can not be a block
-	 * 		  with an id).
+	 * @param blockName the name of the block to be written (can not be a block with an id).
 	 * @param data a collection containing <tt>Message</tt> objects.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public void writeMessageBlock(String blockName, Collection data)
-						   throws IOException
-	{
+	public void writeMessageBlock(String blockName, Collection data) throws IOException {
 		if((data == null) || data.isEmpty()) {
 			return;
 		}
@@ -370,19 +356,15 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the data as one block named <tt>blockName</tt> to the underlying
-	 * stream. The data is written as simple cr strings. The block name is
-	 * only written if there is data to follow.
+	 * Write the data as one block named <tt>blockName</tt> to the underlying stream. The data is
+	 * written as simple cr strings. The block name is only written if there is data to follow.
 	 *
-	 * @param blockName the name of the block to be written (can not be a block
-	 * 		  with an id).
+	 * @param blockName the name of the block to be written (can not be a block with an id).
 	 * @param data a colleciton containing <tt>String</tt> objects.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public void writeStringBlock(String blockName, Collection data)
-						  throws IOException
-	{
+	public void writeStringBlock(String blockName, Collection data) throws IOException {
 		if((data == null) || data.isEmpty()) {
 			return;
 		}
@@ -458,9 +440,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a spells (ZAUBER) block to the underlying stream.
 	 *
-	 * @param map a map containing the spells to write. The keys are expected
-	 * 		  to be <tt>Integer</tt> objects containing the ids of the spells.
-	 * 		  The values are expected to be instances of class <tt>Spell</tt>.
+	 * @param map a map containing the spells to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the spells. The values are expected
+	 * 		  to be instances of class <tt>Spell</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -475,8 +457,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Spell</tt> object to the underlying
-	 * stream.
+	 * Write the cr representation of a <tt>Spell</tt> object to the underlying stream.
 	 *
 	 * @param spell TODO: DOCUMENT ME!
 	 *
@@ -533,10 +514,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of potion (TRANK) blocks to the underlying stream.
 	 *
-	 * @param map a map containing the potions to write. The keys are expected
-	 * 		  to be <tt>Integer</tt> objects containing the ids of the
-	 * 		  potions. The values are expected to be instances of class
-	 * 		  <tt>Potion</tt>.
+	 * @param map a map containing the potions to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the potions. The values are expected
+	 * 		  to be instances of class <tt>Potion</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -551,8 +531,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Potion</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Potion</tt> object to the underlying stream.
 	 *
 	 * @param potion TODO: DOCUMENT ME!
 	 *
@@ -573,16 +552,13 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Writes the ingredients of a potion as a ZUTATEN block to the underlying
-	 * stream.
+	 * Writes the ingredients of a potion as a ZUTATEN block to the underlying stream.
 	 *
 	 * @param ingredients a collection containing Item objects.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public void writePotionIngredients(Collection ingredients)
-								throws IOException
-	{
+	public void writePotionIngredients(Collection ingredients) throws IOException {
 		if(!ingredients.isEmpty()) {
 			write("ZUTATEN");
 			newLine();
@@ -595,13 +571,12 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write a spell components (KOMPONENTEN) block to the underyling. The
-	 * block name is only written, if there are components in <tt>comps</tt>.
+	 * Write a spell components (KOMPONENTEN) block to the underyling. The block name is only
+	 * written, if there are components in <tt>comps</tt>.
 	 *
-	 * @param comps a map containing the components to be written. The map is
-	 * 		  expected to contain the names of the components as keys and the
-	 * 		  component data as values (both as<tt>String</tt> objects). Such
-	 * 		  a map can be found in the <tt>Spell</tt> class.
+	 * @param comps a map containing the components to be written. The map is expected to contain
+	 * 		  the names of the components as keys and the component data as values (both
+	 * 		  as<tt>String</tt> objects). Such a map can be found in the <tt>Spell</tt> class.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 *
@@ -620,7 +595,7 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		while(iter.hasNext()) {
-			String key   = (String) iter.next();
+			String key = (String) iter.next();
 			String value = (String) comps.get(key);
 
 			try {
@@ -634,8 +609,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Option</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Option</tt> object to the underlying stream.
 	 *
 	 * @param options TODO: DOCUMENT ME!
 	 *
@@ -655,10 +629,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of group (GRUPPE) blocks to the underlying stream.
 	 *
-	 * @param map a map containing the groups to write. The keys are expected
-	 * 		  to be <tt>Integer</tt> objects containing the ids of the
-	 * 		  alliances. The values are expected to be instances of class
-	 * 		  <tt>Group</tt>.
+	 * @param map a map containing the groups to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the alliances. The values are
+	 * 		  expected to be instances of class <tt>Group</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -673,8 +646,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Group</tt> object to the underlying
-	 * stream.
+	 * Write the cr representation of a <tt>Group</tt> object to the underlying stream.
 	 *
 	 * @param group TODO: DOCUMENT ME!
 	 *
@@ -702,10 +674,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of alliance (ALLIANZ) blocks to the underlying stream.
 	 *
-	 * @param map a map containing the alliances to write. The keys are
-	 * 		  expected to be <tt>Integer</tt> objects containing the ids of
-	 * 		  the alliances. The values are expected to be instances of class
-	 * 		  <tt>Alliance</tt>.
+	 * @param map a map containing the alliances to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the alliances. The values are
+	 * 		  expected to be instances of class <tt>Alliance</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -720,8 +691,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of an <tt>Alliance</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of an <tt>Alliance</tt> object to the underlying stream.
 	 *
 	 * @param alliance TODO: DOCUMENT ME!
 	 *
@@ -762,8 +732,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Battle</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Battle</tt> object to the underlying stream.
 	 *
 	 * @param battle TODO: DOCUMENT ME!
 	 *
@@ -787,10 +756,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of faction (PARTEI) blocks to the underlying stream.
 	 *
-	 * @param map a map containing the factions to write. The keys are expected
-	 * 		  to be <tt>Integer</tt> objects containing the ids of the
-	 * 		  factions. The values are expected to be instances of class
-	 * 		  <tt>Faction</tt>.
+	 * @param map a map containing the factions to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the factions. The values are expected
+	 * 		  to be instances of class <tt>Faction</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -810,8 +778,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Faction</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Faction</tt> object to the underlying stream.
 	 *
 	 * @param faction TODO: DOCUMENT ME!
 	 *
@@ -921,8 +888,7 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of ship (SCHIFF) blocks to the underlying stream.
 	 *
-	 * @param ships an iterator containing the<tt>Ship</tt> objects to be
-	 * 		  written.
+	 * @param ships an iterator containing the<tt>Ship</tt> objects to be written.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -940,8 +906,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Ship</tt> object to the underlying
-	 * stream.
+	 * Write the cr representation of a <tt>Ship</tt> object to the underlying stream.
 	 *
 	 * @param ship TODO: DOCUMENT ME!
 	 *
@@ -981,13 +946,11 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if(ship.getOwnerUnit() != null) {
-			write(((UnitID) ship.getOwnerUnit().getID()).intValue() +
-				  ";Kapitaen");
+			write(((UnitID) ship.getOwnerUnit().getID()).intValue() + ";Kapitaen");
 			newLine();
 
 			if(ship.getOwnerUnit().getFaction() != null) {
-				write(((EntityID) ship.getOwnerUnit().getFaction().getID()).intValue() +
-					  ";Partei");
+				write(((EntityID) ship.getOwnerUnit().getFaction().getID()).intValue() + ";Partei");
 				newLine();
 			}
 		}
@@ -1014,8 +977,7 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of building (BURG) blocks to the underlying stream.
 	 *
-	 * @param buildings an iterator containing the<tt>Building</tt> objects to
-	 * 		  be written.
+	 * @param buildings an iterator containing the<tt>Building</tt> objects to be written.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -1033,8 +995,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Building</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Building</tt> object to the underlying stream.
 	 *
 	 * @param building TODO: DOCUMENT ME!
 	 *
@@ -1067,8 +1028,7 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if(building.getOwnerUnit() != null) {
-			write(((UnitID) building.getOwnerUnit().getID()).intValue() +
-				  ";Besitzer");
+			write(((UnitID) building.getOwnerUnit().getID()).intValue() + ";Besitzer");
 			newLine();
 
 			if(building.getOwnerUnit().getFaction() != null) {
@@ -1093,18 +1053,15 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write a skills (TALENTE) block to the underlying stream. The block is
-	 * only written, if <tt>skills</tt> contains at least one <tt>Skill</tt>
-	 * object.
+	 * Write a skills (TALENTE) block to the underlying stream. The block is only written, if
+	 * <tt>skills</tt> contains at least one <tt>Skill</tt> object.
 	 *
 	 * @param skills an iterator over the <tt>Skill</tt> objects to write.
 	 * @param persons the number of persons in the unit this skill belongs to.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public void writeSkills(Iterator skills, int persons)
-					 throws IOException
-	{
+	public void writeSkills(Iterator skills, int persons) throws IOException {
 		if(skills.hasNext()) {
 			write("TALENTE");
 			newLine();
@@ -1116,8 +1073,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Skill</tt> object to the underlying
-	 * stream.
+	 * Write the cr representation of a <tt>Skill</tt> object to the underlying stream.
 	 *
 	 * @param skill TODO: DOCUMENT ME!
 	 * @param persons TODO: DOCUMENT ME!
@@ -1126,20 +1082,18 @@ public class CRWriter extends BufferedWriter {
 	 */
 	public void writeSkill(Skill skill, int persons) throws IOException {
 		if(getServerConformance() || !skill.isLevelChanged()) {
-			write(skill.getPoints() + " " + skill.getLevel() + ";" +
-				  skill.getSkillType().getID());
+			write(skill.getPoints() + " " + skill.getLevel() + ";" + skill.getSkillType().getID());
 		} else {
-			write(skill.getPoints() + " " + skill.getLevel() + " " +
-				  skill.getChangeLevel() + ";" + skill.getSkillType().getID());
+			write(skill.getPoints() + " " + skill.getLevel() + " " + skill.getChangeLevel() + ";" +
+				  skill.getSkillType().getID());
 		}
 
 		newLine();
 	}
 
 	/**
-	 * Write a COMMANDS block to the underlying stream. The block is only
-	 * written, if <tt>list</tt> contains at least one <tt>String</tt> object
-	 * representing an order.
+	 * Write a COMMANDS block to the underlying stream. The block is only written, if <tt>list</tt>
+	 * contains at least one <tt>String</tt> object representing an order.
 	 *
 	 * @param list a list with the <tt>String</tt> objects to be written.
 	 *
@@ -1159,9 +1113,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write a unit's spell (SPRUECHE) block to the underlying stream. The
-	 * block is only written, if <tt>list</tt> contains at least one
-	 * <tt>Spell</tt> object.
+	 * Write a unit's spell (SPRUECHE) block to the underlying stream. The block is only written,
+	 * if <tt>list</tt> contains at least one <tt>Spell</tt> object.
 	 *
 	 * @param spells a list with the<tt>Spell</tt> object names to be written.
 	 *
@@ -1186,8 +1139,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write a unit's combat spell (KAMPFZAUBER) blocks to the underlying
-	 * stream.
+	 * Write a unit's combat spell (KAMPFZAUBER) blocks to the underlying stream.
 	 *
 	 * @param map a Map with the <tt>CombatSpell</tt> objects to be written.
 	 *
@@ -1207,8 +1159,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>CombatSpell</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>CombatSpell</tt> object to the underlying stream.
 	 *
 	 * @param cs TODO: DOCUMENT ME!
 	 *
@@ -1241,9 +1192,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write a unit's items (GEGENSTAENDE) block to the underlying stream. The
-	 * block is only written, if <tt>items</tt> contains at least one
-	 * <tt>Item</tt> object.
+	 * Write a unit's items (GEGENSTAENDE) block to the underlying stream. The block is only
+	 * written, if <tt>items</tt> contains at least one <tt>Item</tt> object.
 	 *
 	 * @param items an iterator over the <tt>Item</tt> objects to be written.
 	 *
@@ -1262,8 +1212,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Item</tt> object to the underlying
-	 * stream.
+	 * Write the cr representation of a <tt>Item</tt> object to the underlying stream.
 	 *
 	 * @param item TODO: DOCUMENT ME!
 	 *
@@ -1437,8 +1386,7 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if(unit.getGuiseFaction() != null) {
-			write(((IntegerID) unit.getGuiseFaction().getID()).intValue() +
-				  ";Verkleidung");
+			write(((IntegerID) unit.getGuiseFaction().getID()).intValue() + ";Verkleidung");
 			newLine();
 		}
 
@@ -1447,11 +1395,11 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if(unit.hasTags()) {
-			java.util.Map	   map = unit.getTagMap();
+			java.util.Map map = unit.getTagMap();
 			java.util.Iterator it = map.keySet().iterator();
 
 			while(it.hasNext()) {
-				Object key   = it.next();
+				Object key = it.next();
 				Object value = map.get(key);
 
 				try {
@@ -1482,8 +1430,7 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a region prices (PREISE) block to the underlying stream.
 	 *
-	 * @param map list containing the<tt>LuxuryPrice</tt> objects to be
-	 * 		  written.
+	 * @param map list containing the<tt>LuxuryPrice</tt> objects to be written.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -1505,11 +1452,10 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write region block containing the luxury prices of the last turn
-	 * (LETZTEPREISE) to the underlying stream.
+	 * Write region block containing the luxury prices of the last turn (LETZTEPREISE) to the
+	 * underlying stream.
 	 *
-	 * @param map a map containing the <tt>LuxuryPrice</tt> objects to be
-	 * 		  written.
+	 * @param map a map containing the <tt>LuxuryPrice</tt> objects to be written.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -1531,8 +1477,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>LuxuryPrice</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>LuxuryPrice</tt> object to the underlying stream.
 	 *
 	 * @param price TODO: DOCUMENT ME!
 	 *
@@ -1544,11 +1489,9 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write a sequence of region border (GRENZE) blocks to the underlying
-	 * stream.
+	 * Write a sequence of region border (GRENZE) blocks to the underlying stream.
 	 *
-	 * @param c collection containing the <tt>Border</tt> objects to be
-	 * 		  written.
+	 * @param c collection containing the <tt>Border</tt> objects to be written.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -1565,8 +1508,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Border</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Border</tt> object to the underlying stream.
 	 *
 	 * @param border TODO: DOCUMENT ME!
 	 *
@@ -1585,10 +1527,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of region blocks to the underlying stream.
 	 *
-	 * @param map a map containing the region to write. The keys are expected
-	 * 		  to be <tt>Integer</tt> objects containing the ids of the
-	 * 		  regions. The values are expected to be instances of class
-	 * 		  <tt>Region</tt>.
+	 * @param map a map containing the region to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the regions. The values are expected
+	 * 		  to be instances of class <tt>Region</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -1618,8 +1559,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>Region</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>Region</tt> object to the underlying stream.
 	 *
 	 * @param region TODO: DOCUMENT ME!
 	 *
@@ -1651,17 +1591,16 @@ public class CRWriter extends BufferedWriter {
 			writeQuotedTag(region.getDescription(), "Beschr");
 		}
 
-		if(includeIslands && !serverConformance &&
-			   (region.getIsland() != null)) {
+		if(includeIslands && !serverConformance && (region.getIsland() != null)) {
 			writeQuotedTag(region.getIsland().getID().toString(), "Insel");
 		}
 
 		if(region.hasTags()) {
-			java.util.Map	   map = region.getTagMap();
+			java.util.Map map = region.getTagMap();
 			java.util.Iterator it = map.keySet().iterator();
 
 			while(it.hasNext()) {
-				Object key   = it.next();
+				Object key = it.next();
 				Object value = map.get(key);
 
 				try {
@@ -1868,8 +1807,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Writes the cr representation of a Scheme object to the underlying
-	 * stream.
+	 * Writes the cr representation of a Scheme object to the underlying stream.
 	 *
 	 * @param scheme TODO: DOCUMENT ME!
 	 *
@@ -1891,9 +1829,7 @@ public class CRWriter extends BufferedWriter {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public void writeRegionResources(Collection resources)
-							  throws IOException
-	{
+	public void writeRegionResources(Collection resources) throws IOException {
 		if((resources == null) || resources.isEmpty()) {
 			return;
 		}
@@ -1904,16 +1840,13 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Writes the cr representation of a region resource object to the
-	 * underlying stream.
+	 * Writes the cr representation of a region resource object to the underlying stream.
 	 *
 	 * @param res TODO: DOCUMENT ME!
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public void writeRegionResource(RegionResource res)
-							 throws IOException
-	{
+	public void writeRegionResource(RegionResource res) throws IOException {
 		write("RESOURCE " + res.getID().toString());
 		newLine();
 		writeQuotedTag(res.getType().getID().toString(), "type");
@@ -1932,8 +1865,7 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write message type blocks to the underlying stream.
 	 *
-	 * @param map a map containing the <tt>MessageType</tt> objects to be
-	 * 		  written as values.
+	 * @param map a map containing the <tt>MessageType</tt> objects to be written as values.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -1948,8 +1880,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of a <tt>MessageType</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of a <tt>MessageType</tt> object to the underlying stream.
 	 *
 	 * @param msgType TODO: DOCUMENT ME!
 	 *
@@ -1962,16 +1893,15 @@ public class CRWriter extends BufferedWriter {
 			return;
 		}
 
-		if((msgType.getID() == null) ||
-			   (((IntegerID) msgType.getID()).intValue() < 0)) {
+		if((msgType.getID() == null) || (((IntegerID) msgType.getID()).intValue() < 0)) {
 			log.warn("CRWriter.writeMessageType(): invalid ID");
 
 			return;
 		}
 
 		if(msgType.getPattern() == null) {
-			log.warn("CRWriter.writeMessageType(): pattern of message type " +
-					 msgType.getID() + " is null");
+			log.warn("CRWriter.writeMessageType(): pattern of message type " + msgType.getID() +
+					 " is null");
 
 			return;
 		}
@@ -2029,14 +1959,12 @@ public class CRWriter extends BufferedWriter {
 
 		writeTranslations(world.translations());
 
-		if(includeRegions && includeUnits &&
-			   ((regions == null) || (regions.size() == 0))) {
+		if(includeRegions && includeUnits && ((regions == null) || (regions.size() == 0))) {
 			if(world.units() != null) {
 				if(world.units().size() != unitsWritten) {
 					int homelessUnitsCounter = 0;
 
-					for(Iterator iter = world.units().values().iterator();
-							iter.hasNext();) {
+					for(Iterator iter = world.units().values().iterator(); iter.hasNext();) {
 						Unit u = (Unit) iter.next();
 
 						if(u.getRegion() == null) {
@@ -2046,10 +1974,8 @@ public class CRWriter extends BufferedWriter {
 
 					if((world.units().size() - homelessUnitsCounter) != unitsWritten) {
 						throw new IOException("Although there are " +
-											  (world.units().size() -
-											  homelessUnitsCounter) +
-											  " units, only " + unitsWritten +
-											  " were written!");
+											  (world.units().size() - homelessUnitsCounter) +
+											  " units, only " + unitsWritten + " were written!");
 					}
 				}
 			}
@@ -2057,13 +1983,12 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Change the quote escape behaviour of this CRWriter. Tilde escapes look
-	 * like: 'a "b c"' -> 'a b~c', whereas a backslash escape works like this:
-	 * 'a "b c"' -> 'a \"b c\"'
+	 * Change the quote escape behaviour of this CRWriter. Tilde escapes look like: 'a "b c"' -> 'a
+	 * b~c', whereas a backslash escape works like this: 'a "b c"' -> 'a \"b c\"'
 	 *
-	 * @param bool if <tt>true</tt>, escape quoted parts of any string written
-	 * 		  to the underlying stream with tildes. If <tt>false</tt>, use
-	 * 		  backslash character to escape the quotation marks themselves.
+	 * @param bool if <tt>true</tt>, escape quoted parts of any string written to the underlying
+	 * 		  stream with tildes. If <tt>false</tt>, use backslash character to escape the
+	 * 		  quotation marks themselves.
 	 */
 	public void setTildeEscapes(boolean bool) {
 		useTildesForQuotes = true;
@@ -2102,8 +2027,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeRegions = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes information about
-	 * the regions in data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes information about the regions in data
+	 * to the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2112,8 +2037,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes information about
-	 * the regions in data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes information about the regions in data
+	 * to the underlying stream.
 	 *
 	 * @param includeRegions TODO: DOCUMENT ME!
 	 */
@@ -2124,8 +2049,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeBuildings = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes information about
-	 * the buildings in data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes information about the buildings in data
+	 * to the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2134,8 +2059,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes information about
-	 * the buildings in data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes information about the buildings in data
+	 * to the underlying stream.
 	 *
 	 * @param includeBuildings TODO: DOCUMENT ME!
 	 */
@@ -2146,8 +2071,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeShips = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes information about
-	 * the ships in data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes information about the ships in data to
+	 * the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2156,8 +2081,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes information about
-	 * the ships in data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes information about the ships in data to
+	 * the underlying stream.
 	 *
 	 * @param includeShips TODO: DOCUMENT ME!
 	 */
@@ -2168,8 +2093,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeUnits = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes information about
-	 * the units in data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes information about the units in data to
+	 * the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2178,8 +2103,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes information about
-	 * the units in data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes information about the units in data to
+	 * the underlying stream.
 	 *
 	 * @param includeUnits TODO: DOCUMENT ME!
 	 */
@@ -2190,8 +2115,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeRegionDetails = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes detailed
-	 * information about the regions in data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes detailed information about the regions
+	 * in data to the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2200,8 +2125,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes detailed
-	 * information about the regions in data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes detailed information about the regions
+	 * in data to the underlying stream.
 	 *
 	 * @param includeRegionDetails TODO: DOCUMENT ME!
 	 */
@@ -2212,8 +2137,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeIslands = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes information about
-	 * islands to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes information about islands to the
+	 * underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2222,8 +2147,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes information about
-	 * islands to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes information about islands to the
+	 * underlying stream.
 	 *
 	 * @param includeIslands TODO: DOCUMENT ME!
 	 */
@@ -2234,8 +2159,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeMessages = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes messages contained
-	 * in the game data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes messages contained in the game data to
+	 * the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2244,8 +2169,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes messages contained
-	 * in the game data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes messages contained in the game data to
+	 * the underlying stream.
 	 *
 	 * @param includeMessages TODO: DOCUMENT ME!
 	 */
@@ -2256,8 +2181,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean includeSpellsAndPotions = true;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes messages contained
-	 * in the game data to the underlying stream.
+	 * Returns whether <tt>write(GameData data)</tt> writes messages contained in the game data to
+	 * the underlying stream.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2266,8 +2191,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes messages contained
-	 * in the game data to the underlying stream.
+	 * Toggles whether <tt>write(GameData data)</tt> writes messages contained in the game data to
+	 * the underlying stream.
 	 *
 	 * @param includeSpellsAndPotions TODO: DOCUMENT ME!
 	 */
@@ -2278,9 +2203,8 @@ public class CRWriter extends BufferedWriter {
 	private boolean serverConformance = false;
 
 	/**
-	 * Returns whether <tt>write(GameData data)</tt> writes a cr that is
-	 * compatible with cr's generated by the Eressea server, i.e. not
-	 * including JavaClient specific data.
+	 * Returns whether <tt>write(GameData data)</tt> writes a cr that is compatible with cr's
+	 * generated by the Eressea server, i.e. not including JavaClient specific data.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2289,9 +2213,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Toggles whether <tt>write(GameData data)</tt> writes a cr that is
-	 * compatible with cr's generated by the Eressea server, i.e. not
-	 * including JavaClient specific data.
+	 * Toggles whether <tt>write(GameData data)</tt> writes a cr that is compatible with cr's
+	 * generated by the Eressea server, i.e. not including JavaClient specific data.
 	 *
 	 * @param serverConformance TODO: DOCUMENT ME!
 	 */
@@ -2302,10 +2225,9 @@ public class CRWriter extends BufferedWriter {
 	/**
 	 * Write a sequence of island blocks to the underlying stream.
 	 *
-	 * @param map a map containing the islands to write. The keys are expected
-	 * 		  to be <tt>Integer</tt> objects containing the ids of the
-	 * 		  islands. The values are expected to be instances of class
-	 * 		  <tt>Island</tt>.
+	 * @param map a map containing the islands to write. The keys are expected to be
+	 * 		  <tt>Integer</tt> objects containing the ids of the islands. The values are expected
+	 * 		  to be instances of class <tt>Island</tt>.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
@@ -2320,8 +2242,7 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Write the cr representation of an <tt>Island</tt> object to the
-	 * underlying stream.
+	 * Write the cr representation of an <tt>Island</tt> object to the underlying stream.
 	 *
 	 * @param island TODO: DOCUMENT ME!
 	 *
@@ -2391,10 +2312,10 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Supply the writer with a collection of regions it should write to the
-	 * underlying stream instead of all regions contained in the game data. If
-	 * regions is null or if there is no element in the supplied collection,
-	 * the writer returns to writing all regions defined in the game data.
+	 * Supply the writer with a collection of regions it should write to the underlying stream
+	 * instead of all regions contained in the game data. If regions is null or if there is no
+	 * element in the supplied collection, the writer returns to writing all regions defined in
+	 * the game data.
 	 *
 	 * @param regions TODO: DOCUMENT ME!
 	 */
@@ -2421,7 +2342,7 @@ public class CRWriter extends BufferedWriter {
 		Collections.sort(sorted);
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
-			String key   = (String) iter.next();
+			String key = (String) iter.next();
 			String value = (String) m.get(key);
 			writeQuotedTag(value, key);
 		}

@@ -33,12 +33,10 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public class UnitCountReplacer extends AbstractRegionReplacer
-	implements EnvironmentDependent
-{
-	private static final Integer  ZERO		   = new Integer(0);
+public class UnitCountReplacer extends AbstractRegionReplacer implements EnvironmentDependent {
+	private static final Integer ZERO = new Integer(0);
 	protected ReplacerEnvironment environment;
-	protected boolean			  countPersons;
+	protected boolean countPersons;
 
 	/**
 	 * Creates a new UnitCountReplacer object.
@@ -104,9 +102,7 @@ public class UnitCountReplacer extends AbstractRegionReplacer
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getDescription() {
-		return com.eressea.util.Translations.getTranslation(this,
-															"description." +
-															countPersons);
+		return com.eressea.util.Translations.getTranslation(this, "description." + countPersons);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

@@ -25,10 +25,7 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class TempUnit extends Unit {
-	/**
-	 * If this is a temp unit the parent is the unit that created this temp
-	 * unit.
-	 */
+	/** If this is a temp unit the parent is the unit that created this temp unit. */
 	private Unit parent = null;
 
 	/**
@@ -56,8 +53,7 @@ public class TempUnit extends Unit {
 	}
 
 	/**
-	 * Returns the parent of this temp unit. If this is not a temp unit, null
-	 * is returned.
+	 * Returns the parent of this temp unit. If this is not a temp unit, null is returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -86,8 +82,7 @@ public class TempUnit extends Unit {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newTemp TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, TempUnit curTemp, GameData newGD,
-							 TempUnit newTemp) {
+	public static void merge(GameData curGD, TempUnit curTemp, GameData newGD, TempUnit newTemp) {
 		Unit.merge(curGD, curTemp, newGD, newTemp);
 
 		if(curTemp.getParent() != null) {

@@ -40,15 +40,15 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class RendererLoader extends Object {
-	private static final Logger log					  = Logger.getInstance(RendererLoader.class);
-	private File			    directory;
-	private String			    dirString;
-	private ZipClassLoader	    loader;
-	private Class			    paramClass[];
-	private Object			    paramInst[];
-	private Properties		    settings;
+	private static final Logger log = Logger.getInstance(RendererLoader.class);
+	private File directory;
+	private String dirString;
+	private ZipClassLoader loader;
+	private Class paramClass[];
+	private Object paramInst[];
+	private Properties settings;
 	private static final String RENDERER_CLASS_STRING = "com.eressea.swing.map.ExternalMapCellRenderer";
-	private static Class	    RENDERER_CLASS;
+	private static Class RENDERER_CLASS;
 
 	/**
 	 * Creates new RendererLoader
@@ -60,21 +60,20 @@ public class RendererLoader extends Object {
 	 *
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public RendererLoader(File dir, String sDir, CellGeometry geom,
-						  Properties sett) {
+	public RendererLoader(File dir, String sDir, CellGeometry geom, Properties sett) {
 		try {
-			paramClass    = new Class[2];
+			paramClass = new Class[2];
 			paramClass[0] = geom.getClass();
 			paramClass[1] = (new Properties()).getClass();
 
-			paramInst    = new Object[2];
+			paramInst = new Object[2];
 			paramInst[0] = geom;
 			paramInst[1] = sett;
-			settings     = sett;
+			settings = sett;
 
 			directory = new File(dir, sDir);
 			;
-			loader    = new ZipClassLoader();
+			loader = new ZipClassLoader();
 			dirString = sDir;
 
 			RENDERER_CLASS = Class.forName(RENDERER_CLASS_STRING);
@@ -91,8 +90,7 @@ public class RendererLoader extends Object {
 	public Collection loadRenderers() {
 		log.info("Searching for additional renderers...");
 
-		if(settings.getProperty("RendererLoader.dontSearchAdditionalRenderers",
-									"false").equals("true")) {
+		if(settings.getProperty("RendererLoader.dontSearchAdditionalRenderers", "false").equals("true")) {
 			log.info("Searching for additional renderers disabled.");
 
 			return null;
@@ -102,19 +100,18 @@ public class RendererLoader extends Object {
 
 		try {
 			String names[] = directory.list();
-			List   list = CollectionFactory.createArrayList();
+			List list = CollectionFactory.createArrayList();
 
 			for(int i = 0; i < names.length; i++) {
-				boolean		 found = false;
-				boolean		 error = false;
-				StringBuffer msg   = new StringBuffer();
+				boolean found = false;
+				boolean error = false;
+				StringBuffer msg = new StringBuffer();
 
 				try {
 					if(names[i].endsWith(".jar") || names[i].endsWith(".zip")) {
 						msg.append("Checking " + names[i] + "...");
 
-						ZipFile jar = new ZipFile(dirString + File.separator +
-												  names[i]);
+						ZipFile jar = new ZipFile(dirString + File.separator + names[i]);
 						loader.setToLoad(jar);
 
 						Enumeration e = jar.entries();
@@ -122,11 +119,10 @@ public class RendererLoader extends Object {
 						while(e.hasMoreElements()) {
 							ZipEntry next = (ZipEntry) e.nextElement();
 
-							if(!next.isDirectory() &&
-								   next.getName().endsWith("Renderer.class")) {
+							if(!next.isDirectory() && next.getName().endsWith("Renderer.class")) {
 								String name = next.getName();
-								name = name.substring(0, name.indexOf(".class"))
-										   .replace('\\', '.').replace('/', '.');
+								name = name.substring(0, name.indexOf(".class")).replace('\\', '.')
+										   .replace('/', '.');
 
 								try {
 									Class rclass = loader.loadClass(name);
@@ -135,7 +131,7 @@ public class RendererLoader extends Object {
 										try {
 											try {
 												Constructor constr = rclass.getConstructor(paramClass);
-												Object	    obj = constr.newInstance(paramInst);
+												Object obj = constr.newInstance(paramInst);
 												loadResourceBundle(jar, obj);
 												list.add(obj); // try with arguments
 												found = true;
@@ -148,8 +144,7 @@ public class RendererLoader extends Object {
 										} catch(Exception loadException) {
 											error = true;
 											log.info(msg);
-											log.info("Unable to load " +
-													 rclass.getName() + ':' +
+											log.info("Unable to load " + rclass.getName() + ':' +
 													 loadException + '!');
 										}
 									}
@@ -171,12 +166,11 @@ public class RendererLoader extends Object {
 			}
 
 			if(list.size() > 0) {
-				Iterator     it  = list.iterator();
+				Iterator it = list.iterator();
 				StringBuffer msg = new StringBuffer();
 
 				if(list.size() > 1) {
-					msg.append("Additional renderers(" + list.size() +
-							   ") loaded: ");
+					msg.append("Additional renderers(" + list.size() + ") loaded: ");
 				} else {
 					msg.append("Additional renderer loaded: ");
 				}
@@ -192,9 +186,8 @@ public class RendererLoader extends Object {
 				log.info(msg);
 
 				long end = System.currentTimeMillis();
-				log.info("Searching for additional renderers done. Found " +
-						 list.size() + " instances in " +
-						 String.valueOf((end - start)) + " msecs");
+				log.info("Searching for additional renderers done. Found " + list.size() +
+						 " instances in " + String.valueOf((end - start)) + " msecs");
 
 				return list;
 			}
@@ -202,20 +195,17 @@ public class RendererLoader extends Object {
 		}
 
 		long end = System.currentTimeMillis();
-		log.info("Searching for additional renderers done. Found " + "0" +
-				 " instances in " + String.valueOf((end - start)) + " msecs");
+		log.info("Searching for additional renderers done. Found " + "0" + " instances in " +
+				 String.valueOf((end - start)) + " msecs");
 
 		return null;
 	}
 
 	protected void loadResourceBundle(ZipFile jar, Object obj) {
 		ResourceBundle rb = Translations.loadResourceBundle("res/lang/" +
-															obj.getClass()
-															   .getName()
-															   .replace('.', '-')
-															   .toLowerCase(),
-															Locales.getGUILocale(),
-															loader);
+															obj.getClass().getName()
+															   .replace('.', '-').toLowerCase(),
+															Locales.getGUILocale(), loader);
 
 		if(rb == null) {
 			throw new RuntimeException("ResourceBundle not found.");
@@ -263,22 +253,21 @@ public class RendererLoader extends Object {
 		protected Class findClass(String name) throws ClassNotFoundException {
 			try {
 				//find the according entry
-				ZipEntry entry = jar.getEntry(name.replace('.', '\\') +
-											  ".class");
+				ZipEntry entry = jar.getEntry(name.replace('.', '\\') + ".class");
 
 				if(entry == null) {
 					entry = jar.getEntry(name.replace('.', '/') + ".class");
 				}
 
 				//allocate buffer
-				long size  = entry.getSize();
+				long size = entry.getSize();
 				byte buf[] = new byte[(int) size];
 
 				//open connection
 				InputStream in = jar.getInputStream(entry);
 
-				int		    curSize = 0;
-				int		    i	    = 0;
+				int curSize = 0;
+				int i = 0;
 
 				do {
 					i = in.read(buf, curSize, (int) (size - curSize));

@@ -57,22 +57,21 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
 /**
- * A GUI for Vorlage by Steffen Schuemann (Gulrak). See <A
- * HREF="http://www.gulrak.de/">Gulrak's Homepage</A> for details on Vorlage.
- * This class can be used as a stand-alone application or can be integrated as
- * dialog into a different application.
+ * A GUI for Vorlage by Steffen Schuemann (Gulrak). See <A HREF="http://www.gulrak.de/">Gulrak's
+ * Homepage</A> for details on Vorlage. This class can be used as a stand-alone application or can
+ * be integrated as dialog into a different application.
  */
 public class JVorlage extends InternationalizedDialog {
-	private static final Logger log			    = Logger.getInstance(JVorlage.class);
-	private Properties		    settings	    = null;
-	private boolean			    standAlone	    = false;
-	private JComboBox		    comboInputFile  = null;
-	private JComboBox		    comboOutputFile = null;
-	private JComboBox		    comboScriptFile = null;
-	private JTextField		    txtVorlageFile  = null;
-	private JCheckBox		    chkOptionCR     = null;
-	private JTextField		    txtOptions	    = null;
-	private JTextArea		    txtOutput	    = null;
+	private static final Logger log = Logger.getInstance(JVorlage.class);
+	private Properties settings = null;
+	private boolean standAlone = false;
+	private JComboBox comboInputFile = null;
+	private JComboBox comboOutputFile = null;
+	private JComboBox comboScriptFile = null;
+	private JTextField txtVorlageFile = null;
+	private JCheckBox chkOptionCR = null;
+	private JTextField txtOptions = null;
+	private JTextArea txtOutput = null;
 
 	/**
 	 * Create a stand-alone instance of JVorlage.
@@ -110,80 +109,76 @@ public class JVorlage extends InternationalizedDialog {
 		setContentPane(getMainPane());
 		setTitle(getString("window.title"));
 
-		int width = Math.max(Integer.parseInt(settings.getProperty("JVorlage.width",
-																   "450")), 450);
-		int height = Math.max(Integer.parseInt(settings.getProperty("JVorlage.height",
-																	"310")), 310);
+		int width = Math.max(Integer.parseInt(settings.getProperty("JVorlage.width", "450")), 450);
+		int height = Math.max(Integer.parseInt(settings.getProperty("JVorlage.height", "310")), 310);
 		setSize(width, height);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int		  x = Integer.parseInt(settings.getProperty("JVorlage.x",
-															((screen.width -
-															width) / 2) + ""));
+		int x = Integer.parseInt(settings.getProperty("JVorlage.x",
+													  ((screen.width - width) / 2) + ""));
 		int y = Integer.parseInt(settings.getProperty("JVorlage.y",
-													  ((screen.height - height) / 2) +
-													  ""));
+													  ((screen.height - height) / 2) + ""));
 		setLocation(x, y);
 	}
 
 	private Container getMainPane() {
-		JPanel			   mainPanel = new JPanel(new GridBagLayout());
+		JPanel mainPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		mainPanel.setBorder(new EmptyBorder(4, 4, 4, 4));
 
-		c.anchor     = GridBagConstraints.NORTH;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
-		c.insets     = new Insets(5, 5, 5, 5);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(5, 5, 5, 5);
 		mainPanel.add(getInfoPanel(), c);
 
-		c.anchor     = GridBagConstraints.NORTH;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 2;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
-		c.insets     = new Insets(0, 0, 0, 0);
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 0, 0, 0);
 		mainPanel.add(getButtonPanel(), c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
-		c.insets     = new Insets(0, 0, 0, 5);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 0, 0, 5);
 		mainPanel.add(getFilePanel(), c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 2;
-		c.gridwidth  = 2;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
-		c.insets     = new Insets(0, 0, 0, 0);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
+		c.insets = new Insets(0, 0, 0, 0);
 		mainPanel.add(getOptionPanel(), c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 3;
-		c.gridwidth  = 2;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.BOTH;
-		c.weightx    = 0.2;
-		c.weighty    = 0.2;
-		c.insets     = new Insets(0, 0, 0, 0);
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.2;
+		c.weighty = 0.2;
+		c.insets = new Insets(0, 0, 0, 0);
 		mainPanel.add(getOutputPanel(), c);
 
 		return mainPanel;
@@ -222,8 +217,7 @@ public class JVorlage extends InternationalizedDialog {
 	}
 
 	private Container getFilePanel() {
-		comboInputFile = new JComboBox(getList(settings.getProperty("JVorlage.inputFile",
-																	""))
+		comboInputFile = new JComboBox(getList(settings.getProperty("JVorlage.inputFile", ""))
 										   .toArray());
 		comboInputFile.setEditable(true);
 		comboInputFile.setToolTipText(getString("combo.inputfile.tooltip"));
@@ -236,8 +230,7 @@ public class JVorlage extends InternationalizedDialog {
 		btnInputFile.setToolTipText(getString("btn.inputfile.tooltip"));
 		btnInputFile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String inputFile = getFileName((String) comboInputFile.getSelectedItem(),
-												   true,
+					String inputFile = getFileName((String) comboInputFile.getSelectedItem(), true,
 												   new EresseaFileFilter(EresseaFileFilter.CR_FILTER));
 
 					if(inputFile != null) {
@@ -247,8 +240,7 @@ public class JVorlage extends InternationalizedDialog {
 				}
 			});
 
-		comboOutputFile = new JComboBox(getList(settings.getProperty("JVorlage.outputFile",
-																	 ""))
+		comboOutputFile = new JComboBox(getList(settings.getProperty("JVorlage.outputFile", ""))
 											.toArray());
 		comboOutputFile.setEditable(true);
 		comboOutputFile.setToolTipText(getString("combo.outputfile.tooltip"));
@@ -272,8 +264,7 @@ public class JVorlage extends InternationalizedDialog {
 				}
 			});
 
-		comboScriptFile = new JComboBox(getList(settings.getProperty("JVorlage.scriptFile",
-																	 ""))
+		comboScriptFile = new JComboBox(getList(settings.getProperty("JVorlage.scriptFile", ""))
 											.toArray());
 		comboScriptFile.setEditable(true);
 		comboScriptFile.setToolTipText(getString("combo.scriptfile.tooltip"));
@@ -297,8 +288,7 @@ public class JVorlage extends InternationalizedDialog {
 				}
 			});
 
-		txtVorlageFile = new JTextField(settings.getProperty("JVorlage.vorlageFile",
-															 ""));
+		txtVorlageFile = new JTextField(settings.getProperty("JVorlage.vorlageFile", ""));
 		txtVorlageFile.setEditable(true);
 		txtVorlageFile.setToolTipText(getString("txt.vorlagefile.tooltip"));
 
@@ -310,8 +300,7 @@ public class JVorlage extends InternationalizedDialog {
 		btnVorlageFile.setToolTipText(getString("btn.vorlagefile.tooltip"));
 		btnVorlageFile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String vorlageFile = getFileName(txtVorlageFile.getText(),
-													 false,
+					String vorlageFile = getFileName(txtVorlageFile.getText(), false,
 													 new EresseaFileFilter("exe",
 																		   getString("filter.executable.description")));
 
@@ -328,119 +317,119 @@ public class JVorlage extends InternationalizedDialog {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// inputFile
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(lblInputFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlFiles.add(comboInputFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 2;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(btnInputFile, c);
 
 		// outputFile
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(lblOutputFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlFiles.add(comboOutputFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 2;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(btnOutputFile, c);
 
 		// scriptFile
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 2;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(lblScriptFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 2;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlFiles.add(comboScriptFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 2;
-		c.gridy		 = 2;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(btnScriptFile, c);
 
 		// vorlageFile
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 3;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(lblVorlageFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 3;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 3;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlFiles.add(txtVorlageFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 2;
-		c.gridy		 = 3;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+		c.gridy = 3;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(btnVorlageFile, c);
 
 		return pnlFiles;
@@ -448,8 +437,7 @@ public class JVorlage extends InternationalizedDialog {
 
 	private Container getOptionPanel() {
 		chkOptionCR = new JCheckBox(getString("chk.outputcr.caption"),
-									(new Boolean(settings.getProperty("JVorlage.optionCR",
-																	  "false"))).booleanValue());
+									(new Boolean(settings.getProperty("JVorlage.optionCR", "false"))).booleanValue());
 		chkOptionCR.setToolTipText(getString("chk.outputcr.tooltip"));
 
 		txtOptions = new JTextField(settings.getProperty("JVorlage.options", ""));
@@ -464,32 +452,32 @@ public class JVorlage extends InternationalizedDialog {
 											  getString("border.options")));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 2;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlOptions.add(chkOptionCR, c);
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlOptions.add(lblOptions, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlOptions.add(txtOptions, c);
 
 		return pnlOptions;
@@ -537,24 +525,24 @@ public class JVorlage extends InternationalizedDialog {
 		c.weighty = 0.0;
 		c.insets = new Insets(1, 1, 5, 1);
 		pnlOutput.add(btnShowArgs, c);*/
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 2;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.BOTH;
-		c.weightx    = 0.1;
-		c.weighty    = 0.1;
-		c.insets     = new Insets(1, 1, 1, 1);
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.1;
+		c.weighty = 0.1;
+		c.insets = new Insets(1, 1, 1, 1);
 		pnlOutput.add(new JScrollPane(txtOutput), c);
 
 		return pnlOutput;
 	}
 
 	/**
-	 * Stores all properties of JVorlage that should be preserved to the global
-	 * Properties object. In standalone mode this also saves this object to
-	 * the file 'JVorlage.ini' in the user's home directory.
+	 * Stores all properties of JVorlage that should be preserved to the global Properties object.
+	 * In standalone mode this also saves this object to the file 'JVorlage.ini' in the user's
+	 * home directory.
 	 */
 	private void storeSettings() {
 		settings.setProperty("JVorlage.width", getWidth() + "");
@@ -567,15 +555,13 @@ public class JVorlage extends InternationalizedDialog {
 		settings.setProperty("JVorlage.scriptFile", getString(comboScriptFile));
 		settings.setProperty("JVorlage.vorlageFile", txtVorlageFile.getText());
 
-		settings.setProperty("JVorlage.optionCR",
-							 (new Boolean(chkOptionCR.isSelected())).toString());
+		settings.setProperty("JVorlage.optionCR", (new Boolean(chkOptionCR.isSelected())).toString());
 		settings.setProperty("JVorlage.options", txtOptions.getText());
 
 		if(standAlone == true) {
 			try {
 				settings.store(new FileOutputStream(new File(System.getProperty("user.home"),
-															 "JVorlage.ini")),
-							   "");
+															 "JVorlage.ini")), "");
 			} catch(IOException e) {
 				log.error("JVorlage.storeSettings()", e);
 			}
@@ -583,23 +569,21 @@ public class JVorlage extends InternationalizedDialog {
 	}
 
 	/**
-	 * Executes Vorlage with the specified options and returns the output
-	 * Vorlage produced.
+	 * Executes Vorlage with the specified options and returns the output Vorlage produced.
 	 *
 	 * @param options TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private StringBuffer execVorlage(String options) {
-		String		 commandLine = null;
-		StringBuffer sb		  = null;
-		FileReader   reader   = null;
-		File		 tempFile = null;
-		File		 vorlage  = new File(txtVorlageFile.getText());
+		String commandLine = null;
+		StringBuffer sb = null;
+		FileReader reader = null;
+		File tempFile = null;
+		File vorlage = new File(txtVorlageFile.getText());
 
 		if((vorlage.exists() == false) || (vorlage.canRead() == false)) {
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.invalidvorlage.text"),
+			JOptionPane.showMessageDialog(this, getString("msg.invalidvorlage.text"),
 										  getString("msg.invalidvorlage.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -613,8 +597,7 @@ public class JVorlage extends InternationalizedDialog {
 		} catch(Exception e) {
 			log.error("JVorlage.execVorlage(): unable to create temporary file for Vorlage output",
 					  e);
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.tempfileerror.text"),
+			JOptionPane.showMessageDialog(this, getString("msg.tempfileerror.text"),
 										  getString("msg.tempfileerror.title"),
 										  JOptionPane.ERROR_MESSAGE);
 		}
@@ -626,8 +609,8 @@ public class JVorlage extends InternationalizedDialog {
 
 		commandLine += options;
 
-		Process p     = null;
-		long    start = System.currentTimeMillis();
+		Process p = null;
+		long start = System.currentTimeMillis();
 
 		try {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -643,8 +626,7 @@ public class JVorlage extends InternationalizedDialog {
 			}
 
 			if((System.currentTimeMillis() - start) > 5000) {
-				if(JOptionPane.showConfirmDialog(this,
-													 getString("msg.stopvorlage.text"),
+				if(JOptionPane.showConfirmDialog(this, getString("msg.stopvorlage.text"),
 													 getString("msg.stopvorlage.title"),
 													 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					p.destroy();
@@ -684,7 +666,7 @@ public class JVorlage extends InternationalizedDialog {
 			try {
 				sb = new StringBuffer();
 
-				String			 line = null;
+				String line = null;
 				LineNumberReader lnr = new LineNumberReader(reader);
 
 				line = lnr.readLine();
@@ -694,8 +676,7 @@ public class JVorlage extends InternationalizedDialog {
 					line = lnr.readLine();
 				}
 			} catch(IOException e) {
-				log.error("JVorlage.execVorlage(): unable to read the temporary output file: ",
-						  e);
+				log.error("JVorlage.execVorlage(): unable to read the temporary output file: ", e);
 				sb = null;
 			}
 
@@ -713,9 +694,8 @@ public class JVorlage extends InternationalizedDialog {
 	}
 
 	/**
-	 * Assembles a set of options for Vorlage from the user's input in the GUI
-	 * elements and executes Vorlage, writing its output to the output text
-	 * area.
+	 * Assembles a set of options for Vorlage from the user's input in the GUI elements and
+	 * executes Vorlage, writing its output to the output text area.
 	 */
 	private void execUsersVorlage() {
 		String commandLine = new String();
@@ -730,8 +710,7 @@ public class JVorlage extends InternationalizedDialog {
 
 		if((comboScriptFile.getSelectedItem() != null) &&
 			   (comboScriptFile.getSelectedItem().equals("") == false)) {
-			commandLine += (" -i " +
-			(String) comboScriptFile.getSelectedItem());
+			commandLine += (" -i " + (String) comboScriptFile.getSelectedItem());
 		}
 
 		commandLine += (" -f -o " + (String) comboOutputFile.getSelectedItem());
@@ -745,8 +724,8 @@ public class JVorlage extends InternationalizedDialog {
 	}
 
 	/**
-	 * Converts the elements in the specified combo box to one String
-	 * seperating the string representation of the items by '|' characters.
+	 * Converts the elements in the specified combo box to one String seperating the string
+	 * representation of the items by '|' characters.
 	 *
 	 * @param combo TODO: DOCUMENT ME!
 	 *
@@ -771,15 +750,15 @@ public class JVorlage extends InternationalizedDialog {
 	}
 
 	/**
-	 * Takes a String containing substrings separated by '|' characters and
-	 * assembles a list from that.
+	 * Takes a String containing substrings separated by '|' characters and assembles a list from
+	 * that.
 	 *
 	 * @param str TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private List getList(String str) {
-		List		    retVal = CollectionFactory.createLinkedList();
+		List retVal = CollectionFactory.createLinkedList();
 		StringTokenizer t = new StringTokenizer(str, "|");
 
 		while(t.hasMoreElements() == true) {
@@ -800,8 +779,8 @@ public class JVorlage extends InternationalizedDialog {
 	}
 
 	/**
-	 * Returns a a file name by showing the user a file selection dialog. If
-	 * the user's selection is empty, null is returned.
+	 * Returns a a file name by showing the user a file selection dialog. If the user's selection
+	 * is empty, null is returned.
 	 *
 	 * @param defaultFile TODO: DOCUMENT ME!
 	 * @param multSel TODO: DOCUMENT ME!
@@ -809,12 +788,11 @@ public class JVorlage extends InternationalizedDialog {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private String getFileName(String defaultFile, boolean multSel,
-							   FileFilter ff) {
-		StringBuffer   sb	   = new StringBuffer();
-		File		   files[] = null;
+	private String getFileName(String defaultFile, boolean multSel, FileFilter ff) {
+		StringBuffer sb = new StringBuffer();
+		File files[] = null;
 
-		JFileChooser   fc = new JFileChooser();
+		JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(ff);
 		fc.setFileFilter(ff);
 		fc.setMultiSelectionEnabled(multSel);
@@ -827,7 +805,7 @@ public class JVorlage extends InternationalizedDialog {
 			if(multSel) {
 				files = fc.getSelectedFiles();
 			} else {
-				files    = new File[1];
+				files = new File[1];
 				files[0] = fc.getSelectedFile();
 			}
 		}
@@ -890,41 +868,33 @@ public class JVorlage extends InternationalizedDialog {
 			defaultTranslations.put("combo.inputfile.tooltip",
 									"Vorlage generates the orders or a new CR from one or more source CRs.");
 			defaultTranslations.put("lbl.inputfile.caption", "Source CR(s): ");
-			defaultTranslations.put("btn.inputfile.tooltip",
-									"Opens a file chooser dialog.");
+			defaultTranslations.put("btn.inputfile.tooltip", "Opens a file chooser dialog.");
 			defaultTranslations.put("combo.outputfile.tooltip",
 									"Vorlage will write the generated orders or the new cr to this file.");
 			defaultTranslations.put("lbl.outputfile.caption", "Target file: ");
-			defaultTranslations.put("btn.outputfile.tooltip",
-									"Opens a file chooser dialog.");
+			defaultTranslations.put("btn.outputfile.tooltip", "Opens a file chooser dialog.");
 			defaultTranslations.put("combo.scriptfile.tooltip",
 									"Script files can be used to supply Vorlage with user defined functions.");
 			defaultTranslations.put("lbl.scriptfile.caption", "Script file: ");
-			defaultTranslations.put("btn.scriptfile.tooltip",
-									"Opens a file chooser dialog.");
+			defaultTranslations.put("btn.scriptfile.tooltip", "Opens a file chooser dialog.");
 			defaultTranslations.put("txt.vorlagefile.tooltip",
 									"The fully qualified path to the Vorlage executable.");
 			defaultTranslations.put("lbl.vorlagefile.caption", "Vorlage: ");
-			defaultTranslations.put("btn.vorlagefile.tooltip",
-									"Opens a file chooser dialog.");
-			defaultTranslations.put("filter.executable.description",
-									"Executable");
+			defaultTranslations.put("btn.vorlagefile.tooltip", "Opens a file chooser dialog.");
+			defaultTranslations.put("filter.executable.description", "Executable");
 			defaultTranslations.put("border.files", "Files");
-			defaultTranslations.put("chk.outputcr.caption",
-									"Output as computer report");
+			defaultTranslations.put("chk.outputcr.caption", "Output as computer report");
 			defaultTranslations.put("chk.outputcr.tooltip",
 									"Forces Vorlage to generate the orders into a complete cr instead of a text file.");
 			defaultTranslations.put("txt.options.tooltip",
 									"Additional command line parameters for Vorlage");
-			defaultTranslations.put("lbl.options.caption",
-									"Additional parameters: ");
+			defaultTranslations.put("lbl.options.caption", "Additional parameters: ");
 			defaultTranslations.put("border.options", "Options");
 			defaultTranslations.put("border.output", "Output");
 
 			defaultTranslations.put("msg.invalidvorlage.text",
 									"The specified Vorlage executable does not exist.");
-			defaultTranslations.put("msg.invalidvorlage.title",
-									"File does not exist");
+			defaultTranslations.put("msg.invalidvorlage.title", "File does not exist");
 			defaultTranslations.put("msg.tempfileerror.text",
 									"Unable to create a temporary file for catching Vorlage's output.");
 			defaultTranslations.put("msg.tempfileerror.title", "Error");

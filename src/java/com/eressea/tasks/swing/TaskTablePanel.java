@@ -57,13 +57,13 @@ import com.eressea.util.logging.Logger;
 /**
  * A panel for showing reviews about unit, region and/or gamedata.
  */
-public class TaskTablePanel extends InternationalizedDataPanel
-	implements UnitOrdersListener, SelectionListener
+public class TaskTablePanel extends InternationalizedDataPanel implements UnitOrdersListener,
+																		  SelectionListener
 {
-	private static final Logger log		   = Logger.getInstance(TaskTablePanel.class);
-	protected TaskTableModel    model;
-	protected JTable		    table;
-	protected List			    inspectors;
+	private static final Logger log = Logger.getInstance(TaskTablePanel.class);
+	protected TaskTableModel model;
+	protected JTable table;
+	protected List inspectors;
 
 	/**
 	 * Creates a new TaskTablePanel object.
@@ -107,12 +107,10 @@ public class TaskTablePanel extends InternationalizedDataPanel
 																					.getMinWidth());
 
 		// Row 1 ("!"): smallest possible, not resizeable
-		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS)
-			 .setResizable(false);
-		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS)
-			 .setMaxWidth(table.getColumnModel()
-							   .getColumn(TaskTableModel.UNKNOWN_POS)
-							   .getMinWidth());
+		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setResizable(false);
+		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setMaxWidth(table.getColumnModel()
+																					  .getColumn(TaskTableModel.UNKNOWN_POS)
+																					  .getMinWidth());
 
 		// Row 2 ("Line"): smallest possible, not resizeable
 		table.getColumnModel().getColumn(TaskTableModel.LINE_POS).setResizable(true);
@@ -125,11 +123,10 @@ public class TaskTablePanel extends InternationalizedDataPanel
 				public void mouseClicked(MouseEvent e) {
 					if(e.getClickCount() == 2) {
 						JTable target = (JTable) e.getSource();
-						int    row = target.getSelectedRow();
+						int row = target.getSelectedRow();
 
 						if(log.isDebugEnabled()) {
-							log.debug("TaskTablePanel: Double click on row " +
-									  row);
+							log.debug("TaskTablePanel: Double click on row " + row);
 						}
 
 						selectObjectOnRow(row);
@@ -143,15 +140,15 @@ public class TaskTablePanel extends InternationalizedDataPanel
 	}
 
 	private void selectObjectOnRow(int row) {
-		Vector v   = (Vector) model.getDataVector().get(row);
+		Vector v = (Vector) model.getDataVector().get(row);
 		Object obj = v.get(TaskTableModel.OBJECT_POS);
 		dispatcher.fire(new SelectionEvent(this, null, obj));
 	}
 
-	private static final int     RECALL_IN_MS						 = 10;
+	private static final int RECALL_IN_MS = 10;
 	private static final boolean REGIONS_WITH_UNCONFIRMED_UNITS_ONLY = true;
-	private Timer				 timer;
-	private Iterator			 regionsIterator;
+	private Timer timer;
+	private Iterator regionsIterator;
 
 	private void initTimer() {
 		if(model != null) {
@@ -254,8 +251,7 @@ public class TaskTablePanel extends InternationalizedDataPanel
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
-		if((e.getSource() == this) ||
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSource() == this) || (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			// ignore multiple region selections
 			return;
 		}
@@ -387,12 +383,12 @@ public class TaskTablePanel extends InternationalizedDataPanel
 			}
 		}
 
-		private static final int IMAGE_POS   = 0;
+		private static final int IMAGE_POS = 0;
 		private static final int UNKNOWN_POS = 1;
 		private static final int PROBLEM_POS = 2;
-		private static final int OBJECT_POS  = 3;
-		private static final int LINE_POS    = 4;
-		private static final int REGION_POS  = 5;
+		private static final int OBJECT_POS = 3;
+		private static final int LINE_POS = 4;
+		private static final int REGION_POS = 5;
 
 		/**
 		 * TODO: DOCUMENT ME!
@@ -416,12 +412,11 @@ public class TaskTablePanel extends InternationalizedDataPanel
 			Vector dataVector = getDataVector();
 
 			for(int i = getRowCount() - 1; i >= 0; i--) {
-				Vector  v = (Vector) dataVector.get(i);
+				Vector v = (Vector) dataVector.get(i);
 				Problem p = (Problem) v.get(PROBLEM_POS);
 
 				// Inspector and region: only non unit objects will be removed
-				if(p.getInspector().equals(inspector) &&
-					   p.getSource().equals(source)) {
+				if(p.getInspector().equals(inspector) && p.getSource().equals(source)) {
 					removeRow(i);
 				}
 			}

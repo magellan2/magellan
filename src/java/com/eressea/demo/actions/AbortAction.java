@@ -64,8 +64,7 @@ public class AbortAction extends MenuAction {
 			defaultTranslations.put("name", "Abort");
 			defaultTranslations.put("mnemonic", "b");
 			defaultTranslations.put("accelerator", "");
-			defaultTranslations.put("tooltip",
-									"Exit Magellan without saving settings and options");
+			defaultTranslations.put("tooltip", "Exit Magellan without saving settings and options");
 		}
 
 		return defaultTranslations;

@@ -89,13 +89,12 @@ public class Region extends UnitContainer {
 	public int oldStones = -1;
 
 	/**
-	 * The wage persons can earn by working in this region. Unfortunately this
-	 * is not the wage peasants earn but the wage a player's persons earn and
-	 * to make it worse, the eressea server puts different values into CRs
-	 * depending of the race of the 'owner' faction of the report. I.e. an orc
-	 * faction gets a different value than factions of other races. Therefore
-	 * there is a getPeasantWage() method returning how much a peasant earns
-	 * in this region depending on the biggest castle.
+	 * The wage persons can earn by working in this region. Unfortunately this is not the wage
+	 * peasants earn but the wage a player's persons earn and to make it worse, the eressea server
+	 * puts different values into CRs depending of the race of the 'owner' faction of the report.
+	 * I.e. an orc faction gets a different value than factions of other races. Therefore there is
+	 * a getPeasantWage() method returning how much a peasant earns in this region depending on
+	 * the biggest castle.
 	 */
 	public int wage = -1;
 
@@ -120,8 +119,7 @@ public class Region extends UnitContainer {
 	public int oldRecruits = -1;
 
 	/**
-	 * Constructs a new Region object uniquely identifiable by the specified
-	 * id.
+	 * Constructs a new Region object uniquely identifiable by the specified id.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 * @param data TODO: DOCUMENT ME!
@@ -202,8 +200,7 @@ public class Region extends UnitContainer {
 
 		// peasants == peasants - (maxRecruit() - recruited peasants ) + givenPersons
 		return (this.peasants == -1) ? (-1)
-									 : (this.peasants - zu.getPersons() +
-									 zu.getModifiedPersons() +
+									 : (this.peasants - zu.getPersons() + zu.getModifiedPersons() +
 									 zu.getGivenPersons());
 	}
 
@@ -263,63 +260,59 @@ public class Region extends UnitContainer {
 	/**
 	 * Sets a string constant indicating why this region is visible.
 	 *
-	 * @param vis a String object or null to indicate that the visibility
-	 * 		  cannot be determined.
+	 * @param vis a String object or null to indicate that the visibility cannot be determined.
 	 */
 	public void setVisibility(String vis) {
 		this.visibility = vis;
 	}
 
 	/**
-	 * The prices for luxury goods in this region. The map contains the name of
-	 * the luxury good as instance of class <tt>StringID</tt> as key and
-	 * instances of class <tt>LuxuryPrice</tt> as values.
+	 * The prices for luxury goods in this region. The map contains the name of the luxury good as
+	 * instance of class <tt>StringID</tt> as key and instances of class <tt>LuxuryPrice</tt> as
+	 * values.
 	 */
 	public Map prices = null;
 
 	/** The prices of luxury goods of the last turn. */
 	public Map oldPrices = null;
 
-	/**
-	 * The messages for this region. The list consists of objects of class
-	 * <tt>Message</tt>.
-	 */
+	/** The messages for this region. The list consists of objects of class <tt>Message</tt>. */
 	public List messages = null;
 
 	/**
-	 * Special messages related to this region. The list contains instances of
-	 * class <tt>Message</tt> with type -1 and only the text set.
+	 * Special messages related to this region. The list contains instances of class
+	 * <tt>Message</tt> with type -1 and only the text set.
 	 */
 	public List events = null;
 
 	/**
-	 * Special messages related to this region. The list contains instances of
-	 * class <tt>Message</tt> with type -1 and only the text set.
+	 * Special messages related to this region. The list contains instances of class
+	 * <tt>Message</tt> with type -1 and only the text set.
 	 */
 	public List playerMessages = null;
 
 	/**
-	 * Special messages related to this region. The list contains instances of
-	 * class <tt>Message</tt> with type -1 and only the text set.
+	 * Special messages related to this region. The list contains instances of class
+	 * <tt>Message</tt> with type -1 and only the text set.
 	 */
 	public List surroundings = null;
 
 	/**
-	 * Special messages related to this region. The list contains instances of
-	 * class <tt>Message</tt> with type -1 and only the text set.
+	 * Special messages related to this region. The list contains instances of class
+	 * <tt>Message</tt> with type -1 and only the text set.
 	 */
 	public List travelThru = null;
 
 	/**
-	 * Special messages related to this region. The list contains instances of
-	 * class <tt>Message</tt> with type -1 and only the text set.
+	 * Special messages related to this region. The list contains instances of class
+	 * <tt>Message</tt> with type -1 and only the text set.
 	 */
 	public List travelThruShips = null;
 
 	/**
-	 * RegionResources in this region. The keys in this map are instances of
-	 * class <tt>ID</tt> identifying the item type of the resource, the values
-	 * are instances of class <tt>RegionResource</tt>.
+	 * RegionResources in this region. The keys in this map are instances of class <tt>ID</tt>
+	 * identifying the item type of the resource, the values are instances of class
+	 * <tt>RegionResource</tt>.
 	 */
 	private Map resources = null;
 
@@ -385,13 +378,13 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Removes the resource with the specified numerical id or the id of its
-	 * item type from this region.
+	 * Removes the resource with the specified numerical id or the id of its item type from this
+	 * region.
 	 *
 	 * @param r TODO: DOCUMENT ME!
 	 *
-	 * @return the removed resource or null if no resource with the specified
-	 * 		   id exists in this region.
+	 * @return the removed resource or null if no resource with the specified id exists in this
+	 * 		   region.
 	 */
 	public RegionResource removeResource(RegionResource r) {
 		return this.removeResource(r.getID());
@@ -417,7 +410,7 @@ public class Region extends UnitContainer {
 		}
 
 		if(this.resources.isEmpty()) {
-			this.resources		    = null;
+			this.resources = null;
 			this.resourceCollection = null;
 		}
 
@@ -442,7 +435,7 @@ public class Region extends UnitContainer {
 	public void clearRegionResources() {
 		if(this.resources != null) {
 			this.resources.clear();
-			this.resources		    = null;
+			this.resources = null;
 			this.resourceCollection = null;
 		}
 	}
@@ -452,18 +445,16 @@ public class Region extends UnitContainer {
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
-	 * @return the resource object or null if no resource with the specified ID
-	 * 		   exists in this region.
+	 * @return the resource object or null if no resource with the specified ID exists in this
+	 * 		   region.
 	 */
 	public RegionResource getResource(ID id) {
-		return (this.resources != null)
-			   ? (RegionResource) this.resources.get(id) : null;
+		return (this.resources != null) ? (RegionResource) this.resources.get(id) : null;
 	}
 
 	/**
-	 * Schemes in this region. The keys in this map are instances of class
-	 * <tt>Coordinate</tt> identifying the location of the scheme, the values
-	 * are instances of class <tt>Scheme</tt>.
+	 * Schemes in this region. The keys in this map are instances of class <tt>Coordinate</tt>
+	 * identifying the location of the scheme, the values are instances of class <tt>Scheme</tt>.
 	 */
 	private Map schemes = null;
 
@@ -519,8 +510,7 @@ public class Region extends UnitContainer {
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 *
-	 * @return the removed scheme or null if no scheme with the specified id
-	 * 		   exists in this region.
+	 * @return the removed scheme or null if no scheme with the specified id exists in this region.
 	 */
 	public Scheme removeScheme(Scheme s) {
 		if(this.schemes == null) {
@@ -530,7 +520,7 @@ public class Region extends UnitContainer {
 		Scheme ret = (Scheme) this.schemes.remove(id);
 
 		if(this.schemes.isEmpty()) {
-			this.schemes		  = null;
+			this.schemes = null;
 			this.schemeCollection = null;
 		}
 
@@ -543,7 +533,7 @@ public class Region extends UnitContainer {
 	public void clearSchemes() {
 		if(this.schemes != null) {
 			this.schemes.clear();
-			this.schemes		  = null;
+			this.schemes = null;
 			this.schemeCollection = null;
 		}
 	}
@@ -553,17 +543,13 @@ public class Region extends UnitContainer {
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
-	 * @return the scheme object or null if no scheme with the specified ID
-	 * 		   exists in this region.
+	 * @return the scheme object or null if no scheme with the specified ID exists in this region.
 	 */
 	public Scheme getScheme(ID id) {
 		return (this.schemes != null) ? (Scheme) this.schemes.get(id) : null;
 	}
 
-	/**
-	 * Border elements of this region. The list contains instances of class
-	 * <tt>Border</tt>.
-	 */
+	/** Border elements of this region. The list contains instances of class <tt>Border</tt>. */
 	private Map borders = null;
 
 	/** A collection view of the borders. */
@@ -618,20 +604,19 @@ public class Region extends UnitContainer {
 	 *
 	 * @param b TODO: DOCUMENT ME!
 	 *
-	 * @return the removed border or null if no border with the specified id
-	 * 		   exists in this region.
+	 * @return the removed border or null if no border with the specified id exists in this region.
 	 */
 	public Border removeBorder(Border b) {
 		if(borders == null) {
 			return null;
 		}
-		
+
 		Border ret = (Border) borders.remove(id);
-		
+
 		if(borders.isEmpty()) {
 			clearBorders();
 		}
-		
+
 		return ret;
 	}
 
@@ -641,7 +626,7 @@ public class Region extends UnitContainer {
 	public void clearBorders() {
 		if(borders != null) {
 			borders.clear();
-			borders		  = null;
+			borders = null;
 			borderCollection = null;
 		}
 	}
@@ -651,8 +636,7 @@ public class Region extends UnitContainer {
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
-	 * @return the border object or null if no border with the specified id
-	 * 		   exists in this region.
+	 * @return the border object or null if no border with the specified id exists in this region.
 	 */
 	public Border getBorder(ID id) {
 		return (borders != null) ? (Border) borders.get(id) : null;
@@ -693,15 +677,14 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Adds a ship to this container. This method should only be invoked by
-	 * Ship.setXXX() methods.
+	 * Adds a ship to this container. This method should only be invoked by Ship.setXXX() methods.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 */
 	public void addShip(Ship s) {
 		if(ships == null) {
 			ships = CollectionFactory.createHashtable();
-			
+
 			// enforce the creation of a new collection view
 			// AG: Since we just create if the ship map is non-null not necessary
 			// this.shipCollection = null;
@@ -711,8 +694,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Removes a ship from this container. This method should only be invoked
-	 * by Ship.setXXX() methods.
+	 * Removes a ship from this container. This method should only be invoked by Ship.setXXX()
+	 * methods.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 *
@@ -722,11 +705,11 @@ public class Region extends UnitContainer {
 		if(ships == null) {
 			return null;
 		}
-		
+
 		Ship ret = (Ship) ships.remove(s.getID());
-		
+
 		if(ships.isEmpty()) {
-			ships		   = null;
+			ships = null;
 			shipCollection = null;
 		}
 
@@ -740,8 +723,7 @@ public class Region extends UnitContainer {
 	private Collection buildingCollection = null;
 
 	/**
-	 * Returns an unmodifiable collection of all the buildings in this
-	 * container.
+	 * Returns an unmodifiable collection of all the buildings in this container.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -769,8 +751,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Adds a building to this container. This method should only be invoked by
-	 * Building.setXXX() methods.
+	 * Adds a building to this container. This method should only be invoked by Building.setXXX()
+	 * methods.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 */
@@ -787,8 +769,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Removes a building from this container. This method should only be
-	 * invoked by Building.setXXX() methods.
+	 * Removes a building from this container. This method should only be invoked by
+	 * Building.setXXX() methods.
 	 *
 	 * @param b TODO: DOCUMENT ME!
 	 *
@@ -802,7 +784,7 @@ public class Region extends UnitContainer {
 		Building ret = (Building) this.buildings.remove(b.getID());
 
 		if(buildings.isEmpty()) {
-			buildings		    = null;
+			buildings = null;
 			buildingCollection = null;
 		}
 
@@ -810,10 +792,10 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the items of all units that are stationed in this region and
-	 * belonging to a faction that has at least a privileged trust level. The
-	 * amount of the items of a particular item type are added up, so two
-	 * units with 5 pieces of silver yield one silver item of amount 10 here.
+	 * Returns the items of all units that are stationed in this region and belonging to a faction
+	 * that has at least a privileged trust level. The amount of the items of a particular item
+	 * type are added up, so two units with 5 pieces of silver yield one silver item of amount 10
+	 * here.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -826,8 +808,7 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns a specific item from the items() collection identified by the
-	 * item type.
+	 * Returns a specific item from the items() collection identified by the item type.
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -853,7 +834,7 @@ public class Region extends UnitContainer {
 				cache.regionItems = CollectionFactory.createHashtable();
 			}
 		} else {
-			cache			  = new Cache();
+			cache = new Cache();
 			cache.regionItems = CollectionFactory.createHashtable();
 		}
 
@@ -863,8 +844,7 @@ public class Region extends UnitContainer {
 			if(u.getFaction().isPrivileged()) {
 				for(Iterator items = u.getItems().iterator(); items.hasNext();) {
 					Item item = (Item) items.next();
-					Item i = (Item) cache.regionItems.get(item.getItemType()
-															  .getID());
+					Item i = (Item) cache.regionItems.get(item.getItemType().getID());
 
 					if(i == null) {
 						i = new Item(item.getItemType(), 0);
@@ -878,8 +858,7 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the maximum number of persons that can be recruited in this
-	 * region.
+	 * Returns the maximum number of persons that can be recruited in this region.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -889,8 +868,7 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the maximum number of persons that can be recruited in this
-	 * region.
+	 * Returns the maximum number of persons that can be recruited in this region.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -900,8 +878,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the maximum number of persons available for recruitment in a
-	 * region with the specified number of peasants.
+	 * Returns the maximum number of persons available for recruitment in a region with the
+	 * specified number of peasants.
 	 *
 	 * @param peasants TODO: DOCUMENT ME!
 	 *
@@ -916,8 +894,7 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the silver that can be earned through entertainment in this
-	 * region.
+	 * Returns the silver that can be earned through entertainment in this region.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -926,8 +903,7 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the silver that could be earned through entertainment in this
-	 * region.
+	 * Returns the silver that could be earned through entertainment in this region.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -936,8 +912,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Return the silver that can be earned through entertainment in a region
-	 * with the given amount of silver.
+	 * Return the silver that can be earned through entertainment in a region with the given amount
+	 * of silver.
 	 *
 	 * @param silver TODO: DOCUMENT ME!
 	 *
@@ -952,8 +928,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the maximum number of luxury items that can be bought in this
-	 * region without a price penalty.
+	 * Returns the maximum number of luxury items that can be bought in this region without a price
+	 * penalty.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -962,8 +938,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the maximum number of luxury items that could be bought in this
-	 * region without a price penalty.
+	 * Returns the maximum number of luxury items that could be bought in this region without a
+	 * price penalty.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -972,8 +948,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Return the maximum number of luxury items that can be bought without a
-	 * price increase in a region with the specified number of peasants.
+	 * Return the maximum number of luxury items that can be bought without a price increase in a
+	 * region with the specified number of peasants.
 	 *
 	 * @param peasants TODO: DOCUMENT ME!
 	 *
@@ -984,12 +960,10 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Calculates the wage a peasant earns according to the biggest castle in
-	 * this region. While the value of the wage field is directly taken from
-	 * the report and may be biased by the race of the owner faction of that
-	 * report, this function tries to determine the real wage a peasaent can
-	 * earn in this region. Wage for player persons can be derived from that
-	 * value
+	 * Calculates the wage a peasant earns according to the biggest castle in this region. While
+	 * the value of the wage field is directly taken from the report and may be biased by the race
+	 * of the owner faction of that report, this function tries to determine the real wage a
+	 * peasaent can earn in this region. Wage for player persons can be derived from that value
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1011,23 +985,21 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Indicates whether this Region object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Region and o's id
-	 * is equal to the id of this Region object.
+	 * Indicates whether this Region object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Region and o's id is equal to the id of this Region
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof Region &&
-			   this.getID().equals(((Region) o).getID()));
+		return (this == o) || (o instanceof Region && this.getID().equals(((Region) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on Region objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Region objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -1038,8 +1010,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns a String representation of this Region object. If region has no
-	 * name the string representation of the  region type is used.
+	 * Returns a String representation of this Region object. If region has no name the string
+	 * representation of the  region type is used.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1060,8 +1032,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the coordinate of this region. This method is only a type-safe
-	 * short cut for retrieving and converting the ID object of this region.
+	 * Returns the coordinate of this region. This method is only a type-safe short cut for
+	 * retrieving and converting the ID object of this region.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1070,8 +1042,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the RegionType of this region. This method is only a type-safe
-	 * short cut for retrieving and converting the RegionType of this region.
+	 * Returns the RegionType of this region. This method is only a type-safe short cut for
+	 * retrieving and converting the RegionType of this region.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1080,9 +1052,8 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Refreshes all the relations of all units in this region. It is
-	 * preferrable to call this method instead of refreshing the unit
-	 * relations 'manually'.
+	 * Refreshes all the relations of all units in this region. It is preferrable to call this
+	 * method instead of refreshing the unit relations 'manually'.
 	 */
 	public synchronized void refreshUnitRelations() {
 		if(unitRelationsRefreshed == false) {
@@ -1097,10 +1068,7 @@ public class Region extends UnitContainer {
 		}
 	}
 
-	/**
-	 * Guarding units of this region. The list contains instances of class
-	 * <tt>Unit</tt>.
-	 */
+	/** Guarding units of this region. The list contains instances of class <tt>Unit</tt>. */
 	private List guards;
 
 	/**
@@ -1136,8 +1104,8 @@ public class Region extends UnitContainer {
 	 * @param newRegion TODO: DOCUMENT ME!
 	 * @param sameTurn TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Region curRegion, GameData newGD,
-							 Region newRegion, boolean sameTurn) {
+	public static void merge(GameData curGD, Region curRegion, GameData newGD, Region newRegion,
+							 boolean sameTurn) {
 		UnitContainer.merge(curGD, curRegion, newGD, newRegion);
 
 		if(sameTurn) {
@@ -1310,8 +1278,7 @@ public class Region extends UnitContainer {
 			   !curRegion.prices.equals(newRegion.prices)) {
 			newRegion.oldPrices = CollectionFactory.createHashtable();
 
-			for(Iterator iter = newRegion.prices.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = newRegion.prices.values().iterator(); iter.hasNext();) {
 				LuxuryPrice curPrice = (LuxuryPrice) iter.next();
 				LuxuryPrice newPrice = new LuxuryPrice(newGD.rules.getItemType(curPrice.getItemType()
 																					   .getID()),
@@ -1321,8 +1288,7 @@ public class Region extends UnitContainer {
 		} else if(curRegion.oldPrices != null) {
 			newRegion.oldPrices = CollectionFactory.createHashtable();
 
-			for(Iterator iter = curRegion.oldPrices.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curRegion.oldPrices.values().iterator(); iter.hasNext();) {
 				LuxuryPrice curPrice = (LuxuryPrice) iter.next();
 				LuxuryPrice newPrice = new LuxuryPrice(newGD.rules.getItemType(curPrice.getItemType()
 																					   .getID()),
@@ -1331,12 +1297,10 @@ public class Region extends UnitContainer {
 				if(newPrice.getItemType() == null) {
 					// this happens if there does exist an unknown tag in
 					// the current block description
-					log.warn("WARNING: Invalid tag \"" +
-							 curPrice.getItemType() + "\" found in Region " +
-							 curRegion + ", ignoring it.");
+					log.warn("WARNING: Invalid tag \"" + curPrice.getItemType() +
+							 "\" found in Region " + curRegion + ", ignoring it.");
 				} else {
-					newRegion.oldPrices.put(newPrice.getItemType().getID(),
-											newPrice);
+					newRegion.oldPrices.put(newPrice.getItemType().getID(), newPrice);
 				}
 			}
 		}
@@ -1358,9 +1322,8 @@ public class Region extends UnitContainer {
 				Border newBorder = null;
 
 				try {
-					newBorder = new Border((ID) curBorder.getID().clone(),
-										   curBorder.direction, curBorder.type,
-										   curBorder.buildRatio);
+					newBorder = new Border((ID) curBorder.getID().clone(), curBorder.direction,
+										   curBorder.type, curBorder.buildRatio);
 				} catch(CloneNotSupportedException e) {
 				}
 
@@ -1369,8 +1332,7 @@ public class Region extends UnitContainer {
 		}
 
 		if(curRegion.herb != null) {
-			newRegion.herb = newGD.rules.getItemType(curRegion.herb.getID(),
-													 true);
+			newRegion.herb = newGD.rules.getItemType(curRegion.herb.getID(), true);
 		}
 
 		if(curRegion.herbAmount != null) {
@@ -1418,8 +1380,7 @@ public class Region extends UnitContainer {
 				newRegion.prices.clear();
 			}
 
-			for(Iterator iter = curRegion.prices.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curRegion.prices.values().iterator(); iter.hasNext();) {
 				LuxuryPrice curPrice = (LuxuryPrice) iter.next();
 				LuxuryPrice newPrice = new LuxuryPrice(newGD.rules.getItemType(curPrice.getItemType()
 																					   .getID()),
@@ -1428,38 +1389,32 @@ public class Region extends UnitContainer {
 				if(newPrice.getItemType() == null) {
 					// this happens if there does exist an unknown tag in
 					// the current block description
-					log.warn("Invalid tag \"" + curPrice.getItemType() +
-							 "\" found in Region " + curRegion +
-							 ", ignoring it.");
+					log.warn("Invalid tag \"" + curPrice.getItemType() + "\" found in Region " +
+							 curRegion + ", ignoring it.");
 				} else {
-					newRegion.prices.put(newPrice.getItemType().getID(),
-										 newPrice);
+					newRegion.prices.put(newPrice.getItemType().getID(), newPrice);
 				}
 			}
 		}
 
 		if(!curRegion.resources().isEmpty()) {
-			for(Iterator iter = curRegion.resources().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curRegion.resources().iterator(); iter.hasNext();) {
 				RegionResource curRes = (RegionResource) iter.next();
 				RegionResource newRes = newRegion.getResource(curRes.getID());
 
 				try {
 					/**
-					 * Remember: Merging of regions works like follows: A new
-					 * set of regions is created in the new GameData object.
-					 * Then first the regions of the older report are merged
-					 * into that new object. Then the regions of the newer
-					 * report are merged into that new object. At this time
-					 * sameTurn is guaranteed to be true! The crucial point is
-					 * when a resource is suddenly not seen any longer,
-					 * because its level has increased.
+					 * Remember: Merging of regions works like follows: A new set of regions is
+					 * created in the new GameData object. Then first the regions of the older
+					 * report are merged into that new object. Then the regions of the newer
+					 * report are merged into that new object. At this time sameTurn is guaranteed
+					 * to be true! The crucial point is when a resource is suddenly not seen any
+					 * longer, because its level has increased.
 					 */
 					if(newRes == null) {
 						// add Resource
 						newRes = new RegionResource((ID) curRes.getID().clone(),
-													newGD.rules.getItemType(curRes.getType()
-																				  .getID(),
+													newGD.rules.getItemType(curRes.getType().getID(),
 																			true));
 						newRegion.addResource(newRes);
 					}
@@ -1475,8 +1430,7 @@ public class Region extends UnitContainer {
 		// but not in the current one. These are those, that are not seen in the
 		// maybe newer report! This maybe because their level has changed.
 		if((newRegion.resources != null) && !newRegion.resources.isEmpty()) {
-			for(Iterator iter = newRegion.resources.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = newRegion.resources.values().iterator(); iter.hasNext();) {
 				RegionResource newRes = (RegionResource) iter.next();
 				RegionResource curRes = curRegion.getResource(newRes.getID());
 
@@ -1485,15 +1439,13 @@ public class Region extends UnitContainer {
 					// Keep in mind, that the units are not jet merged (Use those of curRegion)
 					boolean found = false;
 
-					for(Iterator i = curRegion.units().iterator();
-							i.hasNext() && !found;) {
+					for(Iterator i = curRegion.units().iterator(); i.hasNext() && !found;) {
 						Unit unit = (Unit) i.next();
 
 						if(unit.skills != null) {
-							for(Iterator skillIterator = unit.skills.values()
-																	.iterator();
+							for(Iterator skillIterator = unit.skills.values().iterator();
 									skillIterator.hasNext() && !found;) {
-								Skill skill     = (Skill) skillIterator.next();
+								Skill skill = (Skill) skillIterator.next();
 								Skill makeSkill = newRes.getType().getMakeSkill();
 
 								if((makeSkill != null) &&
@@ -1587,8 +1539,7 @@ public class Region extends UnitContainer {
 					newRegion.events = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curRegion.events.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curRegion.events.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -1607,8 +1558,7 @@ public class Region extends UnitContainer {
 					newRegion.messages = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curRegion.messages.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curRegion.messages.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -1622,14 +1572,12 @@ public class Region extends UnitContainer {
 				}
 			}
 
-			if((curRegion.playerMessages != null) &&
-				   (curRegion.playerMessages.size() > 0)) {
+			if((curRegion.playerMessages != null) && (curRegion.playerMessages.size() > 0)) {
 				if(newRegion.playerMessages == null) {
 					newRegion.playerMessages = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curRegion.playerMessages.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curRegion.playerMessages.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -1643,14 +1591,12 @@ public class Region extends UnitContainer {
 				}
 			}
 
-			if((curRegion.surroundings != null) &&
-				   (curRegion.surroundings.size() > 0)) {
+			if((curRegion.surroundings != null) && (curRegion.surroundings.size() > 0)) {
 				if(newRegion.surroundings == null) {
 					newRegion.surroundings = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curRegion.surroundings.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curRegion.surroundings.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -1664,14 +1610,12 @@ public class Region extends UnitContainer {
 				}
 			}
 
-			if((curRegion.travelThru != null) &&
-				   (curRegion.travelThru.size() > 0)) {
+			if((curRegion.travelThru != null) && (curRegion.travelThru.size() > 0)) {
 				if(newRegion.travelThru == null) {
 					newRegion.travelThru = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curRegion.travelThru.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curRegion.travelThru.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -1686,8 +1630,8 @@ public class Region extends UnitContainer {
 					if(!newRegion.travelThru.contains(newMsg)) {
 						newRegion.travelThru.add(newMsg);
 					} else {
-						log.warn("Region.merge(): Duplicate message \"" +
-								 newMsg.getText() + "\", removing it.");
+						log.warn("Region.merge(): Duplicate message \"" + newMsg.getText() +
+								 "\", removing it.");
 
 						/*
 						if(log.isDebugEnabled()) {
@@ -1699,14 +1643,12 @@ public class Region extends UnitContainer {
 				}
 			}
 
-			if((curRegion.travelThruShips != null) &&
-				   (curRegion.travelThruShips.size() > 0)) {
+			if((curRegion.travelThruShips != null) && (curRegion.travelThruShips.size() > 0)) {
 				if(newRegion.travelThruShips == null) {
 					newRegion.travelThruShips = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curRegion.travelThruShips.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curRegion.travelThruShips.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -1721,8 +1663,8 @@ public class Region extends UnitContainer {
 					if(!newRegion.travelThruShips.contains(newMsg)) {
 						newRegion.travelThruShips.add(newMsg);
 					} else {
-						log.warn("Region.merge(): Duplicate message \"" +
-								 newMsg.getText() + "\", removing it.");
+						log.warn("Region.merge(): Duplicate message \"" + newMsg.getText() +
+								 "\", removing it.");
 
 						/*
 						if(log.isDebugEnabled()) {
@@ -1754,8 +1696,8 @@ public class Region extends UnitContainer {
 	private Collection neighbours;
 
 	/**
-	 * Sets the collection of ids for reachable regions to <tt>neighbours</tt>.
-	 * If <tt>neighbours</tt> is null they will be evaluated.
+	 * Sets the collection of ids for reachable regions to <tt>neighbours</tt>. If
+	 * <tt>neighbours</tt> is null they will be evaluated.
 	 *
 	 * @param neighbours TODO: DOCUMENT ME!
 	 */
@@ -1764,9 +1706,9 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * returns a collection of ids for reachable neighbours. This may be set by
-	 * setNeighbours() if neighbours is null it will be calculated from the
-	 * game data). This function may be necessary for new xml reports.
+	 * returns a collection of ids for reachable neighbours. This may be set by setNeighbours() if
+	 * neighbours is null it will be calculated from the game data). This function may be
+	 * necessary for new xml reports.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1783,8 +1725,7 @@ public class Region extends UnitContainer {
 			return null;
 		}
 
-		Collection c = Regions.getAllNeighbours(getData().regions(), getID(),
-												1, null).keySet();
+		Collection c = Regions.getAllNeighbours(getData().regions(), getID(), 1, null).keySet();
 		c.remove(getID());
 
 		return c;

@@ -46,8 +46,8 @@ import com.eressea.util.comparator.UnitTrustComparator;
  */
 public class TreeHelper {
 	/**
-	 * These are some constants used to encode the various criteria by which
-	 * the units in the tree may be organized.
+	 * These are some constants used to encode the various criteria by which the units in the tree
+	 * may be organized.
 	 */
 	public static final int FACTION = 0;
 
@@ -73,8 +73,8 @@ public class TreeHelper {
 	public static final Comparator healthCmp = new UnitHealthComparator(null);
 
 	/**
-	 * Creates the subtree for one region with units (sorted by faction or
-	 * other criteria), ships, buildings, borders etc.
+	 * Creates the subtree for one region with units (sorted by faction or other criteria), ships,
+	 * buildings, borders etc.
 	 *
 	 * @param r TODO: DOCUMENT ME!
 	 * @param factory TODO: DOCUMENT ME!
@@ -88,28 +88,25 @@ public class TreeHelper {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static TreeNode createRegionNode(Region r,
-											NodeWrapperFactory factory,
-											Map activeAlliances, Map unitNodes,
-											Map buildingNodes, Map shipNodes,
-											Comparator unitSorting,
+	public static TreeNode createRegionNode(Region r, NodeWrapperFactory factory,
+											Map activeAlliances, Map unitNodes, Map buildingNodes,
+											Map shipNodes, Comparator unitSorting,
 											int treeStructure[], GameData data) {
-		RegionNodeWrapper	   regionNodeWrapper = factory.createRegionNodeWrapper(r,
-																				   0);
+		RegionNodeWrapper regionNodeWrapper = factory.createRegionNodeWrapper(r, 0);
 		DefaultMutableTreeNode regionNode = new DefaultMutableTreeNode(regionNodeWrapper);
-		DefaultMutableTreeNode node		  = null;
+		DefaultMutableTreeNode node = null;
 
-		List		   units = new ArrayList(r.units());
-		
-		Iterator			   it = null;
-		
+		List units = new ArrayList(r.units());
+
+		Iterator it = null;
+
 		if(units.size() > 0) {
 			if(unitSorting != null) {
 				Collections.sort(units, unitSorting);
 			}
-			
-			addSortedUnits(regionNode, treeStructure, 0, units, factory,
-						   activeAlliances, unitNodes, data);
+
+			addSortedUnits(regionNode, treeStructure, 0, units, factory, activeAlliances,
+						   unitNodes, data);
 		}
 
 		// add ships
@@ -153,8 +150,8 @@ public class TreeHelper {
 	}
 
 	/**
-	 * This method assumes that the units are already sorted corresponding to
-	 * treeStructure. (This is done in createRegionNode(...).)
+	 * This method assumes that the units are already sorted corresponding to treeStructure. (This
+	 * is done in createRegionNode(...).)
 	 *
 	 * @param mother TODO: DOCUMENT ME!
 	 * @param treeStructure TODO: DOCUMENT ME!
@@ -167,19 +164,17 @@ public class TreeHelper {
 	 *
 	 * @return the number of persons (not units) that were added
 	 */
-	private static int addSortedUnits(DefaultMutableTreeNode mother,
-									  int treeStructure[], int sortCriteria,
-									  List units, NodeWrapperFactory factory,
-									  Map activeAlliances, Map unitNodes,
-									  GameData data) {
+	private static int addSortedUnits(DefaultMutableTreeNode mother, int treeStructure[],
+									  int sortCriteria, List units, NodeWrapperFactory factory,
+									  Map activeAlliances, Map unitNodes, GameData data) {
 		SupportsEmphasizing se = null;
 
 		if(mother.getUserObject() instanceof SupportsEmphasizing) {
 			se = (SupportsEmphasizing) mother.getUserObject();
 		}
 
-		int  retVal   = 0;
-		Unit curUnit  = null;
+		int retVal = 0;
+		Unit curUnit = null;
 		Unit prevUnit = null;
 		List helpList = new ArrayList();
 
@@ -193,13 +188,12 @@ public class TreeHelper {
 			}
 
 			prevUnit = curUnit;
-			curUnit  = unit;
+			curUnit = unit;
 
 			if(sortCriteria >= treeStructure.length) {
 				// all structuring has been done
 				// simply add the units
-				UnitNodeWrapper		   nodeWrapper = factory.createUnitNodeWrapper(curUnit,
-																				   curUnit.persons);
+				UnitNodeWrapper nodeWrapper = factory.createUnitNodeWrapper(curUnit, curUnit.persons);
 				DefaultMutableTreeNode node = new DefaultMutableTreeNode(nodeWrapper);
 
 				if(unitNodes != null) {
@@ -215,11 +209,10 @@ public class TreeHelper {
 				retVal += curUnit.persons;
 
 				// take care of temp units
-				for(Iterator tempUnits = curUnit.tempUnits().iterator();
-						tempUnits.hasNext();) {
-					Unit				   tempUnit		   = (Unit) tempUnits.next();
-					UnitNodeWrapper		   tempNodeWrapper = factory.createUnitNodeWrapper(tempUnit,
-																						   tempUnit.persons);
+				for(Iterator tempUnits = curUnit.tempUnits().iterator(); tempUnits.hasNext();) {
+					Unit tempUnit = (Unit) tempUnits.next();
+					UnitNodeWrapper tempNodeWrapper = factory.createUnitNodeWrapper(tempUnit,
+																					tempUnit.persons);
 					DefaultMutableTreeNode tempNode = new DefaultMutableTreeNode(tempNodeWrapper);
 					node.add(tempNode);
 					nodeWrapper.getSubordinatedElements().add(tempNodeWrapper);
@@ -232,6 +225,7 @@ public class TreeHelper {
 				// change in current sortCriteria?
 				switch(treeStructure[sortCriteria]) {
 				case FACTION:
+
 					if(change(FACTION, curUnit, prevUnit)) {
 						FactionNodeWrapper factionNodeWrapper = factory.createFactionNodeWrapper(prevUnit.getFaction(),
 																								 prevUnit.getRegion(),
@@ -243,10 +237,8 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(factionNodeWrapper);
 						}
 
-						retVal += addSortedUnits(factionNode, treeStructure,
-												 sortCriteria + 1, helpList,
-												 factory, activeAlliances,
-												 unitNodes, data);
+						retVal += addSortedUnits(factionNode, treeStructure, sortCriteria + 1,
+												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
 
@@ -257,7 +249,7 @@ public class TreeHelper {
 					if(change(GROUP, curUnit, prevUnit)) {
 						// Do the units belong to a group?
 						if(prevUnit.getGroup() != null) {
-							GroupNodeWrapper	   groupNodeWrapper = factory.createGroupNodeWrapper(prevUnit.getGroup());
+							GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(prevUnit.getGroup());
 							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(groupNodeWrapper);
 							mother.add(groupNode);
 
@@ -265,17 +257,13 @@ public class TreeHelper {
 								se.getSubordinatedElements().add(groupNodeWrapper);
 							}
 
-							retVal += addSortedUnits(groupNode, treeStructure,
-													 sortCriteria + 1,
-													 helpList, factory,
-													 activeAlliances,
-													 unitNodes, data);
+							retVal += addSortedUnits(groupNode, treeStructure, sortCriteria + 1,
+													 helpList, factory, activeAlliances, unitNodes,
+													 data);
 						} else {
-							retVal += addSortedUnits(mother, treeStructure,
-													 sortCriteria + 1,
-													 helpList, factory,
-													 activeAlliances,
-													 unitNodes, data);
+							retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1,
+													 helpList, factory, activeAlliances, unitNodes,
+													 data);
 						}
 
 						helpList.clear();
@@ -286,11 +274,11 @@ public class TreeHelper {
 				case HEALTH:
 
 					if(change(HEALTH, curUnit, prevUnit)) {
-						String verw  = data.getTranslation("verwundet");
+						String verw = data.getTranslation("verwundet");
 						String sverw = data.getTranslation("schwer verwundet");
 						String ersch = data.getTranslation("erschöpft");
 						String hicon = "gesund";
-						String text  = prevUnit.health;
+						String text = prevUnit.health;
 
 						if(text == null) {
 							text = getString("healthy");
@@ -303,8 +291,8 @@ public class TreeHelper {
 						}
 
 						//parent.add(createSimpleNode(u.health,hicon));
-						SimpleNodeWrapper	   simpleNodeWrapper = factory.createSimpleNodeWrapper(text,
-																								   hicon);
+						SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(text,
+																							  hicon);
 						DefaultMutableTreeNode healthNode = new DefaultMutableTreeNode(simpleNodeWrapper);
 						mother.add(healthNode);
 
@@ -312,10 +300,8 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(simpleNodeWrapper);
 						}
 
-						retVal += addSortedUnits(healthNode, treeStructure,
-												 sortCriteria + 1, helpList,
-												 factory, activeAlliances,
-												 unitNodes, data);
+						retVal += addSortedUnits(healthNode, treeStructure, sortCriteria + 1,
+												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
 
@@ -324,8 +310,8 @@ public class TreeHelper {
 				case COMBAT_STATUS:
 
 					if(change(COMBAT_STATUS, curUnit, prevUnit)) {
-						SimpleNodeWrapper	   simpleNodeWrapper = factory.createSimpleNodeWrapper(Unit.combatStatusToString(prevUnit),
-																								   "kampfstatus");
+						SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(Unit.combatStatusToString(prevUnit),
+																							  "kampfstatus");
 						DefaultMutableTreeNode combatNode = new DefaultMutableTreeNode(simpleNodeWrapper);
 						mother.add(combatNode);
 
@@ -333,10 +319,8 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(simpleNodeWrapper);
 						}
 
-						retVal += addSortedUnits(combatNode, treeStructure,
-												 sortCriteria + 1, helpList,
-												 factory, activeAlliances,
-												 unitNodes, data);
+						retVal += addSortedUnits(combatNode, treeStructure, sortCriteria + 1,
+												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
 
@@ -346,8 +330,8 @@ public class TreeHelper {
 
 					if(change(FACTION_DISGUISE_STATUS, curUnit, prevUnit)) {
 						if(prevUnit.hideFaction) {
-							SimpleNodeWrapper	   simpleNodeWrapper = factory.createSimpleNodeWrapper(getString("factiondisguised"),
-																									   "tarnung");
+							SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(getString("factiondisguised"),
+																								  "tarnung");
 							DefaultMutableTreeNode fdsNode = new DefaultMutableTreeNode(simpleNodeWrapper);
 							mother.add(fdsNode);
 
@@ -355,17 +339,13 @@ public class TreeHelper {
 								se.getSubordinatedElements().add(simpleNodeWrapper);
 							}
 
-							retVal += addSortedUnits(fdsNode, treeStructure,
-													 sortCriteria + 1,
-													 helpList, factory,
-													 activeAlliances,
-													 unitNodes, data);
+							retVal += addSortedUnits(fdsNode, treeStructure, sortCriteria + 1,
+													 helpList, factory, activeAlliances, unitNodes,
+													 data);
 						} else {
-							retVal += addSortedUnits(mother, treeStructure,
-													 sortCriteria + 1,
-													 helpList, factory,
-													 activeAlliances,
-													 unitNodes, data);
+							retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1,
+													 helpList, factory, activeAlliances, unitNodes,
+													 data);
 						}
 
 						helpList.clear();
@@ -376,8 +356,8 @@ public class TreeHelper {
 				case TRUSTLEVEL:
 
 					if(change(TRUSTLEVEL, curUnit, prevUnit)) {
-						SimpleNodeWrapper	   simpleNodeWrapper = factory.createSimpleNodeWrapper(FactionTrustComparator.getTrustLevelLabel(prevUnit.getFaction().trustLevel),
-																								   null);
+						SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(FactionTrustComparator.getTrustLevelLabel(prevUnit.getFaction().trustLevel),
+																							  null);
 						DefaultMutableTreeNode trustlevelNode = new DefaultMutableTreeNode(simpleNodeWrapper);
 						mother.add(trustlevelNode);
 
@@ -385,10 +365,8 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(simpleNodeWrapper);
 						}
 
-						retVal += addSortedUnits(trustlevelNode, treeStructure,
-												 sortCriteria + 1, helpList,
-												 factory, activeAlliances,
-												 unitNodes, data);
+						retVal += addSortedUnits(trustlevelNode, treeStructure, sortCriteria + 1,
+												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
 
@@ -425,11 +403,11 @@ public class TreeHelper {
 
 				case HEALTH:
 
-					String verw  = data.getTranslation("verwundet");
+					String verw = data.getTranslation("verwundet");
 					String sverw = data.getTranslation("schwer verwundet");
 					String ersch = data.getTranslation("erschöpft");
 					String hicon = "gesund";
-					String text  = curUnit.health;
+					String text = curUnit.health;
 
 					if(text == null) {
 						text = getString("healthy");
@@ -441,8 +419,7 @@ public class TreeHelper {
 						hicon = "erschoepft";
 					}
 
-					node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(text,
-																					  hicon));
+					node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(text, hicon));
 
 					break;
 
@@ -457,8 +434,7 @@ public class TreeHelper {
 				case FACTION_DISGUISE_STATUS:
 
 					if(curUnit.hideFaction) {
-						o = factory.createSimpleNodeWrapper(getString("factiondisguised"),
-															"tarnung");
+						o = factory.createSimpleNodeWrapper(getString("factiondisguised"), "tarnung");
 						node = new DefaultMutableTreeNode(o);
 					} else {
 						node = null;
@@ -478,20 +454,17 @@ public class TreeHelper {
 			// end of if (sortCriteria <= treeStructure.length)
 			// now add units
 			if(node == null) {
-				retVal += addSortedUnits(mother, treeStructure,
-										 sortCriteria + 1, helpList, factory,
-										 activeAlliances, unitNodes, data);
+				retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1, helpList,
+										 factory, activeAlliances, unitNodes, data);
 			} else {
 				mother.add(node);
 
-				if((se != null) &&
-					   node.getUserObject() instanceof SupportsEmphasizing) {
+				if((se != null) && node.getUserObject() instanceof SupportsEmphasizing) {
 					se.getSubordinatedElements().add(node.getUserObject());
 				}
 
-				retVal += addSortedUnits(node, treeStructure, sortCriteria + 1,
-										 helpList, factory, activeAlliances,
-										 unitNodes, data);
+				retVal += addSortedUnits(node, treeStructure, sortCriteria + 1, helpList, factory,
+										 activeAlliances, unitNodes, data);
 			}
 		}
 
@@ -514,10 +487,9 @@ public class TreeHelper {
 	}
 
 	/**
-	 * Little helper function that determines, whether the two given units
-	 * differ in regard to the given flag. The flag should be given according
-	 * to the constants defined in this class (FACTION, GROUP, ...) If one of
-	 * the unit arguments is null, false is returned.
+	 * Little helper function that determines, whether the two given units differ in regard to the
+	 * given flag. The flag should be given according to the constants defined in this class
+	 * (FACTION, GROUP, ...) If one of the unit arguments is null, false is returned.
 	 *
 	 * @param flag TODO: DOCUMENT ME!
 	 * @param curUnit TODO: DOCUMENT ME!
@@ -547,8 +519,7 @@ public class TreeHelper {
 
 			if((curUnitFactionID == null) && (prevUnitFactionID == null)) {
 				return false;
-			} else if((curUnitFactionID == null) ||
-						  (prevUnitFactionID == null)) {
+			} else if((curUnitFactionID == null) || (prevUnitFactionID == null)) {
 				return true;
 			} else {
 				return !curUnitFactionID.equals(prevUnitFactionID);
@@ -587,16 +558,14 @@ public class TreeHelper {
 			return prevUnit.hideFaction != curUnit.hideFaction;
 
 		case TRUSTLEVEL:
-			return UnitTrustComparator.DEFAULT_COMPARATOR.compare(prevUnit,
-																  curUnit) != 0;
+			return UnitTrustComparator.DEFAULT_COMPARATOR.compare(prevUnit, curUnit) != 0;
 		}
 
 		return false; // default
 	}
 
 	protected static String getString(String key) {
-		return com.eressea.util.Translations.getTranslation(TreeHelper.class,
-															key);
+		return com.eressea.util.Translations.getTranslation(TreeHelper.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

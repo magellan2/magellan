@@ -16,12 +16,9 @@ package com.eressea.relation;
 import com.eressea.Unit;
 
 /**
- * A relation indicating that the source unit has a LEHREN order for the target
- * unit.
+ * A relation indicating that the source unit has a LEHREN order for the target unit.
  */
-public class TeachRelation extends InterUnitRelation
-	implements LongOrderRelation
-{
+public class TeachRelation extends InterUnitRelation implements LongOrderRelation {
 	/**
 	 * Creates a new TeachRelation object.
 	 *

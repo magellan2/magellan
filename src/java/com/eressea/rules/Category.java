@@ -27,10 +27,10 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public abstract class Category extends ObjectType {
-	private int		   sortIndex = 0;
-	private Category   parent   = null;
+	private int sortIndex = 0;
+	private Category parent = null;
 	private Collection children = null;
-	private Collection data     = null;
+	private Collection data = null;
 
 	/**
 	 * Creates a new Category object.
@@ -209,7 +209,7 @@ public abstract class Category extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static Category[] getPath(Category ic) {
-		int		 i = 1;
+		int i = 1;
 		Category j = ic;
 
 		while(j.getParent() != null) {
@@ -221,7 +221,7 @@ public abstract class Category extends ObjectType {
 
 		for(int k = 0; k < i; k++) {
 			path[i - k - 1] = ic;
-			ic			    = ic.getParent();
+			ic = ic.getParent();
 		}
 
 		return path;
@@ -256,8 +256,8 @@ public abstract class Category extends ObjectType {
 	}
 
 	/**
-	 * Sets the sort index of this item category indicating its natural
-	 * ordering compared to other ItemCategory objects.
+	 * Sets the sort index of this item category indicating its natural ordering compared to other
+	 * ItemCategory objects.
 	 *
 	 * @param sortIndex TODO: DOCUMENT ME!
 	 */
@@ -266,8 +266,8 @@ public abstract class Category extends ObjectType {
 	}
 
 	/**
-	 * Returns the sort index of this item category indicating its natural
-	 * ordering compared to other ItemCategory objects.
+	 * Returns the sort index of this item category indicating its natural ordering compared to
+	 * other ItemCategory objects.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -276,9 +276,9 @@ public abstract class Category extends ObjectType {
 	}
 
 	/**
-	 * Indicates whether this ItemCategory object is equal to another object.
-	 * Returns true only if o is not null and an instance of class
-	 * ItemCategory and o's id is equal to the id of this ItemCategory object.
+	 * Indicates whether this ItemCategory object is equal to another object. Returns true only if
+	 * o is not null and an instance of class ItemCategory and o's id is equal to the id of this
+	 * ItemCategory object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -286,23 +286,21 @@ public abstract class Category extends ObjectType {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof Category &&
-			   this.getID().equals(((Category) o).getID()));
+			   (o instanceof Category && this.getID().equals(((Category) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on ItemCategory objects. Since we may have
-	 * more structured item types, begin with the top-level ancestors and work
-	 * down.
+	 * Imposes a natural ordering on ItemCategory objects. Since we may have more structured item
+	 * types, begin with the top-level ancestors and work down.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int compareTo(Object o) {
-		Category   path1[] = getPath(this);
-		Category   path2[] = getPath((Category) o);
-		int		   j	   = path1.length;
+		Category path1[] = getPath(this);
+		Category path2[] = getPath((Category) o);
+		int j = path1.length;
 
 		if(path2.length < j) {
 			j = path2.length;
@@ -341,12 +339,13 @@ public abstract class Category extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getIconName() {
-		if(iconName == null && parent != null) {
+		if((iconName == null) && (parent != null)) {
 			return parent.getIconName();
 		}
+
 		return iconName;
 	}
-	
+
 	/**
 	 * Sets the file name of the icon to use for this item.
 	 *
@@ -355,5 +354,4 @@ public abstract class Category extends ObjectType {
 	public void setIconName(String iName) {
 		iconName = iName;
 	}
-
 }

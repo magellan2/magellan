@@ -42,24 +42,25 @@ import com.eressea.swing.context.ContextObserver;
 import com.eressea.util.CollectionFactory;
 
 /**
- * Simple extension of the default text cell renderer that has two modes:
- * Sell-Mode: Shows the luxury sold in the region(first char) and the trade
- * value Price-Mode: Shows the price of a luxury.
+ * Simple extension of the default text cell renderer that has two modes: Sell-Mode: Shows the
+ * luxury sold in the region(first char) and the trade value Price-Mode: Shows the price of a
+ * luxury.
  *
  * @author Andreas
  * @version 1.0
  */
-public class TradeTextCellRenderer extends TextCellRenderer
-	implements GameDataListener, ActionListener, ContextChangeable
+public class TradeTextCellRenderer extends TextCellRenderer implements GameDataListener,
+																	   ActionListener,
+																	   ContextChangeable
 {
-	protected ItemType			  item;
-	protected String			  itemName;
-	protected boolean			  sellMode	    = false;
-	protected Collection		  allLuxuries;
-	protected JMenu				  context;
-	protected static final String KEY		    = "LUXURY";
-	protected String			  stringArray[] = new String[2];
-	protected ContextObserver     obs;
+	protected ItemType item;
+	protected String itemName;
+	protected boolean sellMode = false;
+	protected Collection allLuxuries;
+	protected JMenu context;
+	protected static final String KEY = "LUXURY";
+	protected String stringArray[] = new String[2];
+	protected ContextObserver obs;
 
 	/**
 	 * Creates new TradeTextCellRenderer
@@ -71,8 +72,7 @@ public class TradeTextCellRenderer extends TextCellRenderer
 		super(geo, settings);
 		EventDispatcher.getDispatcher().addGameDataListener(this);
 		itemName = settings.getProperty("TradeTextCellRenderer.Item");
-		sellMode = settings.getProperty("TradeTextCellRenderer.SellMode",
-										"false").equals("true");
+		sellMode = settings.getProperty("TradeTextCellRenderer.SellMode", "false").equals("true");
 		findLuxuries();
 		createContextMenu();
 	}
@@ -94,15 +94,14 @@ public class TradeTextCellRenderer extends TextCellRenderer
 			Iterator it = r.prices.keySet().iterator();
 
 			while(it.hasNext()) {
-				ID		    id = (ID) it.next();
+				ID id = (ID) it.next();
 				LuxuryPrice lp = (LuxuryPrice) r.prices.get(id);
 
 				if(lp.getPrice() < 0) {
 					ItemType type = data.rules.getItemType(id, false);
 
 					if(type != null) {
-						return type.getName().substring(0, 1) +
-							   r.maxLuxuries();
+						return type.getName().substring(0, 1) + r.maxLuxuries();
 					}
 				}
 			}
@@ -164,8 +163,7 @@ public class TradeTextCellRenderer extends TextCellRenderer
 			return;
 		}
 
-		ItemCategory cat = data.rules.getItemCategory(StringID.create("luxuries"),
-													  false);
+		ItemCategory cat = data.rules.getItemCategory(StringID.create("luxuries"), false);
 
 		if(cat == null) {
 			return;
@@ -191,11 +189,11 @@ public class TradeTextCellRenderer extends TextCellRenderer
 	protected void reprocessContextMenu() {
 		context.removeAll();
 
-		Iterator it    = allLuxuries.iterator();
-		boolean  added = false;
+		Iterator it = allLuxuries.iterator();
+		boolean added = false;
 
 		while(it.hasNext()) {
-			ItemType  type = (ItemType) it.next();
+			ItemType type = (ItemType) it.next();
 			JMenuItem i = new JMenuItem(type.getName());
 			i.addActionListener(this);
 			i.putClientProperty(KEY, type);

@@ -30,8 +30,8 @@ public abstract class AbstractCompletionGUI implements CompletionGUI {
 	}
 
 	/**
-	 * Returns the name of this CompletionGUI. This implementation returns the
-	 * content of "gui.title" key in the current Resource Bundle.
+	 * Returns the name of this CompletionGUI. This implementation returns the content of
+	 * "gui.title" key in the current Resource Bundle.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

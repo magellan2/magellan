@@ -49,15 +49,15 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class TextCellRenderer extends AbstractTextCellRenderer {
-	private static final Logger log				  = Logger.getInstance(TextCellRenderer.class);
-	protected Color			    fontColor		  = Color.black;
-	protected Font			    unscaledFont	  = null;
-	protected Font			    font			  = null;
-	protected FontMetrics	    fontMetrics		  = null;
-	protected int			    minimumFontSize   = 10;
-	protected int			    fontHeight		  = 0;
-	protected boolean		    isScalingFont     = false;
-	protected String		    regNameAndCoord[] = new String[2];
+	private static final Logger log = Logger.getInstance(TextCellRenderer.class);
+	protected Color fontColor = Color.black;
+	protected Font unscaledFont = null;
+	protected Font font = null;
+	protected FontMetrics fontMetrics = null;
+	protected int minimumFontSize = 10;
+	protected int fontHeight = 0;
+	protected boolean isScalingFont = false;
+	protected String regNameAndCoord[] = new String[2];
 
 	/**
 	 * Creates a new TextCellRenderer object.
@@ -79,12 +79,11 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 															 "false"))).booleanValue());
 		}
 
-		setFont(new Font(settings.getProperty("TextCellRenderer.fontName",
-											  "SansSerif"),
+		setFont(new Font(settings.getProperty("TextCellRenderer.fontName", "SansSerif"),
 						 Integer.parseInt(settings.getProperty("TextCellRenderer.fontStyle",
 															   Font.PLAIN + "")),
-						 Integer.parseInt(settings.getProperty("TextCellRenderer.fontSize",
-															   11 + ""))));
+						 Integer.parseInt(settings.getProperty("TextCellRenderer.fontSize", 11 +
+															   ""))));
 		setMinimumFontSize(Integer.parseInt(settings.getProperty("TextCellRenderer.minimumFontSize",
 																 "10")));
 		setShortenStrings(true);
@@ -92,17 +91,14 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 
 	protected void setFontColor(Color fontColor) {
 		super.setFontColor(fontColor);
-		settings.setProperty("TextCellRenderer.textColor",
-							 Colors.encode(fontColor));
+		settings.setProperty("TextCellRenderer.textColor", Colors.encode(fontColor));
 	}
 
 	protected void setFont(Font newFont) {
 		super.setFont(newFont);
 		settings.setProperty("TextCellRenderer.fontName", newFont.getName());
-		settings.setProperty("TextCellRenderer.fontStyle",
-							 Integer.toString(newFont.getStyle()));
-		settings.setProperty("TextCellRenderer.fontSize",
-							 Integer.toString(newFont.getSize()));
+		settings.setProperty("TextCellRenderer.fontStyle", Integer.toString(newFont.getStyle()));
+		settings.setProperty("TextCellRenderer.fontSize", Integer.toString(newFont.getSize()));
 	}
 
 	protected void setScalingFont(boolean bool) {
@@ -189,8 +185,7 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 			defaultTranslations.put("usebold", "use bold font");
 			defaultTranslations.put("fontsize", "font size: ");
 			defaultTranslations.put("minimumfontsize", "minimal font size: ");
-			defaultTranslations.put("scalefontwithmapzoom",
-									"scale font with map zoom");
+			defaultTranslations.put("scalefontwithmapzoom", "scale font with map zoom");
 		}
 
 		return defaultTranslations;
@@ -201,12 +196,12 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 		protected TextCellRenderer source = null;
 
 		// GUI elements
-		private JPanel    pnlFontColor		 = null;
-		private JComboBox cmbFontName		 = null;
-		private JCheckBox chkFontBold		 = null;
-		private JComboBox cmbFontSize		 = null;
+		private JPanel pnlFontColor = null;
+		private JComboBox cmbFontName = null;
+		private JCheckBox chkFontBold = null;
+		private JComboBox cmbFontSize = null;
 		private JComboBox cmbMinimumFontSize = null;
-		private JCheckBox chkScaleFont		 = null;
+		private JCheckBox chkScaleFont = null;
 
 		/**
 		 * Creates a new Preferences object.
@@ -257,7 +252,7 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 			chkFontBold = new JCheckBox(getString("usebold"),
 										source.getFont().getStyle() != Font.PLAIN);
 
-			Font font	   = source.getFont();
+			Font font = source.getFont();
 			List fontSizes = CollectionFactory.createLinkedList();
 			fontSizes.add("8");
 			fontSizes.add("9");
@@ -277,21 +272,19 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 
 			cmbMinimumFontSize = new JComboBox(fontSizes.toArray());
 			cmbMinimumFontSize.setEditable(true);
-			cmbMinimumFontSize.setSelectedItem("" +
-											   source.getMinimumFontSize());
+			cmbMinimumFontSize.setSelectedItem("" + source.getMinimumFontSize());
 
 			JLabel lblMinimumFontSize = new JLabel(getString("minimumfontsize"));
 			lblMinimumFontSize.setLabelFor(cmbMinimumFontSize);
 
-			chkScaleFont = new JCheckBox(getString("scalefontwithmapzoom"),
-										 source.isScalingFont());
+			chkScaleFont = new JCheckBox(getString("scalefontwithmapzoom"), source.isScalingFont());
 
 			this.setLayout(new GridBagLayout());
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.anchor = GridBagConstraints.WEST;
-			c.gridx  = 0;
-			c.gridy  = 0;
+			c.gridx = 0;
+			c.gridy = 0;
 			this.add(lblFontColor, c);
 			c.gridx = 1;
 			c.gridy = 0;
@@ -322,8 +315,8 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 			c.gridy = 4;
 			this.add(cmbMinimumFontSize, c);
 
-			c.gridx     = 0;
-			c.gridy     = 5;
+			c.gridx = 0;
+			c.gridy = 5;
 			c.gridwidth = 2;
 			this.add(chkScaleFont, c);
 		}
@@ -334,9 +327,9 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 		public void applyPreferences() {
 			source.setFontColor(pnlFontColor.getBackground());
 
-			String fontName  = (String) cmbFontName.getSelectedItem();
-			int    fontStyle = chkFontBold.isSelected() ? Font.BOLD : Font.PLAIN;
-			int    fontSize  = Integer.parseInt((String) cmbFontSize.getSelectedItem());
+			String fontName = (String) cmbFontName.getSelectedItem();
+			int fontStyle = chkFontBold.isSelected() ? Font.BOLD : Font.PLAIN;
+			int fontSize = Integer.parseInt((String) cmbFontSize.getSelectedItem());
 			source.setFont(new Font(fontName, fontStyle, fontSize));
 			source.setMinimumFontSize(Integer.parseInt((String) cmbMinimumFontSize.getSelectedItem()));
 			source.setScalingFont(chkScaleFont.isSelected());

@@ -30,26 +30,23 @@ import com.eressea.rules.SkillType;
 
 /**
  * <p>
- * A class summarizing the static information about a game system (a set of
- * rules).
+ * A class summarizing the static information about a game system (a set of rules).
  * </p>
  * 
  * <p>
- * If internationalization is a concern, implementing sub-classes should ensure
- * that the access-methods to the various collections (<tt>getXXX()</tt>)
- * return their objects not only by their (usually language-independent) id
- * but also by their (laguage-dependent) name as it may be supplied by the
- * user.
+ * If internationalization is a concern, implementing sub-classes should ensure that the
+ * access-methods to the various collections (<tt>getXXX()</tt>) return their objects not only by
+ * their (usually language-independent) id but also by their (laguage-dependent) name as it may be
+ * supplied by the user.
  * </p>
  * 
  * <p>
- * If necessary, subclasses could also provide additional access methods to
- * distinguish between an access by id or name.
+ * If necessary, subclasses could also provide additional access methods to distinguish between an
+ * access by id or name.
  * </p>
  * 
  * <p>
- * The methods called getXXX(ID id, boolean add) adds and returns  a new
- * Object.
+ * The methods called getXXX(ID id, boolean add) adds and returns  a new Object.
  * </p>
  */
 public interface Rules {
@@ -518,8 +515,8 @@ public interface Rules {
 	/**
 	 * Changes the name of an object identified by the given old name.
 	 *
-	 * @return the modified object type or null, if no object type is
-	 * 		   registered with the specified id.
+	 * @return the modified object type or null, if no object type is registered with the specified
+	 * 		   id.
 	 */
 	public ObjectType changeName(String from, String to);
 }

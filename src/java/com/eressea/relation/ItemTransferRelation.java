@@ -18,8 +18,7 @@ import com.eressea.Unit;
 import com.eressea.rules.ItemType;
 
 /**
- * A relation indicating that a unit transfers a certain amount of an item to
- * another unit.
+ * A relation indicating that a unit transfers a certain amount of an item to another unit.
  */
 public class ItemTransferRelation extends TransferRelation {
 	/** TODO: DOCUMENT ME! */

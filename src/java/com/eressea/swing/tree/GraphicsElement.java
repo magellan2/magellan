@@ -29,24 +29,18 @@ public class GraphicsElement {
 	/** Holds an icon if provided. Will be asked for at first from renderer. */
 	private Icon icon = null;
 
-	/**
-	 * Stores an image to create an icon from. Is asked secondly if no icon is
-	 * provided.
-	 */
+	/** Stores an image to create an icon from. Is asked secondly if no icon is provided. */
 	private Image image = null;
 
 	/**
-	 * A name for the image that could be used for an Image icon. Will be used
-	 * by the renderer if neither icon nor image are provided.
+	 * A name for the image that could be used for an Image icon. Will be used by the renderer if
+	 * neither icon nor image are provided.
 	 */
 	private String imageName = null;
 
 	// Text display things
 
-	/**
-	 * The object that should be displayed. If not null, the text of toString()
-	 * will be used.
-	 */
+	/** The object that should be displayed. If not null, the text of toString() will be used. */
 	private Object object = null;
 
 	/** A styleset to use for display. */
@@ -72,8 +66,8 @@ public class GraphicsElement {
 
 	// Single use: Icon(/Image/ImageName) / Object
 	public GraphicsElement(Icon icon, Image image, String imageName) {
-		this.icon	   = icon;
-		this.image     = image;
+		this.icon = icon;
+		this.image = image;
 		this.imageName = imageName;
 	}
 
@@ -87,11 +81,10 @@ public class GraphicsElement {
 	}
 
 	// Combined use: Icon + Object
-	public GraphicsElement(Object object, Icon icon, Image image,
-						   String imageName) {
-		this.object    = object;
-		this.icon	   = icon;
-		this.image     = image;
+	public GraphicsElement(Object object, Icon icon, Image image, String imageName) {
+		this.object = object;
+		this.icon = icon;
+		this.image = image;
 		this.imageName = imageName;
 	}
 

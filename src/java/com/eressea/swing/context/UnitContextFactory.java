@@ -36,16 +36,14 @@ public class UnitContextFactory implements ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data,
-													Object argument,
+	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
 													java.util.Collection selectedObjects,
 													javax.swing.tree.DefaultMutableTreeNode node) {
 		if(argument instanceof Unit) {
 			return new UnitContextMenu((Unit) argument, selectedObjects,
 									   EventDispatcher.getDispatcher(), data);
 		} else if(argument instanceof UnitNodeWrapper) {
-			return new UnitContextMenu(((UnitNodeWrapper) argument).getUnit(),
-									   selectedObjects,
+			return new UnitContextMenu(((UnitNodeWrapper) argument).getUnit(), selectedObjects,
 									   EventDispatcher.getDispatcher(), data);
 		}
 

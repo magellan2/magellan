@@ -14,12 +14,11 @@
 package com.eressea.rules;
 
 /**
- * A Resource reflects a needed resource for  e.g. building roads (stones,
- * building) e.g. a building (stones, wood, iron, silver e.g. recruiting
- * (silver, potion?)
+ * A Resource reflects a needed resource for  e.g. building roads (stones, building) e.g. a
+ * building (stones, wood, iron, silver e.g. recruiting (silver, potion?)
  */
 public class Resource {
-	private int		   amount = 1;
+	private int amount = 1;
 	private ObjectType type = null;
 
 	/**

@@ -31,14 +31,12 @@ import com.eressea.util.CollectionFactory;
  *
  * @author Andreas, Ulrich Küster
  */
-public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
-										 SupportsEmphasizing
-{
-	protected Group		  group;
-	protected List		  GE;
+public class GroupNodeWrapper implements CellObject2, SupportsClipboard, SupportsEmphasizing {
+	protected Group group;
+	protected List GE;
 	protected static Icon icon;
-	private int			  amount			   = -1;
-	private List		  subordinatedElements = CollectionFactory.createArrayList();
+	private int amount = -1;
+	private List subordinatedElements = CollectionFactory.createArrayList();
 
 	/**
 	 * Creates new GroupNodeWrapper
@@ -69,8 +67,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 	 */
 	public List getGraphicsElements() {
 		if(GE == null) {
-			GraphicsElement ge = new GroupGraphicsElement(group, icon, null,
-														  null);
+			GraphicsElement ge = new GroupGraphicsElement(group, icon, null, null);
 			Tag2Element.start(group);
 			Tag2Element.apply(ge);
 			ge.setType(GraphicsElement.MAIN);
@@ -90,8 +87,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 		 * @param image TODO: DOCUMENT ME!
 		 * @param imageName TODO: DOCUMENT ME!
 		 */
-		public GroupGraphicsElement(Object object, Icon icon, Image image,
-									String imageName) {
+		public GroupGraphicsElement(Object object, Icon icon, Image image, String imageName) {
 			super(object, icon, image, imageName);
 		}
 
@@ -207,8 +203,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 
@@ -221,8 +216,7 @@ public class GroupNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  String prefix,
+	public NodeWrapperDrawPolicy init(Properties settings, String prefix,
 									  NodeWrapperDrawPolicy adapter) {
 		return null;
 	}

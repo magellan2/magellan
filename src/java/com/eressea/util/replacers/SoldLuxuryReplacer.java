@@ -57,7 +57,7 @@ public class SoldLuxuryReplacer extends AbstractRegionReplacer {
 			Iterator it = r.prices.keySet().iterator();
 
 			while(it.hasNext()) {
-				StringID    id = (StringID) it.next();
+				StringID id = (StringID) it.next();
 				LuxuryPrice lp = (LuxuryPrice) r.prices.get(id);
 
 				if(lp.getPrice() < 0) {
@@ -66,12 +66,10 @@ public class SoldLuxuryReplacer extends AbstractRegionReplacer {
 						return id.toString();
 
 					case 1:
-						return new String(lp.getItemType().getName()
-											.toCharArray(), 0, 1);
+						return new String(lp.getItemType().getName().toCharArray(), 0, 1);
 
 					case 2:
-						return new String(lp.getItemType().getName()
-											.toCharArray(), 0, 2);
+						return new String(lp.getItemType().getName().toCharArray(), 0, 2);
 
 					case 3:
 						return new Integer(-lp.getPrice());
@@ -89,9 +87,7 @@ public class SoldLuxuryReplacer extends AbstractRegionReplacer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getDescription() {
-		return com.eressea.util.Translations.getTranslation(this,
-															"description." +
-															mode);
+		return com.eressea.util.Translations.getTranslation(this, "description." + mode);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

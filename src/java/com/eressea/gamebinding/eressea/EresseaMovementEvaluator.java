@@ -49,22 +49,21 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 	}
 
 	/**
-	 * Returns the maximum payload in GE  100 of this unit when it travels by
-	 * horse. Horses, carts and persons are taken into account for this
-	 * calculation. If the unit has a sufficient skill in horse riding but
-	 * there are too many carts for the horses, the weight of the additional
+	 * Returns the maximum payload in GE  100 of this unit when it travels by horse. Horses, carts
+	 * and persons are taken into account for this calculation. If the unit has a sufficient skill
+	 * in horse riding but there are too many carts for the horses, the weight of the additional
 	 * carts are also already considered.
 	 *
 	 * @param unit TODO: DOCUMENT ME!
 	 *
-	 * @return the payload in GE  100, CAP_NO_HORSES if the unit does not
-	 * 		   possess horses or CAP_UNSKILLED if the unit is not sufficiently
-	 * 		   skilled in horse riding to travel on horseback.
+	 * @return the payload in GE  100, CAP_NO_HORSES if the unit does not possess horses or
+	 * 		   CAP_UNSKILLED if the unit is not sufficiently skilled in horse riding to travel on
+	 * 		   horseback.
 	 */
 	public int getPayloadOnHorse(Unit unit) {
-		int  capacity = 0;
-		int  horses = 0;
-		Item i	    = unit.getModifiedItem(new ItemType(EresseaConstants.I_HORSE));
+		int capacity = 0;
+		int horses = 0;
+		Item i = unit.getModifiedItem(new ItemType(EresseaConstants.I_HORSE));
 
 		if(i != null) {
 			horses = i.getAmount();
@@ -74,7 +73,7 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 			return CAP_NO_HORSES;
 		}
 
-		int   skillLevel = 0;
+		int skillLevel = 0;
 		Skill s = unit.getModifiedSkill(new SkillType(StringID.create("Reiten")));
 
 		if(s != null) {
@@ -96,40 +95,36 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 
 		if(horsesWithoutCarts >= 0) {
 			capacity = (((carts * 140) + (horsesWithoutCarts * 20)) * 100) -
-					   (((int) (((unit.realRace != null)
-								 ? unit.realRace.getWeight()
-								 : unit.race.getWeight()) * 100)) * unit.getModifiedPersons());
+					   (((int) (((unit.realRace != null) ? unit.realRace.getWeight()
+														 : unit.race.getWeight()) * 100)) * unit.getModifiedPersons());
 		} else {
 			int cartsWithoutHorses = carts - (horses / 2);
 			horsesWithoutCarts = horses % 2;
-			capacity		   = (((((carts - cartsWithoutHorses) * 140) +
-								 (horsesWithoutCarts * 20)) -
-								 (cartsWithoutHorses * 40)) * 100) -
-								 (((int) (((unit.realRace != null)
-										   ? unit.realRace.getWeight()
-										   : unit.race.getWeight()) * 100)) * unit.getModifiedPersons());
+			capacity = (((((carts - cartsWithoutHorses) * 140) + (horsesWithoutCarts * 20)) -
+					   (cartsWithoutHorses * 40)) * 100) -
+					   (((int) (((unit.realRace != null) ? unit.realRace.getWeight()
+														 : unit.race.getWeight()) * 100)) * unit.getModifiedPersons());
 		}
 
 		return capacity;
 	}
 
 	/**
-	 * Returns the maximum payload in GE  100 of this unit when it travels on
-	 * foot. Horses, carts and persons are taken into account for this
-	 * calculation. If the unit has a sufficient skill in horse riding but
-	 * there are too many carts for the horses, the weight of the additional
-	 * carts are also already considered. The calculation also takes into
-	 * account that trolls can tow carts.
+	 * Returns the maximum payload in GE  100 of this unit when it travels on foot. Horses, carts
+	 * and persons are taken into account for this calculation. If the unit has a sufficient skill
+	 * in horse riding but there are too many carts for the horses, the weight of the additional
+	 * carts are also already considered. The calculation also takes into account that trolls can
+	 * tow carts.
 	 *
 	 * @param unit TODO: DOCUMENT ME!
 	 *
-	 * @return the payload in GE  100, CAP_UNSKILLED if the unit is not
-	 * 		   sufficiently skilled in horse riding to travel on horseback.
+	 * @return the payload in GE  100, CAP_UNSKILLED if the unit is not sufficiently skilled in
+	 * 		   horse riding to travel on horseback.
 	 */
 	public int getPayloadOnFoot(Unit unit) {
-		int  capacity = 0;
-		int  horses = 0;
-		Item i	    = unit.getModifiedItem(new ItemType(EresseaConstants.I_HORSE));
+		int capacity = 0;
+		int horses = 0;
+		Item i = unit.getModifiedItem(new ItemType(EresseaConstants.I_HORSE));
 
 		if(i != null) {
 			horses = i.getAmount();
@@ -139,15 +134,14 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 			horses = 0;
 		}
 
-		int   skillLevel = 0;
+		int skillLevel = 0;
 		Skill s = unit.getModifiedSkill(new SkillType(StringID.create("Reiten")));
 
 		if(s != null) {
 			skillLevel = s.getLevel();
 		}
 
-		if(horses > ((skillLevel * unit.getModifiedPersons() * 4) +
-			   unit.getModifiedPersons())) {
+		if(horses > ((skillLevel * unit.getModifiedPersons() * 4) + unit.getModifiedPersons())) {
 			// too many horses
 			return CAP_UNSKILLED;
 		}
@@ -184,10 +178,9 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 			race = unit.realRace;
 		}
 
-		if((race == null) ||
-			   (race.getID().equals(EresseaConstants.R_TROLLE) == false)) {
-			capacity = (((((carts - cartsWithoutHorses) * 140) +
-					   (horsesWithoutCarts * 20)) - (cartsWithoutHorses * 40)) * 100) +
+		if((race == null) || (race.getID().equals(EresseaConstants.R_TROLLE) == false)) {
+			capacity = (((((carts - cartsWithoutHorses) * 140) + (horsesWithoutCarts * 20)) -
+					   (cartsWithoutHorses * 40)) * 100) +
 					   (((int) (race.getCapacity() * 100)) * unit.getModifiedPersons());
 		} else {
 			int horsesMasteredPerPerson = (skillLevel * 4) + 1;
@@ -197,13 +190,12 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 				trollsMasteringHorses++;
 			}
 
-			int cartsTowedByTrolls = Math.min((unit.getModifiedPersons() -
-											  trollsMasteringHorses) / 4,
+			int cartsTowedByTrolls = Math.min((unit.getModifiedPersons() - trollsMasteringHorses) / 4,
 											  cartsWithoutHorses);
 			int trollsTowingCarts = cartsTowedByTrolls * 4;
-			int untowedCarts	  = cartsWithoutHorses - cartsTowedByTrolls;
-			capacity = (((((carts - untowedCarts) * 140) +
-					   (horsesWithoutCarts * 20)) - (untowedCarts * 40)) * 100) +
+			int untowedCarts = cartsWithoutHorses - cartsTowedByTrolls;
+			capacity = (((((carts - untowedCarts) * 140) + (horsesWithoutCarts * 20)) -
+					   (untowedCarts * 40)) * 100) +
 					   (((int) (race.getCapacity() * 100)) * (unit.getModifiedPersons() -
 					   trollsTowingCarts));
 		}
@@ -234,9 +226,9 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 	}
 
 	private int getLoad(Unit unit, Collection items) {
-		int		 load  = 0;
+		int load = 0;
 		ItemType horse = unit.getRegion().getData().rules.getItemType(EresseaConstants.I_HORSE);
-		ItemType cart  = unit.getRegion().getData().rules.getItemType(EresseaConstants.I_CART);
+		ItemType cart = unit.getRegion().getData().rules.getItemType(EresseaConstants.I_CART);
 
 		for(Iterator iter = items.iterator(); iter.hasNext();) {
 			Item i = (Item) iter.next();

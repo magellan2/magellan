@@ -24,8 +24,8 @@ import java.awt.Insets;
  */
 public class GridBagHelper {
 	/**
-	 * Sets the constraints for the given constraints object. Helper function
-	 * to be able to reuse a constraints object.
+	 * Sets the constraints for the given constraints object. Helper function to be able to reuse a
+	 * constraints object.
 	 *
 	 * @param constraints the constraints object to initialize.
 	 * @param gridx the initial gridx value.
@@ -42,28 +42,24 @@ public class GridBagHelper {
 	 *
 	 * @return the initialized constraints object.
 	 */
-	public static GridBagConstraints setConstraints(GridBagConstraints constraints,
-													int gridx, int gridy,
-													int gridwidth,
-													int gridheight,
-													double weightx,
-													double weighty, int anchor,
-													int fill, Insets insets,
-													int ipadx, int ipady) {
-		constraints.gridx		  = gridx;
-		constraints.gridy		  = gridy;
-		constraints.gridwidth     = gridwidth;
-		constraints.gridheight    = gridheight;
-		constraints.weightx		  = weightx;
-		constraints.weighty		  = weighty;
-		constraints.anchor		  = anchor;
-		constraints.fill		  = fill;
-		constraints.insets.top    = insets.top;
+	public static GridBagConstraints setConstraints(GridBagConstraints constraints, int gridx,
+													int gridy, int gridwidth, int gridheight,
+													double weightx, double weighty, int anchor,
+													int fill, Insets insets, int ipadx, int ipady) {
+		constraints.gridx = gridx;
+		constraints.gridy = gridy;
+		constraints.gridwidth = gridwidth;
+		constraints.gridheight = gridheight;
+		constraints.weightx = weightx;
+		constraints.weighty = weighty;
+		constraints.anchor = anchor;
+		constraints.fill = fill;
+		constraints.insets.top = insets.top;
 		constraints.insets.bottom = insets.bottom;
-		constraints.insets.left   = insets.left;
-		constraints.insets.right  = insets.right;
-		constraints.ipadx		  = ipadx;
-		constraints.ipady		  = ipady;
+		constraints.insets.left = insets.left;
+		constraints.insets.right = insets.right;
+		constraints.ipadx = ipadx;
+		constraints.ipady = ipady;
 
 		return constraints;
 	}

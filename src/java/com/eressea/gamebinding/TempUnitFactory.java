@@ -25,8 +25,7 @@ import com.eressea.Unit;
  */
 public interface TempUnitFactory {
 	/**
-	 * Returns the orders necessary to issue the creation of all the child temp
-	 * units of this unit.
+	 * Returns the orders necessary to issue the creation of all the child temp units of this unit.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

@@ -32,8 +32,8 @@ import java.util.StringTokenizer;
  */
 public class DefinitionMaker {
 	/** TODO: DOCUMENT ME! */
-	public static final String ESCAPE  = "\\";
-	protected String		   unknown = "";
+	public static final String ESCAPE = "\\";
+	protected String unknown = "";
 
 	/**
 	 * Creates new DefinitionMaker
@@ -81,8 +81,7 @@ public class DefinitionMaker {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public ReplacerSystem createDefinition(String defStr, String cmdChars,
-										   ReplacerFactory factory) {
+	public ReplacerSystem createDefinition(String defStr, String cmdChars, ReplacerFactory factory) {
 		return createDefinition(defStr, cmdChars, factory, unknown);
 	}
 
@@ -96,10 +95,8 @@ public class DefinitionMaker {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static ReplacerSystem createDefinition(String defStr,
-												  String cmdChars,
-												  ReplacerFactory factory,
-												  String unknown) {
+	public static ReplacerSystem createDefinition(String defStr, String cmdChars,
+												  ReplacerFactory factory, String unknown) {
 		ReplacerSystem sys = new ReplacerSystem();
 
 		if((defStr == null) || (defStr.length() == 0)) {
@@ -122,8 +119,7 @@ public class DefinitionMaker {
 			if(factory.isReplacer(s)) {
 				Replacer rep = factory.createReplacer(s);
 
-				if((rep instanceof ParameterReplacer) ||
-					   (rep instanceof BranchReplacer)) {
+				if((rep instanceof ParameterReplacer) || (rep instanceof BranchReplacer)) {
 					sys.setBase(new ListReplacer(null, unknown));
 
 					return sys;
@@ -148,10 +144,8 @@ public class DefinitionMaker {
 		return sys;
 	}
 
-	protected static Replacer createBranchReplacer(BranchReplacer branch,
-												   StringTokenizer st,
-												   ReplacerFactory factory,
-												   String unknown,
+	protected static Replacer createBranchReplacer(BranchReplacer branch, StringTokenizer st,
+												   ReplacerFactory factory, String unknown,
 												   ReplacerSystem env) {
 		int branches = branch.getBranchCount();
 
@@ -163,20 +157,19 @@ public class DefinitionMaker {
 
 		// collect all structure data, but return false
 		for(int i = 0; i < branches; i++) {
-			String     branchEnd     = branch.getBranchSign(i + 1);
-			LinkedList subList		 = new LinkedList();
-			boolean    endReached    = false;
-			boolean    repEndReached = false;
+			String branchEnd = branch.getBranchSign(i + 1);
+			LinkedList subList = new LinkedList();
+			boolean endReached = false;
+			boolean repEndReached = false;
 
 			while(!endReached && !repEndReached && st.hasMoreTokens()) {
 				String token = st.nextToken();
-				endReached    = token.equals(branchEnd);
+				endReached = token.equals(branchEnd);
 				repEndReached = token.equals(repEnd);
 
 				if(!endReached && !repEndReached) {
 					if(factory.isReplacer(token)) {
-						subList.add(createReplacer(token, st, factory, unknown,
-												   env));
+						subList.add(createReplacer(token, st, factory, unknown, env));
 					} else {
 						subList.add(scanEscapes(token, factory));
 					}
@@ -201,17 +194,15 @@ public class DefinitionMaker {
 		return branch;
 	}
 
-	protected static Replacer createSwitchBranchReplacer(BranchReplacer branch,
-														 StringTokenizer st,
-														 ReplacerFactory factory,
-														 String unknown,
+	protected static Replacer createSwitchBranchReplacer(BranchReplacer branch, StringTokenizer st,
+														 ReplacerFactory factory, String unknown,
 														 ReplacerSystem env) {
-		String     branchEnd   = branch.getBranchSign(0);
-		String     switchEnd   = branch.getBranchSign(1);
-		LinkedList subList     = new LinkedList();
-		boolean    endReached  = false;
-		int		   branchCount = 0;
-		boolean    anything    = false;
+		String branchEnd = branch.getBranchSign(0);
+		String switchEnd = branch.getBranchSign(1);
+		LinkedList subList = new LinkedList();
+		boolean endReached = false;
+		int branchCount = 0;
+		boolean anything = false;
 
 		while(!endReached && st.hasMoreTokens()) {
 			boolean isBranchEnd = false;
@@ -219,12 +210,11 @@ public class DefinitionMaker {
 			while(!isBranchEnd && st.hasMoreTokens()) {
 				String token = st.nextToken();
 				isBranchEnd = token.equals(branchEnd);
-				endReached  = token.equals(switchEnd);
+				endReached = token.equals(switchEnd);
 
 				if(!isBranchEnd && !endReached) {
 					if(factory.isReplacer(token)) {
-						subList.add(createReplacer(token, st, factory, unknown,
-												   env));
+						subList.add(createReplacer(token, st, factory, unknown, env));
 					} else {
 						subList.add(scanEscapes(token, factory));
 					}
@@ -249,10 +239,8 @@ public class DefinitionMaker {
 		return new ListReplacer(null, unknown);
 	}
 
-	protected static Replacer createListReplacer(StringTokenizer st,
-												 ReplacerFactory factory,
-												 String unknown,
-												 ReplacerSystem env) {
+	protected static Replacer createListReplacer(StringTokenizer st, ReplacerFactory factory,
+												 String unknown, ReplacerSystem env) {
 		List list = new LinkedList();
 
 		while(st.hasMoreTokens()) {
@@ -281,8 +269,8 @@ public class DefinitionMaker {
 	}
 
 	protected static Replacer createReplacer(String token, StringTokenizer st,
-											 ReplacerFactory factory,
-											 String unknown, ReplacerSystem env) {
+											 ReplacerFactory factory, String unknown,
+											 ReplacerSystem env) {
 		Replacer rep = factory.createReplacer(token);
 
 		if(rep instanceof EnvironmentDependent) {
@@ -290,22 +278,18 @@ public class DefinitionMaker {
 		}
 
 		if(rep instanceof ParameterReplacer) {
-			rep = createParameterReplacer((ParameterReplacer) rep, st, factory,
-										  unknown, env);
+			rep = createParameterReplacer((ParameterReplacer) rep, st, factory, unknown, env);
 		}
 
 		if(rep instanceof BranchReplacer) {
-			rep = createBranchReplacer((BranchReplacer) rep, st, factory,
-									   unknown, env);
+			rep = createBranchReplacer((BranchReplacer) rep, st, factory, unknown, env);
 		}
 
 		return rep;
 	}
 
-	protected static Replacer createParameterReplacer(ParameterReplacer param,
-													  StringTokenizer st,
-													  ReplacerFactory factory,
-													  String unknown,
+	protected static Replacer createParameterReplacer(ParameterReplacer param, StringTokenizer st,
+													  ReplacerFactory factory, String unknown,
 													  ReplacerSystem env) {
 		int params = param.getParameterCount();
 
@@ -313,8 +297,8 @@ public class DefinitionMaker {
 			for(int i = 0; i < params; i++) {
 				if(st.hasMoreTokens()) {
 					try {
-						List    helpList  = null;
-						Object  o		  = null;
+						List helpList = null;
+						Object o = null;
 						boolean nonSwitch = false;
 
 						do {
@@ -322,8 +306,7 @@ public class DefinitionMaker {
 							o = null;
 
 							if(factory.isReplacer(token)) {
-								o = createReplacer(token, st, factory, unknown,
-												   env);
+								o = createReplacer(token, st, factory, unknown, env);
 							} else {
 								o = scanEscapes(token, factory);
 							}
@@ -344,9 +327,7 @@ public class DefinitionMaker {
 						} while(!nonSwitch);
 
 						if(helpList != null) {
-							param.setParameter(i,
-											   new ListReplacer(helpList,
-																unknown));
+							param.setParameter(i, new ListReplacer(helpList, unknown));
 						} else {
 							param.setParameter(i, o);
 						}

@@ -42,10 +42,10 @@ public class DesktopEnvironment extends Object {
 	public static final int LAYOUT = MagellanDesktop.MODE_LAYOUT;
 
 	// init state
-	private static boolean initialized			    = false;
-	private static List    pendingSCListeners;
-	private static List    pendingSingleSCListeners;
-	private static List    pendingAEListeners;
+	private static boolean initialized = false;
+	private static List pendingSCListeners;
+	private static List pendingSingleSCListeners;
+	private static List pendingAEListeners;
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -53,7 +53,7 @@ public class DesktopEnvironment extends Object {
 	 * @param md TODO: DOCUMENT ME!
 	 */
 	public static void init(MagellanDesktop md) {
-		desktop     = md;
+		desktop = md;
 		initialized = true;
 
 		// somebody registered before init
@@ -75,7 +75,7 @@ public class DesktopEnvironment extends Object {
 
 			while(it.hasNext()) {
 				try {
-					KeyStroke		 ks = (KeyStroke) it.next();
+					KeyStroke ks = (KeyStroke) it.next();
 					ShortcutListener sl = (ShortcutListener) it.next();
 					registerShortcutListener(ks, sl);
 				} catch(Exception exc) {
@@ -90,7 +90,7 @@ public class DesktopEnvironment extends Object {
 
 			while(it.hasNext()) {
 				try {
-					KeyStroke	   ks = (KeyStroke) it.next();
+					KeyStroke ks = (KeyStroke) it.next();
 					ActionListener al = (ActionListener) it.next();
 					registerActionListener(ks, al);
 				} catch(Exception exc) {
@@ -124,8 +124,7 @@ public class DesktopEnvironment extends Object {
 	 * @param stroke TODO: DOCUMENT ME!
 	 * @param sl TODO: DOCUMENT ME!
 	 */
-	public static void registerShortcutListener(KeyStroke stroke,
-												ShortcutListener sl) {
+	public static void registerShortcutListener(KeyStroke stroke, ShortcutListener sl) {
 		if(initialized) {
 			desktop.registerShortcut(stroke, sl);
 		} else {
@@ -144,8 +143,7 @@ public class DesktopEnvironment extends Object {
 	 * @param stroke TODO: DOCUMENT ME!
 	 * @param al TODO: DOCUMENT ME!
 	 */
-	public static void registerActionListener(KeyStroke stroke,
-											  ActionListener al) {
+	public static void registerActionListener(KeyStroke stroke, ActionListener al) {
 		if(initialized) {
 			desktop.registerShortcut(stroke, al);
 		} else {

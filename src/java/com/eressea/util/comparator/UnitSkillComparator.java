@@ -26,8 +26,8 @@ import com.eressea.Unit;
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality.
  * </p>
  */
 public class UnitSkillComparator implements Comparator {
@@ -38,29 +38,25 @@ public class UnitSkillComparator implements Comparator {
 	 * Creates a new UnitSkillComparator object.
 	 *
 	 * @param skillsComparator used to compare the skills of two units
-	 * @param subComparator if two units do not possess skills or if the skills
-	 * 		  comparator regards them as equal, this sub-comparator is applied
-	 * 		  if it is not <tt>null</tt>.
+	 * @param subComparator if two units do not possess skills or if the skills comparator regards
+	 * 		  them as equal, this sub-comparator is applied if it is not <tt>null</tt>.
 	 */
-	public UnitSkillComparator(Comparator skillsComparator,
-							   Comparator subComparator) {
+	public UnitSkillComparator(Comparator skillsComparator, Comparator subComparator) {
 		this.skillsCmp = skillsComparator;
-		this.subCmp    = subComparator;
+		this.subCmp = subComparator;
 	}
 
 	/**
-	 * Compares its two arguments for order according to their skills. The
-	 * learning days of the best skill of unit one is compared to those of the
-	 * second unit.
+	 * Compares its two arguments for order according to their skills. The learning days of the
+	 * best skill of unit one is compared to those of the second unit.
 	 *
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return a number &lt; 0 if o1's best skill is alphabetically less than
-	 * 		   o2's best skill. If both units have the same best skill these
-	 * 		   are compared using the standard skill comparator. If these two
-	 * 		   values are the same, the subcomparator is used to compare the
-	 * 		   two units.
+	 * @return a number &lt; 0 if o1's best skill is alphabetically less than o2's best skill. If
+	 * 		   both units have the same best skill these are compared using the standard skill
+	 * 		   comparator. If these two values are the same, the subcomparator is used to compare
+	 * 		   the two units.
 	 */
 	public int compare(Object o1, Object o2) {
 		int retVal = 0;

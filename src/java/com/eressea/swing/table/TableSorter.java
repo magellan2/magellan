@@ -1,4 +1,17 @@
 /*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ */
+
+/*
  * Copyright (c) 2003 Sun Microsystems, Inc. All  Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,17 +50,15 @@
  */
 
 /**
- * A sorter for TableModels. The sorter has a model (conforming to TableModel)
- * and itself implements TableModel. TableSorter does not store or copy  the
- * data in the TableModel, instead it maintains an array of  integers which it
- * keeps the same size as the number of rows in its  model. When the model
- * changes it notifies the sorter that something  has changed eg. "rowsAdded"
- * so that its internal array of integers  can be reallocated. As requests are
- * made of the sorter (like  getValueAt(row, col) it redirects them to its
- * model via the mapping  array. That way the TableSorter appears to hold
- * another copy of the table  with the rows in a different order. The sorting
- * algorthm used is stable  which means that it does not move around rows when
- * its comparison  function returns 0 to denote that they are equivalent.
+ * A sorter for TableModels. The sorter has a model (conforming to TableModel) and itself
+ * implements TableModel. TableSorter does not store or copy  the data in the TableModel, instead
+ * it maintains an array of  integers which it keeps the same size as the number of rows in its
+ * model. When the model changes it notifies the sorter that something  has changed eg.
+ * "rowsAdded" so that its internal array of integers  can be reallocated. As requests are made of
+ * the sorter (like  getValueAt(row, col) it redirects them to its model via the mapping  array.
+ * That way the TableSorter appears to hold another copy of the table  with the rows in a
+ * different order. The sorting algorthm used is stable  which means that it does not move around
+ * rows when its comparison  function returns 0 to denote that they are equivalent.
  */
 package com.eressea.swing.table;
 
@@ -70,10 +81,10 @@ import javax.swing.table.TableModel;
  * @version $Revision$
  */
 public class TableSorter extends TableMap {
-	int		 indexes[];
-	Vector   sortingColumns = new Vector();
-	int		 oldColumn	    = -1;
-	boolean  ascending	    = true;
+	int indexes[];
+	Vector sortingColumns = new Vector();
+	int oldColumn = -1;
+	boolean ascending = true;
 
 	// int compares;
 	public TableSorter() {
@@ -109,7 +120,7 @@ public class TableSorter extends TableMap {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int compareRowsByColumn(int row1, int row2, int column) {
-		Class	   type = model.getColumnClass(column);
+		Class type = model.getColumnClass(column);
 		TableModel data = model;
 
 		// Check for nulls
@@ -159,9 +170,9 @@ public class TableSorter extends TableMap {
 				return 0;
 			}
 		} else if(type == String.class) {
-			String s1     = (String) data.getValueAt(row1, column);
-			String s2     = (String) data.getValueAt(row2, column);
-			int    result = s1.compareTo(s2);
+			String s1 = (String) data.getValueAt(row1, column);
+			String s2 = (String) data.getValueAt(row2, column);
+			int result = s1.compareTo(s2);
 
 			if(result < 0) {
 				return -1;
@@ -172,9 +183,9 @@ public class TableSorter extends TableMap {
 			}
 		} else if(type == Boolean.class) {
 			Boolean bool1 = (Boolean) data.getValueAt(row1, column);
-			boolean b1    = bool1.booleanValue();
+			boolean b1 = bool1.booleanValue();
 			Boolean bool2 = (Boolean) data.getValueAt(row2, column);
-			boolean b2    = bool2.booleanValue();
+			boolean b2 = bool2.booleanValue();
 
 			if(b1 == b2) {
 				return 0;
@@ -185,11 +196,11 @@ public class TableSorter extends TableMap {
 				return -1;
 			}
 		} else {
-			Object v1     = data.getValueAt(row1, column);
-			String s1     = v1.toString();
-			Object v2     = data.getValueAt(row2, column);
-			String s2     = v2.toString();
-			int    result = s1.compareTo(s2);
+			Object v1 = data.getValueAt(row1, column);
+			String s1 = v1.toString();
+			Object v2 = data.getValueAt(row2, column);
+			String s2 = v2.toString();
+			int result = s1.compareTo(s2);
 
 			if(result < 0) {
 				return -1;
@@ -213,7 +224,7 @@ public class TableSorter extends TableMap {
 		// compares++;
 		for(int level = 0; level < sortingColumns.size(); level++) {
 			Integer column = (Integer) sortingColumns.elementAt(level);
-			int     result = compareRowsByColumn(row1, row2, column.intValue());
+			int result = compareRowsByColumn(row1, row2, column.intValue());
 
 			if(result != 0) {
 				return ascending ? result : (-result);
@@ -322,8 +333,7 @@ public class TableSorter extends TableMap {
 		for partially ordered lists but some analysis is needed to
 		find out how the performance drops to Nlog(N) as the initial
 		order diminishes - it may drop very quickly.  */
-		if(((high - low) >= 4) &&
-			   (compare(from[middle - 1], from[middle]) <= 0)) {
+		if(((high - low) >= 4) && (compare(from[middle - 1], from[middle]) <= 0)) {
 			for(int i = low; i < high; i++) {
 				to[i] = from[i];
 			}
@@ -333,8 +343,7 @@ public class TableSorter extends TableMap {
 
 		// A normal merge. 
 		for(int i = low; i < high; i++) {
-			if((q >= high) ||
-				   ((p < middle) && (compare(from[p], from[q]) <= 0))) {
+			if((q >= high) || ((p < middle) && (compare(from[p], from[q]) <= 0))) {
 				to[i] = from[p++];
 			} else {
 				to[i] = from[q++];
@@ -384,7 +393,7 @@ public class TableSorter extends TableMap {
 			// colum did not change, so keep old sorting Vector and invert direction
 			this.ascending = !this.ascending;
 		} else {
-			oldColumn	   = column;
+			oldColumn = column;
 			this.ascending = true;
 			sortingColumns.removeAllElements();
 			sortingColumns.addElement(new Integer(column));
@@ -398,15 +407,15 @@ public class TableSorter extends TableMap {
 	// Add a mouse listener to the Table to trigger a table sort 
 	// when a column heading is clicked in the JTable. 
 	public void addMouseListenerToHeaderInTable(JTable table) {
-		final TableSorter sorter    = this;
-		final JTable	  tableView = table;
+		final TableSorter sorter = this;
+		final JTable tableView = table;
 		tableView.setColumnSelectionAllowed(false);
 
 		MouseAdapter listMouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				TableColumnModel columnModel = tableView.getColumnModel();
-				int				 viewColumn = columnModel.getColumnIndexAtX(e.getX());
-				int				 column     = tableView.convertColumnIndexToModel(viewColumn);
+				int viewColumn = columnModel.getColumnIndexAtX(e.getX());
+				int column = tableView.convertColumnIndexToModel(viewColumn);
 
 				if((e.getClickCount() == 1) && (column != -1)) {
 					//System.out.println("Sorting ..."); 

@@ -16,13 +16,13 @@ package com.eressea.relation;
 import com.eressea.Unit;
 
 /**
- * A (possibly abstract) relation indicating that the source unit transfers a
- * certain amount of some objects to the target unit.
+ * A (possibly abstract) relation indicating that the source unit transfers a certain amount of
+ * some objects to the target unit.
  */
 public class TransferRelation extends InterUnitRelation {
 	/**
-	 * The amount to transfer. This has to be a non-negative value based on the
-	 * rest amount of the transfered object
+	 * The amount to transfer. This has to be a non-negative value based on the rest amount of the
+	 * transfered object
 	 */
 	public int amount;
 

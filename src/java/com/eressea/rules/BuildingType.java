@@ -30,11 +30,11 @@ import com.eressea.util.CollectionFactory;
  */
 public class BuildingType extends UnitContainerType {
 	private int minSkillLevel = -1;
-	private int maxSize		 = -1;
+	private int maxSize = -1;
 	private Map rawMaterials = null;
-	private Map maintenance  = null;
+	private Map maintenance = null;
 	private Map skillBonuses = null;
-	private Map regionTypes  = null;
+	private Map regionTypes = null;
 
 	/**
 	 * Creates a new BuildingType object.
@@ -224,9 +224,9 @@ public class BuildingType extends UnitContainerType {
 	}
 
 	/**
-	 * Indicates whether this BuildingType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class
-	 * BuildingType and o's id is equal to the id of this BuildingType object.
+	 * Indicates whether this BuildingType object is equal to another object. Returns true only if
+	 * o is not null and an instance of class BuildingType and o's id is equal to the id of this
+	 * BuildingType object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -234,13 +234,12 @@ public class BuildingType extends UnitContainerType {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof BuildingType &&
-			   this.getID().equals(((BuildingType) o).getID()));
+			   (o instanceof BuildingType && this.getID().equals(((BuildingType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on BuildingType objects equivalent to the
-	 * natural ordering of their ids.
+	 * Imposes a natural ordering on BuildingType objects equivalent to the natural ordering of
+	 * their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

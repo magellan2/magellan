@@ -29,15 +29,15 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
-	private Unit						   unit;
-	private Skill						   skill;
-	private Skill						   modSkill;
-	private boolean						   showNextLevelPoints     = true;
-	private boolean						   showNextLevelLearnTurns = true;
+	private Unit unit;
+	private Skill skill;
+	private Skill modSkill;
+	private boolean showNextLevelPoints = true;
+	private boolean showNextLevelLearnTurns = true;
 	protected DetailsNodeWrapperDrawPolicy adapter;
-	protected String					   text;
-	protected List						   icon;
-	protected List						   GEs;
+	protected String text;
+	protected List icon;
+	protected List GEs;
 
 	/** TODO: DOCUMENT ME! */
 	public static final int SHOW_NEXTLEVEL = 0;
@@ -55,25 +55,23 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	public static final int SHOW_CHANGE_STYLED = 4;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int     SHOW_CHANGE_TEXT		  = 5;
+	public static final int SHOW_CHANGE_TEXT = 5;
 	private static final String SKILL_CHANGE_STYLE_PREFIX = "Talent";
 
 	/**
 	 * Creates a new SkillNodeWrapper object.
 	 *
 	 * @param u the unit with the specified skills.
-	 * @param s the base skill. If s is null, it is assumed that the unit
-	 * 		  aquires that skill only through a person transfer. s and ms may
-	 * 		  not both be null.
-	 * @param ms the modified skill. If ms is null, it is assumed that the
-	 * 		  modification of the skill cannot be determined. s and ms may not
-	 * 		  both be null.
+	 * @param s the base skill. If s is null, it is assumed that the unit aquires that skill only
+	 * 		  through a person transfer. s and ms may not both be null.
+	 * @param ms the modified skill. If ms is null, it is assumed that the modification of the
+	 * 		  skill cannot be determined. s and ms may not both be null.
 	 */
 	public SkillNodeWrapper(Unit u, Skill s, Skill ms) {
-		unit     = null;
-		skill    = null;
+		unit = null;
+		skill = null;
 		modSkill = null;
-		unit     = u;
+		unit = u;
 
 		if(s != null) {
 			skill = s;
@@ -100,8 +98,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 				sb.append('-');
 			}
 
-			if(skill.isLevelChanged() && isShowingChanges() &&
-				   isShowingChangesText()) {
+			if(skill.isLevelChanged() && isShowingChanges() && isShowingChangesText()) {
 				sb.append('(');
 
 				if(skill.getChangeLevel() >= 0) {
@@ -119,13 +116,10 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 						   (unit.persons == unit.getModifiedPersons())) {
 						sb.append(" [").append(skill.getPointsPerPerson());
 
-						if(isShowingNextLevelPoints() ||
-							   isShowingNextLevelLearnTurns()) {
-							int nextLevel = Skill.getLevelAtPoints(skill.getPointsPerPerson()) +
-											1;
+						if(isShowingNextLevelPoints() || isShowingNextLevelLearnTurns()) {
+							int nextLevel = Skill.getLevelAtPoints(skill.getPointsPerPerson()) + 1;
 							int nextLevelPoints = Skill.getPointsAtLevel(nextLevel);
-							int pointsToLearn   = nextLevelPoints -
-												  skill.getPointsPerPerson();
+							int pointsToLearn = nextLevelPoints - skill.getPointsPerPerson();
 							int turnsToLearn = pointsToLearn / 30;
 
 							if((pointsToLearn % 30) > 0) {
@@ -143,8 +137,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 
 						sb.append("]");
 					} else {
-						sb.append(" [").append(skill.getPointsPerPerson())
-						  .append("]");
+						sb.append(" [").append(skill.getPointsPerPerson()).append("]");
 						sb.append(" (").append(modSkill.getLevel()).append(" [")
 						  .append(modSkill.getPointsPerPerson()).append("])");
 					}
@@ -169,19 +162,19 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	}
 
 	/**
-	 * Controls whether this wrapper shows the skill points required before the
-	 * next skill level can be reached.
+	 * Controls whether this wrapper shows the skill points required before the next skill level
+	 * can be reached.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void showNextLevelPoints(boolean bool) {
-		adapter					 = null;
+		adapter = null;
 		this.showNextLevelPoints = bool;
 	}
 
 	/**
-	 * Returns whether this wrapper shows the skill points required before the
-	 * next skill level can be reached.
+	 * Returns whether this wrapper shows the skill points required before the next skill level can
+	 * be reached.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -194,19 +187,19 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	}
 
 	/**
-	 * Controls whether this wrapper shows the number of turns to learn before
-	 * the next skill level can be reached.
+	 * Controls whether this wrapper shows the number of turns to learn before the next skill level
+	 * can be reached.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void showNextLevelLearnTurns(boolean bool) {
-		adapter						 = null;
+		adapter = null;
 		this.showNextLevelLearnTurns = bool;
 	}
 
 	/**
-	 * Returns whether this wrapper shows the number of turns to learn before
-	 * the next skill level can be reached.
+	 * Returns whether this wrapper shows the number of turns to learn before the next skill level
+	 * can be reached.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -301,7 +294,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	 */
 	public void propertiesChanged() {
 		text = null;
-		GEs  = null;
+		GEs = null;
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -314,8 +307,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	static {
 		defaultTranslations.put("prefs.title", "Skills");
 		defaultTranslations.put("prefs.dialogs.1.title", "Skill changes...");
-		defaultTranslations.put("prefs.dialogs.0.title",
-								"Next level information...");
+		defaultTranslations.put("prefs.dialogs.0.title", "Next level information...");
 		defaultTranslations.put("prefs.showskill.text", "Show next level info");
 		defaultTranslations.put("prefs.changes.text", "Show skill changes");
 		defaultTranslations.put("prefs.changes.mode1.text", "Per Text");
@@ -329,10 +321,8 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 								"Choose the type of talent change visualisation you wish to be used.");
 		defaultTranslations.put("prefs.changes.mode1.text.tooltip",
 								"Shows the difference in brackets behind the current value.");
-		defaultTranslations.put("prefs.changes.text.tooltip",
-								"Makes skill changes visible");
-		defaultTranslations.put("prefs.points.text",
-								"Show skill points till next level");
+		defaultTranslations.put("prefs.changes.text.tooltip", "Makes skill changes visible");
+		defaultTranslations.put("prefs.points.text", "Show skill points till next level");
 	}
 
 	/**
@@ -364,8 +354,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	 */
 	public List getGraphicsElements() {
 		if(GEs == null) {
-			GraphicsElement ge = new GraphicsElement(toString(), null, null,
-													 null);
+			GraphicsElement ge = new GraphicsElement(toString(), null, null, null);
 			ge.setType(GraphicsElement.MAIN);
 
 			if(skill != null) {
@@ -383,8 +372,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 			if(isDiff && isShowingChanges() && isShowingChangesStyled()) {
 				ge.setStyleset(SKILL_CHANGE_STYLE_PREFIX +
 							   ((skill.getChangeLevel() >= 0) ? ">." : "<.") +
-							   SKILL_CHANGE_STYLE_PREFIX +
-							   String.valueOf(skill.getChangeLevel()));
+							   SKILL_CHANGE_STYLE_PREFIX + String.valueOf(skill.getChangeLevel()));
 			}
 
 			GEs = CollectionFactory.singletonList(ge);
@@ -410,8 +398,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return init(settings, "SkillNodeWrapper", adapter);
 	}
 
@@ -424,8 +411,7 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties p1, String p2,
-									  NodeWrapperDrawPolicy p3) {
+	public NodeWrapperDrawPolicy init(Properties p1, String p2, NodeWrapperDrawPolicy p3) {
 		if(p3 == null) {
 			p3 = createSkillDrawPolicy(p1, p2);
 		}
@@ -436,44 +422,21 @@ public class SkillNodeWrapper implements CellObject2, SupportsClipboard {
 		return p3;
 	}
 
-	private NodeWrapperDrawPolicy createSkillDrawPolicy(Properties settings,
-														String prefix) {
-		return new DetailsNodeWrapperDrawPolicy(2, new int[] { 2, 2 },
-												settings, prefix,
+	private NodeWrapperDrawPolicy createSkillDrawPolicy(Properties settings, String prefix) {
+		return new DetailsNodeWrapperDrawPolicy(2, new int[] { 2, 2 }, settings, prefix,
 												new String[][] {
-													{
-														".units.showNextSkillLevel",
-														"true"
-													},
-													{
-														".units.showNextSkillLevelPoints",
-														"true"
-													},
-													{
-														".units.showNextSkillLevelLearnTurns",
-														"true"
-													},
-													{
-														".units.showChanges",
-														"true"
-													},
-													{
-														".units.showChangesStyled",
-														"false"
-													},
-													{
-														".units.showChangesText",
-														"true"
-													},
+													{ ".units.showNextSkillLevel", "true" },
+													{ ".units.showNextSkillLevelPoints", "true" },
+													{ ".units.showNextSkillLevelLearnTurns", "true" },
+													{ ".units.showChanges", "true" },
+													{ ".units.showChangesStyled", "false" },
+													{ ".units.showChangesText", "true" },
 												},
 												new String[] {
-													"prefs.showskill.text",
-													"prefs.points.text",
-													"prefs.turns.text",
-													"prefs.changes.text",
+													"prefs.showskill.text", "prefs.points.text",
+													"prefs.turns.text", "prefs.changes.text",
 													"prefs.changes.mode0.text",
 													"prefs.changes.mode1.text",
-												}, 0, getClass(),
-												getDefaultTranslations());
+												}, 0, getClass(), getDefaultTranslations());
 	}
 }

@@ -14,15 +14,13 @@
 package com.eressea;
 
 /**
- * A class representing a uniquely identifiable object with a modifiable name
- * and description.
+ * A class representing a uniquely identifiable object with a modifiable name and description.
  */
 public abstract class DescribedObject extends NamedObject implements Described {
 	protected String description = null;
 
 	/**
-	 * Constructs a new described object that is uniquely identifiable by the
-	 * specified id.
+	 * Constructs a new described object that is uniquely identifiable by the specified id.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 */

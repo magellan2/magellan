@@ -41,8 +41,8 @@ public class Battle extends Identifiable {
 	 * Create an empty Battle object with the specified id.
 	 *
 	 * @param id an unique identifier for this battle.
-	 * @param spec indicates that the CR representation of this battle is a
-	 * 		  BATTLESPEC block in the computer report.
+	 * @param spec indicates that the CR representation of this battle is a BATTLESPEC block in the
+	 * 		  computer report.
 	 */
 	public Battle(ID id, boolean spec) {
 		this(id);
@@ -52,19 +52,18 @@ public class Battle extends Identifiable {
 	/**
 	 * Get the messages of this battle.
 	 *
-	 * @return a reference to the list of messages stored for this battle. This
-	 * 		   value is never null.
+	 * @return a reference to the list of messages stored for this battle. This value is never
+	 * 		   null.
 	 */
 	public List messages() {
 		return messages;
 	}
 
 	/**
-	 * Sets whether the CR representation of this battle is a standard BATTLE
-	 * block or a BATTLESPEC block.
+	 * Sets whether the CR representation of this battle is a standard BATTLE block or a BATTLESPEC
+	 * block.
 	 *
-	 * @param bool set true to mark it as BATTLESPEC block, false to mark as
-	 * 		  standard BATTLE block.
+	 * @param bool set true to mark it as BATTLESPEC block, false to mark as standard BATTLE block.
 	 */
 	public void setBattleSpec(boolean bool) {
 		this.isBattleSpec = bool;
@@ -73,8 +72,8 @@ public class Battle extends Identifiable {
 	/**
 	 * Check if the Battle object is a BATTLESPEC or BATTLE block.
 	 *
-	 * @return true if the CR representation of this battle is a BATTLESPEC
-	 * 		   block, false if it's a standard BATTLE block.
+	 * @return true if the CR representation of this battle is a BATTLESPEC block, false if it's a
+	 * 		   standard BATTLE block.
 	 */
 	public boolean isBattleSpec() {
 		return this.isBattleSpec;
@@ -85,8 +84,8 @@ public class Battle extends Identifiable {
 	 *
 	 * @param o the Battle object to compare with.
 	 *
-	 * @return true only if o is not null and an instance of class Battle and
-	 * 		   o's id is equal to the id of this  Battle object.
+	 * @return true only if o is not null and an instance of class Battle and o's id is equal to
+	 * 		   the id of this  Battle object.
 	 */
 	public boolean equals(Object o) {
 		if(o instanceof Battle) {
@@ -97,8 +96,8 @@ public class Battle extends Identifiable {
 	}
 
 	/**
-	 * Imposes a natural ordering on Battle objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Battle objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o the Battle object to compare with.
 	 *

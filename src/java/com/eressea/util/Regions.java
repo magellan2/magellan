@@ -46,22 +46,19 @@ public class Regions {
 	 *
 	 * @param regions a map containing the existing regions.
 	 * @param center the region the neighbours of which are retrieved.
-	 * @param radius the maximum distance between center and any region to be
-	 * 		  regarded as a neighbour within radius.
-	 * @param excludedRegionTypes region types that disqualify regions as valid
-	 * 		  neighbours. This also may be null
+	 * @param radius the maximum distance between center and any region to be regarded as a
+	 * 		  neighbour within radius.
+	 * @param excludedRegionTypes region types that disqualify regions as valid neighbours. This
+	 * 		  also may be null
 	 *
-	 * @return a map with all neighbours that were found, including     region
-	 * 		   center. The keys are instances of class ID,     values are
-	 * 		   objects of class Region.
+	 * @return a map with all neighbours that were found, including     region center. The keys are
+	 * 		   instances of class ID,     values are objects of class Region.
 	 *
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public static Map getAllNeighbours(Map regions, ID center, int radius,
-									   Map excludedRegionTypes) {
+	public static Map getAllNeighbours(Map regions, ID center, int radius, Map excludedRegionTypes) {
 		if(center instanceof Coordinate) {
-			return getAllNeighbours(regions, (Coordinate) center, radius,
-									excludedRegionTypes);
+			return getAllNeighbours(regions, (Coordinate) center, radius, excludedRegionTypes);
 		} else {
 			throw new IllegalArgumentException("center is not an eressea coordinate. Support for e2 incomplete!");
 		}
@@ -72,24 +69,21 @@ public class Regions {
 	 *
 	 * @param regions a map containing the existing regions.
 	 * @param center the region the neighbours of which are retrieved.
-	 * @param radius the maximum distance between center and any region to be
-	 * 		  regarded as a neighbour within radius.
-	 * @param excludedRegionTypes region types that disqualify regions as valid
-	 * 		  neighbours.
+	 * @param radius the maximum distance between center and any region to be regarded as a
+	 * 		  neighbour within radius.
+	 * @param excludedRegionTypes region types that disqualify regions as valid neighbours.
 	 *
-	 * @return a map with all neighbours that were found, including     region
-	 * 		   center. The keys are instances of class Coordinate,     values
-	 * 		   are objects of class Region.
+	 * @return a map with all neighbours that were found, including     region center. The keys are
+	 * 		   instances of class Coordinate,     values are objects of class Region.
 	 */
-	private static Map getAllNeighbours(Map regions, Coordinate center,
-										int radius, Map excludedRegionTypes) {
-		Map		   neighbours = CollectionFactory.createHashtable();
+	private static Map getAllNeighbours(Map regions, Coordinate center, int radius,
+										Map excludedRegionTypes) {
+		Map neighbours = CollectionFactory.createHashtable();
 		Coordinate c = new Coordinate(0, 0, center.z);
 
 		for(int dx = -radius; dx <= radius; dx++) {
 			for(int dy = (-radius + Math.abs(dx)) - ((dx > 0) ? dx : 0);
-					dy <= ((radius - Math.abs(dx)) - ((dx < 0) ? dx : 0));
-					dy++) {
+					dy <= ((radius - Math.abs(dx)) - ((dx < 0) ? dx : 0)); dy++) {
 				c.x = center.x + dx;
 				c.y = center.y + dy;
 
@@ -97,8 +91,7 @@ public class Regions {
 
 				if(neighbour != null) {
 					if((excludedRegionTypes == null) ||
-						   !excludedRegionTypes.containsKey(neighbour.getType()
-																		 .getID())) {
+						   !excludedRegionTypes.containsKey(neighbour.getType().getID())) {
 						neighbours.put(neighbour.getID(), neighbour);
 					}
 				}
@@ -109,27 +102,22 @@ public class Regions {
 	}
 
 	/**
-	 * Retrieve the regions directly connected with the center region
-	 * (including it).
+	 * Retrieve the regions directly connected with the center region (including it).
 	 *
 	 * @param regions a map containing the existing regions.
 	 * @param center the region the neighbours of which are retrieved.
-	 * @param excludedRegionTypes region types that disqualify regions as valid
-	 * 		  neighbours.
+	 * @param excludedRegionTypes region types that disqualify regions as valid neighbours.
 	 *
-	 * @return a map with all neighbours that were found, including     region
-	 * 		   center. The keys are instances of class Coordinate,     values
-	 * 		   are objects of class Region.
+	 * @return a map with all neighbours that were found, including     region center. The keys are
+	 * 		   instances of class Coordinate,     values are objects of class Region.
 	 */
-	public static Map getAllNeighbours(Map regions, ID center,
-									   Map excludedRegionTypes) {
+	public static Map getAllNeighbours(Map regions, ID center, Map excludedRegionTypes) {
 		return getAllNeighbours(regions, center, 1, excludedRegionTypes);
 	}
 
 	/**
-	 * Find a way from one region to another region and  get the directions in
-	 * which to move to follow a sequence of regions. This is virtually the
-	 * same as
+	 * Find a way from one region to another region and  get the directions in which to move to
+	 * follow a sequence of regions. This is virtually the same as
 	 * <pre>getDirections(getPath(regions, start, dest, excludedRegionTypes));</pre>
 	 *
 	 * @param regions TODO: DOCUMENT ME!
@@ -137,11 +125,10 @@ public class Regions {
 	 * @param dest TODO: DOCUMENT ME!
 	 * @param excludedRegionTypes TODO: DOCUMENT ME!
 	 *
-	 * @return a String telling the direction statements necessary     to
-	 * 		   follow the sequence of regions contained in regions.
+	 * @return a String telling the direction statements necessary     to follow the sequence of
+	 * 		   regions contained in regions.
 	 */
-	public static String getDirections(Map regions, ID start, ID dest,
-									   Map excludedRegionTypes) {
+	public static String getDirections(Map regions, ID start, ID dest, Map excludedRegionTypes) {
 		return getDirections(getPath(regions, start, dest, excludedRegionTypes));
 	}
 
@@ -150,8 +137,8 @@ public class Regions {
 	 *
 	 * @param regions an ordered consecutive sequence of regions.
 	 *
-	 * @return a String telling the direction statements necessary     to
-	 * 		   follow the sequence of regions contained in regions.
+	 * @return a String telling the direction statements necessary     to follow the sequence of
+	 * 		   regions contained in regions.
 	 */
 	public static String getDirections(Collection regions) {
 		if(regions == null) {
@@ -213,12 +200,12 @@ public class Regions {
 			return null;
 		}
 
-		List	   directions = CollectionFactory.createArrayList(coordinates.size());
+		List directions = CollectionFactory.createArrayList(coordinates.size());
 
 		Coordinate prev = null;
-		Coordinate cur  = null;
+		Coordinate cur = null;
 
-		Iterator   iter = coordinates.iterator();
+		Iterator iter = coordinates.iterator();
 
 		if(iter.hasNext()) {
 			prev = (Coordinate) iter.next();
@@ -227,9 +214,8 @@ public class Regions {
 		while(iter.hasNext()) {
 			cur = (Coordinate) iter.next();
 
-			Coordinate diffCoord = new Coordinate(cur.x - prev.x,
-												  cur.y - prev.y, 0);
-			int		   intDir = Direction.toInt(diffCoord);
+			Coordinate diffCoord = new Coordinate(cur.x - prev.x, cur.y - prev.y, 0);
+			int intDir = Direction.toInt(diffCoord);
 
 			if(intDir != -1) {
 				directions.add(new Direction(intDir));
@@ -253,17 +239,14 @@ public class Regions {
 	 * @param dest TODO: DOCUMENT ME!
 	 * @param excludedRegionTypes TODO: DOCUMENT ME!
 	 *
-	 * @return a Collection of regions that have to be trespassed in  order to
-	 * 		   get from the one to the other specified region, including both
-	 * 		   of them.
+	 * @return a Collection of regions that have to be trespassed in  order to get from the one to
+	 * 		   the other specified region, including both of them.
 	 *
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public static List getPath(Map regions, ID start, ID dest,
-							   Map excludedRegionTypes) {
+	public static List getPath(Map regions, ID start, ID dest, Map excludedRegionTypes) {
 		if(start instanceof Coordinate && dest instanceof Coordinate) {
-			return getPath(regions, (Coordinate) start, (Coordinate) dest,
-						   excludedRegionTypes);
+			return getPath(regions, (Coordinate) start, (Coordinate) dest, excludedRegionTypes);
 		} else {
 			throw new IllegalArgumentException("start of dest is not an eressea coordinate. Support for e2 incomplete!");
 		}
@@ -277,9 +260,8 @@ public class Regions {
 	 * @param dest TODO: DOCUMENT ME!
 	 * @param excludedRegionTypes TODO: DOCUMENT ME!
 	 *
-	 * @return a Collection of regions that have to be trespassed in  order to
-	 * 		   get from the one to the other specified region, including both
-	 * 		   of them.
+	 * @return a Collection of regions that have to be trespassed in  order to get from the one to
+	 * 		   the other specified region, including both of them.
 	 */
 	private static List getPath(Map regions, Coordinate start, Coordinate dest,
 								Map excludedRegionTypes) {
@@ -292,12 +274,12 @@ public class Regions {
 		Map distances = CollectionFactory.createHashtable();
 		distances.put(start, new Float(0.0f)); // contains the distances from the start region to all other regions as Float objects
 
-		LinkedList path					   = new LinkedList();
-		LinkedList backlogList			   = new LinkedList(); // contains regions with unknown distance to the start region
-		Map		   backlogMap			   = CollectionFactory.createHashMap(); // contains the same entries as the backlog list. It's contents are unordered but allow a fast look-up by coordinate
-		Region     curRegion			   = null;
-		Coordinate curCoord				   = null;
-		int		   consecutiveReenlistings = 0; // safe-guard against endless loops
+		LinkedList path = new LinkedList();
+		LinkedList backlogList = new LinkedList(); // contains regions with unknown distance to the start region
+		Map backlogMap = CollectionFactory.createHashMap(); // contains the same entries as the backlog list. It's contents are unordered but allow a fast look-up by coordinate
+		Region curRegion = null;
+		Coordinate curCoord = null;
+		int consecutiveReenlistings = 0; // safe-guard against endless loops
 
 		if(excludedRegionTypes == null) {
 			excludedRegionTypes = CollectionFactory.createHashtable();
@@ -305,8 +287,7 @@ public class Regions {
 
 		/* initialize the backlog list and map with the neighbours of
 		   the start region */
-		Map initNeighbours = getAllNeighbours(regions, start,
-											  excludedRegionTypes);
+		Map initNeighbours = getAllNeighbours(regions, start, excludedRegionTypes);
 		initNeighbours.remove(start);
 		backlogList.addAll(initNeighbours.values());
 		backlogMap.putAll(initNeighbours);
@@ -322,7 +303,7 @@ public class Regions {
 
 			/* take the first region from the backlog list */
 			curRegion = (Region) backlogList.getFirst();
-			curCoord  = curRegion.getCoordinate();
+			curCoord = curRegion.getCoordinate();
 
 			/* safety checks */
 			if(excludedRegionTypes.containsKey(curRegion.getType().getID())) {
@@ -346,25 +327,23 @@ public class Regions {
 			/* determine all neighbours of the current region taken
 			   from the backlog list */
 			float minDistance = Float.MAX_VALUE;
-			Map   neighbours = getAllNeighbours(regions, curCoord,
-												excludedRegionTypes);
+			Map neighbours = getAllNeighbours(regions, curCoord, excludedRegionTypes);
 			neighbours.remove(curCoord);
 
 			/* now determine the distance from the start region to the
 			   current region taken from the backlog list by checking
 			   its neighbour's distances to the start region */
 			for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
-				Region     curNb	  = (Region) iter.next();
+				Region curNb = (Region) iter.next();
 				Coordinate curNbCoord = curNb.getCoordinate();
-				Float	   dist		  = (Float) distances.get(curNbCoord);
+				Float dist = (Float) distances.get(curNbCoord);
 
 				if(dist != null) {
 					/* we know the distance from the start region to
 					   this neighbour, so we can determine the
 					   distance from the start region to the current
 					   region taken from the backlog list */
-					float curDistance = getDistance(curNb, curRegion) +
-										dist.floatValue();
+					float curDistance = getDistance(curNb, curRegion) + dist.floatValue();
 
 					if(curDistance < minDistance) {
 						minDistance = curDistance;
@@ -416,31 +395,28 @@ public class Regions {
 		   to the start region until we reach the start region. This
 		   sequence of regions is the reverse shortest path. */
 		curRegion = (Region) regions.get(dest);
-		curCoord  = dest;
+		curCoord = dest;
 		path.add(curRegion);
 
-		while((curRegion != null) && (curCoord != null) &&
-				  !curCoord.equals(start)) {
+		while((curRegion != null) && (curCoord != null) && !curCoord.equals(start)) {
 			Float dist = (Float) distances.get(curCoord);
 
 			if(dist != null) {
-				float	   minDistance    = dist.floatValue();
+				float minDistance = dist.floatValue();
 				Coordinate closestNbCoord = null;
-				Map		   neighbours     = getAllNeighbours(regions, curCoord,
-															 excludedRegionTypes);
+				Map neighbours = getAllNeighbours(regions, curCoord, excludedRegionTypes);
 				neighbours.remove(curCoord);
 
-				for(Iterator iter = neighbours.values().iterator();
-						iter.hasNext();) {
-					Region     curNb	  = (Region) iter.next();
+				for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
+					Region curNb = (Region) iter.next();
 					Coordinate curNbCoord = curNb.getCoordinate();
-					Float	   nbDist     = (Float) distances.get(curNbCoord);
+					Float nbDist = (Float) distances.get(curNbCoord);
 
 					if(nbDist != null) {
 						float curDistance = nbDist.floatValue();
 
 						if(curDistance < minDistance) {
-							minDistance    = curDistance;
+							minDistance = curDistance;
 							closestNbCoord = curNbCoord;
 						}
 					} else {
@@ -450,7 +426,7 @@ public class Regions {
 				}
 
 				if(closestNbCoord != null) {
-					curCoord  = closestNbCoord;
+					curCoord = closestNbCoord;
 					curRegion = (Region) regions.get(curCoord);
 					path.addFirst(curRegion);
 				} else {
@@ -485,8 +461,7 @@ public class Regions {
 			for(Iterator iter = r.buildings().iterator(); iter.hasNext();) {
 				Building b = (Building) iter.next();
 
-				if(b.getType().equals(harbour) &&
-					   (b.getSize() == harbour.getMaxSize())) {
+				if(b.getType().equals(harbour) && (b.getSize() == harbour.getMaxSize())) {
 					harbourFound = true;
 
 					break;
@@ -509,18 +484,16 @@ public class Regions {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static List planShipRoute(Ship ship, Coordinate destination,
-									 Map allregions, RegionType oceanType,
-									 BuildingType harbour, int speedBonus) {
+	public static List planShipRoute(Ship ship, Coordinate destination, Map allregions,
+									 RegionType oceanType, BuildingType harbour, int speedBonus) {
 		if(destination != null) {
-			Map regions		   = CollectionFactory.createHashtable();
+			Map regions = CollectionFactory.createHashtable();
 			Map harbourRegions = CollectionFactory.createHashtable();
 
 			// Fetch all ocean-regions and all regions, that contain a harbour.
 			// These are the valid one in witch a path shall be searched.
 			if(oceanType != null) {
-				for(Iterator iter = allregions.values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = allregions.values().iterator(); iter.hasNext();) {
 					Region r = (Region) iter.next();
 
 					if((r.getType() != null) && r.getType().equals(oceanType)) {
@@ -541,13 +514,12 @@ public class Regions {
 			// determine the possible ways off (ships casually can not leave
 			// land to all directions)
 			List startregions = CollectionFactory.createLinkedList();
-			int  shipRange = ship.getShipType().getRange();
+			int shipRange = ship.getShipType().getRange();
 			shipRange += speedBonus;
 
 			Region curRegion = ship.getRegion();
 
-			if((ship.shoreId == Direction.DIR_INVALID) ||
-				   containsHarbour(curRegion, harbour)) {
+			if((ship.shoreId == Direction.DIR_INVALID) || containsHarbour(curRegion, harbour)) {
 				// Ship can leave in all directions
 				startregions.add(curRegion);
 				regions.put(curRegion.getCoordinate(), curRegion);
@@ -560,7 +532,7 @@ public class Regions {
 				 * oceanregion will be added.
 				 */
 				Coordinate c = null;
-				Region     r = null;
+				Region r = null;
 
 				// central direction
 				int shoreID = ship.shoreId;
@@ -569,9 +541,7 @@ public class Regions {
 				c.y += curRegion.getCoordinate().y;
 				r = (Region) allregions.get(c);
 
-				if((r != null) &&
-					   (r.getType().equals(oceanType) ||
-					   containsHarbour(r, harbour))) {
+				if((r != null) && (r.getType().equals(oceanType) || containsHarbour(r, harbour))) {
 					startregions.add(r);
 					regions.put(r.getCoordinate(), r);
 				}
@@ -588,23 +558,19 @@ public class Regions {
 				c.y += curRegion.getCoordinate().y;
 				r = (Region) allregions.get(c);
 
-				if((r != null) &&
-					   (r.getType().equals(oceanType) ||
-					   containsHarbour(r, harbour))) {
+				if((r != null) && (r.getType().equals(oceanType) || containsHarbour(r, harbour))) {
 					startregions.add(r);
 					regions.put(r.getCoordinate(), r);
 				}
 
 				// right neighbour
 				shoreID = (shoreID + 2) % 6;
-				c	    = Direction.toCoordinate(shoreID);
+				c = Direction.toCoordinate(shoreID);
 				c.x += curRegion.getCoordinate().x;
 				c.y += curRegion.getCoordinate().y;
 				r = (Region) allregions.get(c);
 
-				if((r != null) &&
-					   (r.getType().equals(oceanType) ||
-					   containsHarbour(r, harbour))) {
+				if((r != null) && (r.getType().equals(oceanType) || containsHarbour(r, harbour))) {
 					startregions.add(r);
 					regions.put(r.getCoordinate(), r);
 				}
@@ -622,18 +588,15 @@ public class Regions {
 
 			for(Iterator iter = startregions.iterator(); iter.hasNext();) {
 				Region startregion = (Region) iter.next();
-				List   path = Regions.getPath(regions,
-											  startregion.getCoordinate(),
-											  destination,
-											  CollectionFactory.createHashtable());
+				List path = Regions.getPath(regions, startregion.getCoordinate(), destination,
+											CollectionFactory.createHashtable());
 
 				if((path != null) && (path.size() > 0)) {
 					paths.add(path);
 				}
 
 				List pathWithHarbours = Regions.getPath(harbourRegions,
-														startregion.getCoordinate(),
-														destination,
+														startregion.getCoordinate(), destination,
 														CollectionFactory.createHashtable());
 
 				if((pathWithHarbours != null) && (pathWithHarbours.size() > 0) &&
@@ -646,11 +609,10 @@ public class Regions {
 			int minpos = 0;
 
 			if(paths.size() > 1) {
-				int curpos   = 0;
+				int curpos = 0;
 				int minweeks = Integer.MAX_VALUE;
 
-				for(Iterator iter = paths.iterator(); iter.hasNext();
-						curpos++) {
+				for(Iterator iter = paths.iterator(); iter.hasNext(); curpos++) {
 					List path = (List) iter.next();
 
 					// determine path size considering ship-range
@@ -661,8 +623,7 @@ public class Regions {
 						int counter = shipRange;
 						weeks = 1;
 
-						for(Iterator i = path.iterator(); i.hasNext();
-								counter--) {
+						for(Iterator i = path.iterator(); i.hasNext(); counter--) {
 							if(counter == 0) {
 								counter = shipRange;
 								weeks++;
@@ -675,7 +636,7 @@ public class Regions {
 
 					if(weeks < minweeks) {
 						minweeks = weeks;
-						minpos   = curpos;
+						minpos = curpos;
 					} else if((weeks == minweeks) &&
 								  (((List) paths.get(minpos)).size() > path.size())) {
 						minpos = curpos;
@@ -702,14 +663,13 @@ public class Regions {
 	}
 
 	/**
-	 * Retrieve the coordinates the unit passes from the messages of the
-	 * regions.
+	 * Retrieve the coordinates the unit passes from the messages of the regions.
 	 *
 	 * @param data the unit
 	 * @param u TODO: DOCUMENT ME!
 	 *
-	 * @return a List of Coordinate objects of the path the unit used (although
-	 * 		   evaluated via  backtracking) from start to end.
+	 * @return a List of Coordinate objects of the path the unit used (although evaluated via
+	 * 		   backtracking) from start to end.
 	 */
 	public static List getMovement(GameData data, Unit u) {
 		List coordinates = CollectionFactory.createArrayList(2);
@@ -718,12 +678,10 @@ public class Regions {
 		coordinates.add(u.getRegion().getID());
 
 		// we need a string which is useable for travelThru AND travelThruShip
-		String ID = (u.getShip() == null) ? u.toString()
-										  : u.getShip().toString(false);
+		String ID = (u.getShip() == null) ? u.toString() : u.getShip().toString(false);
 
 		// run over neighbours recursively
-		Coordinate c = getMovement(data, ID, u.getRegion().getCoordinate(),
-								   coordinates);
+		Coordinate c = getMovement(data, ID, u.getRegion().getCoordinate(), coordinates);
 
 		while((c != null) && !coordinates.contains(c)) {
 			coordinates.add(c);
@@ -737,13 +695,12 @@ public class Regions {
 		// return getDirectionObjectsOfCoordinates(coordinates);
 	}
 
-	private static Coordinate getMovement(GameData data, String ID,
-										  Coordinate c, List travelledRegions) {
-		Map neighbours = getAllNeighbours(data.regions(), c,
-										  Collections.EMPTY_MAP);
+	private static Coordinate getMovement(GameData data, String ID, Coordinate c,
+										  List travelledRegions) {
+		Map neighbours = getAllNeighbours(data.regions(), c, Collections.EMPTY_MAP);
 
 		for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
-			Region     r		 = (Region) iter.next();
+			Region r = (Region) iter.next();
 			Coordinate neighbour = r.getCoordinate();
 
 			if(neighbour.equals(c) || travelledRegions.contains(neighbour)) {

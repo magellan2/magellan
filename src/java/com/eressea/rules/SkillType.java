@@ -34,9 +34,9 @@ public class SkillType extends ObjectType {
 	}
 
 	/**
-	 * Indicates whether this SkillType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class SkillType
-	 * and o's id is equal to the id of this  SkillType object.
+	 * Indicates whether this SkillType object is equal to another object. Returns true only if o
+	 * is not null and an instance of class SkillType and o's id is equal to the id of this
+	 * SkillType object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -44,13 +44,12 @@ public class SkillType extends ObjectType {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof SkillType &&
-			   this.getID().equals(((SkillType) o).getID()));
+			   (o instanceof SkillType && this.getID().equals(((SkillType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on SkillType objects equivalent to the
-	 * natural ordering of their ids.
+	 * Imposes a natural ordering on SkillType objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

@@ -56,8 +56,7 @@ public class HerbReplacer extends AbstractRegionReplacer {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("description",
-									"Returns the herb of the region.");
+			defaultTranslations.put("description", "Returns the herb of the region.");
 		}
 
 		return defaultTranslations;

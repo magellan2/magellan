@@ -16,8 +16,8 @@ package com.eressea.swing.tree;
 import com.eressea.swing.context.ContextFactory;
 
 /**
- * An interface signaling a context manager that this element can be edited. At
- * this time only context menus are supported.
+ * An interface signaling a context manager that this element can be edited. At this time only
+ * context menus are supported.
  *
  * @author Andreas
  * @version

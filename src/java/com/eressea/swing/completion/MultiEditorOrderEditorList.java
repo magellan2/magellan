@@ -119,34 +119,34 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class MultiEditorOrderEditorList extends InternationalizedDataPanel
-	implements OrderEditorList, KeyListener, SelectionListener,
-			   TempUnitListener, FocusListener, CacheHandler
+	implements OrderEditorList, KeyListener, SelectionListener, TempUnitListener, FocusListener,
+			   CacheHandler
 {
-	private static final Logger			 log					  = Logger.getInstance(MultiEditorOrderEditorList.class);
-	private boolean						 multiEditorLayout	      = false;
-	private boolean						 hideButtons			  = false;
-	private List						 units				      = CollectionFactory.createLinkedList();
-	private Unit						 currentUnit			  = null;
-	private Region						 currentRegion		      = null;
-	private int							 currentUnitIndex		  = -1;
-	private Color						 standardBgColor		  = null;
-	private Color						 activeBgColor		      = null;
-	private Color						 standardBgColorConfirmed = null;
-	private Color						 activeBgColorConfirmed   = null;
-	private OrderEditor					 editor				      = null;
-	private static final Border          standardBorder		      = new LineBorder(Color.lightGray, 2);
-	private static final Border          activeBorder             = new LineBorder(Color.darkGray, 2);
-	private UpdateThread				 updateThread		 = new UpdateThread();
-	private SwingGlitchThread			 swingGlitchThread = new SwingGlitchThread();
+	private static final Logger log = Logger.getInstance(MultiEditorOrderEditorList.class);
+	private boolean multiEditorLayout = false;
+	private boolean hideButtons = false;
+	private List units = CollectionFactory.createLinkedList();
+	private Unit currentUnit = null;
+	private Region currentRegion = null;
+	private int currentUnitIndex = -1;
+	private Color standardBgColor = null;
+	private Color activeBgColor = null;
+	private Color standardBgColorConfirmed = null;
+	private Color activeBgColorConfirmed = null;
+	private OrderEditor editor = null;
+	private static final Border standardBorder = new LineBorder(Color.lightGray, 2);
+	private static final Border activeBorder = new LineBorder(Color.darkGray, 2);
+	private UpdateThread updateThread = new UpdateThread();
+	private SwingGlitchThread swingGlitchThread = new SwingGlitchThread();
 
 	// undo listener
-	private UndoManager undoMgr	    = null;
-	protected List						 keyListeners   = CollectionFactory.createLinkedList();
-	protected MEKeyAdapter				 keyAdapter;
-	protected List						 caretListeners = CollectionFactory.createLinkedList();
-	protected MECaretAdapter			 caretAdapter;
-	protected List						 focusListeners = CollectionFactory.createLinkedList();
-	protected MEFocusAdapter			 focusAdapter;
+	private UndoManager undoMgr = null;
+	protected List keyListeners = CollectionFactory.createLinkedList();
+	protected MEKeyAdapter keyAdapter;
+	protected List caretListeners = CollectionFactory.createLinkedList();
+	protected MECaretAdapter caretAdapter;
+	protected List focusListeners = CollectionFactory.createLinkedList();
+	protected MEFocusAdapter focusAdapter;
 
 	// we have no longer any container like OrderEditingPanel
 	protected ScrollPanel content; // a Panel implementing the scrollable interface
@@ -158,11 +158,11 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	protected ButtonPanel buttons;
 
 	// editor list generation mode
-	protected int			 listMode     = 1 << LIST_REGION;
-	private static final int LIST_UNIT    = 0;
+	protected int listMode = 1 << LIST_REGION;
+	private static final int LIST_UNIT = 0;
 	private static final int LIST_FACTION = 1;
-	private static final int LIST_REGION  = 2;
-	private static final int LIST_ISLAND  = 3;
+	private static final int LIST_REGION = 2;
+	private static final int LIST_ISLAND = 3;
 
 	/**
 	 * Creates a new MultiEditorOrderEditorList object.
@@ -172,8 +172,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 * @param settings TODO: DOCUMENT ME!
 	 * @param _undoMgr TODO: DOCUMENT ME!
 	 */
-	public MultiEditorOrderEditorList(EventDispatcher d, GameData initData,
-									  Properties settings,
+	public MultiEditorOrderEditorList(EventDispatcher d, GameData initData, Properties settings,
 									  UndoManager _undoMgr) {
 		super(d, initData, settings);
 
@@ -181,7 +180,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 		d.addTempUnitListener(this);
 
-		keyAdapter   = new MEKeyAdapter(this);
+		keyAdapter = new MEKeyAdapter(this);
 		caretAdapter = new MECaretAdapter(this);
 		focusAdapter = new MEFocusAdapter(this);
 
@@ -210,12 +209,10 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		dispatcher.addOrderConfirmListener(new OrderConfirmListener() {
 				public void orderConfirmationChanged(OrderConfirmEvent e) {
 					if(!this.equals(e.getSource())) {
-						for(Iterator iter = e.getUnits().iterator();
-								iter.hasNext();) {
+						for(Iterator iter = e.getUnits().iterator(); iter.hasNext();) {
 							Unit u = (Unit) iter.next();
 
-							if((u.cache != null) &&
-								   (u.cache.orderEditor != null)) {
+							if((u.cache != null) && (u.cache.orderEditor != null)) {
 								if(u.equals(currentUnit)) {
 									// u is active unit
 									if(u.ordersConfirmed) {
@@ -242,8 +239,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 																 Boolean.TRUE.toString()))
 								   .booleanValue();
 		hideButtons = Boolean.valueOf(settings.getProperty("OrderEditor.hideButtons",
-														   Boolean.FALSE.toString()))
-							 .booleanValue();
+														   Boolean.FALSE.toString())).booleanValue();
 		activeBgColor = Colors.decode(settings.getProperty("OrderEditor.activeBackgroundColor",
 														   "255,255,255"));
 		standardBgColor = Colors.decode(settings.getProperty("OrderEditor.standardBackgroundColor",
@@ -284,8 +280,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public void selectionChanged(SelectionEvent se) {
 		if(log.isDebugEnabled()) {
-			log.debug("MultiEditorOrderEditorList.selectionChanged: " +
-					  se.getActiveObject());
+			log.debug("MultiEditorOrderEditorList.selectionChanged: " + se.getActiveObject());
 		}
 
 		if(se.getActiveObject() != null) {
@@ -294,12 +289,10 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		}
 
 		if(log.isDebugEnabled()) {
-			log.debug("MultiEditorOrderEditorList.selectionChanged: " +
-					  (se.getSource() == this));
+			log.debug("MultiEditorOrderEditorList.selectionChanged: " + (se.getSource() == this));
 		}
 
-		boolean restoreFocus = ((currentUnit != null) &&
-							   (currentUnit.cache != null) &&
+		boolean restoreFocus = ((currentUnit != null) && (currentUnit.cache != null) &&
 							   (currentUnit.cache.orderEditor != null) &&
 							   currentUnit.cache.orderEditor.hasFocus());
 
@@ -340,13 +333,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 					// only jump to a different unit
 					if((currentUnit == null) || !currentUnit.equals(u)) {
-						currentUnit		 = u;
+						currentUnit = u;
 						currentUnitIndex = units.indexOf(currentUnit);
 					}
 
 					// set different border for selected editor
-					if((currentUnit.cache != null) &&
-						   (currentUnit.cache.orderEditor != null)) {
+					if((currentUnit.cache != null) && (currentUnit.cache.orderEditor != null)) {
 						currentUnit.cache.orderEditor.setBorder(new TitledBorder(activeBorder,
 																				 currentUnit.toString() +
 																				 ": " +
@@ -367,18 +359,16 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						SwingUtilities.invokeLater(swingGlitchThread);
 					}
 				} else if(se.getActiveObject() instanceof Region) {
-					currentRegion    = (Region) se.getActiveObject();
-					currentUnit		 = null;
+					currentRegion = (Region) se.getActiveObject();
+					currentUnit = null;
 					currentUnitIndex = -1;
 					loadEditors(currentRegion);
 				} else if(se.getActiveObject() instanceof Faction) {
-					currentUnit		 = null;
+					currentUnit = null;
 					currentUnitIndex = -1;
 
-					if(((Faction) se.getActiveObject()).isPrivileged() &&
-						   (currentRegion != null)) {
-						loadEditors((Faction) se.getActiveObject(),
-									currentRegion);
+					if(((Faction) se.getActiveObject()).isPrivileged() && (currentRegion != null)) {
+						loadEditors((Faction) se.getActiveObject(), currentRegion);
 					} else {
 						units.clear();
 						removeListenersFromAll();
@@ -386,12 +376,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						repaint();
 					}
 				} else if(se.getActiveObject() instanceof Island) {
-					currentRegion    = null;
-					currentUnit		 = null;
+					currentRegion = null;
+					currentUnit = null;
 					currentUnitIndex = -1;
 					loadEditors((Island) se.getActiveObject());
 				} else {
-					currentUnit		 = null;
+					currentUnit = null;
 					currentUnitIndex = -1;
 					units.clear();
 					removeListenersFromAll();
@@ -399,8 +389,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					repaint();
 				}
 			} else {
-				currentUnit		 = null;
-				currentRegion    = null;
+				currentUnit = null;
+				currentRegion = null;
 				currentUnitIndex = -1;
 				units.clear();
 				removeListenersFromAll();
@@ -429,12 +419,13 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 																		 currentUnit.toString() +
 																		 ": " +
 																		 currentUnit.persons));
-				
+
 				if(currentUnit.ordersConfirmed) {
 					currentUnit.cache.orderEditor.setBackground(activeBgColorConfirmed);
 				} else {
 					currentUnit.cache.orderEditor.setBackground(activeBgColor);
 				}
+
 				editor.setEditable(true);
 			} else {
 				if(currentUnit != null) {
@@ -442,7 +433,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						currentUnit.cache.orderEditor = null;
 					}
 
-					currentUnit   = null;
+					currentUnit = null;
 					currentRegion = null;
 					editor.setUnit(null);
 					editor.setEditable(false);
@@ -451,9 +442,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		}
 
 		// restore focus
-		if(((DesktopEnvironment.getMode() == DesktopEnvironment.FRAME) ||
-			   restoreFocus) && (currentUnit != null) &&
-			   (currentUnit.cache != null) &&
+		if(((DesktopEnvironment.getMode() == DesktopEnvironment.FRAME) || restoreFocus) &&
+			   (currentUnit != null) && (currentUnit.cache != null) &&
 			   (currentUnit.cache.orderEditor != null)) {
 			currentUnit.cache.orderEditor.requestFocus();
 		}
@@ -469,22 +459,20 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public void tempUnitCreated(TempUnitEvent e) {
 		if(log.isDebugEnabled()) {
-			log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
-					  e.getTempUnit());
+			log.debug("MultiEditorOrderEditorList.tempUnitCreated: " + e.getTempUnit());
 		}
 
 		if((currentUnit != null) && multiEditorLayout) {
 			loadEditors(currentRegion);
 			this.revalidate();
+
 			if(log.isDebugEnabled()) {
-				log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
-						  e.getTempUnit().cache);
+				log.debug("MultiEditorOrderEditorList.tempUnitCreated: " + e.getTempUnit().cache);
 				log.debug("MultiEditorOrderEditorList.tempUnitCreated: " +
 						  e.getTempUnit().cache.orderEditor);
 			}
 
-			if((e.getTempUnit().cache != null) &&
-				   (e.getTempUnit().cache.orderEditor != null)) {
+			if((e.getTempUnit().cache != null) && (e.getTempUnit().cache.orderEditor != null)) {
 				e.getTempUnit().cache.orderEditor.requestFocus();
 			}
 		}
@@ -519,8 +507,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						 where a different unit is selected and the
 						 focusLost event in the order editor does
 						 not occur before the selection event */
-						if((currentUnit != null) &&
-							   (currentUnit.cache != null) &&
+						if((currentUnit != null) && (currentUnit.cache != null) &&
 							   (currentUnit.cache.orderEditor != null) &&
 							   currentUnit.cache.orderEditor.isModified()) {
 							currentUnit.refreshRelations();
@@ -541,8 +528,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						 where a different unit is selected and the
 						 focusLost event in the order editor does
 						 not occur before the selection event */
-						if((currentUnit != null) &&
-							   (currentUnit.cache != null) &&
+						if((currentUnit != null) && (currentUnit.cache != null) &&
 							   (currentUnit.cache.orderEditor != null) &&
 							   currentUnit.cache.orderEditor.isModified()) {
 							currentUnit.refreshRelations();
@@ -576,8 +562,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Fires an SelectionChanged event if a different editor than the current
-	 * one is selected.
+	 * Fires an SelectionChanged event if a different editor than the current one is selected.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
@@ -640,8 +625,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			boolean foundEditor = false;
 
 			if(data.units() != null) {
-				for(Iterator iter = data.units().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 					Unit u = (Unit) iter.next();
 
 					if((u.cache != null) && (u.cache.orderEditor != null)) {
@@ -660,8 +644,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Return the color of the specified token style used for syntax
-	 * highlighting in the editor.
+	 * Return the color of the specified token style used for syntax highlighting in the editor.
 	 *
 	 * @param styleName TODO: DOCUMENT ME!
 	 *
@@ -672,8 +655,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Set the color of the specified token style used for syntax highlighting
-	 * in the editor.
+	 * Set the color of the specified token style used for syntax highlighting in the editor.
 	 *
 	 * @param styleName TODO: DOCUMENT ME!
 	 * @param color TODO: DOCUMENT ME!
@@ -683,8 +665,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			boolean foundEditor = false;
 
 			if(data.units() != null) {
-				for(Iterator iter = data.units().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 					Unit u = (Unit) iter.next();
 
 					if((u.cache != null) && (u.cache.orderEditor != null)) {
@@ -720,14 +701,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	public void setStandardBackgroundColor(Color c) {
 		if((standardBgColor != c) && (c != null)) {
 			standardBgColor = c;
-			settings.setProperty("OrderEditor.standardBackgroundColor",
-								 Colors.encode(c));
+			settings.setProperty("OrderEditor.standardBackgroundColor", Colors.encode(c));
 		}
 
 		if(multiEditorLayout) {
 			if(data.units() != null) {
-				for(Iterator iter = data.units().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 					Unit u = (Unit) iter.next();
 
 					if((u.cache != null) && (u.cache.orderEditor != null)) {
@@ -755,14 +734,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	public void setStandardBackgroundColorConfirmed(Color c) {
 		if((standardBgColorConfirmed != c) && (c != null)) {
 			standardBgColorConfirmed = c;
-			settings.setProperty("OrderEditor.standardBackgroundColorConfirmed",
-								 Colors.encode(c));
+			settings.setProperty("OrderEditor.standardBackgroundColorConfirmed", Colors.encode(c));
 		}
 
 		if(multiEditorLayout) {
 			if(data.units() != null) {
-				for(Iterator iter = data.units().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 					Unit u = (Unit) iter.next();
 
 					if((u.cache != null) && (u.cache.orderEditor != null)) {
@@ -790,8 +767,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	public void setActiveBackgroundColor(Color c) {
 		if((activeBgColor != c) && (c != null)) {
 			activeBgColor = c;
-			settings.setProperty("OrderEditor.activeBackgroundColor",
-								 Colors.encode(c));
+			settings.setProperty("OrderEditor.activeBackgroundColor", Colors.encode(c));
 		}
 	}
 
@@ -812,8 +788,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	public void setActiveBackgroundColorConfirmed(Color c) {
 		if((activeBgColorConfirmed != c) && (c != null)) {
 			activeBgColorConfirmed = c;
-			settings.setProperty("OrderEditor.activeBackgroundColorConfirmed",
-								 Colors.encode(c));
+			settings.setProperty("OrderEditor.activeBackgroundColorConfirmed", Colors.encode(c));
 		}
 	}
 
@@ -833,8 +808,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public void setMultiEditorLayout(boolean bool) {
 		if(bool != multiEditorLayout) {
-			settings.setProperty("OrderEditor.multiEditorLayout",
-								 (new Boolean(bool)).toString());
+			settings.setProperty("OrderEditor.multiEditorLayout", (new Boolean(bool)).toString());
 			clearUnits();
 
 			if(bool && (editor != null)) {
@@ -873,8 +847,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	 */
 	public void setHideButtons(boolean bool) {
 		if(bool != hideButtons) {
-			settings.setProperty("OrderEditor.hideButtons",
-								 (new Boolean(bool)).toString());
+			settings.setProperty("OrderEditor.hideButtons", (new Boolean(bool)).toString());
 			hideButtons = bool;
 			redrawPane();
 		}
@@ -894,8 +867,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Removes the Adapters for Key-, Caret- & Focusevents from the given
-	 * JTextComponents.
+	 * Removes the Adapters for Key-, Caret- & Focusevents from the given JTextComponents.
 	 *
 	 * @param j TODO: DOCUMENT ME!
 	 */
@@ -906,8 +878,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Removes the Adapters for Key-, Caret- & Focusevents from all
-	 * sub-components that are JTextComponents.
+	 * Removes the Adapters for Key-, Caret- & Focusevents from all sub-components that are
+	 * JTextComponents.
 	 */
 	private void removeListenersFromAll() {
 		Component c[] = content.getComponents();
@@ -922,8 +894,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Adds the Adapters for Key-, Caret- & Focusevents to the given
-	 * JTextComponents.
+	 * Adds the Adapters for Key-, Caret- & Focusevents to the given JTextComponents.
 	 *
 	 * @param j TODO: DOCUMENT ME!
 	 */
@@ -939,7 +910,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		if((listMode >> LIST_ISLAND) != 0) {
 			// list units of specified Island
 			for(Iterator iter = i.regions().iterator(); iter.hasNext();) {
-				Region     r = (Region) iter.next();
+				Region r = (Region) iter.next();
 				Collection c = r.units();
 
 				if(c != null) {
@@ -1041,14 +1012,13 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Adds editors for all units in privileged factions that are in the
-	 * specified list to this component. OrderEditors are created if
-	 * necessary, else the cached version are used.
+	 * Adds editors for all units in privileged factions that are in the specified list to this
+	 * component. OrderEditors are created if necessary, else the cached version are used.
 	 *
 	 * @param unitsToAdd TODO: DOCUMENT ME!
 	 */
 	private void loadEditors(List unitsToAdd) {
-		int  unitIndex = 0;
+		int unitIndex = 0;
 		List allUnits = unitsToAdd;
 
 		removeListenersFromAll();
@@ -1084,8 +1054,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Adds the specified unit to this component. This includes creating and
-	 * adding a new order editor and updating the internal data structures.
+	 * Adds the specified unit to this component. This includes creating and adding a new order
+	 * editor and updating the internal data structures.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 */
@@ -1093,8 +1063,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		if((u.cache == null) || (u.cache.orderEditor == null)) {
 			OrderEditor ce = new OrderEditor(data, settings, undoMgr, dispatcher);
 
-			ce.setBorder(new TitledBorder(standardBorder,
-										  u.toString() + ": " + u.persons));
+			ce.setBorder(new TitledBorder(standardBorder, u.toString() + ": " + u.persons));
 
 			if(u.ordersConfirmed) {
 				ce.setBackground(standardBgColorConfirmed);
@@ -1122,8 +1091,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Performs the clean-up necessary to put the editor list into a state
-	 * without units and editors
+	 * Performs the clean-up necessary to put the editor list into a state without units and
+	 * editors
 	 */
 	private void clearUnits() {
 		if(multiEditorLayout) {
@@ -1172,8 +1141,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		if(listMode == (1 << LIST_REGION)) {
 			settings.remove("OrderEditorList.listMode");
 		} else {
-			settings.setProperty("OrderEditorList.listMode",
-								 String.valueOf(listMode));
+			settings.setProperty("OrderEditorList.listMode", String.valueOf(listMode));
 		}
 	}
 
@@ -1205,18 +1173,14 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			defaultTranslations.put("prefs.listMode.text",
 									"This settings affects the units to be shown while selecting a game object. Only useful in Multieditor-Mode.");
 			defaultTranslations.put("prefs.listMode", "Editor Listing");
-			defaultTranslations.put("shortcuts.description.1",
-									"Delete temp unit");
+			defaultTranslations.put("shortcuts.description.1", "Delete temp unit");
 			defaultTranslations.put("msg.invalidtempid.title", "Invalid temp id");
 
-			defaultTranslations.put("prefs.multieditorlayout",
-									"Multi-editor layout");
+			defaultTranslations.put("prefs.multieditorlayout", "Multi-editor layout");
 			defaultTranslations.put("prefs.hidebuttons", "Hide buttons");
-			defaultTranslations.put("prefs.syntaxhighlighting",
-									"Syntax highlighting");
+			defaultTranslations.put("prefs.syntaxhighlighting", "Syntax highlighting");
 			defaultTranslations.put("prefs.colors", "Colors");
-			defaultTranslations.put("prefs.orderautocompletion",
-									"Auto-complete orders");
+			defaultTranslations.put("prefs.orderautocompletion", "Auto-complete orders");
 			defaultTranslations.put("prefs.title", "Order editor");
 			defaultTranslations.put("prefs.colors.standard", "Default");
 			defaultTranslations.put("prefs.colors.keywords", "Keywords");
@@ -1230,8 +1194,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			defaultTranslations.put("prefs.listMode.2", "Factions");
 			defaultTranslations.put("prefs.listMode.1", "Regions");
 			defaultTranslations.put("prefs.listMode.0", "Islands");
-			defaultTranslations.put("shortcuts.description.0",
-									"Create temp unit");
+			defaultTranslations.put("shortcuts.description.0", "Create temp unit");
 			defaultTranslations.put("shortcuts.title", "Temp units");
 			defaultTranslations.put("prefs.syntaxhighlighting.caption",
 									"Activate Syntax highlighting");
@@ -1239,40 +1202,34 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			defaultTranslations.put("prefs.colors.numbers", "Numbers");
 			defaultTranslations.put("prefs.colors.ids", "IDs");
 			defaultTranslations.put("prefs.colors.comments", "Comments");
-			defaultTranslations.put("prefs.inactivebackground",
-									"Color of inactive editors");
+			defaultTranslations.put("prefs.inactivebackground", "Color of inactive editors");
 			defaultTranslations.put("prefs.inactivebackground.confirmed",
 									"Color of inactive and confirmed editors");
 			defaultTranslations.put("prefs.backgroundcolor", "Background color");
-			defaultTranslations.put("prefs.activebackground",
-									"Color of active editor");
+			defaultTranslations.put("prefs.activebackground", "Color of active editor");
 			defaultTranslations.put("prefs.activebackground.confirmed",
 									"Color of active and confirmed editor");
 
 			defaultTranslations.put("tempunit.recruitCost", "recruitment costs");
-			defaultTranslations.put("tempunit.maintainCost",
-									"maintainance costs");
+			defaultTranslations.put("tempunit.maintainCost", "maintainance costs");
 		}
 
 		return defaultTranslations;
 	}
 
-	class OrderEditorListPreferences extends JPanel
-		implements PreferencesAdapter
-	{
-		private MultiEditorOrderEditorList source					 = null;
-		private JPanel					   pnlStandardColor			 = null;
-		private JPanel					   pnlStandardColorConfirmed = null;
-		private JPanel					   pnlActiveColor			 = null;
-		private JPanel					   pnlActiveColorConfirmed   = null;
-		private JPanel					   pnlStylesColor			 = null;
-		private JCheckBox				   chkMultiEditorLayout;
-		private JCheckBox				   chkHideButtons;
-		private JCheckBox				   chkSyntaxHighlighting;
-		private JComboBox				   comboSHColors			 = null;
-		private Dimension				   prefDim					 = new Dimension(20,
-																					 20);
-		private JCheckBox				   listModes[];
+	class OrderEditorListPreferences extends JPanel implements PreferencesAdapter {
+		private MultiEditorOrderEditorList source = null;
+		private JPanel pnlStandardColor = null;
+		private JPanel pnlStandardColorConfirmed = null;
+		private JPanel pnlActiveColor = null;
+		private JPanel pnlActiveColorConfirmed = null;
+		private JPanel pnlStylesColor = null;
+		private JCheckBox chkMultiEditorLayout;
+		private JCheckBox chkHideButtons;
+		private JCheckBox chkSyntaxHighlighting;
+		private JComboBox comboSHColors = null;
+		private Dimension prefDim = new Dimension(20, 20);
+		private JCheckBox listModes[];
 
 		/**
 		 * Creates a new OrderEditorListPreferences object.
@@ -1287,8 +1244,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(0, 0, 0, 0),
-														  0, 0);
+														  new Insets(0, 0, 0, 0), 0, 0);
 
 			this.add(getLayoutPanel(), c);
 
@@ -1310,8 +1266,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 												 source.isMultiEditorLayout());
 			content.add(chkMultiEditorLayout);
 
-			chkHideButtons = new JCheckBox(getString("prefs.hidebuttons"),
-										   source.isHideButtons());
+			chkHideButtons = new JCheckBox(getString("prefs.hidebuttons"), source.isHideButtons());
 			content.add(chkHideButtons);
 
 			return content;
@@ -1324,11 +1279,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.NONE,
-														  new Insets(0, 2, 1, 1),
-														  0, 0);
+														  new Insets(0, 2, 1, 1), 0, 0);
 
-			JLabel			   lblStandardColor = new JLabel(getString("prefs.inactivebackground") +
-															 ": ");
+			JLabel lblStandardColor = new JLabel(getString("prefs.inactivebackground") + ": ");
 
 			pnlStandardColor = new JPanel();
 			pnlStandardColor.setBorder(new LineBorder(Color.black));
@@ -1365,8 +1318,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					}
 				});
 
-			JLabel lblActiveColor = new JLabel(getString("prefs.activebackground") +
-											   ": ");
+			JLabel lblActiveColor = new JLabel(getString("prefs.activebackground") + ": ");
 
 			pnlActiveColor = new JPanel();
 			pnlActiveColor.setBorder(new LineBorder(Color.black));
@@ -1438,8 +1390,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.NONE,
-														  new Insets(0, 2, 1, 1),
-														  0, 0);
+														  new Insets(0, 2, 1, 1), 0, 0);
 
 			chkSyntaxHighlighting = new JCheckBox(getString("prefs.syntaxhighlighting.caption"),
 												  source.getUseSyntaxHighlighting());
@@ -1464,12 +1415,11 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			text.setWrapStyleWord(true);
 			content.add(text, BorderLayout.NORTH);
 
-			JPanel			   help = new JPanel(new GridBagLayout());
+			JPanel help = new JPanel(new GridBagLayout());
 			GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 0.5, 0,
 															GridBagConstraints.WEST,
 															GridBagConstraints.NONE,
-															new Insets(1, 1, 1,
-																	   1), 0, 0);
+															new Insets(1, 1, 1, 1), 0, 0);
 			listModes = new JCheckBox[3];
 
 			for(int i = 0; i < 3; i++) {
@@ -1481,7 +1431,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 			con.gridy = 0;
 			con.gridx = 1;
-			con.fill  = GridBagConstraints.HORIZONTAL;
+			con.fill = GridBagConstraints.HORIZONTAL;
 
 			for(int i = 0; i < 3; i++) {
 				text = new JTextArea(getString("prefs.listMode." + i + ".text"));
@@ -1520,11 +1470,10 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			pnlStylesColor.setBackground(((StyleContainer) comboSHColors.getItemAt(0)).color);
 			pnlStylesColor.addMouseListener(new MouseAdapter() {
 					public void mousePressed(MouseEvent me) {
-						StyleContainer sc	    = (StyleContainer) comboSHColors.getSelectedItem();
-						Color		   newColor = JColorChooser.showDialog(((JComponent) me.getSource()).getTopLevelAncestor(),
-																		   sc.description +
-																		   " Farbe",
-																		   sc.color);
+						StyleContainer sc = (StyleContainer) comboSHColors.getSelectedItem();
+						Color newColor = JColorChooser.showDialog(((JComponent) me.getSource()).getTopLevelAncestor(),
+																  sc.description + " Farbe",
+																  sc.color);
 
 						if(newColor != null) {
 							sc.color = newColor;
@@ -1546,14 +1495,11 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			styles[1] = new StyleContainer(getString("prefs.colors.keywords"),
 										   OrderEditor.S_KEYWORD,
 										   source.getTokenColor(OrderEditor.S_KEYWORD));
-			styles[2] = new StyleContainer(getString("prefs.colors.strings"),
-										   OrderEditor.S_STRING,
+			styles[2] = new StyleContainer(getString("prefs.colors.strings"), OrderEditor.S_STRING,
 										   source.getTokenColor(OrderEditor.S_STRING));
-			styles[3] = new StyleContainer(getString("prefs.colors.numbers"),
-										   OrderEditor.S_NUMBER,
+			styles[3] = new StyleContainer(getString("prefs.colors.numbers"), OrderEditor.S_NUMBER,
 										   source.getTokenColor(OrderEditor.S_NUMBER));
-			styles[4] = new StyleContainer(getString("prefs.colors.ids"),
-										   OrderEditor.S_ID,
+			styles[4] = new StyleContainer(getString("prefs.colors.ids"), OrderEditor.S_ID,
 										   source.getTokenColor(OrderEditor.S_ID));
 			styles[5] = new StyleContainer(getString("prefs.colors.comments"),
 										   OrderEditor.S_COMMENT,
@@ -1631,8 +1577,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			 */
 			public StyleContainer(String description, String name, Color color) {
 				this.description = description;
-				this.name		 = name;
-				this.color		 = color;
+				this.name = name;
+				this.color = color;
 			}
 
 			/**
@@ -1827,8 +1773,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			source.focusGained(e);
 
 			// then external listeners
-			for(Iterator iter = source.focusListeners.iterator();
-					iter.hasNext();) {
+			for(Iterator iter = source.focusListeners.iterator(); iter.hasNext();) {
 				((FocusListener) iter.next()).focusGained(e);
 			}
 		}
@@ -1840,8 +1785,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 */
 		public void focusLost(FocusEvent e) {
 			// first external listeners
-			for(Iterator iter = source.focusListeners.iterator();
-					iter.hasNext();) {
+			for(Iterator iter = source.focusListeners.iterator(); iter.hasNext();) {
 				((FocusListener) iter.next()).focusLost(e);
 			}
 
@@ -1868,8 +1812,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void caretUpdate(CaretEvent e) {
-			for(Iterator iter = source.caretListeners.iterator();
-					iter.hasNext();) {
+			for(Iterator iter = source.caretListeners.iterator(); iter.hasNext();) {
 				((CaretListener) iter.next()).caretUpdate(e);
 			}
 		}
@@ -1902,18 +1845,14 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			if((currentUnit != null) && (currentUnit.cache != null) &&
 				   (currentUnit.cache.orderEditor != null)) {
 				Rectangle bounds = currentUnit.cache.orderEditor.getBounds();
-				log.debug("MultiEditorOrderEditorList.selectionChanged.runnable: Bounds:" +
-						  bounds);
+				log.debug("MultiEditorOrderEditorList.selectionChanged.runnable: Bounds:" + bounds);
 
 				while(!viewRect.contains(viewRect.x, bounds.y, viewRect.width,
-											 Math.min(viewRect.height,
-														  bounds.height))) {
+											 Math.min(viewRect.height, bounds.height))) {
 					Point newPos = null;
 
 					if(bounds.height < viewRect.height) {
-						newPos = new Point(0,
-										   bounds.y -
-										   ((viewRect.height - bounds.height) / 2));
+						newPos = new Point(0, bounds.y - ((viewRect.height - bounds.height) / 2));
 					} else {
 						newPos = new Point(0, bounds.y);
 					}
@@ -1933,7 +1872,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 					// scpContent.getViewport().setViewPosition(newPos);
 					viewRect = scpContent.getViewport().getViewRect();
-					bounds   = currentUnit.cache.orderEditor.getBounds();
+					bounds = currentUnit.cache.orderEditor.getBounds();
 
 					if(++loopCounter > 3) {
 						loopCounter = 0;
@@ -1969,9 +1908,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 	// for "check orders", "create temp unit" and "delete temp unit"
 	protected class ButtonPanel extends JPanel implements ActionListener {
-		private JCheckBox	   checkOrderConfirm = null;
-		private JButton		   btnCreateTempUnit = null;
-		private JButton		   btnDeleteTempUnit = null;
+		private JCheckBox checkOrderConfirm = null;
+		private JButton btnCreateTempUnit = null;
+		private JButton btnDeleteTempUnit = null;
 		private TempUnitDialog dialog;
 
 		/**
@@ -1984,8 +1923,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					public Iterator getShortCuts() {
 						if(shortcuts == null) {
 							shortcuts = CollectionFactory.createLinkedList();
-							shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_T,
-																 KeyEvent.CTRL_MASK));
+							shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_MASK));
 							shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_T,
 																 KeyEvent.CTRL_MASK |
 																 KeyEvent.SHIFT_MASK));
@@ -2017,13 +1955,11 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					public String getShortcutDescription(Object stroke) {
 						int index = shortcuts.indexOf(stroke);
 
-						return getString("shortcuts.description." +
-										 String.valueOf(index));
+						return getString("shortcuts.description." + String.valueOf(index));
 					}
 				});
 
-			checkOrderConfirm = new JCheckBox(getString("chk.orderconfirmation"),
-											  false);
+			checkOrderConfirm = new JCheckBox(getString("chk.orderconfirmation"), false);
 			checkOrderConfirm.addActionListener(this);
 			checkOrderConfirm.setEnabled(false);
 
@@ -2032,7 +1968,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			btnCreateTempUnit.addActionListener(this);
 			btnCreateTempUnit.setEnabled(false);
 
-			icon			  = new ImageIcon(com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/gui/deletetempunit.gif"));
+			icon = new ImageIcon(com.eressea.resource.ResourcePathClassLoader.getResourceStatically("images/gui/deletetempunit.gif"));
 			btnDeleteTempUnit = new JButton(icon);
 			btnDeleteTempUnit.addActionListener(this);
 			btnDeleteTempUnit.setEnabled(false);
@@ -2045,14 +1981,14 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			c.anchor = GridBagConstraints.WEST;
 			this.add(checkOrderConfirm, c);
 
-			c.anchor  = GridBagConstraints.CENTER;
-			c.gridx   = 1;
+			c.anchor = GridBagConstraints.CENTER;
+			c.gridx = 1;
 			c.weightx = 1.0;
-			c.fill    = GridBagConstraints.HORIZONTAL;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			this.add(new JPanel(), c);
 
 			c.anchor = GridBagConstraints.CENTER;
-			c.gridx  = 2;
+			c.gridx = 2;
 			this.add(btnCreateTempUnit, c);
 
 			c.gridx = 3;
@@ -2062,8 +1998,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			dispatcher.addOrderConfirmListener(new OrderConfirmListener() {
 					public void orderConfirmationChanged(OrderConfirmEvent e) {
 						if(!this.equals(e.getSource())) {
-							for(Iterator iter = e.getUnits().iterator();
-									iter.hasNext();) {
+							for(Iterator iter = e.getUnits().iterator(); iter.hasNext();) {
 								Unit u = (Unit) iter.next();
 
 								if(u.equals(currentUnit)) {
@@ -2079,8 +2014,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			// update the check box when a different unit is selected
 			dispatcher.addSelectionListener(new SelectionListener() {
 					public void selectionChanged(SelectionEvent e) {
-						if((e.getActiveObject() != null) &&
-							   e.getActiveObject() instanceof Unit) {
+						if((e.getActiveObject() != null) && e.getActiveObject() instanceof Unit) {
 							Unit u = (Unit) e.getActiveObject();
 
 							checkOrderConfirm.setSelected(u.ordersConfirmed);
@@ -2121,8 +2055,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		}
 
 		protected void createTempUnit() {
-			if((currentUnit != null) &&
-				   currentUnit.getFaction().isPrivileged()) {
+			if((currentUnit != null) && currentUnit.getFaction().isPrivileged()) {
 				// Use the current unit as the parent or its parent if it
 				// is itself a temp unit
 				Unit parentUnit = currentUnit;
@@ -2136,8 +2069,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 				if(data.getCurTempID() == -1) {
 					// uninitialized
-					String s = settings.getProperty("ClientPreferences.TempIDsInitialValue",
-													"");
+					String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
 					data.setCurTempID(s);
 				}
 
@@ -2148,13 +2080,11 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					id = UnitID.createUnitID(data.getCurTempID());
 
 					boolean ascending = settings.getProperty("ClientPreferences.ascendingOrder",
-															 "true")
-												.equalsIgnoreCase("true");
+															 "true").equalsIgnoreCase("true");
 
-					if(settings.getProperty("ClientPreferences.countDecimal",
-												"true").equalsIgnoreCase("true")) {
-						data.setCurTempID(getNextDecimalID(data.getCurTempID(),
-														   ascending));
+					if(settings.getProperty("ClientPreferences.countDecimal", "true")
+								   .equalsIgnoreCase("true")) {
+						data.setCurTempID(getNextDecimalID(data.getCurTempID(), ascending));
 					} else {
 						if(ascending) {
 							data.setCurTempID(data.getCurTempID() + 1);
@@ -2184,9 +2114,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 * @param i TODO: DOCUMENT ME!
 		 * @param ascending TODO: DOCUMENT ME!
 		 *
-		 * @return the next int, that is bigger than the given one but consists
-		 * 		   only out of decimal digits (interpreted in the current
-		 * 		   base) if the given int did so also.
+		 * @return the next int, that is bigger than the given one but consists only out of decimal
+		 * 		   digits (interpreted in the current base) if the given int did so also.
 		 */
 		private int getNextDecimalID(int i, boolean ascending) {
 			int base = IDBaseConverter.getBase();
@@ -2228,11 +2157,10 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			return i;
 		}
 
-		private void createTempImpl(Unit parentUnit, UnitID id,
-									Region parentRegion) {
-			int    unitIntID = id.intValue();
-			int    newIDInt = 0;
-			UnitID newID    = null;
+		private void createTempImpl(Unit parentUnit, UnitID id, Region parentRegion) {
+			int unitIntID = id.intValue();
+			int newIDInt = 0;
+			UnitID newID = null;
 
 			for(newIDInt = unitIntID; newIDInt != (unitIntID - 1);
 					newIDInt = (newIDInt + (1 % IDBaseConverter.getMaxId()))) {
@@ -2245,16 +2173,14 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 										 "true").equalsIgnoreCase("true")) {
 				// don't show any dialogs, simply create the tempunit and finish.
 				TempUnit tempUnit = parentUnit.createTemp(UnitID.createUnitID(-newIDInt));
-				dispatcher.fire(new TempUnitEvent(this, tempUnit,
-												  TempUnitEvent.CREATED));
+				dispatcher.fire(new TempUnitEvent(this, tempUnit, TempUnitEvent.CREATED));
 				dispatcher.fire(new SelectionEvent(this, null, tempUnit));
 			} else {
 				// do all the tempunit-dialog-stuff
 				newID = UnitID.createUnitID(newIDInt);
 
 				if(dialog == null) {
-					dialog = new TempUnitDialog((Frame) this.getTopLevelAncestor(),
-												this, settings);
+					dialog = new TempUnitDialog((Frame) this.getTopLevelAncestor(), this, settings);
 				}
 
 				// ask the user for a valid id repeatedly
@@ -2262,7 +2188,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 				while(true) {
 					if(first) { // reset if it's the first dialog for this temp unit
-						dialog.show(newID.toString(),parentUnit.getName());
+						dialog.show(newID.toString(), parentUnit.getName());
 					} else { // do not reset if we had formerly wrong data
 						dialog.show(parentUnit.getName());
 					}
@@ -2278,7 +2204,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						}
 
 						try {
-							int    realNewIDInt = IDBaseConverter.parse(tempID);
+							int realNewIDInt = IDBaseConverter.parse(tempID);
 							UnitID checkID = UnitID.createUnitID(-realNewIDInt);
 
 							if(parentRegion.getUnit(checkID) == null) {
@@ -2289,8 +2215,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 								if((name != null) && !name.trim().equals("")) {
 									tempUnit.setName(name);
-									data.getGameSpecificStuff().getOrderChanger()
-										.addNamingOrder(tempUnit, name);
+									data.getGameSpecificStuff().getOrderChanger().addNamingOrder(tempUnit,
+																								 name);
 								}
 
 								// extended features
@@ -2303,15 +2229,14 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 											int i = Integer.parseInt(recruit);
 
 											if(i > 0) {
-												data.getGameSpecificStuff()
-													.getOrderChanger()
+												data.getGameSpecificStuff().getOrderChanger()
 													.addRecruitOrder(tempUnit, i);
 
 												if(dialog.isGiveMaintainCost() ||
 													   dialog.isGiveRecruitCost()) {
 													ItemType silverType = data.rules.getItemType(StringID.create("Silber"),
 																								 false);
-													String   silver = null;
+													String silver = null;
 
 													if(silverType != null) {
 														silver = silverType.getName();
@@ -2335,11 +2260,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 																		   " TEMP " +
 																		   tempUnit.getID()
 																				   .toString() +
-																		   " " +
-																		   recCost +
-																		   " " +
-																		   silver +
-																		   "; " +
+																		   " " + recCost + " " +
+																		   silver + "; " +
 																		   getString("tempunit.recruitCost");
 														parentUnit.addOrders(tmpOrders);
 													}
@@ -2351,9 +2273,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 																				   .toString() +
 																		   " " +
 																		   String.valueOf(10 * i) +
-																		   " " +
-																		   silver +
-																		   "; " +
+																		   " " + silver + "; " +
 																		   getString("tempunit.maintainCost");
 														parentUnit.addOrders(tmpOrders);
 													}
@@ -2371,31 +2291,25 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 									// simple order
 									String order = dialog.getOrder();
 
-									if((order != null) &&
-										   !order.trim().equals("")) {
+									if((order != null) && !order.trim().equals("")) {
 										tempUnit.addOrders(order);
 									}
 
 									// description
 									String descript = dialog.getDescript();
 
-									if((descript != null) &&
-										   !descript.trim().equals("")) {
+									if((descript != null) && !descript.trim().equals("")) {
 										descript.replace('\n', ' ');
 										tempUnit.setDescription(descript);
-										data.getGameSpecificStuff()
-											.getOrderChanger()
-											.addDescribeUnitOrder(tempUnit,
-																  descript);
+										data.getGameSpecificStuff().getOrderChanger()
+											.addDescribeUnitOrder(tempUnit, descript);
 									}
 								}
 
 								// data update
-								dispatcher.fire(new TempUnitEvent(this,
-																  tempUnit,
+								dispatcher.fire(new TempUnitEvent(this, tempUnit,
 																  TempUnitEvent.CREATED));
-								dispatcher.fire(new SelectionEvent(this, null,
-																   tempUnit));
+								dispatcher.fire(new SelectionEvent(this, null, tempUnit));
 
 								return;
 							} else {
@@ -2460,8 +2374,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 * TODO: DOCUMENT ME!
 		 */
 		public void currentUnitChanged() {
-			boolean enabled = (currentUnit != null) &&
-							  currentUnit.getFaction().isPrivileged();
+			boolean enabled = (currentUnit != null) && currentUnit.getFaction().isPrivileged();
 
 			setConfirmEnabled(enabled);
 			setCreationEnabled(enabled);
@@ -2470,8 +2383,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 	/**
-	 * A simple JPanel that implements the Scrollable interface and is used to
-	 * hold the order editors.
+	 * A simple JPanel that implements the Scrollable interface and is used to hold the order
+	 * editors.
 	 */
 	private class ScrollPanel extends JPanel implements Scrollable {
 		/**
@@ -2484,9 +2397,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		}
 
 		/**
-		 * If the parent of this component is an instance of JViewport this
-		 * method returns the maximum of the original preferred size and the
-		 * viewport size.
+		 * If the parent of this component is an instance of JViewport this method returns the
+		 * maximum of the original preferred size and the viewport size.
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
@@ -2498,7 +2410,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			if(parent instanceof JViewport) {
 				JViewport viewport = (JViewport) parent;
 				Dimension psize = super.getPreferredSize();
-				psize.width  = Math.max(psize.width, viewport.getWidth());
+				psize.width = Math.max(psize.width, viewport.getWidth());
 				psize.height = Math.max(psize.height, viewport.getHeight());
 
 				return psize;
@@ -2516,8 +2428,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect,
-											  int orientation, int direction) {
+		public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation,
+											  int direction) {
 			if(orientation == SwingConstants.HORIZONTAL) {
 				return visibleRect.width / 5;
 			} else {
@@ -2525,8 +2437,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 				Component nextComponent = null;
 
 				if(direction < 0) { // up
-					lastVisibleComponent = this.getComponentAt(visibleRect.x,
-															   visibleRect.y);
+					lastVisibleComponent = this.getComponentAt(visibleRect.x, visibleRect.y);
 
 					if(lastVisibleComponent != null) {
 						if(visibleRect.y > lastVisibleComponent.getY()) {
@@ -2535,11 +2446,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						} else {
 							// component is fully visible, get next component
 							List components = Arrays.asList(this.getComponents());
-							int  count = components.indexOf(lastVisibleComponent) -
-										 1;
+							int count = components.indexOf(lastVisibleComponent) - 1;
 
-							if((count >= 0) &&
-								   (count < this.getComponentCount())) {
+							if((count >= 0) && (count < this.getComponentCount())) {
 								nextComponent = this.getComponent(count);
 
 								return nextComponent.getHeight();
@@ -2548,24 +2457,20 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					}
 				} else { // down
 					lastVisibleComponent = this.getComponentAt(visibleRect.x,
-															   visibleRect.y +
-															   visibleRect.height);
+															   visibleRect.y + visibleRect.height);
 
 					if(lastVisibleComponent != null) {
 						if((visibleRect.y + visibleRect.height) < (lastVisibleComponent.getY() +
 							   lastVisibleComponent.getHeight())) {
 							// component is not fully visible
-							return (lastVisibleComponent.getY() +
-								   lastVisibleComponent.getHeight()) -
+							return (lastVisibleComponent.getY() + lastVisibleComponent.getHeight()) -
 								   visibleRect.y - visibleRect.height;
 						} else {
 							// component is fully visible, get next component
 							List components = Arrays.asList(this.getComponents());
-							int  count = components.indexOf(lastVisibleComponent) +
-										 1;
+							int count = components.indexOf(lastVisibleComponent) + 1;
 
-							if((count >= 0) &&
-								   (count < this.getComponentCount())) {
+							if((count >= 0) && (count < this.getComponentCount())) {
 								nextComponent = this.getComponent(count);
 
 								return nextComponent.getHeight();
@@ -2588,8 +2493,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect,
-											   int orientation, int direction) {
+		public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation,
+											   int direction) {
 			if(orientation == SwingConstants.HORIZONTAL) {
 				return visibleRect.width;
 			} else {

@@ -21,11 +21,10 @@ import java.util.Map;
 import com.eressea.Coordinate;
 
 /**
- * A class providing convience functions for handling directions like in ships
- * or borders. There are three direction formats and the coversions between
- * them supported: integer representation (0 = north west and clockwise up),
- * string representation (like 'NW' or 'Nordwesten') and relative coordinate
- * representation (coordinate with x = -1, y = 1).
+ * A class providing convience functions for handling directions like in ships or borders. There
+ * are three direction formats and the coversions between them supported: integer representation
+ * (0 = north west and clockwise up), string representation (like 'NW' or 'Nordwesten') and
+ * relative coordinate representation (coordinate with x = -1, y = 1).
  */
 public class Direction {
 	/** Invalid/unknown direction */
@@ -47,15 +46,15 @@ public class Direction {
 	public static final int DIR_SW = 4;
 
 	/** west direction */
-	public static final int DIR_W	   = 5;
-	private static List     shortNames = null;
-	private static List     longNames  = null;
-	private static Locale   usedLocale = null;
-	private int			    dir		   = DIR_INVALID;
+	public static final int DIR_W = 5;
+	private static List shortNames = null;
+	private static List longNames = null;
+	private static Locale usedLocale = null;
+	private int dir = DIR_INVALID;
 
 	/**
-	 * Creates a new Direction object interpreting the specified integer as a
-	 * direction according to the direction constants of this class.
+	 * Creates a new Direction object interpreting the specified integer as a direction according
+	 * to the direction constants of this class.
 	 *
 	 * @param direction TODO: DOCUMENT ME!
 	 */
@@ -68,8 +67,7 @@ public class Direction {
 	}
 
 	/**
-	 * Creates a new Direction object interpreting the specified coordinate as
-	 * a direction.
+	 * Creates a new Direction object interpreting the specified coordinate as a direction.
 	 *
 	 * @param c a relative coordinate, e.g. (1, 0) for DIR_E. If c is null an
 	 * 		  IllegalArgumentException is thrown.
@@ -85,11 +83,10 @@ public class Direction {
 	}
 
 	/**
-	 * Creates a new Direction object interpreting the specified String as a
-	 * direction.
+	 * Creates a new Direction object interpreting the specified String as a direction.
 	 *
-	 * @param str a german name for a direction, e.g. "Osten" for DIR_E. If str
-	 * 		  is null an IllegalArgumentException is thrown.
+	 * @param str a german name for a direction, e.g. "Osten" for DIR_E. If str is null an
+	 * 		  IllegalArgumentException is thrown.
 	 *
 	 * @throws IllegalArgumentException if the str param is null.
 	 */
@@ -120,8 +117,8 @@ public class Direction {
 	}
 
 	/**
-	 * Returns a relative coordinate representing the direction dir. E.g. the
-	 * direction DIR_W would create the coordinate (-1, 0).
+	 * Returns a relative coordinate representing the direction dir. E.g. the direction DIR_W would
+	 * create the coordinate (-1, 0).
 	 *
 	 * @param dir TODO: DOCUMENT ME!
 	 *
@@ -187,8 +184,7 @@ public class Direction {
 	/**
 	 * Returns a String representation of the specified direction.
 	 *
-	 * @param dir if true, a short form of the direction's string
-	 * 		  representation is returned.
+	 * @param dir if true, a short form of the direction's string representation is returned.
 	 * @param shortForm TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
@@ -206,8 +202,7 @@ public class Direction {
 	}
 
 	/**
-	 * Converts a relative coordinate to an integer representation of the
-	 * direction.
+	 * Converts a relative coordinate to an integer representation of the direction.
 	 *
 	 * @param c TODO: DOCUMENT ME!
 	 *
@@ -247,7 +242,7 @@ public class Direction {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static int toInt(String str) {
-		int    dir = DIR_INVALID;
+		int dir = DIR_INVALID;
 		String s = str.toLowerCase();
 
 		dir = find(s, getShortNames());
@@ -308,15 +303,14 @@ public class Direction {
 	}
 
 	/**
-	 * Returns the names of all valid directions in an all-lowercase short
-	 * form.
+	 * Returns the names of all valid directions in an all-lowercase short form.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static List getShortNames() {
 		if(!Locales.getOrderLocale().equals(usedLocale)) {
 			shortNames = null;
-			longNames  = null;
+			longNames = null;
 		}
 
 		if(shortNames == null) {
@@ -339,12 +333,12 @@ public class Direction {
 	public static List getLongNames() {
 		if(!Locales.getOrderLocale().equals(usedLocale)) {
 			shortNames = null;
-			longNames  = null;
+			longNames = null;
 		}
 
 		if(longNames == null) {
 			usedLocale = Locales.getOrderLocale();
-			longNames  = CollectionFactory.createArrayList(6);
+			longNames = CollectionFactory.createArrayList(6);
 
 			for(int i = 0; i < 6; i++) {
 				longNames.add(getLongDirectionString(i).toLowerCase());
@@ -355,10 +349,9 @@ public class Direction {
 	}
 
 	/**
-	 * Finds pattern in the set of matches (case-sensitively) and returns the
-	 * index of the hit. Pattern may be an abbreviation of any of the matches.
-	 * If pattern is ambiguous or cannot be found among the matches, -1 is
-	 * returned
+	 * Finds pattern in the set of matches (case-sensitively) and returns the index of the hit.
+	 * Pattern may be an abbreviation of any of the matches. If pattern is ambiguous or cannot be
+	 * found among the matches, -1 is returned
 	 *
 	 * @param pattern TODO: DOCUMENT ME!
 	 * @param matches TODO: DOCUMENT ME!
@@ -366,9 +359,9 @@ public class Direction {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private static int find(String pattern, List matches) {
-		int i		 = 0;
+		int i = 0;
 		int hitIndex = -1;
-		int hits     = 0;
+		int hits = 0;
 
 		for(Iterator iter = matches.iterator(); iter.hasNext(); i++) {
 			String match = (String) iter.next();

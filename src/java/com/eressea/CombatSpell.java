@@ -14,14 +14,13 @@
 package com.eressea;
 
 /**
- * A class representing a combat spell set for a certain unit. It links a unit
- * with a certain spell and contains information at which level the unit wants
- * to cast the spell.
+ * A class representing a combat spell set for a certain unit. It links a unit with a certain spell
+ * and contains information at which level the unit wants to cast the spell.
  */
 public class CombatSpell extends Identifiable {
 	private Spell spell;
-	private Unit  unit;
-	private int   castingLevel;
+	private Unit unit;
+	private int castingLevel;
 
 	/**
 	 * Creates a new CombatSpell object with the specified id.
@@ -80,8 +79,8 @@ public class CombatSpell extends Identifiable {
 	/**
 	 * Sets a level at which the unit wants to cast this spell.
 	 *
-	 * @param castingLevel this value must be greater than 0 and  not greater
-	 * 		  than the unit's magic skill level.
+	 * @param castingLevel this value must be greater than 0 and  not greater than the unit's magic
+	 * 		  skill level.
 	 */
 	public void setCastingLevel(int castingLevel) {
 		this.castingLevel = castingLevel;
@@ -94,8 +93,7 @@ public class CombatSpell extends Identifiable {
 	 */
 	public String toString() {
 		return (getSpell() == null) ? ""
-									: (getSpell().getTypeName() + ", " +
-									getCastingLevel() + ": " +
+									: (getSpell().getTypeName() + ", " + getCastingLevel() + ": " +
 									getSpell().toString());
 	}
 
@@ -104,18 +102,17 @@ public class CombatSpell extends Identifiable {
 	 *
 	 * @param o the CombatSpell object to compare with.
 	 *
-	 * @return true only if o is not null and an instance of class CombatSpell
-	 * 		   and o's id is equal to the id of this  CombatSpell object.
+	 * @return true only if o is not null and an instance of class CombatSpell and o's id is equal
+	 * 		   to the id of this  CombatSpell object.
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof CombatSpell &&
-			   this.getID().equals(((CombatSpell) o).getID()));
+			   (o instanceof CombatSpell && this.getID().equals(((CombatSpell) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on CombatSpell objects equivalent to the
-	 * natural ordering of their ids.
+	 * Imposes a natural ordering on CombatSpell objects equivalent to the natural ordering of
+	 * their ids.
 	 *
 	 * @param o the CombatSpell object to compare with.
 	 *
@@ -133,8 +130,7 @@ public class CombatSpell extends Identifiable {
 	 * @param newGD the new GameData.
 	 * @param newCS the new CombatSpell.
 	 */
-	public static void merge(GameData curGD, CombatSpell curCS, GameData newGD,
-							 CombatSpell newCS) {
+	public static void merge(GameData curGD, CombatSpell curCS, GameData newGD, CombatSpell newCS) {
 		// transfer the level of the casted spell
 		if(curCS.getCastingLevel() != -1) {
 			newCS.setCastingLevel(curCS.getCastingLevel());

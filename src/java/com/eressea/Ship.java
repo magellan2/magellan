@@ -33,24 +33,20 @@ public class Ship extends UnitContainer implements HasRegion {
 							 // -1 = every direction
 
 	/**
-	 * The size of this ship. While the ship is being built, size &lt;=
-	 * getType().getMaxSize() is true. After the ship is finished,  size
-	 * equals getType().getMaxSize().
+	 * The size of this ship. While the ship is being built, size &lt;= getType().getMaxSize() is
+	 * true. After the ship is finished,  size equals getType().getMaxSize().
 	 */
 	public int size = -1;
 
-	/**
-	 * The ratio to which degree this ship is damaged. Values range from 0 to
-	 * 100.
-	 */
+	/** The ratio to which degree this ship is damaged. Values range from 0 to 100. */
 	public int damageRatio = 0;
 
 	/** The weight of the units and items on this ship in GE. */
 	public int load = -1;
 
 	/**
-	 * The maximum payload of this ship in GE. 0 &lt;= capacity &lt;=
-	 * getType().getCapacity() if the ship is damaged.
+	 * The maximum payload of this ship in GE. 0 &lt;= capacity &lt;= getType().getCapacity() if
+	 * the ship is damaged.
 	 */
 	public int capacity = -1;
 
@@ -112,8 +108,8 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Returns the weight of all units of this ship that are not horses or
-	 * carts in GE  100 based on the modified units.
+	 * Returns the weight of all units of this ship that are not horses or carts in GE  100 based
+	 * on the modified units.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -130,9 +126,8 @@ public class Ship extends UnitContainer implements HasRegion {
 
 	// this is a helper function for showing inner object state
 	public String toDebugString() {
-		return "SHIP[" + "shoreId=" + shoreId + "," + "size=" + size + "," +
-			   "damageRation=" + damageRatio + "," + "load=" + load + "," +
-			   "capacity=" + capacity + "]";
+		return "SHIP[" + "shoreId=" + shoreId + "," + "size=" + size + "," + "damageRation=" +
+			   damageRatio + "," + "load=" + load + "," + "capacity=" + capacity + "]";
 	}
 
 	/**
@@ -154,8 +149,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	public String toString(boolean printExtended) {
 		StringBuffer sb = new StringBuffer();
 
-		sb.append(getName()).append(" (").append(this.getID().toString())
-		  .append(")");
+		sb.append(getName()).append(" (").append(this.getID().toString()).append(")");
 
 		if(printExtended) {
 			sb.append(", ").append(getType());
@@ -163,8 +157,7 @@ public class Ship extends UnitContainer implements HasRegion {
 			int nominalShipSize = getShipType().getMaxSize();
 
 			if(size != nominalShipSize) {
-				sb.append(" (").append(size).append("/").append(nominalShipSize)
-				  .append(")");
+				sb.append(" (").append(size).append("/").append(nominalShipSize).append(")");
 			}
 
 			if(damageRatio != 0) {
@@ -180,22 +173,19 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Indicates whether this Ship object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Ship and o's id is
-	 * equal to the id of this  Ship object.
+	 * Indicates whether this Ship object is equal to another object. Returns true only if o is not
+	 * null and an instance of class Ship and o's id is equal to the id of this  Ship object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof Ship && this.getID().equals(((Ship) o).getID()));
+		return (this == o) || (o instanceof Ship && this.getID().equals(((Ship) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on Ship objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Ship objects equivalent to the natural ordering of their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -213,8 +203,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newShip TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Ship curShip, GameData newGD,
-							 Ship newShip) {
+	public static void merge(GameData curGD, Ship curShip, GameData newGD, Ship newShip) {
 		UnitContainer.merge(curGD, curShip, newGD, newShip);
 
 		if(curShip.capacity != -1) {

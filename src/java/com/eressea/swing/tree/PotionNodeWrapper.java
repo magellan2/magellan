@@ -25,7 +25,7 @@ import com.eressea.Potion;
  * @version $Revision$
  */
 public class PotionNodeWrapper implements CellObject, SupportsClipboard {
-	private Potion potion		   = null;
+	private Potion potion = null;
 	private String displayedString = null;
 
 	/**
@@ -116,8 +116,7 @@ public class PotionNodeWrapper implements CellObject, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 

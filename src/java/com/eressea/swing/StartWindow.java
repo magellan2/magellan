@@ -52,13 +52,13 @@ import com.eressea.demo.Client;
  * @version
  */
 public class StartWindow extends JWindow {
-	protected Collection		  images;
-	protected int				  steps;
-	protected int				  currentStep = 0;
-	protected JLabel			  imageLabel;
-	protected JProgressBar		  progress;
-	protected JTextPane			  text;
-	protected static final JFrame parent	  = new JFrame();
+	protected Collection images;
+	protected int steps;
+	protected int currentStep = 0;
+	protected JLabel imageLabel;
+	protected JProgressBar progress;
+	protected JTextPane text;
+	protected static final JFrame parent = new JFrame();
 
 	/**
 	 * Creates new StartWindow
@@ -94,7 +94,7 @@ public class StartWindow extends JWindow {
 
 	protected void init(Collection icons, int steps) {
 		this.images = icons;
-		this.steps  = steps;
+		this.steps = steps;
 
 		Image iconImage = Client.getApplicationIcon();
 
@@ -117,7 +117,7 @@ public class StartWindow extends JWindow {
 
 		if((images != null) && !images.isEmpty()) {
 			Icon icon = (Icon) images.iterator().next();
-			prefwidth  = icon.getIconWidth();
+			prefwidth = icon.getIconWidth();
 			imageLabel = new JLabel(icon);
 			imageLabel.setBackground(background);
 			cont.add(imageLabel);
@@ -153,7 +153,7 @@ public class StartWindow extends JWindow {
 			names = "Roger Butenuth, Enno Rehling, Stefan G\u00f6tz, Klaas Prause, Sebastian Tusk, Andreas Gampe, Roland Behme, Michael Schmidt, Henning Zahn, Oliver Hertel, Guenter Grossberger, Sören Bendig, Marc Geerligs, Matthias Müller, Ulrich Küster, Jake Hofer, Ilja Pavkovic\n";
 		}
 
-		StyledDocument	    styled = new DefaultStyledDocument();
+		StyledDocument styled = new DefaultStyledDocument();
 
 		MutableAttributeSet set = new SimpleAttributeSet();
 		StyleConstants.setBold(set, true);
@@ -205,11 +205,10 @@ public class StartWindow extends JWindow {
 
 		pack();
 
-		Toolkit   t		 = getToolkit();
+		Toolkit t = getToolkit();
 		Dimension screen = t.getScreenSize();
-		Dimension size   = getSize();
-		setLocation((screen.width - size.width) / 2,
-					(screen.height - size.height) / 2);
+		Dimension size = getSize();
+		setLocation((screen.width - size.width) / 2, (screen.height - size.height) / 2);
 	}
 
 	/**
@@ -224,7 +223,7 @@ public class StartWindow extends JWindow {
 			progress.setString(message);
 
 			if((images != null) && (step < images.size())) {
-				Icon     icon = null;
+				Icon icon = null;
 				Iterator it = images.iterator();
 
 				for(int i = 0; i <= step; i++) {
@@ -243,12 +242,12 @@ public class StartWindow extends JWindow {
 		 * @param container TODO: DOCUMENT ME!
 		 */
 		public void layoutContainer(java.awt.Container container) {
-			int		  width  = 0;
-			int		  height = 0;
-			Component c[]    = container.getComponents();
+			int width = 0;
+			int height = 0;
+			Component c[] = container.getComponents();
 
 			if((c != null) && (c.length > 0)) {
-				int		  i;
+				int i;
 				Dimension d;
 
 				for(i = 0; i < c.length; i++) {
@@ -262,8 +261,8 @@ public class StartWindow extends JWindow {
 				}
 
 				Insets insets = container.getInsets();
-				int    x = 0;
-				int    y = 0;
+				int x = 0;
+				int y = 0;
 
 				if(insets != null) {
 					x += insets.left;
@@ -286,12 +285,12 @@ public class StartWindow extends JWindow {
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public java.awt.Dimension preferredLayoutSize(java.awt.Container container) {
-			int		  width  = 0;
-			int		  height = 0;
-			Component c[]    = container.getComponents();
+			int width = 0;
+			int height = 0;
+			Component c[] = container.getComponents();
 
 			if((c != null) && (c.length > 0)) {
-				int		  i;
+				int i;
 				Dimension d;
 
 				for(i = 0; i < c.length; i++) {
@@ -321,8 +320,7 @@ public class StartWindow extends JWindow {
 		 * @param str TODO: DOCUMENT ME!
 		 * @param component TODO: DOCUMENT ME!
 		 */
-		public void addLayoutComponent(java.lang.String str,
-									   java.awt.Component component) {
+		public void addLayoutComponent(java.lang.String str, java.awt.Component component) {
 		}
 
 		/**

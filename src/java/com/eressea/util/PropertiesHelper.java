@@ -24,8 +24,8 @@ import java.util.Properties;
  */
 public class PropertiesHelper {
 	/**
-	 * Extracts properties by given prefix. If there exists a key called
-	 * prefix.count this is used as order
+	 * Extracts properties by given prefix. If there exists a key called prefix.count this is used
+	 * as order
 	 *
 	 * @param p TODO: DOCUMENT ME!
 	 * @param prefix TODO: DOCUMENT ME!
@@ -33,7 +33,7 @@ public class PropertiesHelper {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static List getList(Properties p, String prefix) {
-		List   ret   = CollectionFactory.createLinkedList();
+		List ret = CollectionFactory.createLinkedList();
 		String count = p.getProperty(prefix + ".count");
 
 		if(count == null) {
@@ -62,8 +62,7 @@ public class PropertiesHelper {
 	// c) set prefix.0 .. prefix.n values
 	public static void setList(Properties p, String prefix, Collection list) {
 		// a) remove old properties
-		for(Iterator iter = getPrefixedList(p, prefix).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getPrefixedList(p, prefix).iterator(); iter.hasNext();) {
 			p.remove(iter.next());
 		}
 

@@ -26,24 +26,24 @@ import com.eressea.util.logging.Logger;
  * A class forwarding events from event sources to listeners.
  */
 public class EventDispatcher {
-	private static final Logger log					  = Logger.getInstance(EventDispatcher.class);
-	private List			    gameDataListeners     = CollectionFactory.createLinkedList();
-	private List			    tempUnitListeners     = CollectionFactory.createLinkedList();
-	private List			    unitOrdersListeners   = CollectionFactory.createLinkedList();
-	private List			    selectionListeners    = CollectionFactory.createLinkedList();
-	private List			    orderConfirmListeners = CollectionFactory.createLinkedList();
-	private boolean			    notifierIsAlive		  = false;
-	private boolean			    stopNotification	  = false;
-	private int				    eventsFired			  = 0;
-	private int				    eventsDispatched	  = 0;
-	private int				    lastPriority		  = Integer.MAX_VALUE;
-	private static final int    GAMEDATA_INDEX		  = 0;
-	private static final int    SELECTION_INDEX		  = 1;
-	private static final int    UNITORDERS_INDEX	  = 2;
-	private static final int    TEMPUNIT_INDEX		  = 3;
-	private static final int    ORDERCONFIRM_INDEX    = 4;
-	private static final int    PRIORITIES[]		  = { 0, 4, 1, 1, 1 };
-	private EQueue			    queue;
+	private static final Logger log = Logger.getInstance(EventDispatcher.class);
+	private List gameDataListeners = CollectionFactory.createLinkedList();
+	private List tempUnitListeners = CollectionFactory.createLinkedList();
+	private List unitOrdersListeners = CollectionFactory.createLinkedList();
+	private List selectionListeners = CollectionFactory.createLinkedList();
+	private List orderConfirmListeners = CollectionFactory.createLinkedList();
+	private boolean notifierIsAlive = false;
+	private boolean stopNotification = false;
+	private int eventsFired = 0;
+	private int eventsDispatched = 0;
+	private int lastPriority = Integer.MAX_VALUE;
+	private static final int GAMEDATA_INDEX = 0;
+	private static final int SELECTION_INDEX = 1;
+	private static final int UNITORDERS_INDEX = 2;
+	private static final int TEMPUNIT_INDEX = 3;
+	private static final int ORDERCONFIRM_INDEX = 4;
+	private static final int PRIORITIES[] = { 0, 4, 1, 1, 1 };
+	private EQueue queue;
 
 	private EventDispatcher() {
 		queue = new EQueue();
@@ -57,8 +57,8 @@ public class EventDispatcher {
 	private static final EventDispatcher INSTANCE = new EventDispatcher();
 
 	/**
-	 * Returns the shared instance of the event dispatcher. This will create a
-	 * new one if there's no current one. This is the Singleton pattern.
+	 * Returns the shared instance of the event dispatcher. This will create a new one if there's
+	 * no current one. This is the Singleton pattern.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -78,9 +78,8 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Adds the given selection listener to the front of all registered
-	 * listeners. Warning: The order will change if another listener is added
-	 * with priority.
+	 * Adds the given selection listener to the front of all registered listeners. Warning: The
+	 * order will change if another listener is added with priority.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -113,9 +112,8 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Adds the given game-data listener to the front of all registered
-	 * listeners. Warning: The order will change if another listener is added
-	 * with priority.
+	 * Adds the given game-data listener to the front of all registered listeners. Warning: The
+	 * order will change if another listener is added with priority.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -148,9 +146,8 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Adds the given temp-unit listener to the front of all registered
-	 * listeners. Warning: The order will change if another listener is added
-	 * with priority.
+	 * Adds the given temp-unit listener to the front of all registered listeners. Warning: The
+	 * order will change if another listener is added with priority.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -183,9 +180,8 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Adds the given unit-orders listener to the front of all registered
-	 * listeners. Warning: The order will change if another listener is added
-	 * with priority.
+	 * Adds the given unit-orders listener to the front of all registered listeners. Warning: The
+	 * order will change if another listener is added with priority.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -286,9 +282,8 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Adds the given order-confirm listener to the front of all registered
-	 * listeners. Warning: The order will change if another listener is added
-	 * with priority.
+	 * Adds the given order-confirm listener to the front of all registered listeners. Warning: The
+	 * order will change if another listener is added with priority.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -313,10 +308,9 @@ public class EventDispatcher {
 	 * Forwards an event to all registered listeners for this event type.
 	 * 
 	 * <p>
-	 * If synchronous is false, the forwarding is done asynchronously in a
-	 * separate dispatcher thread. If the fire method is called before the
-	 * dispatcher thread has finished the previous request, it is stopped and
-	 * starts forwarding the new event.
+	 * If synchronous is false, the forwarding is done asynchronously in a separate dispatcher
+	 * thread. If the fire method is called before the dispatcher thread has finished the previous
+	 * request, it is stopped and starts forwarding the new event.
 	 * </p>
 	 *
 	 * @param e TODO: DOCUMENT ME!
@@ -331,8 +325,7 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Asynchronously forwards an event to all registered listeners for this
-	 * event type.
+	 * Asynchronously forwards an event to all registered listeners for this event type.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
@@ -341,8 +334,7 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Returns the number of events that were passed to this dispatcher for
-	 * forwarding.
+	 * Returns the number of events that were passed to this dispatcher for forwarding.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -351,8 +343,7 @@ public class EventDispatcher {
 	}
 
 	/**
-	 * Returns the number of events that were actually forwarded to event
-	 * listeners.
+	 * Returns the number of events that were actually forwarded to event listeners.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -369,9 +360,9 @@ public class EventDispatcher {
 				try {
 					EventObject o = queue.waitFor();
 
-					long	    start = 0;
+					long start = 0;
 
-					int		    prio = getPriority(o);
+					int prio = getPriority(o);
 
 					eventsFired++;
 
@@ -385,7 +376,7 @@ public class EventDispatcher {
 					if(notifierIsAlive) {
 						if(prio < lastPriority) { // interrupt the old notifier
 							stopNotification = true;
-							start			 = System.currentTimeMillis();
+							start = System.currentTimeMillis();
 
 							while(stopNotification &&
 									  ((System.currentTimeMillis() - start) < 2000)) {
@@ -410,7 +401,7 @@ public class EventDispatcher {
 	}
 
 	private class EQueue {
-		private List    objects = CollectionFactory.createLinkedList();
+		private List objects = CollectionFactory.createLinkedList();
 		private boolean block = false;
 
 		/**
@@ -461,8 +452,8 @@ public class EventDispatcher {
 				block = true;
 
 				while(index < objects.size()) {
-					EventObject obj     = (EventObject) objects.get(index);
-					int		    prioOld = getPriority(obj);
+					EventObject obj = (EventObject) objects.get(index);
+					int prioOld = getPriority(obj);
 
 					if(prioOld > prioNew) {
 						do {
@@ -524,8 +515,7 @@ public class EventDispatcher {
 				SelectionEvent e = (SelectionEvent) event;
 
 				for(Iterator iter = selectionListeners.iterator();
-						iter.hasNext() &&
-						!EventDispatcher.this.stopNotification;) {
+						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					eventsDispatched++;
 					((SelectionListener) iter.next()).selectionChanged(e);
 
@@ -537,8 +527,7 @@ public class EventDispatcher {
 				OrderConfirmEvent e = (OrderConfirmEvent) event;
 
 				for(Iterator iter = orderConfirmListeners.iterator();
-						iter.hasNext() &&
-						!EventDispatcher.this.stopNotification;) {
+						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					eventsDispatched++;
 					((OrderConfirmListener) iter.next()).orderConfirmationChanged(e);
 
@@ -550,8 +539,7 @@ public class EventDispatcher {
 				UnitOrdersEvent e = (UnitOrdersEvent) event;
 
 				for(Iterator iter = unitOrdersListeners.iterator();
-						iter.hasNext() &&
-						!EventDispatcher.this.stopNotification;) {
+						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					eventsDispatched++;
 					((UnitOrdersListener) iter.next()).unitOrdersChanged(e);
 
@@ -563,8 +551,7 @@ public class EventDispatcher {
 				TempUnitEvent e = (TempUnitEvent) event;
 
 				for(Iterator iter = tempUnitListeners.iterator();
-						iter.hasNext() &&
-						!EventDispatcher.this.stopNotification;) {
+						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					TempUnitListener l = (TempUnitListener) iter.next();
 					eventsDispatched++;
 
@@ -582,8 +569,7 @@ public class EventDispatcher {
 				GameDataEvent e = (GameDataEvent) event;
 
 				for(Iterator iter = gameDataListeners.iterator();
-						iter.hasNext() &&
-						!EventDispatcher.this.stopNotification;) {
+						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					eventsDispatched++;
 					((GameDataListener) iter.next()).gameDataChanged(e);
 
@@ -595,9 +581,9 @@ public class EventDispatcher {
 
 			// 2002.03.04 pavkovic: get rid of evil Event, seems that Notifier will not
 			// be removed correctly
-			event		    = null;
+			event = null;
 			notifierIsAlive = false;
-			lastPriority    = Integer.MAX_VALUE;
+			lastPriority = Integer.MAX_VALUE;
 		}
 	}
 }

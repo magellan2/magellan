@@ -49,8 +49,8 @@ public class OpenCRAction extends MenuAction {
 	}
 
 	/**
-	 * Called when the file->open menu is selected in order to open a certain
-	 * cr file. Displays a file chooser and loads the selected cr file.
+	 * Called when the file->open menu is selected in order to open a certain cr file. Displays a
+	 * file chooser and loads the selected cr file.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
@@ -59,8 +59,8 @@ public class OpenCRAction extends MenuAction {
 			return;
 		}
 
-		JFileChooser fc		  = new JFileChooser();
-		Properties   settings = client.getSettings();
+		JFileChooser fc = new JFileChooser();
+		Properties settings = client.getSettings();
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.CR_FILTER));
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.GZ_FILTER));
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER));
@@ -68,8 +68,7 @@ public class OpenCRAction extends MenuAction {
 
 		int lastFileFilter = Integer.parseInt(settings.getProperty("Client.lastSelectedOpenCRFileFilter",
 																   "3"));
-		lastFileFilter = Math.min(fc.getChoosableFileFilters().length - 1,
-								  lastFileFilter);
+		lastFileFilter = Math.min(fc.getChoosableFileFilters().length - 1, lastFileFilter);
 		fc.setFileFilter(fc.getChoosableFileFilters()[lastFileFilter]);
 
 		File file = new File(settings.getProperty("Client.lastCROpened", ""));
@@ -91,20 +90,16 @@ public class OpenCRAction extends MenuAction {
 				i++;
 			}
 
-			settings.setProperty("Client.lastSelectedOpenCRFileFilter",
-								 String.valueOf(i));
+			settings.setProperty("Client.lastSelectedOpenCRFileFilter", String.valueOf(i));
 
-			settings.setProperty("Client.lastCROpened",
-								 fc.getSelectedFile().getAbsolutePath());
+			settings.setProperty("Client.lastCROpened", fc.getSelectedFile().getAbsolutePath());
 			client.addFileToHistory(fc.getSelectedFile());
 
 			boolean bOpenEqualsSave = Boolean.valueOf(settings.getProperty("Client.openEqualsSave",
-																		   "false"))
-											 .booleanValue();
+																		   "false")).booleanValue();
 
 			if(bOpenEqualsSave) {
-				settings.setProperty("Client.lastCRSaved",
-									 fc.getSelectedFile().getAbsolutePath());
+				settings.setProperty("Client.lastCRSaved", fc.getSelectedFile().getAbsolutePath());
 			}
 
 			GameData data = client.loadCR(fc.getSelectedFile().getPath());

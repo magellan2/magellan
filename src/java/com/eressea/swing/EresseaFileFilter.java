@@ -42,10 +42,10 @@ public class EresseaFileFilter extends javax.swing.filechooser.FileFilter {
 	public static final int BZ2_FILTER = 4;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int MAX_DEFAULTS   = 5;
-	protected int		    flag		   = 0;
-	protected String	    optExtension   = null;
-	protected String	    optDescription = "";
+	public static final int MAX_DEFAULTS = 5;
+	protected int flag = 0;
+	protected String optExtension = null;
+	protected String optDescription = "";
 
 	private String getString(String key) {
 		return com.eressea.util.Translations.getTranslation(this, key);
@@ -66,16 +66,11 @@ public class EresseaFileFilter extends javax.swing.filechooser.FileFilter {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("defaults.description.0",
-									"Eressea computer report files");
-			defaultTranslations.put("defaults.description.1",
-									"Eressea order files");
-			defaultTranslations.put("defaults.description.2",
-									"ZIP archive files");
-			defaultTranslations.put("defaults.description.3",
-									"GZIP archive files");
-			defaultTranslations.put("defaults.description.4",
-									"BZIP2 archive files");
+			defaultTranslations.put("defaults.description.0", "Eressea computer report files");
+			defaultTranslations.put("defaults.description.1", "Eressea order files");
+			defaultTranslations.put("defaults.description.2", "ZIP archive files");
+			defaultTranslations.put("defaults.description.3", "GZIP archive files");
+			defaultTranslations.put("defaults.description.4", "BZIP2 archive files");
 
 			defaultTranslations.put("defaults.extension.0", "cr");
 			defaultTranslations.put("defaults.extension.1", "txt");
@@ -105,7 +100,7 @@ public class EresseaFileFilter extends javax.swing.filechooser.FileFilter {
 	 * @param desc TODO: DOCUMENT ME!
 	 */
 	public EresseaFileFilter(String ext, String desc) {
-		optExtension   = ext;
+		optExtension = ext;
 		optDescription = desc;
 	}
 
@@ -117,8 +112,7 @@ public class EresseaFileFilter extends javax.swing.filechooser.FileFilter {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public File addExtension(File aFile) {
-		return accept(aFile) ? aFile : new File(aFile.getPath() +
-												getExtension());
+		return accept(aFile) ? aFile : new File(aFile.getPath() + getExtension());
 	}
 
 	/**
@@ -129,15 +123,12 @@ public class EresseaFileFilter extends javax.swing.filechooser.FileFilter {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean accept(File f) {
-		return f.isDirectory() ||
-			   f.getName().toLowerCase().endsWith(getExtension());
+		return f.isDirectory() || f.getName().toLowerCase().endsWith(getExtension());
 	}
 
 	private String getExtension() {
 		return "." +
-			   ((optExtension != null) ? optExtension
-									   : getString("defaults.extension." +
-												   flag)).toLowerCase();
+			   ((optExtension != null) ? optExtension : getString("defaults.extension." + flag)).toLowerCase();
 	}
 
 	/**
