@@ -39,7 +39,7 @@ public class GenericRules implements Rules {
 	private Map mapUnitContainerType	  = CollectionFactory.createOrderedHashtable();
 	private Map mapUnitContainerTypeNames = CollectionFactory.createOrderedHashtable();
 
-	// Map consisting of ItemType, Herb
+	// Map consisting of ItemType
 	private Map mapItemType		 = CollectionFactory.createOrderedHashtable();
 	private Map mapItemTypeNames = CollectionFactory.createOrderedHashtable();
 
@@ -486,76 +486,6 @@ public class GenericRules implements Rules {
 		}
 
 		return getItemType(StringID.create(id), add);
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Iterator getHerbIterator() {
-		return getIterator(Herb.class, mapItemType);
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(ID id) {
-		return getHerb(id, false);
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 * @param add TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(ID id, boolean add) {
-		Object uct = mapItemType.get(id);
-		if(uct != null && ! (uct instanceof Herb)) {
-			return null;
-		}
-		Herb r = (Herb) mapItemType.get(id);
-
-		if((r == null) && add) {
-			r = (Herb) addObject(new Herb(id), mapItemType, mapItemTypeNames);
-			r.setName(id.toString());
-		}
-
-		return r;
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(String id) {
-		return getHerb(id, false);
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 * @param add TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Herb getHerb(String id, boolean add) {
-		if((id == null) || id.equals("")) {
-			return null;
-		}
-
-		return getHerb(StringID.create(id), add);
 	}
 
 	/**

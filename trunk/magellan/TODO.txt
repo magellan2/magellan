@@ -1,11 +1,3 @@
-
-- Extend createFileType* methods in com.eressea.io.file.FileTypeFactory with
-  read/write boolean.
-
-
-
-
-
 -- technical todo:
 
 - remove src/java/com/eressea/crtonr

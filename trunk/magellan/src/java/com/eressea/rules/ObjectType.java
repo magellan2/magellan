@@ -46,4 +46,6 @@ public abstract class ObjectType extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public abstract int compareTo(Object o);
+
+
 }
