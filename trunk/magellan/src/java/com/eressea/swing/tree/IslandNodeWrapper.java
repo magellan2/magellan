@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import com.eressea.Faction;
 import com.eressea.Island;
 import com.eressea.Region;
 import com.eressea.Unit;

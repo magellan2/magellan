@@ -32,7 +32,6 @@ import com.eressea.StringID;
 import com.eressea.Unit;
 
 import com.eressea.rules.BuildingType;
-import com.eressea.rules.RegionType;
 
 import com.eressea.swing.RoutingDialog;
 

@@ -119,6 +119,9 @@ public class GameDataReader {
 			}
 		}
 
+		// after reading the filetype may be written
+		aFileType.setReadonly(false);
+
 		return newData;
 	}
 

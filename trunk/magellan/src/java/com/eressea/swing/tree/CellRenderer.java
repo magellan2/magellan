@@ -24,8 +24,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
-import java.net.URL;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,8 +45,6 @@ import javax.swing.border.MatteBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
-
-import com.eressea.resource.ResourcePathClassLoader;
 
 import com.eressea.util.Colors;
 import com.eressea.util.ImageFactory;
