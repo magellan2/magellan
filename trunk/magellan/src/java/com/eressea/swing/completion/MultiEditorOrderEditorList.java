@@ -1743,7 +1743,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 
 								if (name != null && !name.trim().equals("")) {
 									tempUnit.setName(name);
-									tempUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + name + "\"");
+									data.getGameSpecificStuff().addNamingOrder(tempUnit,name);
 								}
 								// extended features
 								if (dialog.wasExtendedDialog()) {
@@ -1754,8 +1754,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 										int i = Integer.parseInt(recruit);
 
 										if (i > 0) {
-											tempUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_RECRUIT) + " " + String.valueOf(i));
-
+											data.getGameSpecificStuff().addRecruitOrder(tempUnit,i);
 											if (dialog.isGiveMaintainCost() || dialog.isGiveRecruitCost()) {
 
 												ItemType silverType = data.rules.getItemType(StringID.create("Silber"), false);

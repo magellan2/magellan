@@ -21,6 +21,7 @@ import java.util.Set;
 
 
 import com.eressea.event.*;
+import com.eressea.gamebinding.RelationFactory;
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
@@ -29,7 +30,6 @@ import com.eressea.relation.LeaveRelation;
 import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
-import com.eressea.relation.RelationFactory;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
@@ -1748,7 +1748,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		}
 		invalidateCache();
 		removeRelationsOriginatingFromUs(from);
-		addAndSpreadRelations(new RelationFactory().createRelations(this,from));
+		addAndSpreadRelations(getRegion().getData().getGameSpecificStuff().getRelationFactory().createRelations(this,from));
 	}
 
 	private void addAndSpreadRelations(Collection newRelations) {

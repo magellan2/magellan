@@ -14,6 +14,8 @@ import java.util.Map;
 
 import com.eressea.cr.Loader;
 
+import com.eressea.gamebinding.GameSpecificStuff;
+import com.eressea.gamebinding.eressea.EresseaSpecificStuff;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.MessageType;
 import com.eressea.rules.Date;
@@ -103,12 +105,14 @@ abstract public class GameData implements Cloneable {
 	 * @return returns the units map
 	 */
 	abstract public Map units();
+
 	/** All regions in this game data. The keys are <tt>Coordinate</tt>
 	 * objects containg the id of each region. The values consist
 	 * of objects of class <tt>Region</tt>.
 	 * @return returns the regions map
 	 */
 	abstract public Map regions();
+
 	/** All factions in this game data. The keys are <tt>Integer</tt>
 	 * objects containg the id of each faction. The values consist
 	 * of objects of class <tt>Faction</tt>. One of these factions
@@ -116,48 +120,56 @@ abstract public class GameData implements Cloneable {
 	 * @return returns the factions map
 	 */
 	abstract public Map factions();
+
 	/** All buildings in this game data. The keys are <tt>Integer</tt>
 	 * objects containg the id of each building. The values consist
 	 * of objects of class <tt>Building</tt>.
 	 * @return returns the buildings map
 	 */
 	abstract public Map buildings();
+
 	/** All ships in this game data. The keys are <tt>Integer</tt>
 	 * objects containg the id of each ship. The values consist
 	 * of objects of class <tt>Ship</tt>.
 	 * @return returns the ships map
 	 */
 	abstract public Map ships();
+
 	/** All message types in this game data. The keys are
 	 * <tt>Integer</tt> objects containg the id of each message
 	 * type. The values consist of <tt>MessageType</tt> objects.
 	 * @return returns the messageType map
 	 */
 	abstract public Map msgTypes();
+
 	/** All magic spells in this game data. The keys are
 	 * <tt>Integer</tt> objects containg the id of each spell.
 	 * The values consist of objects of class <tt>Spell</tt>.
 	 * @return returns the spells map
 	 */
 	abstract public Map spells();
+
 	/** All potions in this game data. The keys are
 	 * <tt>Integer</tt> objects containg the id of each potion.
 	 * The values consist of objects of class <tt>Potion</tt>.
 	 * @return returns the potions map
 	 */
 	abstract public Map potions();
+
 	/** All islands in this game data. The keys are
 	 * <tt>Integer</tt> objects containing the id of each island.
 	 * The values consist of objects of class <tt>Island</tt>.
 	 * @return returns the islands map
 	 */
 	abstract public Map islands();
+
 	/** All HotSpots existing for this game data. Hot spots are used
 	 * to quickly access regions of interest on the map. The keys are
 	 * Integer representations of the hot spot id, the values are
 	 * Coordinate objects.
 	 */
 	abstract public Map hotSpots();
+
 	/** Represents the table of translations from the report.
 	 */
 	abstract public Map translations();
@@ -169,6 +181,7 @@ abstract public class GameData implements Cloneable {
 	public GameData(Rules _rules, String _name) {
 		rules = _rules;
 		name = _name;
+		initGameSpecificStuff(_name);
 	}
 
 	/**
@@ -1215,4 +1228,20 @@ abstract public class GameData implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		return Loader.cloneGameData(this);
 	}
+
+
+	private GameSpecificStuff gameSpecificStuff;
+	/** 
+	 * Provides the encapsulating of game specific stuff
+	 */
+	public GameSpecificStuff getGameSpecificStuff() {
+		return gameSpecificStuff;
+	}
+	
+	private void initGameSpecificStuff(String name) {
+		gameSpecificStuff = new EresseaSpecificStuff();
+	}
+
+
+
 }

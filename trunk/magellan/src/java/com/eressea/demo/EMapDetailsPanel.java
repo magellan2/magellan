@@ -144,7 +144,6 @@ import com.eressea.swing.tree.UnitListNodeWrapper;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
-import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.EresseaRaceConstants;
 import com.eressea.util.EresseaSkillConstants;
 import com.eressea.util.ShipRoutePlanner;
@@ -264,11 +263,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 							 u.getName() != null && name.getText().equals(u.getName()) == false) &&
 							isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
 							// the following code only changes the name
-							// right now it is not necessary to refresh the relations
-							String newOrder = Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + 
-								Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + 
-								name.getText() + "\"";
-							u.addOrder(newOrder, true, 2);
+							// right now it is not necessary to refresh the relations; are we sure??
+							data.getGameSpecificStuff().addNamingOrder(u, name.getText());
 							dispatcher.fire(new UnitOrdersEvent(this, u));
 							//if (u.cache != null && u.cache.orderEditor != null) {
 							//	u.cache.orderEditor.reloadOrders();
@@ -277,24 +273,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					} else if (displayedObject instanceof UnitContainer) {
 						UnitContainer uc = (UnitContainer)displayedObject;
 						Unit modUnit = null;
-						String order = null;
-						if (uc instanceof Building) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_CASTLE);
-							modUnit = uc.getOwnerUnit();
-						} else if (uc instanceof Ship) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP);
-							modUnit = uc.getOwnerUnit();
-						} else if (uc instanceof Region) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_REGION);
-							modUnit = uc.getOwnerUnit();
-						} else if (uc instanceof Faction) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_FACTION);
+						if(uc instanceof Faction) {
 							modUnit = (Unit)uc.units().iterator().next();
+						} else {
+							modUnit = uc.getOwnerUnit();
 						}
 
 						if (isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
 							if (uc.getName() == null && name.getText().equals("") == false || uc.getName() != null && name.getText().equals(uc.getName()) == false) {
-								modUnit.addOrder(Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + order + " \"" + name.getText() + "\"", true, 2);
+								data.getGameSpecificStuff().addNamingOrder(modUnit, uc, name.getText());
 								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -331,9 +318,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						if ((u.getDescription() == null && description.getText().equals("") == false || u.getDescription() != null && description.getText().equals(u.getDescription()) == false) && isPrivilegedAndNoSpy(u) && !u.ordersAreNull()) {
 							String descr = getDescriptionPart(description.getText());
 							String privat = getPrivatePart(description.getText());
-							u.addOrder(Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + descr + "\"", true, 2);
+							data.getGameSpecificStuff().addDescribeUnitOrder(u, descr);
 							if ((u.privDesc == null && privat.length()>0) || (u.privDesc != null && !privat.equals(u.privDesc))) {
-								u.addOrder(Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " +Translations.getOrderTranslation(EresseaOrderConstants.O_PRIVATE)+ " \"" + privat + "\"", true, 2);
+								data.getGameSpecificStuff().addDescribeUnitOrder(u, privat);
 								u.privDesc = privat;
 							}
 							dispatcher.fire(new UnitOrdersEvent(this, u));
@@ -344,24 +331,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					} else if (displayedObject instanceof UnitContainer) {
 						UnitContainer uc = (UnitContainer)displayedObject;
 						Unit modUnit = null;
-						String order = null;
-						if (uc instanceof Building) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_CASTLE);
-							modUnit = uc.getOwnerUnit();
-						} else if (uc instanceof Ship) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP);
-							modUnit = uc.getOwnerUnit();
-						} else if (uc instanceof Region) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_REGION);
-							modUnit = uc.getOwnerUnit();
-						} else if (uc instanceof Faction) {
-							order = Translations.getOrderTranslation(EresseaOrderConstants.O_BANNER);
+						if(uc instanceof Faction) {
 							modUnit = (Unit)uc.units().iterator().next();
+						} else {
+							modUnit = uc.getOwnerUnit();
 						}
 
 						if (isPrivilegedAndNoSpy(modUnit) && !modUnit.ordersAreNull()) {
 							if (uc.getDescription() == null && description.getText().equals("") == false || uc.getDescription() != null && description.getText().equals(uc.getDescription()) == false) {
-								modUnit.addOrder(order + " \"" + normalizeDescription(description.getText()) + "\"", true, order.indexOf(" ") >= 0 ? 2 : 1);
+								data.getGameSpecificStuff().addDescribeUnitContainerOrder(modUnit,uc, normalizeDescription(description.getText()));
 								dispatcher.fire(new UnitOrdersEvent(this, modUnit));
 								//if (modUnit.cache != null && modUnit.cache.orderEditor != null) {
 								//	modUnit.cache.orderEditor.reloadOrders();
@@ -2951,27 +2929,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				int newStealth = Integer.parseInt(e.getActionCommand());
 				if (newStealth != unit.stealth) {
 					unit.stealth = newStealth;
-
+					
 					EMapDetailsPanel.this.show(unit, false);
-					// search "stealth number" order and remove it
-					for(Iterator iter = unit.getOrders().iterator(); iter.hasNext(); ) {
-						String order = (String)iter.next();
-						if (order.startsWith(Translations.getOrderTranslation(EresseaOrderConstants.O_HIDE)) && order.indexOf(Translations.getOrderTranslation(EresseaOrderConstants.O_FACTION))<0) {
-							boolean raceFound = false;
-							for(Iterator it2 = data.rules.getRaces(); it2.hasNext(); ) {
-								Race race = (Race)it2.next();
-								if (order.indexOf(race.getName())>0) {
-									raceFound = true;
-									break;
-								}
-							}
-							if (!raceFound) {
-								// FIXME(pavkovic:) problem hier!
-								iter.remove();
-							}
-						}
-					}
-					unit.addOrders(Collections.singleton(Translations.getOrderTranslation(EresseaOrderConstants.O_HIDE)+" "+e.getActionCommand()));
+					data.getGameSpecificStuff().addHideOrder(unit, e.getActionCommand().toString());
 					/* Note: Of course it would be better to inform all that a game data object
 					 *       has changed but I think it's not necessary and consumes too much time
 					 *                  Andreas
@@ -3019,27 +2979,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					unit.combatStatus = newState;
 
 					EMapDetailsPanel.this.show(unit, false);
-					// search "fight code" order and remove it
-					Iterator it = unit.getOrders().iterator();
-					while(it.hasNext()) {
-						String order = (String)it.next();
-						if (order.startsWith(Translations.getOrderTranslation(EresseaOrderConstants.O_COMBAT))) {
-							// FIXME(pavkovic): PROBLEM HIER!
-							it.remove();
-						}
-					}
-					String str = Translations.getOrderTranslation(EresseaOrderConstants.O_COMBAT)+" ";
-					switch(newState) {
-					case 0: str += Translations.getOrderTranslation(EresseaOrderConstants.O_AGGRESSIVE);break;
-					case 1: str += Translations.getOrderTranslation(EresseaOrderConstants.O_FRONT);break;
-					case 2: str += Translations.getOrderTranslation(EresseaOrderConstants.O_REAR);break;
-					case 3: str += Translations.getOrderTranslation(EresseaOrderConstants.O_DEFENSIVE);break;
-					case 4: str += Translations.getOrderTranslation(EresseaOrderConstants.O_NOT);break;
-					case 5: str += Translations.getOrderTranslation(EresseaOrderConstants.O_FLEE);break;
-					default: break;
-					}
-
-					unit.addOrders(str);
+					data.getGameSpecificStuff().addCombatOrder(unit,newState);
 					// Note: Same as in StealthContextMenu
 					//dispatcher.fire(new GameDataEvent(EMapDetailsPanel.this, data));
 					dispatcher.fire(new UnitOrdersEvent(EMapDetailsPanel.this, unit));

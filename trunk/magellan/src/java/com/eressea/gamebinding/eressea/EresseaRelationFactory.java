@@ -1,24 +1,31 @@
-package com.eressea.relation;
+package com.eressea.gamebinding.eressea;
 
 import java.io.*;
 import java.util.*;
 
 import com.eressea.*;
+import com.eressea.gamebinding.RelationFactory;
+import com.eressea.relation.*;
 import com.eressea.rules.*;
 import com.eressea.util.*;
 
 import com.eressea.util.logging.Logger;
 
-public class RelationFactory {
-	private final static Logger log = Logger.getInstance(RelationFactory.class);
+public class EresseaRelationFactory implements RelationFactory {
+	private final static Logger log = Logger.getInstance(EresseaRelationFactory.class);
 
-	public RelationFactory() {
+	private EresseaRelationFactory() {
+	}
+
+	private final static EresseaRelationFactory singleton= new EresseaRelationFactory();
+	public static EresseaRelationFactory getSingleton() {
+		return singleton;
 	}
 
 	private final static int REFRESHRELATIONS_ALL = -2;
 
-	public Collection createRelations(Unit u, int from) {
-		Collection rels = CollectionFactory.createArrayList(5);
+	public List createRelations(Unit u, int from) {
+		List rels = CollectionFactory.createArrayList(5);
 		
 		GameData data = u.getRegion().getData();
 		Map modItems = null;	// needed to track changes in the items for GIB orders
