@@ -1,3 +1,8 @@
+2004-11-21  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/completion/OrderEditor.java: prevent
+	data loss if key events are coming too fast.
+
 2004-09-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/util/OrderWriter.java: #tag EINHEIT instead

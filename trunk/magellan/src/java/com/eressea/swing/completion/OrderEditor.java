@@ -430,17 +430,11 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 
 	/**
 	 * Allows to change the modified state of this text pane. Setting it to <tt>true</tt> currently
-	 * does not result in an event being fired.
+	 * does not automatically result in an event being fired.
 	 *
 	 * @param isModified TODO: DOCUMENT ME!
 	 */
-	public void setModified(boolean isModified) {
-		if(isModified) {
-			unit.setOrders(getOrders());
-
-			// TODO: fire change event?
-		}
-
+	private void setModified(boolean isModified) {
 		modified = isModified;
 	}
 
