@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import com.eressea.util.CollectionFactory;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.eressea.Item;
@@ -26,8 +26,8 @@ import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
-import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
+import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -67,17 +67,17 @@ public class Units {
 				Item item = (Item)i.next();
 
 				// get the container this item is stored in
-				Map container = getItemContainer(item.getType());
+				Map container = getItemContainer(item.getItemType());
 
 				// get the stat item from the category container
-				StatItem stored = (StatItem)container.get(item.getType().getID());
+				StatItem stored = (StatItem)container.get(item.getItemType().getID());
 				if (stored != null) {
 					// add up the amount in the stat item
 					stored.setAmount(stored.getAmount() + item.getAmount());
 				} else {
 					// create a new stat item for this item type
-					stored = new StatItem(item.getType(), item.getAmount());
-					container.put(stored.getType().getID(), stored);
+					stored = new StatItem(item.getItemType(), item.getAmount());
+					container.put(stored.getItemType().getID(), stored);
 				}
 				// add the unit owning the item to the stat item
 				stored.units.add(new UnitWrapper(u, item.getAmount()));
@@ -98,14 +98,14 @@ public class Units {
 				Item item = (Item)i.next();
 
 				// get the stat item by item type
-				StatItem stored = (StatItem)items.get(item.getType().getID());
+				StatItem stored = (StatItem)items.get(item.getItemType().getID());
 				if (stored != null) {
 					// add up the amount in the stat item
 					stored.setAmount(stored.getAmount() + item.getAmount());
 				} else {
 					// create a new stat item for this item type
-					stored = new StatItem(item.getType(), item.getAmount());
-					items.put(stored.getType().getID(), stored);
+					stored = new StatItem(item.getItemType(), item.getAmount());
+					items.put(stored.getItemType().getID(), stored);
 				}
 				// add the unit owning the item to the stat item
 				stored.units.add(new UnitWrapper(u, item.getAmount()));
@@ -168,7 +168,7 @@ public class Units {
 				for (Iterator iter = sortedItems.iterator(); iter.hasNext();) {
 					StatItem si = (StatItem)iter.next();
 					catNumber += si.getAmount();
-					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getType().getName() + ": " + si.getAmount(),"items/"+si.getType().getIconName()));
+					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType().getName() + ": " + si.getAmount(),"items/"+si.getItemType().getIconName()));
 					catNode.add(itemNode);
 					if (showUnits && si.units != null) {
 						Collections.sort(si.units, new UnitWrapperComparator(unitComparator));
@@ -202,7 +202,7 @@ public class Units {
 
 		for (Iterator iter = sortedItems.iterator(); iter.hasNext();) {
 			StatItem si = (StatItem)iter.next();
-			DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getType().getName() + ": " + si.getAmount(),"items/"+si.getType().getIconName()));
+			DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType().getName() + ": " + si.getAmount(),"items/"+si.getType().getIconName()));
 			parentNode.add(itemNode);
 			if (showUnits && si.units != null) {
 				Collections.sort(si.units, new UnitWrapperComparator(unitComparator));

@@ -18,7 +18,6 @@ import javax.swing.KeyStroke;
 
 import com.eressea.util.ImageFactory;
 import com.eressea.util.Translations;
-
 import com.eressea.util.logging.Logger;
 
 /**

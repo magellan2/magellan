@@ -9,13 +9,13 @@
 package com.eressea.demo.actions;
 
 
-import java.util.Map;
-import com.eressea.util.CollectionFactory;
 import java.beans.PropertyChangeListener;
+import java.util.Map;
 
 import javax.swing.Action;
 
 import com.eressea.demo.MagellanUndoManager;
+import com.eressea.util.CollectionFactory;
 /**
  *
  * @author  Andreas

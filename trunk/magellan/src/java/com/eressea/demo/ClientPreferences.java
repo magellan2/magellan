@@ -22,8 +22,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.swing.*;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -34,8 +32,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
@@ -44,10 +44,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import com.eressea.swing.CenterLayout;
-import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.MagellanLookAndFeel;
 import com.eressea.swing.layout.GridBagHelper;
+import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;

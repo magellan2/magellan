@@ -70,7 +70,7 @@ public class ItemType extends ObjectType {
 		if (resources == null) {
 			resources = CollectionFactory.createHashtable();
 		}
-		resources.put(i.getType().getID(), i);
+		resources.put(i.getItemType().getID(), i);
 	}
 
 	public ROIterator getResources() {

@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import com.eressea.util.CollectionFactory;
 
 import javax.swing.JDialog;
 import javax.swing.JMenu;
@@ -43,6 +42,7 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.swing.map.MapCellRenderer;
 import com.eressea.swing.map.Mapper;
 import com.eressea.swing.map.RenderingPlane;
+import com.eressea.util.CollectionFactory;
 
 /**
  * A context menu for the map.

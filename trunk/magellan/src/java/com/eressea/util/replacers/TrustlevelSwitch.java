@@ -7,8 +7,8 @@
 package com.eressea.util.replacers;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.filters.UnitFactionTLFilter;
 import com.eressea.util.logging.Logger;
 /**

@@ -20,7 +20,6 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -31,7 +30,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import com.eressea.swing.layout.GridBagHelper;
 import com.eressea.swing.preferences.PreferencesAdapter;

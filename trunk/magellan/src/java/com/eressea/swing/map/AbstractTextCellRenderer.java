@@ -133,7 +133,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer{
 	public void render(Object obj, boolean active, boolean selected) {
 		if (obj instanceof Region) {
 			Region r = (Region)obj;
-			Coordinate c = (Coordinate)r.getID();
+			Coordinate c = r.getCoordinate();
 			Rectangle rect = cellGeo.getCellRect(c.x, c.y);
 			
 			String display[] = getText(r, rect);

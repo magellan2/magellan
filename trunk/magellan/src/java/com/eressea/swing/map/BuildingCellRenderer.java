@@ -37,7 +37,7 @@ public class BuildingCellRenderer extends ImageCellRenderer {
 			
 			Iterator iter = r.buildings().iterator();
 			if (iter.hasNext()) {
-				Coordinate c = (Coordinate)r.getID();
+				Coordinate c = r.getCoordinate();
 				Point pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 				pos.translate(-offset.x, -offset.y);
 				Dimension size = cellGeo.getImageSize();

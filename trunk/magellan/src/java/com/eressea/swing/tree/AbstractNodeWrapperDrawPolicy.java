@@ -8,7 +8,6 @@
 
 package com.eressea.swing.tree;
 
-import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;

@@ -12,7 +12,6 @@ package com.eressea.swing.map;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
-
 import java.util.Map;
 import java.util.Properties;
 

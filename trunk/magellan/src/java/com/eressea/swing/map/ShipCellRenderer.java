@@ -13,13 +13,13 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
 import com.eressea.Ship;
+import com.eressea.util.CollectionFactory;
 
 public class ShipCellRenderer extends ImageCellRenderer {
 	
@@ -33,7 +33,7 @@ public class ShipCellRenderer extends ImageCellRenderer {
 			
 			Iterator iter = r.ships().iterator();
 			if (iter.hasNext()) {
-				Coordinate c = (Coordinate)r.getID();
+				Coordinate c = r.getCoordinate();
 				Point pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 				pos.translate(-offset.x, -offset.y);
 				Dimension size = cellGeo.getImageSize();

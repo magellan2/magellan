@@ -8,7 +8,7 @@
 
 package com.eressea.swing.tree;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * An interface to be implemented by wrapper classes.

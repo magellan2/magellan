@@ -27,7 +27,7 @@ import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.EresseaRaceConstants;
 import com.eressea.util.Translations;
 /**
- *
+ * TODO(pavkovic): remove this stuff, is better suited in inspector environment
  * @author  SirBacon
  */
 public class UnitWarning {

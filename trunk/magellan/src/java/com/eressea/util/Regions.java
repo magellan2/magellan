@@ -11,7 +11,6 @@ package com.eressea.util;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +25,6 @@ import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.RegionType;
-import com.eressea.rules.ShipType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -121,7 +119,7 @@ public class Regions {
 		List coordinates = CollectionFactory.createArrayList(regions.size());
 		for(Iterator iter = regions.iterator(); iter.hasNext(); ) {
 			Region r = (Region) iter.next();
-			coordinates.add((Coordinate) r.getID());
+			coordinates.add(r.getCoordinate());
 		}
 		return getDirectionObjectsOfCoordinates(coordinates);
 	}
@@ -201,7 +199,7 @@ public class Regions {
 			}
 			/* take the first region from the backlog list */
 			curRegion = (Region)backlogList.getFirst();
-			curCoord = (Coordinate)curRegion.getID();
+			curCoord = curRegion.getCoordinate();
 			
 			/* safety checks */
 			if (excludedRegionTypes.containsKey(curRegion.getType().getID())) {
@@ -227,7 +225,7 @@ public class Regions {
 			   its neighbour's distances to the start region */
 			for (Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 				Region curNb = (Region)iter.next();
-				Coordinate curNbCoord = (Coordinate)curNb.getID();
+				Coordinate curNbCoord = curNb.getCoordinate();
 				Float dist = (Float)distances.get(curNbCoord);
 				if (dist != null) {
 					/* we know the distance from the start region to
@@ -294,7 +292,7 @@ public class Regions {
 				neighbours.remove(curCoord);
 				for (Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 					Region curNb = (Region)iter.next();
-					Coordinate curNbCoord = (Coordinate)curNb.getID();
+					Coordinate curNbCoord = curNb.getCoordinate();
 					Float nbDist = (Float)distances.get(curNbCoord);
 					if (nbDist != null) {
 						float curDistance = nbDist.floatValue();
@@ -505,7 +503,7 @@ public class Regions {
 			u.getShip().toString(false);
 		
 		// run over neighbours recursively
-		Coordinate c = getMovement(data, ID, (Coordinate) u.getRegion().getID(), coordinates);
+		Coordinate c = getMovement(data, ID, u.getRegion().getCoordinate(), coordinates);
 		while(c != null && !coordinates.contains(c)){
 			coordinates.add(c);
 			c = getMovement(data, ID, c, coordinates);
@@ -519,7 +517,8 @@ public class Regions {
 		Map neighbours = getAllNeighbours(data.regions(), c, Collections.EMPTY_MAP);
 
 		for(Iterator iter = neighbours.values().iterator(); iter.hasNext(); ) {
-			Region r = (Region) iter.next();			Coordinate  neighbour = (Coordinate) r.getID();
+			Region r = (Region) iter.next();
+			Coordinate  neighbour = r.getCoordinate();
 			if(neighbour.equals(c) || travelledRegions.contains(neighbour)) {
 				// dont add our own or an already visited coordinate
 				continue;

@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -107,11 +108,11 @@ public class BasicRegionPanel extends InternationalizedDataPanel implements Sele
             GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
 
 		//html = new JLabel();
-		html = new HTMLLabel();
+		;
 		//html.setContentType("text/html");
 		//html.setFont(new Font("Arial", Font.PLAIN, html.getFont().getSize()));
 		//html.setEditable(false);
-		add(html, c);
+		add(html = new HTMLLabel(), c);
 
 		// parse the def for ourself
 		show(null);
@@ -358,6 +359,8 @@ public class BasicRegionPanel extends InternationalizedDataPanel implements Sele
 
 		/**  requires: 'text' is HTML string. */
 		public HTMLLabel(String text) {
+			// we need to install the LookAndFeel Fonts from the beginning
+			LookAndFeel.installColorsAndFont(this, "Label.background", "Label.foreground", "Label.font");
 			setText(text);
 		}
 
@@ -455,6 +458,10 @@ public class BasicRegionPanel extends InternationalizedDataPanel implements Sele
 			if (!equal(f, getFont()))
 				view = null;
 			
+
+			if(log.isDebugEnabled()) {
+				log.debug("HTMLLabel.setFont("+f+" called");
+			}
 			super.setFont(f);
 		}
 		

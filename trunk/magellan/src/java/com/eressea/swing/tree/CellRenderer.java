@@ -43,7 +43,6 @@ import javax.swing.tree.TreeCellRenderer;
 
 import com.eressea.util.Colors;
 import com.eressea.util.JVMUtilities;
-
 import com.eressea.util.logging.Logger;
 
 /**

@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -45,7 +44,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import com.eressea.Building;
-import com.eressea.Coordinate;
 import com.eressea.Described;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -605,7 +603,7 @@ public class FindDialog extends InternationalizedDataDialog implements javax.swi
 			Unit u = (Unit)item;
 			if (u.items != null) {
 				for (Iterator iterator = u.items.values().iterator(); iterator.hasNext(); ) {
-					String name = getName(((Item)iterator.next()).getType());
+					String name = getName(((Item)iterator.next()).getItemType());
 					if (name != null) {
 						name = name.toLowerCase();
 						for (Iterator iter = patterns.iterator(); iter.hasNext();) {
@@ -855,7 +853,7 @@ public class FindDialog extends InternationalizedDataDialog implements javax.swi
 		}
 
 		public String toString() {
-			return region.getName() + " (" + ((Coordinate)region.getID()).toString(", ") + ")";
+			return region.getName() + " (" + region.getCoordinate().toString(", ") + ")";
 		}
 	}
 

@@ -25,9 +25,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Properties;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -51,6 +50,7 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.resource.ResourcePathClassLoader;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.TrustLevels;
 import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.IDComparator;

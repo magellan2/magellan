@@ -168,7 +168,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 					newCenterRegion = ((HasRegion)o).getRegion();
 				}
 			if (newCenterRegion != null) {
-				newCenter = (Coordinate)newCenterRegion.getID();
+				newCenter = newCenterRegion.getCoordinate();
 			}
 		}
 		
@@ -214,7 +214,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 				if(!island.regions().isEmpty()) {
 					// first set right level
 					Region r = (Region) island.regions().iterator().next();
-					Coordinate coord = (Coordinate)r.getID();
+					Coordinate coord = r.getCoordinate();
 					if (cmbLevel.isVisible()) {
 						Integer level = new Integer(coord.z);
 						if (level.intValue() != mapper.getLevel()) {
@@ -571,7 +571,9 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	public void showHotSpot(HotSpot h) {
 		
 		// switch planes
-		if (mapper.getActiveRegion() == null || ((Coordinate)mapper.getActiveRegion().getID()).z != h.getCenter().z) {
+		if (mapper.getActiveRegion() == null || 
+			mapper.getActiveRegion().getCoordinate().z != h.getCenter().z) {
+
 			if (cmbLevel.isVisible()) {
 				cmbLevel.setSelectedItem(new Integer(h.getCenter().z));
 			}

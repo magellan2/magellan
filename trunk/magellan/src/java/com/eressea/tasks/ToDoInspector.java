@@ -1,12 +1,12 @@
 
 package com.eressea.tasks;
 
-import com.eressea.*;
-import com.eressea.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-import com.eressea.tasks.*;
-
-import java.util.*;
+import com.eressea.Unit;
+import com.eressea.util.CollectionFactory;
 
 /** 
  * A Inspector inspects the given resource (TODO: Unit, region or whole gamedata?) 

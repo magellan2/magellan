@@ -8,9 +8,9 @@
 
 package com.eressea.util;
 
+import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-import com.eressea.event.EventDispatcher;
 
 /**
  * A class for handling the input and output of ids at certain bases.

@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -25,6 +24,7 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.swing.EresseaFileFilter;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 

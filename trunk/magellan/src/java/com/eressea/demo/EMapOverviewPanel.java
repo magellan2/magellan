@@ -28,17 +28,16 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -54,7 +53,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListModel;
-import javax.swing.DefaultListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
@@ -86,8 +84,8 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitID;
 import com.eressea.ZeroUnit;
-import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.demo.desktop.DesktopEnvironment;
+import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.OrderConfirmEvent;
@@ -121,8 +119,26 @@ import com.eressea.swing.tree.TreeHelper;
 import com.eressea.swing.tree.TreeUpdate;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
-import com.eressea.util.*;
-import com.eressea.util.comparator.*;
+import com.eressea.util.CollectionFactory;
+import com.eressea.util.SelectionHistory;
+import com.eressea.util.comparator.BestSkillComparator;
+import com.eressea.util.comparator.FactionTrustComparator;
+import com.eressea.util.comparator.IDComparator;
+import com.eressea.util.comparator.NameComparator;
+import com.eressea.util.comparator.RegionIslandComparator;
+import com.eressea.util.comparator.SkillComparator;
+import com.eressea.util.comparator.SkillTypeComparator;
+import com.eressea.util.comparator.SkillTypeRankComparator;
+import com.eressea.util.comparator.SortIndexComparator;
+import com.eressea.util.comparator.TopmostRankedSkillComparator;
+import com.eressea.util.comparator.UnitCombatStatusComparator;
+import com.eressea.util.comparator.UnitFactionComparator;
+import com.eressea.util.comparator.UnitFactionDisguisedComparator;
+import com.eressea.util.comparator.UnitGroupComparator;
+import com.eressea.util.comparator.UnitHealthComparator;
+import com.eressea.util.comparator.UnitSkillComparator;
+import com.eressea.util.comparator.UnitTempUnitComparator;
+import com.eressea.util.comparator.UnitTrustComparator;
 import com.eressea.util.logging.Logger;
 
 public class EMapOverviewPanel extends InternationalizedDataPanel implements TreeSelectionListener, TreeExpansionListener, SelectionListener, OrderConfirmListener, PreferencesFactory, TempUnitListener, ShortcutListener, ChangeListener, TreeUpdate, MenuProvider {
@@ -2091,6 +2107,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 			skillSort.applyPreferences();
 
+			// TODO: wirklich ein GameDatachange?
 			gameDataChanged(new GameDataEvent(EMapOverviewPanel.this, data));
 		}
 

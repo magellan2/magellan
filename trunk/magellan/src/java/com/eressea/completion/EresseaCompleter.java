@@ -13,7 +13,6 @@ import java.util.List;
 
 import com.eressea.GameData;
 import com.eressea.Unit;
-import com.eressea.completion.Completer;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;

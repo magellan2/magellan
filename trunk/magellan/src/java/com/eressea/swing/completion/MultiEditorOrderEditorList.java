@@ -85,6 +85,7 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.TempUnitEvent;
 import com.eressea.event.TempUnitListener;
+import com.eressea.event.UnitOrdersEvent;
 import com.eressea.rules.ItemType;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -1743,7 +1744,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 
 								if (name != null && !name.trim().equals("")) {
 									tempUnit.setName(name);
-									data.getGameSpecificStuff().addNamingOrder(tempUnit,name);
+									data.getGameSpecificStuff().getOrderChanger().addNamingOrder(tempUnit,name);
 								}
 								// extended features
 								if (dialog.wasExtendedDialog()) {
@@ -1754,7 +1755,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 										int i = Integer.parseInt(recruit);
 
 										if (i > 0) {
-											data.getGameSpecificStuff().addRecruitOrder(tempUnit,i);
+											data.getGameSpecificStuff().getOrderChanger().addRecruitOrder(tempUnit,i);
 											if (dialog.isGiveMaintainCost() || dialog.isGiveRecruitCost()) {
 
 												ItemType silverType = data.rules.getItemType(StringID.create("Silber"), false);
@@ -1773,17 +1774,20 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
                                                         recCost = parentUnit.race.getRecruitmentCosts();
                                                     }
                                                     recCost = i * recCost;
-													parentUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE)
+													// TODO(pavkovic) extract to EresseaOrderChanger
+													String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE)
                                                         + " TEMP " + tempUnit.getID().toString()
                                                         + " " + recCost + " " + silver
-                                                        + "; " + getString("tempunit.recruitCost")
-                                                    );
+                                                        + "; " + getString("tempunit.recruitCost");
+													parentUnit.addOrders(tmpOrders);
+
 												}
 												if (dialog.isGiveMaintainCost()) {
-													parentUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) + " TEMP "+tempUnit.getID().toString()+" "+String.valueOf(10*i)+" "+silver+"; "+getString("tempunit.maintainCost"));
+													String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) + " TEMP "+tempUnit.getID().toString()+" "+String.valueOf(10*i)+" "+silver+"; "+getString("tempunit.maintainCost");
+													parentUnit.addOrders(tmpOrders);
 												}
-
-												dispatcher.fire(new com.eressea.event.UnitOrdersEvent(this, parentUnit));
+												// TODO(pavkovic) extract to EresseaOrderChanger
+												dispatcher.fire(new UnitOrdersEvent(this, parentUnit));
 											}
 
 										}
@@ -1804,7 +1808,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 									if (descript != null && !descript.trim().equals("")) {
 										descript.replace('\n', ' ');
 										tempUnit.setDescription(descript);
-										tempUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + descript + "\"");
+										data.getGameSpecificStuff().getOrderChanger().addDescribeUnitOrder(tempUnit,descript);
 									}
 								}
 								// data update

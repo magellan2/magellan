@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.Skill;
-import com.eressea.rules.SkillType;
 
 
 /**

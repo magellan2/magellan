@@ -8,15 +8,13 @@
 package com.eressea.demo.actions;
 
 import java.util.Iterator;
-
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
-
 
 import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.util.CollectionFactory;
 
 /**
  * @author  Ilja Pavkovic

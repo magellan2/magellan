@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
 import com.eressea.Alliance;
 import com.eressea.Border;
 import com.eressea.Building;
@@ -51,7 +50,6 @@ import com.eressea.rules.Eressea;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
-import com.eressea.rules.RegionType;
 import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillType;
 import com.eressea.util.logging.Logger;
@@ -1008,7 +1006,7 @@ public class OrderCompleter implements EresseaSkillConstants {
 				Item item = (Item)iter.next();
 				if (silverPool
 					// Item is not silver
-					|| (item.getType() != data.rules.getItemType(StringID.create(EresseaOrderConstants.O_SILVER)))
+					|| (item.getItemType() != data.rules.getItemType(StringID.create(EresseaOrderConstants.O_SILVER)))
 					// unit has silver
 					|| (unit.getItem(data.rules.getItemType(StringID.create(EresseaOrderConstants.O_SILVER))) != null)) {
 					String name = item.getName();
@@ -1025,7 +1023,7 @@ public class OrderCompleter implements EresseaSkillConstants {
 				// silver only if silverpool activated or unit has silver
 				if (silverPool
 					// Item is not silver
-					|| (item.getType() != data.rules.getItemType(StringID.create(EresseaOrderConstants.O_SILVER)))
+					|| (item.getItemType() != data.rules.getItemType(StringID.create(EresseaOrderConstants.O_SILVER)))
 					// unit has silver
 					|| (unit.getItem(data.rules.getItemType(StringID.create(EresseaOrderConstants.O_SILVER))) != null)) {
 					String name = item.getName();
@@ -1396,7 +1394,7 @@ public class OrderCompleter implements EresseaSkillConstants {
 		}
 		Map excludedRegionTypes = CollectionFactory.createHashtable();
 		excludedRegionTypes.put(oceanType.getID(), oceanType);
-		Map neighbours = Regions.getAllNeighbours(data.regions(), (Coordinate)region.getID(), radius, excludedRegionTypes);
+		Map neighbours = Regions.getAllNeighbours(data.regions(), region.getCoordinate(), radius, excludedRegionTypes);
 		neighbours.remove(region);
 		Iterator iter = neighbours.values().iterator();
 		while (iter.hasNext()) {
@@ -1404,7 +1402,7 @@ public class OrderCompleter implements EresseaSkillConstants {
 			// do not include the region the unit stays in
 			if (region != null && !region.equals(r)) {
 				// get a path from the current region to neighbouring
-				Collection path = Regions.getPath(data.regions(), (Coordinate)region.getID(), (Coordinate)r.getID(), excludedRegionTypes);
+				Collection path = Regions.getPath(data.regions(), region.getCoordinate(), r.getCoordinate(), excludedRegionTypes);
 				// translate the path of regions into a string of
 				// directions to take
 				String directions = Regions.getDirections(path);
@@ -1434,7 +1432,7 @@ public class OrderCompleter implements EresseaSkillConstants {
 		if (cat != null && unit != null && unit.items != null) {
 			for (Iterator items = unit.getModifiedItems().iterator(); items.hasNext(); ) {
 				Item i = (Item)items.next();
-				if (i.getType().getCategory() != null && i.getType().getCategory().equals(cat)) {
+				if (i.getItemType().getCategory() != null && i.getItemType().getCategory().equals(cat)) {
 					completions.add(new Completion(i.getName(), postfix));
 				}
 			}
@@ -1494,12 +1492,12 @@ public class OrderCompleter implements EresseaSkillConstants {
 		while (iter.hasNext() && canMake) {
 			Item ingredient = (Item)iter.next();
 			// be careful, units cannot own peasants although one is required for the potion "Bauernblut"
-			if (ingredient.getType() != null) {
+			if (ingredient.getItemType() != null) {
 				int availableAmount = 0;
-				if (ingredient.getType().equals(data.rules.getItemType(StringID.create("Bauer")))) {
+				if (ingredient.getItemType().equals(data.rules.getItemType(StringID.create("Bauer")))) {
 					availableAmount = region.peasants;
 				} else {
-					Item available = region.getItem(ingredient.getType());
+					Item available = region.getItem(ingredient.getItemType());
 					if (available != null) {
 						availableAmount = available.getAmount();
 					}

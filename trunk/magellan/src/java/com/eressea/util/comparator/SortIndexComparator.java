@@ -10,6 +10,7 @@ package com.eressea.util.comparator;
 
 
 import java.util.Comparator;
+
 import com.eressea.util.Sorted;
 
 /**

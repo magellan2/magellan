@@ -73,7 +73,8 @@
     <property name="build.compiler.emacs" value="on"/>
   </target>
 
-  <target name="compile" depends="compile.magellan, compile.chart, compile.patcher"/>
+<!--  <target name="compile" depends="compile.magellan, compile.chart, compile.patcher"/>-->
+  <target name="compile" depends="compile.magellan"/>
   
   <target name="compile.magellan" depends="init">
     <mkdir dir="${CLASSES.MAGELLAN}"/>
@@ -340,7 +341,7 @@
   </target>
 
   <target name="toRemote" depends="init">
-    <replace dir="${basedir}" defaultexcludes="no">
+    <replace dir="${basedir}/../" defaultexcludes="no">
 	  <include name="**/CVS/Root"/>
 	  <replacefilter  token="@cvs.sourceforge.net" value="@eressea.upb.de"/>
 	  <replacefilter  token="@localhost"           value="@eressea.upb.de"/>
@@ -348,7 +349,7 @@
   </target>
 
   <target name="toSF" depends="init">
-    <replace dir="${basedir}" defaultexcludes="no">
+    <replace dir="${basedir}/../" defaultexcludes="no">
 	  <include name="**/CVS/Root"/>
 	  <replacefilter  token="@eressea.upb.de" value="@cvs.sourceforge.net"/>
 	  <replacefilter  token="@localhost"      value="@cvs.sourceforge.net"/>

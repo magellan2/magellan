@@ -26,7 +26,6 @@ import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.RegionType;
-import com.eressea.rules.ShipType;
 import com.eressea.swing.RoutingDialog;
 
 /**
@@ -104,6 +103,7 @@ public class ShipRoutePlanner {
 						String order = "";
 
 						if (v.makeRoute) {
+							// TODO(pavkovic): move to EresseaOrderChanger
 							order = Translations.getOrderTranslation(EresseaOrderConstants.O_ROUTE);
 							order += " " + Regions.getDirections(path);
 							order += " " + Translations.getOrderTranslation(EresseaOrderConstants.O_PAUSE);

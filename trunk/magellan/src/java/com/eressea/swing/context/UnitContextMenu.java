@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JMenuItem;
@@ -28,13 +27,11 @@ import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
-import com.eressea.relation.TeachRelation;
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.UnitOrdersEvent;
+import com.eressea.relation.TeachRelation;
 import com.eressea.swing.GiveOrderDialog;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.EresseaOrderConstants;
-import com.eressea.util.Translations;
 import com.eressea.util.UnitRoutePlanner;
 
 public class UnitContextMenu extends JPopupMenu{
@@ -256,41 +253,9 @@ public class UnitContextMenu extends JPopupMenu{
 	}
 
 	private void event_hideID(ActionEvent e) {
-		List orders = CollectionFactory.createLinkedList();
 
-		orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_NUMBER) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " " );
-		orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"\"" );
-		orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"\"" );
-		orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_HIDE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_FACTION) );
-
-		if (unit.getShip() != null) {
-			orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_NUMBER) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP) );
-			orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP) + " \"\"" );
-			orders.add( Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP) + " \"\"" );
-		}
-
-		orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_NUMBER) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " " + unit.getID());
-		orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + unit.getName() + "\"" );
-		if (unit.getDescription() != null) {
-			orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " \"" + unit.getDescription() + "\"" );
-		}
-		if (!unit.hideFaction) {
-			orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_HIDE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_FACTION) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_NOT) );
-		}
-
-		if (unit.getShip() != null) {
-			orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_NUMBER) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP) + " " +
-				unit.getShip().getID().toString() );
-			orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_NAME) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP) + " \"" +
-				unit.getShip().getName() + "\"" );
-			if (unit.getShip().getDescription() != null) {
-				orders.add( "// " + Translations.getOrderTranslation(EresseaOrderConstants.O_DESCRIBE) + " " + Translations.getOrderTranslation(EresseaOrderConstants.O_SHIP) + " \"" +
-					unit.getShip().getDescription() + "\"" );
-			}
-		}
-		unit.addOrders(orders);
-
-		dispatcher.fire(new com.eressea.event.UnitOrdersEvent(this, unit));
+		data.getGameSpecificStuff().getOrderChanger().addMultipleHideOrder(unit);
+		dispatcher.fire(new UnitOrdersEvent(this, unit));
 
 		unit = null;
 		selectedUnits.clear();

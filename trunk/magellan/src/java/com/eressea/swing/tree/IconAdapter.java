@@ -78,7 +78,6 @@ import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

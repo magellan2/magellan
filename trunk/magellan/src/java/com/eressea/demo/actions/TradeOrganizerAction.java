@@ -9,10 +9,10 @@
 package com.eressea.demo.actions;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.demo.Client;
 import com.eressea.swing.TradeOrganizer;
+import com.eressea.util.CollectionFactory;
 
 /**
  * Just a little class to invoke a trade organizer

@@ -6,10 +6,10 @@
 
 package com.eressea.swing.tree;
 
+import java.util.List;
+
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
-import java.util.List;
 
 /**
  *

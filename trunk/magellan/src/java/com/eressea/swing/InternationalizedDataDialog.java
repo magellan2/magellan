@@ -9,15 +9,11 @@
 package com.eressea.swing;
 
 import java.awt.Frame;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Properties;
 
 import com.eressea.GameData;
-import com.eressea.event.GameDataListener;
 import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataListener;
 
 public class InternationalizedDataDialog extends InternationalizedDialog implements GameDataListener {
 	protected GameData data = null;

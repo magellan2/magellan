@@ -12,18 +12,14 @@ package com.eressea.extern;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-
-import java.util.Collections;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 

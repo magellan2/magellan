@@ -12,8 +12,8 @@ package com.eressea.demo;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEdit;
 
 /**
  * TODO: undo/redo seems broken

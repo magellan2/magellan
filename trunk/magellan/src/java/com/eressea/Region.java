@@ -689,10 +689,10 @@ public class Region extends UnitContainer {
 			if (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED) {
 				for (Iterator items = u.getItems().iterator(); items.hasNext(); ) {
 					Item item = (Item)items.next();
-					Item i = (Item)cache.regionItems.get(item.getType().getID());
+					Item i = (Item)cache.regionItems.get(item.getItemType().getID());
 					if (i == null) {
-						i = new Item(item.getType(), 0);
-						cache.regionItems.put(item.getType().getID(), i);
+						i = new Item(item.getItemType(), 0);
+						cache.regionItems.put(item.getItemType().getID(), i);
 					}
 					i.setAmount(i.getAmount() + item.getAmount());
 				}

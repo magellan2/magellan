@@ -18,7 +18,6 @@ import com.eressea.Faction;
 import com.eressea.Island;
 import com.eressea.Region;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 
 public class IslandNodeWrapper implements CellObject, SupportsClipboard {

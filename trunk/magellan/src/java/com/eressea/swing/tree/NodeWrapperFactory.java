@@ -11,8 +11,8 @@ package com.eressea.swing.tree;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -32,9 +32,9 @@ import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-import com.eressea.util.logging.Logger;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
+import com.eressea.util.logging.Logger;
 
 /**
  *

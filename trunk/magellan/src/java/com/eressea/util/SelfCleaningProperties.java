@@ -8,9 +8,8 @@
  
 package com.eressea.util;
 
-import java.io.InputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;

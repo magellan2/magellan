@@ -2,9 +2,7 @@ package com.eressea.util;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-
 import java.net.URL;
-
 import java.util.Map;
 
 import com.eressea.resource.ResourcePathClassLoader;

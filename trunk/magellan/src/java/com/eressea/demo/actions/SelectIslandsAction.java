@@ -10,7 +10,6 @@ package com.eressea.demo.actions;
 
 import java.util.Iterator;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
@@ -19,6 +18,7 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.util.CollectionFactory;
 import com.eressea.util.Islands;
 
 /**

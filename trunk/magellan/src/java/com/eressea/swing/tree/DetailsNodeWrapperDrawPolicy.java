@@ -11,8 +11,7 @@ package com.eressea.swing.tree;
 import java.util.Map;
 import java.util.Properties;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import com.eressea.swing.preferences.DetailedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;

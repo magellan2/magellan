@@ -8,9 +8,9 @@
 
 package com.eressea;
 
-import com.eressea.util.CollectionFactory;
-
 import java.util.List;
+
+import com.eressea.util.CollectionFactory;
 
 /**
  * Container class for a battle. 

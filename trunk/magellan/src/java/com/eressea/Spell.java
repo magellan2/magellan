@@ -9,6 +9,7 @@
 package com.eressea;
 
 import java.util.Map;
+
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -393,8 +393,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 							}
 						}
 						// region check done
-						if (msg.getType() != null && msg.getType().getID() != null) {
-							int msgID = ((IntegerID)msg.getType().getID()).intValue();
+						if (msg.getMessageType() != null && msg.getMessageType().getID() != null) {
+							int msgID = ((IntegerID)msg.getMessageType().getID()).intValue();
 							if (msgID == 771334452 || msgID == 2097) {
 								// Einnahmen
 								String modeValue = (String)msg.attributes.get("mode");
@@ -581,7 +581,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 							}
 						}
 						// find a valid amount
-						if (msg.getType() != null && msg.getType().getSection() != null && msg.getType().getSection().equalsIgnoreCase("production")) {
+						if (msg.getMessageType() != null && 
+							msg.getMessageType().getSection() != null && 
+							msg.getMessageType().getSection().equalsIgnoreCase("production")) {
+							
 							String value = (String)msg.attributes.get("amount");
 							int amount = 0;
 							if (value != null) {

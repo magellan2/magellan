@@ -12,8 +12,8 @@ package com.eressea.util.comparator;
 import java.util.Comparator;
 
 import com.eressea.Faction;
-import com.eressea.util.Translations;
 import com.eressea.swing.FactionStatsPanel;
+import com.eressea.util.Translations;
 
 
 /**

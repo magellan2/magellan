@@ -9,9 +9,10 @@
 package com.eressea.demo.actions;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+
 import com.eressea.demo.Client;
 import com.eressea.swing.FactionStatsDialog;
+import com.eressea.util.CollectionFactory;
 
 public class EresseaOptionsAction extends MenuAction {
 	private Client client = null;

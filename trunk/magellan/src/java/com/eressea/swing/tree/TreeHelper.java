@@ -8,14 +8,30 @@
 
 package com.eressea.swing.tree;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.eressea.*;
-import com.eressea.util.*;
-import com.eressea.util.comparator.*;
+import com.eressea.Building;
+import com.eressea.GameData;
+import com.eressea.ID;
+import com.eressea.Region;
+import com.eressea.Ship;
+import com.eressea.TempUnit;
+import com.eressea.Unit;
+import com.eressea.util.CollectionFactory;
+import com.eressea.util.comparator.BuildingTypeComparator;
+import com.eressea.util.comparator.FactionTrustComparator;
+import com.eressea.util.comparator.IDComparator;
+import com.eressea.util.comparator.NameComparator;
+import com.eressea.util.comparator.UnitHealthComparator;
+import com.eressea.util.comparator.UnitTrustComparator;
 
 /**
  * To help constructing the tree structure.

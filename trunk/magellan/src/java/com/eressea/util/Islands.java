@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.Coordinate;
 import com.eressea.GameData;
 import com.eressea.IntegerID;
 import com.eressea.Island;
@@ -118,7 +117,7 @@ public class Islands {
 			Region currentRegion = (Region)unchecked.remove(unchecked.keySet().iterator().next());
 			checked.put(currentRegion.getID(), currentRegion);
 			
-			Map neighbours = Regions.getAllNeighbours(regions, (Coordinate)currentRegion.getID(), 1, excludedRegionTypes);
+			Map neighbours = Regions.getAllNeighbours(regions, currentRegion.getCoordinate(), 1, excludedRegionTypes);
 			for (Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 				Region neighbour = (Region)iter.next();
 				if (!checked.containsKey(neighbour.getID())) {

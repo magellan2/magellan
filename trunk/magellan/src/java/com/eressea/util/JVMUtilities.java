@@ -7,13 +7,13 @@
 // ===
 package com.eressea.util;
 
-import com.eressea.util.logging.Logger;
-
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
 
 import javax.swing.UIManager;
+
+import com.eressea.util.logging.Logger;
 
 /**
  * This class provides static functions for jvm specific bullshit (e.g. changed focus system 

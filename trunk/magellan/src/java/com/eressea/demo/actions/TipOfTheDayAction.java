@@ -9,11 +9,11 @@
 package com.eressea.demo.actions;
 
 import java.awt.Frame;
-import java.util.Properties;
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
+import java.util.Properties;
 
 import com.eressea.swing.TipOfTheDay;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

@@ -9,11 +9,11 @@
 package com.eressea.demo.actions;
 
 import java.util.Map;
-import com.eressea.util.CollectionFactory;
 
 import com.eressea.demo.Client;
 import com.eressea.swing.MapSaverUI;
 import com.eressea.swing.MapperPanel;
+import com.eressea.util.CollectionFactory;
 
 /**
  *

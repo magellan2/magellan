@@ -8,13 +8,13 @@
 
 package com.eressea.extern;
 
-import java.util.Map;
-import java.util.Properties;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Map;
+import java.util.Properties;
+
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;

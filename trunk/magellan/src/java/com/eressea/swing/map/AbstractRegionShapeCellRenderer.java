@@ -31,7 +31,7 @@ public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
 	public void render(Object obj, boolean active, boolean selected) {
 		if (obj instanceof Region) {
 			Region r = (Region)obj;
-			Coordinate c = (Coordinate)r.getID();
+			Coordinate c = r.getCoordinate();
 			
 			Point pos = cellGeo.getCellPosition(c.x, c.y);
 			pos.translate(-offset.x, -offset.y);

@@ -10,7 +10,6 @@ package com.eressea.swing.tree;
 
 
 import java.awt.Image;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,11 +19,7 @@ import java.util.Properties;
 
 import javax.swing.Icon;
 
-import com.eressea.Coordinate;
-import com.eressea.Faction;
 import com.eressea.Region;
-import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
 
@@ -63,7 +58,7 @@ public class RegionNodeWrapper implements CellObject2, SupportsClipboard, Suppor
 		} else {
 			text = region.getType().toString();
 		}
-		text +=  " (" + ((Coordinate)region.getID()).toString(", ") + ")";
+		text +=  " (" + region.getCoordinate().toString(", ") + ")";
 		if (amount > Integer.MIN_VALUE) {
 			text += ": " + amount;
 		}
