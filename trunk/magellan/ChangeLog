@@ -1,5 +1,8 @@
 2004-03-22  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/GameData.java: Remove merging bug for temp
+	units (temp orders have been duplicated).
+
 	* src/java/com/eressea/demo/Client.java: Removed property 
 	"Client.checkVersionOnStartup" and attached logic.
 
