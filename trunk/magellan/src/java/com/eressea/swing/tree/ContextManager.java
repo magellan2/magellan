@@ -34,6 +34,8 @@ import com.eressea.GameData;
 
 import com.eressea.swing.context.ContextFactory;
 
+import com.eressea.util.logging.Logger;
+
 /**
  * A context management class for trees.
  *
@@ -41,6 +43,8 @@ import com.eressea.swing.context.ContextFactory;
  * @version
  */
 public class ContextManager extends MouseAdapter {
+	private final static Logger log = Logger.getInstance(ContextManager.class);
+
 	private Collection listeners = null;
 	private JTree source;
 	private Collection selection = null;
@@ -255,7 +259,7 @@ public class ContextManager extends MouseAdapter {
 				}
 			}
 		} catch(Exception exc) {
-			exc.printStackTrace();
+			log.error(exc);
 		}
 
 		return false;

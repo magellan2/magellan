@@ -233,11 +233,8 @@ public class Group extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		if(o instanceof Group) {
-			return this.getID().equals(((Group) o).getID());
-		} else {
-			return false;
-		}
+		return (this == o) ||
+			(o instanceof Group && this.getID().equals(((Group) o).getID()));
 	}
 
 	/**
