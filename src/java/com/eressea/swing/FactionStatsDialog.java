@@ -496,13 +496,13 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 	}
 
 	/**
-	 * Tries to instantiate a SkillChartPanel-Object to display skillcharts. If the necessary
-	 * library can't be found, null is returned
-	 *
-	 * @return TODO: DOCUMENT ME!
+     * Returns the skillchart statistics panel. The old method is no longer
+     * of use, since the sourcecode has become an integral part of the
+     * magellan code base. Thus it has no longer to be instatiated via
+     * reflections.
 	 */
 	private JPanel getSkillChartPanel() {
-		// try to load the skillchart classes
+    /*	// try to load the skillchart classes
 		ResourcePathClassLoader loader = new ResourcePathClassLoader(settings);
 		Class SkillChartPanel = null;
 
@@ -556,6 +556,9 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 
 		// return casted Panel
 		return (JPanel) skillChartPanel;
+        */
+        JPanel skillChartPanel = new com.eressea.skillchart.SkillChartPanel(dispatcher, data, settings);
+        return skillChartPanel;
 	}
 
 	private void storeSettings() {

@@ -32,13 +32,14 @@ import javax.swing.JTextField;
 import com.eressea.util.CollectionFactory;
 
 /**
- * DOCUMENT ME!
- *
- * @author Ulrich Küster A Dialog that asks the user for a string input (usually an eressea order).
- * 		   In Addition the user is asked, if the order shall extend or replace existing orders.
+ * A Dialog that asks the user for a string input
+ * (usually an eressea order). In Addition the user is asked, if the
+ * order shall extend or replace existing orders.
+ * @author Ulrich Küster
  */
 public class GiveOrderDialog extends InternationalizedDialog {
 	private JCheckBox replaceOrders;
+    private JCheckBox keepComments;
 	private JTextField order;
 	private JButton ok;
 	private JButton cancel;
@@ -73,12 +74,16 @@ public class GiveOrderDialog extends InternationalizedDialog {
 		c.weightx = 0;
 		cp.add(replaceOrders, c);
 
+        keepComments = new JCheckBox(getString("chkbox.keepComments.title"));
+        keepComments.setSelected(true);
+        c.gridy = 2;
+        cp.add(keepComments, c);
+
 		ok = new JButton(getString("btn.ok.caption"));
 		ok.setMnemonic(getString("btn.ok.mnemonic").charAt(0));
 
 		// actionListener is added in the show() method
-		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy  = 3;
 		c.anchor = GridBagConstraints.EAST;
 		cp.add(ok, c);
 
@@ -95,17 +100,19 @@ public class GiveOrderDialog extends InternationalizedDialog {
 	}
 
 	/**
-	 * Shows the dialog and returns a String-Array with to values: - [0] : The order that was given
-	 * - [1] : A String represantative of the boolean value for "replace Orders"
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public String[] showGiveOrderDialog() {
-		final String retVal[] = new String[2];
+	 * Shows the dialog
+     * @return A string array with the following values: <br>
+     * [0] : The order that was given <br>
+     * [1] : A String represantative of the boolean value for "Replace orders" <br>
+     * [2] : A String represantative of the boolean value for "Keep comments"
+     */
+ 	public String[] showGiveOrderDialog() {
+		final String retVal[] = new String[3];
 		ActionListener okButtonAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				retVal[0] = GiveOrderDialog.this.order.getText();
 				retVal[1] = String.valueOf(GiveOrderDialog.this.replaceOrders.isSelected());
+                retVal[2] = String.valueOf(GiveOrderDialog.this.keepComments.isSelected());
 				quit();
 			}
 		};
@@ -136,8 +143,9 @@ public class GiveOrderDialog extends InternationalizedDialog {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("window.title", "Give order");
 			defaultTranslations.put("window.message", "Please insert an order:");
-			defaultTranslations.put("chkbox.replaceOrder.title", "Replace existing orders");
-
+			defaultTranslations.put("chkbox.replaceOrder.title",
+									"Replace existing orders");
+            defaultTranslations.put("chkbox.keepComments.title", "Keep comments");
 			defaultTranslations.put("btn.ok.caption", "OK");
 			defaultTranslations.put("btn.ok.mnemonic", "o");
 			defaultTranslations.put("btn.cancel.caption", "Cancel");
