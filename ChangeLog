@@ -1,3 +1,8 @@
+2004-04-02  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: removed
+	unused code.
+
 2004-04-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/demo/desktop/SplitBuilder.java: used

@@ -188,8 +188,7 @@ public class NameGenerator implements PreferencesFactory {
 	}
 
 	protected void showMessage() {
-		JFrame dummy = new JFrame();
-		JOptionPane.showMessageDialog(dummy, getString("nomorenames"));
+		JOptionPane.showMessageDialog(new JFrame(), getString("nomorenames"));
 	}
 
 	protected String getString(String key) {

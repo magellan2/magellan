@@ -136,7 +136,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 * component.
 	 */
 	private Map components;
-	private Map componentsReversed;
 
 	/** Some shortcut things */
 	private Map shortCutListeners = CollectionFactory.createHashMap();
@@ -229,7 +228,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		keyHandler = new KeyHandler();
 		client.addWindowListener(this);
 		this.settings = settings;
-		componentsReversed = CollectionFactory.createHashMap();
 		setManagedComponents(components);
 		setLayout(new BorderLayout());
 
@@ -443,14 +441,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 */
 	public void setManagedComponents(Map components) {
 		this.components = components;
-
-		Iterator it = components.keySet().iterator();
-		componentsReversed.clear();
-
-		while(it.hasNext()) {
-			Object o = it.next();
-			componentsReversed.put(components.get(o), o);
-		}
 	}
 
 	/**

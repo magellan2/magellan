@@ -57,6 +57,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -446,6 +449,9 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		lastScale = (float) (size / (float) d.width);
 		minimap.setScaleFactor(lastScale);
 		minimapPane = new JScrollPane(minimap);
+		// ClearLook suggests to remove border 
+		minimapPane.setBorder(new EmptyBorder(0,0,0,0));
+
 		resizeMinimap = settings.getProperty("Minimap.AutoScale", "false").equals("true");
 		minimapScaler = new MinimapScaler();
 		minimapPane.addComponentListener(minimapScaler);
@@ -792,8 +798,9 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 
 	private Container getMainPane(Collection renderers, CellGeometry geo) {
 		mapper = new Mapper(dispatcher, settings, renderers, geo);
-		scpMapper = new JScrollPane(mapper, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-									ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+ 		scpMapper = new JScrollPane(mapper);
+		// ClearLook suggests to remove border 
+		scpMapper.setBorder(new EmptyBorder(0,0,0,0));
 
 		JLabel lblScaling = new JLabel(getString("lbl.zoom.caption"));
 		sldScaling = new JSlider(SwingConstants.HORIZONTAL);
@@ -874,7 +881,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		mainPanel.setBorder(new javax.swing.border.EmptyBorder(2, 2, 2, 2));
+		mainPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
 
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 0;
@@ -1166,7 +1173,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 										  source.isAutoScaling());
 
 				// panel grouping minimap stuff
-				this.setBorder(new javax.swing.border.TitledBorder(BorderFactory.createEtchedBorder(),
+				this.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 																   getString("prefs.border.minimap")));
 
 				this.setLayout(new GridBagLayout());

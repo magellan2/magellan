@@ -270,8 +270,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		tree.addTreeExpansionListener(this);
 
 		ToolTipManager.sharedInstance().registerComponent(tree);
-		scpTree = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-								  JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scpTree = new JScrollPane(tree);
+		// ClearLook suggests to remove border
+		scpTree.setBorder(null);
 
 		// tree uses different cell renderer
 		tree.setCellRenderer(new CellRenderer(settings));
@@ -296,8 +297,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			}
 		});
 		SelectionHistory.ignoreSource(lstHistory);
-		scpHistory = new JScrollPane(lstHistory, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-									 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scpHistory = new JScrollPane(lstHistory);
+		// ClearLook suggests to remove border
+		scpHistory.setBorder(null);
 
 		// split pane
 		sppTreeHistory = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scpTree, scpHistory);
@@ -305,6 +307,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		sppTreeHistory.setDividerLocation(Integer.parseInt(settings.getProperty(
 			"EMapOverviewPanel.treeHistorySplit",
 			"100")));
+		// ClearLook suggests to remove border
+		sppTreeHistory.setBorder(null);
 
 		// add components to this panel
 		this.setLayout(new GridLayout(1, 0));

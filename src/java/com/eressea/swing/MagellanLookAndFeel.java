@@ -249,7 +249,7 @@ public class MagellanLookAndFeel {
 // 	}
 
 	static {
-		MagellanLookAndFeel.enableClearLookOn();
+			MagellanLookAndFeel.enableClearLookDebug();
 	}
 
 	public static boolean enableClearLookOn() {
@@ -387,12 +387,10 @@ public class MagellanLookAndFeel {
 		}
 
 		try {
-			if(log.isDebugEnabled()) {
-				log.debug("MagellanLookAndfeel.setLookAndFeel(" + laf + "): " +
-						  UIManager.getLookAndFeel().getClass() + ", " +
-						  UIManager.getLookAndFeel().getName() + ", " +
-						  UIManager.getLookAndFeel().getID());
-			}
+			log.info("MagellanLookAndfeel.setLookAndFeel(" + laf + "): " +
+					 UIManager.getLookAndFeel().getClass() + ", " +
+					 UIManager.getLookAndFeel().getName() + ", " +
+					 UIManager.getLookAndFeel().getID());
 		} catch(Exception e) {
 		}
 

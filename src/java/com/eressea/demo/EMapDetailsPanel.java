@@ -414,8 +414,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		});
 
 		JScrollPane descScrollPane = new JScrollPane(description,
-			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		// ClearLook suggests to remove border
+ 		descScrollPane.setBorder(null);
+		
 
 		// panel combining name and description
 		JPanel nameDescPanel = new JPanel(new BorderLayout(0, 2));
@@ -462,8 +465,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		contextManager.putSimpleObject(UnitNodeWrapper.class, unitContext);
 		contextManager.putSimpleObject(UnitListNodeWrapper.class, unitContext);
 
-		JScrollPane treeScrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane treeScrollPane = new JScrollPane(tree);
+		// ClearLook suggests to remove border
+		treeScrollPane.setBorder(null);
 
 		// panel combining the region info and the tree
 		JPanel pnlRegionInfoTree = new JPanel(new BorderLayout());
