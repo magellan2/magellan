@@ -26,6 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -513,6 +514,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getPlanes() {
+		return Arrays.asList(planes);
+/*
 		List p = CollectionFactory.createLinkedList();
 
 		for(int planeIndex = 0; planeIndex < planes.length; planeIndex++) {
@@ -522,6 +525,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		}
 
 		return p;
+		*/
 	}
 
 	/**
@@ -831,7 +835,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @param g TODO: DOCUMENT ME!
 	 */
-	public void paint(Graphics g) {
+	protected void paintComponent(Graphics g) {
 		//long start = System.currentTimeMillis();
 		if(mapToScreenBounds == null) {
 			return;
@@ -886,7 +890,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			bg.setColor(getBackground());
 			bg.fillRect(0, 0, clipBounds.width, clipBounds.height);
 
-			for(int planeIndex = 0; (planeIndex < 5) && (planeIndex < planes.length);
+			for(int planeIndex = 0; (planeIndex < this.PLANE_PATH) && (planeIndex < planes.length);
 					planeIndex++) {
 				if(planes[planeIndex] == null) {
 					continue;
@@ -941,10 +945,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		offset.y = mapToScreenBounds.y;
 
 		// there are some every time repaint things
-		if(planes.length > 5) {
+		if(planes.length > PLANE_PATH) {
 			boolean clipChanged = !clipBounds.equals(currentBounds);
 
-			for(int planeIndex = 5; planeIndex < 8; planeIndex++) {
+			for(int planeIndex = PLANE_PATH; planeIndex < PLANE_SCHEMES; planeIndex++) {
 				if(planes[planeIndex] == null) {
 					continue;
 				}

@@ -47,6 +47,7 @@ import com.eressea.Skill;
 import com.eressea.Spell;
 import com.eressea.StringID;
 import com.eressea.Unit;
+import com.eressea.UnitContainer;
 import com.eressea.UnitID;
 import com.eressea.io.GameDataIO;
 import com.eressea.io.RulesIO;
@@ -1599,7 +1600,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				parseAdressen();
 			} else if(sc.isBlock && sc.argv[0].equals("GEGENSTAENDE")) {
 				// FIXME: This only prevents the bug but the faction item pool will be lost!
-				parseItems(null);
+				parseItems(faction);
 			} else if(sc.isBlock && sc.argv[0].equals("OPTIONEN")) {
 				// ignore this block, if there are options, they are
 				// encoded as a bit field whereas these string
@@ -1779,6 +1780,25 @@ public class CRParser implements RulesIO, GameDataIO {
 			sc.getNextToken();
 		}
 	}
+
+	/*
+	 * Syntax: "count;item"
+	 * Example: "1;Steine"
+	 * Does not delete existing items.
+	 */
+	private void parseItems(UnitContainer unitcontainer) throws IOException {
+
+		sc.getNextToken(); // skip GEGENSTAENDE
+
+		while(!sc.eof && (sc.argc == 2)) {
+			Item item = new Item(world.rules.getItemType(StringID.create(sc.argv[1]), true),
+								 Integer.parseInt(sc.argv[0]));
+			if(unitcontainer != null) { unitcontainer.addItem(item); }
+			sc.getNextToken();
+		}
+	}
+
+
 
 	private int parseUnit(GameData world, Region region, int sortIndex) throws IOException {
 		Unit unit = getAddUnit(world, UnitID.createUnitID(sc.argv[0].substring(8), 10));

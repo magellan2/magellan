@@ -16,14 +16,21 @@ package com.eressea.swing.map;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.Coordinate;
+import com.eressea.EntityID;
+import com.eressea.Faction;
+import com.eressea.ID;
+import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.comparator.FactionTrustComparator;
+import com.sun.rsasign.s;
 
 /**
  * TODO: DOCUMENT ME!
@@ -104,9 +111,59 @@ public class ShipCellRenderer extends ImageCellRenderer {
 					}
 				}
 			}
+			renderTravelThrough(r);
 		}
 	}
 
+	/** 
+	 * renders shipthrou informations here. May be smarter elsewhere.
+	 */
+	private void renderTravelThrough(Region region) {
+		if(!region.getRegionType().isOcean()) {
+			return;
+		}
+		boolean foundEnemy=false;
+		boolean foundAllied=false;
+		if(region.travelThruShips != null) {
+			for(Iterator iter = region.travelThruShips.iterator(); iter.hasNext(); ) {
+				// Messages like "Wogenspalter (64ch)"
+				String msg = ((Message) iter.next()).toString();
+				int from = msg.lastIndexOf("(");
+				int to   = msg.indexOf(")",from);
+				if(from>-1 && to <msg.toString().length()) {
+					ID sid = EntityID.createEntityID(msg.substring(from+1,to),region.getData().base);
+					Ship ship = region.getData().getShip(sid);
+					if(ship != null && ship.getOwnerUnit() != null &&
+							ship.getOwnerUnit().getFaction() != null && 
+							ship.getOwnerUnit().getFaction().trustLevel >=FactionTrustComparator.ALLIED) {
+						foundAllied=true;
+					} else {
+						foundEnemy=true;
+					}
+				}
+			}
+		}
+
+		if(foundAllied) {
+			Image img = getImage("durchschiffung_alliiert");
+			if(img != null) {
+				Coordinate c = region.getCoordinate();
+				Rectangle rect = cellGeo.getImageRect(c.x, c.y);		
+				rect.translate(-offset.x, -offset.y);
+				graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
+			}
+		}		
+		if(foundEnemy) {
+			Image img = getImage("durchschiffung_feindlich");
+			if(img != null) {
+				Coordinate c = region.getCoordinate();
+				Rectangle rect = cellGeo.getImageRect(c.x, c.y);		
+				rect.translate(-offset.x, -offset.y);
+				graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
+			}
+		}		
+	}
+	
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)
