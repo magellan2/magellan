@@ -95,10 +95,6 @@ unübersichtlich, weil die Talente doch stark beim Identifizieren der Einheit
 helfen. Stellt man den Namen nach hinten, sieht man ihn bei einer EInheit mit
 vielen Gegenständen nicht mehr. 
 
-Alterantiv könnte es reichen, wenn das Kategorisieren von Gegenständen
-wengistens im Regionsbaum wieder funzen würde - dann sieht man wenigstens
-Kräuter und Handelswaren nicht x-mal.
-
 Reinhaun,
 Hinnerk
 -------------------------------------------------------------------------------
@@ -139,56 +135,3 @@ Schwarz alle Ozeanregionen, in denen ein Kampf stattgefunden hat
 
 
 -------------------------------------------------------------------------------------
-Hallo Ilja,
-
-ich hab Dir ja vor einiger Zeit von einem Bug bei verlorenen Talenten
-berichtet (Die Talente werden korrekt als verloren angezeigt, diese
-Information geht aber beim Speichern verloren und danach stehen die
-Talente mit Level 0 im Report).
-Ich hab das nun ein bisschen debugged und herausgefunden, dass das
-daran liegt, dass solche verlorenen Talente offenbar
-skill.isLevelChanged false haben (fälschlicherweise). Nun könnte man
-beim CRSchreiben einfach auf isLevelChanged || isLostSkill abfragen.
-Sinnvoller fände ich aber, wenn auch diese Talente korrekterweise
-isLevelChanged true hätten. Das müsste im Mergen geändert werden und
-da würd ich ungern drin herumpfuschen. Kannst Du das bitte
-korrigieren?
-
-
-346: Hiebwaffen 3
-347: Hiebwaffen verloren
-Merge: Hiebwaffen -(-3). Es fehlt Information, isLevelChanged == false. Sollte
-       sein: true
-
-
-Grüße,
-
-Uli
-
-PS: Die Berechnung der Personenzahl ist auch buggy. Wenn ich zwei
-Einheiten mit je 100 Personen habe und befehle:
-
-Einheit 1:
-  Gib Temp 1 100 Person
-Einheit 2:
-  Gib Temp 1 100 Person
-Temp 1:
-  Gib Einheit 1 100 Person
-  Gib Einheit 2 100 Person
-
-Dann wird die Tempeinheit vernichtet und die beiden Einheiten haben
-danach wieder je 100 Personen. Das funktioniert garantiert, weil
-Tempeinheiten vom Server immer nach allen normalen Einheiten
-ausgewertet werden.
-
-Magellan prognostiziert dann aber bei der Tempeinheit 200 Personen und
-bei den beiden Einheiten jeweils 0 (zumindest in meiner Konstellation
-gerade).
-Soll ich das ins alte Bugzilla posten?
-
-Und noch ein seltsames (neues) Verhalten:
-Wenn ich Einheit 1 befehle:
-  Gib Einheit 2 100 Pferd
-
-Und dann zur Einheit 2 wechsele, dann wird EMapDetailsPanel nicht
-aktualisiert. Erst ein neuerlicher Wechsel bringt den Erfolg?!

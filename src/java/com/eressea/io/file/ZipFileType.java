@@ -102,13 +102,20 @@ public class ZipFileType extends FileType {
 			ZipEntry oldEntry = (ZipEntry) e.nextElement();
 
 			if(!oldEntry.getName().equals(zipentry.getName())) {
-				zos.putNextEntry(oldEntry);
-				CopyFile.copyStreams(zfile.getInputStream(oldEntry), zos);
+				// do not reuse oldEntry but create a new ZipEntry
+				zos.putNextEntry(new ZipEntry(oldEntry.getName()));
+
+				InputStream currIn=zfile.getInputStream(oldEntry);
+				CopyFile.copyStreams(currIn, zos);
+				currIn.close();
 			}
 		}
 
-		zos.putNextEntry(zipentry);
+		// do not reuse oldEntry but create a new ZipEntry
+		zos.putNextEntry(new ZipEntry(zipentry.getName()));
 
 		return zos;
 	}
 }
+
+

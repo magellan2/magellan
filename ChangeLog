@@ -1,5 +1,8 @@
 2004-07-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/io/file/ZipFileType.java: prevent
+	ZipFileException (create new ZipEntry instead of reuse).
+
 	* src/java/com/eressea/io/cr/Scanner.java: changed parsing of
 	"bla";string entries: use last index '"' to find end of a string,
 	silently ignoring unescaped ". 
