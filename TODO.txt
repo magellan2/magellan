@@ -1,8 +1,6 @@
-
-Wenn ich mehr als 1679615 Silber übergebe, steigt die Gewichtsberechnung aus und
-ich bekomme die Übergabe nicht mehr angezeigt. Da läuft wohl eine Variable über,
-was? ;-)
-
+-------------------------------------------------------------------------------
+Track all calls to Eventdispatcher and ensure that the given objects are still
+referenced by the caller to make WeakReference logic work
 
 -------------------------------------------------------------------------------
 move eressea specific stuff to com.eressea.gamebinding.eressea

@@ -1,3 +1,10 @@
+2004-03-26  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/event/EventDispatcher.java: Disabled
+	WeakReference logic as there exist some stupid objects that do not
+	reference their EventListener - this is bad as they are never able
+	to remove the listener in any situation.
+
 2004-03-25  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/gamebinding/eressea/EresseaOrderParser.java:
