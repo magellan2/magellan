@@ -1261,7 +1261,6 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 				//setMinimapMode(cmbDisplayMode.getSelectedIndex());
 				if(autoScale.isSelected()) {
 					setAutoScaling(true);
-					rescale();
 				} else {
 					setAutoScaling(false);
 					setMinimapScale(sldZoom.getValue());

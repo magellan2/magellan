@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.AbstractListModel;
@@ -159,7 +160,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 	 * @param geo The CellGeometry to be used
 	 * @param settings The Properties to be used
 	 */
-	public RegionShapeCellRenderer(CellGeometry geo, java.util.Properties settings) {
+	public RegionShapeCellRenderer(CellGeometry geo, Properties settings) {
 		this(geo, settings, DEFAULT_FACTION_KEY, DEFAULT_REGION_KEY, DEFAULT_PAINTMODE_KEY);
 	}
 
@@ -174,7 +175,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 	 * @param rKey The regionKey value for settings operations
 	 * @param pKey The paintKey value for settings operations
 	 */
-	public RegionShapeCellRenderer(CellGeometry geo, java.util.Properties settings, String fKey,
+	public RegionShapeCellRenderer(CellGeometry geo, Properties settings, String fKey,
 								   String rKey, String pKey) {
 		super(geo, settings);
 
@@ -683,20 +684,20 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 				factions.add(f);
 			}
 		}
+		
 
-		if(factions.size() < 2) {
-			if(factions.size() == 0) {
-				singleColorArray[0] = getUnknownColor();
-
-				if(r.getRegionType().isOcean()) {
-					singleColorArray[0] = getOceanColor();
-				}
-			} else {
-				singleColorArray[0] = getFactionColor((String) factions.get(0));
+		if(factions.size() == 0) {
+			singleColorArray[0] = getUnknownColor();
+			
+			if(r.getRegionType().isOcean()) {
+				singleColorArray[0] = getOceanColor();
 			}
-
 			return singleColorArray;
 		}
+		if(factions.size() == 1) {
+			singleColorArray[0] = getFactionColor((String) factions.get(0));
+			return singleColorArray;
+		}			
 
 		Color cols[] = new Color[factions.size()];
 

@@ -16,6 +16,7 @@ package com.eressea.swing.tree;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -335,7 +336,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		Collection others = null;
 
 		if(isShowingOtherIcons()) {
-			others = u.getModifiedItems();
+			others = new ArrayList(u.getModifiedItems());
 		}
 
 		// main

@@ -1,3 +1,11 @@
+2004-03-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/res/plaf/plaf.ini: added support for WinLaF (see 
+	http://winlaf.dev.java.net).
+
+	* src/java/com/eressea/swing/tree/UnitNodeWrapper.java: Fixed
+	grouping of items.
+
 2004-03-26  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/event/EventDispatcher.java: Disabled
