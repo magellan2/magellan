@@ -40,6 +40,7 @@ public class EventDispatcher {
 	private static final int UNITORDERS = 2;
 	private static final int TEMPUNIT = 3;
 	private static final int ORDERCONFIRM = 4;
+
 	private static final int PRIORITIES[] = { 0, 4, 1, 1, 1 };
 	private EQueue queue;
 

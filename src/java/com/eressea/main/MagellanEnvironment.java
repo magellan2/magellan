@@ -1,0 +1,46 @@
+/*
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ */
+
+package com.eressea.main;
+
+import java.util.Properties;
+
+import com.eressea.event.EventDispatcher;
+import com.eressea.resource.ResourcePathClassLoader;
+import com.eressea.util.IDBaseConverter;
+import com.eressea.util.ImageFactory;
+import com.eressea.util.Locales;
+import com.eressea.util.NameGenerator;
+import com.eressea.util.Translations;
+
+/**
+ * This class keeps all anchors to global resources e.g. EventDispatcher, Properties, perhaps different stuff<br>
+ */
+public interface MagellanEnvironment {
+
+	/** 
+	 * Returns the properties of Magellan.
+	 */
+	public Properties getProperties();
+	
+	/** 
+	 * Returns the EventDispatcher of Magellan.
+	 */
+	public EventDispatcher getEventDispatcher();
+	
+	/** 
+	 * Initializes global resources.
+	 */
+	public void init();
+}
+

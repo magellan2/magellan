@@ -1,4 +1,15 @@
+2004-04-29  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/desktop/WorkSpace.java: Renamed
+	Desktop.java to WorkSpace.java to remove name clash.
+
+	* src/java/com/eressea/main/MagellanContext.java: Cleaned out
+	singleton pattern. Implements interface MagellanEnvironment.
+
 2004-04-28  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/completion/OrderEditor.java: fixed
+	refresh bug for EMapDetailsPanel (prevent unwanted UnitOrderEvent).
 
 	* src/java/com/eressea/swing/completion/MultiEditorOrderEditorList.java: 
 	Removed unwanted EventDispatcher.fire calls to increase performance.

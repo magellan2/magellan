@@ -51,7 +51,7 @@ public class DesktopEnvironment extends Object {
 	 *
 	 * @param md TODO: DOCUMENT ME!
 	 */
-	public static void init(MagellanDesktop md) {
+	static void init(MagellanDesktop md) {
 		desktop = md;
 		initialized = true;
 

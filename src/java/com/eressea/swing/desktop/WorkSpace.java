@@ -24,7 +24,7 @@ import javax.swing.*;
  * @author $author$
  * @version $Revision$
  */
-public class Desktop extends JPanel {
+public class WorkSpace extends JPanel {
 	private JPanel contentPanel;
 	private JPanel content;
 	private JPanel chooser;
@@ -32,18 +32,23 @@ public class Desktop extends JPanel {
 	// private Perspective[] perspectives;
 
 	/*
-	 * A Desktop consists of four parts:
+	 * A WorkSpace  consists of four parts:
 	 * - perspective chooser panel
 	 * (- toolbar panel)
 	 * - perspective panel
 	 * - status panel
 	 */
-	public Desktop() {
-		this(null);
+	public WorkSpace(ButtonGroup buttonGroup) {
+		initUI(buttonGroup);
 	}
 
-	public Desktop(ButtonGroup buttonGroup) {
-		initUI(buttonGroup);
+
+	public void setEnabledChooser(boolean bool) {
+		if(bool) {
+			this.add(chooser, BorderLayout.WEST);
+		} else {
+			this.remove(chooser);
+		}
 	}
 
 	private void initUI(ButtonGroup buttonGroup) {
@@ -153,7 +158,7 @@ public class Desktop extends JPanel {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		JFrame frame = new JFrame();
-		frame.setContentPane(new Desktop());
+		frame.setContentPane(new WorkSpace(null));
 		frame.setSize(600, 400);
 		frame.setTitle("Magellan - Desktop");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
