@@ -167,7 +167,9 @@ import com.eressea.util.VersionInfo;
 import com.eressea.util.logging.Logger;
 
 /**
- * TODO: DOCUMENT ME!
+ * This class is the root of all evil. It represents also the main
+ * entry point into the application and also the basic frame the
+ * application creates.
  *
  * @author $author$
  * @version $Revision$
@@ -1127,7 +1129,8 @@ public class Client extends JFrame implements ShortcutListener,
 	 * This method should be called before the application is terminated in
 	 * order to store GUI settings etc.
 	 *
-	 * @param storeSettings TODO: DOCUMENT ME!
+	 * @param storeSettings store the settings to magellan.ini if
+	 * <code>storeSettings</code> is <code>true</code>.
 	 */
 	public void quit(boolean storeSettings) {
 		if(reportState.isStateChanged()) {
@@ -1270,15 +1273,15 @@ public class Client extends JFrame implements ShortcutListener,
 	/**
 	 * Do some additional checks after loading a report.
 	 *
-	 * @param loadedData TODO: DOCUMENT ME!
+	 * @param loadedData the currently loaded game data
 	 */
-	private void postProcessLoadedCR(GameData loadedData) {
+	private void postProcessLoadedCR(GameData aData) {
 		// show a warning if no password is set for any of the privileged factions
 		boolean privFacsWoPwd = true;
-
-		if((loadedData != null) && (loadedData.factions() != null)) {
-			for(Iterator factions = loadedData.factions().values().iterator();
-					factions.hasNext();) {
+		
+		if((aData != null) && (aData.factions() != null)) {
+			for(Iterator factions = aData.factions().values().iterator();
+				factions.hasNext();) {
 				Faction f = (Faction) factions.next();
 
 				if(f.password == null) {
@@ -1351,7 +1354,7 @@ public class Client extends JFrame implements ShortcutListener,
 			}
 
 			// recalculate default-trustlevels after CR-Load
-			TrustLevels.recalculateTrustLevels(loadedData);
+			TrustLevels.recalculateTrustLevels(aData);
 
 			if(privFacsWoPwd) { // no password set for any faction
 				JOptionPane.showMessageDialog(getRootPane(),
@@ -1373,7 +1376,14 @@ public class Client extends JFrame implements ShortcutListener,
 		}
 
 		if(data.filetype != null) {
-			title += (" [" + data.filetype + "]");
+			String file;
+			try { 
+				file = data.filetype.getFile().toString();
+			} catch(IOException e) {
+				file = data.filetype.toString();
+			}
+			file = file.substring(file.lastIndexOf(File.separator)+1);
+			title += " [" + file + "]";
 		}
 
 		if(data.getDate() != null) {
@@ -1386,27 +1396,36 @@ public class Client extends JFrame implements ShortcutListener,
 		if(showStatus) {
 			int		 units = 0;
 			int		 done = 0;
-			Iterator it   = data.units().values().iterator();
-
-			while(it.hasNext()) {
-				Unit u = (Unit) it.next();
-
+			for(Iterator iter   = data.units().values().iterator(); iter.hasNext(); ) {
+				Unit u = (Unit) iter.next();
+				
 				if(u.getFaction().isPrivileged()) {
 					units++;
-
+					
 					if(u.ordersConfirmed) {
 						done++;
 					}
 				}
+				// also count temp units
+				for(Iterator iter2 = u.tempUnits().iterator(); iter2.hasNext(); ) {
+					Unit u2 = (Unit) iter2.next();
+					if(u2.getFaction().isPrivileged()) {
+						units++;
+						
+						if(u2.ordersConfirmed) {
+							done++;
+						}
+					}
+				}
 			}
-
+			
 			if(units > 0) {
 				BigDecimal percent = (new BigDecimal(((float) done * 100) / ((float) units))).setScale(2,
 																									   BigDecimal.ROUND_DOWN);
 				title += (" (" + units + " " + getString("title.unit") + ", " +
-				done + " " + getString("title.done") + ", " +
-				getString("title.thatare") + " " + percent + " " +
-				getString("title.percent") + ")");
+						  done + " " + getString("title.done") + ", " +
+						  getString("title.thatare") + " " + percent + " " +
+						  getString("title.percent") + ")");
 			}
 		}
 
@@ -1442,7 +1461,12 @@ public class Client extends JFrame implements ShortcutListener,
 			}
 		}
 
-		dispatcher.fire(new com.eressea.event.GameDataEvent(this, data));
+		// pavkovic 2004.01.04: 
+		// this method behaves at if the gamedata has been loaded by this method.
+		// this is not true at all but true enough for our needs.
+		// dispatcher.fire(new GameDataEvent(this, data));
+
+		dispatcher.fire(new GameDataEvent(this, data, true));
 	}
 
 	//////////////

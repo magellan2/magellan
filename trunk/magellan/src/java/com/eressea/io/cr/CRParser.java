@@ -1010,7 +1010,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("region")) {
 				ID		   regionID = StringID.create(sc.argv[0]);
-				RegionType rType = rules.getRegionType(regionID, true);
+				rules.getRegionType(regionID, true);
 				sc.getNextToken();
 			} else if((sc.argc == 2) &&
 						  sc.argv[1].equalsIgnoreCase("iconname")) {

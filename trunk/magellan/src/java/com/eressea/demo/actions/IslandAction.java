@@ -14,12 +14,13 @@
 package com.eressea.demo.actions;
 
 import java.awt.Cursor;
-
+import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.GameData;
 
 import com.eressea.demo.Client;
+import com.eressea.event.GameDataEvent;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Islands;
@@ -47,13 +48,12 @@ public class IslandAction extends MenuAction {
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		GameData data = client.getData();
 		client.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		data.islands().putAll(Islands.getIslands(data.rules, data.regions(),
 												 data.islands(), data));
-		client.getDispatcher().fire(new com.eressea.event.GameDataEvent(this,
-																		data));
+		client.getDispatcher().fire(new GameDataEvent(this, data));
 		client.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 

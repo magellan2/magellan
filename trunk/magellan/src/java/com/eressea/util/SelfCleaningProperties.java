@@ -47,7 +47,8 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Loads the properties from the given input stream and
+	 * cleans them afterwards.
 	 *
 	 * @param inStream TODO: DOCUMENT ME!
 	 *
@@ -76,11 +77,17 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 	/**
 	 * this operation check possible clean states on a given property name. Add
 	 * more cleanings here (and take care to return a possibly new key name
-	 * value!
+	 * value!)
 	 *
-	 * @param name TODO: DOCUMENT ME!
+	 * @param name the name of the current property to check for cleaning.
 	 */
 	private void doClean(String name) {
+		if(1==2) {
+			if(doRemoveProperty(name, "EMapOverviewPanel.displayIslands")) {
+				// after a property has been removed, we dont need more checks
+				return;
+			}
+		}
 		name = doCleanCompareValue(name);
 		name = doExpandValue(name, "OrderWriter.outputFile", "|");
 		name = doExpandValue(name, "CRWriterDialog.outputFile", "|");
@@ -89,6 +96,7 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 							  "HistoryAccessory.directoryHistory");
 		name = doExpandValue(name, "HistoryAccessory.directoryHistory", "|");
 
+		
 		if(1 == 2) {
 			// TODO!!
 			name = doExpandFactionColors(name, "GeomRenderer.FactionColors");
@@ -97,9 +105,21 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 		}
 	}
 
+	/** 
+	 * Removes the given property.
+	 */
+	private boolean doRemoveProperty(String oldName, String key) {
+		if(oldName.equals(key)) {
+			remove(oldName);
+			return true;
+		} else {
+			return false; 
+		}
+	}
+
 	/**
-						 *
-						 */
+	 *
+	 */
 	private String doExpandFactionColors(String oldName, String key) {
 		if(oldName.equals(key)) {
 			int    i     = 0;

@@ -13,10 +13,10 @@
 
 package com.eressea.swing.tree;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -99,15 +99,15 @@ public class TreeHelper {
 		DefaultMutableTreeNode regionNode = new DefaultMutableTreeNode(regionNodeWrapper);
 		DefaultMutableTreeNode node		  = null;
 
-		java.util.List		   units = new LinkedList(r.units());
-
+		List		   units = new ArrayList(r.units());
+		
 		Iterator			   it = null;
-
+		
 		if(units.size() > 0) {
 			if(unitSorting != null) {
 				Collections.sort(units, unitSorting);
 			}
-
+			
 			addSortedUnits(regionNode, treeStructure, 0, units, factory,
 						   activeAlliances, unitNodes, data);
 		}
@@ -126,7 +126,7 @@ public class TreeHelper {
 		}
 
 		// add buildings
-		java.util.List sortedBuildings = new LinkedList(r.buildings());
+		java.util.List sortedBuildings = new ArrayList(r.buildings());
 		Collections.sort(sortedBuildings, buildingComparator);
 		it = sortedBuildings.iterator();
 
@@ -181,13 +181,13 @@ public class TreeHelper {
 		int  retVal   = 0;
 		Unit curUnit  = null;
 		Unit prevUnit = null;
-		List helpList = new LinkedList();
+		List helpList = new ArrayList();
 
 		for(Iterator iter = units.iterator(); iter.hasNext();) {
-			// ignore temp units
-			// they are added under their mother unit
 			Unit unit = (Unit) iter.next();
 
+			// ignore temp units
+			// they are added under their mother unit
 			if(unit instanceof TempUnit) {
 				continue;
 			}
@@ -232,7 +232,6 @@ public class TreeHelper {
 				// change in current sortCriteria?
 				switch(treeStructure[sortCriteria]) {
 				case FACTION:
-
 					if(change(FACTION, curUnit, prevUnit)) {
 						FactionNodeWrapper factionNodeWrapper = factory.createFactionNodeWrapper(prevUnit.getFaction(),
 																								 prevUnit.getRegion(),
@@ -557,24 +556,25 @@ public class TreeHelper {
 
 		case GROUP:
 
-			ID prevUnitGroupID = null;
+			// pavkovic 2004.01.04: let the name decide to split the groups
+			String prevUnitGroupName = null;
 
 			if(prevUnit.getGroup() != null) {
-				prevUnitGroupID = prevUnit.getGroup().getID();
+				prevUnitGroupName = prevUnit.getGroup().getName();
 			}
 
-			ID curUnitGroupID = null;
+			String curUnitGroupName = null;
 
 			if(curUnit.getGroup() != null) {
-				curUnitGroupID = curUnit.getGroup().getID();
+				curUnitGroupName = curUnit.getGroup().getName();
 			}
 
-			if((curUnitGroupID == null) && (prevUnitGroupID == null)) {
+			if((curUnitGroupName == null) && (prevUnitGroupName == null)) {
 				return false;
-			} else if((curUnitGroupID == null) || (prevUnitGroupID == null)) {
+			} else if((curUnitGroupName == null) || (prevUnitGroupName == null)) {
 				return true;
 			} else {
-				return !curUnitGroupID.equals(prevUnitGroupID);
+				return !curUnitGroupName.equals(prevUnitGroupName);
 			}
 
 		case HEALTH:
