@@ -298,6 +298,8 @@
 		<fileset dir="${SRC.RELEASE}">
           <!-- pavkovic 2003.11.12: ignore jflap for now -->
           <exclude name="**/lib/jflap*.*"/>
+          <!-- pavkovic 2004.01.25: ignore jfreechart-0.9.8 for now -->
+          <exclude name="**/lib/jfreechart-0.9.8*.*"/>
         </fileset>
 		<fileset dir="${basedir}">
           <include name="COPYING"/>
@@ -342,6 +344,8 @@
       <fileset dir="${basedir}">
         <!-- pavkovic 2003.11.12: ignore jflap for now -->
         <exclude name="**/lib/jflap*.*"/>
+        <!-- pavkovic 2004.01.25: ignore jfreechart-0.9.8 for now -->
+        <exclude name="**/lib/jfreechart-0.9.8*.*"/>
         <exclude name="build/**"/>
         <!-- pavkovic 2003.11.13: ignore buildlib for now -->
         <exclude name="buildlib/**"/>
