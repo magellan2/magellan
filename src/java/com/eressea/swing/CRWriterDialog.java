@@ -195,6 +195,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 											 .createWriter());
 						quit();
 					} catch(IOException ioe) {
+						ioe.printStackTrace();
 						Object msgArgs[] = { outputFile.getPath() };
 						JOptionPane.showMessageDialog((JButton) e.getSource(),
 													  (new java.text.MessageFormat(getString("msg.writeerror.text"))).format(msgArgs),
@@ -669,6 +670,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 			crw.write(newData);
 			crw.close();
 		} catch(Exception exc) {
+			exc.printStackTrace();
 			JOptionPane.showMessageDialog(this, getString("msg.exporterror.text") + exc.toString(),
 										  getString("msg.exporterror.title"),
 										  JOptionPane.WARNING_MESSAGE);
