@@ -96,6 +96,35 @@ public class Umlaut {
 		}
 	}
 
+	/** 
+	 * Replaces all occurences of <tt>from</tt> in <tt>str</tt>
+	 * with <tt>to</tt>.
+	 */
+	public static String replace(String str, String from, String to) {
+		int startIndex = 0;
+		int endIndex   = 0;
+		boolean delimiterFound = false;
+		StringBuffer returnString = new StringBuffer ();
+		do {
+			endIndex = str.indexOf (from, startIndex);
+			if (endIndex < 0) {
+				endIndex = str.length ();
+				delimiterFound = false;
+			} else {
+				delimiterFound = true;
+			}
+			if (startIndex < endIndex) {
+				returnString.append (str.substring (startIndex, endIndex));
+			}
+			if (delimiterFound) {
+				returnString.append (to);
+				startIndex = endIndex + from.length ();
+			}
+		} while (delimiterFound);
+
+		return returnString.toString ();
+  }
+
 	/**
 	 * Expand all umlauts in a string and convert it to uppercase.
 	 *
@@ -106,9 +135,7 @@ public class Umlaut {
 	public static String normalize(String str) {
 		if (str == null) {
 			return null;
-		} else {
-			return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str).
-				toUpperCase());
 		}
+		return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str).toUpperCase());
 	}
 }

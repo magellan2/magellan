@@ -1,3 +1,14 @@
+2004-02-14  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/completion/MultiEditorOrderEditorList.java: 
+	moved requestFocus to order editors in an invokeLater context to
+	give CTRL-N a chance to keep focus in editors.
+	
+2004-02-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/actions/AddCRAction.java: Added bzip2
+	file filter for AddCrAction (bugzilla bug 781).
+
 2004-02-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/demo/actions/OpenSelectionAction.java: add

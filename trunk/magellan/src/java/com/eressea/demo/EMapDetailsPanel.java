@@ -1830,16 +1830,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// load
 		int load = u.getLoad();
 		int modLoad = u.getModifiedLoad();
-		Map passengers = u.getPassengers();
 
-		// pavkovic 2003.10.02: moved to Unit.getModifiedLoad
-		// if (passengers.size() > 0) {
-		// 	for (Iterator iter = passengers.values().iterator(); iter.hasNext(); ) {
-		//		Unit passenger = (Unit)iter.next();
-		//		load += passenger.getWeight();
-		//		modLoad += passenger.getModifiedWeight();
-		//	}
-		// }
 		if ((load != 0) || (modLoad != 0)) {
 			text = getString("node.load") + ": " +
 				   weightNumberFormat.format(new Float(load / 100.0F));
@@ -2125,6 +2116,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 		}
 
+		Map passengers = u.getPassengers();
 		if (passengers.size() > 0) {
 			DefaultMutableTreeNode passengersNode = new DefaultMutableTreeNode(new
 				UnitListNodeWrapper(getString("node.passengers"),

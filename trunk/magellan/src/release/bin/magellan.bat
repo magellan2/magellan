@@ -46,14 +46,14 @@ set LOCALCLASSPATH=%CLASSPATH%
 for /R "%MAGELLAN_HOME%\lib" %%i in (.) do for %%j in ("%%i\*.jar") do call "%MAGELLAN_HOME%\bin\lcp.bat" %%j
 
 if "%JAVA_HOME%" == "" goto noJavaHome
-if not exist "%JAVA_HOME%\bin\java.exe" goto noJavaHome
-if "%_JAVACMD%" == "" set _JAVACMD=%JAVA_HOME%\bin\java.exe
+if not exist "%JAVA_HOME%\bin\javaw.exe" goto noJavaHome
+if "%_JAVACMD%" == "" set _JAVACMD=%JAVA_HOME%\bin\javaw.exe
 if exist "%JAVA_HOME%\lib\tools.jar" set LOCALCLASSPATH=%JAVA_HOME%\lib\tools.jar;%LOCALCLASSPATH%
 if exist "%JAVA_HOME%\lib\classes.zip" set LOCALCLASSPATH=%JAVA_HOME%\lib\classes.zip;%LOCALCLASSPATH%
 goto doneCheckJava
 
 :noJavaHome
-if "%_JAVACMD%" == "" set _JAVACMD=java.exe
+if "%_JAVACMD%" == "" set _JAVACMD=javaw.exe
 echo.
 echo Warning: JAVA_HOME environment variable is not set.
 echo   If Magellan fails because java is not found you will
@@ -66,7 +66,7 @@ echo.
 if "%MAGELLAN_WORKDIR%" == "" set MAGELLAN_WORKDIR=%MAGELLAN_HOME%\work
 
 @ECHO ON
-"%_JAVACMD%" %_MAGELLAN_OPTS% -classpath "%LOCALCLASSPATH%" "-Dmagellan.home=%MAGELLAN_WORKDIR%" com.eressea.demo.Client -d "%MAGELLAN_WORKDIR%" %MAGELLAN_CMD_LINE_ARGS%
+start %_JAVACMD% %_MAGELLAN_OPTS% -classpath "%LOCALCLASSPATH%" "-Dmagellan.home=%MAGELLAN_WORKDIR%" com.eressea.demo.Client -d "%MAGELLAN_WORKDIR%" %MAGELLAN_CMD_LINE_ARGS%
 goto end
 
 @ECHO OFF

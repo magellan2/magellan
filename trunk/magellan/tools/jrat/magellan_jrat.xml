@@ -1,0 +1,10 @@
+<jrat>
+    <handler>
+        
+        <factory class="org.shiftone.jrat.provider.log.LogMethodHandlerFactory"/>
+        <factory class="org.shiftone.jrat.provider.rate.RateMethodHandlerFactory"/>
+        <factory class="org.shiftone.jrat.provider.stats.StatMethodHandlerFactory"/>
+        <factory class="org.shiftone.jrat.provider.tree.TreeMethodHandlerFactory"/>
+
+    </handler>
+</jrat>

@@ -212,7 +212,7 @@ public class FileType {
 	 *
 	 * @throws IOException
 	 */
-	public static Writer createEncodingWriter(OutputStream os) throws IOException {
+	public static OutputStreamWriter createEncodingWriter(OutputStream os) throws IOException {
 		return new OutputStreamWriter(os, DEFAULT_ENCODING);
 	}
 

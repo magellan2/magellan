@@ -445,7 +445,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		if(((DesktopEnvironment.getMode() == DesktopEnvironment.FRAME) || restoreFocus) &&
 			   (currentUnit != null) && (currentUnit.cache != null) &&
 			   (currentUnit.cache.orderEditor != null)) {
-			currentUnit.cache.orderEditor.requestFocus();
+			requestFocus(currentUnit.cache.orderEditor);
 		}
 
 		// update button state
@@ -473,7 +473,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			}
 
 			if((e.getTempUnit().cache != null) && (e.getTempUnit().cache.orderEditor != null)) {
-				e.getTempUnit().cache.orderEditor.requestFocus();
+				requestFocus(e.getTempUnit().cache.orderEditor);
 			}
 		}
 	}
@@ -1119,13 +1119,26 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		currentUnit = null;
 	}
 
+	private void requestFocus(final OrderEditor editor) {
+		// pavkovic 2004.02.14
+		// THIS IS A HACK: I don't know why the focus 
+		// gets lost somehow so put it at the end of the 
+		// event dispatching thread.
+		// It may be EMapOverviewPanel (SwingUtilities.invokeLater(new ScrollerRunnable()))).
+		SwingUtilities.invokeLater(new Runnable() { 
+				public void run() { 
+					editor.requestFocus();
+				}
+			});
+	}
+
 	/**
 	 * Ensures that the right order editor gets the focus.
 	 */
 	public void requestFocus() {
 		if((currentUnit != null) && (currentUnit.cache != null) &&
 			   (currentUnit.cache.orderEditor != null)) {
-			currentUnit.cache.orderEditor.requestFocus();
+			requestFocus(currentUnit.cache.orderEditor);
 		}
 	}
 
