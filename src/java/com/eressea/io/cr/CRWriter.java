@@ -1237,7 +1237,13 @@ public class CRWriter extends BufferedWriter {
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
-			writeUnit(u);
+			if(this.units != null && this.units.size()>0) {
+				if(this.units.contains(u)) {
+					writeUnit(u);
+				}
+			} else {
+				writeUnit(u);
+			}
 		}
 	}
 
@@ -2318,6 +2324,30 @@ public class CRWriter extends BufferedWriter {
 	 */
 	public void setRegions(Collection regions) {
 		this.regions = regions;
+	}
+
+
+	private Collection units = null;
+
+	/**
+	 * Returns the units this object writes to the underlying stream.
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public Collection getUnits() {
+		return this.units;
+	}
+
+	/**
+	 * Supply the writer with a collection of units it should write to the underlying stream
+	 * instead of all units contained in the game data. If units is null or if there is no
+	 * element in the supplied collection, the writer returns to writing all units defined in
+	 * the game data.
+	 *
+	 * @param units TODO: DOCUMENT ME!
+	 */
+	public void setUnits(Collection units) {
+		this.units = units;
 	}
 
 	/**

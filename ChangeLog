@@ -1,3 +1,8 @@
+2004-05-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/io/cr/CRWriter.java: added setUnits (like
+	setRegions) to filter out unit writing.
+
 2004-04-30  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: Moved
