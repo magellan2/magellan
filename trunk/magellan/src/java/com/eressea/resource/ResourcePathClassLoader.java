@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -27,6 +29,7 @@ import java.util.Properties;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IteratorEnumeration;
 import com.eressea.util.PropertiesHelper;
+import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -181,9 +184,12 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 * @return a URL for reading the resource, or <code>null</code> if the resource could not be
 	 * 		   found
 	 */
-	public static URL getResourceStatically(String name, Collection resourcePaths) {
+	public static URL getResourceStatically(String aName, Collection resourcePaths) {
 		URL url = null;
 
+		//String name = Umlaut.replace(aName," ","\\ ");
+		String name=aName;
+		
 		url = getResourceFromPaths(name, resourcePaths);
 
 		if(url == null) {
@@ -200,7 +206,40 @@ public class ResourcePathClassLoader extends ClassLoader {
 			url = getSystemClassLoader().getResource("res/" + name);
 		}
 
+		if(url != null) {
+			// do some ugly tests here because of jvm specification bugs with spaces
+			// in filenames inside OR outside a jar file
+			if(canOpenURLResource(url) == null) {
+				URL decoded = canOpenURLResource(URLDecoder.decode(url.toString()));
+				if(decoded != null) {
+					url = decoded;
+				} else {
+					URL encoded = canOpenURLResource(URLEncoder.encode(url.toString()));
+					if(encoded != null) {
+						url = encoded;
+					}
+				}
+			}
+		}
 		return url;
+	}
+	
+	private static URL canOpenURLResource(String aUrl) {
+		try {
+			return canOpenURLResource(new URL(aUrl));
+		}  catch (MalformedURLException e) {
+			return null;
+		}
+	}
+
+	private static URL canOpenURLResource(URL url) {
+		if(url == null) return null;
+		try {
+			url.openStream().close();
+			return url;
+		} catch (IOException e) {
+			return null;
+		}	
 	}
 
 	/**
