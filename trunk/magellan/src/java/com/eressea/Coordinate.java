@@ -194,6 +194,15 @@ public class Coordinate implements ID {
 		return this;
 	}
 
+
+	/**
+	 * Creates the distance coordinate from this coordinate to the given coordinate 
+	 * 
+	 */
+	public Coordinate createDistanceCoordinate(Coordinate to) {
+		return new Coordinate(to.x - this.x, to.y - this.y, to.z - this.z);
+	}
+
 	/**
 	 * Defines the natural ordering of coordinates which is: Iff the z coordinates differ their
 	 * difference is returend. Iff the y coordinates differ their difference is returend. Else the

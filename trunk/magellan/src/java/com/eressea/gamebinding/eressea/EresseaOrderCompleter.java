@@ -23,6 +23,7 @@ import java.util.Map;
 
 import com.eressea.Alliance;
 import com.eressea.Border;
+import com.eressea.Coordinate;
 import com.eressea.Building;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -1542,9 +1543,9 @@ public class EresseaOrderCompleter implements Completer {
 
 		// first add all regions within a radius of 1 and remove them from Map regions2
 		for(Iterator iter = regions1.keySet().iterator(); iter.hasNext();) {
-			ID c = (ID) iter.next();
+			Coordinate c = (Coordinate) iter.next();
 
-			if(!c.equals(region.getID())) {
+			if(!c.equals(region.getCoordinate())) {
 				Region r = (Region) regions1.get(c);
 				String name = r.getName();
 				int prio = 7;
@@ -1554,7 +1555,8 @@ public class EresseaOrderCompleter implements Completer {
 					prio = 8;
 				}
 
-				completions.add(new Completion(name, c.toString(), " ", prio));
+				Coordinate distance = region.getCoordinate().createDistanceCoordinate(c);
+				completions.add(new Completion(name, distance.toString(" "), " ", prio));
 			}
 
 			regions2.remove(c);
