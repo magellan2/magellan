@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -48,7 +48,6 @@ public class FileType {
 
 	/** true iff file is readonly. */
 	protected boolean readonly = false;
-
 	protected boolean createBackup = true;
 
 	FileType(String aFile, boolean readonly) throws IOException {
@@ -70,9 +69,15 @@ public class FileType {
 		this.readonly = readonly;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param aCreateBackup TODO: DOCUMENT ME!
+	 */
 	public void setCreateBackup(boolean aCreateBackup) {
 		createBackup = aCreateBackup;
 	}
+
 	/**
 	 * Tests if an InputStream can be opened for this FileType.
 	 *
@@ -160,7 +165,7 @@ public class FileType {
 		if(readonly) {
 			throw new ReadOnlyException();
 		}
-		
+
 		if(createBackup) {
 			FileBackup.create(new File(filename));
 		}
@@ -212,7 +217,9 @@ public class FileType {
 	 *
 	 * @throws IOException
 	 */
-	public static OutputStreamWriter createEncodingWriter(OutputStream os) throws IOException {
+	public static OutputStreamWriter createEncodingWriter(OutputStream os)
+												   throws IOException
+	{
 		return new OutputStreamWriter(os, DEFAULT_ENCODING);
 	}
 
@@ -227,5 +234,4 @@ public class FileType {
 	 */
 	public static class ReadOnlyException extends IOException {
 	}
-
 }

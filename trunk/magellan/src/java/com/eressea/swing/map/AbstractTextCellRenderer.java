@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -222,11 +222,9 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 				upperY -= (((display.length - 1) * height) / 4);
 			}
 
-
 			switch(hAlign) {
 			// left
 			case LEFT:
-
 
 				int leftX = middleX - (getMaxWidth(display) / 2);
 
@@ -260,17 +258,19 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 			}
 		}
 	}
-		
-	private int getMaxWidth(String[] display) {
+
+	private int getMaxWidth(String display[]) {
 		int maxWidth = -1;
+
 		for(int i = 0; i < display.length; i++) {
 			if(fontMetrics.stringWidth(display[i]) > maxWidth) {
 				maxWidth = fontMetrics.stringWidth(display[i]);
 			}
 		}
+
 		return maxWidth;
 	}
-	
+
 	private void drawString(Graphics graphic, String text, int X, int Y) {
 		//graphics.setColor(brighterColor);
 		//graphics.drawString(text, X+1, Y+1);

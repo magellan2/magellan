@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -60,8 +60,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import org.apache.tools.mail.MailMessage;
-
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -75,6 +73,8 @@ import com.eressea.util.OrderWriter;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.logging.Logger;
+
+import org.apache.tools.mail.MailMessage;
 
 /**
  * A GUI for writing orders to a file or copy them to the clipboard. This class can be used as a

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -14,6 +14,7 @@
 package com.eressea.swing.context;
 
 import javax.swing.JPopupMenu;
+
 /**
  * Interface for automated context menu creation.
  *
@@ -32,6 +33,6 @@ public interface ContextFactory {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
-													java.util.Collection selectedObjects,
-													javax.swing.tree.DefaultMutableTreeNode node);
+										java.util.Collection selectedObjects,
+										javax.swing.tree.DefaultMutableTreeNode node);
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -31,8 +31,8 @@ import com.eressea.io.file.FileType;
  */
 public class Log {
 	private File baseDir = null;
-	
-	
+
+	/** TODO: DOCUMENT ME! */
 	public String encoding;
 
 	/**
@@ -49,10 +49,15 @@ public class Log {
 	 * Create a stream for writing errors to the log.
 	 *
 	 * @return output stream to the error log.
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public PrintStream getPrintStream() throws IOException {
-		OutputStreamWriter osw = FileType.createEncodingWriter(new FileOutputStream(new File(baseDir, "errors.txt").getAbsolutePath(), true));
+		OutputStreamWriter osw = FileType.createEncodingWriter(new FileOutputStream(new File(baseDir,
+																							 "errors.txt").getAbsolutePath(),
+																					true));
 		encoding = osw.getEncoding();
+
 		return new PrintStream(new StreamWrapper(new BufferedWriter(osw)));
 	}
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -136,10 +136,12 @@ public class SplitBuilder extends Object {
 			}
 
 			jc.setMinimumSize(minSize);
+
 			if(current.getChild(0).getName() == null) {
 				jsp.setTopComponent(jc);
-			}  else {
-				jsp.setTopComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(0).getName(),jc));
+			} else {
+				jsp.setTopComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(0)
+																				  .getName(), jc));
 			}
 
 			if(!componentsUsed.contains(jc)) {
@@ -147,10 +149,12 @@ public class SplitBuilder extends Object {
 			}
 		} else {
 			JComponent jc = createSplit(current.getChild(0), components, left);
+
 			if(current.getChild(0).getName() == null) {
 				jsp.setTopComponent(jc);
-			}  else {
-				jsp.setTopComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(0).getName(),jc));
+			} else {
+				jsp.setTopComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(0)
+																				  .getName(), jc));
 			}
 		}
 
@@ -165,8 +169,9 @@ public class SplitBuilder extends Object {
 
 			if(current.getChild(1).getName() == null) {
 				jsp.setBottomComponent(jc);
-			}  else {
-				jsp.setBottomComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(1).getName(),jc));
+			} else {
+				jsp.setBottomComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(1)
+																					 .getName(), jc));
 			}
 
 			if(!componentsUsed.contains(jc)) {
@@ -175,10 +180,12 @@ public class SplitBuilder extends Object {
 		} else {
 			// jsp.setBottomComponent(createSplit(current.getChild(1), components, right));
 			JComponent jc = createSplit(current.getChild(1), components, right);
+
 			if(current.getChild(1).getName() == null) {
 				jsp.setBottomComponent(jc);
-			}  else {
-				jsp.setBottomComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(1).getName(),jc));
+			} else {
+				jsp.setBottomComponent(new com.eressea.swing.ui.InternalFrame(current.getChild(1)
+																					 .getName(), jc));
 			}
 		}
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -45,7 +45,6 @@ public class Units {
 	private StatItemContainer catLessContainer = null;
 	private Map itemCategoriesMap = CollectionFactory.createHashtable();
 	private NodeWrapperFactory nodeWrapperFactory = null;
-
 	private static ItemType silberbeutel = new ItemType(StringID.create("Silberbeutel"));
 	private static ItemType silberkassette = new ItemType(StringID.create("Silberkassette"));
 
@@ -99,7 +98,8 @@ public class Units {
 
 				// get the stat item from the category container
 				StatItem stored = (StatItem) container.get(item.getItemType().getID());
-				if (stored == null) {
+
+				if(stored == null) {
 					stored = new StatItem(item.getItemType(), 0);
 					container.put(stored.getItemType().getID(), stored);
 				}
@@ -108,9 +108,12 @@ public class Units {
 				// multiply amount with unit.persons if item is
 				// silver
 				int amount = item.getAmount();
-				if (item.getItemType().equals(silberbeutel) || item.getItemType().equals(silberkassette)) {
+
+				if(item.getItemType().equals(silberbeutel) ||
+					   item.getItemType().equals(silberkassette)) {
 					amount *= u.persons;
 				}
+
 				stored.setAmount(stored.getAmount() + amount);
 
 				// add the unit owning the item to the stat item
@@ -142,17 +145,22 @@ public class Units {
 
 				// get the stat item by item type
 				StatItem stored = (StatItem) items.get(item.getItemType().getID());
-				if (stored == null) {
+
+				if(stored == null) {
 					stored = new StatItem(item.getItemType(), 0);
 					items.put(stored.getItemType().getID(), stored);
 				}
+
 				// add up the amount in the stat item
 				// multiply amount with unit.persons if item is
 				// silver
 				int amount = item.getAmount();
-				if (item.getItemType().equals(silberbeutel) || item.getItemType().equals(silberkassette)) {
+
+				if(item.getItemType().equals(silberbeutel) ||
+					   item.getItemType().equals(silberkassette)) {
 					amount *= u.persons;
 				}
+
 				stored.setAmount(stored.getAmount() + amount);
 
 				// add the unit owning the item to the stat item

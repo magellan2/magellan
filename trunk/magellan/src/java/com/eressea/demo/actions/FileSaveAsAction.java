@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -89,9 +89,8 @@ public class FileSaveAsAction extends MenuAction {
 		EresseaFileFilter bz2Filter = new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER);
 		fc.addChoosableFileFilter(bz2Filter);
 
-// 		EresseaFileFilter zipFilter = new EresseaFileFilter(EresseaFileFilter.ZIP_FILTER);
-// 		fc.addChoosableFileFilter(zipFilter);
-
+		// 		EresseaFileFilter zipFilter = new EresseaFileFilter(EresseaFileFilter.ZIP_FILTER);
+		// 		fc.addChoosableFileFilter(zipFilter);
 		File selectedFile = new File(settings.getProperty("Client.lastCRSaved", ""));
 		fc.setSelectedFile(selectedFile);
 
@@ -103,10 +102,10 @@ public class FileSaveAsAction extends MenuAction {
 				fc.setFileFilter(gzFilter);
 			} else if(bz2Filter.accept(selectedFile)) {
 				fc.setFileFilter(bz2Filter);
-// 			} else if(zipFilter.accept(selectedFile)) {
-// 				fc.setFileFilter(zipFilter);
-			}
 
+				// 			} else if(zipFilter.accept(selectedFile)) {
+				// 				fc.setFileFilter(zipFilter);
+			}
 		}
 
 		fc.setAccessory(new com.eressea.swing.HistoryAccessory(settings, fc));

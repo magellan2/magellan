@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -192,6 +192,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 						quit();
 					} catch(IOException ioe) {
 						log.error(ioe);
+
 						Object msgArgs[] = { outputFile.getPath() };
 						JOptionPane.showMessageDialog((JButton) e.getSource(),
 													  (new java.text.MessageFormat(getString("msg.writeerror.text"))).format(msgArgs),

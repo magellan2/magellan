@@ -1,27 +1,43 @@
-package com.eressea.swing.desktop;
+/*
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ */
 
+package com.eressea.swing.desktop;
 
 import javax.swing.JPanel;
 
-/** 
- * This object represents a kind of view. Views are a JPanel together
- * with a title and an identifier
+/**
+ * This object represents a kind of view. Views are a JPanel together with a title and an
+ * identifier
  */
 public interface View {
-	
-	/** 
+	/**
 	 * Returns the (localized) name of the View
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getName();
-	
-	/** 
+
+	/**
 	 * Returns the unique identifier name of the View
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getIdentifier();
 
-	/** 
+	/**
 	 * returns a Panel of this view
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public JPanel getPanel();
 }
-

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -181,9 +181,10 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 		undoMgr = _undoMgr;
 		initGUI();
+
 		//startTimer();
 	}
-	
+
 	private void initGUI() {
 		readSettings();
 
@@ -192,6 +193,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		// content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 		scpContent = new JScrollPane(content);
+
 		// ClearLook suggests to remove the border
 		scpContent.setBorder(null);
 
@@ -235,14 +237,17 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			});
 	}
 
-
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void gameDataChanged(GameDataEvent e) {
 		super.gameDataChanged(e);
 
 		// rebuild order editors
 		// startTimer();
 	}
-
 
 	private void readSettings() {
 		multiEditorLayout = Boolean.valueOf(settings.getProperty("OrderEditor.multiEditorLayout",
@@ -1079,6 +1084,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 	/**
 	 * Builds and attaches the order editor for and to the given unit.
+	 *
+	 * @param u TODO: DOCUMENT ME!
 	 */
 	private void buildOrderEditor(Unit u) {
 		if((u.cache == null) || (u.cache.orderEditor == null)) {
@@ -1106,6 +1113,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			u.cache.addHandler(this);
 		}
 	}
+
 	/**
 	 * Performs the clean-up necessary to put the editor list into a state without units and
 	 * editors
@@ -1141,8 +1149,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		// gets lost somehow so put it at the end of the 
 		// event dispatching thread.
 		// It may be EMapOverviewPanel (SwingUtilities.invokeLater(new ScrollerRunnable()))).
-		SwingUtilities.invokeLater(new Runnable() { 
-				public void run() { 
+		SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
 					editor.requestFocus();
 				}
 			});
@@ -2098,19 +2106,17 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			}
 		}
 
-
 		private void createTempImpl(Unit parentUnit, UnitID id, Region parentRegion) {
 			int unitIntID = id.intValue();
 			int newIDInt = unitIntID;
 			UnitID newID = null;
 
-//			for(newIDInt = unitIntID; newIDInt != (unitIntID - 1);
-//					newIDInt = (newIDInt + (1 % IDBaseConverter.getMaxId()))) {
-//				if(parentRegion.getUnit(UnitID.createUnitID(-newIDInt)) == null) {
-//					break;
-//				}
-//			}
-
+			//			for(newIDInt = unitIntID; newIDInt != (unitIntID - 1);
+			//					newIDInt = (newIDInt + (1 % IDBaseConverter.getMaxId()))) {
+			//				if(parentRegion.getUnit(UnitID.createUnitID(-newIDInt)) == null) {
+			//					break;
+			//				}
+			//			}
 			if(!settings.getProperty("MultiEditorOrderEditorList.ButtonPanel.ShowTempUnitDialog",
 										 "true").equalsIgnoreCase("true")) {
 				// don't show any dialogs, simply create the tempunit and finish.

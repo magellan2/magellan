@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -41,9 +41,9 @@ public class SpecifiedSkillTypeSkillComparator implements Comparator {
 	/**
 	 * Creates a new BestSkillComparator object.
 	 *
-	 * @param skillComparator used to compare the two best skills.
 	 * @param skillComparator used to determine the best skill in each of the two collections of
 	 * 		  skills to be compared.
+	 * @param skillComparator used to compare the two best skills.
 	 * @param subComparator applied when the best skills are equal or cannot be determined.
 	 */
 	public SpecifiedSkillTypeSkillComparator(SkillType skillType, Comparator skillComparator,

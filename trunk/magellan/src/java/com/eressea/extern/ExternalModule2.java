@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -19,9 +19,8 @@ import com.eressea.demo.Client;
  * This interface allows it to write modules for Magellan that are automatically integrated if
  * found in one of the resource paths of Magellan. All that has to be done is to implement this
  * interface and integrate the class file into a resource path. The class must have the default
- * constructor. For performance reasons the name of the class must end with "Module2".
- * If classes implement SelectionListener, they are automatically registered at the
- * event dispatcher.
+ * constructor. For performance reasons the name of the class must end with "Module2". If classes
+ * implement SelectionListener, they are automatically registered at the event dispatcher.
  *
  * @author Ilja Pavkovic
  */

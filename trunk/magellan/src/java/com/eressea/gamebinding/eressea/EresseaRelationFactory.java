@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -83,20 +83,28 @@ public class EresseaRelationFactory implements RelationFactory {
 		return createRelations(u, u.getOrders().iterator(), from);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param u TODO: DOCUMENT ME!
+	 * @param orders TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public List createRelations(Unit u, List orders) {
 		return createRelations(u, orders.iterator(), 0);
 	}
 
 	private List createRelations(Unit u, Iterator orders, int from) {
 		List rels = CollectionFactory.createArrayList(5);
-		
+
 		GameData data = u.getRegion().getData();
 		Map modItems = null; // needed to track changes in the items for GIB orders
 		int modPersons = u.getPersons();
-		
+
 		// clone u unit's items
 		modItems = CollectionFactory.createHashtable();
-		
+
 		if(u.items != null) {
 			for(Iterator iter = u.items.values().iterator(); iter.hasNext();) {
 				Item i = (Item) iter.next();
@@ -108,10 +116,10 @@ public class EresseaRelationFactory implements RelationFactory {
 		EresseaOrderParser parser = new EresseaOrderParser(data.rules);
 		boolean tempOrders = false;
 		int line = 0;
-		
+
 		for(Iterator iter = orders; iter.hasNext();) {
 			String order = (String) iter.next();
-			
+
 			line++; // keep track of line
 
 			if(line < from) {
@@ -283,8 +291,8 @@ public class EresseaRelationFactory implements RelationFactory {
 										// TODO(pavkovic): korrigieren!!! Hier soll eigentlich das Item über den 
 										// übersetzten Namen gefunden werden!!!
 										ItemType iType = data.rules.getItemType(itemName);
-										//ItemType iType = data.rules.getItemType(StringID.create(itemName));
 
+										//ItemType iType = data.rules.getItemType(StringID.create(itemName));
 										if(iType != null) {
 											// get the item from the list of modified items
 											Item i = (Item) modItems.get(iType.getID());

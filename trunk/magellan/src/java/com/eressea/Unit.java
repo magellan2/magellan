@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -873,7 +873,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		}
 
 		// add to tempunits in gamedata
-		if (this.getRegion() != null && this.getRegion().getData() != null) {
+		if((this.getRegion() != null) && (this.getRegion().getData() != null)) {
 			this.getRegion().getData().tempUnits().put(t.getID(), t);
 		} else {
 			log.warn("Unit.createTemp(): Warning: Couldn't add temp unit to game data. Couldn't access game data");
@@ -2271,7 +2271,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @param newUnit TODO: DOCUMENT ME!
 	 * @param sameRound notifies if both game data objects have been from the same round
 	 */
-	public static void merge(GameData curGD, Unit curUnit, GameData newGD, Unit newUnit, boolean sameRound) {
+	public static void merge(GameData curGD, Unit curUnit, GameData newGD, Unit newUnit,
+							 boolean sameRound) {
 		/*
 		 * True, when curUnit is seen by the faction it belongs to and
 		 * is therefore fully specified.
@@ -2345,7 +2346,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		}
 
 		if(!curUnit.ordersAreNull() && (curUnit.getCompleteOrders().size() > 0)) {
-			newUnit.setOrders(curUnit.getCompleteOrders(),false);
+			newUnit.setOrders(curUnit.getCompleteOrders(), false);
 		}
 
 		newUnit.ordersConfirmed |= curUnit.ordersConfirmed;
@@ -2469,19 +2470,19 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		if((curUnit.skills != null) && (curUnit.skills.size() > 0)) {
 			for(Iterator iter = curUnit.skills.values().iterator(); iter.hasNext();) {
 				Skill curSkill = (Skill) iter.next();
-				SkillType newSkillType = newGD.rules.getSkillType(curSkill.getSkillType().getID(), true);
-				Skill newSkill = new Skill(newSkillType, curSkill.getPoints(),
-										   curSkill.getLevel(), newUnit.getPersons(),
-										   curSkill.noSkillPoints());
+				SkillType newSkillType = newGD.rules.getSkillType(curSkill.getSkillType().getID(),
+																  true);
+				Skill newSkill = new Skill(newSkillType, curSkill.getPoints(), curSkill.getLevel(),
+										   newUnit.getPersons(), curSkill.noSkillPoints());
 
 				if(curSkill.isLevelChanged()) {
 					newSkill.setLevelChanged(true);
 					newSkill.setChangeLevel(curSkill.getChangeLevel());
 				}
+
 				if(curSkill.isLostSkill()) {
 					newSkill.setLevel(-1);
 				}
-
 
 				// NOTE: Maybe some decision about change-level computation in reports of
 				//       same date here
@@ -2514,7 +2515,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 			// Now remove all skills that are lost
 			for(Iterator iter = oldSkills.iterator(); iter.hasNext();) {
 				Skill oldSkill = (Skill) iter.next();
-				
+
 				if(oldSkill.isLostSkill()) { // remove if it was lost
 					newUnit.skills.remove(oldSkill.getSkillType().getID());
 				} else { // dont remove it but mark it as a lostSkill 
@@ -2593,7 +2594,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		// merge tags
 		if(curUnit.hasTags()) {
-			for(Iterator iter = curUnit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
+			for(Iterator iter = curUnit.getTagMap().keySet().iterator(); iter.hasNext();) {
 				String tag = (String) iter.next();
 				newUnit.putTag(tag, curUnit.getTag(tag));
 			}
@@ -2609,8 +2610,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return o instanceof Unit && 
-			getID().equals(((Unit) o).getID());
+		return o instanceof Unit && getID().equals(((Unit) o).getID());
 	}
 
 	/**

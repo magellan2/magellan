@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -213,7 +213,6 @@ public class MagellanLookAndFeel {
 				//	defaultLafCache.add(defaultMap.get(iter.next()));
 				//}
 			}
-
 		}
 
 		return Collections.unmodifiableMap(lafCache);
@@ -231,7 +230,6 @@ public class MagellanLookAndFeel {
 		return Class.forName("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
 	}
 
-	
 	private static Class getClearLookManagerClass() throws ClassNotFoundException {
 		return Class.forName("com.jgoodies.clearlook.ClearLookManager");
 	}
@@ -240,18 +238,27 @@ public class MagellanLookAndFeel {
 		return Class.forName("com.jgoodies.clearlook.ClearLookMode");
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static boolean enableClearLookDebug() {
 		return enableClearLook("DEBUG");
 	}
-	
-// 	public static boolean enableClearLookVerbose() {
-// 		return enableClearLook("VERBOSE");
-// 	}
 
+	// 	public static boolean enableClearLookVerbose() {
+	// 		return enableClearLook("VERBOSE");
+	// 	}
 	static {
-			MagellanLookAndFeel.enableClearLookDebug();
+		//MagellanLookAndFeel.enableClearLookDebug();
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static boolean enableClearLookOn() {
 		return enableClearLook("ON");
 	}
@@ -260,9 +267,13 @@ public class MagellanLookAndFeel {
 		try {
 			// call method public static void ClearLookManager.setMode(fieldName)
 			// fieldName may be "ON", "OFF", "VERBOSE" or "DEBUG"
-			getClearLookManagerClass().getMethod("setMode", new Class[] { getClearLookModeClass() }).
-				invoke(null, new Object[] { getClearLookModeClass().getField(fieldName).get(null) });
-			log.debug("Enabled ClearLookDebug.");
+			getClearLookManagerClass().getMethod("setMode", new Class[] { getClearLookModeClass() })
+				.invoke(null, new Object[] { getClearLookModeClass().getField(fieldName).get(null) });
+
+			if(log.isDebugEnabled()) {
+				log.debug("Enabled ClearLookDebug.");
+			}
+
 			return true;
 		} catch(ClassNotFoundException e) {
 			log.error(e);
@@ -277,7 +288,11 @@ public class MagellanLookAndFeel {
 		} catch(Error e) {
 			log.error(e);
 		}
-		log.debug("Failed to invoke ClearLookDebug.");
+
+		if(log.isDebugEnabled()) {
+			log.debug("Failed to invoke ClearLookDebug.");
+		}
+
 		return false;
 	}
 

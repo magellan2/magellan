@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -96,34 +96,43 @@ public class Umlaut {
 		}
 	}
 
-	/** 
-	 * Replaces all occurences of <tt>from</tt> in <tt>str</tt>
-	 * with <tt>to</tt>.
+	/**
+	 * Replaces all occurences of <tt>from</tt> in <tt>str</tt> with <tt>to</tt>.
+	 *
+	 * @param str TODO: DOCUMENT ME!
+	 * @param from TODO: DOCUMENT ME!
+	 * @param to TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public static String replace(String str, String from, String to) {
 		int startIndex = 0;
-		int endIndex   = 0;
+		int endIndex = 0;
 		boolean delimiterFound = false;
-		StringBuffer returnString = new StringBuffer ();
+		StringBuffer returnString = new StringBuffer();
+
 		do {
-			endIndex = str.indexOf (from, startIndex);
-			if (endIndex < 0) {
-				endIndex = str.length ();
+			endIndex = str.indexOf(from, startIndex);
+
+			if(endIndex < 0) {
+				endIndex = str.length();
 				delimiterFound = false;
 			} else {
 				delimiterFound = true;
 			}
-			if (startIndex < endIndex) {
-				returnString.append (str.substring (startIndex, endIndex));
-			}
-			if (delimiterFound) {
-				returnString.append (to);
-				startIndex = endIndex + from.length ();
-			}
-		} while (delimiterFound);
 
-		return returnString.toString ();
-  }
+			if(startIndex < endIndex) {
+				returnString.append(str.substring(startIndex, endIndex));
+			}
+
+			if(delimiterFound) {
+				returnString.append(to);
+				startIndex = endIndex + from.length();
+			}
+		} while(delimiterFound);
+
+		return returnString.toString();
+	}
 
 	/**
 	 * Expand all umlauts in a string and convert it to uppercase.
@@ -133,9 +142,10 @@ public class Umlaut {
 	 * @return the uppercase version of <tt>str</tt> with all umlauts expanded.
 	 */
 	public static String normalize(String str) {
-		if (str == null) {
+		if(str == null) {
 			return null;
 		}
+
 		return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str).toUpperCase());
 	}
 }

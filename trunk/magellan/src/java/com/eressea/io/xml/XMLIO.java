@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -22,11 +22,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.eressea.util.logging.Logger;
+
 import org.w3c.dom.Document;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.eressea.util.logging.Logger;
 
 /**
  * TODO: DOCUMENT ME!

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -27,10 +27,8 @@ import java.awt.LayoutManager;
  */
 public class CenterLayout implements LayoutManager {
 	private static final Dimension NULL = new Dimension(0, 0);
-
 	private static final int SPAN_X = 1;
 	private static final int SPAN_Y = 2;
-
 	protected int mode = 0;
 
 	/** A layout that spans the x axis. */

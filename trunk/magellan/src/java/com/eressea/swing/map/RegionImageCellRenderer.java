@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -104,13 +104,16 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 
 			if(type != null) {
 				Image img = getImage(type.getID().toString());
-				if (img != null) {
+
+				if(img != null) {
 					drawImage(r, getImage(type.getID().toString()), rect);
 				} else {
-					log.warn("RegionImageCellRenderer.render(): image is null (" + type.getID() + ")");
+					log.warn("RegionImageCellRenderer.render(): image is null (" + type.getID() +
+							 ")");
 				}
 			} else {
-				log.warn("RegionImageCellRenderer.render(): Couldn't determine region type for region: " + r.toString());
+				log.warn("RegionImageCellRenderer.render(): Couldn't determine region type for region: " +
+						 r.toString());
 			}
 		}
 	}

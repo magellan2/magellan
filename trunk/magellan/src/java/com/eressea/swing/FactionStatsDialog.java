@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -491,74 +491,77 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 	}
 
 	/**
-     * Returns the skillchart statistics panel. The old method is no longer
-     * of use, since the sourcecode has become an integral part of the
-     * magellan code base. Thus it has no longer to be instatiated via
-     * reflections.
+	 * Returns the skillchart statistics panel. The old method is no longer of use, since the
+	 * sourcecode has become an integral part of the magellan code base. Thus it has no longer to
+	 * be instatiated via reflections.
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	private JPanel getSkillChartPanel() {
-    /*	// try to load the skillchart classes
-		ResourcePathClassLoader loader = new ResourcePathClassLoader(settings);
-		Class SkillChartPanel = null;
+		/*    // try to load the skillchart classes
+		    ResourcePathClassLoader loader = new ResourcePathClassLoader(settings);
+		    Class SkillChartPanel = null;
 
+		    try {
+		        SkillChartPanel = loader.loadClass("com.eressea.skillchart.SkillChartPanel");
+		    } catch(java.lang.ClassNotFoundException cnf) {
+		        return null;
+		    }
+
+		    // get it's constructor
+		    java.lang.reflect.Constructor constructor = null;
+
+		    try {
+		        constructor = SkillChartPanel.getConstructor(new Class[] {
+		                                                         Class.forName("com.eressea.event.EventDispatcher"),
+		                                                         Class.forName("com.eressea.GameData"),
+		                                                         Class.forName("java.util.Properties")
+		                                                     });
+		    } catch(java.lang.NoSuchMethodException e) {
+		        log.error(e);
+
+		        return null;
+		    } catch(java.lang.ClassNotFoundException e) {
+		        log.error(e);
+
+		        return null;
+		    } catch(java.lang.NoClassDefFoundError e) {
+		        log.error(e);
+
+		        return null;
+		    }
+
+		    // create an instance of this class
+		    Object skillChartPanel = null;
+
+		    try {
+		        skillChartPanel = constructor.newInstance(new Object[] { dispatcher, data, settings });
+		    } catch(java.lang.reflect.InvocationTargetException e) {
+		        log.error(e);
+
+		        return null;
+		    } catch(java.lang.IllegalAccessException e) {
+		        log.error(e);
+
+		        return null;
+		    } catch(java.lang.InstantiationException e) {
+		        log.error(e);
+
+		        return null;
+		    }
+
+		    // return casted Panel
+		    return (JPanel) skillChartPanel;
+		    */
 		try {
-			SkillChartPanel = loader.loadClass("com.eressea.skillchart.SkillChartPanel");
-		} catch(java.lang.ClassNotFoundException cnf) {
-			return null;
-		}
+			JPanel skillChartPanel = new com.eressea.skillchart.SkillChartPanel(dispatcher, data,
+																				settings);
 
-		// get it's constructor
-		java.lang.reflect.Constructor constructor = null;
-
-		try {
-			constructor = SkillChartPanel.getConstructor(new Class[] {
-															 Class.forName("com.eressea.event.EventDispatcher"),
-															 Class.forName("com.eressea.GameData"),
-															 Class.forName("java.util.Properties")
-														 });
-		} catch(java.lang.NoSuchMethodException e) {
-			log.error(e);
-
-			return null;
-		} catch(java.lang.ClassNotFoundException e) {
-			log.error(e);
-
-			return null;
-		} catch(java.lang.NoClassDefFoundError e) {
-			log.error(e);
-
-			return null;
-		}
-
-		// create an instance of this class
-		Object skillChartPanel = null;
-
-		try {
-			skillChartPanel = constructor.newInstance(new Object[] { dispatcher, data, settings });
-		} catch(java.lang.reflect.InvocationTargetException e) {
-			log.error(e);
-
-			return null;
-		} catch(java.lang.IllegalAccessException e) {
-			log.error(e);
-
-			return null;
-		} catch(java.lang.InstantiationException e) {
-			log.error(e);
-
-			return null;
-		}
-
-		// return casted Panel
-		return (JPanel) skillChartPanel;
-        */
-		try {
-			JPanel skillChartPanel = new com.eressea.skillchart.SkillChartPanel(
-				dispatcher, data, settings);
 			return skillChartPanel;
-		} catch (Throwable t) {
+		} catch(Throwable t) {
 			log.warn("FactionStatsDialog.getSkillChartPanel(): Couldn't create skillChartPanel! Delivering null.");
 		}
+
 		return null;
 	}
 

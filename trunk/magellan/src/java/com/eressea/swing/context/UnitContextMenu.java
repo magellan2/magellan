@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -129,7 +129,8 @@ public class UnitContextMenu extends JPopupMenu {
 																								  teacher));
 				}
 			}
-			if(unit.getShip() != null && unit.equals(unit.getShip().getOwnerUnit()))  {
+
+			if((unit.getShip() != null) && unit.equals(unit.getShip().getOwnerUnit())) {
 				JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));
 				planShipRoute.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -222,27 +223,31 @@ public class UnitContextMenu extends JPopupMenu {
 
 		// remember: s[0] : inserted Order (null if the ok-button wasn't pressed)
 		// s[1] : String represantative for "replace order ?"
-        // c[2] : String represantative for "keep comments"
+		// c[2] : String represantative for "keep comments"
 		if(s[0] != null) {
 			boolean replace = Boolean.valueOf(s[1]).booleanValue();
-            boolean keepComments = Boolean.valueOf(s[2]).booleanValue();
+			boolean keepComments = Boolean.valueOf(s[2]).booleanValue();
+
 			for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
 				if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 					if(replace) {
-                        if (keepComments) {
-                            Collection oldOrders = u.getOrders();
-                            Collection newOrders = CollectionFactory.createLinkedList();
-                            for (Iterator iterator = oldOrders.iterator(); iterator.hasNext(); ) {
-                                String order = (String)iterator.next();
-                                if (order.trim().startsWith("//") || order.trim().startsWith(";")) {
-                                    newOrders.add(order);
-                                }
-                            }
-                            newOrders.add(s[0]);
-                            u.setOrders(newOrders);
-                        } else {
+						if(keepComments) {
+							Collection oldOrders = u.getOrders();
+							Collection newOrders = CollectionFactory.createLinkedList();
+
+							for(Iterator iterator = oldOrders.iterator(); iterator.hasNext();) {
+								String order = (String) iterator.next();
+
+								if(order.trim().startsWith("//") || order.trim().startsWith(";")) {
+									newOrders.add(order);
+								}
+							}
+
+							newOrders.add(s[0]);
+							u.setOrders(newOrders);
+						} else {
 							u.setOrders(Collections.singleton(s[0]));
 						}
 					} else {

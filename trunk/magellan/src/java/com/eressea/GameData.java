@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *  Copyright (C) 2000-2004 Roger Butenuth, Andreas Gampe,
  *                          Stefan Goetz, Sebastian Pappert,
  *                          Klaas Prause, Enno Rehling,
  *                          Sebastian Tusk, Ulrich Kuester,
@@ -32,7 +32,7 @@ import com.eressea.util.logging.Logger;
 
 /**
  * This is the central class for collecting all the data representing one computer report.
- *
+ * 
  * <p>
  * The maps units, regions and so on are declared as abstract methods and the getX and addX provide
  * access to them. This allows for subclasses that implicitely represent only a certain part of
@@ -110,7 +110,8 @@ public abstract class GameData implements Cloneable {
 	/**
 	 * A collection of all units. The keys are <tt>Integer</tt> objects containg the unit's ids.
 	 * The values consist of objects of class <tt>Unit</tt>. TEMP units are not included, they are
-	 * only stored in the unit collection of their parents and their regions and in the tempUnits map.
+	 * only stored in the unit collection of their parents and their regions and in the tempUnits
+	 * map.
 	 *
 	 * @return returns the units map
 	 */
@@ -119,6 +120,7 @@ public abstract class GameData implements Cloneable {
 	/**
 	 * A collection of tempUnits. The keys are <tt>Integer</tt> objects containg the unit's ids.
 	 * The values consist of objects of class <tt>TempUnit</tt>.
+	 *
 	 * @return returns the tempunits map
 	 */
 	public abstract Map tempUnits();
@@ -218,9 +220,14 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @param _rules TODO: DOCUMENT ME!
 	 * @param _name TODO: DOCUMENT ME!
+	 *
+	 * @throws NullPointerException TODO: DOCUMENT ME!
 	 */
 	public GameData(Rules _rules, String _name) {
-		if(_rules == null) throw new NullPointerException();
+		if(_rules == null) {
+			throw new NullPointerException();
+		}
+
 		rules = _rules;
 		name = _name;
 	}
@@ -665,8 +672,8 @@ public abstract class GameData implements Cloneable {
 	 *
 	 * @return the new merged game data object
 	 *
-	 * @throws IllegalArgumentException if first and second game data
-	 * object are from different game types.
+	 * @throws IllegalArgumentException if first and second game data object are from different
+	 * 		   game types.
 	 */
 	public static GameData merge(GameData gd1, GameData gd2) {
 		// make sure, the game types are the same.
@@ -695,6 +702,11 @@ public abstract class GameData implements Cloneable {
 	 * Merges the two game data containers yielding a third one. By convention, gd1 must not be
 	 * newer than gd2. The resulting game data container inherits the rules and name from
 	 * <b>gd2</b>.
+	 *
+	 * @param gd1 TODO: DOCUMENT ME!
+	 * @param gd2 TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	private static GameData mergeIt(GameData gd1, GameData gd2) {
 		// 2002.02.20 pavkovic: the newer rules are in GameData gd2. So we take
@@ -751,109 +763,109 @@ public abstract class GameData implements Cloneable {
 		// MESSAGETYPES
 		// simple objects, created and merged in one step
 		if(gd1.msgTypes() != null) {
-		for(Iterator iter = gd1.msgTypes().values().iterator(); iter.hasNext();) {
-			MessageType mt = (MessageType) iter.next();
-			MessageType newMT = null;
+			for(Iterator iter = gd1.msgTypes().values().iterator(); iter.hasNext();) {
+				MessageType mt = (MessageType) iter.next();
+				MessageType newMT = null;
 
-			try {
-				newMT = new MessageType((ID) mt.getID().clone());
-			} catch(CloneNotSupportedException e) {
-				log.error(e);
-			}
-
-			MessageType.merge(gd1, mt, newGD, newMT);
-			newGD.addMsgType(newMT);
-		}
-		}
-
-		if(gd2.msgTypes() != null) {
-		for(Iterator iter = gd2.msgTypes().values().iterator(); iter.hasNext();) {
-			MessageType mt = (MessageType) iter.next();
-			MessageType newMT = newGD.getMsgType(mt.getID());
-
-			if(newMT == null) {
 				try {
 					newMT = new MessageType((ID) mt.getID().clone());
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
-			}
 
-			MessageType.merge(gd2, mt, newGD, newMT);
-			newGD.addMsgType(newMT);
+				MessageType.merge(gd1, mt, newGD, newMT);
+				newGD.addMsgType(newMT);
+			}
 		}
+
+		if(gd2.msgTypes() != null) {
+			for(Iterator iter = gd2.msgTypes().values().iterator(); iter.hasNext();) {
+				MessageType mt = (MessageType) iter.next();
+				MessageType newMT = newGD.getMsgType(mt.getID());
+
+				if(newMT == null) {
+					try {
+						newMT = new MessageType((ID) mt.getID().clone());
+					} catch(CloneNotSupportedException e) {
+						log.error(e);
+					}
+				}
+
+				MessageType.merge(gd2, mt, newGD, newMT);
+				newGD.addMsgType(newMT);
+			}
 		}
 
 		// SPELLS
 		// simple objects, created and merged in one step
 		if(gd1.spells() != null) {
-		for(Iterator iter = gd1.spells().values().iterator(); iter.hasNext();) {
-			Spell spell = (Spell) iter.next();
-			Spell newSpell = null;
+			for(Iterator iter = gd1.spells().values().iterator(); iter.hasNext();) {
+				Spell spell = (Spell) iter.next();
+				Spell newSpell = null;
 
-			try {
-				newSpell = new Spell((ID) spell.getID().clone());
-			} catch(CloneNotSupportedException e) {
-				log.error(e);
-			}
-
-			Spell.merge(gd1, spell, newGD, newSpell);
-			newGD.addSpell(newSpell);
-		}
-		}
-
-		if(gd2.spells() != null) {
-		for(Iterator iter = gd2.spells().values().iterator(); iter.hasNext();) {
-			Spell spell = (Spell) iter.next();
-			Spell newSpell = newGD.getSpell(spell.getID());
-
-			if(newSpell == null) {
 				try {
 					newSpell = new Spell((ID) spell.getID().clone());
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
-			}
 
-			Spell.merge(gd2, spell, newGD, newSpell);
-			newGD.addSpell(newSpell);
+				Spell.merge(gd1, spell, newGD, newSpell);
+				newGD.addSpell(newSpell);
+			}
 		}
+
+		if(gd2.spells() != null) {
+			for(Iterator iter = gd2.spells().values().iterator(); iter.hasNext();) {
+				Spell spell = (Spell) iter.next();
+				Spell newSpell = newGD.getSpell(spell.getID());
+
+				if(newSpell == null) {
+					try {
+						newSpell = new Spell((ID) spell.getID().clone());
+					} catch(CloneNotSupportedException e) {
+						log.error(e);
+					}
+				}
+
+				Spell.merge(gd2, spell, newGD, newSpell);
+				newGD.addSpell(newSpell);
+			}
 		}
 
 		// POTIONS
 		// simple objects, created and merged in one step
 		if(gd1.potions() != null) {
-		for(Iterator iter = gd1.potions().values().iterator(); iter.hasNext();) {
-			Potion potion = (Potion) iter.next();
-			Potion newPotion = null;
+			for(Iterator iter = gd1.potions().values().iterator(); iter.hasNext();) {
+				Potion potion = (Potion) iter.next();
+				Potion newPotion = null;
 
-			try {
-				newPotion = new Potion((ID) potion.getID().clone());
-			} catch(CloneNotSupportedException e) {
-				log.error(e);
-			}
-
-			Potion.merge(gd1, potion, newGD, newPotion);
-			newGD.addPotion(newPotion);
-		}
-		}
-
-		if(gd2.potions() != null) {
-		for(Iterator iter = gd2.potions().values().iterator(); iter.hasNext();) {
-			Potion potion = (Potion) iter.next();
-			Potion newPotion = newGD.getPotion(potion.getID());
-
-			if(newPotion == null) {
 				try {
 					newPotion = new Potion((ID) potion.getID().clone());
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
-			}
 
-			Potion.merge(gd2, potion, newGD, newPotion);
-			newGD.addPotion(newPotion);
+				Potion.merge(gd1, potion, newGD, newPotion);
+				newGD.addPotion(newPotion);
+			}
 		}
+
+		if(gd2.potions() != null) {
+			for(Iterator iter = gd2.potions().values().iterator(); iter.hasNext();) {
+				Potion potion = (Potion) iter.next();
+				Potion newPotion = newGD.getPotion(potion.getID());
+
+				if(newPotion == null) {
+					try {
+						newPotion = new Potion((ID) potion.getID().clone());
+					} catch(CloneNotSupportedException e) {
+						log.error(e);
+					}
+				}
+
+				Potion.merge(gd2, potion, newGD, newPotion);
+				newGD.addPotion(newPotion);
+			}
 		}
 
 		// TRANSLATIONS
@@ -1055,7 +1067,6 @@ public abstract class GameData implements Cloneable {
 		 *       that are also in the second report are added to the new one and
 		 *       temp units are ignored. IDs are used for comparism.
 		*/
-
 		if(gd1.units() != null) {
 			for(Iterator iter = gd1.units().values().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
@@ -1081,7 +1092,6 @@ public abstract class GameData implements Cloneable {
 						log.error(e);
 					}
 				}
-
 			}
 		}
 
@@ -1090,6 +1100,7 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd1.factions().values().iterator(); iter.hasNext();) {
 				Faction curFaction = (Faction) iter.next();
 				Faction newFaction = newGD.getFaction(curFaction.getID());
+
 				// first pass
 				Faction.merge(gd1, curFaction, newGD, newFaction);
 			}
@@ -1099,6 +1110,7 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
 				Faction curFaction = (Faction) iter.next();
 				Faction newFaction = newGD.getFaction(curFaction.getID());
+
 				// second pass
 				Faction.merge(gd2, curFaction, newGD, newFaction);
 			}
@@ -1109,6 +1121,7 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd1.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
 				Region newRegion = newGD.getRegion(curRegion.getID());
+
 				// first pass
 				Region.merge(gd1, curRegion, newGD, newRegion, sameRound);
 			}
@@ -1118,6 +1131,7 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
 				Region newRegion = newGD.getRegion(curRegion.getID());
+
 				// second pass
 				Region.merge(gd2, curRegion, newGD, newRegion, true);
 			}
@@ -1128,6 +1142,7 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd1.islands().values().iterator(); iter.hasNext();) {
 				Island curIsland = (Island) iter.next();
 				Island newIsland = newGD.getIsland(curIsland.getID());
+
 				// first pass
 				Island.merge(gd1, curIsland, newGD, newIsland);
 			}
@@ -1137,6 +1152,7 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd2.islands().values().iterator(); iter.hasNext();) {
 				Island curIsland = (Island) iter.next();
 				Island newIsland = newGD.getIsland(curIsland.getID());
+
 				// second pass
 				Island.merge(gd2, curIsland, newGD, newIsland);
 			}
@@ -1373,9 +1389,8 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Adds the order locale of Magellan if locale is null.
-	 * This should prevent some NPE with the sideeffect to
-	 * store a locale in a locale-less game data object.
+	 * Adds the order locale of Magellan if locale is null. This should prevent some NPE with the
+	 * sideeffect to store a locale in a locale-less game data object.
 	 */
 	private void postProcessLocale() {
 		if(getLocale() == null) {
