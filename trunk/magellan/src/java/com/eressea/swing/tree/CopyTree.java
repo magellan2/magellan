@@ -76,14 +76,12 @@ public class CopyTree extends JTree implements KeyListener {
 		// delete F2-key-binding to startEditing to allow bookmarking to be activ
 		// @see com.eressea.demo.desktop.BookmarkManager
 		try {
-			((InputMap) getInputMap()).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-																  0), "none");
+			((InputMap) getInputMap()).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "none");
 		} catch(java.lang.NoSuchMethodError e) {
 			// in case of 1.2.2 JRE
 			// it's a bit crude, but unregisterKeyboardAction didn't work on my computer -
 			// for unknown reasons... so this is the compromise
-			this.unregisterKeyboardAction(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-																 0));
+			this.unregisterKeyboardAction(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 
 			// probably 1.2.2 users will have to live without bookmarking ;(
 		}
@@ -103,7 +101,7 @@ public class CopyTree extends JTree implements KeyListener {
 			return;
 		}
 
-		String   text			 = "";
+		String text = "";
 		TreePath selectedPaths[] = this.getSelectionPaths();
 
 		if(selectedPaths != null) {
@@ -143,8 +141,7 @@ public class CopyTree extends JTree implements KeyListener {
 	 */
 	public void keyPressed(KeyEvent e) {
 		if((e.getModifiers() == InputEvent.CTRL_MASK) &&
-			   ((e.getKeyCode() == KeyEvent.VK_C) ||
-			   (e.getKeyCode() == KeyEvent.VK_INSERT))) {
+			   ((e.getKeyCode() == KeyEvent.VK_C) || (e.getKeyCode() == KeyEvent.VK_INSERT))) {
 			shortCut_Copy();
 		}
 	}

@@ -41,9 +41,9 @@ import com.eressea.util.PropertiesHelper;
  * @version $Revision$
  */
 public class HistoryAccessory extends JPanel {
-	protected Properties   settings = null;
+	protected Properties settings = null;
 	protected JFileChooser chooser = null;
-	private Bucket		   history = new Bucket(6);
+	private Bucket history = new Bucket(6);
 
 	/**
 	 * Creates a new HistoryAccessory object.
@@ -53,14 +53,13 @@ public class HistoryAccessory extends JPanel {
 	 */
 	public HistoryAccessory(Properties setting, JFileChooser fileChooser) {
 		this.settings = setting;
-		this.chooser  = fileChooser;
+		this.chooser = fileChooser;
 
 		// load history fifo buffer
-		for(Iterator iter = PropertiesHelper.getList(settings,
-													 "HistoryAccessory.directoryHistory")
+		for(Iterator iter = PropertiesHelper.getList(settings, "HistoryAccessory.directoryHistory")
 											.iterator(); iter.hasNext();) {
 			String dirName = (String) iter.next();
-			File   dir = new File(dirName);
+			File dir = new File(dirName);
 
 			if(dir.exists() && dir.isDirectory()) {
 				history.add(new DirWrapper(dir));
@@ -82,14 +81,14 @@ public class HistoryAccessory extends JPanel {
 
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.anchor     = GridBagConstraints.NORTHWEST;
-			c.gridx		 = 0;
-			c.gridy		 = 0;
-			c.gridwidth  = 1;
+			c.anchor = GridBagConstraints.NORTHWEST;
+			c.gridx = 0;
+			c.gridy = 0;
+			c.gridwidth = 1;
 			c.gridheight = 1;
-			c.fill		 = GridBagConstraints.NONE;
-			c.weightx    = 0.0;
-			c.weighty    = 0.0;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
 			this.add(new JLabel("Directory History:"), c);
 
 			JComboBox cmbHistory = new JComboBox(history.toArray());
@@ -102,14 +101,14 @@ public class HistoryAccessory extends JPanel {
 					}
 				});
 
-			c.anchor     = GridBagConstraints.NORTH;
-			c.gridx		 = 0;
-			c.gridy		 = 1;
-			c.gridwidth  = 1;
+			c.anchor = GridBagConstraints.NORTH;
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = 1;
 			c.gridheight = 1;
-			c.fill		 = GridBagConstraints.NONE;
-			c.weightx    = 0.0;
-			c.weighty    = 0.0;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
 			this.add(cmbHistory, c);
 		}
 	}
@@ -124,8 +123,7 @@ public class HistoryAccessory extends JPanel {
 		}
 
 		Collections.reverse(dirs);
-		PropertiesHelper.setList(settings, "HistoryAccessory.directoryHistory",
-								 dirs);
+		PropertiesHelper.setList(settings, "HistoryAccessory.directoryHistory", dirs);
 	}
 }
 
@@ -161,8 +159,7 @@ class DirWrapper {
 		String str = new String(dirName);
 
 		if(dirName.length() > 30) {
-			str = dirName.substring(0, 10) + "..." +
-				  dirName.substring(dirName.length() - 18);
+			str = dirName.substring(0, 10) + "..." + dirName.substring(dirName.length() - 18);
 		}
 
 		return str;

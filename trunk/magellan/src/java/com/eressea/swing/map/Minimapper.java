@@ -28,7 +28,7 @@ import com.eressea.util.CollectionFactory;
  */
 public class Minimapper extends com.eressea.swing.map.Mapper {
 	private RegionShapeCellRenderer myRenderer;
-	protected int				    minimapLastType = -1;
+	protected int minimapLastType = -1;
 
 	/**
 	 * Creates new Minimapper
@@ -66,8 +66,7 @@ public class Minimapper extends com.eressea.swing.map.Mapper {
 
 	protected RenderingPlane[] initRenderingPlanes() {
 		RenderingPlane p[] = new RenderingPlane[1];
-		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION,
-											 getString("plane.region.name"), 1);
+		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION, getString("plane.region.name"), 1);
 		p[PLANE_REGION].setRenderer(myRenderer = new RegionShapeCellRenderer(getCellGeometry(),
 																			 settings,
 																			 "Minimap.FactionColors",
@@ -109,13 +108,11 @@ public class Minimapper extends com.eressea.swing.map.Mapper {
 	 */
 	public void synchronizeColors() {
 		// synchronize factions
-		myRenderer.loadFactionColors(RegionShapeCellRenderer.DEFAULT_FACTION_KEY,
-									 false);
+		myRenderer.loadFactionColors(RegionShapeCellRenderer.DEFAULT_FACTION_KEY, false);
 		myRenderer.saveFactionColors();
 
 		// synchronize regions
-		myRenderer.loadRegionColors(RegionShapeCellRenderer.DEFAULT_REGION_KEY,
-									false);
+		myRenderer.loadRegionColors(RegionShapeCellRenderer.DEFAULT_REGION_KEY, false);
 		myRenderer.saveRegionColors();
 
 		// load unknown/ocean

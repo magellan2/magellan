@@ -19,8 +19,8 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 /**
- * Simple layout that arranges the first component of the container centered
- * and spans the whole area if the corresponding mode is set.
+ * Simple layout that arranges the first component of the container centered and spans the whole
+ * area if the corresponding mode is set.
  *
  * @author Andreas
  * @version
@@ -34,7 +34,7 @@ public class CenterLayout implements LayoutManager {
 
 	/** TODO: DOCUMENT ME! */
 	public static final int SPAN_Y = 2;
-	protected int		    mode = 0;
+	protected int mode = 0;
 
 	/** TODO: DOCUMENT ME! */
 	public static final CenterLayout SPAN_X_LAYOUT = new CenterLayout(SPAN_X);
@@ -43,8 +43,7 @@ public class CenterLayout implements LayoutManager {
 	public static final CenterLayout SPAN_Y_LAYOUT = new CenterLayout(SPAN_Y);
 
 	/** TODO: DOCUMENT ME! */
-	public static final CenterLayout SPAN_BOTH_LAYOUT = new CenterLayout(SPAN_X |
-																		 SPAN_Y);
+	public static final CenterLayout SPAN_BOTH_LAYOUT = new CenterLayout(SPAN_X | SPAN_Y);
 
 	/**
 	 * Creates a new CenterLayout object.
@@ -92,7 +91,7 @@ public class CenterLayout implements LayoutManager {
 
 			Component first = container.getComponent(0);
 			Dimension pSize = first.getPreferredSize();
-			int		  x     = (size.width - pSize.width) / 2;
+			int x = (size.width - pSize.width) / 2;
 
 			if((x < 0) || ((mode & SPAN_X) != 0)) {
 				x = 0;

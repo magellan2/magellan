@@ -37,7 +37,7 @@ public class UnitRelation {
 	public UnitRelation(Unit s, int line) {
 		this.origin = s;
 		this.source = s;
-		this.line   = line;
+		this.line = line;
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class UnitRelation {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return this.getClass().getName() + "@ORIGIN=" + origin + "@SOURCE=" +
-			   source + "@line=" + line;
+		return this.getClass().getName() + "@ORIGIN=" + origin + "@SOURCE=" + source + "@line=" +
+			   line;
 	}
 
 	/**

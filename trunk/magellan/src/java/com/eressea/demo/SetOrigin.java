@@ -43,15 +43,15 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 	}
 
 	private void initComponents() {
-		btnOK     = new javax.swing.JButton();
+		btnOK = new javax.swing.JButton();
 		btnCancel = new javax.swing.JButton();
-		jPanel1   = new javax.swing.JPanel();
-		jPanel2   = new javax.swing.JPanel();
-		jLabel1   = new javax.swing.JLabel();
-		jLabel2   = new javax.swing.JLabel();
-		jLabel3   = new javax.swing.JLabel();
-		editX     = new javax.swing.JTextField();
-		editY     = new javax.swing.JTextField();
+		jPanel1 = new javax.swing.JPanel();
+		jPanel2 = new javax.swing.JPanel();
+		jLabel1 = new javax.swing.JLabel();
+		jLabel2 = new javax.swing.JLabel();
+		jLabel3 = new javax.swing.JLabel();
+		editX = new javax.swing.JTextField();
+		editY = new javax.swing.JTextField();
 		editLevel = new javax.swing.JTextField();
 		getContentPane().setLayout(new java.awt.GridBagLayout());
 		setTitle(getString("window.title"));
@@ -70,9 +70,9 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 				}
 			});
 
-		gridBagConstraints1		   = new java.awt.GridBagConstraints();
-		gridBagConstraints1.gridx  = 1;
-		gridBagConstraints1.gridy  = 1;
+		gridBagConstraints1 = new java.awt.GridBagConstraints();
+		gridBagConstraints1.gridx = 1;
+		gridBagConstraints1.gridy = 1;
 		gridBagConstraints1.insets = new java.awt.Insets(0, 0, 5, 5);
 		getContentPane().add(btnOK, gridBagConstraints1);
 
@@ -83,16 +83,16 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 				}
 			});
 
-		gridBagConstraints1		   = new java.awt.GridBagConstraints();
-		gridBagConstraints1.gridx  = 2;
-		gridBagConstraints1.gridy  = 1;
+		gridBagConstraints1 = new java.awt.GridBagConstraints();
+		gridBagConstraints1.gridx = 2;
+		gridBagConstraints1.gridy = 1;
 		gridBagConstraints1.insets = new java.awt.Insets(0, 0, 5, 5);
 		getContentPane().add(btnCancel, gridBagConstraints1);
 
-		gridBagConstraints1		    = new java.awt.GridBagConstraints();
-		gridBagConstraints1.gridx   = 0;
-		gridBagConstraints1.gridy   = 1;
-		gridBagConstraints1.fill    = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints1 = new java.awt.GridBagConstraints();
+		gridBagConstraints1.gridx = 0;
+		gridBagConstraints1.gridy = 1;
+		gridBagConstraints1.fill = java.awt.GridBagConstraints.BOTH;
 		gridBagConstraints1.weightx = 1.0;
 		getContentPane().add(jPanel1, gridBagConstraints1);
 
@@ -102,30 +102,30 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 
 		jLabel1.setText(getString("lbl.x.caption") + ":");
 
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
-		gridBagConstraints2.gridx  = 0;
-		gridBagConstraints2.gridy  = 0;
-		gridBagConstraints2.fill   = java.awt.GridBagConstraints.HORIZONTAL;
+		gridBagConstraints2 = new java.awt.GridBagConstraints();
+		gridBagConstraints2.gridx = 0;
+		gridBagConstraints2.gridy = 0;
+		gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.insets = new java.awt.Insets(5, 5, 5, 5);
 		gridBagConstraints2.anchor = java.awt.GridBagConstraints.EAST;
 		jPanel2.add(jLabel1, gridBagConstraints2);
 
 		jLabel2.setText(getString("lbl.y.caption") + ":");
 
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
-		gridBagConstraints2.gridx  = 2;
-		gridBagConstraints2.gridy  = 0;
-		gridBagConstraints2.fill   = java.awt.GridBagConstraints.HORIZONTAL;
+		gridBagConstraints2 = new java.awt.GridBagConstraints();
+		gridBagConstraints2.gridx = 2;
+		gridBagConstraints2.gridy = 0;
+		gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.insets = new java.awt.Insets(5, 0, 5, 5);
 		gridBagConstraints2.anchor = java.awt.GridBagConstraints.EAST;
 		jPanel2.add(jLabel2, gridBagConstraints2);
 
 		jLabel3.setText(getString("lbl.z.caption") + ":");
 
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
-		gridBagConstraints2.gridx  = 4;
-		gridBagConstraints2.gridy  = 0;
-		gridBagConstraints2.fill   = java.awt.GridBagConstraints.HORIZONTAL;
+		gridBagConstraints2 = new java.awt.GridBagConstraints();
+		gridBagConstraints2.gridx = 4;
+		gridBagConstraints2.gridy = 0;
+		gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.insets = new java.awt.Insets(5, 0, 5, 5);
 		gridBagConstraints2.anchor = java.awt.GridBagConstraints.EAST;
 		jPanel2.add(jLabel3, gridBagConstraints2);
@@ -134,10 +134,10 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 		editX.setText("0");
 		editX.setMinimumSize(new java.awt.Dimension(50, 20));
 
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
-		gridBagConstraints2.gridx  = 1;
-		gridBagConstraints2.gridy  = 0;
-		gridBagConstraints2.fill   = java.awt.GridBagConstraints.HORIZONTAL;
+		gridBagConstraints2 = new java.awt.GridBagConstraints();
+		gridBagConstraints2.gridx = 1;
+		gridBagConstraints2.gridy = 0;
+		gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.insets = new java.awt.Insets(5, 0, 5, 5);
 		jPanel2.add(editX, gridBagConstraints2);
 
@@ -145,10 +145,10 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 		editY.setText("0");
 		editY.setMinimumSize(new java.awt.Dimension(50, 20));
 
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
-		gridBagConstraints2.gridx  = 3;
-		gridBagConstraints2.gridy  = 0;
-		gridBagConstraints2.fill   = java.awt.GridBagConstraints.HORIZONTAL;
+		gridBagConstraints2 = new java.awt.GridBagConstraints();
+		gridBagConstraints2.gridx = 3;
+		gridBagConstraints2.gridy = 0;
+		gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.insets = new java.awt.Insets(5, 0, 5, 5);
 		jPanel2.add(editY, gridBagConstraints2);
 
@@ -156,18 +156,18 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 		editLevel.setText("0");
 		editLevel.setMinimumSize(new java.awt.Dimension(50, 20));
 
-		gridBagConstraints2		   = new java.awt.GridBagConstraints();
-		gridBagConstraints2.gridx  = 5;
-		gridBagConstraints2.gridy  = 0;
-		gridBagConstraints2.fill   = java.awt.GridBagConstraints.HORIZONTAL;
+		gridBagConstraints2 = new java.awt.GridBagConstraints();
+		gridBagConstraints2.gridx = 5;
+		gridBagConstraints2.gridy = 0;
+		gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.insets = new java.awt.Insets(5, 0, 5, 5);
 		jPanel2.add(editLevel, gridBagConstraints2);
 
-		gridBagConstraints1			  = new java.awt.GridBagConstraints();
+		gridBagConstraints1 = new java.awt.GridBagConstraints();
 		gridBagConstraints1.gridwidth = 3;
-		gridBagConstraints1.fill	  = java.awt.GridBagConstraints.BOTH;
-		gridBagConstraints1.weightx   = 1.0;
-		gridBagConstraints1.weighty   = 1.0;
+		gridBagConstraints1.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints1.weightx = 1.0;
+		gridBagConstraints1.weighty = 1.0;
 		getContentPane().add(jPanel2, gridBagConstraints1);
 	}
 
@@ -177,8 +177,8 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 		int iLevel;
 
 		try {
-			iX     = Integer.parseInt(editX.getText());
-			iY     = Integer.parseInt(editY.getText());
+			iX = Integer.parseInt(editX.getText());
+			iY = Integer.parseInt(editY.getText());
 			iLevel = Integer.parseInt(editLevel.getText());
 
 			data.placeOrigin(new Coordinate(iX, iY, iLevel));
@@ -197,13 +197,13 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 		quit();
 	}
 
-	private javax.swing.JButton    btnOK;
-	private javax.swing.JButton    btnCancel;
-	private javax.swing.JPanel     jPanel1;
-	private javax.swing.JPanel     jPanel2;
-	private javax.swing.JLabel     jLabel1;
-	private javax.swing.JLabel     jLabel2;
-	private javax.swing.JLabel     jLabel3;
+	private javax.swing.JButton btnOK;
+	private javax.swing.JButton btnCancel;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
 	private javax.swing.JTextField editX;
 	private javax.swing.JTextField editY;
 	private javax.swing.JTextField editLevel;

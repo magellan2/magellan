@@ -22,12 +22,12 @@ import com.eressea.ID;
  * @version $Revision$
  */
 public class ShipType extends UnitContainerType {
-	private int maxSize		 = -1;
-	private int buildLevel   = -1;
-	private int range		 = -1;
-	private int capacity     = -1;
+	private int maxSize = -1;
+	private int buildLevel = -1;
+	private int range = -1;
+	private int capacity = -1;
 	private int captainLevel = -1;
-	private int sailorLevel  = -1;
+	private int sailorLevel = -1;
 
 	/**
 	 * Creates a new ShipType object.
@@ -147,9 +147,9 @@ public class ShipType extends UnitContainerType {
 	}
 
 	/**
-	 * Indicates whether this ShipType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class ShipType
-	 * and o's id is equal to the id of this  ShipType object.
+	 * Indicates whether this ShipType object is equal to another object. Returns true only if o is
+	 * not null and an instance of class ShipType and o's id is equal to the id of this  ShipType
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -157,13 +157,12 @@ public class ShipType extends UnitContainerType {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof ShipType &&
-			   this.getID().equals(((ShipType) o).getID()));
+			   (o instanceof ShipType && this.getID().equals(((ShipType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on ShipType objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on ShipType objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

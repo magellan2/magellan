@@ -26,18 +26,14 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class Island extends DescribedObject {
-	/**
-	 * The game data required to construct the collection of regions belonging
-	 * to this island.
-	 */
+	/** The game data required to construct the collection of regions belonging to this island. */
 	private GameData data = null;
 
 	/**
-	 * Constructs a new Island object uniquely identifiable by the specified
-	 * id.
+	 * Constructs a new Island object uniquely identifiable by the specified id.
 	 *
-	 * @param id allows this island to return all region objects that belong to
-	 * 		  it via the<tt>regions()</tt> and <tt>getRegion()</tt> methods.
+	 * @param id allows this island to return all region objects that belong to it via
+	 * 		  the<tt>regions()</tt> and <tt>getRegion()</tt> methods.
 	 * @param data TODO: DOCUMENT ME!
 	 */
 	public Island(ID id, GameData data) {
@@ -46,9 +42,9 @@ public class Island extends DescribedObject {
 	}
 
 	/**
-	 * Indicates whether this Island object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Island and o's id
-	 * is equal to the id of this  Island object.
+	 * Indicates whether this Island object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Island and o's id is equal to the id of this  Island
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -59,8 +55,8 @@ public class Island extends DescribedObject {
 	}
 
 	/**
-	 * Imposes a natural ordering on Island objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Island objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -80,22 +76,19 @@ public class Island extends DescribedObject {
 	}
 
 	/**
-	 * Contains all regions that are in this region. This map is updated
-	 * lazily, i.e. this container is notified every time an object is added
-	 * or removed and it refreshes that map only when it is accessed from
-	 * outside. This strategy has two major advantages over one drawback. On
-	 * the one hand, it reduces memory consumption, as the map is only
-	 * allocated with data when acually needed. Since the map is used like a
-	 * cache, the computational overhead is acceptable. Furthermore, the
-	 * complexity of merging to game data objects is significantly reduced
-	 * because there are no more consistency  issues between such maps and the
-	 * contained objects referring to this container. On the other hand, there
-	 * is basically no code re-use, which could be realized through
-	 * inheritance (not applicable here) or by using a generic data structure,
-	 * which itself has again the disadvantage of lacking type safety. Also,
-	 * without wrapping it there is again the problem of either having to deal
-	 * with null values outside this class or increased memory consumption by
-	 * always allocating this data structure.
+	 * Contains all regions that are in this region. This map is updated lazily, i.e. this
+	 * container is notified every time an object is added or removed and it refreshes that map
+	 * only when it is accessed from outside. This strategy has two major advantages over one
+	 * drawback. On the one hand, it reduces memory consumption, as the map is only allocated with
+	 * data when acually needed. Since the map is used like a cache, the computational overhead is
+	 * acceptable. Furthermore, the complexity of merging to game data objects is significantly
+	 * reduced because there are no more consistency  issues between such maps and the contained
+	 * objects referring to this container. On the other hand, there is basically no code re-use,
+	 * which could be realized through inheritance (not applicable here) or by using a generic
+	 * data structure, which itself has again the disadvantage of lacking type safety. Also,
+	 * without wrapping it there is again the problem of either having to deal with null values
+	 * outside this class or increased memory consumption by always allocating this data
+	 * structure.
 	 */
 	private Map regions = null;
 
@@ -135,19 +128,17 @@ public class Island extends DescribedObject {
 	}
 
 	/**
-	 * Informs this container that a region was added or removed. It is
-	 * mandatory that this function is called every time a region is added or
-	 * removed from this container for keeping the objects returned by the
-	 * getRegion() and regions() methods consistent.
+	 * Informs this container that a region was added or removed. It is mandatory that this
+	 * function is called every time a region is added or removed from this container for keeping
+	 * the objects returned by the getRegion() and regions() methods consistent.
 	 */
 	public void invalidateRegions() {
 		regionsInvalidated = true;
 	}
 
 	/**
-	 * Recreates the map of regions in this container. This function is called
-	 * every time the collection of regions is accessed and the
-	 * regionsInvalidated variable is true.
+	 * Recreates the map of regions in this container. This function is called every time the
+	 * collection of regions is accessed and the regionsInvalidated variable is true.
 	 */
 	private void refreshRegions() {
 		if(regions == null) {
@@ -155,9 +146,9 @@ public class Island extends DescribedObject {
 		} else {
 			regions.clear();
 		}
-		
+
 		if(data.regions() != null) {
-			for(Iterator iter = data.regions().values().iterator(); iter.hasNext(); ) {
+			for(Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
 				if(this.equals(r.getIsland())) {
@@ -177,8 +168,7 @@ public class Island extends DescribedObject {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newIsland TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Island curIsland, GameData newGD,
-							 Island newIsland) {
+	public static void merge(GameData curGD, Island curIsland, GameData newGD, Island newIsland) {
 		if(curIsland.getName() != null) {
 			newIsland.setName(curIsland.getName());
 		}
@@ -190,35 +180,42 @@ public class Island extends DescribedObject {
 		newIsland.invalidateRegions();
 	}
 
-
-	/** 
+	/**
 	 * Sets the Map of regions. This shall solely called by GameData.postProcess.
+	 *
+	 * @param r TODO: DOCUMENT ME!
 	 */
 	private void setRegions(Map r) {
 		this.regions = r;
 		regionsInvalidated = false;
-	} 
+	}
 
-	/**  
+	/**
 	 * Postprocess of Island objects. The Regions of the GameData are attached to their Island.
+	 *
+	 * @param data TODO: DOCUMENT ME!
 	 */
 	public static void postProcess(GameData data) {
 		// create a map of region maps for every Island
 		Map islandMap = CollectionFactory.createHashtable();
-		for(Iterator iter = data.regions().values().iterator(); iter.hasNext(); ) {
+
+		for(Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
 			Region r = (Region) iter.next();
+
 			if(r.getIsland() != null) {
 				Map actRegionMap = (Map) islandMap.get(r.getIsland());
+
 				if(actRegionMap == null) {
 					actRegionMap = CollectionFactory.createHashtable();
 					islandMap.put(r.getIsland(), actRegionMap);
 				}
+
 				actRegionMap.put(r.getID(), r);
 			}
 		}
-		
+
 		// setRegions for every Island in the map of region maps.
-		for(Iterator iter = islandMap.keySet().iterator(); iter.hasNext(); ) {
+		for(Iterator iter = islandMap.keySet().iterator(); iter.hasNext();) {
 			Island island = (Island) iter.next();
 			Map actRegionMap = (Map) islandMap.get(island);
 			island.setRegions(actRegionMap);

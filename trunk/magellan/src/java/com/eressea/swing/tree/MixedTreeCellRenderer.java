@@ -27,7 +27,7 @@ import javax.swing.tree.TreeCellRenderer;
  * @version
  */
 public class MixedTreeCellRenderer implements TreeCellRenderer {
-	protected Map			   renderers;
+	protected Map renderers;
 	protected TreeCellRenderer def;
 
 	/**
@@ -36,7 +36,7 @@ public class MixedTreeCellRenderer implements TreeCellRenderer {
 	 * @param def TODO: DOCUMENT ME!
 	 */
 	public MixedTreeCellRenderer(TreeCellRenderer def) {
-		this.def  = def;
+		this.def = def;
 		renderers = new HashMap();
 	}
 
@@ -86,12 +86,9 @@ public class MixedTreeCellRenderer implements TreeCellRenderer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public java.awt.Component getTreeCellRendererComponent(javax.swing.JTree jTree,
-														   java.lang.Object obj,
-														   boolean param,
-														   boolean param3,
-														   boolean param4,
-														   int param5,
-														   boolean param6) {
+														   java.lang.Object obj, boolean param,
+														   boolean param3, boolean param4,
+														   int param5, boolean param6) {
 		Object o = obj;
 
 		if(obj instanceof DefaultMutableTreeNode) {
@@ -101,8 +98,8 @@ public class MixedTreeCellRenderer implements TreeCellRenderer {
 		TreeCellRenderer tcr = findRenderer(o.getClass());
 
 		if(tcr != null) {
-			return tcr.getTreeCellRendererComponent(jTree, obj, param, param3,
-													param4, param5, param6);
+			return tcr.getTreeCellRendererComponent(jTree, obj, param, param3, param4, param5,
+													param6);
 		}
 
 		return null;

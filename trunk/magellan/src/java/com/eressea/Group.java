@@ -24,9 +24,9 @@ import com.eressea.util.ExternalTagMap;
  * A class representing a group of units within a faction.
  */
 public class Group extends NamedObject {
-	private Faction				  faction     = null;
-	private Map					  allies	  = CollectionFactory.createOrderedHashtable();
-	private GameData			  data		  = null;
+	private Faction faction = null;
+	private Map allies = CollectionFactory.createOrderedHashtable();
+	private GameData data = null;
 	private static ExternalTagMap externalMap = null; // Map for external tags
 
 	/**
@@ -84,10 +84,9 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * The alliances specific to this group. The map returned by this function
-	 * contains <tt>ID</tt> objects as keys with the id of the faction that
-	 * alliance references. The values are instances of class
-	 * <tt>Alliance</tt>. The return value is never null.
+	 * The alliances specific to this group. The map returned by this function contains <tt>ID</tt>
+	 * objects as keys with the id of the faction that alliance references. The values are
+	 * instances of class <tt>Alliance</tt>. The return value is never null.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -120,8 +119,7 @@ public class Group extends NamedObject {
 	private int sortIndex = -1;
 
 	/**
-	 * Sets an index indicating how instances of class are sorted in the
-	 * report.
+	 * Sets an index indicating how instances of class are sorted in the report.
 	 *
 	 * @param index TODO: DOCUMENT ME!
 	 */
@@ -130,8 +128,7 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Returns an index indicating how instances of class are sorted in the
-	 * report.
+	 * Returns an index indicating how instances of class are sorted in the report.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -178,8 +175,7 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Adds a unit to this container. This method should only be invoked by
-	 * Unit.setXXX() methods.
+	 * Adds a unit to this container. This method should only be invoked by Unit.setXXX() methods.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 */
@@ -195,8 +191,8 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Removes a unit from this container. This method should only be invoked
-	 * by Unit.setXXX() methods.
+	 * Removes a unit from this container. This method should only be invoked by Unit.setXXX()
+	 * methods.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
@@ -229,9 +225,8 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this Group object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Group and o's id is
-	 * equal to the id of this Group object.
+	 * Indicates whether this Group object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Group and o's id is equal to the id of this Group object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -246,8 +241,7 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Imposes a natural ordering on Group objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Group objects equivalent to the natural ordering of their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -258,16 +252,14 @@ public class Group extends NamedObject {
 	}
 
 	/**
-	 * Transfers all available information from the current group to the new
-	 * one.
+	 * Transfers all available information from the current group to the new one.
 	 *
 	 * @param curGD fully loaded game data
 	 * @param curGroup a fully initialized and valid group
 	 * @param newGD the game data to be updated
 	 * @param newGroup a group to be updated with the data from curGroup
 	 */
-	public static void merge(GameData curGD, Group curGroup, GameData newGD,
-							 Group newGroup) {
+	public static void merge(GameData curGD, Group curGroup, GameData newGD, Group newGroup) {
 		if(curGroup.getName() != null) {
 			newGroup.setName(curGroup.getName());
 		}
@@ -279,12 +271,10 @@ public class Group extends NamedObject {
 				newGroup.allies.clear();
 			}
 
-			for(Iterator iter = curGroup.allies.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curGroup.allies.values().iterator(); iter.hasNext();) {
 				Alliance alliance = (Alliance) iter.next();
-				Faction  ally = newGD.getFaction(alliance.getFaction().getID());
-				newGroup.allies.put(ally.getID(),
-									new Alliance(ally, alliance.getState()));
+				Faction ally = newGD.getFaction(alliance.getFaction().getID());
+				newGroup.allies.put(ally.getID(), new Alliance(ally, alliance.getState()));
 			}
 		}
 

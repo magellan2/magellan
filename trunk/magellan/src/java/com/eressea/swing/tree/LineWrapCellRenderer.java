@@ -48,17 +48,15 @@ import javax.swing.tree.TreePath;
  * @author Andreas
  * @version
  */
-public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
-															ComponentListener
-{
+public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer, ComponentListener {
 	protected DefaultTreeCellRenderer defaultRenderer;
-	protected Icon					  icon;
-	protected String				  text;
-	protected int					  lastLength     = -1;
-	protected Color					  textColor;
-	protected Color					  textBackground;
-	protected Color					  textFocus;
-	protected LinkedList			  buf			 = new LinkedList();
+	protected Icon icon;
+	protected String text;
+	protected int lastLength = -1;
+	protected Color textColor;
+	protected Color textBackground;
+	protected Color textFocus;
+	protected LinkedList buf = new LinkedList();
 
 	/** Holds value of property lineWrap. */
 	private boolean lineWrap;
@@ -93,9 +91,9 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 	}
 
 	protected int getIndent(JTree tree, BasicTreeUI tui, int row) {
-		int		 width = tui.getLeftChildIndent() + tui.getRightChildIndent();
+		int width = tui.getLeftChildIndent() + tui.getRightChildIndent();
 		TreePath path = tree.getPathForRow(row);
-		int		 j    = 0;
+		int j = 0;
 
 		if(path != null) {
 			j = path.getPathCount() - 1;
@@ -123,19 +121,18 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 
 		Insets in = getInsets();
 
-		int    maxLength = treeWidth - indent - labelWidth - 3 - in.left -
-						   in.right;
+		int maxLength = treeWidth - indent - labelWidth - 3 - in.left - in.right;
 		lastLength = maxLength;
 
 		AttributedString string = new AttributedString(text);
 		string.addAttribute(TextAttribute.FONT, getFont());
 
-		AttributedCharacterIterator it	    = string.getIterator();
-		FontRenderContext		    context = ((Graphics2D) tree.getGraphics()).getFontRenderContext();
-		LineBreakMeasurer		    lbm     = new LineBreakMeasurer(it, context);
+		AttributedCharacterIterator it = string.getIterator();
+		FontRenderContext context = ((Graphics2D) tree.getGraphics()).getFontRenderContext();
+		LineBreakMeasurer lbm = new LineBreakMeasurer(it, context);
 
-		int						    height = 0;
-		float					    help   = 0;
+		int height = 0;
+		float help = 0;
 
 		while(lbm.getPosition() < it.getEndIndex()) {
 			TextLayout tl = lbm.nextLayout(maxLength);
@@ -152,8 +149,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 			height = Math.max(height, icon.getIconHeight());
 		}
 
-		setPreferredSize(new Dimension(treeWidth - indent - 1,
-									   height + in.top + in.bottom + 2));
+		setPreferredSize(new Dimension(treeWidth - indent - 1, height + in.top + in.bottom + 2));
 
 		return true;
 	}
@@ -176,8 +172,8 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 	 * @param g TODO: DOCUMENT ME!
 	 */
 	public void paintComponent(Graphics g) {
-		int		  x = 0;
-		int		  y = 1;
+		int x = 0;
+		int y = 1;
 
 		Dimension size = getSize();
 
@@ -195,18 +191,17 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 
 		if((lastLength != -1) && (g instanceof Graphics2D)) {
 			// break text
-			Graphics2D		 g2 = (Graphics2D) g;
+			Graphics2D g2 = (Graphics2D) g;
 
 			AttributedString string = new AttributedString(text);
 			string.addAttribute(TextAttribute.FONT, getFont());
 			string.addAttribute(TextAttribute.FOREGROUND, textColor);
 
-			AttributedCharacterIterator it	    = string.getIterator();
-			FontRenderContext		    context = g2.getFontRenderContext();
-			LineBreakMeasurer		    lbm     = new LineBreakMeasurer(it,
-																		context);
+			AttributedCharacterIterator it = string.getIterator();
+			FontRenderContext context = g2.getFontRenderContext();
+			LineBreakMeasurer lbm = new LineBreakMeasurer(it, context);
 
-			float help  = 0;
+			float help = 0;
 			float help2 = 0;
 
 			while(lbm.getPosition() < it.getEndIndex()) {
@@ -226,7 +221,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 			}
 
 			height = (int) Math.ceil(help);
-			width  = (int) Math.ceil(help2);
+			width = (int) Math.ceil(help2);
 
 			if(textBackground != null) {
 				g.setColor(textBackground);
@@ -252,7 +247,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 		} else {
 			// draw a singe text line
 			FontMetrics fm = g.getFontMetrics(getFont());
-			width  = fm.stringWidth(text);
+			width = fm.stringWidth(text);
 			height = fm.getAscent() + fm.getDescent();
 
 			if(textBackground != null) {
@@ -286,28 +281,24 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public java.awt.Component getTreeCellRendererComponent(javax.swing.JTree jTree,
-														   java.lang.Object obj,
-														   boolean param,
-														   boolean param3,
-														   boolean param4,
-														   int param5,
-														   boolean param6) {
-		icon		   = null;
+														   java.lang.Object obj, boolean param,
+														   boolean param3, boolean param4,
+														   int param5, boolean param6) {
+		icon = null;
 		textBackground = null;
-		textFocus	   = null;
-		lastLength     = -1;
+		textFocus = null;
+		lastLength = -1;
 
-		text = jTree.convertValueToText(obj, param, param3, param4, param5,
-										param6);
+		text = jTree.convertValueToText(obj, param, param3, param4, param5, param6);
 
 		if(defaultRenderer != null) {
 			if(param) {
 				textBackground = defaultRenderer.getBackgroundSelectionColor();
-				textColor	   = defaultRenderer.getTextSelectionColor();
-				textFocus	   = defaultRenderer.getBorderSelectionColor();
+				textColor = defaultRenderer.getTextSelectionColor();
+				textFocus = defaultRenderer.getBorderSelectionColor();
 			} else {
 				textBackground = defaultRenderer.getBackgroundNonSelectionColor();
-				textColor	   = defaultRenderer.getTextNonSelectionColor();
+				textColor = defaultRenderer.getTextNonSelectionColor();
 			}
 
 			if(param4) {
@@ -322,7 +313,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 		} else {
 			if(param) {
 				textBackground = Color.blue.brighter();
-				textFocus	   = Color.blue;
+				textFocus = Color.blue;
 			} else {
 				textBackground = Color.white;
 			}
@@ -330,7 +321,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 			textColor = Color.black;
 		}
 
-		TreeUI  ui   = jTree.getUI();
+		TreeUI ui = jTree.getUI();
 		boolean init = false;
 
 		if(lineWrap && ui instanceof BasicTreeUI) {
@@ -359,7 +350,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 		 */
 		if(ui instanceof BasicTreeUI) {
 			BasicTreeUI tui = (BasicTreeUI) ui;
-			int		    i = tui.getLeftChildIndent();
+			int i = tui.getLeftChildIndent();
 			tui.setLeftChildIndent(i + 1);
 			tui.setLeftChildIndent(i);
 		}
@@ -421,8 +412,8 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 	}
 
 	protected class SimpleLayout implements LayoutManager {
-		protected Dimension inDim     = new Dimension(0, 0);
-		protected boolean   inCompute = false;
+		protected Dimension inDim = new Dimension(0, 0);
+		protected boolean inCompute = false;
 
 		/**
 		 * TODO: DOCUMENT ME!
@@ -438,12 +429,11 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 
 			inCompute = true;
 
-			Dimension dim  = container.getComponent(0).getMinimumSize();
+			Dimension dim = container.getComponent(0).getMinimumSize();
 			Dimension dim2 = container.getComponent(1).getMinimumSize();
-			Insets    in   = container.getInsets();
+			Insets in = container.getInsets();
 			dim.width += (dim2.width + in.left + in.right);
-			dim.height = Math.max(dim.height, dim2.height) + in.top +
-						 in.bottom;
+			dim.height = Math.max(dim.height, dim2.height) + in.top + in.bottom;
 			inCompute = false;
 
 			return dim;
@@ -455,8 +445,7 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 		 * @param str TODO: DOCUMENT ME!
 		 * @param component TODO: DOCUMENT ME!
 		 */
-		public void addLayoutComponent(java.lang.String str,
-									   java.awt.Component component) {
+		public void addLayoutComponent(java.lang.String str, java.awt.Component component) {
 		}
 
 		/**
@@ -466,9 +455,9 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 		 */
 		public void layoutContainer(java.awt.Container container) {
 			// always use pref sizes
-			Component c   = container.getComponent(0);
+			Component c = container.getComponent(0);
 			Dimension dim = c.getPreferredSize();
-			Insets    in  = container.getInsets();
+			Insets in = container.getInsets();
 			c.setBounds(in.left, in.top, dim.width, dim.height);
 
 			c = container.getComponent(1);
@@ -499,12 +488,11 @@ public class LineWrapCellRenderer extends JPanel implements TreeCellRenderer,
 
 			inCompute = true;
 
-			Dimension dim  = container.getComponent(0).getPreferredSize();
+			Dimension dim = container.getComponent(0).getPreferredSize();
 			Dimension dim2 = container.getComponent(1).getPreferredSize();
-			Insets    in   = container.getInsets();
+			Insets in = container.getInsets();
 			dim.width += (dim2.width + in.left + in.right);
-			dim.height = Math.max(dim.height, dim2.height) + in.top +
-						 in.bottom;
+			dim.height = Math.max(dim.height, dim2.height) + in.top + in.bottom;
 			inCompute = false;
 
 			return dim;

@@ -26,16 +26,13 @@ import com.eressea.rules.ItemType;
 import com.eressea.util.CollectionFactory;
 
 /**
- * Replaces a item name string with the number of that item in the given
- * region.
+ * Replaces a item name string with the number of that item in the given region.
  *
  * @author unknown
  * @version
  */
-public class ItemTypeReplacer extends AbstractParameterReplacer
-	implements EnvironmentDependent
-{
-	private static final Integer  ZERO		  = new Integer(0);
+public class ItemTypeReplacer extends AbstractParameterReplacer implements EnvironmentDependent {
+	private static final Integer ZERO = new Integer(0);
 	protected ReplacerEnvironment environment;
 
 	/**
@@ -54,9 +51,9 @@ public class ItemTypeReplacer extends AbstractParameterReplacer
 	 */
 	public Object getReplacement(Object o) {
 		if(o instanceof Region) {
-			String     items = getParameter(0, o).toString();
-			int		   count = 0;
-			Collection c     = ((UnitSelection) environment.getPart(ReplacerEnvironment.UNITSELECTION_PART)).getUnits((Region) o);
+			String items = getParameter(0, o).toString();
+			int count = 0;
+			Collection c = ((UnitSelection) environment.getPart(ReplacerEnvironment.UNITSELECTION_PART)).getUnits((Region) o);
 
 			if(c == null) {
 				return null;
@@ -65,11 +62,11 @@ public class ItemTypeReplacer extends AbstractParameterReplacer
 			Iterator it = c.iterator();
 
 			while(it.hasNext()) {
-				Unit     u   = (Unit) it.next();
+				Unit u = (Unit) it.next();
 				Iterator it2 = u.getItems().iterator();
 
 				while(it2.hasNext()) {
-					Item     i   = (Item) it2.next();
+					Item i = (Item) it2.next();
 					ItemType ity = i.getItemType();
 
 					if(ity.getName().equalsIgnoreCase(items) ||

@@ -25,17 +25,16 @@ import javax.swing.text.TextAction;
 import javax.swing.text.Utilities;
 
 /**
- * This object is designed to change the default behaviour of JTextPane. I
- * (Ilja Pavkovic) personally dislike the way &lt;CTRL&gt;-&lt;Right&gt; and
- * &lt;CTRL&gt;-&lt;Left;gt; is handled.  Therefore I changed NextWordAction
- * and PreviousWordAction.
+ * This object is designed to change the default behaviour of JTextPane. I (Ilja Pavkovic)
+ * personally dislike the way &lt;CTRL&gt;-&lt;Right&gt; and &lt;CTRL&gt;-&lt;Left;gt; is handled.
+ * Therefore I changed NextWordAction and PreviousWordAction.
  */
 public class OrderEditorKit extends StyledEditorKit {
 	/** TODO: DOCUMENT ME! */
 	public static final String copyLineActionKeyStroke = "ctrl shift C";
 
 	/** TODO: DOCUMENT ME! */
-	public static final String  copyLineAction   = "copy-line-to-clipboard";
+	public static final String copyLineAction = "copy-line-to-clipboard";
 	private static final Action defaultActions[] = {
 													   new CopyLineAction(),
 													   new PreviousWordAction(previousWordAction,
@@ -53,15 +52,13 @@ public class OrderEditorKit extends StyledEditorKit {
 	}
 
 	/**
-	 * Fetches the order list for the editor.  This is the list of orders
-	 * supported by the superclass augmented by the collection of orders
-	 * defined locally for style operations.
+	 * Fetches the order list for the editor.  This is the list of orders supported by the
+	 * superclass augmented by the collection of orders defined locally for style operations.
 	 *
 	 * @return the order list
 	 */
 	public Action[] getActions() {
-		return TextAction.augmentList(super.getActions(),
-									  OrderEditorKit.defaultActions);
+		return TextAction.augmentList(super.getActions(), OrderEditorKit.defaultActions);
 	}
 
 	/**
@@ -85,11 +82,10 @@ public class OrderEditorKit extends StyledEditorKit {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			JTextComponent target = getTextComponent(e);
-			int			   caret = target.getCaretPosition();
-			String		   text  = target.getText();
+			int caret = target.getCaretPosition();
+			String text = target.getText();
 
-			int			   from = text.substring(0, caret).lastIndexOf("\n") +
-								  1;
+			int from = text.substring(0, caret).lastIndexOf("\n") + 1;
 
 			int to = text.indexOf("\n", caret);
 
@@ -116,8 +112,7 @@ public class OrderEditorKit extends StyledEditorKit {
 		 * Create this action with the appropriate identifier.
 		 *
 		 * @param nm the name of the action, Action.NAME.
-		 * @param select whether to extend the selection when changing the
-		 * 		  caret position.
+		 * @param select whether to extend the selection when changing the caret position.
 		 */
 		NextWordAction(String nm, boolean select) {
 			super(nm);
@@ -184,8 +179,7 @@ public class OrderEditorKit extends StyledEditorKit {
 		 * Create this action with the appropriate identifier.
 		 *
 		 * @param nm the name of the action, Action.NAME.
-		 * @param select whether to extend the selection when changing the
-		 * 		  caret position.
+		 * @param select whether to extend the selection when changing the caret position.
 		 */
 		PreviousWordAction(String nm, boolean select) {
 			super(nm);
@@ -201,13 +195,12 @@ public class OrderEditorKit extends StyledEditorKit {
 			JTextComponent target = getTextComponent(e);
 
 			if(target != null) {
-				int oldPos   = target.getCaretPosition();
+				int oldPos = target.getCaretPosition();
 				int rowStart = -1;
-				int newPos   = -1;
+				int newPos = -1;
 
 				try {
-					rowStart = Utilities.getParagraphElement(target, oldPos)
-										.getStartOffset();
+					rowStart = Utilities.getParagraphElement(target, oldPos).getStartOffset();
 					newPos = Utilities.getPreviousWord(target, oldPos);
 				} catch(BadLocationException bl) {
 				}

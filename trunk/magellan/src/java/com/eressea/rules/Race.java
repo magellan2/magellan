@@ -26,10 +26,10 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class Race extends UnitContainerType {
-	private int   recruit	   = 0;
-	private float weight	   = 0;
-	private float capacity     = 0;
-	private Map   skillBonuses = null;
+	private int recruit = 0;
+	private float weight = 0;
+	private float capacity = 0;
+	private Map skillBonuses = null;
 
 	/**
 	 * Creates a new Race object.
@@ -99,8 +99,8 @@ public class Race extends UnitContainerType {
 	 *
 	 * @param skillType TODO: DOCUMENT ME!
 	 *
-	 * @return the bonus for the specified skill or 0, if no bonus-information
-	 * 		   is available for this skill.
+	 * @return the bonus for the specified skill or 0, if no bonus-information is available for
+	 * 		   this skill.
 	 */
 	public int getSkillBonus(SkillType skillType) {
 		int bonus = 0;
@@ -166,8 +166,7 @@ public class Race extends UnitContainerType {
 	 * @param regionType TODO: DOCUMENT ME!
 	 * @param bonus TODO: DOCUMENT ME!
 	 */
-	public void setSkillBonus(SkillType skillType, RegionType regionType,
-							  int bonus) {
+	public void setSkillBonus(SkillType skillType, RegionType regionType, int bonus) {
 		// let's do a dirty trick and abuse skillBonuses for these 
 		// bonuses too *g*, the index is the regionType id, the value
 		// is a map containing the skills like in skillBonuses
@@ -186,22 +185,19 @@ public class Race extends UnitContainerType {
 	}
 
 	/**
-	 * Indicates whether this Race object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Race and o's id is
-	 * equal to the id of this  Race object.
+	 * Indicates whether this Race object is equal to another object. Returns true only if o is not
+	 * null and an instance of class Race and o's id is equal to the id of this  Race object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof Race && this.getID().equals(((Race) o).getID()));
+		return (this == o) || (o instanceof Race && this.getID().equals(((Race) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on Race objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Race objects equivalent to the natural ordering of their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

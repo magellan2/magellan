@@ -14,10 +14,9 @@
 package com.eressea.event;
 
 /**
- * The listener interface for receiving temp unit events. A class interested in
- * temp unit events implements this interface and registers with an instance
- * of the EventDispatcher class to receive such events. Temp unit events are
- * issued when a temporary unit is created or deleted.
+ * The listener interface for receiving temp unit events. A class interested in temp unit events
+ * implements this interface and registers with an instance of the EventDispatcher class to
+ * receive such events. Temp unit events are issued when a temporary unit is created or deleted.
  *
  * @see TempUnitEvent
  * @see EventDispatcher

@@ -19,19 +19,18 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A LRU-like organized collection, i.e. calls to the add() method always
- * insert elements at the front of the collection. If an already exisiting
- * element is added to the bucket it is moved to the front of the bucket. If a
- * maximum size is set for the bucket it does not grow beyond this limit by
- * dropping elements at the end of the bucket.
+ * A LRU-like organized collection, i.e. calls to the add() method always insert elements at the
+ * front of the collection. If an already exisiting element is added to the bucket it is moved to
+ * the front of the bucket. If a maximum size is set for the bucket it does not grow beyond this
+ * limit by dropping elements at the end of the bucket.
  */
 public class Bucket extends AbstractCollection {
-	private int  maxSize = -1;
+	private int maxSize = -1;
 	private List data = CollectionFactory.createLinkedList();
 
 	/**
-	 * Creates a Bucket object with unlimited maximum size. I.e. this bucket
-	 * will never drop elements by itself.
+	 * Creates a Bucket object with unlimited maximum size. I.e. this bucket will never drop
+	 * elements by itself.
 	 */
 	public Bucket() {
 		this(-1);
@@ -47,10 +46,9 @@ public class Bucket extends AbstractCollection {
 	}
 
 	/**
-	 * Add an object to the front of the bucket. If the number of elements in
-	 * the bucket exceeds the bucket's maximum size an element at the end of
-	 * the bucket is dropped. If object o is already contained in the bucket,
-	 * it is moved to the front of the bucket.
+	 * Add an object to the front of the bucket. If the number of elements in the bucket exceeds
+	 * the bucket's maximum size an element at the end of the bucket is dropped. If object o is
+	 * already contained in the bucket, it is moved to the front of the bucket.
 	 *
 	 * @param o object to add to the bucket.
 	 *
@@ -129,8 +127,7 @@ public class Bucket extends AbstractCollection {
 		if(o instanceof Bucket) {
 			Bucket b = (Bucket) o;
 
-			if((this.getMaxSize() == b.getMaxSize()) &&
-				   (this.size() == b.size())) {
+			if((this.getMaxSize() == b.getMaxSize()) && (this.size() == b.size())) {
 				Iterator i1 = this.iterator();
 				Iterator i2 = b.iterator();
 
@@ -228,8 +225,7 @@ public class Bucket extends AbstractCollection {
 	}
 
 	/**
-	 * Returns the maximum size of this bucket that it is not allowed to
-	 * outgrow.
+	 * Returns the maximum size of this bucket that it is not allowed to outgrow.
 	 *
 	 * @return number of items the bucket may contain.
 	 */
@@ -238,9 +234,9 @@ public class Bucket extends AbstractCollection {
 	}
 
 	/**
-	 * Sets the specified maximum size for this bucket. If there are more
-	 * elements in the bucket than maxSize, elements at the end of the bucket
-	 * are dropped until the size of the bucket equals maxSize.
+	 * Sets the specified maximum size for this bucket. If there are more elements in the bucket
+	 * than maxSize, elements at the end of the bucket are dropped until the size of the bucket
+	 * equals maxSize.
 	 *
 	 * @param maxSize number of items the bucket may contain.
 	 */

@@ -47,10 +47,8 @@ public class ExportCRAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		CRWriterDialog d = new CRWriterDialog(client, true, client.getData(),
-											  client.getSettings(),
-											  client.getSelectedRegions()
-													.values());
+		CRWriterDialog d = new CRWriterDialog(client, true, client.getData(), client.getSettings(),
+											  client.getSelectedRegions().values());
 		d.setVisible(true);
 	}
 

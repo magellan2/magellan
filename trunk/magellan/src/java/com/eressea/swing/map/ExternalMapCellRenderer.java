@@ -16,8 +16,8 @@ package com.eressea.swing.map;
 import java.util.ResourceBundle;
 
 /**
- * An interface for plug-in renderers. It allows to connect a properties object
- * directly (not through normal getString()).
+ * An interface for plug-in renderers. It allows to connect a properties object directly (not
+ * through normal getString()).
  *
  * @author Andreas
  * @version

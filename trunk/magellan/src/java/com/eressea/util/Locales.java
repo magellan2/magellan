@@ -17,19 +17,18 @@ import java.util.Locale;
 import java.util.Properties;
 
 /**
- * Helper class for centrally managing different locales. This class provides
- * the locales statically. Optionally, you can specify a Properties object
- * from which this class determines which Locale to use. If the Locales are
- * changed this is also recorded in the Properties object.
+ * Helper class for centrally managing different locales. This class provides the locales
+ * statically. Optionally, you can specify a Properties object from which this class determines
+ * which Locale to use. If the Locales are changed this is also recorded in the Properties object.
  */
 public class Locales {
-	private static Properties settings    = null;
-	private static Locale     guiLocale   = null;
-	private static Locale     orderLocale = null;
+	private static Properties settings = null;
+	private static Locale guiLocale = null;
+	private static Locale orderLocale = null;
 
 	/**
-	 * Provides this class with settings to load the default locales from and
-	 * store them to, if they are changed.
+	 * Provides this class with settings to load the default locales from and store them to, if
+	 * they are changed.
 	 *
 	 * @param p TODO: DOCUMENT ME!
 	 */
@@ -41,8 +40,8 @@ public class Locales {
 	}
 
 	/**
-	 * Sets the locale for the user interface. If Locales was initialized with
-	 * a Properties object earlier, the new Locale is stored in it.
+	 * Sets the locale for the user interface. If Locales was initialized with a Properties object
+	 * earlier, the new Locale is stored in it.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -60,17 +59,14 @@ public class Locales {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
-	 * @throws IllegalStateException when the method is invoked and neither the
-	 * 		   init() nor the setGUILocale() methodes were invoked earlier
-	 * 		   with valid arguments.
+	 * @throws IllegalStateException when the method is invoked and neither the init() nor the
+	 * 		   setGUILocale() methodes were invoked earlier with valid arguments.
 	 */
 	public static Locale getGUILocale() throws IllegalStateException {
 		if(guiLocale == null) {
 			if(settings != null) {
 				setGUILocale(new Locale(settings.getProperty("locales.gui",
-															 Locale.getDefault()
-																   .getLanguage()),
-										""));
+															 Locale.getDefault().getLanguage()), ""));
 			} else {
 				throw new IllegalStateException("Locales is not initialized");
 			}
@@ -80,8 +76,8 @@ public class Locales {
 	}
 
 	/**
-	 * Sets the locale for the unit orders. If Locales was initialized with a
-	 * Properties object earlier, the new Locale is stored in it.
+	 * Sets the locale for the unit orders. If Locales was initialized with a Properties object
+	 * earlier, the new Locale is stored in it.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -98,17 +94,14 @@ public class Locales {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
-	 * @throws IllegalStateException when the method is invoked and neither the
-	 * 		   init() nor the setGUILocale() methodes were invoked earlier
-	 * 		   with valid arguments.
+	 * @throws IllegalStateException when the method is invoked and neither the init() nor the
+	 * 		   setGUILocale() methodes were invoked earlier with valid arguments.
 	 */
 	public static Locale getOrderLocale() throws IllegalStateException {
 		if(orderLocale == null) {
 			if(settings != null) {
 				orderLocale = new Locale(settings.getProperty("locales.orders",
-															  Locale.getDefault()
-																	.getLanguage()),
-										 "");
+															  Locale.getDefault().getLanguage()), "");
 			} else {
 				throw new IllegalStateException("Locales is not initialized");
 			}

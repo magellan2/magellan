@@ -21,20 +21,18 @@ import com.eressea.Skill;
 import com.eressea.rules.SkillType;
 
 /**
- * A comparator imposing an ordering on SkillType objects by comparing their
- * user modifiable ranking.
+ * A comparator imposing an ordering on SkillType objects by comparing their user modifiable
+ * ranking.
  * 
  * <p>
- * Note: this comparator can impose orderings that are inconsistent with
- * equals.
+ * Note: this comparator can impose orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
- * I.e. if the two compared objects have the same rank and they would be
- * regarded as equal by this comparator, instead of 0 the result of the
- * sub-comparator's comparison is returned.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality. I.e. if the two compared objects have the
+ * same rank and they would be regarded as equal by this comparator, instead of 0 the result of
+ * the sub-comparator's comparison is returned.
  * </p>
  *
  * @author Ulrich Küster
@@ -79,7 +77,7 @@ public class SkillTypeRankComparator implements Comparator {
 		SkillType s1 = (SkillType) o1;
 		SkillType s2 = (SkillType) o2;
 
-		int		  retVal = getProperty(s1) - getProperty(s2);
+		int retVal = getProperty(s1) - getProperty(s2);
 
 		if((retVal == 0) && (subCmp != null)) {
 			retVal = subCmp.compare(s1, s2);
@@ -91,8 +89,7 @@ public class SkillTypeRankComparator implements Comparator {
 	private int getProperty(SkillType s) {
 		// FIXME(pavkovic): fallback should only be -1 !
 		String fallback = settings.getProperty(s.getID() + ".compareValue", "-1");
-		String prop = settings.getProperty("ClientPreferences.compareValue." +
-										   s.getID(), fallback);
+		String prop = settings.getProperty("ClientPreferences.compareValue." + s.getID(), fallback);
 
 		return Integer.parseInt(prop);
 	}

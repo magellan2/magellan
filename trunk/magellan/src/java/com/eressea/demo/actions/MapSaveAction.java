@@ -29,7 +29,7 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class MapSaveAction extends MenuAction {
-	private Client	    client;
+	private Client client;
 	private MapperPanel map;
 
 	/**
@@ -40,7 +40,7 @@ public class MapSaveAction extends MenuAction {
 	 */
 	public MapSaveAction(Client parent, MapperPanel m) {
 		client = parent;
-		map    = m;
+		map = m;
 	}
 
 	/**

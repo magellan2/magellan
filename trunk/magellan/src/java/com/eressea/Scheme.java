@@ -14,8 +14,8 @@
 package com.eressea;
 
 /**
- * A class encapsulating a scheme object indicating the position of a region in
- * the 'Astralraum' relative to the standard Eressea map.
+ * A class encapsulating a scheme object indicating the position of a region in the 'Astralraum'
+ * relative to the standard Eressea map.
  */
 public class Scheme extends NamedObject {
 	/**
@@ -37,9 +37,9 @@ public class Scheme extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this Scheme object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Scheem and o's ID
-	 * is equal to the ID of this  Scheme object.
+	 * Indicates whether this Scheme object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Scheem and o's ID is equal to the ID of this  Scheme
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -54,8 +54,8 @@ public class Scheme extends NamedObject {
 	}
 
 	/**
-	 * Imposes a natural ordering on Scheme objects equivalent to the natural
-	 * ordering of their IDs.
+	 * Imposes a natural ordering on Scheme objects equivalent to the natural ordering of their
+	 * IDs.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -73,8 +73,7 @@ public class Scheme extends NamedObject {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newScheme TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Scheme curScheme, GameData newGD,
-							 Scheme newScheme) {
+	public static void merge(GameData curGD, Scheme curScheme, GameData newGD, Scheme newScheme) {
 		if(curScheme.getName() != null) {
 			newScheme.setName(curScheme.getName());
 		}

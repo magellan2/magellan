@@ -40,11 +40,11 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 	public static final int REMOVECONFIRMATION = 1;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int INVERTCONFIRMATION  = 2;
-	private Client		    client;
-	private Faction		    faction;
-	private int			    confirmation; // one of the values above, should be selfexplaining
-	private boolean		    selectedRegionsOnly; // only change confirmation in selected regions
+	public static final int INVERTCONFIRMATION = 2;
+	private Client client;
+	private Faction faction;
+	private int confirmation; // one of the values above, should be selfexplaining
+	private boolean selectedRegionsOnly; // only change confirmation in selected regions
 
 	/**
 	 * Creates a new ChangeFactionConfirmationAction object.
@@ -56,8 +56,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 	 *
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public ChangeFactionConfirmationAction(Client c, Faction f, int conf,
-										   boolean r) {
+	public ChangeFactionConfirmationAction(Client c, Faction f, int conf, boolean r) {
 		super();
 		client = c;
 
@@ -71,12 +70,11 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 			throw new IllegalArgumentException();
 		}
 
-		confirmation	    = conf;
+		confirmation = conf;
 		selectedRegionsOnly = r;
 
 		if(selectedRegionsOnly) {
-			setName(getName() + " " +
-					Translations.getTranslation(this, "name.postfix.selected"));
+			setName(getName() + " " + Translations.getTranslation(this, "name.postfix.selected"));
 		}
 	}
 
@@ -89,8 +87,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 		Collection units = null;
 
 		if(faction == null) {
-			if((client.getData() != null) &&
-				   (client.getData().units() != null)) {
+			if((client.getData() != null) && (client.getData().units() != null)) {
 				units = client.getData().units().values();
 			}
 		} else {
@@ -105,8 +102,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 					// this is slow but ok for this situation (normally one would iterate over the
 					// regions and check the containment once per region)
 					if(selectedRegionsOnly &&
-						   !client.getSelectedRegions().containsKey(unit.getRegion()
-																			.getID())) {
+						   !client.getSelectedRegions().containsKey(unit.getRegion().getID())) {
 						continue;
 					}
 
@@ -114,8 +110,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 
 					// (!) temp units are contained in Faction.units(),
 					// but not in GameData.units() (!)
-					for(Iterator temps = unit.tempUnits().iterator();
-							temps.hasNext();) {
+					for(Iterator temps = unit.tempUnits().iterator(); temps.hasNext();) {
 						Unit temp = (Unit) temps.next();
 						changeConfirmation(temp);
 					}
@@ -124,9 +119,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 
 			client.getDispatcher().fire(new OrderConfirmEvent(this,
 															  (faction == null)
-															  ? client.getData()
-																	  .units()
-																	  .values()
+															  ? client.getData().units().values()
 															  : faction.units()));
 		}
 	}
@@ -172,8 +165,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 			defaultTranslations.put("mnemonic", "a");
 			defaultTranslations.put("accelerator", "");
 			defaultTranslations.put("tooltip", "");
-			defaultTranslations.put("name.postfix.selected",
-									"in selected regions only");
+			defaultTranslations.put("name.postfix.selected", "in selected regions only");
 		}
 
 		return defaultTranslations;

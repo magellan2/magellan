@@ -14,8 +14,8 @@
 package com.eressea.util.replacers;
 
 /**
- * A replacer that modifies the definition list by skipping all elements till
- * next occurence of the implemented class if a certain condition is true.
+ * A replacer that modifies the definition list by skipping all elements till next occurence of the
+ * implemented class if a certain condition is true.
  *
  * @author Andreas
  * @version 1.0

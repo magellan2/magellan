@@ -33,13 +33,18 @@ public class FileSaveAction extends FileSaveAsAction {
 		super(parent);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getIconName() {
 		return "save_edit";
 	}
 
 	/**
-	 * This function delivers the target file. In FileSaveAction use  the
-	 * possibly well known FileType of the gamedata object
+	 * This function delivers the target file. In FileSaveAction use  the possibly well known
+	 * FileType of the gamedata object
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

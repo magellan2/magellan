@@ -17,12 +17,10 @@ import com.eressea.Region;
 import com.eressea.Unit;
 
 /**
- * A relation indicating earning money from a unit container (region) based on
- * WORK, (STEAL) (BUY) TAX, ENTERTAIN (SELL)
+ * A relation indicating earning money from a unit container (region) based on WORK, (STEAL) (BUY)
+ * TAX, ENTERTAIN (SELL)
  */
-public class IncomeRelation extends UnitContainerRelation
-	implements LongOrderRelation
-{
+public class IncomeRelation extends UnitContainerRelation implements LongOrderRelation {
 	/** TODO: DOCUMENT ME! */
 	public final int amount;
 

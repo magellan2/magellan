@@ -28,10 +28,9 @@ import com.eressea.Region;
  */
 public abstract class AbstractRegionSwitch extends AbstractSwitch {
 	/**
-	 * Defines the state of this switch for the given object. The object is
-	 * casted to a Region object and forwarded to the abstract <i>
-	 * isSwitchingRegion()</i> method. If the object is no region,
-	 * <i>false</i> is returned.
+	 * Defines the state of this switch for the given object. The object is casted to a Region
+	 * object and forwarded to the abstract <i> isSwitchingRegion()</i> method. If the object is
+	 * no region, <i>false</i> is returned.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -46,8 +45,8 @@ public abstract class AbstractRegionSwitch extends AbstractSwitch {
 	}
 
 	/**
-	 * Returns the Switch state for the given region. A value of <i>true</i>
-	 * tells the switch to skip some definition elements.
+	 * Returns the Switch state for the given region. A value of <i>true</i> tells the switch to
+	 * skip some definition elements.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

@@ -32,10 +32,8 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public class FindAction extends MenuAction implements SelectionListener,
-													  GameDataListener
-{
-	private Client     client;
+public class FindAction extends MenuAction implements SelectionListener, GameDataListener {
+	private Client client;
 	private Collection selectedRegions = CollectionFactory.createLinkedList();
 
 	/**
@@ -55,9 +53,8 @@ public class FindAction extends MenuAction implements SelectionListener,
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		FindDialog f = new FindDialog(client, false, client.getDispatcher(),
-									  client.getData(), client.getSettings(),
-									  selectedRegions);
+		FindDialog f = new FindDialog(client, false, client.getDispatcher(), client.getData(),
+									  client.getSettings(), selectedRegions);
 		f.setVisible(true);
 	}
 

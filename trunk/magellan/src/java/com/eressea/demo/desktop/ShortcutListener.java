@@ -25,8 +25,8 @@ import javax.swing.KeyStroke;
  */
 public interface ShortcutListener {
 	/**
-	 * Should return all short cuts this class want to be informed. The
-	 * elements have to be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The elements have to be of type
+	 * javax.swing.KeyStroke
 	 *
 	 * @return Iterator over all short
 	 */

@@ -20,19 +20,17 @@ import com.eressea.GameData;
 import com.eressea.event.EventDispatcher;
 
 /**
- * This interface allows it to write modules for Magellan that are
- * automatically integrated if found in one of the resource paths of Magellan.
- * All that has to be done is to implement this interface and integrate the
- * class file into a resource path. The class must have the default
- * constructor. For performance reasons the name of the class must end with
- * "Module".
+ * This interface allows it to write modules for Magellan that are automatically integrated if
+ * found in one of the resource paths of Magellan. All that has to be done is to implement this
+ * interface and integrate the class file into a resource path. The class must have the default
+ * constructor. For performance reasons the name of the class must end with "Module".
  *
  * @author Ulrich Küster
  */
 public interface ExternalModule {
 	/**
-	 * Retrieve the MenuItemName by which the module shall be invoked. It is
-	 * automatically added to the extras menu of Magellan.
+	 * Retrieve the MenuItemName by which the module shall be invoked. It is automatically added to
+	 * the extras menu of Magellan.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -41,6 +39,5 @@ public interface ExternalModule {
 	/**
 	 * This method is called to run the module
 	 */
-	public void start(GameData data, EventDispatcher dispatcher,
-					  Properties settings);
+	public void start(GameData data, EventDispatcher dispatcher, Properties settings);
 }

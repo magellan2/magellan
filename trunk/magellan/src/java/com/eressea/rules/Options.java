@@ -30,9 +30,9 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class Options {
-	private static final Logger log     = Logger.getInstance(Options.class);
-	private Map				    options = null;
-	Rules					    rules;
+	private static final Logger log = Logger.getInstance(Options.class);
+	private Map options = null;
+	Rules rules;
 
 	/**
 	 * Creates a new Options object.

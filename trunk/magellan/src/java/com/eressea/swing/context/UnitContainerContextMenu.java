@@ -42,14 +42,14 @@ import com.eressea.util.ShipRoutePlanner;
 /**
  * DOCUMENT ME!
  *
- * @author Ulrich Küster A context menu for UnitContainers like ships or
- * 		   buildings. Providing copy ID and copy ID+name.
+ * @author Ulrich Küster A context menu for UnitContainers like ships or buildings. Providing copy
+ * 		   ID and copy ID+name.
  */
 public class UnitContainerContextMenu extends JPopupMenu {
-	private UnitContainer   uc;
+	private UnitContainer uc;
 	private EventDispatcher dispatcher;
-	private GameData	    data;
-	private Properties	    settings;
+	private GameData data;
+	private Properties settings;
 
 	/**
 	 * Creates a new UnitContainerContextMenu object.
@@ -59,14 +59,13 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 * @param data TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public UnitContainerContextMenu(UnitContainer uc,
-									EventDispatcher dispatcher, GameData data,
+	public UnitContainerContextMenu(UnitContainer uc, EventDispatcher dispatcher, GameData data,
 									Properties settings) {
 		super(uc.toString());
-		this.uc		    = uc;
+		this.uc = uc;
 		this.dispatcher = dispatcher;
-		this.data	    = data;
-		this.settings   = settings;
+		this.data = data;
+		this.settings = settings;
 
 		initMenu();
 	}
@@ -125,7 +124,7 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 */
 	private void copyID() {
 		StringSelection strSel = new StringSelection(uc.getID().toString());
-		Clipboard	    cb = getToolkit().getSystemClipboard();
+		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 	}
 
@@ -133,10 +132,9 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 * Copies name and id to the sytem clipboard.
 	 */
 	private void copyNameID() {
-		StringSelection strSel = new StringSelection(uc.getName() + " (" +
-													 uc.getID().toString() +
+		StringSelection strSel = new StringSelection(uc.getName() + " (" + uc.getID().toString() +
 													 ")");
-		Clipboard	    cb = getToolkit().getSystemClipboard();
+		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 	}
 
@@ -147,9 +145,8 @@ public class UnitContainerContextMenu extends JPopupMenu {
 		Faction f = (Faction) uc;
 
 		// pavkovic 2002.11.12: creating mail addresses in a form like: Noeskadu <noeskadu@gmx.de>
-		StringSelection strSel = new StringSelection(f.getName() + " <" +
-													 f.email + ">");
-		Clipboard	    cb = getToolkit().getSystemClipboard();
+		StringSelection strSel = new StringSelection(f.getName() + " <" + f.email + ">");
+		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 	}
 
@@ -158,8 +155,8 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 */
 	private void factionStats() {
 		FactionStatsDialog d = new FactionStatsDialog(JOptionPane.getFrameForComponent(this),
-													  false, dispatcher, data,
-													  settings, (Faction) uc);
+													  false, dispatcher, data, settings,
+													  (Faction) uc);
 		d.setVisible(true);
 	}
 
@@ -196,12 +193,9 @@ public class UnitContainerContextMenu extends JPopupMenu {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("menu.copyid.caption", "Copy ID");
-			defaultTranslations.put("menu.copyidandname.caption",
-									"Copy ID and name");
-			defaultTranslations.put("menu.planshiproute.caption",
-									"Ship route scheduler");
-			defaultTranslations.put("menu.copymail.caption",
-									"Copy email address");
+			defaultTranslations.put("menu.copyidandname.caption", "Copy ID and name");
+			defaultTranslations.put("menu.planshiproute.caption", "Ship route scheduler");
+			defaultTranslations.put("menu.copymail.caption", "Copy email address");
 			defaultTranslations.put("menu.factionstats.caption", "Factionstats");
 		}
 

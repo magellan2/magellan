@@ -24,8 +24,8 @@ import com.eressea.util.filters.UnitFactionTLFilter;
  * @author Andreas
  * @version
  */
-public class TrustlevelSwitch extends AbstractParameterReplacer
-	implements EnvironmentDependent, SwitchOnly
+public class TrustlevelSwitch extends AbstractParameterReplacer implements EnvironmentDependent,
+																		   SwitchOnly
 {
 	protected ReplacerEnvironment environment;
 
@@ -49,12 +49,12 @@ public class TrustlevelSwitch extends AbstractParameterReplacer
 		try {
 			Object param1 = getParameter(0, src);
 			Object param2 = null;
-			int    min    = Integer.MIN_VALUE;
-			int    max    = Integer.MAX_VALUE;
+			int min = Integer.MIN_VALUE;
+			int max = Integer.MAX_VALUE;
 
 			if(getParameterCount() > 1) {
 				param2 = getParameter(1, src);
-				max    = Integer.parseInt(param2.toString());
+				max = Integer.parseInt(param2.toString());
 			}
 
 			try {
@@ -92,8 +92,7 @@ public class TrustlevelSwitch extends AbstractParameterReplacer
 	public String getDescription() {
 		return com.eressea.util.Translations.getTranslation(this,
 															"description." +
-															(getParameterCount() -
-															1));
+															(getParameterCount() - 1));
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

@@ -48,34 +48,34 @@ import com.eressea.swing.map.RenderingPlane;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A context menu for the map. Currently providing copy of the name and the
- * coordinates of the region.
+ * A context menu for the map. Currently providing copy of the name and the coordinates of the
+ * region.
  *
  * @author Ulrich Küster
  */
 public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	// the region on which the menu is inferred
-	private Region		    region;
+	private Region region;
 	private EventDispatcher dispatcher;
 
 	//	private Client client;
-	private GameData		    data;
-	private Properties		    settings;
-	private List			    selectedRegions = CollectionFactory.createLinkedList();
-	private Collection		    armystatsSel    = CollectionFactory.createHashSet();
-	private static final String RKEY		    = "MAGELLAN.RENDERER";
-	private static final String TKEY		    = "MAGELLAN.TOOLTIP";
-	protected JMenuItem		    name;
-	protected JMenuItem		    changeSelState;
-	protected JMenuItem		    copyNameID;
-	protected JMenuItem		    setOrigin;
-	protected JMenuItem		    changeHotSpot;
-	protected JMenuItem		    armystats;
-	protected JMenu			    renderer;
-	protected JMenu			    tooltips;
-	protected ActionListener    rListener;
-	protected ActionListener    tListener;
-	protected Mapper		    source;
+	private GameData data;
+	private Properties settings;
+	private List selectedRegions = CollectionFactory.createLinkedList();
+	private Collection armystatsSel = CollectionFactory.createHashSet();
+	private static final String RKEY = "MAGELLAN.RENDERER";
+	private static final String TKEY = "MAGELLAN.TOOLTIP";
+	protected JMenuItem name;
+	protected JMenuItem changeSelState;
+	protected JMenuItem copyNameID;
+	protected JMenuItem setOrigin;
+	protected JMenuItem changeHotSpot;
+	protected JMenuItem armystats;
+	protected JMenu renderer;
+	protected JMenu tooltips;
+	protected ActionListener rListener;
+	protected ActionListener tListener;
+	protected Mapper source;
 
 	/**
 	 * Creates a new MapContextMenu object.
@@ -85,7 +85,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	 */
 	public MapContextMenu(EventDispatcher dispatcher, Properties settings) {
 		this.dispatcher = dispatcher;
-		this.settings   = settings;
+		this.settings = settings;
 
 		//		this.client = client;
 		rListener = new RendererActionListener();
@@ -134,13 +134,12 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		armystats = new JMenuItem(getString("menu.armystats"));
 		armystats.setEnabled(false);
 
-		final EventDispatcher ed  = dispatcher;
-		final Properties	  set = settings;
+		final EventDispatcher ed = dispatcher;
+		final Properties set = settings;
 		armystats.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						new com.eressea.swing.ArmyStatsDialog(new Frame(), ed,
-															  data, set,
+						new com.eressea.swing.ArmyStatsDialog(new Frame(), ed, data, set,
 															  armystatsSel).show();
 					} catch(Exception exc) {
 					}
@@ -209,7 +208,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		while(it.hasNext()) {
 			String name = (String) it.next();
 			String tip = (String) it.next();
-			String s   = name + ": " + tip;
+			String s = name + ": " + tip;
 
 			if(s.length() > 25) {
 				s = s.substring(0, 23) + "...";
@@ -234,12 +233,12 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		renderer.removeAll();
 
 		// add renderers that are context changeable
-		Collection pl    = source.getPlanes();
-		Iterator   it    = pl.iterator();
-		boolean    added = false;
+		Collection pl = source.getPlanes();
+		Iterator it = pl.iterator();
+		boolean added = false;
 
 		while(it.hasNext()) {
-			RenderingPlane  rp = (RenderingPlane) it.next();
+			RenderingPlane rp = (RenderingPlane) it.next();
 			MapCellRenderer r = rp.getRenderer();
 
 			if((r != null) && (r instanceof ContextChangeable)) {
@@ -267,10 +266,10 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		it = pl.iterator();
 
 		while(it.hasNext()) {
-			RenderingPlane rp     = (RenderingPlane) it.next();
-			JMenu		   help   = new JMenu(rp.getName());
-			Collection     rs     = source.getRenderers(rp.getIndex());
-			boolean		   addedi = false;
+			RenderingPlane rp = (RenderingPlane) it.next();
+			JMenu help = new JMenu(rp.getName());
+			Collection rs = source.getRenderers(rp.getIndex());
+			boolean addedi = false;
 
 			if(rs != null) {
 				addedi = true;
@@ -319,8 +318,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 			selectedRegions.add(region);
 		}
 
-		dispatcher.fire(new SelectionEvent(this, selectedRegions, null,
-										   SelectionEvent.ST_REGIONS));
+		dispatcher.fire(new SelectionEvent(this, selectedRegions, null, SelectionEvent.ST_REGIONS));
 	}
 
 	/**
@@ -328,7 +326,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	 */
 	private void copyNameID() {
 		StringSelection strSel = new StringSelection(region.toString());
-		Clipboard	    cb = getToolkit().getSystemClipboard();
+		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 	}
 
@@ -350,11 +348,10 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	private void changeHotSpot() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		Map     hotspots = data.hotSpots();
+		Map hotspots = data.hotSpots();
 		boolean found = false;
 
-		for(Iterator iter = hotspots.values().iterator();
-				iter.hasNext() && !found;) {
+		for(Iterator iter = hotspots.values().iterator(); iter.hasNext() && !found;) {
 			HotSpot h = (HotSpot) iter.next();
 
 			if(h.getCenter().equals(region.getCoordinate())) {
@@ -403,14 +400,10 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("menu.copyidandname.caption",
-									"Copy name and coordinates");
-			defaultTranslations.put("menu.changeselectionstate",
-									"Change selection state");
-			defaultTranslations.put("menu.setorigin",
-									"Set origin to this region");
-			defaultTranslations.put("menu.changehotspot",
-									"Set or delete hotspot");
+			defaultTranslations.put("menu.copyidandname.caption", "Copy name and coordinates");
+			defaultTranslations.put("menu.changeselectionstate", "Change selection state");
+			defaultTranslations.put("menu.setorigin", "Set origin to this region");
+			defaultTranslations.put("menu.changehotspot", "Set or delete hotspot");
 			defaultTranslations.put("menu.tooltips", "Tooltips");
 			defaultTranslations.put("menu.armystats", "Army statistics...");
 			defaultTranslations.put("menu.renderer.none", "Off");
@@ -438,10 +431,9 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		 * @param actionEvent TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-			if((source != null) &&
-				   (actionEvent.getSource() instanceof JMenuItem)) {
+			if((source != null) && (actionEvent.getSource() instanceof JMenuItem)) {
 				JMenuItem src = (JMenuItem) actionEvent.getSource();
-				Object    obj = src.getClientProperty(TKEY);
+				Object obj = src.getClientProperty(TKEY);
 
 				if(obj == null) {
 					return;
@@ -459,8 +451,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		 * @param actionEvent TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-			if((source != null) &&
-				   (actionEvent.getSource() instanceof JMenuItem)) {
+			if((source != null) && (actionEvent.getSource() instanceof JMenuItem)) {
 				JMenuItem src = (JMenuItem) actionEvent.getSource();
 
 				try {

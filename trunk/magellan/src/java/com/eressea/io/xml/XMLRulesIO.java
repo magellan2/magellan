@@ -65,9 +65,7 @@ public class XMLRulesIO implements RulesIO {
 	private static final String T_RULES = "Rules";
 	private static final String A_ID = "id";
 
-	private Rules readRules(Document aDocument)
-					 throws SAXException, IOException
-	{
+	private Rules readRules(Document aDocument) throws SAXException, IOException {
 		// check for Rules
 		if((aDocument.getDocumentElement() == null) ||
 			   !T_RULES.equals(aDocument.getDocumentElement().getTagName())) {
@@ -77,9 +75,7 @@ public class XMLRulesIO implements RulesIO {
 		return readRules(aDocument.getDocumentElement());
 	}
 
-	private Rules readRules(Element aDocumentElement)
-					 throws SAXException, IOException
-	{
+	private Rules readRules(Element aDocumentElement) throws SAXException, IOException {
 		Rules rules = new GenericRules();
 
 		// two step mechanism: 
@@ -100,9 +96,7 @@ public class XMLRulesIO implements RulesIO {
 	// use a generic builder mechanism that uses Reflection
 	// this enforces a name binding between com.eressea.rules.* Files and 
 	// rules.dtd, but hey, we reduce complexity by a notifiable factor
-	private void addElement(Rules rules, Element child)
-					 throws SAXException, IOException
-	{
+	private void addElement(Rules rules, Element child) throws SAXException, IOException {
 		if(log.isDebugEnabled()) {
 			log.debug("XMLRulesIO.addElement(): Adding element " + child);
 		}
@@ -111,21 +105,15 @@ public class XMLRulesIO implements RulesIO {
 		String id = child.getAttribute(A_ID);
 
 		if(id == null) {
-			throw new XMLIOException("Missing attribute " + A_ID +
-									 " at element " + child);
+			throw new XMLIOException("Missing attribute " + A_ID + " at element " + child);
 		}
 
 		try {
 			// call get<ObjectType>(id, true);
 			Object objectTypeObj = Rules.class.getMethod("get" + objectType,
-														 new Class[] {
-															 String.class,
-															 Boolean.TYPE
-														 }).invoke(rules,
-																   new Object[] {
-																	   objectType,
-																	   Boolean.TRUE
-																   });
+														 new Class[] { String.class, Boolean.TYPE })
+											  .invoke(rules,
+													  new Object[] { objectType, Boolean.TRUE });
 
 			// now dynamically add all attributes (expect "id")
 			NamedNodeMap attributes = child.getAttributes();
@@ -135,16 +123,15 @@ public class XMLRulesIO implements RulesIO {
 
 				if(!A_ID.equals(attr.getName())) {
 					// convert attrname to Attrname
-					String attrName = attr.getName().substring(0, 1)
-										  .toUpperCase() +
+					String attrName = attr.getName().substring(0, 1).toUpperCase() +
 									  attr.getName().substring(1);
 
 					// call set<Attrname>(attrValue);
 					objectTypeObj.getClass()
-								 .getMethod("set" + attrName,
-											new Class[] { String.class })
-								 .invoke(objectTypeObj,
-										 new Object[] { attr.getValue() });
+								 .getMethod("set" + attrName, new Class[] { String.class }).invoke(objectTypeObj,
+																								   new Object[] {
+																									   attr.getValue()
+																								   });
 				}
 			}
 		} catch(NoSuchMethodException e) {

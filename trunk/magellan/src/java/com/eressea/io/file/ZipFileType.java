@@ -36,9 +36,7 @@ public class ZipFileType extends FileType {
 	// TODO: ZipEntry may also be a "normal" FileType
 	protected ZipEntry zipentry = null;
 
-	ZipFileType(String aFile, boolean readonly, ZipEntry aEntry)
-		 throws IOException
-	{
+	ZipFileType(String aFile, boolean readonly, ZipEntry aEntry) throws IOException {
 		super(aFile, readonly);
 
 		if(aEntry == null) {
@@ -49,8 +47,7 @@ public class ZipFileType extends FileType {
 	}
 
 	/**
-	 * Returns the most inner name of the FileType. Will be overwritten in
-	 * ZipFileType
+	 * Returns the most inner name of the FileType. Will be overwritten in ZipFileType
 	 *
 	 * @return the most inner name of a FileType.
 	 */
@@ -59,8 +56,7 @@ public class ZipFileType extends FileType {
 	}
 
 	/**
-	 * Returns all files inside the zip ending with one of  the given endings
-	 * case insensitive
+	 * Returns all files inside the zip ending with one of  the given endings case insensitive
 	 *
 	 * @param zip a ZipFile to inspect
 	 * @param endings an array of valid file name endings.
@@ -71,8 +67,8 @@ public class ZipFileType extends FileType {
 		Collection ret = new ArrayList();
 
 		for(Enumeration iter = zip.entries(); iter.hasMoreElements();) {
-			ZipEntry entry     = (ZipEntry) iter.nextElement();
-			String   entryName = entry.getName();
+			ZipEntry entry = (ZipEntry) iter.nextElement();
+			String entryName = entry.getName();
 
 			for(int i = 0; i < endings.length; i++) {
 				if(entryName.toLowerCase().endsWith(endings[i])) {
@@ -90,8 +86,8 @@ public class ZipFileType extends FileType {
 		InputStream is = new ZipFile(filename).getInputStream(zipentry);
 
 		if(is == null) {
-			throw new IOException("Cannot read zip entry '" + zipentry +
-								  "' in file '" + filename + "',");
+			throw new IOException("Cannot read zip entry '" + zipentry + "' in file '" + filename +
+								  "',");
 		}
 
 		return is;
@@ -99,9 +95,9 @@ public class ZipFileType extends FileType {
 
 	protected OutputStream createOutputStream() throws IOException {
 		// here we need to do something special: all entries are copied expect the named zipentry, which will be overwritten
-		File		    tmpfile = CopyFile.copy(new File(filename));
-		ZipFile		    zfile = new ZipFile(tmpfile);
-		ZipOutputStream zos   = new ZipOutputStream(new FileOutputStream(new File(filename)));
+		File tmpfile = CopyFile.copy(new File(filename));
+		ZipFile zfile = new ZipFile(tmpfile);
+		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(filename)));
 
 		for(Enumeration e = zfile.entries(); e.hasMoreElements();) {
 			ZipEntry oldEntry = (ZipEntry) e.nextElement();

@@ -28,10 +28,9 @@ import com.eressea.util.comparator.SkillComparator;
 /**
  * DOCUMENT ME!
  *
- * @author Ulrich Küster a class for holding statistic information about units
- * 		   and their skills like number of persons with a specified skill or
- * 		   total skillpoints or things like that. Units can be added by a call
- * 		   to the addUnit-Method but not removed.
+ * @author Ulrich Küster a class for holding statistic information about units and their skills
+ * 		   like number of persons with a specified skill or total skillpoints or things like that.
+ * 		   Units can be added by a call to the addUnit-Method but not removed.
  */
 public class SkillStats {
 	/**
@@ -55,8 +54,7 @@ public class SkillStats {
 	private Map skillData = CollectionFactory.createHashtable();
 
 	/**
-	 * returns a List containing the units with the specified skill at the
-	 * specified level
+	 * returns a List containing the units with the specified skill at the specified level
 	 *
 	 * @param skill TODO: DOCUMENT ME!
 	 *
@@ -68,7 +66,7 @@ public class SkillStats {
 		if(skillStorage == null) {
 			return CollectionFactory.createLinkedList();
 		} else {
-			Map		   levelTable = skillStorage.levelTable;
+			Map levelTable = skillStorage.levelTable;
 			UnitVector uv = (UnitVector) levelTable.get(new Integer(skill.getLevel()));
 
 			if(uv == null) {
@@ -80,10 +78,9 @@ public class SkillStats {
 	}
 
 	/**
-	 * returns the number of persons that master the specified skill at exact
-	 * that level, specified in the skill Object. That means, a call with a
-	 * skill-Object containing let's say skilllevel 5, will not consider
-	 * persons, that master this skill at a higher level
+	 * returns the number of persons that master the specified skill at exact that level, specified
+	 * in the skill Object. That means, a call with a skill-Object containing let's say skilllevel
+	 * 5, will not consider persons, that master this skill at a higher level
 	 *
 	 * @param skill TODO: DOCUMENT ME!
 	 *
@@ -95,7 +92,7 @@ public class SkillStats {
 		if(skillStorage == null) {
 			return 0;
 		} else {
-			Map		   levelTable = skillStorage.levelTable;
+			Map levelTable = skillStorage.levelTable;
 			UnitVector uv = (UnitVector) levelTable.get(new Integer(skill.getLevel()));
 
 			if(uv == null) {
@@ -177,9 +174,8 @@ public class SkillStats {
 	}
 
 	/**
-	 * returns the total number of persons that master the specified SkillType
-	 * at any level (also level 0, as long as they have more than zero
-	 * skillpoints of this skillType)
+	 * returns the total number of persons that master the specified SkillType at any level (also
+	 * level 0, as long as they have more than zero skillpoints of this skillType)
 	 *
 	 * @param skillType TODO: DOCUMENT ME!
 	 *
@@ -196,10 +192,9 @@ public class SkillStats {
 	}
 
 	/**
-	 * returns a sorted Collection containing the existing entries (type Skill)
-	 * for the specified SkillType in the internal data. If type == null
-	 * returns a Collection containing all existing entries (for all
-	 * skilltypes)
+	 * returns a sorted Collection containing the existing entries (type Skill) for the specified
+	 * SkillType in the internal data. If type == null returns a Collection containing all
+	 * existing entries (for all skilltypes)
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -214,8 +209,7 @@ public class SkillStats {
 
 				SkillStorage skillStorage = (SkillStorage) skillData.get(type);
 
-				for(Iterator i = skillStorage.levelTable.keySet().iterator();
-						i.hasNext();) {
+				for(Iterator i = skillStorage.levelTable.keySet().iterator(); i.hasNext();) {
 					Integer level = (Integer) i.next();
 					v.add(new Skill(type, 1, level.intValue(), 1, false));
 				}
@@ -230,14 +224,12 @@ public class SkillStats {
 			if(skillStorage == null) {
 				return CollectionFactory.createLinkedList();
 			} else {
-				Map  levelTable = skillStorage.levelTable;
+				Map levelTable = skillStorage.levelTable;
 				List v = CollectionFactory.createLinkedList();
 
-				for(Iterator iter = levelTable.keySet().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = levelTable.keySet().iterator(); iter.hasNext();) {
 					int level = ((Integer) iter.next()).intValue();
-					v.add(new Skill(type, Skill.getPointsAtLevel(level), level,
-									1, false));
+					v.add(new Skill(type, Skill.getPointsAtLevel(level), level, 1, false));
 				}
 
 				Collections.sort(v, new SkillComparator());
@@ -248,8 +240,7 @@ public class SkillStats {
 	}
 
 	/**
-	 * returns an Collection containing the known SkillTypes in the internal
-	 * data.
+	 * returns an Collection containing the known SkillTypes in the internal data.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -270,8 +261,7 @@ public class SkillStats {
 	}
 
 	/**
-	 * returns the lowest level of the specified skillType known in the
-	 * internal data
+	 * returns the lowest level of the specified skillType known in the internal data
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -299,8 +289,7 @@ public class SkillStats {
 	}
 
 	/**
-	 * returns the highest level of the specified skillType known in the
-	 * internal data
+	 * returns the highest level of the specified skillType known in the internal data
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -334,7 +323,7 @@ public class SkillStats {
 	 */
 	public void addUnit(Unit u) {
 		for(Iterator iter = u.getSkills().iterator(); iter.hasNext();) {
-			Skill		 skill		  = (Skill) iter.next();
+			Skill skill = (Skill) iter.next();
 			SkillStorage skillStorage = (SkillStorage) skillData.get(skill.getSkillType());
 
 			if(skillStorage == null) {
@@ -342,7 +331,7 @@ public class SkillStats {
 				skillData.put(skill.getSkillType(), skillStorage);
 			}
 
-			Map		   levelTable = skillStorage.levelTable;
+			Map levelTable = skillStorage.levelTable;
 			UnitVector uv = (UnitVector) levelTable.get(new Integer(skill.getLevel()));
 
 			if(uv == null) {
@@ -353,24 +342,22 @@ public class SkillStats {
 			uv.units.add(u);
 			uv.personCounter += u.persons;
 			skillStorage.personCounter += u.persons;
-			skillStorage.skillPointCounter += u.getSkill(skill.getSkillType())
-											   .getPoints();
-			skillStorage.skillLevelCounter += (u.getSkill(skill.getSkillType())
-												.getLevel() * u.persons);
+			skillStorage.skillPointCounter += u.getSkill(skill.getSkillType()).getPoints();
+			skillStorage.skillLevelCounter += (u.getSkill(skill.getSkillType()).getLevel() * u.persons);
 		}
 	}
 
 	// inner helper classes
 	private class UnitVector {
-		int  personCounter = 0;
+		int personCounter = 0;
 		List units = CollectionFactory.createLinkedList();
 	}
 
 	private class SkillStorage {
 		// maps level (Integerobjects) to UnitVector-Objects
-		Map levelTable		  = CollectionFactory.createHashtable();
+		Map levelTable = CollectionFactory.createHashtable();
 		int skillPointCounter = 0;
-		int personCounter     = 0;
+		int personCounter = 0;
 		int skillLevelCounter = 0;
 	}
 }

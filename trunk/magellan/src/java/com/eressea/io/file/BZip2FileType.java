@@ -39,18 +39,16 @@ public class BZip2FileType extends FileType {
 		// normally the following lines would be ok. But somehow it does not work, so we copy the content of the 
 		// bzip2file into a tmpfile for reading with deleteonexit set.
 		//return new CBZip2InputStream(new FileInputStream(fileName));
-		File	    tmpfile = CopyFile.createTempFile();
-		InputStream fis    = new FileInputStream(new File(filename));
-		int		    magic3 = fis.read();
-		int		    magic4 = fis.read();
+		File tmpfile = CopyFile.createTempFile();
+		InputStream fis = new FileInputStream(new File(filename));
+		int magic3 = fis.read();
+		int magic4 = fis.read();
 
 		if((magic3 != 'B') || (magic4 != 'Z')) {
-			throw new IOException("File " + filename +
-								  " is missing bzip2 header BZ.");
+			throw new IOException("File " + filename + " is missing bzip2 header BZ.");
 		}
 
-		CopyFile.copyStreams(new CBZip2InputStream(fis),
-							 new FileOutputStream(tmpfile));
+		CopyFile.copyStreams(new CBZip2InputStream(fis), new FileOutputStream(tmpfile));
 
 		return new FileInputStream(tmpfile);
 	}

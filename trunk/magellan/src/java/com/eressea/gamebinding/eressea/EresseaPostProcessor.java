@@ -75,8 +75,7 @@ public class EresseaPostProcessor {
 	public void postProcess(GameData data) {
 		/* scan the messages for additional information */
 		if((data != null) && (data.factions() != null)) {
-			for(Iterator factions = data.factions().values().iterator();
-					factions.hasNext();) {
+			for(Iterator factions = data.factions().values().iterator(); factions.hasNext();) {
 				Faction f = (Faction) factions.next();
 
 				if(f.messages != null) {
@@ -92,10 +91,9 @@ public class EresseaPostProcessor {
 							case 1349776898:
 
 								// a certain amount of herbs has been detected in a region
-								if((m.attributes != null) &&
-									   m.attributes.containsKey("region")) {
-									String str   = (String) m.attributes.get("region");
-									ID     coord = Coordinate.parse(str, ",");
+								if((m.attributes != null) && m.attributes.containsKey("region")) {
+									String str = (String) m.attributes.get("region");
+									ID coord = Coordinate.parse(str, ",");
 
 									if(coord == null) {
 										coord = Coordinate.parse(str, " ");
@@ -112,8 +110,7 @@ public class EresseaPostProcessor {
 											r.herb = type;
 										}
 
-										if((((IntegerID) m.getMessageType()
-															  .getID()).intValue()) == 1349776898) {
+										if((((IntegerID) m.getMessageType().getID()).intValue()) == 1349776898) {
 											// a certain amount of herbs has been detected in a region
 											String amount = (String) m.attributes.get("amount");
 
@@ -136,8 +133,7 @@ public class EresseaPostProcessor {
 		if(data.units() != null) {
 			Collection dummyUnitIDs = CollectionFactory.createLinkedList();
 
-			for(Iterator iter = data.units().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 				Unit unit = (Unit) iter.next();
 
 				if(unit.getName() == null) {
@@ -152,11 +148,9 @@ public class EresseaPostProcessor {
 
 		/* retrieve the temp units mentioned in the orders and
 		 create them as TempUnit objects */
-		int  sortIndex   = 0;
-		List sortedUnits = CollectionFactory.createLinkedList(data.units()
-																  .values());
-		Collections.sort(sortedUnits,
-						 new SortIndexComparator(new IDComparator()));
+		int sortIndex = 0;
+		List sortedUnits = CollectionFactory.createLinkedList(data.units().values());
+		Collections.sort(sortedUnits, new SortIndexComparator(new IDComparator()));
 
 		for(Iterator unitIter = sortedUnits.iterator(); unitIter.hasNext();) {
 			Unit unit = (Unit) unitIter.next();
@@ -169,13 +163,12 @@ public class EresseaPostProcessor {
 		although we actually know that the resource is available with
 		an amount of 0. Resolve this ambiguity here: */
 		if((data != null) && (data.regions() != null)) {
-			ID sproutResourceID		   = StringID.create("Schößlinge");
-			ID treeResourceID		   = StringID.create("Bäume");
+			ID sproutResourceID = StringID.create("Schößlinge");
+			ID treeResourceID = StringID.create("Bäume");
 			ID mallornSproutResourceID = StringID.create("Mallornschößlinge");
-			ID mallornTreeResourceID   = StringID.create("Mallorn");
+			ID mallornTreeResourceID = StringID.create("Mallorn");
 
-			for(Iterator regionIter = data.regions().values().iterator();
-					regionIter.hasNext();) {
+			for(Iterator regionIter = data.regions().values().iterator(); regionIter.hasNext();) {
 				Region region = (Region) regionIter.next();
 
 				/* first determine whether we know everything about
@@ -211,8 +204,7 @@ public class EresseaPostProcessor {
 						if(cleanup) {
 							Set cleanupSet = CollectionFactory.createHashSet();
 
-							for(Iterator riter = region.resources().iterator();
-									riter.hasNext();) {
+							for(Iterator riter = region.resources().iterator(); riter.hasNext();) {
 								RegionResource rr = (RegionResource) riter.next();
 
 								if(rr.getID().equals(sproutResourceID) ||
@@ -228,8 +220,7 @@ public class EresseaPostProcessor {
 								}
 							}
 
-							for(Iterator riter = cleanupSet.iterator();
-									riter.hasNext();) {
+							for(Iterator riter = cleanupSet.iterator(); riter.hasNext();) {
 								ID id = (ID) riter.next();
 								region.removeResource(id);
 							}
@@ -311,8 +302,7 @@ public class EresseaPostProcessor {
 		// initialize fog-of-war cache (FIXME(pavkovic): Do it always?)
 		// clear all fog-of-war caches
 		if(data.regions() != null) {
-			for(Iterator iter = data.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 				r.setFogOfWar(-1);
 			}
@@ -320,25 +310,23 @@ public class EresseaPostProcessor {
 
 		// intialize the fog-of-war cache for all regions that are covered by lighthouses
 		if(data.buildings() != null) {
-			BuildingType type				 = data.rules.getBuildingType(EresseaConstants.B_LIGHTTOWER);
-			RegionType   oceanType			 = data.rules.getRegionType(EresseaConstants.RT_OCEAN);
-			Comparator   sortIndexComparator = new SortIndexComparator(new IDComparator());
+			BuildingType type = data.rules.getBuildingType(EresseaConstants.B_LIGHTTOWER);
+			RegionType oceanType = data.rules.getRegionType(EresseaConstants.RT_OCEAN);
+			Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
 
 			if(type != null) {
-				for(Iterator iter = data.buildings().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.buildings().values().iterator(); iter.hasNext();) {
 					Building b = (Building) iter.next();
 
 					if(type.equals(b.getType()) && (b.getSize() >= 10)) {
-						int  personCounter		  = 0;
-						int  perceptionSkillLevel = 0;
-						List sortedInmates		  = CollectionFactory.createLinkedList(b.units());
+						int personCounter = 0;
+						int perceptionSkillLevel = 0;
+						List sortedInmates = CollectionFactory.createLinkedList(b.units());
 						Collections.sort(sortedInmates, sortIndexComparator);
 
 						for(Iterator inmates = sortedInmates.iterator();
-								inmates.hasNext() && (personCounter < 4);
-								personCounter++) {
-							Unit  inmate		  = (Unit) inmates.next();
+								inmates.hasNext() && (personCounter < 4); personCounter++) {
+							Unit inmate = (Unit) inmates.next();
 							Skill perceptionSkill = inmate.getSkill(data.rules.getSkillType(EresseaConstants.S_WAHRNEHMUNG,
 																							true));
 
@@ -348,23 +336,19 @@ public class EresseaPostProcessor {
 							}
 						}
 
-						int maxRadius = (int) Math.min((Math.log(b.getSize()) / Math.log(10)) +
-													   1,
+						int maxRadius = (int) Math.min((Math.log(b.getSize()) / Math.log(10)) + 1,
 													   perceptionSkillLevel / 3);
 
 						if(maxRadius > 0) {
 							Map regions = Regions.getAllNeighbours(data.regions(),
-																   b.getRegion()
-																	.getCoordinate(),
-																   maxRadius,
-																   null);
+																   b.getRegion().getCoordinate(),
+																   maxRadius, null);
 
 							for(Iterator regionIter = regions.values().iterator();
 									regionIter.hasNext();) {
 								Region r = (Region) regionIter.next();
 
-								if((oceanType == null) ||
-									   oceanType.equals(r.getType())) {
+								if((oceanType == null) || oceanType.equals(r.getType())) {
 									r.setFogOfWar(0);
 								}
 							}
@@ -375,8 +359,7 @@ public class EresseaPostProcessor {
 		}
 
 		// intialize the fog-of-war cache for all regions where units or ships traveled through
-		for(Iterator iterator = data.regions().values().iterator();
-				iterator.hasNext();) {
+		for(Iterator iterator = data.regions().values().iterator(); iterator.hasNext();) {
 			Region r = (Region) iterator.next();
 
 			if(r.travelThru != null) {
@@ -389,15 +372,14 @@ public class EresseaPostProcessor {
 		}
 	}
 
-	private void initTravelThru(GameData data, Region region,
-								Collection travelThru) {
+	private void initTravelThru(GameData data, Region region, Collection travelThru) {
 		for(Iterator iter = travelThru.iterator(); iter.hasNext();) {
 			Message mes = (Message) iter.next();
 
 			// fetch ID of Unit or Ship from Message of type "<name> (<id>)"
-			String s	    = mes.getText();
-			int    startpos = s.lastIndexOf("(") + 1;
-			int    endpos   = s.length() - 1;
+			String s = mes.getText();
+			int startpos = s.lastIndexOf("(") + 1;
+			int endpos = s.length() - 1;
 
 			if((startpos > -1) && (endpos > startpos)) {
 				try {
@@ -413,8 +395,7 @@ public class EresseaPostProcessor {
 						Ship ship = data.getShip(id);
 
 						if(ship != null) {
-							for(Iterator i = ship.units().iterator();
-									i.hasNext();) {
+							for(Iterator i = ship.units().iterator(); i.hasNext();) {
 								if(((Unit) i.next()).getFaction().isPrivileged()) {
 									// fast return
 									region.setFogOfWar(0);

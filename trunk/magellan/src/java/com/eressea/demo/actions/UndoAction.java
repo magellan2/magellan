@@ -31,7 +31,7 @@ import com.eressea.util.CollectionFactory;
  */
 public class UndoAction extends MenuAction implements PropertyChangeListener {
 	private MagellanUndoManager undo;
-	private String			    name = null;
+	private String name = null;
 
 	/**
 	 * Creates a new UndoAction object.
@@ -40,7 +40,7 @@ public class UndoAction extends MenuAction implements PropertyChangeListener {
 	 */
 	public UndoAction(MagellanUndoManager m) {
 		this.name = getName();
-		undo	  = m;
+		undo = m;
 		setEnabled(undo.canUndo());
 
 		if(isEnabled()) {
@@ -50,6 +50,11 @@ public class UndoAction extends MenuAction implements PropertyChangeListener {
 		undo.addPropertyChangeListener(MagellanUndoManager.UNDO, this);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getIconName() {
 		return "undo_edit";
 	}

@@ -85,11 +85,11 @@ public class EresseaRelationFactory implements RelationFactory {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List createRelations(Unit u, int from) {
-		List     rels = CollectionFactory.createArrayList(5);
+		List rels = CollectionFactory.createArrayList(5);
 
-		GameData data	    = u.getRegion().getData();
-		Map		 modItems   = null; // needed to track changes in the items for GIB orders
-		int		 modPersons = u.getPersons();
+		GameData data = u.getRegion().getData();
+		Map modItems = null; // needed to track changes in the items for GIB orders
+		int modPersons = u.getPersons();
 
 		// clone u unit's items
 		modItems = CollectionFactory.createHashtable();
@@ -97,15 +97,14 @@ public class EresseaRelationFactory implements RelationFactory {
 		if(u.items != null) {
 			for(Iterator iter = u.items.values().iterator(); iter.hasNext();) {
 				Item i = (Item) iter.next();
-				modItems.put(i.getItemType().getID(),
-							 new Item(i.getItemType(), i.getAmount()));
+				modItems.put(i.getItemType().getID(), new Item(i.getItemType(), i.getAmount()));
 			}
 		}
 
 		// 4. parse the orders and create new relations
-		EresseaOrderParser parser     = new EresseaOrderParser(data.rules);
-		boolean			   tempOrders = false;
-		int				   line		  = 0;
+		EresseaOrderParser parser = new EresseaOrderParser(data.rules);
+		boolean tempOrders = false;
+		int line = 0;
 
 		for(Iterator iter = u.getOrders().iterator(); iter.hasNext();) {
 			String order = (String) iter.next();
@@ -141,8 +140,7 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			// begin of temp unit
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_MAKE)) &&
-				   ((OrderToken) tokens.get(1)).getText().toUpperCase()
-						.startsWith(getOrder(EresseaConstants.O_TEMP))) {
+				   ((OrderToken) tokens.get(1)).getText().toUpperCase().startsWith(getOrder(EresseaConstants.O_TEMP))) {
 				tempOrders = true;
 
 				continue;
@@ -160,7 +158,7 @@ public class EresseaRelationFactory implements RelationFactory {
 
 				for(Iterator iter2 = tokens.listIterator(1); iter2.hasNext();) {
 					OrderToken token = (OrderToken) iter2.next();
-					int		   dir = Direction.toInt(token.getText());
+					int dir = Direction.toInt(token.getText());
 
 					if(dir != -1) {
 						c = new Coordinate(c); // make c a new copy
@@ -196,8 +194,8 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			// transport relation
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_CARRY))) {
-				OrderToken t	  = (OrderToken) tokens.get(1);
-				Unit	   target = getTargetUnit(t, u.getRegion());
+				OrderToken t = (OrderToken) tokens.get(1);
+				Unit target = getTargetUnit(t, u.getRegion());
 
 				if((target == null) || u.equals(target)) {
 					continue;
@@ -212,40 +210,36 @@ public class EresseaRelationFactory implements RelationFactory {
 			// transfer relation
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_GIVE)) ||
 				   ((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_SUPPLY))) {
-				boolean    parseTarget = false; // indicates whether to parse the object to be transferred
-				OrderToken t	  = (OrderToken) tokens.get(1);
-				Unit	   target = getTargetUnit(t, u.getRegion());
+				boolean parseTarget = false; // indicates whether to parse the object to be transferred
+				OrderToken t = (OrderToken) tokens.get(1);
+				Unit target = getTargetUnit(t, u.getRegion());
 
 				if(target != null) {
 					if(!target.equals(u)) {
-						TransferRelation rel = new TransferRelation(u, target,
-																	-1, line);
+						TransferRelation rel = new TransferRelation(u, target, -1, line);
 
 						// -1 means that the amount could not determined
 						t = (OrderToken) tokens.get(2);
 
 						if(t.ttype == OrderToken.TT_NUMBER) {
 							// u is a plain number
-							rel.amount  = Integer.parseInt(t.getText());
+							rel.amount = Integer.parseInt(t.getText());
 							parseTarget = true;
 						} else if((t.ttype == OrderToken.TT_KEYWORD) &&
 									  t.equalsToken(getOrder(EresseaConstants.O_ALL))) {
 							// -2 encodes that everything is to be transferred
-							rel.amount  = REFRESHRELATIONS_ALL;
+							rel.amount = REFRESHRELATIONS_ALL;
 							parseTarget = true;
 						} else if(t.equalsToken(getOrder(EresseaConstants.O_HERBS))) {
 							// if the 'amount' is HERBS then create relations for all herbs the unit carries
 							ItemCategory herbCategory = data.rules.getItemCategory(StringID.create(("HERBS")));
 
 							if((herbCategory != null) && (u.items != null)) {
-								for(Iterator items = modItems.values().iterator();
-										items.hasNext();) {
+								for(Iterator items = modItems.values().iterator(); items.hasNext();) {
 									Item i = (Item) items.next();
 
-									if(herbCategory.equals(i.getItemType()
-																.getCategory())) {
-										TransferRelation r = new ItemTransferRelation(u,
-																					  target,
+									if(herbCategory.equals(i.getItemType().getCategory())) {
+										TransferRelation r = new ItemTransferRelation(u, target,
 																					  i.getAmount(),
 																					  i.getItemType(),
 																					  line);
@@ -273,22 +267,15 @@ public class EresseaRelationFactory implements RelationFactory {
 											rel.amount = modPersons;
 										} else {
 											// if not, only transfer the minimum amount the unit has
-											rel.amount = Math.min(modPersons,
-																  rel.amount);
+											rel.amount = Math.min(modPersons, rel.amount);
 										}
 
-										rel = new PersonTransferRelation(u,
-																		 target,
-																		 rel.amount,
+										rel = new PersonTransferRelation(u, target, rel.amount,
 																		 (u.realRace != null)
-																		 ? u.realRace
-																		 : u.race,
-																		 line);
+																		 ? u.realRace : u.race, line);
 
 										// update the modified person amount
-										modPersons = Math.max(0,
-															  modPersons -
-															  rel.amount);
+										modPersons = Math.max(0, modPersons - rel.amount);
 									} else if(itemName.length() > 0) {
 										// TODO(pavkovic): korrigieren!!! Hier soll eigentlich das Item über den 
 										// übersetzten Namen gefunden werden!!!
@@ -308,23 +295,17 @@ public class EresseaRelationFactory implements RelationFactory {
 													rel.amount = i.getAmount();
 												} else {
 													// if not, only transfer the minimum amount the unit has
-													rel.amount = Math.min(i.getAmount(),
-																		  rel.amount);
+													rel.amount = Math.min(i.getAmount(), rel.amount);
 												}
 											}
 
 											// create the new transfer relation
-											rel = new ItemTransferRelation(u,
-																		   target,
-																		   rel.amount,
-																		   iType,
-																		   line);
+											rel = new ItemTransferRelation(u, target, rel.amount,
+																		   iType, line);
 
 											// update the modified item amount
 											if(i != null) {
-												i.setAmount(Math.max(0,
-																	 i.getAmount() -
-																	 rel.amount));
+												i.setAmount(Math.max(0, i.getAmount() - rel.amount));
 											}
 										} else {
 											rel = null;
@@ -342,10 +323,9 @@ public class EresseaRelationFactory implements RelationFactory {
 									// GIVE <unit id> <amount><EOC>
 									if(rel.amount == REFRESHRELATIONS_ALL) { // -2 is used to encode that the amount was 'ALL'
 
-										for(Iterator items = modItems.values()
-																	 .iterator();
+										for(Iterator items = modItems.values().iterator();
 												items.hasNext();) {
-											Item			 i = (Item) items.next();
+											Item i = (Item) items.next();
 											TransferRelation r = new ItemTransferRelation(u,
 																						  target,
 																						  i.getAmount(),
@@ -379,8 +359,7 @@ public class EresseaRelationFactory implements RelationFactory {
 																	  line);
 					rels.add(rel);
 				} else {
-					log.warn("Unit.updateRelations(): invalid amount in order " +
-							 order);
+					log.warn("Unit.updateRelations(): invalid amount in order " + order);
 				}
 
 				continue;
@@ -388,14 +367,14 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			// enter relation
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_ENTER))) {
-				OrderToken    t  = (OrderToken) tokens.get(1);
+				OrderToken t = (OrderToken) tokens.get(1);
 				UnitContainer uc = null;
 
 				if(t.equalsToken(getOrder(EresseaConstants.O_CASTLE))) {
-					t  = (OrderToken) tokens.get(2);
+					t = (OrderToken) tokens.get(2);
 					uc = u.getRegion().getBuilding(EntityID.createEntityID(t.getText()));
 				} else if(t.equalsToken(getOrder(EresseaConstants.O_SHIP))) {
-					t  = (OrderToken) tokens.get(2);
+					t = (OrderToken) tokens.get(2);
 					uc = u.getRegion().getShip(EntityID.createEntityID(t.getText()));
 				}
 
@@ -403,8 +382,7 @@ public class EresseaRelationFactory implements RelationFactory {
 					EnterRelation rel = new EnterRelation(u, uc, line);
 					rels.add(rel);
 				} else {
-					log.warn("Unit.refreshRelations(): cannot find target in order " +
-							 order);
+					log.warn("Unit.refreshRelations(): cannot find target in order " + order);
 				}
 
 				// check whether the unit leaves a container
@@ -435,8 +413,7 @@ public class EresseaRelationFactory implements RelationFactory {
 					rels.add(rel);
 				} else {
 					log.warn("Unit.refreshRelations(): unit " + u +
-							 " cannot leave a ship or a building as indicated by order " +
-							 order);
+							 " cannot leave a ship or a building as indicated by order " + order);
 				}
 
 				continue;
@@ -444,7 +421,7 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			// teach relation
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_TEACH))) {
-				int		   tokCtr = 1;
+				int tokCtr = 1;
 				OrderToken token = (OrderToken) tokens.get(tokCtr);
 
 				while(token.ttype != OrderToken.TT_EOC) {
@@ -470,7 +447,7 @@ public class EresseaRelationFactory implements RelationFactory {
 			// attack relation
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_ATTACK))) {
 				OrderToken token = (OrderToken) tokens.get(1);
-				Unit	   enemy = getTargetUnit(token, u.getRegion());
+				Unit enemy = getTargetUnit(token, u.getRegion());
 
 				if(enemy != null) {
 					AttackRelation rel = new AttackRelation(u, enemy, line);
@@ -488,16 +465,15 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			return r.getUnit(id);
 		} catch(NumberFormatException e) {
-			log.warn("Unit.getTargetUnit(): cannot parse unit id \"" +
-					 t.getText() + "\"!");
+			log.warn("Unit.getTargetUnit(): cannot parse unit id \"" + t.getText() + "\"!");
 		}
 
 		return null;
 	}
 
 	/**
-	 * Removes quotes at the beginning and at the end of str or replaces tilde
-	 * characters with spaces.
+	 * Removes quotes at the beginning and at the end of str or replaces tilde characters with
+	 * spaces.
 	 *
 	 * @param str TODO: DOCUMENT ME!
 	 *
@@ -510,8 +486,7 @@ public class EresseaRelationFactory implements RelationFactory {
 
 		int strLen = str.length();
 
-		if((strLen >= 2) && (str.charAt(0) == '"') &&
-			   (str.charAt(strLen - 1) == '"')) {
+		if((strLen >= 2) && (str.charAt(0) == '"') && (str.charAt(strLen - 1) == '"')) {
 			return str.substring(1, strLen - 1);
 		} else {
 			return str.replace('~', ' ');

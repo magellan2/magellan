@@ -29,10 +29,10 @@ import com.eressea.event.SelectionListener;
  * @version $Revision$
  */
 public class SelectionHistory {
-	private static SelectionListener eventHook	    = new EventHook();
-	private static Bucket			 history	    = new Bucket(10);
-	private static Collection		 ignoredSources = CollectionFactory.createHashSet();
-	private static List				 listeners	    = CollectionFactory.createArrayList();
+	private static SelectionListener eventHook = new EventHook();
+	private static Bucket history = new Bucket(10);
+	private static Collection ignoredSources = CollectionFactory.createHashSet();
+	private static List listeners = CollectionFactory.createArrayList();
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -49,8 +49,7 @@ public class SelectionHistory {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public static void selectionChanged(SelectionEvent e) {
-		if((e.getActiveObject() != null) &&
-			   !ignoredSources.contains(e.getSource())) {
+		if((e.getActiveObject() != null) && !ignoredSources.contains(e.getSource())) {
 			history.add(e.getActiveObject());
 			informListeners();
 		}

@@ -31,7 +31,6 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.swing.OpenOrdersAccessory;
 
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.OrderReader;
 import com.eressea.util.Translations;
@@ -44,8 +43,8 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class OpenOrdersAction extends MenuAction {
-	private static final Logger log    = Logger.getInstance(OpenOrdersAction.class);
-	private Client			    client;
+	private static final Logger log = Logger.getInstance(OpenOrdersAction.class);
+	private Client client;
 
 	/**
 	 * Creates a new OpenOrdersAction object.
@@ -62,18 +61,16 @@ public class OpenOrdersAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		JFileChooser fc		  = new JFileChooser();
-		Properties   settings = client.getSettings();
+		JFileChooser fc = new JFileChooser();
+		Properties settings = client.getSettings();
 		fc.addChoosableFileFilter(new EresseaFileFilter(EresseaFileFilter.TXT_FILTER));
-		fc.setSelectedFile(new File(settings.getProperty("Client.lastOrdersOpened",
-														 "")));
+		fc.setSelectedFile(new File(settings.getProperty("Client.lastOrdersOpened", "")));
 
 		OpenOrdersAccessory acc = new OpenOrdersAccessory(settings, fc);
 		fc.setAccessory(acc);
 
 		if(fc.showOpenDialog(client) == JFileChooser.APPROVE_OPTION) {
-			settings.setProperty("Client.lastOrdersOpened",
-								 fc.getSelectedFile().getAbsolutePath());
+			settings.setProperty("Client.lastOrdersOpened", fc.getSelectedFile().getAbsolutePath());
 
 			OrderReader r = new OrderReader(client.getData());
 			r.setAutoConfirm(acc.getAutoConfirm());
@@ -82,11 +79,8 @@ public class OpenOrdersAction extends MenuAction {
 			try {
 				r.read(new FileReader(fc.getSelectedFile().getAbsolutePath()));
 
-				OrderReader.Status status    = r.getStatus();
-				Object			   msgArgs[] = {
-												   new Integer(status.factions),
-												   new Integer(status.units)
-											   };
+				OrderReader.Status status = r.getStatus();
+				Object msgArgs[] = { new Integer(status.factions), new Integer(status.units) };
 				JOptionPane.showMessageDialog(client,
 											  (new java.text.MessageFormat(Translations.getTranslation(this,
 																									   "msg.fileordersopen.status.text"))).format(msgArgs),
@@ -132,8 +126,7 @@ public class OpenOrdersAction extends MenuAction {
 			defaultTranslations.put("tooltip", "");
 			defaultTranslations.put("msg.fileordersopen.status.text",
 									"Read orders for {0} faction(s) and {1} unit(s).");
-			defaultTranslations.put("msg.fileordersopen.status.title",
-									"Orders read");
+			defaultTranslations.put("msg.fileordersopen.status.title", "Orders read");
 			defaultTranslations.put("msg.fileordersopen.error.text",
 									"While loading the orders the following error occurred:\n");
 		}

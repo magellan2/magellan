@@ -24,7 +24,7 @@ import com.eressea.ID;
 public class CastleType extends BuildingType implements Comparable {
 	private int minSize;
 	private int wage = -1;
-	private int tax  = -1;
+	private int tax = -1;
 
 	/**
 	 * Creates a new CastleType object.
@@ -90,9 +90,9 @@ public class CastleType extends BuildingType implements Comparable {
 	}
 
 	/**
-	 * Indicates whether this CastleType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class CastleType
-	 * and o's id is equal to the id of this  CastleType object.
+	 * Indicates whether this CastleType object is equal to another object. Returns true only if o
+	 * is not null and an instance of class CastleType and o's id is equal to the id of this
+	 * CastleType object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -100,15 +100,13 @@ public class CastleType extends BuildingType implements Comparable {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof CastleType &&
-			   this.getID().equals(((CastleType) o).getID()));
+			   (o instanceof CastleType && this.getID().equals(((CastleType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on CastleType objects according to their
-	 * minimum size attribute. If obj is an instance of class BuildingType the
-	 * return value reflects the natural ordering of the ids of this object
-	 * and obj.
+	 * Imposes a natural ordering on CastleType objects according to their minimum size attribute.
+	 * If obj is an instance of class BuildingType the return value reflects the natural ordering
+	 * of the ids of this object and obj.
 	 *
 	 * @param obj TODO: DOCUMENT ME!
 	 *

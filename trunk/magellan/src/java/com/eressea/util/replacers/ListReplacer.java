@@ -30,10 +30,10 @@ import java.util.List;
  * @version
  */
 public class ListReplacer implements Replacer {
-	protected StringBuffer		  buffer;
-	protected List				  list;
-	protected String			  unknown;
-	protected String			  evolved	   = null;
+	protected StringBuffer buffer;
+	protected List list;
+	protected String unknown;
+	protected String evolved = null;
 	protected static NumberFormat numberFormat;
 
 	/**
@@ -43,8 +43,8 @@ public class ListReplacer implements Replacer {
 	 * @param unknown TODO: DOCUMENT ME!
 	 */
 	public ListReplacer(List list, String unknown) {
-		buffer		 = new StringBuffer();
-		this.list    = list;
+		buffer = new StringBuffer();
+		this.list = list;
 		this.unknown = unknown;
 
 		if(numberFormat == null) {
@@ -61,8 +61,8 @@ public class ListReplacer implements Replacer {
 		if(list == null) {
 			evolved = "";
 		} else {
-			Iterator it		   = list.iterator();
-			boolean  canEvolve = true;
+			Iterator it = list.iterator();
+			boolean canEvolve = true;
 
 			while(canEvolve && it.hasNext()) {
 				canEvolve = !(it.next() instanceof Replacer);
@@ -138,7 +138,7 @@ public class ListReplacer implements Replacer {
 	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		Iterator     it = list.iterator();
+		Iterator it = list.iterator();
 
 		while(it.hasNext()) {
 			buf.append(it.next());

@@ -16,8 +16,7 @@ package com.eressea.relation;
 import com.eressea.Unit;
 
 /**
- * A relation indicating that the source unit has a ATTACKIEREN order for the
- * target unit.
+ * A relation indicating that the source unit has a ATTACKIEREN order for the target unit.
  */
 public class AttackRelation extends InterUnitRelation {
 	/**

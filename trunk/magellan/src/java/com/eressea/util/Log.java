@@ -33,8 +33,8 @@ public class Log {
 	private File baseDir = null;
 
 	/**
-	 * Creates a new Log object copying the output onto the exported print
-	 * stream to a file in the specified directory.
+	 * Creates a new Log object copying the output onto the exported print stream to a file in the
+	 * specified directory.
 	 *
 	 * @param baseDir name of the directory for logging output.
 	 */
@@ -51,8 +51,7 @@ public class Log {
 		Writer out = null;
 
 		try {
-			out = FileType.createEncodingWriter(new FileOutputStream(new File(baseDir,
-																			  "errors.txt").getAbsolutePath(),
+			out = FileType.createEncodingWriter(new FileOutputStream(new File(baseDir, "errors.txt").getAbsolutePath(),
 																	 true));
 			out = new BufferedWriter(out);
 		} catch(IOException e) {
@@ -62,8 +61,7 @@ public class Log {
 	}
 
 	/**
-	 * Wrapper for the logging stream for adding timestamp and linebreaks to
-	 * output.
+	 * Wrapper for the logging stream for adding timestamp and linebreaks to output.
 	 */
 	private class StreamWrapper extends OutputStream {
 		Writer out = null;

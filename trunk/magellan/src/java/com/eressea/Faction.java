@@ -49,14 +49,14 @@ public class Faction extends UnitContainer {
 	public static final int TL_DEFAULT = 0;
 
 	/**
-	 * This trust level indicates that units of this faction may receive new
-	 * orders and similar privileges.
+	 * This trust level indicates that units of this faction may receive new orders and similar
+	 * privileges.
 	 */
 	public static final int TL_PRIVILEGED = 100;
 
 	/**
-	 * The password of this faction required for authentication of orders sent
-	 * to the Eressea server.
+	 * The password of this faction required for authentication of orders sent to the Eressea
+	 * server.
 	 */
 	public String password = null;
 
@@ -85,9 +85,8 @@ public class Faction extends UnitContainer {
 	public String spellSchool = null; // Magiegebiet
 
 	/**
-	 * Indicates to what amount this faction can be trusted. It also influences
-	 * the privileges of this faction (e.g. being able to edit its units'
-	 * orders).
+	 * Indicates to what amount this faction can be trusted. It also influences the privileges of
+	 * this faction (e.g. being able to edit its units' orders).
 	 */
 	public int trustLevel = TL_DEFAULT;
 
@@ -101,10 +100,9 @@ public class Faction extends UnitContainer {
 	}
 
 	/**
-	 * true: indicates that this trustlevel was explicitly set by the user or
-	 * read from a CR-file false: indicates that this is either a default
-	 * level or was calculated by Magellan based on the alliances of the
-	 * privileged factions.
+	 * true: indicates that this trustlevel was explicitly set by the user or read from a CR-file
+	 * false: indicates that this is either a default level or was calculated by Magellan based on
+	 * the alliances of the privileged factions.
 	 */
 	public boolean trustLevelSetByUser = false;
 
@@ -114,21 +112,18 @@ public class Faction extends UnitContainer {
 	/** contains error messages for this faction as <tt>String</tt> objects */
 	public List errors = null;
 
-	/**
-	 * contains the battles, this faction had in the current round, as
-	 * <tt>Battle</tt> objects
-	 */
+	/** contains the battles, this faction had in the current round, as <tt>Battle</tt> objects */
 	public List battles = null;
 
 	/**
-	 * The allies of this faction are stored in this map with the faction ID of
-	 * the ally as key and an <tt>Alliance</tt> object as value.
+	 * The allies of this faction are stored in this map with the faction ID of the ally as key and
+	 * an <tt>Alliance</tt> object as value.
 	 */
 	public Map allies = null;
 
 	/**
-	 * The different groups in this faction. The map contains <tt>ID</tt>
-	 * objects with the group id as keys and <tt>Group</tt> objects as values.
+	 * The different groups in this faction. The map contains <tt>ID</tt> objects with the group id
+	 * as keys and <tt>Group</tt> objects as values.
 	 */
 	public Map groups = null;
 
@@ -136,8 +131,7 @@ public class Faction extends UnitContainer {
 	private Locale locale = null;
 
 	/**
-	 * Creates a new Faction object with the specified id on top of the
-	 * specified game data object.
+	 * Creates a new Faction object with the specified id on top of the specified game data object.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 * @param data TODO: DOCUMENT ME!
@@ -147,8 +141,7 @@ public class Faction extends UnitContainer {
 	}
 
 	/**
-	 * Assigns this faction a locale indicating the language of its report and
-	 * the orders.
+	 * Assigns this faction a locale indicating the language of its report and the orders.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -157,8 +150,7 @@ public class Faction extends UnitContainer {
 	}
 
 	/**
-	 * Returns the locale of this faction indicating the language of its report
-	 * and orders.
+	 * Returns the locale of this faction indicating the language of its report and orders.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -166,9 +158,7 @@ public class Faction extends UnitContainer {
 		return this.locale;
 	}
 
-	/**
-	 * A faction dependent prefix to be prepended to this faction's race name.
-	 */
+	/** A faction dependent prefix to be prepended to this faction's race name. */
 	private String raceNamePrefix = null;
 
 	/**
@@ -190,8 +180,7 @@ public class Faction extends UnitContainer {
 	}
 
 	/**
-	 * Returns the race of this faction. This method is an alias for the
-	 * getType() method.
+	 * Returns the race of this faction. This method is an alias for the getType() method.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -216,8 +205,7 @@ public class Faction extends UnitContainer {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newFaction TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Faction curFaction,
-							 GameData newGD, Faction newFaction) {
+	public static void merge(GameData curGD, Faction curFaction, GameData newGD, Faction newFaction) {
 		UnitContainer.merge(curGD, curFaction, newGD, newFaction);
 
 		if((curFaction.allies != null) && (curFaction.allies.size() > 0)) {
@@ -227,12 +215,10 @@ public class Faction extends UnitContainer {
 				newFaction.allies.clear();
 			}
 
-			for(Iterator iter = curFaction.allies.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curFaction.allies.values().iterator(); iter.hasNext();) {
 				Alliance alliance = (Alliance) iter.next();
-				Faction  ally = newGD.getFaction(alliance.getFaction().getID());
-				newFaction.allies.put(ally.getID(),
-									  new Alliance(ally, alliance.getState()));
+				Faction ally = newGD.getFaction(alliance.getFaction().getID());
+				newFaction.allies.put(ally.getID(), new Alliance(ally, alliance.getState()));
 			}
 		}
 
@@ -247,8 +233,7 @@ public class Faction extends UnitContainer {
 				newFaction.groups.clear();
 			}
 
-			for(Iterator iter = curFaction.groups.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curFaction.groups.values().iterator(); iter.hasNext();) {
 				Group curGroup = (Group) iter.next();
 				Group newGroup = null;
 
@@ -286,16 +271,14 @@ public class Faction extends UnitContainer {
 		// ReportMerger.mergeReport() :
 
 		/**
-		 * prepare faction trustlevel for merging: - to be added CR is older or
-		 * of same age -> hold existing trust levels - to be added CR is newer
-		 * and contains trust level that were set by the user explicitly (or
-		 * read from CR what means the same) -> take the trust levels out of
-		 * the new CR otherwise -> hold existing trust levels This means: set
-		 * those trust levels, that will not be retained to default values
+		 * prepare faction trustlevel for merging: - to be added CR is older or of same age -> hold
+		 * existing trust levels - to be added CR is newer and contains trust level that were set
+		 * by the user explicitly (or read from CR what means the same) -> take the trust levels
+		 * out of the new CR otherwise -> hold existing trust levels This means: set those trust
+		 * levels, that will not be retained to default values
 		 */
-		if((curFaction.trustLevel != Faction.TL_DEFAULT) ||
-			   curFaction.trustLevelSetByUser) {
-			newFaction.trustLevel		   = curFaction.trustLevel;
+		if((curFaction.trustLevel != Faction.TL_DEFAULT) || curFaction.trustLevelSetByUser) {
+			newFaction.trustLevel = curFaction.trustLevel;
 			newFaction.trustLevelSetByUser = curFaction.trustLevelSetByUser;
 		}
 
@@ -308,20 +291,16 @@ public class Faction extends UnitContainer {
 			if((curFaction.battles != null) && (curFaction.battles.size() > 0)) {
 				newFaction.battles = CollectionFactory.createLinkedList();
 
-				for(Iterator iter = curFaction.battles.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curFaction.battles.iterator(); iter.hasNext();) {
 					Battle curBattle = (Battle) iter.next();
 
 					try {
-						Battle newBattle = new Battle((ID) curBattle.getID()
-																	.clone(),
+						Battle newBattle = new Battle((ID) curBattle.getID().clone(),
 													  curBattle.isBattleSpec());
 
-						for(Iterator msgs = curBattle.messages().iterator();
-								msgs.hasNext();) {
+						for(Iterator msgs = curBattle.messages().iterator(); msgs.hasNext();) {
 							Message curMsg = (Message) msgs.next();
-							Message newMsg = new Message((ID) curMsg.getID()
-																	.clone());
+							Message newMsg = new Message((ID) curMsg.getID().clone());
 							Message.merge(curGD, curMsg, newGD, newMsg);
 							newBattle.messages().add(newMsg);
 						}
@@ -337,16 +316,14 @@ public class Faction extends UnitContainer {
 				newFaction.errors = CollectionFactory.createLinkedList(curFaction.errors);
 			}
 
-			if((curFaction.messages != null) &&
-				   (curFaction.messages.size() > 0)) {
+			if((curFaction.messages != null) && (curFaction.messages.size() > 0)) {
 				if(newFaction.messages == null) {
 					newFaction.messages = CollectionFactory.createLinkedList();
 				} else {
 					newFaction.messages.clear();
 				}
 
-				for(Iterator iter = curFaction.messages.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curFaction.messages.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -379,8 +356,8 @@ public class Faction extends UnitContainer {
 	}
 
 	/**
-	 * Compares this faction to another object. Returns true only if o is not
-	 * null and an instance of class Faction and their id's are equal.
+	 * Compares this faction to another object. Returns true only if o is not null and an instance
+	 * of class Faction and their id's are equal.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -395,8 +372,7 @@ public class Faction extends UnitContainer {
 	}
 
 	/**
-	 * Imposes a natural ordering on faction objects based on the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on faction objects based on the natural ordering of their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

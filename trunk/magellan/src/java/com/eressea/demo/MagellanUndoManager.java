@@ -56,8 +56,7 @@ public class MagellanUndoManager extends UndoManager {
 	 * @param property TODO: DOCUMENT ME!
 	 * @param l TODO: DOCUMENT ME!
 	 */
-	public void addPropertyChangeListener(String property,
-										  PropertyChangeListener l) {
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
 		list.addPropertyChangeListener(property, l);
 	}
 
@@ -76,8 +75,7 @@ public class MagellanUndoManager extends UndoManager {
 	 * @param property TODO: DOCUMENT ME!
 	 * @param l TODO: DOCUMENT ME!
 	 */
-	public void removePropertyChangeListener(String property,
-											 PropertyChangeListener l) {
+	public void removePropertyChangeListener(String property, PropertyChangeListener l) {
 		list.removePropertyChangeListener(property, l);
 	}
 

@@ -20,16 +20,16 @@ import java.util.Map;
 import com.eressea.Skill;
 
 /**
- * A comparator imposing an ordering on collections of Skill objects by
- * comparing the best skills available in each set.
+ * A comparator imposing an ordering on collections of Skill objects by comparing the best skills
+ * available in each set.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality.
  * </p>
  */
 public class BestSkillComparator implements Comparator {
@@ -40,18 +40,16 @@ public class BestSkillComparator implements Comparator {
 	/**
 	 * Creates a new BestSkillComparator object.
 	 *
-	 * @param bestComparator used to determine the best skill in each of the
-	 * 		  two collections of skills to be compared.
+	 * @param bestComparator used to determine the best skill in each of the two collections of
+	 * 		  skills to be compared.
 	 * @param skillComparator used to compare the two best skills.
-	 * @param subComparator applied when the best skills are equal or cannot be
-	 * 		  determined.
+	 * @param subComparator applied when the best skills are equal or cannot be determined.
 	 */
-	public BestSkillComparator(Comparator bestComparator,
-							   Comparator skillComparator,
+	public BestSkillComparator(Comparator bestComparator, Comparator skillComparator,
 							   Comparator subComparator) {
-		this.bestCmp  = bestComparator;
+		this.bestCmp = bestComparator;
 		this.skillCmp = skillComparator;
-		this.subCmp   = subComparator;
+		this.subCmp = subComparator;
 	}
 
 	/**
@@ -60,11 +58,11 @@ public class BestSkillComparator implements Comparator {
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return the result of the skill comparator applied to the - according to
-	 * 		   the best comparator - smallest skills in o1 and o2.
+	 * @return the result of the skill comparator applied to the - according to the best comparator
+	 * 		   - smallest skills in o1 and o2.
 	 */
 	public int compare(Object o1, Object o2) {
-		int   retVal = 0;
+		int retVal = 0;
 		Skill s1 = getBestSkill((Map) o1);
 		Skill s2 = getBestSkill((Map) o2);
 
@@ -94,8 +92,8 @@ public class BestSkillComparator implements Comparator {
 			return null;
 		}
 
-		Iterator iter	   = skills.values().iterator();
-		Skill    bestSkill = (Skill) iter.next();
+		Iterator iter = skills.values().iterator();
+		Skill bestSkill = (Skill) iter.next();
 
 		if(skills.size() > 1) {
 			while(iter.hasNext()) {

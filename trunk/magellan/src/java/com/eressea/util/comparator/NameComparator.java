@@ -18,24 +18,21 @@ import java.util.Comparator;
 import com.eressea.Named;
 
 /**
- * A comparator imposing an ordering on named objects by comparing their names
- * alphabetically.
+ * A comparator imposing an ordering on named objects by comparing their names alphabetically.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
- * I.e. if the two compared objects have the same name and they would be
- * regarded as equal by this comparator, instead of 0 the result of the
- * sub-comparator's comparison is returned.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality. I.e. if the two compared objects have the
+ * same name and they would be regarded as equal by this comparator, instead of 0 the result of
+ * the sub-comparator's comparison is returned.
  * </p>
  */
 public class NameComparator implements Comparator {
 	protected Comparator sameNameSubCmp = null;
-
 
 	/** The default NameComparator without a subComparator */
 	public static final Comparator DEFAULT = new NameComparator(null);
@@ -43,9 +40,8 @@ public class NameComparator implements Comparator {
 	/**
 	 * Creates a new NameComparator object.
 	 *
-	 * @param sameNameSubComparator if two objects with the same name are
-	 * 		  compared, this sub-comparator is applied if it is not
-	 * 		  <tt>null</tt>.
+	 * @param sameNameSubComparator if two objects with the same name are compared, this
+	 * 		  sub-comparator is applied if it is not <tt>null</tt>.
 	 */
 	public NameComparator(Comparator sameNameSubComparator) {
 		sameNameSubCmp = sameNameSubComparator;
@@ -57,13 +53,12 @@ public class NameComparator implements Comparator {
 	 * @param o1 an instance of interface Named.
 	 * @param o2 an instance of interface Named.
 	 *
-	 * @return the lexical difference of <tt>o1</tt>'s and <tt>o2</tt>'s names
-	 * 		   as returned by String.compareTo(). If the names are equal and a
-	 * 		   sub-comparator was specified, the result of that
-	 * 		   sub-comparator's comparison is returned.
+	 * @return the lexical difference of <tt>o1</tt>'s and <tt>o2</tt>'s names as returned by
+	 * 		   String.compareTo(). If the names are equal and a sub-comparator was specified, the
+	 * 		   result of that sub-comparator's comparison is returned.
 	 */
 	public int compare(Object o1, Object o2) {
-		int    retVal = 0;
+		int retVal = 0;
 		String n1 = ((Named) o1).getName();
 		String n2 = ((Named) o2).getName();
 

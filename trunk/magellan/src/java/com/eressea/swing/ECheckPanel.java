@@ -78,21 +78,18 @@ import com.eressea.util.logging.Logger;
 /**
  * A panel for showing statistics about factions.
  */
-public class ECheckPanel extends InternationalizedDataPanel
-	implements SelectionListener
-{
-	private static final Logger log			 = Logger.getInstance(ECheckPanel.class);
-	private JTextField		    txtECheckEXE = null;
-	private JList			    lstMessages  = null;
-	private JComboBox		    cmbFactions  = null;
-	private JTextArea		    txtOutput    = null;
-	private File			    orderFile    = null;
-	private JComboBox		    usedOptions  = new JComboBox();
-	private JTextField		    txtOptions   = (JTextField) usedOptions.getEditor()
-																	   .getEditorComponent();
-	private JCheckBox		    chkConfirmedOnly  = null;
-	private JCheckBox		    chkSelRegionsOnly = null;
-	private Collection		    regions			  = null;
+public class ECheckPanel extends InternationalizedDataPanel implements SelectionListener {
+	private static final Logger log = Logger.getInstance(ECheckPanel.class);
+	private JTextField txtECheckEXE = null;
+	private JList lstMessages = null;
+	private JComboBox cmbFactions = null;
+	private JTextArea txtOutput = null;
+	private File orderFile = null;
+	private JComboBox usedOptions = new JComboBox();
+	private JTextField txtOptions = (JTextField) usedOptions.getEditor().getEditorComponent();
+	private JCheckBox chkConfirmedOnly = null;
+	private JCheckBox chkSelRegionsOnly = null;
+	private Collection regions = null;
 
 	/**
 	 * Creates a new ECheckPanel object.
@@ -102,8 +99,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 	 * @param p TODO: DOCUMENT ME!
 	 * @param regions TODO: DOCUMENT ME!
 	 */
-	public ECheckPanel(EventDispatcher d, GameData initData, Properties p,
-					   Collection regions) {
+	public ECheckPanel(EventDispatcher d, GameData initData, Properties p, Collection regions) {
 		super(d, initData, p);
 		this.regions = regions;
 		init(d);
@@ -139,16 +135,14 @@ public class ECheckPanel extends InternationalizedDataPanel
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
-		if((SelectionEvent.ST_REGIONS == e.getSelectionType()) &&
-			   (e.getSelectedObjects() != null)) {
+		if((SelectionEvent.ST_REGIONS == e.getSelectionType()) && (e.getSelectedObjects() != null)) {
 			if(regions == null) {
 				regions = CollectionFactory.createHashSet();
 			} else {
 				regions.clear();
 			}
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -163,8 +157,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			  System.err.println("ECheckPanel.selectionChanged:"+regions);
 			  System.err.println("ECheckPanel.selectionChanged:");
 			*/
-			chkSelRegionsOnly.setEnabled((regions != null) &&
-										 (regions.size() > 0));
+			chkSelRegionsOnly.setEnabled((regions != null) && (regions.size() > 0));
 		}
 	}
 
@@ -185,8 +178,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 		Faction selectedFaction = (Faction) cmbFactions.getSelectedItem();
 
 		if(selectedFaction == null) {
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.nofaction.text"),
+			JOptionPane.showMessageDialog(this, getString("msg.nofaction.text"),
 										  getString("msg.nofaction.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -213,16 +205,14 @@ public class ECheckPanel extends InternationalizedDataPanel
 				s += (usedOptions.getItemAt(i) + ";");
 			}
 
-			settings.setProperty("ECheckPanel.options." +
-								 selectedFaction.getID().toString(), s);
+			settings.setProperty("ECheckPanel.options." + selectedFaction.getID().toString(), s);
 		}
 
 		// check the given executable
 		File exeFile = new File(txtECheckEXE.getText());
 
 		if(!exeFile.exists()) {
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.echeckmissing.text"),
+			JOptionPane.showMessageDialog(this, getString("msg.echeckmissing.text"),
 										  getString("msg.echeckmissing.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -247,8 +237,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			}
 		} catch(IOException e) {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.versionretrievalerror.text"),
+			JOptionPane.showMessageDialog(this, getString("msg.versionretrievalerror.text"),
 										  getString("msg.versionretrievalerror.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -263,12 +252,10 @@ public class ECheckPanel extends InternationalizedDataPanel
 		try {
 			orderFile = File.createTempFile("orders", null);
 
-			Writer	    stream    = new FileWriter(orderFile);
-			OrderWriter cmdWriter = new OrderWriter(data, selectedFaction,
-													options);
+			Writer stream = new FileWriter(orderFile);
+			OrderWriter cmdWriter = new OrderWriter(data, selectedFaction, options);
 
-			if(chkSelRegionsOnly.isSelected() && (regions != null) &&
-				   (regions.size() > 0)) {
+			if(chkSelRegionsOnly.isSelected() && (regions != null) && (regions.size() > 0)) {
 				cmdWriter.setRegions(regions);
 			}
 
@@ -277,9 +264,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			stream.close();
 		} catch(IOException e) {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.ordersaveerror.text") +
-										  e,
+			JOptionPane.showMessageDialog(this, getString("msg.ordersaveerror.text") + e,
 										  getString("msg.ordersaveerror.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -293,10 +278,8 @@ public class ECheckPanel extends InternationalizedDataPanel
 
 		// run ECheck and display the ECheck output
 		try {
-			LineNumberReader r = new LineNumberReader(new JECheck(exeFile,
-																  orderFile,
-																  options));
-			StringBuffer     sb = new StringBuffer();
+			LineNumberReader r = new LineNumberReader(new JECheck(exeFile, orderFile, options));
+			StringBuffer sb = new StringBuffer();
 
 			while(r.ready()) {
 				sb.append(r.readLine()).append("\n");
@@ -305,8 +288,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			r.close();
 			txtOutput.setText(sb.toString());
 		} catch(IOException e) {
-			log.error("ECheckPanel.runECheck(): error while reading ECheck output",
-					  e);
+			log.error("ECheckPanel.runECheck(): error while reading ECheck output", e);
 		}
 
 		// run echeck to get the messages
@@ -319,16 +301,13 @@ public class ECheckPanel extends InternationalizedDataPanel
 				JECheck.determineAffectedObjects(data, orderFile, messages);
 				lstMessages.setListData(messages.toArray());
 			} else {
-				JOptionPane.showMessageDialog(this,
-											  getString("msg.noecheckmessages.text"),
+				JOptionPane.showMessageDialog(this, getString("msg.noecheckmessages.text"),
 											  getString("msg.noecheckmessages.title"),
 											  JOptionPane.INFORMATION_MESSAGE);
 			}
 		} catch(IOException e) {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.echeckerror.text") +
-										  e,
+			JOptionPane.showMessageDialog(this, getString("msg.echeckerror.text") + e,
 										  getString("msg.echeckerror.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -342,8 +321,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			return;
 		} catch(java.text.ParseException e) {
 			this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.parseerror.text") + e,
+			JOptionPane.showMessageDialog(this, getString("msg.parseerror.text") + e,
 										  getString("msg.parseerror.title"),
 										  JOptionPane.ERROR_MESSAGE);
 
@@ -376,10 +354,8 @@ public class ECheckPanel extends InternationalizedDataPanel
 		usedOptions.setEditable(true);
 
 		JLabel lblECheckEXE = new JLabel(getString("lbl.echeck.caption"));
-		lblECheckEXE.setDisplayedMnemonic(getString("lbl.echeck.mnemonic")
-											  .charAt(0));
-		txtECheckEXE = new JTextField(settings.getProperty("JECheckPanel.echeckEXE",
-														   ""));
+		lblECheckEXE.setDisplayedMnemonic(getString("lbl.echeck.mnemonic").charAt(0));
+		txtECheckEXE = new JTextField(settings.getProperty("JECheckPanel.echeckEXE", ""));
 		lblECheckEXE.setLabelFor(txtECheckEXE);
 
 		JButton btnBrowse = new JButton("...");
@@ -394,13 +370,11 @@ public class ECheckPanel extends InternationalizedDataPanel
 			});
 
 		JLabel lblFactions = new JLabel(getString("lbl.faction.caption"));
-		lblFactions.setDisplayedMnemonic(getString("lbl.faction.mnemonic")
-											 .charAt(0));
+		lblFactions.setDisplayedMnemonic(getString("lbl.faction.mnemonic").charAt(0));
 		cmbFactions = new JComboBox();
 		lblFactions.setLabelFor(cmbFactions);
 
-		for(Iterator iter = data.factions().values().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = data.factions().values().iterator(); iter.hasNext();) {
 			Faction f = (Faction) iter.next();
 
 			if(f.isPrivileged()) {
@@ -449,8 +423,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 		chkSelRegionsOnly.setEnabled((regions != null) && (regions.size() > 0));
 
 		JLabel lblOptions = new JLabel(getString("lbl.options.caption"));
-		lblOptions.setDisplayedMnemonic(getString("lbl.options.mnemonic")
-											.charAt(0));
+		lblOptions.setDisplayedMnemonic(getString("lbl.options.mnemonic").charAt(0));
 		lblOptions.setLabelFor(usedOptions);
 
 		/* trigger option creation */
@@ -458,77 +431,77 @@ public class ECheckPanel extends InternationalizedDataPanel
 			cmbFactions.setSelectedIndex(0);
 		}
 
-		JPanel			   controls = new JPanel(new GridBagLayout());
+		JPanel controls = new JPanel(new GridBagLayout());
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
 		c.insets = new Insets(2, 1, 2, 1);
 
-		c.gridx   = 0;
-		c.gridy   = 0;
-		c.fill    = GridBagConstraints.NONE;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		controls.add(lblECheckEXE, c);
 
-		c.gridx   = 1;
-		c.gridy   = 0;
-		c.fill    = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 1.0;
 		c.weighty = 0.0;
 		controls.add(txtECheckEXE, c);
 
-		c.gridx   = 2;
-		c.gridy   = 0;
-		c.fill    = GridBagConstraints.NONE;
+		c.gridx = 2;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		controls.add(btnBrowse, c);
 
-		c.gridx   = 0;
-		c.gridy   = 1;
-		c.fill    = GridBagConstraints.NONE;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		controls.add(lblFactions, c);
 
-		c.gridx     = 1;
-		c.gridy     = 1;
-		c.fill	    = GridBagConstraints.HORIZONTAL;
-		c.weightx   = 1.0;
-		c.weighty   = 0.0;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1.0;
+		c.weighty = 0.0;
 		c.gridwidth = 2;
 		controls.add(cmbFactions, c);
 
-		c.gridx     = 0;
-		c.gridy     = 2;
-		c.fill	    = GridBagConstraints.NONE;
-		c.weightx   = 0.0;
-		c.weighty   = 0.0;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		c.gridwidth = 1;
 		controls.add(lblOptions, c);
 
-		c.gridx     = 1;
-		c.gridy     = 2;
-		c.fill	    = GridBagConstraints.HORIZONTAL;
-		c.weightx   = 1.0;
-		c.weighty   = 0.0;
+		c.gridx = 1;
+		c.gridy = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1.0;
+		c.weighty = 0.0;
 		c.gridwidth = 2;
 		controls.add(usedOptions, c);
 
-		c.gridx     = 1;
-		c.gridy     = 3;
-		c.fill	    = GridBagConstraints.HORIZONTAL;
-		c.weightx   = 1.0;
-		c.weighty   = 0.0;
+		c.gridx = 1;
+		c.gridy = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1.0;
+		c.weighty = 0.0;
 		c.gridwidth = 2;
 		controls.add(chkConfirmedOnly, c);
 
-		c.gridx     = 1;
-		c.gridy     = 4;
-		c.fill	    = GridBagConstraints.HORIZONTAL;
-		c.weightx   = 1.0;
-		c.weighty   = 0.0;
+		c.gridx = 1;
+		c.gridy = 4;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1.0;
+		c.weighty = 0.0;
 		c.gridwidth = 2;
 		controls.add(chkSelRegionsOnly, c);
 
@@ -536,8 +509,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 	}
 
 	protected static String getOwnString(String key) {
-		return com.eressea.util.Translations.getTranslation(ECheckPanel.class,
-															key);
+		return com.eressea.util.Translations.getTranslation(ECheckPanel.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -564,8 +536,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			defaultTranslations.put("msg.wrongversion.title", "ECheck too old");
 			defaultTranslations.put("msg.wrongversion.text",
 									"The specified version of ECheck is too old. Please use version {0} or higher.");
-			defaultTranslations.put("msg.versionretrievalerror.title",
-									"Version undetermined");
+			defaultTranslations.put("msg.versionretrievalerror.title", "Version undetermined");
 			defaultTranslations.put("msg.versionretrievalerror.text",
 									"While trying to gather version information about the specified ECheck the following error occurred:\n");
 			defaultTranslations.put("msg.ordersaveerror.text",
@@ -573,8 +544,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 			defaultTranslations.put("msg.ordersaveerror.title", "Error on save");
 			defaultTranslations.put("msg.noecheckmessages.text",
 									"ECheck did not find any errors in your orders.");
-			defaultTranslations.put("msg.noecheckmessages.title",
-									"Orders checked");
+			defaultTranslations.put("msg.noecheckmessages.title", "Orders checked");
 			defaultTranslations.put("msg.echeckerror.text",
 									"The following error occurred while executing ECheck:  ");
 			defaultTranslations.put("msg.echeckerror.title", "ECheck error");
@@ -592,13 +562,11 @@ public class ECheckPanel extends InternationalizedDataPanel
 			defaultTranslations.put("lbl.options.caption", "Options:");
 			defaultTranslations.put("lbl.options.mnemonic", "o");
 
-			defaultTranslations.put("chk.selectedregions.caption",
-									"Selected regions");
+			defaultTranslations.put("chk.selectedregions.caption", "Selected regions");
 			defaultTranslations.put("chk.skipunconfirmedorders.caption",
 									"Skip units with unconfirmed orders");
 
-			defaultTranslations.put("border.echeckmessages",
-									"Retrieved messages");
+			defaultTranslations.put("border.echeckmessages", "Retrieved messages");
 			defaultTranslations.put("border.orders", "ECheck output");
 
 			defaultTranslations.put("filter.echeckexe.desc", "ECheck executable");
@@ -623,8 +591,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 						}
 
 						if(msg.getAffectedObject() != null) {
-							dispatcher.fire(new SelectionEvent(ECheckPanel.this,
-															   null,
+							dispatcher.fire(new SelectionEvent(ECheckPanel.this, null,
 															   msg.getAffectedObject()));
 						} else {
 							JOptionPane.showMessageDialog(ECheckPanel.this,
@@ -657,22 +624,21 @@ public class ECheckPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns a file name by showing the user a file selection dialog. If the
-	 * user's selection is empty, null is returned.
+	 * Returns a file name by showing the user a file selection dialog. If the user's selection is
+	 * empty, null is returned.
 	 *
 	 * @param defaultFile TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private String getFileName(String defaultFile) {
-		String							   retVal = null;
+		String retVal = null;
 
 		javax.swing.filechooser.FileFilter ff = new javax.swing.filechooser.FileFilter() {
 			public boolean accept(File f) {
-				String fileName				  = f.getName().toLowerCase();
+				String fileName = f.getName().toLowerCase();
 
-				return f.isDirectory() ||
-					   (fileName.endsWith(".exe") || fileName.equals("echeck"));
+				return f.isDirectory() || (fileName.endsWith(".exe") || fileName.equals("echeck"));
 			}
 
 			public String getDescription() {
@@ -722,18 +688,16 @@ public class ECheckPanel extends InternationalizedDataPanel
 		return options;
 	}
 
-	private static final class ECheckMessageRenderer extends JPanel
-		implements ListCellRenderer
-	{
-		private static javax.swing.border.Border focusedBorder	    = null;
-		private static javax.swing.border.Border selectedBorder     = null;
-		private static javax.swing.border.Border plainBorder	    = null;
-		private static Color					 textForeground     = null;
-		private static Color					 textBackground     = null;
-		private static Color					 selectedForeground = null;
-		private static Color					 selectedBackground = null;
-		private JLabel							 lblCaption		    = null;
-		private JTextArea						 txtMessage		    = null;
+	private static final class ECheckMessageRenderer extends JPanel implements ListCellRenderer {
+		private static javax.swing.border.Border focusedBorder = null;
+		private static javax.swing.border.Border selectedBorder = null;
+		private static javax.swing.border.Border plainBorder = null;
+		private static Color textForeground = null;
+		private static Color textBackground = null;
+		private static Color selectedForeground = null;
+		private static Color selectedBackground = null;
+		private JLabel lblCaption = null;
+		private JTextArea txtMessage = null;
 
 		/**
 		 * Creates a new ECheckMessageRenderer object.
@@ -749,26 +713,26 @@ public class ECheckPanel extends InternationalizedDataPanel
 
 			this.setLayout(new GridBagLayout());
 
-			c.anchor     = GridBagConstraints.CENTER;
-			c.gridx		 = 0;
-			c.gridy		 = 0;
-			c.gridwidth  = 1;
+			c.anchor = GridBagConstraints.CENTER;
+			c.gridx = 0;
+			c.gridy = 0;
+			c.gridwidth = 1;
 			c.gridheight = 1;
-			c.fill		 = GridBagConstraints.HORIZONTAL;
-			c.weightx    = 0.5;
-			c.weighty    = 0.0;
-			c.insets     = new Insets(0, 0, 0, 0);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 0.5;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 0, 0, 0);
 			this.add(lblCaption, c);
 
-			c.anchor     = GridBagConstraints.CENTER;
-			c.gridx		 = 0;
-			c.gridy		 = 1;
-			c.gridwidth  = 1;
+			c.anchor = GridBagConstraints.CENTER;
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = 1;
 			c.gridheight = 1;
-			c.fill		 = GridBagConstraints.HORIZONTAL;
-			c.weightx    = 0.0;
-			c.weighty    = 0.0;
-			c.insets     = new Insets(0, 8, 0, 0);
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.insets = new Insets(0, 8, 0, 0);
 			this.add(txtMessage, c);
 
 			applyUIDefaults();
@@ -785,10 +749,8 @@ public class ECheckPanel extends InternationalizedDataPanel
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public Component getListCellRendererComponent(JList list, Object value,
-													  int index,
-													  boolean isSelected,
-													  boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value, int index,
+													  boolean isSelected, boolean cellHasFocus) {
 			try {
 				JECheck.ECheckMessage m = (JECheck.ECheckMessage) value;
 
@@ -813,11 +775,9 @@ public class ECheckPanel extends InternationalizedDataPanel
 				}
 
 				if(m.getType() == JECheck.ECheckMessage.WARNING) {
-					lblCaption.setText(getOwnString("celllbl.warning") +
-									   m.getLineNr());
+					lblCaption.setText(getOwnString("celllbl.warning") + m.getLineNr());
 				} else {
-					lblCaption.setText(getOwnString("celllbl.error") +
-									   m.getLineNr());
+					lblCaption.setText(getOwnString("celllbl.error") + m.getLineNr());
 				}
 
 				txtMessage.setText(m.getMessage());
@@ -828,16 +788,15 @@ public class ECheckPanel extends InternationalizedDataPanel
 		}
 
 		private void applyUIDefaults() {
-			textForeground     = (Color) UIManager.getDefaults().get("Tree.textForeground");
-			textBackground     = (Color) UIManager.getDefaults().get("Tree.textBackground");
+			textForeground = (Color) UIManager.getDefaults().get("Tree.textForeground");
+			textBackground = (Color) UIManager.getDefaults().get("Tree.textBackground");
 			selectedForeground = (Color) UIManager.getDefaults().get("Tree.selectionForeground");
 			selectedBackground = (Color) UIManager.getDefaults().get("Tree.selectionBackground");
 
 			// pavkovic 2003.10.17: prevent jvm 1.4.2_01 bug
-			focusedBorder = new MatteBorder(1, 1, 1, 1,
-											JVMUtilities.getTreeSelectionBorderColor());
+			focusedBorder = new MatteBorder(1, 1, 1, 1, JVMUtilities.getTreeSelectionBorderColor());
 			selectedBorder = new MatteBorder(1, 1, 1, 1, selectedBackground);
-			plainBorder    = new EmptyBorder(1, 1, 1, 1);
+			plainBorder = new EmptyBorder(1, 1, 1, 1);
 
 			this.setOpaque(true);
 			this.setBackground(textBackground);

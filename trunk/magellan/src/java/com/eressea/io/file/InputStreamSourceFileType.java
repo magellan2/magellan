@@ -23,8 +23,8 @@ import java.net.URL;
 import com.eressea.resource.ResourcePathClassLoader;
 
 /**
- * This FileType represent a "File" via an input stream URL. This is a
- * convenient object for encapsulating ClassLoader stuff.
+ * This FileType represent a "File" via an input stream URL. This is a convenient object for
+ * encapsulating ClassLoader stuff.
  */
 public class InputStreamSourceFileType extends FileType {
 	InputStreamSourceFileType(String url) throws IOException {
@@ -50,11 +50,10 @@ public class InputStreamSourceFileType extends FileType {
 	 *
 	 * @return a File object
 	 *
-	 * @throws IOException if file cannot be determined, e.g. for  an url
-	 * 		   pointing to an InputStream.
+	 * @throws IOException if file cannot be determined, e.g. for  an url pointing to an
+	 * 		   InputStream.
 	 */
 	public File getFile() throws IOException {
-		throw new IOException("Unable to determine File for InputStream URL '" +
-							  toString() + "'.");
+		throw new IOException("Unable to determine File for InputStream URL '" + toString() + "'.");
 	}
 }

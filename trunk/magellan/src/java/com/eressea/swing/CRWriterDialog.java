@@ -63,27 +63,26 @@ import com.eressea.util.PropertiesHelper;
 import com.eressea.util.logging.Logger;
 
 /**
- * A GUI for writing a CR to a file or copy it to the clipboard. This class can
- * be used as a stand-alone application or can be integrated as dialog into a
- * different application.
+ * A GUI for writing a CR to a file or copy it to the clipboard. This class can be used as a
+ * stand-alone application or can be integrated as dialog into a different application.
  */
 public class CRWriterDialog extends InternationalizedDataDialog {
-	private static final Logger log					 = Logger.getInstance(CRWriterDialog.class);
-	private boolean			    standAlone			 = false;
-	private Collection		    regions				 = null;
-	private JComboBox		    comboOutputFile		 = null;
-	private JCheckBox		    chkServerConformance = null;
-	private JCheckBox		    chkIslands			 = null;
-	private JCheckBox		    chkRegions			 = null;
-	private JCheckBox		    chkRegionDetails     = null;
-	private JCheckBox		    chkBuildings		 = null;
-	private JCheckBox		    chkShips			 = null;
-	private JCheckBox		    chkUnits			 = null;
-	private JCheckBox		    chkMessages			 = null;
-	private JCheckBox		    chkSpellsAndPotions  = null;
-	private JCheckBox		    chkSelRegionsOnly    = null;
-	private JCheckBox		    chkDelStats			 = null;
-	private JCheckBox		    chkDelTrans			 = null;
+	private static final Logger log = Logger.getInstance(CRWriterDialog.class);
+	private boolean standAlone = false;
+	private Collection regions = null;
+	private JComboBox comboOutputFile = null;
+	private JCheckBox chkServerConformance = null;
+	private JCheckBox chkIslands = null;
+	private JCheckBox chkRegions = null;
+	private JCheckBox chkRegionDetails = null;
+	private JCheckBox chkBuildings = null;
+	private JCheckBox chkShips = null;
+	private JCheckBox chkUnits = null;
+	private JCheckBox chkMessages = null;
+	private JCheckBox chkSpellsAndPotions = null;
+	private JCheckBox chkSelRegionsOnly = null;
+	private JCheckBox chkDelStats = null;
+	private JCheckBox chkDelTrans = null;
 
 	/**
 	 * Create a stand-alone instance of CRWriterDialog.
@@ -112,15 +111,14 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 	 * @param initData TODO: DOCUMENT ME!
 	 * @param p TODO: DOCUMENT ME!
 	 */
-	public CRWriterDialog(Frame owner, boolean modal, GameData initData,
-						  Properties p) {
+	public CRWriterDialog(Frame owner, boolean modal, GameData initData, Properties p) {
 		super(owner, modal, null, initData, p);
 		init();
 	}
 
 	/**
-	 * Create a new CRWriterDialog object as a dialog with a parent window and
-	 * a set of selected regions.
+	 * Create a new CRWriterDialog object as a dialog with a parent window and a set of selected
+	 * regions.
 	 *
 	 * @param owner TODO: DOCUMENT ME!
 	 * @param modal TODO: DOCUMENT ME!
@@ -128,8 +126,8 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 	 * @param p TODO: DOCUMENT ME!
 	 * @param selectedRegions TODO: DOCUMENT ME!
 	 */
-	public CRWriterDialog(Frame owner, boolean modal, GameData initData,
-						  Properties p, Collection selectedRegions) {
+	public CRWriterDialog(Frame owner, boolean modal, GameData initData, Properties p,
+						  Collection selectedRegions) {
 		super(owner, modal, null, initData, p);
 		this.regions = selectedRegions;
 		init();
@@ -141,49 +139,46 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		setSize(450, 250);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int		  x = Integer.parseInt(settings.getProperty("CRWriterDialog.x",
-															((screen.width -
-															getWidth()) / 2) +
-															""));
+		int x = Integer.parseInt(settings.getProperty("CRWriterDialog.x",
+													  ((screen.width - getWidth()) / 2) + ""));
 		int y = Integer.parseInt(settings.getProperty("CRWriterDialog.y",
-													  ((screen.height -
-													  getHeight()) / 2) + ""));
+													  ((screen.height - getHeight()) / 2) + ""));
 		setLocation(x, y);
 	}
 
 	private Container getMainPane() {
-		JPanel			   mainPanel = new JPanel(new GridBagLayout());
+		JPanel mainPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		mainPanel.setBorder(new EmptyBorder(4, 4, 4, 4));
 
-		c.anchor     = GridBagConstraints.NORTH;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		mainPanel.add(getOptionPanel(), c);
 
-		c.anchor     = GridBagConstraints.NORTH;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		mainPanel.add(getButtonPanel(), c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 2;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		mainPanel.add(getFilePanel(), c);
 
 		return mainPanel;
@@ -196,8 +191,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 					File outputFile = new File((String) comboOutputFile.getSelectedItem());
 
 					try {
-						write(FileTypeFactory.singleton()
-											 .createFileType(outputFile, false)
+						write(FileTypeFactory.singleton().createFileType(outputFile, false)
 											 .createWriter());
 						quit();
 					} catch(IOException ioe) {
@@ -264,32 +258,32 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		GridBagConstraints c = new GridBagConstraints();
 
 		// outputFile
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(lblOutputFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlFiles.add(comboOutputFile, c);
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 2;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlFiles.add(btnOutputFile, c);
 
 		return pnlFiles;
@@ -390,8 +384,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		if(standAlone == true) {
 			try {
 				settings.store(new FileOutputStream(new File(System.getProperty("user.home"),
-															 "CRWriterDialog.ini")),
-							   "");
+															 "CRWriterDialog.ini")), "");
 			} catch(IOException e) {
 				log.error("CRWriterDialog.storeSettings():", e);
 			}
@@ -423,7 +416,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 	}
 
 	private String getFileName(String defaultFile) {
-		String		 retVal = null;
+		String retVal = null;
 
 		JFileChooser fc = new JFileChooser();
 
@@ -469,13 +462,12 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 				 **/
 				if(newData.factions() != null) {
 					Iterator it = newData.factions().values().iterator();
-					boolean  excludeBRegions = (crw.getIncludeMessages() &&
-											   chkSelRegionsOnly.isSelected() &&
-											   (regions != null) &&
-											   (regions.size() > 0));
+					boolean excludeBRegions = (crw.getIncludeMessages() &&
+											  chkSelRegionsOnly.isSelected() && (regions != null) &&
+											  (regions.size() > 0));
 
 					while(it.hasNext()) {
-						Faction f     = (Faction) it.next();
+						Faction f = (Faction) it.next();
 						boolean found = true;
 
 						if(excludeBRegions) {
@@ -483,7 +475,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 							found = false;
 
 							while(!found && it2.hasNext()) {
-								Region   reg = (Region) it2.next();
+								Region reg = (Region) it2.next();
 								Iterator it3 = reg.units().iterator();
 
 								while(!found && it3.hasNext()) {
@@ -499,12 +491,12 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 						if(found && f.isPrivileged()) {
 							f.averageScore = -1;
-							f.score		   = -1;
-							f.persons	   = -1;
-							f.migrants     = -1;
-							f.maxMigrants  = -1;
-							f.spellSchool  = null;
-							f.allies	   = null;
+							f.score = -1;
+							f.persons = -1;
+							f.migrants = -1;
+							f.maxMigrants = -1;
+							f.spellSchool = null;
+							f.allies = null;
 
 							if(excludeBRegions && (f.messages != null)) {
 								Iterator it2 = f.messages.iterator();
@@ -539,8 +531,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 			if(chkDelTrans.isSelected()) {
 				// clean translation table
-				List trans = CollectionFactory.createLinkedList(newData.translations()
-																	   .keySet());
+				List trans = CollectionFactory.createLinkedList(newData.translations().keySet());
 
 				// some static data that is not connected but needed
 				trans.remove("Einheit");
@@ -551,19 +542,18 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 				Collection lookup = data.regions().values();
 
-				if(chkSelRegionsOnly.isSelected() && (regions != null) &&
-					   (regions.size() > 0)) {
+				if(chkSelRegionsOnly.isSelected() && (regions != null) && (regions.size() > 0)) {
 					lookup = regions;
 				}
 
-				Iterator it				 = lookup.iterator();
-				Iterator it2			 = null;
-				Iterator it3			 = null;
-				boolean  checkShips		 = chkShips.isSelected();
-				boolean  checkUnits		 = chkUnits.isSelected();
-				boolean  checkBuildings  = chkBuildings.isSelected();
-				boolean  checkSpells     = chkSpellsAndPotions.isSelected();
-				boolean  checkRegDetails = chkRegionDetails.isSelected();
+				Iterator it = lookup.iterator();
+				Iterator it2 = null;
+				Iterator it3 = null;
+				boolean checkShips = chkShips.isSelected();
+				boolean checkUnits = chkUnits.isSelected();
+				boolean checkBuildings = chkBuildings.isSelected();
+				boolean checkSpells = chkSpellsAndPotions.isSelected();
+				boolean checkRegDetails = chkRegionDetails.isSelected();
 
 				while(it.hasNext()) {
 					Region r = (Region) it.next();
@@ -583,8 +573,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 						it2 = r.ships().iterator();
 
 						while(it2.hasNext()) {
-							trans.remove(((Ship) it2.next()).getType().getID()
-										  .toString());
+							trans.remove(((Ship) it2.next()).getType().getID().toString());
 						}
 					}
 
@@ -592,8 +581,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 						it2 = r.buildings().iterator();
 
 						while(it2.hasNext()) {
-							trans.remove(((Building) it2.next()).getType()
-										  .getID().toString());
+							trans.remove(((Building) it2.next()).getType().getID().toString());
 						}
 					}
 
@@ -609,23 +597,22 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 							} else {
 								if((u.getFaction() != null) &&
 									   (u.getFaction().getRaceNamePrefix() != null)) {
-									trans.remove(u.getFaction()
-												  .getRaceNamePrefix());
+									trans.remove(u.getFaction().getRaceNamePrefix());
 								}
 							}
 
 							it3 = u.getItems().iterator();
 
 							while(it3.hasNext()) {
-								trans.remove(((com.eressea.Item) it3.next()).getItemType()
-											  .getID().toString());
+								trans.remove(((com.eressea.Item) it3.next()).getItemType().getID()
+											  .toString());
 							}
 
 							it3 = u.getSkills().iterator();
 
 							while(it3.hasNext()) {
-								trans.remove(((com.eressea.Skill) it3.next()).getSkillType()
-											  .getID().toString());
+								trans.remove(((com.eressea.Skill) it3.next()).getSkillType().getID()
+											  .toString());
 							}
 						}
 					}
@@ -652,8 +639,8 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 						it2 = sp.ingredients().iterator();
 
 						while(it2.hasNext()) {
-							trans.remove(((com.eressea.Item) it2.next()).getItemType()
-										  .getID().toString());
+							trans.remove(((com.eressea.Item) it2.next()).getItemType().getID()
+										  .toString());
 						}
 					}
 				}
@@ -675,17 +662,14 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 				}
 			}
 
-			if(chkSelRegionsOnly.isSelected() && (regions != null) &&
-				   (regions.size() > 0)) {
+			if(chkSelRegionsOnly.isSelected() && (regions != null) && (regions.size() > 0)) {
 				crw.setRegions(regions);
 			}
 
 			crw.write(newData);
 			crw.close();
 		} catch(Exception exc) {
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.exporterror.text") +
-										  exc.toString(),
+			JOptionPane.showMessageDialog(this, getString("msg.exporterror.text") + exc.toString(),
 										  getString("msg.exporterror.title"),
 										  JOptionPane.WARNING_MESSAGE);
 		}

@@ -27,18 +27,16 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public abstract class AbstractNodeWrapperDrawPolicy
-	implements NodeWrapperDrawPolicy
-{
-	protected List			 nodes;
+public abstract class AbstractNodeWrapperDrawPolicy implements NodeWrapperDrawPolicy {
+	protected List nodes;
 	protected ReferenceQueue refQueue;
-	protected boolean		 inUpdate = false;
+	protected boolean inUpdate = false;
 
 	/**
 	 * Creates new NodeWrapperPreferencesDialog
 	 */
 	public AbstractNodeWrapperDrawPolicy() {
-		nodes    = CollectionFactory.createLinkedList();
+		nodes = CollectionFactory.createLinkedList();
 		refQueue = new ReferenceQueue();
 	}
 

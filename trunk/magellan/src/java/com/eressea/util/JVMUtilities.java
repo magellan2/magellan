@@ -23,9 +23,8 @@ import javax.swing.UIManager;
 import com.eressea.util.logging.Logger;
 
 /**
- * This class provides static functions for jvm specific bullshit (e.g. changed
- * focus system  from jvm 1.3.x to 1.4.x It also checks for necessary systems,
- * e.g. XML
+ * This class provides static functions for jvm specific bullshit (e.g. changed focus system  from
+ * jvm 1.3.x to 1.4.x It also checks for necessary systems, e.g. XML
  */
 public class JVMUtilities {
 	private static final Logger log = Logger.getInstance(JVMUtilities.class);
@@ -43,8 +42,7 @@ public class JVMUtilities {
 
 			if(log.isDebugEnabled()) {
 				log.debug("JVM 1.4.2_01 bug: class " +
-						  UIManager.getDefaults()
-								   .get("Tree.selectionBorderColor").getClass()
+						  UIManager.getDefaults().get("Tree.selectionBorderColor").getClass()
 								   .getName() + " instead of Color!");
 			}
 
@@ -52,15 +50,17 @@ public class JVMUtilities {
 		}
 	}
 
-	/** 
+	/**
 	 * Request the focus in the current window.
+	 *
+	 * @param aObj TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
-
 	public static final boolean requestFocusInWindow(Component aObj) {
 		try {
-			Object result = aObj.getClass()
-				.getMethod("requestFocusInWindow", new Class[] {  })
-				.invoke(aObj, new Object[] {  });
+			Object result = aObj.getClass().getMethod("requestFocusInWindow", new Class[] {  })
+								.invoke(aObj, new Object[] {  });
 
 			if(log.isDebugEnabled()) {
 				log.debug("JVMUtitities : successfully called Component.requestFocusInWindow()!");
@@ -75,14 +75,16 @@ public class JVMUtilities {
 				log.debug(ex);
 			}
 		}
+
 		// fallback for java < 1.4
 		aObj.requestFocus();
+
 		return false;
 	}
 
 	/**
-	 * This function calls Component.setFocusableWindowState (in java >= 1.4)
-	 * to  keep GUI consistent with java 1.3.x
+	 * This function calls Component.setFocusableWindowState (in java >= 1.4) to  keep GUI
+	 * consistent with java 1.3.x
 	 *
 	 * @param aObj TODO: DOCUMENT ME!
 	 * @param aFlag TODO: DOCUMENT ME!
@@ -90,14 +92,8 @@ public class JVMUtilities {
 	public static final void setFocusableWindowState(Window aObj, boolean aFlag) {
 		try {
 			//try to call setFocusableWindowState (true) on java 1.4 while staying compatible with Java 1.3
-			aObj.getClass()
-				.getMethod("setFocusableWindowState",
-						   new Class[] { Boolean.TYPE }).invoke(aObj,
-																new Object[] {
-																	aFlag
-																	? Boolean.TRUE
-																	: Boolean.FALSE
-																});
+			aObj.getClass().getMethod("setFocusableWindowState", new Class[] { Boolean.TYPE })
+				.invoke(aObj, new Object[] { aFlag ? Boolean.TRUE : Boolean.FALSE });
 
 			if(log.isDebugEnabled()) {
 				log.debug("JVMUtitities : successfully called Component.setFocusableWindowState(" +
@@ -128,8 +124,8 @@ public class JVMUtilities {
 	public static final int MAXIMIZED_BOTH = MAXIMIZED_VERT | MAXIMIZED_HORIZ;
 
 	/**
-	 * This function calls Frame.getExtendedState (in java >= 1.4) to  keep GUI
-	 * consistent with java 1.3.x
+	 * This function calls Frame.getExtendedState (in java >= 1.4) to  keep GUI consistent with
+	 * java 1.3.x
 	 *
 	 * @param aObj TODO: DOCUMENT ME!
 	 *
@@ -137,9 +133,10 @@ public class JVMUtilities {
 	 */
 	public static final int getExtendedState(Frame aObj) {
 		try {
-			Object result = aObj.getClass()
-								.getMethod("getExtendedState", new Class[] {  })
-								.invoke(aObj, new Object[] {  });
+			Object result = aObj.getClass().getMethod("getExtendedState", new Class[] {  }).invoke(aObj,
+																								   new Object[] {
+																									   
+																								   });
 
 			if(log.isDebugEnabled()) {
 				log.debug("JVMUtitities : successfully called Window.getExtendedState()!");
@@ -159,8 +156,8 @@ public class JVMUtilities {
 	}
 
 	/**
-	 * This function calls Frame.setExtendedState (in java >= 1.4) to  keep GUI
-	 * consistent with java 1.3.x
+	 * This function calls Frame.setExtendedState (in java >= 1.4) to  keep GUI consistent with
+	 * java 1.3.x
 	 *
 	 * @param aObj TODO: DOCUMENT ME!
 	 * @param state TODO: DOCUMENT ME!
@@ -173,13 +170,14 @@ public class JVMUtilities {
 		}
 
 		try {
-			aObj.getClass()
-				.getMethod("setExtendedState", new Class[] { Integer.TYPE })
-				.invoke(aObj, new Object[] { new Integer(state) });
+			aObj.getClass().getMethod("setExtendedState", new Class[] { Integer.TYPE }).invoke(aObj,
+																							   new Object[] {
+																								   new Integer(state)
+																							   });
 
 			if(log.isDebugEnabled()) {
-				log.debug("JVMUtitities : successfully called Window.setExtendedState(" +
-						  state + ")!");
+				log.debug("JVMUtitities : successfully called Window.setExtendedState(" + state +
+						  ")!");
 			}
 
 			return true;
@@ -217,8 +215,7 @@ public class JVMUtilities {
 		try {
 			// this would be a test without Class.forName, we are too stupid so we use the Class.forName test
 			// " ".subSequence (0, 0);
-			String.class.getMethod("subSequence",
-								   new Class[] { Integer.TYPE, Integer.TYPE });
+			String.class.getMethod("subSequence", new Class[] { Integer.TYPE, Integer.TYPE });
 
 			return true;
 		} catch(Throwable ignore) {

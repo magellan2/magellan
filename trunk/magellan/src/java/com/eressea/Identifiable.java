@@ -16,9 +16,7 @@ package com.eressea;
 /**
  * A template class for objects to be uniquely identifiable by other objects.
  */
-public abstract class Identifiable extends Object implements Unique, Comparable,
-															 Cloneable
-{
+public abstract class Identifiable extends Object implements Unique, Comparable, Cloneable {
 	/** The object imposing the unique identifiability.  This is immutable. */
 	protected final ID id;
 
@@ -47,9 +45,8 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	}
 
 	/**
-	 * Returns a copy of this object identified by a copy of the orignial's id.
-	 * I.e., the following statement holds true: this.getID() !=
-	 * this.clone().getID()
+	 * Returns a copy of this object identified by a copy of the orignial's id. I.e., the following
+	 * statement holds true: this.getID() != this.clone().getID()
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
@@ -60,18 +57,17 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	}
 
 	/**
-	 * Indicates that this object is to be regarded as equal to some other
-	 * object. Especially with implementing sub classes of Identifiable,
-	 * equality will often be established through the equality of ids.
+	 * Indicates that this object is to be regarded as equal to some other object. Especially with
+	 * implementing sub classes of Identifiable, equality will often be established through the
+	 * equality of ids.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public abstract boolean equals(Object o);
 
 	/**
-	 * Imposes a natural ordering on Identifiable objects. Especially with
-	 * implementing sub classes of Identifiable, such orderings will often be
-	 * established by the natural order of ids.
+	 * Imposes a natural ordering on Identifiable objects. Especially with implementing sub classes
+	 * of Identifiable, such orderings will often be established by the natural order of ids.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

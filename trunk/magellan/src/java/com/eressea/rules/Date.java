@@ -71,8 +71,7 @@ public abstract class Date extends Object implements ID {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof Date && (iDate == ((Date) o).iDate));
+		return (this == o) || (o instanceof Date && (iDate == ((Date) o).iDate));
 	}
 
 	/**
@@ -105,8 +104,8 @@ public abstract class Date extends Object implements ID {
 	}
 
 	/**
-	 * Imposes a natural ordering on date objects based on the numeric ordering
-	 * of the integer date value.
+	 * Imposes a natural ordering on date objects based on the numeric ordering of the integer date
+	 * value.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

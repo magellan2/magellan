@@ -38,13 +38,13 @@ public class FrameTreeNode implements PropertyChangeListener {
 	private FrameTreeNode child[];
 
 	/** Holds value of property percentage. */
-	private double   percentage;
+	private double percentage;
 
 	/** Holds value of property orientation. */
 	private int orientation;
 
 	/** Holds value of property absolute. */
-	private boolean    absolute;
+	private boolean absolute;
 	private JSplitPane splitPane;
 
 	/** Holds value of property configuration. */
@@ -180,15 +180,13 @@ public class FrameTreeNode implements PropertyChangeListener {
 	public void write(PrintWriter out) {
 		if(isLeaf()) {
 			if(getConfiguration() != null) {
-				out.println("COMPONENT " + getName() + " " +
-							getConfiguration());
+				out.println("COMPONENT " + getName() + " " + getConfiguration());
 			} else {
 				out.println("COMPONENT " + getName());
 			}
 		} else {
 			out.println("SPLIT " + getPercentage() + ' ' +
-						((getOrientation() == javax.swing.JSplitPane.HORIZONTAL_SPLIT)
-						 ? 'H' : 'V'));
+						((getOrientation() == javax.swing.JSplitPane.HORIZONTAL_SPLIT) ? 'H' : 'V'));
 
 			if(getChild(0) != null) {
 				getChild(0).write(out);
@@ -209,15 +207,13 @@ public class FrameTreeNode implements PropertyChangeListener {
 	 */
 	public void connectToSplitPane(JSplitPane pane) {
 		if(splitPane != null) {
-			splitPane.removePropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
-												   this);
+			splitPane.removePropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
 		}
 
 		splitPane = pane;
 
 		if(splitPane != null) {
-			splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
-												this);
+			splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
 		}
 	}
 
@@ -232,8 +228,7 @@ public class FrameTreeNode implements PropertyChangeListener {
 		// pavkovic 2003.06.04: translate absolute values to relative values
 		double fullsize = (double) ((splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT)
 									? splitPane.getHeight()
-									: (splitPane.getWidth() -
-									splitPane.getDividerSize()));
+									: (splitPane.getWidth() - splitPane.getDividerSize()));
 
 		if(isAbsolute()) {
 			setAbsolute(false);
@@ -242,10 +237,8 @@ public class FrameTreeNode implements PropertyChangeListener {
 		double location = (double) splitPane.getDividerLocation();
 
 		// round half up (sign(value)*floor(|value|+0.5f)), 2 digits after . (/10^2) 
-		setPercentage(new BigDecimal(location).divide(new BigDecimal(fullsize),
-													  2,
-													  BigDecimal.ROUND_HALF_UP)
-											  .doubleValue());
+		setPercentage(new BigDecimal(location).divide(new BigDecimal(fullsize), 2,
+													  BigDecimal.ROUND_HALF_UP).doubleValue());
 
 		/*if (!isLeaf())
 		            for(int i=0;i<2;i++)
@@ -262,8 +255,7 @@ public class FrameTreeNode implements PropertyChangeListener {
 	}
 
 	/**
-	 * Getter for property configuration. null means no configurable object/no
-	 * configurations.
+	 * Getter for property configuration. null means no configurable object/no configurations.
 	 *
 	 * @return Value of property configuration.
 	 */

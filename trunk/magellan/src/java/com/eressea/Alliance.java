@@ -20,17 +20,16 @@ import com.eressea.rules.AllianceCategory;
 import com.eressea.util.Translations;
 
 /**
- * A class representing an alliance status between two factions. The faction
- * having this alliance is implicit, the target faction is an explicite field
- * of this class.
+ * A class representing an alliance status between two factions. The faction having this alliance
+ * is implicit, the target faction is an explicite field of this class.
  */
 public class Alliance {
 	private final Faction faction;
-	private int			  state = 0;
+	private int state = 0;
 
 	/**
-	 * Create a new Alliance object for an alliance with the specified faction
-	 * and without any alliance status set.
+	 * Create a new Alliance object for an alliance with the specified faction and without any
+	 * alliance status set.
 	 *
 	 * @param faction the faction to establish an alliance with.
 	 */
@@ -39,12 +38,12 @@ public class Alliance {
 	}
 
 	/**
-	 * Create a new Alliance object for an alliance with the specified faction
-	 * and the specified status.
+	 * Create a new Alliance object for an alliance with the specified faction and the specified
+	 * status.
 	 *
 	 * @param faction the faction to establish an alliance with
-	 * @param state the alliance status, must be one of constants SILVER,
-	 * 		  FIGHT, GIVE, GUARD, GUISE or ALL.
+	 * @param state the alliance status, must be one of constants SILVER, FIGHT, GIVE, GUARD, GUISE
+	 * 		  or ALL.
 	 *
 	 * @throws NullPointerException if the faction parameter is null.
 	 */
@@ -54,7 +53,7 @@ public class Alliance {
 		}
 
 		this.faction = faction;
-		this.state   = state;
+		this.state = state;
 	}
 
 	private AllianceCategory getMaxAllianceCategory() {
@@ -78,8 +77,7 @@ public class Alliance {
 	}
 
 	/**
-	 * Returns the faction this alliance refers to. The return value is never
-	 * null.
+	 * Returns the faction this alliance refers to. The return value is never null.
 	 *
 	 * @return the faction of this alliance
 	 */
@@ -110,8 +108,7 @@ public class Alliance {
 	 *
 	 * @param selector specifying one of the constants in this class.
 	 *
-	 * @return true if specific state is set, false if not which state should
-	 * 		   be evaluated.
+	 * @return true if specific state is set, false if not which state should be evaluated.
 	 */
 	public boolean getState(int selector) {
 		return ((state & selector) == selector);
@@ -136,8 +133,7 @@ public class Alliance {
 		StringBuffer ret = new StringBuffer();
 
 		// connect all state strings separated by spaces
-		for(Iterator iter = faction.getData().rules.getAllianceCategoryIterator();
-				iter.hasNext();) {
+		for(Iterator iter = faction.getData().rules.getAllianceCategoryIterator(); iter.hasNext();) {
 			AllianceCategory ac = (AllianceCategory) iter.next();
 
 			if(!ac.equals(maxAC) && getState(ac.getBitMask())) {
@@ -162,8 +158,8 @@ public class Alliance {
 	}
 
 	/**
-	 * A method to convert an alliance into a trustlevel. This method should be
-	 * uses when Magellan calculates trust levels on its own.
+	 * A method to convert an alliance into a trustlevel. This method should be uses when Magellan
+	 * calculates trust levels on its own.
 	 *
 	 * @return the trustlevel of this alliance
 	 */
@@ -171,8 +167,7 @@ public class Alliance {
 		int ret = 0;
 
 		// connect all state strings separated by spaces
-		for(Iterator iter = faction.getData().rules.getAllianceCategoryIterator();
-				iter.hasNext();) {
+		for(Iterator iter = faction.getData().rules.getAllianceCategoryIterator(); iter.hasNext();) {
 			AllianceCategory ac = (AllianceCategory) iter.next();
 
 			if(getState(ac.getBitMask())) {

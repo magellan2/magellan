@@ -26,15 +26,15 @@ import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
- * A common super class for all menu actions. It offers all necessary
- * information to build a menu with it.
+ * A common super class for all menu actions. It offers all necessary information to build a menu
+ * with it.
  */
 public abstract class MenuAction extends AbstractAction {
 	private static final Logger log = Logger.getInstance(MenuAction.class);
 
 	/**
-	 * Creates a new MenuAction object reading its name, mnemonic and
-	 * accelerator from the dictionary.
+	 * Creates a new MenuAction object reading its name, mnemonic and accelerator from the
+	 * dictionary.
 	 */
 	public MenuAction() {
 		this.setName(getNameTranslated());
@@ -42,13 +42,11 @@ public abstract class MenuAction extends AbstractAction {
 		this.setIcon(getIconName());
 
 		if(getMnemonicTranslated() != null) {
-			this.putValue("mnemonic",
-						  new Character(getMnemonicTranslated().charAt(0)));
+			this.putValue("mnemonic", new Character(getMnemonicTranslated().charAt(0)));
 		}
 
 		if(getAcceleratorTranslated() != null) {
-			this.putValue("accelerator",
-						  KeyStroke.getKeyStroke(getAcceleratorTranslated()));
+			this.putValue("accelerator", KeyStroke.getKeyStroke(getAcceleratorTranslated()));
 		}
 
 		if(getTooltipTranslated() != null) {
@@ -57,8 +55,8 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-	 * These methods are now needed to keep translation in the corresponding
-	 * class. they MAY deliver null!
+	 * These methods are now needed to keep translation in the corresponding class. they MAY
+	 * deliver null!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -114,9 +112,9 @@ public abstract class MenuAction extends AbstractAction {
 		}
 
 		if(aName != null) {
-			String name		 = "images/gui/actions/" + aName;
-			Image  imageIcon = ImageFactory.getFactory().loadImage(name);
-			
+			String name = "images/gui/actions/" + aName;
+			Image imageIcon = ImageFactory.getFactory().loadImage(name);
+
 			if(imageIcon != null) {
 				icon = new ImageIcon(imageIcon);
 			}
@@ -126,8 +124,8 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-	 *
-	 */
+		 *
+		 */
 	public String getIconName() {
 		// String className = this.getClass().getName().toLowerCase();
 		// int pos = className.lastIndexOf(".");
@@ -136,8 +134,7 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-	 * Returns the mnemonic of the menu this menu action is to be associated
-	 * with.
+	 * Returns the mnemonic of the menu this menu action is to be associated with.
 	 *
 	 * @return the mnemonic, a value of 0 means that no mnemonic is set.
 	 */
@@ -152,8 +149,7 @@ public abstract class MenuAction extends AbstractAction {
 	}
 
 	/**
-	 * Returns the shortcut key stroke this menu action is to be invokable
-	 * with.
+	 * Returns the shortcut key stroke this menu action is to be invokable with.
 	 *
 	 * @return the accelerator or null, if the menu has no accelerator.
 	 */

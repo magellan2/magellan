@@ -18,56 +18,53 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * A class for writing text in lines of a maximum specified length. If the
- * characters written to this writer exceed the specified line length, a
- * platform dependent line break is inserted and escaped by writing a
- * backslash character in front of the line break.
+ * A class for writing text in lines of a maximum specified length. If the characters written to
+ * this writer exceed the specified line length, a platform dependent line break is inserted and
+ * escaped by writing a backslash character in front of the line break.
  * 
  * <p>
- * Assuming that spaces after an escaped line break and the first
- * non-whitespace character in the new line are discarded, there is a special
- * rule in order to prevent such whitespace losses. If a  line has to be
- * wrapped and - without escaping - the last character on that line was a
- * whitespace character the escape character and  line break are in the line
- * is wrapped at the last non-whitespace character pulling it into the next
- * line and preserving the whitespace character following it.
+ * Assuming that spaces after an escaped line break and the first non-whitespace character in the
+ * new line are discarded, there is a special rule in order to prevent such whitespace losses. If
+ * a  line has to be wrapped and - without escaping - the last character on that line was a
+ * whitespace character the escape character and  line break are in the line is wrapped at the
+ * last non-whitespace character pulling it into the next line and preserving the whitespace
+ * character following it.
  * </p>
  * 
  * <p>
- * With a line width of 4 the String "lorem ipsum" is written to the underlying
- * stream in a Unix environment as "lor\\\\nem \\\nips\\\num", i.e.
+ * With a line width of 4 the String "lorem ipsum" is written to the underlying stream in a Unix
+ * environment as "lor\\\\nem \\\nips\\\num", i.e.
  * </p>
  * lor\<br>em \<br>ips\<br>um
  * 
  * <p>
- * With a line width of 6 the String "lorem ipsum" is written to the underlying
- * stream in a Unix environment as "lore\\\nm ips\\\num", i.e.
+ * With a line width of 6 the String "lorem ipsum" is written to the underlying stream in a Unix
+ * environment as "lore\\\nm ips\\\num", i.e.
  * </p>
  * lore\<br>m ips\<br>um
  */
 public class FixedWidthWriter extends Writer {
 	/** The maximum line width this class supports */
-	public static final int  MAX_WIDTH			 = 1000;
-	protected BufferedWriter out				 = null;
-	protected int			 width				 = MAX_WIDTH;
-	private StringBuffer     lineBuffer			 = new StringBuffer();
-	private int				 lastNonWhitespace   = 0;
-	private boolean			 forceUnixLineBreaks = false;
+	public static final int MAX_WIDTH = 1000;
+	protected BufferedWriter out = null;
+	protected int width = MAX_WIDTH;
+	private StringBuffer lineBuffer = new StringBuffer();
+	private int lastNonWhitespace = 0;
+	private boolean forceUnixLineBreaks = false;
 
 	/**
-	 * Creates a new FixedWidthWriter object with the underlying
-	 * <tt>Writer</tt> object out stream and a MAX_WIDTH line width.
+	 * Creates a new FixedWidthWriter object with the underlying <tt>Writer</tt> object out stream
+	 * and a MAX_WIDTH line width.
 	 *
-	 * @param out the stream this writer writes to through a
-	 * 		  <tt>BufferedWriter</tt>.
+	 * @param out the stream this writer writes to through a <tt>BufferedWriter</tt>.
 	 */
 	public FixedWidthWriter(Writer out) {
 		this(new BufferedWriter(out));
 	}
 
 	/**
-	 * Creates a new FixedWidthWriter object with the underlying
-	 * <tt>BufferedWriter</tt> object out stream and a MAX_WIDTH line width.
+	 * Creates a new FixedWidthWriter object with the underlying <tt>BufferedWriter</tt> object out
+	 * stream and a MAX_WIDTH line width.
 	 *
 	 * @param out the stream this writer writes to.
 	 */
@@ -76,11 +73,10 @@ public class FixedWidthWriter extends Writer {
 	}
 
 	/**
-	 * Creates a new FixedWidthWriter object with the underlying
-	 * <tt>Writer</tt> object out stream and the specified line width.
+	 * Creates a new FixedWidthWriter object with the underlying <tt>Writer</tt> object out stream
+	 * and the specified line width.
 	 *
-	 * @param out the stream this writer writes to through a
-	 * 		  <tt>BufferedWriter</tt>.
+	 * @param out the stream this writer writes to through a <tt>BufferedWriter</tt>.
 	 * @param width the maximum line width enforced by this writer.
 	 */
 	public FixedWidthWriter(Writer out, int width) {
@@ -88,11 +84,10 @@ public class FixedWidthWriter extends Writer {
 	}
 
 	/**
-	 * Creates a new FixedWidthWriter object with the underlying
-	 * <tt>Writer</tt> object out stream and the specified line width.
+	 * Creates a new FixedWidthWriter object with the underlying <tt>Writer</tt> object out stream
+	 * and the specified line width.
 	 *
-	 * @param out the stream this writer writes to through a
-	 * 		  <tt>BufferedWriter</tt>.
+	 * @param out the stream this writer writes to through a <tt>BufferedWriter</tt>.
 	 * @param width the maximum line width enforced by this writer.
 	 * @param bool forces unix line breaks.
 	 */
@@ -102,8 +97,8 @@ public class FixedWidthWriter extends Writer {
 	}
 
 	/**
-	 * Creates a new FixedWidthWriter object with the underlying
-	 * <tt>BufferedWriter</tt> object out stream and the specified line width.
+	 * Creates a new FixedWidthWriter object with the underlying <tt>BufferedWriter</tt> object out
+	 * stream and the specified line width.
 	 *
 	 * @param out the stream this writer writes to.
 	 * @param width the maximum line width enforced by this writer.
@@ -249,10 +244,9 @@ public class FixedWidthWriter extends Writer {
 	}
 
 	/**
-	 * Sets whether this writer always uses Unix style line breaks or system
-	 * dependent line breaks. This functionality has been added, since copying
-	 * the content of a StringWriter to the clipboard with Windows line breaks
-	 * introduces additional empty lines.
+	 * Sets whether this writer always uses Unix style line breaks or system dependent line breaks.
+	 * This functionality has been added, since copying the content of a StringWriter to the
+	 * clipboard with Windows line breaks introduces additional empty lines.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */

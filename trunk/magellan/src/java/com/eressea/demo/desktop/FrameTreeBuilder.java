@@ -32,11 +32,11 @@ import com.eressea.util.CollectionFactory;
  */
 public class FrameTreeBuilder extends Object {
 	/** TODO: DOCUMENT ME! */
-	public static final String DEFAULT[]   = { "SPLIT", "COMPONENT", "/SPLIT" };
+	public static final String DEFAULT[] = { "SPLIT", "COMPONENT", "/SPLIT" };
 
 	/** TODO: DOCUMENT ME! */
-	public String		    tags[] = { "SPLIT", "COMPONENT", "/SPLIT" };
-	private FrameTreeNode   root;
+	public String tags[] = { "SPLIT", "COMPONENT", "/SPLIT" };
+	private FrameTreeNode root;
 
 	/**
 	 * Creates new FrameTreeBuilder
@@ -70,7 +70,7 @@ public class FrameTreeBuilder extends Object {
 			reader = new BufferedReader(r);
 		}
 
-		List   v = CollectionFactory.createLinkedList();
+		List v = CollectionFactory.createLinkedList();
 		String s = null;
 
 		do {
@@ -147,9 +147,9 @@ public class FrameTreeBuilder extends Object {
 	protected boolean buildPart(Iterator e, FrameTreeNode me, String splitDef)
 						 throws Exception
 	{
-		double percent     = 0;
-		int    orientation = 0;
-		String ppo		   = splitDef.substring(6);
+		double percent = 0;
+		int orientation = 0;
+		String ppo = splitDef.substring(6);
 
 		try {
 			percent = Double.parseDouble(ppo.substring(0, ppo.indexOf(' ')));
@@ -175,7 +175,7 @@ public class FrameTreeBuilder extends Object {
 
 		me.setOrientation(orientation);
 
-		int    cfound = 0;
+		int cfound = 0;
 		String s = null;
 
 		do {
@@ -234,8 +234,7 @@ public class FrameTreeBuilder extends Object {
 						continue;
 					}
 
-					if((child.getChild(0) == null) ||
-						   (child.getChild(1) == null)) {
+					if((child.getChild(0) == null) || (child.getChild(1) == null)) {
 						FrameTreeNode ftn = child.getChild(0);
 
 						if(ftn == null) {

@@ -38,12 +38,12 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public abstract class UnitContainer extends DescribedObject
-	implements com.eressea.util.Sorted, Taggable
+public abstract class UnitContainer extends DescribedObject implements com.eressea.util.Sorted,
+																	   Taggable
 {
-	private static final Logger log   = Logger.getInstance(UnitContainer.class);
-	private UnitContainerType   type  = null;
-	private Unit			    owner = null;
+	private static final Logger log = Logger.getInstance(UnitContainer.class);
+	private UnitContainerType type = null;
+	private Unit owner = null;
 
 	/**
 	 * A list containing <tt>String</tt> objects, specifying  effects on this
@@ -54,25 +54,21 @@ public abstract class UnitContainer extends DescribedObject
 	// hm, could be private, too, just to prevent it to be null
 	// but that probably consumes a lot of memory
 
-	/**
-	 * Comments modifiable by the user. The comments are represented as String
-	 * objects.
-	 */
+	/** Comments modifiable by the user. The comments are represented as String objects. */
 	public List comments = null;
 
 	/** The game data this unit capsule refers to. */
 	protected GameData data = null;
 
 	/**
-	 * The cache object containing cached information that may be not related
-	 * enough to be encapsulated as a function and is time consuming to
-	 * gather.
+	 * The cache object containing cached information that may be not related enough to be
+	 * encapsulated as a function and is time consuming to gather.
 	 */
 	public Cache cache = null;
 
 	/**
-	 * A map storing all unknown tags for all UnitContainer objects. Keys are
-	 * IDs of these objects, values are Maps(should be TagMaps).
+	 * A map storing all unknown tags for all UnitContainer objects. Keys are IDs of these objects,
+	 * values are Maps(should be TagMaps).
 	 */
 	private TagMap externalMap = null;
 
@@ -124,8 +120,7 @@ public abstract class UnitContainer extends DescribedObject
 	private int sortIndex = -1;
 
 	/**
-	 * Sets an index indicating how instances of class are sorted in the
-	 * report.
+	 * Sets an index indicating how instances of class are sorted in the report.
 	 *
 	 * @param index TODO: DOCUMENT ME!
 	 */
@@ -134,8 +129,7 @@ public abstract class UnitContainer extends DescribedObject
 	}
 
 	/**
-	 * Returns an index indicating how instances of class are sorted in the
-	 * report.
+	 * Returns an index indicating how instances of class are sorted in the report.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -186,8 +180,7 @@ public abstract class UnitContainer extends DescribedObject
 	}
 
 	/**
-	 * Adds a unit to this container. This method should only be invoked by
-	 * Unit.setXXX() methods.
+	 * Adds a unit to this container. This method should only be invoked by Unit.setXXX() methods.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 */
@@ -203,8 +196,8 @@ public abstract class UnitContainer extends DescribedObject
 	}
 
 	/**
-	 * Removes a unit from this container. This method should only be invoked
-	 * by Unit.setXXX() methods.
+	 * Removes a unit from this container. This method should only be invoked by Unit.setXXX()
+	 * methods.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
@@ -305,19 +298,16 @@ public abstract class UnitContainer extends DescribedObject
 
 				if(this.equals(ucr.target)) {
 					if(ucr instanceof EnterRelation) {
-						cache.modifiedContainerUnits.put(ucr.source.getID(),
-														 ucr.source);
+						cache.modifiedContainerUnits.put(ucr.source.getID(), ucr.source);
 					} else if(ucr instanceof LeaveRelation) {
 						cache.modifiedContainerUnits.remove(ucr.source.getID());
 					}
 				} else {
-					log.info("UnitContainer.refreshModifiedUnits(): unit container " +
-							 this +
+					log.info("UnitContainer.refreshModifiedUnits(): unit container " + this +
 							 " has a relation associated that does not point to it!");
 				}
 			} else {
-				log.info("UnitContainer.refreshModifiedUnits(): unit container " +
-						 this +
+				log.info("UnitContainer.refreshModifiedUnits(): unit container " + this +
 						 " contains a relation that is not a UnitContainerRelation object!");
 			}
 		}
@@ -342,25 +332,24 @@ public abstract class UnitContainer extends DescribedObject
 	}
 
 	/**
-	 * Returns the unit owning this UnitContainer. If this UnitContainer is an
-	 * instance of class Ship or Building the normal owning unit is returned
-	 * (or null, if there is none). In case of a Region, the OwnerUnit of the
-	 * largest castle is returned. In case of a Faction, null is returned.
+	 * Returns the unit owning this UnitContainer. If this UnitContainer is an instance of class
+	 * Ship or Building the normal owning unit is returned (or null, if there is none). In case of
+	 * a Region, the OwnerUnit of the largest castle is returned. In case of a Faction, null is
+	 * returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Unit getOwnerUnit() {
 		if((owner == null) && this instanceof Region) {
 			Unit foundOwner = null;
-			int  bSize = 0;
+			int bSize = 0;
 
-			for(Iterator iter = ((Region) this).buildings().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = ((Region) this).buildings().iterator(); iter.hasNext();) {
 				Building b = (Building) iter.next();
 
 				if(b.getType() instanceof CastleType) {
 					if(b.getSize() > bSize) {
-						bSize	   = b.getSize();
+						bSize = b.getSize();
 						foundOwner = b.getOwnerUnit();
 					}
 				}
@@ -382,8 +371,8 @@ public abstract class UnitContainer extends DescribedObject
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newUC TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, UnitContainer curUC,
-							 GameData newGD, UnitContainer newUC) {
+	public static void merge(GameData curGD, UnitContainer curUC, GameData newGD,
+							 UnitContainer newUC) {
 		if(curUC.getName() != null) {
 			newUC.setName(curUC.getName());
 		}
@@ -423,14 +412,11 @@ public abstract class UnitContainer extends DescribedObject
 
 		if(curUC.getType() != null) {
 			if(curUC instanceof Building) {
-				newUC.setType(newGD.rules.getBuildingType(curUC.getType().getID(),
-														  true));
+				newUC.setType(newGD.rules.getBuildingType(curUC.getType().getID(), true));
 			} else if(curUC instanceof Region) {
-				newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(),
-														true));
+				newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(), true));
 			} else if(curUC instanceof Ship) {
-				newUC.setType(newGD.rules.getShipType(curUC.getType().getID(),
-													  true));
+				newUC.setType(newGD.rules.getShipType(curUC.getType().getID(), true));
 			} else if(curUC instanceof Faction) {
 				newUC.setType(newGD.rules.getRace(curUC.getType().getID(), true));
 			}
@@ -453,11 +439,10 @@ public abstract class UnitContainer extends DescribedObject
 	}
 
 	/**
-	 * Returns an Iterator over the relations this container has to units. The
-	 * iterator returns <tt>UnitRelation</tt> objects. An empty iterator is
-	 * returned if the relations have not been set up so far or if there are
-	 * no relations. To have the relations to all units properly set up the
-	 * refreshRelations() method has to be invoked on these units.
+	 * Returns an Iterator over the relations this container has to units. The iterator returns
+	 * <tt>UnitRelation</tt> objects. An empty iterator is returned if the relations have not been
+	 * set up so far or if there are no relations. To have the relations to all units properly set
+	 * up the refreshRelations() method has to be invoked on these units.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -504,7 +489,7 @@ public abstract class UnitContainer extends DescribedObject
 
 		if((cache != null) && (cache.relations != null)) {
 			if(cache.relations.remove(rel)) {
-				r							 = rel;
+				r = rel;
 				cache.modifiedContainerUnits = null;
 			}
 		}

@@ -16,10 +16,10 @@ package com.eressea.relation;
 import com.eressea.Unit;
 
 /**
- * This relation indicates that the source unit is transporting the the target
- * unit. Although the order semantics require a TRANSPORTIERE and FAHRE order
- * for the carrier and each passenger, this relation does not enforce these
- * semantics and is established by the TRANSPORTIERE order only.
+ * This relation indicates that the source unit is transporting the the target unit. Although the
+ * order semantics require a TRANSPORTIERE and FAHRE order for the carrier and each passenger,
+ * this relation does not enforce these semantics and is established by the TRANSPORTIERE order
+ * only.
  */
 public class TransportRelation extends InterUnitRelation {
 	/**

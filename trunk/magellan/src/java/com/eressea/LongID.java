@@ -18,8 +18,8 @@ import java.util.Map;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A class establishing the uniqueness property through a long. This class
- * assumes the representation of integers to be decimal in all cases.
+ * A class establishing the uniqueness property through a long. This class assumes the
+ * representation of integers to be decimal in all cases.
  */
 public class LongID implements ID {
 	/** The Long object this id is based on. */
@@ -37,8 +37,7 @@ public class LongID implements ID {
 	}
 
 	/**
-	 * Constructs a new LongID object based on an Long object created from the
-	 * specified long.
+	 * Constructs a new LongID object based on an Long object created from the specified long.
 	 *
 	 * @param l TODO: DOCUMENT ME!
 	 */
@@ -47,8 +46,7 @@ public class LongID implements ID {
 	}
 
 	/**
-	 * Creates a new LongID object by parsing the specified string for a
-	 * decimal integer.
+	 * Creates a new LongID object by parsing the specified string for a decimal integer.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 */
@@ -139,16 +137,16 @@ public class LongID implements ID {
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
-	 * @return true, if o is an instance of class LongID and the numerical
-	 * 		   values of this and the specified object are equal.
+	 * @return true, if o is an instance of class LongID and the numerical values of this and the
+	 * 		   specified object are equal.
 	 */
 	public boolean equals(Object o) {
 		return (this == o) || (o instanceof LongID && (id == ((LongID) o).id));
 	}
 
 	/**
-	 * Imposes a natural ordering on LongID objects which is based on the
-	 * natural ordering of the underlying integers.
+	 * Imposes a natural ordering on LongID objects which is based on the natural ordering of the
+	 * underlying integers.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -163,8 +161,7 @@ public class LongID implements ID {
 	/**
 	 * Returns a hash code for this object.
 	 *
-	 * @return a hash code value based on the hash code returned by the
-	 * 		   underlying Long object.
+	 * @return a hash code value based on the hash code returned by the underlying Long object.
 	 */
 	public int hashCode() {
 		return (int) (id ^ (id >>> 32));

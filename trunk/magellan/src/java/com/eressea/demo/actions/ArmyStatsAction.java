@@ -45,8 +45,7 @@ public class ArmyStatsAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		new ArmyStatsDialog(client, client.getDispatcher(), client.getData(),
-							client.getSettings()).setVisible(true);
+		new ArmyStatsDialog(client, client.getDispatcher(), client.getData(), client.getSettings()).setVisible(true);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

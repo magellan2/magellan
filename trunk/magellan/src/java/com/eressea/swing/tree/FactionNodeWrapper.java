@@ -31,21 +31,18 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
-										   SupportsEmphasizing
-{
-	private static final Logger log					 = Logger.getInstance(FactionNodeWrapper.class);
-	private Faction			    faction				 = null;
-	private Region			    region				 = null;
-	private List			    GEs					 = null;
-	private int				    amount				 = -1;
-	private List			    subordinatedElements = CollectionFactory.createLinkedList();
+public class FactionNodeWrapper implements CellObject2, SupportsClipboard, SupportsEmphasizing {
+	private static final Logger log = Logger.getInstance(FactionNodeWrapper.class);
+	private Faction faction = null;
+	private Region region = null;
+	private List GEs = null;
+	private int amount = -1;
+	private List subordinatedElements = CollectionFactory.createLinkedList();
 
 	/**
-	 * This Map is used to respond dynamically to changes of the currently
-	 * active alliance-state that changes, when the user changes between
-	 * units/factions/groups etc. in EMapOverviewPanel. Don't change it's
-	 * contents here!
+	 * This Map is used to respond dynamically to changes of the currently active alliance-state
+	 * that changes, when the user changes between units/factions/groups etc. in
+	 * EMapOverviewPanel. Don't change it's contents here!
 	 */
 	private Map activeAlliances;
 
@@ -58,8 +55,8 @@ public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
 	 */
 	public FactionNodeWrapper(Faction f, Region r, Map activeAlliances) {
 		this.activeAlliances = activeAlliances;
-		this.faction		 = f;
-		this.region			 = r;
+		this.faction = f;
+		this.region = r;
 	}
 
 	/**
@@ -139,7 +136,7 @@ public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
 		}
 
 		Alliance alliance = (Alliance) activeAlliances.get(faction.getID());
-		String   key;
+		String key;
 
 		if(alliance == null) {
 			key = "alliancestate_0";
@@ -198,7 +195,7 @@ public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
 			GEs.clear();
 		}
 
-		String icon    = null;
+		String icon = null;
 		String tooltip = null;
 
 		if(activeAlliances == null) {
@@ -211,14 +208,14 @@ public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
 				// This is a workaround and indicates, that this faction
 				// is that one upon whose alliances the activeAlliances depends
 				if(alliance.getState() == Integer.MAX_VALUE) {
-					icon    = "alliancestate_basisfaction";
+					icon = "alliancestate_basisfaction";
 					tooltip = getString("basis");
 				} else {
-					icon    = "alliancestate_" + alliance.getState();
+					icon = "alliancestate_" + alliance.getState();
 					tooltip = getString("allied") + alliance.stateToString();
 				}
 			} else {
-				icon    = "alliancestate_0";
+				icon = "alliancestate_0";
 				tooltip = getString("neutral");
 			}
 		}
@@ -286,8 +283,7 @@ public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
 	private static final Map defaultTranslations = CollectionFactory.createHashtable();
 
 	static {
-		defaultTranslations.put("basis",
-								"Display bases on the alliances of this faction");
+		defaultTranslations.put("basis", "Display bases on the alliances of this faction");
 		defaultTranslations.put("allied", "Allied: ");
 		defaultTranslations.put("neutral", "Not allied");
 	}
@@ -309,8 +305,7 @@ public class FactionNodeWrapper implements CellObject2, SupportsClipboard,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 

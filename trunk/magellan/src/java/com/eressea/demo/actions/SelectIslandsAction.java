@@ -34,11 +34,9 @@ import com.eressea.util.Islands;
  *
  * @author Ulrich Küster
  */
-public class SelectIslandsAction extends MenuAction implements GameDataListener,
-															   SelectionListener
-{
+public class SelectIslandsAction extends MenuAction implements GameDataListener, SelectionListener {
 	private Client client;
-	private Map    selectedRegions = CollectionFactory.createHashtable();
+	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
 	 * Creates a new SelectIslandsAction object.
@@ -61,12 +59,10 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -97,26 +93,20 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 		// add all regions, that were selected before and don't belong to the active level
 		// or that belong to the active level region _and_ that belong to an island
 		// that contained at least one selected region before
-		for(Iterator iter = selectedRegions.keySet().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
 			Coordinate c = (Coordinate) iter.next();
 
 			if(c.z != client.getLevel()) {
 				newSelectedRegions.put(c, client.getData().regions().get(c));
 			} else if(!newSelectedRegions.containsKey(c)) {
 				newSelectedRegions.putAll(Islands.getIsland(client.getData().rules,
-															client.getData()
-																  .regions(),
-															(Region) client.getData()
-																		   .regions()
-																		   .get(c)));
+															client.getData().regions(),
+															(Region) client.getData().regions().get(c)));
 			}
 		}
 
 		selectedRegions = newSelectedRegions;
-		client.getDispatcher().fire(new SelectionEvent(this,
-													   selectedRegions.values(),
-													   null,
+		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}
 

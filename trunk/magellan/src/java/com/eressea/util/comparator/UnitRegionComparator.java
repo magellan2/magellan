@@ -19,48 +19,42 @@ import com.eressea.Region;
 import com.eressea.Unit;
 
 /**
- * A comparator imposing an ordering on Unit objects by comparing the regions
- * they are in.
+ * A comparator imposing an ordering on Unit objects by comparing the regions they are in.
  * 
  * <p>
- * Note: this comparator can impose orderings that are inconsistent with
- * equals.
+ * Note: this comparator can impose orderings that are inconsistent with equals.
  * </p>
  */
 public class UnitRegionComparator implements Comparator {
-	protected Comparator regionSubCmp     = null;
+	protected Comparator regionSubCmp = null;
 	protected Comparator sameRegionSubCmp = null;
 
 	/**
 	 * Creates a new UnitRegionComparator object.
 	 *
-	 * @param regionSubComparator is used to compare the regions that two units
-	 * 		  to be compared belong to. If regionSubComparators regards the
-	 * 		  regions as equal, the comparator sameRegionSubComparator is
-	 * 		  applied.
-	 * @param sameRegionSubComparator is applied if the regionSubComparator
-	 * 		  regards two units equal according to the regions they are in.
+	 * @param regionSubComparator is used to compare the regions that two units to be compared
+	 * 		  belong to. If regionSubComparators regards the regions as equal, the comparator
+	 * 		  sameRegionSubComparator is applied.
+	 * @param sameRegionSubComparator is applied if the regionSubComparator regards two units equal
+	 * 		  according to the regions they are in.
 	 */
-	public UnitRegionComparator(Comparator regionSubComparator,
-								Comparator sameRegionSubComparator) {
-		regionSubCmp     = regionSubComparator;
+	public UnitRegionComparator(Comparator regionSubComparator, Comparator sameRegionSubComparator) {
+		regionSubCmp = regionSubComparator;
 		sameRegionSubCmp = sameRegionSubComparator;
 	}
 
 	/**
-	 * Compares its two arguments for order according to the regions they
-	 * belong to.
+	 * Compares its two arguments for order according to the regions they belong to.
 	 *
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return the result of the region sub-comparator applied to the regions
-	 * 		   of the the two units o1 and o2 or the result of the sameRegion
-	 * 		   sub-comparator if the afore-said comparator regards the units'
-	 * 		   regions as equal.
+	 * @return the result of the region sub-comparator applied to the regions of the the two units
+	 * 		   o1 and o2 or the result of the sameRegion sub-comparator if the afore-said
+	 * 		   comparator regards the units' regions as equal.
 	 */
 	public int compare(Object o1, Object o2) {
-		int    retVal = 0;
+		int retVal = 0;
 
 		Region r1 = ((Unit) o1).getRegion();
 		Region r2 = ((Unit) o2).getRegion();

@@ -24,9 +24,7 @@ package com.eressea.util.replacers;
  * @author Andreas
  * @version
  */
-public abstract class AbstractParameterSwitch extends AbstractSwitch
-	implements ParameterReplacer
-{
+public abstract class AbstractParameterSwitch extends AbstractSwitch implements ParameterReplacer {
 	protected Object parameters[];
 
 	/**

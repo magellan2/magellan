@@ -59,8 +59,8 @@ public class VersionInfo {
 	}
 
 	/**
-	 * Returns the build date of the currently executing instance of Magellan.
-	 * If this information cannot be determined, null is returned.
+	 * Returns the build date of the currently executing instance of Magellan. If this information
+	 * cannot be determined, null is returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
@@ -71,9 +71,8 @@ public class VersionInfo {
 	}
 
 	/**
-	 * Returns the build date of the latest version of Magellan that is
-	 * available on the server. If this information cannot be determined, null
-	 * is returned.
+	 * Returns the build date of the latest version of Magellan that is available on the server. If
+	 * this information cannot be determined, null is returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
@@ -101,8 +100,7 @@ public class VersionInfo {
 
 			return new Date(msecs);
 		} catch(Exception e) {
-			log.info("VersionInfo.readDate(): unable to read from URL: " +
-					 e.toString());
+			log.info("VersionInfo.readDate(): unable to read from URL: " + e.toString());
 		} finally {
 			if(r != null) {
 				try {

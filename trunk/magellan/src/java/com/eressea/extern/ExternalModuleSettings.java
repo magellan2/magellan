@@ -36,12 +36,10 @@ import com.eressea.util.CollectionFactory;
  * @author $author$
  * @version $Revision$
  */
-public class ExternalModuleSettings extends InternationalizedPanel
-	implements PreferencesAdapter
-{
+public class ExternalModuleSettings extends InternationalizedPanel implements PreferencesAdapter {
 	protected Properties settings;
-	protected JCheckBox  chkSearchResources;
-	protected JCheckBox  chkSearchClassPath;
+	protected JCheckBox chkSearchResources;
+	protected JCheckBox chkSearchClassPath;
 
 	/**
 	 * Creates a new ExternalModuleSettings object.
@@ -66,10 +64,10 @@ public class ExternalModuleSettings extends InternationalizedPanel
 										   new Boolean(settings.getProperty("ExternalModuleLoader.searchResourcePathClassLoader",
 																			"true")).booleanValue());
 
-		c.gridx   = 0;
-		c.gridy   = 0;
-		c.anchor  = GridBagConstraints.WEST;
-		c.fill    = GridBagConstraints.NONE;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.NONE;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		pnl.add(chkSearchResources, c);
@@ -83,8 +81,7 @@ public class ExternalModuleSettings extends InternationalizedPanel
 		pnl.add(chkSearchClassPath, c);
 
 		c = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
-								   GridBagConstraints.HORIZONTAL,
-								   new Insets(0, 0, 2, 0), 0, 0);
+								   GridBagConstraints.HORIZONTAL, new Insets(0, 0, 2, 0), 0, 0);
 		this.add(pnl, c);
 	}
 
@@ -134,8 +131,7 @@ public class ExternalModuleSettings extends InternationalizedPanel
 			defaultTranslations.put("title", "External modules");
 			defaultTranslations.put("chk.searchResources", "resource paths");
 			defaultTranslations.put("chk.searchClassPath", "class path");
-			defaultTranslations.put("border.externalmodules",
-									"Search external modules in");
+			defaultTranslations.put("border.externalmodules", "Search external modules in");
 		}
 
 		return defaultTranslations;

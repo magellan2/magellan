@@ -39,12 +39,12 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class PathPreferencesAdapter extends JPanel implements PreferencesAdapter {
-	protected List				 textFields;
-	protected List				 keys;
-	protected Properties		 settings;
+	protected List textFields;
+	protected List keys;
+	protected Properties settings;
 	protected GridBagConstraints con;
-	protected JFileChooser		 fchooser;
-	protected File				 file;
+	protected JFileChooser fchooser;
+	protected File file;
 
 	/**
 	 * Creates new PathPreferencesAdapter
@@ -56,15 +56,15 @@ public class PathPreferencesAdapter extends JPanel implements PreferencesAdapter
 
 		// UI
 		setLayout(new GridBagLayout());
-		con		    = new GridBagConstraints();
-		con.anchor  = GridBagConstraints.CENTER;
-		con.fill    = GridBagConstraints.HORIZONTAL;
+		con = new GridBagConstraints();
+		con.anchor = GridBagConstraints.CENTER;
+		con.fill = GridBagConstraints.HORIZONTAL;
 		con.weighty = 0;
-		con.gridy   = 0;
+		con.gridy = 0;
 
 		// list
 		textFields = CollectionFactory.createLinkedList();
-		keys	   = CollectionFactory.createLinkedList();
+		keys = CollectionFactory.createLinkedList();
 
 		// files
 		fchooser = new JFileChooser();
@@ -90,18 +90,18 @@ public class PathPreferencesAdapter extends JPanel implements PreferencesAdapter
 	 * @param key TODO: DOCUMENT ME!
 	 */
 	public void addPath(String label, String key) {
-		con.gridx   = 0;
+		con.gridx = 0;
 		con.weightx = 0.25;
 		add(new JLabel(label), con);
 
 		JTextField tf = new JTextField(settings.getProperty(key));
-		con.gridx   = 1;
+		con.gridx = 1;
 		con.weightx = 0.5;
 		add(tf, con);
 		textFields.add(tf);
 		keys.add(key);
 
-		con.gridx   = 2;
+		con.gridx = 2;
 		con.weightx = 0.25;
 		add(new DirButton(tf), con);
 

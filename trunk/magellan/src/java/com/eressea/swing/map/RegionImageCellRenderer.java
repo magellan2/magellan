@@ -43,15 +43,13 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class RegionImageCellRenderer extends ImageCellRenderer
-	implements ContextChangeable
-{
+public class RegionImageCellRenderer extends ImageCellRenderer implements ContextChangeable {
 	/** TODO: DOCUMENT ME! */
-	public static final String  MAP_TAG  = "mapicon";
-	private static final Logger log		 = Logger.getInstance(RegionImageCellRenderer.class);
-	private boolean			    fogOfWar = true;
-	protected JCheckBoxMenuItem item     = null;
-	protected ContextObserver   obs		 = null;
+	public static final String MAP_TAG = "mapicon";
+	private static final Logger log = Logger.getInstance(RegionImageCellRenderer.class);
+	private boolean fogOfWar = true;
+	protected JCheckBoxMenuItem item = null;
+	protected ContextObserver obs = null;
 
 	/**
 	 * Creates a new RegionImageCellRenderer object.
@@ -90,10 +88,10 @@ public class RegionImageCellRenderer extends ImageCellRenderer
 	 */
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
-			Region     r = (Region) obj;
+			Region r = (Region) obj;
 			Coordinate c = r.getCoordinate();
 
-			Rectangle  rect = cellGeo.getImageRect(c.x, c.y);
+			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);
 
 			if(r.containsTag(MAP_TAG)) {
@@ -116,8 +114,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer
 
 	protected void drawImage(Region r, Image img, Rectangle rect) {
 		if(img != null) {
-			graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height,
-							   null);
+			graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
 		} else {
 			log.warn("RegionImageCellRenderer.render(): image is null");
 		}
@@ -126,8 +123,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer
 			Image fogImg = getImage("Nebel");
 
 			if((fogImg != null) && r.fogOfWar()) {
-				graphics.drawImage(fogImg, rect.x, rect.y, rect.width,
-								   rect.height, null);
+				graphics.drawImage(fogImg, rect.x, rect.y, rect.width, rect.height, null);
 			}
 		}
 	}
@@ -157,8 +153,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer
 	 */
 	public void setFogOfWar(boolean bool) {
 		fogOfWar = bool;
-		settings.setProperty("RegionImageCellRenderer.fogOfWar",
-							 (new Boolean(fogOfWar)).toString());
+		settings.setProperty("RegionImageCellRenderer.fogOfWar", (new Boolean(fogOfWar)).toString());
 		item.setSelected(fogOfWar);
 	}
 
@@ -229,8 +224,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer
 		}
 
 		private void init() {
-			chkFogOfWar = new JCheckBox(getString("chk.showfow.caption"),
-										source.getFogOfWar());
+			chkFogOfWar = new JCheckBox(getString("chk.showfow.caption"), source.getFogOfWar());
 			this.add(chkFogOfWar);
 		}
 

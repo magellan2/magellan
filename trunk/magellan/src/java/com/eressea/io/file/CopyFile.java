@@ -55,9 +55,7 @@ public class CopyFile {
 	 *
 	 * @throws IOException if an I/O error occured.
 	 */
-	public static synchronized File copy(File source, File target)
-								  throws IOException
-	{
+	public static synchronized File copy(File source, File target) throws IOException {
 		copyStreams(new FileInputStream(source), new FileOutputStream(target));
 		target.setLastModified(source.lastModified());
 
@@ -71,9 +69,7 @@ public class CopyFile {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static synchronized File createCrTempFile()
-											  throws IOException
-	{
+	public static synchronized File createCrTempFile() throws IOException {
 		return createTempFile("magellan", ".tmp.cr");
 	}
 
@@ -97,25 +93,18 @@ public class CopyFile {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static synchronized File createTempFile(String prefix)
-											throws IOException
-	{
+	public static synchronized File createTempFile(String prefix) throws IOException {
 		return createTempFile(prefix, null);
 	}
 
-	private static File createTempFile(String prefix, String suffix)
-								throws IOException
-	{
+	private static File createTempFile(String prefix, String suffix) throws IOException {
 		File tempfile = File.createTempFile(prefix, suffix);
 		tempfile.deleteOnExit();
 
 		return tempfile;
 	}
 
-	/**
-	 * Copies the given source inputstream to the given destination
-	 * outputstream.
-	 */
+	/** Copies the given source inputstream to the given destination outputstream. */
 	private static final int BUFF_SIZE = 100000;
 
 	/**
@@ -126,13 +115,12 @@ public class CopyFile {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static synchronized void copyStreams(InputStream source,
-												OutputStream target)
+	public static synchronized void copyStreams(InputStream source, OutputStream target)
 										 throws IOException
 	{
-		InputStream  in		  = null;
-		OutputStream out	  = null;
-		byte		 buffer[] = new byte[BUFF_SIZE];
+		InputStream in = null;
+		OutputStream out = null;
+		byte buffer[] = new byte[BUFF_SIZE];
 
 		try {
 			// encapsulate into BufferedInputStream if necessary

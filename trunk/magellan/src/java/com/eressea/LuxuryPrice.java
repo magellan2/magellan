@@ -16,22 +16,20 @@ package com.eressea;
 import com.eressea.rules.ItemType;
 
 /**
- * A class representing the price of a luxury good as they are offered in any
- * region.
+ * A class representing the price of a luxury good as they are offered in any region.
  */
 public class LuxuryPrice {
 	private final int price;
-	private ItemType  itemType;
+	private ItemType itemType;
 
 	/**
-	 * Creates a new LuxuryPrice object with the specified luxury good and
-	 * price.
+	 * Creates a new LuxuryPrice object with the specified luxury good and price.
 	 *
 	 * @param itemType TODO: DOCUMENT ME!
 	 * @param price TODO: DOCUMENT ME!
 	 */
 	public LuxuryPrice(ItemType itemType, int price) {
-		this.price    = price;
+		this.price = price;
 		this.itemType = itemType;
 	}
 

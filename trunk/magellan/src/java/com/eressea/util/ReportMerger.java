@@ -120,8 +120,8 @@ public class ReportMerger extends java.lang.Object {
 		}
 
 		private class Confirm implements Runnable {
-			String  strMessage;
-			String  strTitle;
+			String strMessage;
+			String strTitle;
 			boolean bResult = false;
 
 			/**
@@ -150,7 +150,7 @@ public class ReportMerger extends java.lang.Object {
 		public boolean confirm(String strMessage, String strTitle) {
 			Confirm conf = new Confirm();
 			conf.strMessage = strMessage;
-			conf.strTitle   = strTitle;
+			conf.strTitle = strTitle;
 
 			try {
 				SwingUtilities.invokeAndWait(conf);
@@ -164,7 +164,7 @@ public class ReportMerger extends java.lang.Object {
 
 		private class Progress implements Runnable {
 			String strMessage;
-			int    iProgress;
+			int iProgress;
 
 			/**
 			 * TODO: DOCUMENT ME!
@@ -184,7 +184,7 @@ public class ReportMerger extends java.lang.Object {
 		public void setProgress(String strMessage, int iProgress) {
 			Progress progress = new Progress();
 			progress.strMessage = strMessage;
-			progress.iProgress  = iProgress;
+			progress.iProgress = iProgress;
 
 			SwingUtilities.invokeLater(progress);
 		}
@@ -211,8 +211,8 @@ public class ReportMerger extends java.lang.Object {
 		}
 	}
 
-	UserInterface ui	    = new UserInterface();
-	int			  iProgress;
+	UserInterface ui = new UserInterface();
+	int iProgress;
 
 	/**
 	 * Creates new ReportMerger
@@ -222,18 +222,17 @@ public class ReportMerger extends java.lang.Object {
 	 * @param _loader TODO: DOCUMENT ME!
 	 * @param _assignData TODO: DOCUMENT ME!
 	 */
-	public ReportMerger(GameData _data, File files[], Loader _loader,
-						AssignData _assignData) {
+	public ReportMerger(GameData _data, File files[], Loader _loader, AssignData _assignData) {
 		data = _data;
 
 		reports = new Report[files.length];
 
 		for(int i = 0; i < files.length; i++) {
-			reports[i]	    = new Report();
+			reports[i] = new Report();
 			reports[i].file = files[i];
 		}
 
-		loader     = _loader;
+		loader = _loader;
 		assignData = _assignData;
 	}
 
@@ -245,15 +244,14 @@ public class ReportMerger extends java.lang.Object {
 	 * @param _loader TODO: DOCUMENT ME!
 	 * @param _assignData TODO: DOCUMENT ME!
 	 */
-	public ReportMerger(GameData _data, File file, Loader _loader,
-						AssignData _assignData) {
+	public ReportMerger(GameData _data, File file, Loader _loader, AssignData _assignData) {
 		data = _data;
 
-		reports		    = new Report[1];
-		reports[0]	    = new Report();
+		reports = new Report[1];
+		reports[0] = new Report();
 		reports[0].file = file;
 
-		loader     = _loader;
+		loader = _loader;
 		assignData = _assignData;
 	}
 
@@ -289,9 +287,9 @@ public class ReportMerger extends java.lang.Object {
 
 	private void mergeThread() {
 		try {
-			int iPosition		    = 0;
+			int iPosition = 0;
 			int iFailedConnectivity = 0;
-			int iMerged			    = 0;
+			int iMerged = 0;
 
 			while(true) {
 				if(!reports[iPosition].merged) {
@@ -311,7 +309,7 @@ public class ReportMerger extends java.lang.Object {
 				iPosition++;
 
 				if(iPosition >= reports.length) {
-					iPosition		    = 0;
+					iPosition = 0;
 					iFailedConnectivity = 0;
 				}
 			}
@@ -336,8 +334,7 @@ public class ReportMerger extends java.lang.Object {
 						if(!reports[i].merged) {
 							iProgress += 2;
 							ui.setProgress(reports[i].file.getName() + " - " +
-										   getString("status.merging"),
-										   iProgress);
+										   getString("status.merging"), iProgress);
 
 							//data.mergeWith( reports[i].data );
 							data = GameData.merge(data, reports[i].data);
@@ -355,8 +352,7 @@ public class ReportMerger extends java.lang.Object {
 	private boolean mergeReport(Report report) {
 		if(report.data == null) {
 			iProgress += 1;
-			ui.setProgress(report.file.getName() + " - " +
-						   getString("status.loading"), iProgress);
+			ui.setProgress(report.file.getName() + " - " + getString("status.loading"), iProgress);
 
 			report.data = loader.load(report.file);
 		}
@@ -370,39 +366,35 @@ public class ReportMerger extends java.lang.Object {
 		}
 
 		/**
-		 * prepare faction trustlevel for merging: - to be added CR is older or
-		 * of same age -> hold existing trust levels - to be added CR is newer
-		 * and contains trust level that were set by the user explicitly (or
-		 * read from CR what means the same) -> take the trust levels out of
-		 * the new CR otherwise -> hold existing trust levels This means: set
-		 * those trust levels, that will not be retained to default values
+		 * prepare faction trustlevel for merging: - to be added CR is older or of same age -> hold
+		 * existing trust levels - to be added CR is newer and contains trust level that were set
+		 * by the user explicitly (or read from CR what means the same) -> take the trust levels
+		 * out of the new CR otherwise -> hold existing trust levels This means: set those trust
+		 * levels, that will not be retained to default values
 		 */
 		if((data.getDate() != null) && (report.data.getDate() != null) &&
 			   (data.getDate().getDate() < report.data.getDate().getDate()) &&
 			   TrustLevels.containsTrustLevelsSetByUser(report.data)) {
 			// take the trust levels out of the to be added data
 			// set those in the existing data to default-values
-			for(Iterator iterator = data.factions().values().iterator();
-					iterator.hasNext();) {
+			for(Iterator iterator = data.factions().values().iterator(); iterator.hasNext();) {
 				Faction f = (Faction) iterator.next();
-				f.trustLevel		  = Faction.TL_DEFAULT;
+				f.trustLevel = Faction.TL_DEFAULT;
 				f.trustLevelSetByUser = false;
 			}
 		} else {
 			// take the trust levels out of the existing data
 			// set those in the to be added data to default-values
-			for(Iterator iterator = report.data.factions().values().iterator();
-					iterator.hasNext();) {
+			for(Iterator iterator = report.data.factions().values().iterator(); iterator.hasNext();) {
 				Faction f = (Faction) iterator.next();
-				f.trustLevel		  = Faction.TL_DEFAULT;
+				f.trustLevel = Faction.TL_DEFAULT;
 				f.trustLevelSetByUser = false;
 			}
 		}
 
 		/**
-		 * Prepare curTempID-Value for merging. If reports are of the same age,
-		 * keep existing by setting the new one to default value. Otherwise
-		 * set the existing to default value.
+		 * Prepare curTempID-Value for merging. If reports are of the same age, keep existing by
+		 * setting the new one to default value. Otherwise set the existing to default value.
 		 */
 		if((data.getDate() != null) && (report.data.getDate() != null) &&
 			   (data.getDate().getDate() < report.data.getDate().getDate())) {
@@ -413,17 +405,14 @@ public class ReportMerger extends java.lang.Object {
 
 		if(report.regionMap == null) {
 			iProgress += 1;
-			ui.setProgress(report.file.getName() + " - " +
-						   getString("status.processing"), iProgress);
+			ui.setProgress(report.file.getName() + " - " + getString("status.processing"), iProgress);
 
 			report.regionMap = CollectionFactory.createHashMap();
 
-			for(Iterator iter = report.data.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = report.data.regions().values().iterator(); iter.hasNext();) {
 				Region region = (Region) iter.next();
 
-				if((region.getName() != null) &&
-					   (region.getName().length() > 0)) {
+				if((region.getName() != null) && (region.getName().length() > 0)) {
 					/*if (report.regionMap.containsKey(region.getName())) {
 					    report.regionMap.put(region.getName(), null);
 					}else{*/
@@ -436,8 +425,7 @@ public class ReportMerger extends java.lang.Object {
 
 		// determine translation
 		iProgress += 1;
-		ui.setProgress(report.file.getName() + " - " +
-					   getString("status.connecting"), iProgress);
+		ui.setProgress(report.file.getName() + " - " + getString("status.connecting"), iProgress);
 
 		// maps translation (Coordinate) to match count (Integer)
 		Map translationMap = new java.util.Hashtable();
@@ -454,10 +442,8 @@ public class ReportMerger extends java.lang.Object {
 					if(foundRegion != null) {
 						Coordinate foundCoord = foundRegion.getCoordinate();
 
-						Coordinate translation = new Coordinate(foundCoord.x -
-																coord.x,
-																foundCoord.y -
-																coord.y);
+						Coordinate translation = new Coordinate(foundCoord.x - coord.x,
+																foundCoord.y - coord.y);
 
 						Integer count = (Integer) translationMap.get(translation);
 
@@ -475,25 +461,23 @@ public class ReportMerger extends java.lang.Object {
 
 		/* check whether any of the translations is impossible by
 		   comparing the terrains */
-		int		   maxTerrainMismatches = (int) (Math.max(data.regions().size(),
-														  report.data.regions()
-																	 .size()) * 0.02);
-		Coordinate loopCoord		    = new Coordinate(0, 0, 0);
-		RegionType forestTerrain	    = data.rules.getRegionType(StringID.create("Wald"));
-		RegionType plainTerrain		    = data.rules.getRegionType(StringID.create("Ebene"));
-		RegionType oceanTerrain		    = data.rules.getRegionType(StringID.create("Ozean"));
-		RegionType glacierTerrain	    = data.rules.getRegionType(StringID.create("Gletscher"));
+		int maxTerrainMismatches = (int) (Math.max(data.regions().size(),
+												   report.data.regions().size()) * 0.02);
+		Coordinate loopCoord = new Coordinate(0, 0, 0);
+		RegionType forestTerrain = data.rules.getRegionType(StringID.create("Wald"));
+		RegionType plainTerrain = data.rules.getRegionType(StringID.create("Ebene"));
+		RegionType oceanTerrain = data.rules.getRegionType(StringID.create("Ozean"));
+		RegionType glacierTerrain = data.rules.getRegionType(StringID.create("Gletscher"));
 		RegionType activeVolcanoTerrain = data.rules.getRegionType(StringID.create("Aktiver Vulkan"));
-		RegionType volcanoTerrain	    = data.rules.getRegionType(StringID.create("Vulkan"));
+		RegionType volcanoTerrain = data.rules.getRegionType(StringID.create("Vulkan"));
 
 		for(Iterator iter = translationMap.keySet().iterator(); iter.hasNext();) {
 			Coordinate translation = (Coordinate) iter.next();
-			int		   mismatches = 0; // the number of regions not having the same region type at the current translations
+			int mismatches = 0; // the number of regions not having the same region type at the current translations
 
 			/* for each traslations we have to compare the regions'
 			   terrains */
-			for(Iterator regionIter = data.regions().values().iterator();
-					regionIter.hasNext();) {
+			for(Iterator regionIter = data.regions().values().iterator(); regionIter.hasNext();) {
 				Region r = (Region) regionIter.next();
 
 				if(r.getType() == null) {
@@ -509,39 +493,33 @@ public class ReportMerger extends java.lang.Object {
 					loopCoord.y = c.y;
 					loopCoord.translate(translation);
 
-					Region reportDataRegion = (Region) report.data.regions()
-																  .get(loopCoord);
+					Region reportDataRegion = (Region) report.data.regions().get(loopCoord);
 
 					/* the hit count for the current translation must
 					   only be modified, if there actually are regions
 					   to be compared and their terrains are valid */
-					if((reportDataRegion != null) &&
-						   (reportDataRegion.getType() != null)) {
+					if((reportDataRegion != null) && (reportDataRegion.getType() != null)) {
 						if(!r.getType().equals(reportDataRegion.getType())) {
 							/* now we have a mismatch. If the reports
 							   are from the same turn, terrains may
 							   not differ at all. If the reports are
 							   from different turns, some terrains
 							   can be transformed. */
-							if((data.getDate() != null) &&
-								   (report.data.getDate() != null) &&
+							if((data.getDate() != null) && (report.data.getDate() != null) &&
 								   data.getDate().equals(report.data.getDate())) {
 								mismatches++;
 							} else {
-								if(!(((forestTerrain != null) &&
-									   (plainTerrain != null) &&
+								if(!(((forestTerrain != null) && (plainTerrain != null) &&
 									   ((forestTerrain.equals(r.getType()) &&
 									   plainTerrain.equals(reportDataRegion.getType())) ||
 									   (plainTerrain.equals(r.getType()) &&
 									   forestTerrain.equals(reportDataRegion.getType())))) ||
-									   ((oceanTerrain != null) &&
-									   (glacierTerrain != null) &&
+									   ((oceanTerrain != null) && (glacierTerrain != null) &&
 									   ((oceanTerrain.equals(r.getType()) &&
 									   glacierTerrain.equals(reportDataRegion.getType())) ||
 									   (glacierTerrain.equals(r.getType()) &&
 									   oceanTerrain.equals(reportDataRegion.getType())))) ||
-									   ((activeVolcanoTerrain != null) &&
-									   (volcanoTerrain != null) &&
+									   ((activeVolcanoTerrain != null) && (volcanoTerrain != null) &&
 									   ((activeVolcanoTerrain.equals(r.getType()) &&
 									   volcanoTerrain.equals(reportDataRegion.getType())) ||
 									   (volcanoTerrain.equals(r.getType()) &&
@@ -561,25 +539,25 @@ public class ReportMerger extends java.lang.Object {
 			}
 		}
 
-		int     iDX    = 0;
-		int     iDY    = 0;
-		int     iCount = 0;
+		int iDX = 0;
+		int iDY = 0;
+		int iCount = 0;
 		boolean bEqual = false;
 
 		// search highest hit count
 		Iterator iter = translationMap.entrySet().iterator();
 
 		while(iter.hasNext()) {
-			Map.Entry  entry = (Map.Entry) iter.next();
+			Map.Entry entry = (Map.Entry) iter.next();
 
 			Coordinate translation = (Coordinate) entry.getKey();
-			int		   count	   = ((Integer) entry.getValue()).intValue();
+			int count = ((Integer) entry.getValue()).intValue();
 
 			/*System.out.println( "Translation X:" + translation.x + " Y:" + translation.y +
 			    " Hits:" + count );*/
 			if(count > iCount) {
-				iDX    = translation.x;
-				iDY    = translation.y;
+				iDX = translation.x;
+				iDY = translation.y;
 				iCount = count;
 				bEqual = false;
 			} else {
@@ -592,8 +570,7 @@ public class ReportMerger extends java.lang.Object {
 		// valid translation?
 		if((iCount > 0) && (!bEqual)) {
 			iProgress += 1;
-			ui.setProgress(report.file.getName() + " - " +
-						   getString("status.merging"), iProgress);
+			ui.setProgress(report.file.getName() + " - " + getString("status.merging"), iProgress);
 
 			if((data.getDate() == null) || (report.data.getDate() == null)) {
 				report.data.placeOrigin(new Coordinate(iDX, iDY));
@@ -606,10 +583,10 @@ public class ReportMerger extends java.lang.Object {
 			}
 
 			//data.mergeWith( report.data );
-			data		  = GameData.merge(data, report.data);
+			data = GameData.merge(data, report.data);
 			report.merged = true;
 
-			report.data		 = null;
+			report.data = null;
 			report.regionMap = null;
 		} else {
 			iProgress -= 1;
@@ -633,7 +610,7 @@ public class ReportMerger extends java.lang.Object {
 		}
 
 		private void initComponents() {
-			labelText   = new javax.swing.JLabel();
+			labelText = new javax.swing.JLabel();
 			progressBar = new javax.swing.JProgressBar();
 			getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -652,11 +629,11 @@ public class ReportMerger extends java.lang.Object {
 			labelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 			labelText.setMaximumSize(new java.awt.Dimension(32767, 16));
 
-			gridBagConstraints1		    = new java.awt.GridBagConstraints();
-			gridBagConstraints1.gridx   = 0;
-			gridBagConstraints1.gridy   = 1;
-			gridBagConstraints1.fill    = java.awt.GridBagConstraints.BOTH;
-			gridBagConstraints1.insets  = new java.awt.Insets(0, 5, 5, 5);
+			gridBagConstraints1 = new java.awt.GridBagConstraints();
+			gridBagConstraints1.gridx = 0;
+			gridBagConstraints1.gridy = 1;
+			gridBagConstraints1.fill = java.awt.GridBagConstraints.BOTH;
+			gridBagConstraints1.insets = new java.awt.Insets(0, 5, 5, 5);
 			gridBagConstraints1.weightx = 1.0;
 			gridBagConstraints1.weighty = 0.5;
 			getContentPane().add(labelText, gridBagConstraints1);
@@ -664,9 +641,9 @@ public class ReportMerger extends java.lang.Object {
 			progressBar.setPreferredSize(new java.awt.Dimension(250, 14));
 			progressBar.setMinimumSize(new java.awt.Dimension(250, 14));
 
-			gridBagConstraints1		    = new java.awt.GridBagConstraints();
-			gridBagConstraints1.fill    = java.awt.GridBagConstraints.BOTH;
-			gridBagConstraints1.insets  = new java.awt.Insets(5, 5, 5, 5);
+			gridBagConstraints1 = new java.awt.GridBagConstraints();
+			gridBagConstraints1.fill = java.awt.GridBagConstraints.BOTH;
+			gridBagConstraints1.insets = new java.awt.Insets(5, 5, 5, 5);
 			gridBagConstraints1.weightx = 1.0;
 			gridBagConstraints1.weighty = 0.5;
 			getContentPane().add(progressBar, gridBagConstraints1);
@@ -711,8 +688,7 @@ public class ReportMerger extends java.lang.Object {
 
 			defaultTranslations.put("window.title", "Merging reports...");
 
-			defaultTranslations.put("msg.confirmmerge.title",
-									"Merge without connection");
+			defaultTranslations.put("msg.confirmmerge.title", "Merge without connection");
 			defaultTranslations.put("msg.noconnection.text.1",
 									"These reports seem to be non-overlapping and therefore not connectable:");
 			defaultTranslations.put("msg.noconnection.text.2",

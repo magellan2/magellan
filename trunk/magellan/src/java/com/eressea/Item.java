@@ -16,14 +16,13 @@ package com.eressea;
 import com.eressea.rules.ItemType;
 
 /**
- * A class representing an item in Eressea. Items are qualified by their type
- * and a certain amount. Mark that the item class is quite 'bare', i.e. its
- * name and identifiability are not enforced  by sub-classing the respective
- * interfaces.
+ * A class representing an item in Eressea. Items are qualified by their type and a certain amount.
+ * Mark that the item class is quite 'bare', i.e. its name and identifiability are not enforced
+ * by sub-classing the respective interfaces.
  */
 public class Item {
 	private ItemType type;
-	private int		 amount;
+	private int amount;
 
 	/**
 	 * Creates a new item of the specified type and with the specified amount.
@@ -35,7 +34,7 @@ public class Item {
 	 */
 	public Item(ItemType type, int amount) {
 		if(type != null) {
-			this.type   = type;
+			this.type = type;
 			this.amount = amount;
 		} else {
 			throw new IllegalArgumentException("Item.Item(): specified item type is null!");

@@ -33,11 +33,11 @@ import com.eressea.util.CollectionFactory;
  *
  * @author Ulrich Küster
  */
-public class InvertSelectionAction extends MenuAction
-	implements GameDataListener, SelectionListener
+public class InvertSelectionAction extends MenuAction implements GameDataListener,
+																 SelectionListener
 {
 	private Client client;
-	private Map    selectedRegions = CollectionFactory.createHashtable();
+	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
 	 * Creates a new InvertSelectionAction object.
@@ -60,12 +60,10 @@ public class InvertSelectionAction extends MenuAction
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -94,8 +92,7 @@ public class InvertSelectionAction extends MenuAction
 		Map newSelectedRegions = CollectionFactory.createHashtable();
 
 		// add all regions that belong to the active level XOR were selected befor
-		for(Iterator iter = client.getData().regions().keySet().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = client.getData().regions().keySet().iterator(); iter.hasNext();) {
 			Coordinate c = (Coordinate) iter.next();
 
 			if((c.z == client.getLevel()) ^ selectedRegions.containsKey(c)) {
@@ -104,9 +101,7 @@ public class InvertSelectionAction extends MenuAction
 		}
 
 		selectedRegions = newSelectedRegions;
-		client.getDispatcher().fire(new SelectionEvent(this,
-													   selectedRegions.values(),
-													   null,
+		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}
 

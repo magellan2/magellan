@@ -51,8 +51,8 @@ public class ECheckDialog extends InternationalizedDataDialog {
 	 * @param initData TODO: DOCUMENT ME!
 	 * @param p TODO: DOCUMENT ME!
 	 */
-	public ECheckDialog(Frame owner, boolean modal, EventDispatcher ed,
-						GameData initData, Properties p) {
+	public ECheckDialog(Frame owner, boolean modal, EventDispatcher ed, GameData initData,
+						Properties p) {
 		this(owner, modal, ed, initData, p, null);
 	}
 
@@ -66,8 +66,8 @@ public class ECheckDialog extends InternationalizedDataDialog {
 	 * @param p TODO: DOCUMENT ME!
 	 * @param regions TODO: DOCUMENT ME!
 	 */
-	public ECheckDialog(Frame owner, boolean modal, EventDispatcher ed,
-						GameData initData, Properties p, Collection regions) {
+	public ECheckDialog(Frame owner, boolean modal, EventDispatcher ed, GameData initData,
+						Properties p, Collection regions) {
 		super(owner, modal, ed, initData, p);
 		init(regions);
 	}
@@ -82,20 +82,15 @@ public class ECheckDialog extends InternationalizedDataDialog {
 		setContentPane(getMainPane());
 		setTitle(getString("window.title"));
 
-		int width = Integer.parseInt(settings.getProperty("ECheckDialog.width",
-														  "500"));
-		int height = Integer.parseInt(settings.getProperty("ECheckDialog.height",
-														   "300"));
+		int width = Integer.parseInt(settings.getProperty("ECheckDialog.width", "500"));
+		int height = Integer.parseInt(settings.getProperty("ECheckDialog.height", "300"));
 		this.setSize(width, height);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int		  x = Integer.parseInt(settings.getProperty("ECheckDialog.x",
-															((screen.width -
-															getWidth()) / 2) +
-															""));
+		int x = Integer.parseInt(settings.getProperty("ECheckDialog.x",
+													  ((screen.width - getWidth()) / 2) + ""));
 		int y = Integer.parseInt(settings.getProperty("ECheckDialog.y",
-													  ((screen.height -
-													  getHeight()) / 2) + ""));
+													  ((screen.height - getHeight()) / 2) + ""));
 		this.setLocation(x, y);
 		pnlECheck.setSelRegionsOnly(new Boolean(settings.getProperty("ECheckDialog.includeSelRegionsOnly",
 																	 "false")).booleanValue());

@@ -29,28 +29,27 @@ import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.util.logging.Logger;
 
 /**
- * A class holding the information necessary to describe the  geometry of a map
- * cell. The information should be sufficient to calculate the size of a cell,
- * an optional offset of the opaque part of an image representing the cell and
- * the position of a cell with arbitrary coordinates on the map in pixels.
- * Some effort has been put into the routines calculating the pixel position
- * of a cell and for retrieving the coordinate of a cell containing a certain
- * pixel position with regard to good accuracy.
+ * A class holding the information necessary to describe the  geometry of a map cell. The
+ * information should be sufficient to calculate the size of a cell, an optional offset of the
+ * opaque part of an image representing the cell and the position of a cell with arbitrary
+ * coordinates on the map in pixels. Some effort has been put into the routines calculating the
+ * pixel position of a cell and for retrieving the coordinate of a cell containing a certain pixel
+ * position with regard to good accuracy.
  */
 public class CellGeometry {
-	private static final Logger log				 = Logger.getInstance(CellGeometry.class);
-	private float			    scaleFactor		 = 1.0f;
-	private Polygon			    cell			 = null;
-	private Polygon			    scaledPoly		 = null;
-	private Point			    imgOffset		 = new Point(0, 0);
-	private Point			    scaledImgOffset  = new Point(0, 0);
-	private Dimension		    imgSize			 = new Dimension(0, 0);
-	private Dimension		    scaledImgSize    = new Dimension(0, 0);
-	private Dimension		    unscaledCellSize = new Dimension(0, 0); // cell.getBounds().width/height + 1
-	private Dimension		    scaledCellSize   = new Dimension(0, 0); // unscaledCellSize.width/height * scaleFactor
-	private float			    cellShiftXX		 = 0.0f; // unscaledCellSize.width
-	private float			    cellShiftXY		 = 0.0f; // unscaledCellSize.width / 2.0f
-	private float			    cellShiftYY		 = 0.0f; // -(cell.ypoints[2] + 1)
+	private static final Logger log = Logger.getInstance(CellGeometry.class);
+	private float scaleFactor = 1.0f;
+	private Polygon cell = null;
+	private Polygon scaledPoly = null;
+	private Point imgOffset = new Point(0, 0);
+	private Point scaledImgOffset = new Point(0, 0);
+	private Dimension imgSize = new Dimension(0, 0);
+	private Dimension scaledImgSize = new Dimension(0, 0);
+	private Dimension unscaledCellSize = new Dimension(0, 0); // cell.getBounds().width/height + 1
+	private Dimension scaledCellSize = new Dimension(0, 0); // unscaledCellSize.width/height * scaleFactor
+	private float cellShiftXX = 0.0f; // unscaledCellSize.width
+	private float cellShiftXY = 0.0f; // unscaledCellSize.width / 2.0f
+	private float cellShiftYY = 0.0f; // -(cell.ypoints[2] + 1)
 
 	/**
 	 * Creates a new CellGeometry object with no geometry data set.
@@ -59,9 +58,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Creates a new CellGeometry object initializing itself with the data
-	 * available in the specified resource file. The file is supposed to have
-	 * the following layout:
+	 * Creates a new CellGeometry object initializing itself with the data available in the
+	 * specified resource file. The file is supposed to have the following layout:
 	 * 
 	 * <p>
 	 * <tt>x0=32<br>x1=63<br>
@@ -80,39 +78,34 @@ public class CellGeometry {
 	 * imgSizex=80<br>
 	 * imgSizey=80 </tt>
 	 * </p>
-	 * These values are default values if they cannot be retrieved from the
-	 * file. The coordinates are interpreted to describe a symmetric hexagon
-	 * that sits at the coordinate axes with positive x values increasing to
-	 * the right and positive y values increasing downwards. The x0 through x5
-	 * values describe the x values of the points that make up the hexagonal
-	 * cell, y0 through y5 are the respective y values. x0, y0 represent the
-	 * top node of the hexagon, the other points are numbered up clockwise.
-	 * Therefore x4, x5 and y0 are expected to always be 0, else no guarantee
-	 * can be made as to the correctness of the position calculations. The
-	 * imgOffset and imgSize values give additional information about how the
-	 * hexagon is located within the graphics files used together with this
-	 * cellgeometry. This information is necessary to calculate the images'
-	 * pixel positions for  painting. imgOffset is the offset of the opaque
-	 * part of the image representing a cell within the graphics file, imgSize
-	 * denotes the size of the graphics files in pixels. The created
-	 * CellGeometry is fully initialized with this data, no further
-	 * information has to be given.
+	 * These values are default values if they cannot be retrieved from the file. The coordinates
+	 * are interpreted to describe a symmetric hexagon that sits at the coordinate axes with
+	 * positive x values increasing to the right and positive y values increasing downwards. The
+	 * x0 through x5 values describe the x values of the points that make up the hexagonal cell,
+	 * y0 through y5 are the respective y values. x0, y0 represent the top node of the hexagon,
+	 * the other points are numbered up clockwise. Therefore x4, x5 and y0 are expected to always
+	 * be 0, else no guarantee can be made as to the correctness of the position calculations. The
+	 * imgOffset and imgSize values give additional information about how the hexagon is located
+	 * within the graphics files used together with this cellgeometry. This information is
+	 * necessary to calculate the images' pixel positions for  painting. imgOffset is the offset
+	 * of the opaque part of the image representing a cell within the graphics file, imgSize
+	 * denotes the size of the graphics files in pixels. The created CellGeometry is fully
+	 * initialized with this data, no further information has to be given.
 	 *
-	 * @param fileName the name of the file to read the geometry data from.
-	 * 		  fileName is retrieved from the current resource bundle.
+	 * @param fileName the name of the file to read the geometry data from. fileName is retrieved
+	 * 		  from the current resource bundle.
 	 */
 	public CellGeometry(String fileName) {
 		Properties p = new Properties();
 
 		try {
-			URL		    url = ResourcePathClassLoader.getResourceStatically("images/map/" +
-																			fileName);
+			URL url = ResourcePathClassLoader.getResourceStatically("images/map/" + fileName);
 			InputStream is = url.openStream();
 			p.load(is);
 			is.close();
 		} catch(Exception e) {
-			log.error("CellGeometry(): unable to load file images/map/" +
-					  fileName + " from resource path. Using default values", e);
+			log.error("CellGeometry(): unable to load file images/map/" + fileName +
+					  " from resource path. Using default values", e);
 		}
 
 		int xpoints[] = new int[6];
@@ -138,9 +131,9 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Sets the hexagon coordinates of the cell geometry, the supplied arrays
-	 * are expected to be of size 6 and the values are expected to confirm
-	 * with the restrictions given in the constructor description.
+	 * Sets the hexagon coordinates of the cell geometry, the supplied arrays are expected to be of
+	 * size 6 and the values are expected to confirm with the restrictions given in the
+	 * constructor description.
 	 *
 	 * @param xpoints TODO: DOCUMENT ME!
 	 * @param ypoints TODO: DOCUMENT ME!
@@ -152,21 +145,21 @@ public class CellGeometry {
 			cell = new Polygon(xpoints, ypoints, 6);
 
 			// pavkovic 2003.06.19: the scaled polygon should have a resonable initial value
-			scaledPoly		 = scalePolygon(scaleFactor);
+			scaledPoly = scalePolygon(scaleFactor);
 			unscaledCellSize = cell.getBounds().getSize();
 			unscaledCellSize.width++;
 			unscaledCellSize.height++;
 			scaledCellSize = new Dimension(unscaledCellSize);
-			cellShiftXX    = (float) (unscaledCellSize.width);
-			cellShiftXY    = (float) (unscaledCellSize.width / 2.0f);
-			cellShiftYY    = (float) (-1.0f * (ypoints[2] + 1.0f));
+			cellShiftXX = (float) (unscaledCellSize.width);
+			cellShiftXY = (float) (unscaledCellSize.width / 2.0f);
+			cellShiftYY = (float) (-1.0f * (ypoints[2] + 1.0f));
 		}
 	}
 
 	/**
-	 * Sets the offset of the opaque part of an image representing a cell in
-	 * the graphics file in pixels. The x and y values are expected to be
-	 * non-negative and smaller than the size of the cell hexagon.
+	 * Sets the offset of the opaque part of an image representing a cell in the graphics file in
+	 * pixels. The x and y values are expected to be non-negative and smaller than the size of the
+	 * cell hexagon.
 	 *
 	 * @param x TODO: DOCUMENT ME!
 	 * @param y TODO: DOCUMENT ME!
@@ -178,16 +171,14 @@ public class CellGeometry {
 			return;
 		}
 
-		if((cell != null) &&
-			   ((x > cell.getBounds().width) || (y > cell.getBounds().height))) {
+		if((cell != null) && ((x > cell.getBounds().width) || (y > cell.getBounds().height))) {
 			log.warn("CellGraphicsSet.setImageOffsets(): Invalid offset value");
 
 			return;
 		}
 
-		imgOffset	    = new Point(x, y);
-		scaledImgOffset = new Point((int) (x * scaleFactor),
-									(int) (y * scaleFactor));
+		imgOffset = new Point(x, y);
+		scaledImgOffset = new Point((int) (x * scaleFactor), (int) (y * scaleFactor));
 	}
 
 	/**
@@ -197,28 +188,26 @@ public class CellGeometry {
 	 * @param height TODO: DOCUMENT ME!
 	 */
 	public void setImageSize(int width, int height) {
-		imgSize		  = new Dimension(width, height);
-		scaledImgSize = new Dimension((int) (width * scaleFactor),
-									  (int) (height * scaleFactor));
+		imgSize = new Dimension(width, height);
+		scaledImgSize = new Dimension((int) (width * scaleFactor), (int) (height * scaleFactor));
 	}
 
 	/**
-	 * Set a scale factor to be used for all calculations of cell positions and
-	 * sizes.
+	 * Set a scale factor to be used for all calculations of cell positions and sizes.
 	 *
 	 * @param scaleFactor TODO: DOCUMENT ME!
 	 */
 	public void setScaleFactor(float scaleFactor) {
 		this.scaleFactor = scaleFactor;
 
-		scaledPoly			  = scalePolygon(scaleFactor);
-		scaledCellSize.width  = (int) (unscaledCellSize.width * scaleFactor);
+		scaledPoly = scalePolygon(scaleFactor);
+		scaledCellSize.width = (int) (unscaledCellSize.width * scaleFactor);
 		scaledCellSize.height = (int) (unscaledCellSize.height * scaleFactor);
 
 		scaledImgOffset.x = (int) (imgOffset.x * scaleFactor);
 		scaledImgOffset.y = (int) (imgOffset.y * scaleFactor);
 
-		scaledImgSize.width  = (int) (imgSize.width * scaleFactor);
+		scaledImgSize.width = (int) (imgSize.width * scaleFactor);
 		scaledImgSize.height = (int) (imgSize.height * scaleFactor);
 	}
 
@@ -259,8 +248,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the scaled pixel position where to draw an image to exactly
-	 * match the position of the cell with the map coordinates mapX and mapY.
+	 * Returns the scaled pixel position where to draw an image to exactly match the position of
+	 * the cell with the map coordinates mapX and mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -284,8 +273,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the scaled pixel position and size of an image to exactly match
-	 * the position of the cell with the map coordinate mapX and mapY.
+	 * Returns the scaled pixel position and size of an image to exactly match the position of the
+	 * cell with the map coordinate mapX and mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -297,8 +286,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the unscaled pixel position on the x-axis of a cell with the map
-	 * coordinates mapX and mapY.
+	 * Returns the unscaled pixel position on the x-axis of a cell with the map coordinates mapX
+	 * and mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -310,8 +299,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the unscaled pixel position on the y-axis of a cell with the map
-	 * coordinates mapX and mapY.
+	 * Returns the unscaled pixel position on the y-axis of a cell with the map coordinates mapX
+	 * and mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -323,8 +312,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the scaled pixel position on the x-axis of a cell with the map
-	 * coordinates mapX and mapY.
+	 * Returns the scaled pixel position on the x-axis of a cell with the map coordinates mapX and
+	 * mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -336,8 +325,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the scaled pixel position on the y-axis of a cell with the map
-	 * coordinates mapX and mapY.
+	 * Returns the scaled pixel position on the y-axis of a cell with the map coordinates mapX and
+	 * mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -349,8 +338,7 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the scaled pixel position of a cell with the map coordinates
-	 * mapX and mapY.
+	 * Returns the scaled pixel position of a cell with the map coordinates mapX and mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -358,13 +346,11 @@ public class CellGeometry {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Point getCellPosition(int mapX, int mapY) {
-		return new Point(getCellPositionX(mapX, mapY),
-						 getCellPositionY(mapX, mapY));
+		return new Point(getCellPositionX(mapX, mapY), getCellPositionY(mapX, mapY));
 	}
 
 	/**
-	 * Returns the scaled pixel position and size of a cell with the map
-	 * coordinates mapX and mapY.
+	 * Returns the scaled pixel position and size of a cell with the map coordinates mapX and mapY.
 	 *
 	 * @param mapX TODO: DOCUMENT ME!
 	 * @param mapY TODO: DOCUMENT ME!
@@ -376,8 +362,8 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns the map coordinate of a cell containing the pixels sx and sy.
-	 * The z-value of the returned coordinate is z.
+	 * Returns the map coordinate of a cell containing the pixels sx and sy. The z-value of the
+	 * returned coordinate is z.
 	 *
 	 * @param sx TODO: DOCUMENT ME!
 	 * @param sy TODO: DOCUMENT ME!
@@ -386,20 +372,20 @@ public class CellGeometry {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public com.eressea.Coordinate getCoordinate(int sx, int sy, int z) {
-		int   mx		   = 0;
-		float mfy		   = (float) sy / (cellShiftYY * scaleFactor);
-		int   my		   = roundPosUp(mfy);
+		int mx = 0;
+		float mfy = (float) sy / (cellShiftYY * scaleFactor);
+		int my = roundPosUp(mfy);
 		mx = roundNegDown((((float) sx / scaleFactor) - (my * cellShiftXY)) / cellShiftXX);
 
-		float capHeight    = scaleFactor * cell.ypoints[1];
-		int   yPixelInCell = sy - getCellPositionY(mx, my);
+		float capHeight = scaleFactor * cell.ypoints[1];
+		int yPixelInCell = sy - getCellPositionY(mx, my);
 
 		if(yPixelInCell < ((int) (capHeight) - 1)) {
-			float halfCellWidth		 = scaledCellSize.width * scaleFactor * 0.5f;
-			int   xMaxPixelOffCenter = (int) ((halfCellWidth / capHeight) * yPixelInCell * 1.1f);
+			float halfCellWidth = scaledCellSize.width * scaleFactor * 0.5f;
+			int xMaxPixelOffCenter = (int) ((halfCellWidth / capHeight) * yPixelInCell * 1.1f);
 
-			int   xPixelInCell    = sx - getCellPositionX(mx, my);
-			int   xPixelOffCenter = xPixelInCell - (int) halfCellWidth;
+			int xPixelInCell = sx - getCellPositionX(mx, my);
+			int xPixelOffCenter = xPixelInCell - (int) halfCellWidth;
 
 			if(xPixelOffCenter < -xMaxPixelOffCenter) {
 				my += 1;
@@ -413,16 +399,14 @@ public class CellGeometry {
 	}
 
 	/**
-	 * Returns a new Polygon object that is a scaled instance of the unscaled
-	 * polygon.
+	 * Returns a new Polygon object that is a scaled instance of the unscaled polygon.
 	 *
 	 * @param scaleFactor TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Polygon scalePolygon(float scaleFactor) {
-		Polygon scaledPoly = new Polygon(cell.xpoints, cell.ypoints,
-										 cell.npoints);
+		Polygon scaledPoly = new Polygon(cell.xpoints, cell.ypoints, cell.npoints);
 
 		for(int i = 0; i < scaledPoly.npoints; i++) {
 			scaledPoly.xpoints[i] = (int) (scaledPoly.xpoints[i] * scaleFactor);

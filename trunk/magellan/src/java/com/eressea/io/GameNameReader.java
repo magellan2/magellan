@@ -43,8 +43,7 @@ public class GameNameReader {
 		try {
 			String gameName = CRGameNameIO.singleton().getGameName(filetype);
 
-			return (gameName != null) ? gameName
-									  : XMLGameNameIO.singleton().getGameName(filetype);
+			return (gameName != null) ? gameName : XMLGameNameIO.singleton().getGameName(filetype);
 		} catch(IOException e) {
 			return null;
 		}

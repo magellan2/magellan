@@ -51,8 +51,8 @@ import com.eressea.util.CollectionFactory;
  * A dialog allowing the user to set preferences or similar data.
  * 
  * <p>
- * This class has a kind of plug-in mechanism, that allows displaying a dynamic
- * set of panels as tab panes without changing the implementation.
+ * This class has a kind of plug-in mechanism, that allows displaying a dynamic set of panels as
+ * tab panes without changing the implementation.
  * </p>
  * 
  * <p>
@@ -60,57 +60,51 @@ import com.eressea.util.CollectionFactory;
  * 
  * <ul>
  * <li>
- * Make all preferences of your actual UI component (a subclass of DataPanel or
- * something similar, e.g. the EMapDetailsPanel) publicly accessible (usually
- * via get/set methods).
+ * Make all preferences of your actual UI component (a subclass of DataPanel or something similar,
+ * e.g. the EMapDetailsPanel) publicly accessible (usually via get/set methods).
  * </li>
  * <li>
- * Write a container that makes these preferences editable (nice checkboxes and
- * so on).
+ * Write a container that makes these preferences editable (nice checkboxes and so on).
  * </li>
  * <li>
- * That container must, upon creation, reflect the current preferences of your
- * UI component.
+ * That container must, upon creation, reflect the current preferences of your UI component.
  * </li>
  * <li>
- * That container also has to provide a means of applying the changes made by
- * the user to your UI component.
+ * That container also has to provide a means of applying the changes made by the user to your UI
+ * component.
  * </li>
  * <li>
- * Create a class implementing the PreferencesAdapter interface, which holds a
- * reference to the container. It is responsible for passing the your
- * container to this PreferencesDialog and making it 'apply' the changes made
- * by the user to your UI component.
+ * Create a class implementing the PreferencesAdapter interface, which holds a reference to the
+ * container. It is responsible for passing the your container to this PreferencesDialog and
+ * making it 'apply' the changes made by the user to your UI component.
  * </li>
  * <li>
- * Finally, plug in your container into this PreferencesDialog object by
- * calling the addTab() method.
+ * Finally, plug in your container into this PreferencesDialog object by calling the addTab()
+ * method.
  * </li>
  * </ul>
  * </p>
  * 
  * <p>
- * Note that such a preferences container has to resize with its parent
- * component, i.e. the preferences dialog
+ * Note that such a preferences container has to resize with its parent component, i.e. the
+ * preferences dialog
  * </p>
  */
 public class PreferencesDialog extends InternationalizedDialog {
 	/**
-	 * list of all PreferencesAdapters connected (also the children of
-	 * ExtendedPreferencesAdapters)
+	 * list of all PreferencesAdapters connected (also the children of ExtendedPreferencesAdapters)
 	 */
-	private Collection  adapters   = null;
-	private JTabbedPane tabs	   = null;
-	private DialogTree  dialogtree;
-	private Properties  settings   = null;
+	private Collection adapters = null;
+	private JTabbedPane tabs = null;
+	private DialogTree dialogtree;
+	private Properties settings = null;
 
 	/**
-	 * Creates a modal or non-modal dialog with the specified title and the
-	 * specified owner frame.
+	 * Creates a modal or non-modal dialog with the specified title and the specified owner frame.
 	 *
 	 * @param owner the frame from which the dialog is displayed.
-	 * @param modal true for a modal dialog, false for one that     allows
-	 * 		  others windows to be active at the same     time.
+	 * @param modal true for a modal dialog, false for one that     allows others windows to be
+	 * 		  active at the same     time.
 	 * @param settings the String to display in the dialog's title     bar.
 	 */
 	public PreferencesDialog(Frame owner, boolean modal, Properties settings) {
@@ -122,19 +116,15 @@ public class PreferencesDialog extends InternationalizedDialog {
 
 		setContentPane(getMainPane());
 
-		int width = Integer.parseInt(settings.getProperty("PreferencesDialog.width",
-														  "450"));
-		int height = Integer.parseInt(settings.getProperty("PreferencesDialog.height",
-														   "450"));
+		int width = Integer.parseInt(settings.getProperty("PreferencesDialog.width", "450"));
+		int height = Integer.parseInt(settings.getProperty("PreferencesDialog.height", "450"));
 		setSize(width, height);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int		  x = Integer.parseInt(settings.getProperty("PreferencesDialog.x",
-															((screen.width -
-															width) / 2) + ""));
+		int x = Integer.parseInt(settings.getProperty("PreferencesDialog.x",
+													  ((screen.width - width) / 2) + ""));
 		int y = Integer.parseInt(settings.getProperty("PreferencesDialog.y",
-													  ((screen.height - height) / 2) +
-													  ""));
+													  ((screen.height - height) / 2) + ""));
 		setLocation(x, y);
 	}
 
@@ -179,9 +169,8 @@ public class PreferencesDialog extends InternationalizedDialog {
 	}
 
 	/**
-	 * Register a new container with this dialog. It will be put into its own
-	 * tab and notified via the apply() method, if the user confirmed the
-	 * presumably modified preferences.
+	 * Register a new container with this dialog. It will be put into its own tab and notified via
+	 * the apply() method, if the user confirmed the presumably modified preferences.
 	 *
 	 * @param adapter TODO: DOCUMENT ME!
 	 */
@@ -263,12 +252,12 @@ public class PreferencesDialog extends InternationalizedDialog {
 	}
 
 	protected class DialogTree extends JPanel implements TreeSelectionListener {
-		protected JTree					 tree;
+		protected JTree tree;
 		protected DefaultMutableTreeNode root;
-		protected DefaultTreeModel		 model;
-		protected TreePath				 firstAdapter;
-		protected JPanel				 content;
-		protected CardLayout			 cardLayout;
+		protected DefaultTreeModel model;
+		protected TreePath firstAdapter;
+		protected JPanel content;
+		protected CardLayout cardLayout;
 
 		/**
 		 * Creates a new DialogTree object.
@@ -327,11 +316,11 @@ public class PreferencesDialog extends InternationalizedDialog {
 			// add adapter to adapter list
 			adapters.add(pa);
 
-			PreferencesInfo		   pref = new PreferencesInfo(pa);
+			PreferencesInfo pref = new PreferencesInfo(pa);
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(pref);
 
-			Component			   c   = pa.getComponent();
-			Dimension			   dim = c.getPreferredSize();
+			Component c = pa.getComponent();
+			Dimension dim = c.getPreferredSize();
 			dim.width += 5;
 			dim.height += 5;
 
@@ -344,8 +333,8 @@ public class PreferencesDialog extends InternationalizedDialog {
 			content.add(pane, pa.getTitle());
 
 			if(pa instanceof ExtendedPreferencesAdapter) {
-				for(Iterator iter = ((ExtendedPreferencesAdapter) pa).getChildren()
-									 .iterator(); iter.hasNext();) {
+				for(Iterator iter = ((ExtendedPreferencesAdapter) pa).getChildren().iterator();
+						iter.hasNext();) {
 					DefaultMutableTreeNode subNode = addAdapterImpl((PreferencesAdapter) iter.next());
 
 					if(subNode != null) {
@@ -368,8 +357,7 @@ public class PreferencesDialog extends InternationalizedDialog {
 				}
 			}
 
-			String s = settings.getProperty("PreferencesDialog.DialogTree.SelectedRow",
-											"-1");
+			String s = settings.getProperty("PreferencesDialog.DialogTree.SelectedRow", "-1");
 
 			if(!s.equals("-1")) {
 				tree.setSelectionRow(Integer.parseInt(s));

@@ -18,8 +18,8 @@ import java.util.Comparator;
 import com.eressea.Alliance;
 
 /**
- * A comparator imposing an ordering on <tt>Alliance</tt> objects by comparing
- * the factions they contain.
+ * A comparator imposing an ordering on <tt>Alliance</tt> objects by comparing the factions they
+ * contain.
  */
 public class AllianceFactionComparator implements Comparator {
 	protected Comparator factionSubCmp = null;
@@ -27,8 +27,7 @@ public class AllianceFactionComparator implements Comparator {
 	/**
 	 * Creates a new <tt>AllianceFactionComparator</tt> object.
 	 *
-	 * @param factionSubComparator is used to compare the factions of two
-	 * 		  alliance objects.
+	 * @param factionSubComparator is used to compare the factions of two alliance objects.
 	 */
 	public AllianceFactionComparator(Comparator factionSubComparator) {
 		factionSubCmp = factionSubComparator;
@@ -40,8 +39,8 @@ public class AllianceFactionComparator implements Comparator {
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return the result of the faction comparator applied to the factions of
-	 * 		   the alliances o1 and o2.
+	 * @return the result of the faction comparator applied to the factions of the alliances o1 and
+	 * 		   o2.
 	 */
 	public int compare(Object o1, Object o2) {
 		Alliance a1 = (Alliance) o1;
@@ -50,9 +49,7 @@ public class AllianceFactionComparator implements Comparator {
 		if(a1 == null) {
 			return (a2 == null) ? 0 : 1;
 		} else {
-			return (a2 == null) ? (-1)
-								: factionSubCmp.compare(a1.getFaction(),
-														a2.getFaction());
+			return (a2 == null) ? (-1) : factionSubCmp.compare(a1.getFaction(), a2.getFaction());
 		}
 	}
 

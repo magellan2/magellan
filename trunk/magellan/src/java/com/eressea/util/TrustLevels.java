@@ -24,13 +24,12 @@ import com.eressea.GameData;
 /**
  * DOCUMENT ME!
  *
- * @author Ulrich Küster A class providing useful methods on handling factions'
- * 		   trustlevels
+ * @author Ulrich Küster A class providing useful methods on handling factions' trustlevels
  */
 public class TrustLevels {
 	/**
-	 * recalculates the default-trustlevel based on the alliances of all
-	 * privileged factions in the given GameData-Object.
+	 * recalculates the default-trustlevel based on the alliances of all privileged factions in the
+	 * given GameData-Object.
 	 *
 	 * @param data TODO: DOCUMENT ME!
 	 */
@@ -38,8 +37,7 @@ public class TrustLevels {
 		if(data.factions() != null) {
 			// first reset all trustlevel, that were not set by the user
 			// but by Magellan itself to TL_DEFAULT
-			for(Iterator iter = data.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				if(!f.trustLevelSetByUser) {
@@ -47,8 +45,7 @@ public class TrustLevels {
 				}
 			}
 
-			for(Iterator factions = data.factions().values().iterator();
-					factions.hasNext();) {
+			for(Iterator factions = data.factions().values().iterator(); factions.hasNext();) {
 				Faction f = (Faction) factions.next();
 
 				if((f.password != null) && !f.trustLevelSetByUser) { // password set
@@ -77,8 +74,7 @@ public class TrustLevels {
 						Faction ally = alliance.getFaction();
 
 						if(!ally.trustLevelSetByUser) {
-							ally.trustLevel = Math.max(ally.trustLevel,
-													   alliance.getTrustLevel());
+							ally.trustLevel = Math.max(ally.trustLevel, alliance.getTrustLevel());
 						}
 					}
 				}
@@ -89,16 +85,15 @@ public class TrustLevels {
 	}
 
 	/**
-	 * determines if the specified gamedata contains trust levels, that were
-	 * set by the user explicitly or read from CR (which means the same)
+	 * determines if the specified gamedata contains trust levels, that were set by the user
+	 * explicitly or read from CR (which means the same)
 	 *
 	 * @param data TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static boolean containsTrustLevelsSetByUser(GameData data) {
-		for(Iterator iter = data.factions().values().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = data.factions().values().iterator(); iter.hasNext();) {
 			if(((Faction) iter.next()).trustLevelSetByUser) {
 				return true;
 			}

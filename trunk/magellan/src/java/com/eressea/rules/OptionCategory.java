@@ -22,9 +22,9 @@ import com.eressea.ID;
  * @version $Revision$
  */
 public class OptionCategory extends ObjectType {
-	private int     bitMask  = 0;
+	private int bitMask = 0;
 	private boolean isActive = false;
-	private boolean isOrder  = false;
+	private boolean isOrder = false;
 
 	/**
 	 * Creates a new OptionCategory object.
@@ -42,9 +42,9 @@ public class OptionCategory extends ObjectType {
 	 */
 	public OptionCategory(OptionCategory orig) {
 		super(orig.getID());
-		bitMask  = orig.bitMask;
+		bitMask = orig.bitMask;
 		isActive = orig.isActive;
-		isOrder  = orig.isOrder;
+		isOrder = orig.isOrder;
 	}
 
 	/**
@@ -109,8 +109,7 @@ public class OptionCategory extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean equals(Object o) {
-		return (o instanceof OptionCategory) &&
-			   ((OptionCategory) o).getID().equals(this.getID());
+		return (o instanceof OptionCategory) && ((OptionCategory) o).getID().equals(this.getID());
 	}
 
 	/**

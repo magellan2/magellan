@@ -51,26 +51,21 @@ public class UnitContainerContextFactory implements ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data,
-													Object argument,
+	public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
 													java.util.Collection selectedObjects,
 													javax.swing.tree.DefaultMutableTreeNode node) {
 		if(argument instanceof UnitContainer) {
 			return new UnitContainerContextMenu((UnitContainer) argument,
-												EventDispatcher.getDispatcher(),
-												data, settings);
+												EventDispatcher.getDispatcher(), data, settings);
 		} else if(argument instanceof RegionNodeWrapper) {
 			return new UnitContainerContextMenu(((RegionNodeWrapper) argument).getRegion(),
-												EventDispatcher.getDispatcher(),
-												data, settings);
+												EventDispatcher.getDispatcher(), data, settings);
 		} else if(argument instanceof FactionNodeWrapper) {
 			return new UnitContainerContextMenu(((FactionNodeWrapper) argument).getFaction(),
-												EventDispatcher.getDispatcher(),
-												data, settings);
+												EventDispatcher.getDispatcher(), data, settings);
 		} else if(argument instanceof UnitContainerNodeWrapper) {
 			return new UnitContainerContextMenu(((UnitContainerNodeWrapper) argument).getUnitContainer(),
-												EventDispatcher.getDispatcher(),
-												data, settings);
+												EventDispatcher.getDispatcher(), data, settings);
 		}
 
 		return null;

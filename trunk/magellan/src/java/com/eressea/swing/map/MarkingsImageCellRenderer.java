@@ -37,7 +37,7 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 
 	/** TODO: DOCUMENT ME! */
 	public static final String ICON_TAG = "regionicon";
-	private StringBuffer	   buf;
+	private StringBuffer buf;
 
 	/**
 	 * Creates a new MarkingsImageCellRenderer object.
@@ -59,10 +59,10 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 	 */
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region && ((Region) obj).hasTags()) {
-			Region     r = (Region) obj;
+			Region r = (Region) obj;
 			Coordinate c = r.getCoordinate();
 
-			Rectangle  rect = cellGeo.getImageRect(c.x, c.y);
+			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);
 
 			int i = 1;
@@ -82,8 +82,7 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 						Image img = getImage(st.nextToken());
 
 						if(img != null) {
-							graphics.drawImage(img, rect.x, rect.y, rect.width,
-											   rect.height, null);
+							graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
 						} else {
 							log.warn("MarkingsImageCellRenderer.render(): marking image is null!");
 						}

@@ -97,8 +97,8 @@
             <methodCallChain>true</methodCallChain>
             <parameterMethodDeclaration>false</parameterMethodDeclaration>
             <ternaryOperator>true</ternaryOperator>
-            <variableAssignment>true</variableAssignment>
-            <variableIdentifier>true</variableIdentifier>
+            <variableAssignment>false</variableAssignment>
+            <variableIdentifier>false</variableIdentifier>
         </alignment>
         <backup>
             <directory>bak</directory>

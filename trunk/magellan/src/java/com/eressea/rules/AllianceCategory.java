@@ -84,8 +84,7 @@ public class AllianceCategory extends ObjectType {
 	public int compareTo(Object o) {
 		int anotherBitMask = ((AllianceCategory) o).bitMask;
 
-		return (bitMask < anotherBitMask) ? (-1)
-										  : ((bitMask == anotherBitMask) ? 0 : 1);
+		return (bitMask < anotherBitMask) ? (-1) : ((bitMask == anotherBitMask) ? 0 : 1);
 	}
 
 	/**

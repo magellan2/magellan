@@ -35,14 +35,14 @@ public class DetailsNodeWrapperDrawPolicy extends AbstractNodeWrapperDrawPolicy 
 	protected int rows;
 
 	// data for pref adapter
-	protected int		   subcount[];
-	protected Properties   settings;
-	protected String	   prefix;
-	protected String	   sK[][];
-	protected String	   lK[];
-	protected Class		   languageClass;
-	protected Map		   defaultTranslations;
-	boolean				   properties[];
+	protected int subcount[];
+	protected Properties settings;
+	protected String prefix;
+	protected String sK[][];
+	protected String lK[];
+	protected Class languageClass;
+	protected Map defaultTranslations;
+	boolean properties[];
 
 	/**
 	 * Creates new NodeWrapperPreferencesDialog
@@ -57,18 +57,17 @@ public class DetailsNodeWrapperDrawPolicy extends AbstractNodeWrapperDrawPolicy 
 	 * @param languageClass TODO: DOCUMENT ME!
 	 * @param defaultTrans TODO: DOCUMENT ME!
 	 */
-	public DetailsNodeWrapperDrawPolicy(int count, int subcount[],
-										Properties p, String prefix,
-										String sK[][], String lK[], int rows,
-										Class languageClass, Map defaultTrans) {
-		this.count				 = count;
-		this.subcount			 = subcount;
-		this.settings			 = p;
-		this.prefix				 = prefix;
-		this.sK					 = sK;
-		this.lK					 = lK;
-		this.rows				 = rows;
-		this.languageClass		 = languageClass;
+	public DetailsNodeWrapperDrawPolicy(int count, int subcount[], Properties p, String prefix,
+										String sK[][], String lK[], int rows, Class languageClass,
+										Map defaultTrans) {
+		this.count = count;
+		this.subcount = subcount;
+		this.settings = p;
+		this.prefix = prefix;
+		this.sK = sK;
+		this.lK = lK;
+		this.rows = rows;
+		this.languageClass = languageClass;
 		this.defaultTranslations = defaultTrans;
 
 		loadSettings();
@@ -89,8 +88,7 @@ public class DetailsNodeWrapperDrawPolicy extends AbstractNodeWrapperDrawPolicy 
 		properties = new boolean[sum];
 
 		for(int i = 0; i < properties.length; i++) {
-			properties[i] = settings.getProperty(prefix + "." + sK[i][0],
-												 sK[i][1]).equals("true");
+			properties[i] = settings.getProperty(prefix + "." + sK[i][0], sK[i][1]).equals("true");
 		}
 	}
 
@@ -107,8 +105,8 @@ public class DetailsNodeWrapperDrawPolicy extends AbstractNodeWrapperDrawPolicy 
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public PreferencesAdapter createPreferencesAdapter() {
-		return new DetailPolicyPreferencesAdapter(count, subcount, settings,
-												  prefix, sK, lK, rows, this);
+		return new DetailPolicyPreferencesAdapter(count, subcount, settings, prefix, sK, lK, rows,
+												  this);
 	}
 
 	/**
@@ -150,10 +148,8 @@ public class DetailsNodeWrapperDrawPolicy extends AbstractNodeWrapperDrawPolicy 
 		 * @param rows TODO: DOCUMENT ME!
 		 * @param parent TODO: DOCUMENT ME!
 		 */
-		public DetailPolicyPreferencesAdapter(int count, int subcount[],
-											  Properties p, String prefix,
-											  String sK[][], String lK[],
-											  int rows,
+		public DetailPolicyPreferencesAdapter(int count, int subcount[], Properties p,
+											  String prefix, String sK[][], String lK[], int rows,
 											  DetailsNodeWrapperDrawPolicy parent) {
 			super(count, subcount, p, prefix, sK, lK, rows, true);
 			this.parent = parent;

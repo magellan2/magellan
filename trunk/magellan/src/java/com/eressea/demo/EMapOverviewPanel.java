@@ -158,36 +158,42 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class EMapOverviewPanel extends InternationalizedDataPanel
-	implements TreeSelectionListener, TreeExpansionListener, SelectionListener,
-			   OrderConfirmListener, PreferencesFactory, TempUnitListener,
-			   ShortcutListener, ChangeListener, TreeUpdate, MenuProvider
+public class EMapOverviewPanel extends InternationalizedDataPanel implements TreeSelectionListener,
+																			 TreeExpansionListener,
+																			 SelectionListener,
+																			 OrderConfirmListener,
+																			 PreferencesFactory,
+																			 TempUnitListener,
+																			 ShortcutListener,
+																			 ChangeListener,
+																			 TreeUpdate,
+																			 MenuProvider
 {
 	private static final Logger log = Logger.getInstance(EMapOverviewPanel.class);
 
 	// GUI elements
-	private JSplitPane			   sppTreeHistory = null;
-	private CopyTree			   tree		  = null;
-	private DefaultTreeModel	   treeModel  = null;
-	private DefaultMutableTreeNode rootNode   = null;
-	private JScrollPane			   scpTree    = null;
-	private JList				   lstHistory = null;
-	private JScrollPane			   scpHistory;
+	private JSplitPane sppTreeHistory = null;
+	private CopyTree tree = null;
+	private DefaultTreeModel treeModel = null;
+	private DefaultMutableTreeNode rootNode = null;
+	private JScrollPane scpTree = null;
+	private JList lstHistory = null;
+	private JScrollPane scpHistory;
 
 	// node maps, mapping the object ids to their tree nodes
-	private Map regionNodes   = CollectionFactory.createHashtable();
-	private Map unitNodes     = CollectionFactory.createHashtable();
+	private Map regionNodes = CollectionFactory.createHashtable();
+	private Map unitNodes = CollectionFactory.createHashtable();
 	private Map buildingNodes = CollectionFactory.createHashtable();
-	private Map shipNodes     = CollectionFactory.createHashtable();
+	private Map shipNodes = CollectionFactory.createHashtable();
 
 	// relation map, mapping unit's id to its relations
-	private Map     unitRelations		 = CollectionFactory.createHashMap();
+	private Map unitRelations = CollectionFactory.createHashMap();
 	private boolean ignoreTreeSelections = false;
 
 	// region with previously selected item
-	private Region previousRegion  = null;
-	private Object activeObject    = null;
-	private List   selectedObjects = CollectionFactory.createLinkedList();
+	private Region previousRegion = null;
+	private Object activeObject = null;
+	private List selectedObjects = CollectionFactory.createLinkedList();
 
 	// needed by FactionNodeWrapper to determine the active alliances
 	// keys: FactionIDs, values: Alliance-objects
@@ -213,24 +219,22 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 	/** TODO: DOCUMENT ME! */
 	public static final int EXPAND_IFINSIDE_FLAG = 2;
-	private int			    expandMode		 = EXPAND_FLAG | (3 << 2);
-	private int			    expandTrustlevel = Faction.TL_PRIVILEGED;
+	private int expandMode = EXPAND_FLAG | (3 << 2);
+	private int expandTrustlevel = Faction.TL_PRIVILEGED;
 
 	/** TODO: DOCUMENT ME! */
 	public static final int COLLAPSE_FLAG = 1;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int		    COLLAPSE_ONLY_EXPANDED = 2;
-	private int					    collapseMode = COLLAPSE_FLAG |
-												   COLLAPSE_ONLY_EXPANDED |
-												   (3 << 2);
-	private List				    lastExpanded	  = CollectionFactory.createLinkedList();
-	private Set					    collapsedNodes    = CollectionFactory.createHashSet();
-	private Set					    collapseInfo	  = CollectionFactory.createHashSet();
-	private Set					    expandInfo		  = CollectionFactory.createHashSet();
-	private Set					    selectionTransfer = CollectionFactory.createHashSet();
-	private static final Comparator idCmp			  = new IDComparator();
-	private static final Comparator nameCmp			  = new NameComparator(idCmp);
+	public static final int COLLAPSE_ONLY_EXPANDED = 2;
+	private int collapseMode = COLLAPSE_FLAG | COLLAPSE_ONLY_EXPANDED | (3 << 2);
+	private List lastExpanded = CollectionFactory.createLinkedList();
+	private Set collapsedNodes = CollectionFactory.createHashSet();
+	private Set collapseInfo = CollectionFactory.createHashSet();
+	private Set expandInfo = CollectionFactory.createHashSet();
+	private Set selectionTransfer = CollectionFactory.createHashSet();
+	private static final Comparator idCmp = new IDComparator();
+	private static final Comparator nameCmp = new NameComparator(idCmp);
 
 	/**
 	 * Creates a new EMapOverviewPanel object.
@@ -244,8 +248,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		loadExpandProperties();
 		loadCollapseProperty();
 
-		nodeWrapperFactory = new NodeWrapperFactory(settings,
-													"EMapOverviewPanel",
+		nodeWrapperFactory = new NodeWrapperFactory(settings, "EMapOverviewPanel",
 													getString("wrapperfactory.title"));
 		nodeWrapperFactory.setSource(this);
 
@@ -258,9 +261,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		d.addTempUnitListener(this);
 
 		// create tree and add it to this panel within a scroll pane
-		rootNode  = new DefaultMutableTreeNode(null);
+		rootNode = new DefaultMutableTreeNode(null);
 		treeModel = new DefaultTreeModel(rootNode);
-		tree	  = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel, dispatcher);
 		tree.setRootVisible(false);
 
 		// pavkovic 2005.05.28: enable handle for root nodes
@@ -283,8 +286,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		// init context manager with different node wrappers
 		contextManager = new ContextManager(tree);
-		contextManager.putSimpleObject(UnitNodeWrapper.class,
-									   new UnitContextFactory());
+		contextManager.putSimpleObject(UnitNodeWrapper.class, new UnitContextFactory());
 
 		UnitContainerContextFactory conMenu = new UnitContainerContextFactory(settings);
 		contextManager.putSimpleObject(FactionNodeWrapper.class, conMenu);
@@ -302,13 +304,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				}
 			});
 		SelectionHistory.ignoreSource(lstHistory);
-		scpHistory = new JScrollPane(lstHistory,
-									 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		scpHistory = new JScrollPane(lstHistory, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 									 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		// split pane
-		sppTreeHistory = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scpTree,
-										scpHistory);
+		sppTreeHistory = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scpTree, scpHistory);
 		sppTreeHistory.setOneTouchExpandable(true);
 		sppTreeHistory.setDividerLocation(Integer.parseInt(settings.getProperty("EMapOverviewPanel.treeHistorySplit",
 																				"100")));
@@ -327,16 +327,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		// 2-4: Other CTRL shortcuts
 		//shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_N,KeyEvent.CTRL_MASK));
 		//shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_B,KeyEvent.CTRL_MASK));
-		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA,
-											 KeyEvent.CTRL_MASK));
-		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD,
-											 KeyEvent.CTRL_MASK));
+		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, KeyEvent.CTRL_MASK));
+		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_MASK));
 
 		// 5-6: Other ALT shortcuts
-		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
-											 KeyEvent.CTRL_MASK));
-		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-											 KeyEvent.CTRL_MASK));
+		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_MASK));
+		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK));
 
 		// register for shortcuts
 		DesktopEnvironment.registerShortcutListener(this);
@@ -373,9 +369,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * GameDataChanged event handler routine updating the tree. Note: It is
-	 * significant for the valueChanged() method, how deep the different node
-	 * types are nested.
+	 * GameDataChanged event handler routine updating the tree. Note: It is significant for the
+	 * valueChanged() method, how deep the different node types are nested.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
@@ -418,15 +413,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		//	((Region) iter.next()).refreshUnitRelations();
 		//}
 		//}
-
 		// initialize variables used in while loop
 		boolean createIslandNodes = ((new Boolean(settings.getProperty("EMapOverviewPanel.displayIslands",
 																	   "true"))).booleanValue() == true) &&
 									((new Boolean(settings.getProperty("EMapOverviewPanel.sortRegions",
 																	   "true"))).booleanValue() == true) &&
 									(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-														  "coordinates")
-											 .equalsIgnoreCase("islands") == true);
+														  "coordinates").equalsIgnoreCase("islands") == true);
 
 		if(treeBuilder == null) {
 			createTreeBuilder();
@@ -453,24 +446,20 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	 */
 	public static Comparator getUnitSorting(Properties settings) {
 		// create Comparator used for unit sorting
-		String criteria = settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-											   "skills");
+		String criteria = settings.getProperty("EMapOverviewPanel.sortUnitsCriteria", "skills");
 
 		// used as the comparator on the lowest structure level
 		Comparator cmp = null;
 
 		if(criteria.equals("skills")) {
-			if(settings.getProperty("EMapOverviewPanel.useBestSkill", "true")
-						   .equalsIgnoreCase("true")) {
+			if(settings.getProperty("EMapOverviewPanel.useBestSkill", "true").equalsIgnoreCase("true")) {
 				cmp = new UnitSkillComparator(new BestSkillComparator(SkillComparator.skillCmp,
 																	  new SkillTypeComparator(new SkillTypeRankComparator(new NameComparator(null),
 																														  settings),
 																							  SkillComparator.skillCmp),
-																	  null),
-											  idCmp);
+																	  null), idCmp);
 			} else {
-				cmp = new UnitSkillComparator(new TopmostRankedSkillComparator(null,
-																			   settings),
+				cmp = new UnitSkillComparator(new TopmostRankedSkillComparator(null, settings),
 											  idCmp);
 			}
 		} else if(criteria.equals("names")) {
@@ -483,18 +472,18 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		int treeStructure[] = getTreeStructure(settings);
 
 		// now build the Comparator used for unit sorting
-		int		   i    = treeStructure.length - 1;
+		int i = treeStructure.length - 1;
 		Comparator help = null;
 
 		while(i >= 0) {
 			switch(treeStructure[i]) {
 			case TreeHelper.FACTION:
-				help = new UnitFactionComparator(new FactionTrustComparator(nameCmp),
-												 cmp);
+				help = new UnitFactionComparator(new FactionTrustComparator(nameCmp), cmp);
 
 				break;
 
 			case TreeHelper.GROUP:
+
 				// pavkovic 2004.01.04: we dont want to sort groups by group id but name;
 				// if they are sorted by id this would make tree hierarchy 
 				// (trustlevel, group) somehow uninteresting
@@ -546,11 +535,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	 */
 	private static int[] getTreeStructure(Properties settings) {
 		String criteria = settings.getProperty("EMapOverviewPanel.treeStructure",
-											   " " + TreeHelper.FACTION + " " +
-											   TreeHelper.GROUP);
+											   " " + TreeHelper.FACTION + " " + TreeHelper.GROUP);
 		StringTokenizer tokenizer = new StringTokenizer(criteria);
-		int    treeStructure[]    = new int[tokenizer.countTokens()];
-		int    i				  = 0;
+		int treeStructure[] = new int[tokenizer.countTokens()];
+		int i = 0;
 
 		while(tokenizer.hasMoreTokens()) {
 			try {
@@ -580,11 +568,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 
 		DefaultMutableTreeNode firstNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-		TreePath			   paths[] = tse.getPaths();
+		TreePath paths[] = tse.getPaths();
 
 		// search for nodes which have been selected/deselected because of collapse
-		DefaultMutableTreeNode node    = null;
-		boolean				   removed = false;
+		DefaultMutableTreeNode node = null;
+		boolean removed = false;
 
 		for(int i = 0; i < paths.length; i++) {
 			if(selectionTransfer.contains(paths[i])) {
@@ -617,7 +605,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			// region node selected?
 			if(o instanceof RegionNodeWrapper) {
-				activeObject   = ((RegionNodeWrapper) o).getRegion();
+				activeObject = ((RegionNodeWrapper) o).getRegion();
 				previousRegion = ((RegionNodeWrapper) o).getRegion();
 
 				if(!activeAlliancesAreDefault) {
@@ -630,13 +618,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				Region selectedRegion = getSelectedRegion(node);
 
-				if((selectedRegion != null) &&
-					   (selectedRegion.equals(previousRegion) == false)) {
+				if((selectedRegion != null) && (selectedRegion.equals(previousRegion) == false)) {
 					previousRegion = selectedRegion;
 
 					// fire to make clear we have another region
-					dispatcher.fire(new SelectionEvent(this, null,
-													   selectedRegion));
+					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
 				Faction f = (Faction) activeObject;
@@ -645,16 +631,14 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 					activeAlliances.clear();
 					activeAlliancesAreDefault = false;
 					tree.repaint();
-				} else if((f.allies != null) &&
-							  !activeAlliances.equals(f.allies)) {
+				} else if((f.allies != null) && !activeAlliances.equals(f.allies)) {
 					activeAlliances.clear();
 					activeAlliances.putAll(f.allies);
 					activeAlliancesAreDefault = false;
 
 					// add the selected faction to be able to show, on whose alliances
 					// the current colors of the icons of a faction node depend
-					activeAlliances.put(f.getID(),
-										new Alliance(f, Integer.MAX_VALUE));
+					activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
 					tree.repaint();
 				}
 			} else if(o instanceof GroupNodeWrapper) {
@@ -664,22 +648,18 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				Region selectedRegion = getSelectedRegion(node);
 
-				if((selectedRegion != null) &&
-					   !selectedRegion.equals(previousRegion)) {
+				if((selectedRegion != null) && !selectedRegion.equals(previousRegion)) {
 					previousRegion = selectedRegion;
 
 					// fire to make clear we have another region
-					dispatcher.fire(new SelectionEvent(this, null,
-													   selectedRegion));
+					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
-				if((g.allies() == null) &&
-					   (activeAlliances.values().size() > 0)) {
+				if((g.allies() == null) && (activeAlliances.values().size() > 0)) {
 					activeAlliances.clear();
 					activeAlliancesAreDefault = false;
 					tree.repaint();
-				} else if((g.allies() != null) &&
-							  !activeAlliances.equals(g.allies())) {
+				} else if((g.allies() != null) && !activeAlliances.equals(g.allies())) {
 					activeAlliances.clear();
 					activeAlliancesAreDefault = false;
 					activeAlliances.putAll(g.allies());
@@ -687,12 +667,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 					// add the group's faction to be able to show, on whose alliances
 					// the current colors of the icons of a faction node depend
 					if(g.getFaction() == null) {
-						log.warn("Found group without set faction: " +
-								 g.getName());
+						log.warn("Found group without set faction: " + g.getName());
 					} else {
 						activeAlliances.put(g.getFaction().getID(),
-											new Alliance(g.getFaction(),
-														 Integer.MAX_VALUE));
+											new Alliance(g.getFaction(), Integer.MAX_VALUE));
 					}
 
 					tree.repaint();
@@ -703,13 +681,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				Region selectedRegion = getSelectedRegion(node);
 
-				if((selectedRegion != null) &&
-					   !selectedRegion.equals(previousRegion)) {
+				if((selectedRegion != null) && !selectedRegion.equals(previousRegion)) {
 					previousRegion = selectedRegion;
 
 					// fire to make clear we have another region
-					dispatcher.fire(new SelectionEvent(this, null,
-													   selectedRegion));
+					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
 				/*
@@ -723,31 +699,26 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(g == null) {
 					Faction f = ((Unit) activeObject).getFaction();
 
-					if((f.allies == null) &&
-						   (activeAlliances.values().size() > 0)) {
+					if((f.allies == null) && (activeAlliances.values().size() > 0)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						tree.repaint();
-					} else if((f.allies != null) &&
-								  !activeAlliances.equals(f.allies)) {
+					} else if((f.allies != null) && !activeAlliances.equals(f.allies)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						activeAlliances.putAll(f.allies);
 
 						// add the selected faction to be able to show, on whose alliances
 						// the current colors of the icons of a faction node depend
-						activeAlliances.put(f.getID(),
-											new Alliance(f, Integer.MAX_VALUE));
+						activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
 						tree.repaint();
 					}
 				} else {
-					if((g.allies() == null) &&
-						   (activeAlliances.values().size() > 0)) {
+					if((g.allies() == null) && (activeAlliances.values().size() > 0)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						tree.repaint();
-					} else if((g.allies() != null) &&
-								  !g.allies().equals(activeAlliances)) {
+					} else if((g.allies() != null) && !g.allies().equals(activeAlliances)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						activeAlliances.putAll(g.allies());
@@ -755,12 +726,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 						// add the group's faction to be able to show, on whose alliances
 						// the current colors of the icons of a faction node depend
 						if(g.getFaction() == null) {
-							log.warn("Found group without set faction: " +
-									 g.getName());
+							log.warn("Found group without set faction: " + g.getName());
 						} else {
 							activeAlliances.put(g.getFaction().getID(),
-												new Alliance(g.getFaction(),
-															 Integer.MAX_VALUE));
+												new Alliance(g.getFaction(), Integer.MAX_VALUE));
 						}
 
 						tree.repaint();
@@ -779,8 +748,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 						previousRegion = selectedRegion;
 
 						// fire to make clear we have another region
-						dispatcher.fire(new SelectionEvent(this, null,
-														   selectedRegion));
+						dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 					}
 				}
 
@@ -794,13 +762,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				Region selectedRegion = getSelectedRegion(node);
 
-				if((selectedRegion != null) &&
-					   (selectedRegion.equals(previousRegion) == false)) {
+				if((selectedRegion != null) && (selectedRegion.equals(previousRegion) == false)) {
 					previousRegion = selectedRegion;
 
 					// fire to make clear we have another region
-					dispatcher.fire(new SelectionEvent(this, null,
-													   selectedRegion));
+					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
 				if(!activeAlliancesAreDefault) {
@@ -820,13 +786,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				Region selectedRegion = getSelectedRegion(node);
 
-				if((selectedRegion != null) &&
-					   (selectedRegion.equals(previousRegion) == false)) {
+				if((selectedRegion != null) && (selectedRegion.equals(previousRegion) == false)) {
 					previousRegion = selectedRegion;
 
 					// fire to make clear we have another region
-					dispatcher.fire(new SelectionEvent(this, null,
-													   selectedRegion));
+					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
 				// not a very smart implementation
@@ -880,8 +844,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	private Region getSelectedRegion(DefaultMutableTreeNode node) {
-		while((node != null) &&
-				  !(node.getUserObject() instanceof RegionNodeWrapper)) {
+		while((node != null) && !(node.getUserObject() instanceof RegionNodeWrapper)) {
 			node = (DefaultMutableTreeNode) node.getParent();
 		}
 
@@ -898,9 +861,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void treeExpanded(TreeExpansionEvent e) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath()
-																.getLastPathComponent();
-		Rectangle			   rec = tree.getPathBounds(new TreePath(node.getPath()));
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+		Rectangle rec = tree.getPathBounds(new TreePath(node.getPath()));
 
 		if(node.getChildCount() > 0) {
 			TreePath path = new TreePath(((DefaultMutableTreeNode) node.getLastChild()).getPath());
@@ -926,14 +888,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Change event handler, change the display status of the tree if an unit
-	 * orderConfimation Status changed
+	 * Change event handler, change the display status of the tree if an unit orderConfimation
+	 * Status changed
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void orderConfirmationChanged(OrderConfirmEvent e) {
-		if((e.getSource() == this) || (e.getUnits() == null) ||
-			   (e.getUnits().size() == 0)) {
+		if((e.getSource() == this) || (e.getUnits() == null) || (e.getUnits().size() == 0)) {
 			return;
 		}
 
@@ -962,7 +923,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				while(e.hasMoreElements()) {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-					Object				   obj = node.getUserObject();
+					Object obj = node.getUserObject();
 
 					if(obj instanceof IslandNodeWrapper) {
 						collapseImpl(node, depth + 1, true, collapseInfo);
@@ -974,14 +935,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 	}
 
-	private void collapseImpl(DefaultMutableTreeNode node, int depth,
-							  boolean add, Set infoSet) {
+	private void collapseImpl(DefaultMutableTreeNode node, int depth, boolean add, Set infoSet) {
 		if((depth > 0) && (node.getChildCount() > 0)) {
 			depth--;
 
 			for(int i = 0; i < node.getChildCount(); i++) {
-				collapseImpl((DefaultMutableTreeNode) node.getChildAt(i),
-							 depth, true, infoSet);
+				collapseImpl((DefaultMutableTreeNode) node.getChildAt(i), depth, true, infoSet);
 			}
 		}
 
@@ -1001,18 +960,17 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		expandInfo.add(node);
 	}
 
-	protected void collectExpandInfo(Region region,
-									 DefaultMutableTreeNode node, TreePath path) {
+	protected void collectExpandInfo(Region region, DefaultMutableTreeNode node, TreePath path) {
 		if((expandMode & EXPAND_FLAG) != 0) {
 			if((expandMode & EXPAND_IFINSIDE_FLAG) != 0) {
 				// search for privileged faction
 				//    note: Node searching is not nice, but the fastest way
-				boolean     found = false;
+				boolean found = false;
 				Enumeration enum = node.children();
 
 				while(!found && enum.hasMoreElements()) {
 					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
-					Object				   obj = child.getUserObject();
+					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
 						Faction fac = ((FactionNodeWrapper) obj).getFaction();
@@ -1036,13 +994,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				eDepth--;
 
 				Enumeration enum = node.children();
-				boolean     open;
+				boolean open;
 
 				while(enum.hasMoreElements()) {
 					open = false;
 
 					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
-					Object				   obj = child.getUserObject();
+					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
 						Faction fac = ((FactionNodeWrapper) obj).getFaction();
@@ -1067,21 +1025,20 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			depth--;
 
 			for(int i = 0; i < node.getChildCount(); i++) {
-				expandImpl((DefaultMutableTreeNode) node.getChildAt(i), depth,
-						   infoSet);
+				expandImpl((DefaultMutableTreeNode) node.getChildAt(i), depth, infoSet);
 			}
 		}
 	}
 
 	protected void doExpandAndCollapse(Collection newSelection) {
 		// filter collapse info that would be re-expanded
-		Iterator it   = collapseInfo.iterator();
-		Map		 buf1 = CollectionFactory.createHashMap();
-		Map		 buf2 = CollectionFactory.createHashMap();
+		Iterator it = collapseInfo.iterator();
+		Map buf1 = CollectionFactory.createHashMap();
+		Map buf2 = CollectionFactory.createHashMap();
 
 		while(it.hasNext()) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) it.next();
-			TreePath			   path = new TreePath(node.getPath());
+			TreePath path = new TreePath(node.getPath());
 			buf1.put(node, path);
 
 			Iterator it2 = expandInfo.iterator();
@@ -1113,7 +1070,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		while(it.hasNext()) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) it.next();
-			TreePath			   path = null;
+			TreePath path = null;
 
 			if(buf2.containsKey(node)) {
 				path = (TreePath) buf2.get(node);
@@ -1159,7 +1116,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		while(it.hasNext()) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) it.next();
-			TreePath			   path = (TreePath) buf1.get(node);
+			TreePath path = (TreePath) buf1.get(node);
 
 			if(tree.isExpanded(path)) {
 				tree.collapsePath(path);
@@ -1184,12 +1141,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Selection event handler, update the selection status of the tree. First
-	 * the active object is considered and selected in the tree if contained.
-	 * After that selected objects are considered, but only if != null and
-	 * selection type is different to SelectionEvent.ST_REGIONS. In this case
-	 * the tree selection is set to the selected objects (as long as they are
-	 * contained in the tree anyway). Keep in mind, thtat this will produce
+	 * Selection event handler, update the selection status of the tree. First the active object is
+	 * considered and selected in the tree if contained. After that selected objects are
+	 * considered, but only if != null and selection type is different to
+	 * SelectionEvent.ST_REGIONS. In this case the tree selection is set to the selected objects
+	 * (as long as they are contained in the tree anyway). Keep in mind, thtat this will produce
 	 * the active object _NOT_ to be selected, if selectedObjects != null &&
 	 * !selectedObjects.contains(activeObject) !!!
 	 *
@@ -1239,7 +1195,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 					tree.repaint();
 				}
 
-				Region				   i    = (Region) o;
+				Region i = (Region) o;
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) regionNodes.get(i.getID());
 
 				if(node != null) {
@@ -1250,7 +1206,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			} else
 			// unit selected?
 			if(o instanceof Unit) {
-				Unit				   i    = (Unit) o;
+				Unit i = (Unit) o;
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) unitNodes.get(i.getID());
 
 				if(node != null) {
@@ -1263,31 +1219,26 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(g == null) {
 					Faction f = i.getFaction();
 
-					if((f.allies == null) &&
-						   (activeAlliances.values().size() > 0)) {
+					if((f.allies == null) && (activeAlliances.values().size() > 0)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						tree.repaint();
-					} else if((f.allies != null) &&
-								  !f.allies.equals(activeAlliances)) {
+					} else if((f.allies != null) && !f.allies.equals(activeAlliances)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						activeAlliances.putAll(f.allies);
 
 						// add the selected faction to be able to show, on whose alliances
 						// the current colors of the icons of a faction node depend
-						activeAlliances.put(f.getID(),
-											new Alliance(f, Integer.MAX_VALUE));
+						activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
 						tree.repaint();
 					}
 				} else {
-					if((g.allies() == null) &&
-						   (activeAlliances.values().size() > 0)) {
+					if((g.allies() == null) && (activeAlliances.values().size() > 0)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						tree.repaint();
-					} else if((g.allies() != null) &&
-								  !g.allies().equals(activeAlliances)) {
+					} else if((g.allies() != null) && !g.allies().equals(activeAlliances)) {
 						activeAlliances.clear();
 						activeAlliancesAreDefault = false;
 						activeAlliances.putAll(g.allies());
@@ -1295,12 +1246,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 						// add the group's faction to be able to show, on whose alliances
 						// the current colors of the icons of a faction node depend
 						if(g.getFaction() == null) {
-							log.warn("Found group without set faction: " +
-									 g.getName());
+							log.warn("Found group without set faction: " + g.getName());
 						} else {
 							activeAlliances.put(g.getFaction().getID(),
-												new Alliance(g.getFaction(),
-															 Integer.MAX_VALUE));
+												new Alliance(g.getFaction(), Integer.MAX_VALUE));
 						}
 
 						tree.repaint();
@@ -1309,7 +1258,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			} else
 			// ship selected?
 			if(o instanceof Ship) {
-				Ship				   i    = (Ship) o;
+				Ship i = (Ship) o;
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) shipNodes.get(i.getID());
 
 				if(node != null) {
@@ -1324,7 +1273,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			} else
 			// building selected?
 			if(o instanceof Building) {
-				Building			   i    = (Building) o;
+				Building i = (Building) o;
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) buildingNodes.get(i.getID());
 
 				if(node != null) {
@@ -1355,11 +1304,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 
 		/**
-		 * HANDLE selectedObjects Don't change anything, if selectedObjects ==
-		 * null or selection event type is ST_REGIONS (which means that this
-		 * is a selection of regions on the map or of regions to be selected
-		 * on the map. Keep in mind that selections on the map don't have
-		 * anything to do with selections in the tree).
+		 * HANDLE selectedObjects Don't change anything, if selectedObjects == null or selection
+		 * event type is ST_REGIONS (which means that this is a selection of regions on the map or
+		 * of regions to be selected on the map. Keep in mind that selections on the map don't
+		 * have anything to do with selections in the tree).
 		 */
 		if((se.getSelectedObjects() != null) &&
 			   (se.getSelectionType() != SelectionEvent.ST_REGIONS)) {
@@ -1392,18 +1340,17 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 	}
 
-	protected void expandSelected(Region region, DefaultMutableTreeNode node,
-								  TreePath path) {
+	protected void expandSelected(Region region, DefaultMutableTreeNode node, TreePath path) {
 		if((expandMode & EXPAND_FLAG) != 0) {
 			if((expandMode & EXPAND_IFINSIDE_FLAG) != 0) {
 				// search for privileged faction
 				//    note: Node searching is not nice, but the fastest way
-				boolean     found = false;
+				boolean found = false;
 				Enumeration enum = node.children();
 
 				while(!found && enum.hasMoreElements()) {
 					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
-					Object				   obj = child.getUserObject();
+					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
 						Faction fac = ((FactionNodeWrapper) obj).getFaction();
@@ -1430,13 +1377,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			if(eDepth > 0) {
 				Enumeration enum = node.children();
-				boolean     open;
+				boolean open;
 
 				while(enum.hasMoreElements()) {
 					open = false;
 
 					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
-					Object				   obj = child.getUserObject();
+					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
 						Faction fac = ((FactionNodeWrapper) obj).getFaction();
@@ -1479,13 +1426,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			if((collapseMode & COLLAPSE_ONLY_EXPANDED) != 0) {
 				if(lastExpanded.size() > 0) {
-					List     copy = CollectionFactory.createLinkedList(lastExpanded);
+					List copy = CollectionFactory.createLinkedList(lastExpanded);
 					Iterator it = copy.iterator();
 
 					while(it.hasNext()) {
 						DefaultMutableTreeNode node = (DefaultMutableTreeNode) it.next();
 
-						Collection			   col = childSelected(node, false);
+						Collection col = childSelected(node, false);
 
 						if(col != null) {
 							collapsedNodes.addAll(col);
@@ -1501,7 +1448,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				while(e.hasMoreElements()) {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-					Object				   obj = node.getUserObject();
+					Object obj = node.getUserObject();
 
 					if(obj instanceof IslandNodeWrapper) {
 						collapseImpl(node, depth + 1, true);
@@ -1513,14 +1460,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 	}
 
-	private void collapseImpl(DefaultMutableTreeNode node, int depth,
-							  boolean add) {
+	private void collapseImpl(DefaultMutableTreeNode node, int depth, boolean add) {
 		if((depth > 0) && (node.getChildCount() > 0)) {
 			depth--;
 
 			for(int i = 0; i < node.getChildCount(); i++) {
-				collapseImpl((DefaultMutableTreeNode) node.getChildAt(i),
-							 depth, true);
+				collapseImpl((DefaultMutableTreeNode) node.getChildAt(i), depth, true);
 			}
 		}
 
@@ -1536,8 +1481,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 	}
 
-	private Collection childSelected(DefaultMutableTreeNode node,
-									 boolean include) {
+	private Collection childSelected(DefaultMutableTreeNode node, boolean include) {
 		if(tree.isSelectionEmpty()) {
 			return null;
 		}
@@ -1551,8 +1495,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		Enumeration e = node.children();
 
 		while(e.hasMoreElements()) {
-			Collection col = childSelected((DefaultMutableTreeNode) e.nextElement(),
-										   true);
+			Collection col = childSelected((DefaultMutableTreeNode) e.nextElement(), true);
 
 			if(col != null) {
 				list.addAll(col);
@@ -1577,14 +1520,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 																					.getID());
 
 		if(parentNode != null) {
-			Comparator idComp   = new IDComparator();
-			List	   siblings = CollectionFactory.createLinkedList(e.getTempUnit()
-																	  .getParent()
-																	  .tempUnits());
+			Comparator idComp = new IDComparator();
+			List siblings = CollectionFactory.createLinkedList(e.getTempUnit().getParent()
+																.tempUnits());
 			Collections.sort(siblings, idComp);
 
-			int index = Collections.binarySearch(siblings, e.getTempUnit(),
-												 idComp);
+			int index = Collections.binarySearch(siblings, e.getTempUnit(), idComp);
 
 			if(index >= 0) {
 				insertUnit(parentNode, e.getTempUnit(), index);
@@ -1602,7 +1543,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void tempUnitDeleted(TempUnitEvent e) {
-		TempUnit			   t	    = e.getTempUnit();
+		TempUnit t = e.getTempUnit();
 		DefaultMutableTreeNode unitNode = (DefaultMutableTreeNode) unitNodes.get(t.getID());
 		unitNodes.remove(t.getID());
 
@@ -1620,7 +1561,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	private void insertUnit(DefaultMutableTreeNode parentNode, Unit u, int index) {
-		UnitNodeWrapper		   w	    = nodeWrapperFactory.createUnitNodeWrapper(u);
+		UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u);
 		DefaultMutableTreeNode unitNode = new DefaultMutableTreeNode(w);
 		parentNode.insert(unitNode, index);
 		unitNodes.put(u.getID(), unitNode);
@@ -1635,21 +1576,18 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Collection sortRegions(Collection regions) {
-		if((new Boolean(settings.getProperty("EMapOverviewPanel.sortRegions",
-												 "true"))).booleanValue() == true) {
-			if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-										"coordinates").equals("coordinates")) {
+		if((new Boolean(settings.getProperty("EMapOverviewPanel.sortRegions", "true"))).booleanValue() == true) {
+			if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates").equals("coordinates")) {
 				List sortedRegions = CollectionFactory.createLinkedList(regions);
 				Collections.sort(sortedRegions, new IDComparator());
 
 				return sortedRegions;
-			} else if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-											   "coordinates").equals("islands")) {
-				List	   sortedRegions = CollectionFactory.createLinkedList(regions);
+			} else if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates")
+								  .equals("islands")) {
+				List sortedRegions = CollectionFactory.createLinkedList(regions);
 				Comparator idCmp = new IDComparator();
 				Collections.sort(sortedRegions,
-								 new RegionIslandComparator(new NameComparator(idCmp),
-															idCmp, idCmp));
+								 new RegionIslandComparator(new NameComparator(idCmp), idCmp, idCmp));
 
 				return sortedRegions;
 			} else {
@@ -1665,8 +1603,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	/////////////////
 
 	/**
-	 * Should return all short cuts this class want to be informed. The
-	 * elements should be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The elements should be of type
+	 * javax.swing.KeyStroke
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1731,42 +1669,39 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	protected void shortCut_N(boolean traverseDown) {
-		if((tree == null) || (rootNode == null) ||
-			   (tree.getSelectionPath() == null)) {
+		if((tree == null) || (rootNode == null) || (tree.getSelectionPath() == null)) {
 			// fail fast
 			return;
 		}
 
 		DefaultMutableTreeNode actNode = (DefaultMutableTreeNode) tree.getSelectionPath()
 																	  .getLastPathComponent();
-		Unit				   u = null;
+		Unit u = null;
 
 		if(traverseDown) {
 			// iterate over objects after  actNode
-			u = getUnitInTree(iterateToNode(rootNode.preorderEnumeration(),
-											actNode), actNode, traverseDown);
-
-			if(u == null) {
-				// iterate over objects before actNode
-				u = getUnitInTree(rootNode.preorderEnumeration(), actNode,
-								  traverseDown);
-			}
-		} else {
-			// iterate over objects before actNode
-			u = getUnitInTree(rootNode.preorderEnumeration(), actNode,
+			u = getUnitInTree(iterateToNode(rootNode.preorderEnumeration(), actNode), actNode,
 							  traverseDown);
 
 			if(u == null) {
+				// iterate over objects before actNode
+				u = getUnitInTree(rootNode.preorderEnumeration(), actNode, traverseDown);
+			}
+		} else {
+			// iterate over objects before actNode
+			u = getUnitInTree(rootNode.preorderEnumeration(), actNode, traverseDown);
+
+			if(u == null) {
 				// iterate over objects after  actNode
-				u = getUnitInTree(iterateToNode(rootNode.preorderEnumeration(),
-												actNode), actNode, traverseDown);
+				u = getUnitInTree(iterateToNode(rootNode.preorderEnumeration(), actNode), actNode,
+								  traverseDown);
 			}
 		}
 
 		if(u != null) {
 			if(log.isDebugEnabled()) {
-				log.debug("EMapOverviewPanel.shortCut_N(): firing Selection Event with Unit " +
-						  u + " (" + u.ordersConfirmed + ")");
+				log.debug("EMapOverviewPanel.shortCut_N(): firing Selection Event with Unit " + u +
+						  " (" + u.ordersConfirmed + ")");
 			}
 
 			previousRegion = u.getRegion();
@@ -1803,7 +1738,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			if(nextNode.getUserObject() instanceof UnitNodeWrapper) {
 				UnitNodeWrapper uw = (UnitNodeWrapper) nextNode.getUserObject();
-				Unit		    u = uw.getUnit();
+				Unit u = uw.getUnit();
 
 				// pavkovic 2003.06.17: foreign units have their ordersConfirmed set to false!
 				// we use uw.emphasized() to find a *candidate* for selecting. 
@@ -1844,9 +1779,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Repaints this component. This method also explicitly repaints it's
-	 * managed components because the may be separated by the Magellan
-	 * Desktop.
+	 * Repaints this component. This method also explicitly repaints it's managed components
+	 * because the may be separated by the Magellan Desktop.
 	 */
 	public void repaint() {
 		super.repaint();
@@ -1866,8 +1800,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		}
 
 		if(activeObject instanceof Region) {
-			Region  r	    = (Region) activeObject;
-			boolean first   = true;
+			Region r = (Region) activeObject;
+			boolean first = true;
 			boolean confirm = false;
 
 			for(Iterator iter = r.units().iterator(); iter.hasNext();) {
@@ -1876,7 +1810,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 					if(first) {
 						confirm = !u.ordersConfirmed;
-						first   = false;
+						first = false;
 					}
 
 					u.ordersConfirmed = confirm;
@@ -1918,24 +1852,21 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		if(model.getSize() > 0) {
 			int selectedIndex = Math.max(lstHistory.getSelectedIndex(), 0);
-			int newIndex = Math.min(Math.max(selectedIndex + i, 0),
-									model.getSize() - 1);
+			int newIndex = Math.min(Math.max(selectedIndex + i, 0), model.getSize() - 1);
 
 			if(selectedIndex != newIndex) {
 				lstHistory.setSelectedIndex(newIndex);
 				dispatcher.fire(new SelectionEvent(lstHistory, null,
-												   lstHistory.getModel()
-															 .getElementAt(newIndex)));
+												   lstHistory.getModel().getElementAt(newIndex)));
 			}
 		}
 	}
 
 	/**
-	 * This is a helper method to set this.activeAlliances to a usefull value,
-	 * if no faction or group is active. The idea is to take all alliances of
-	 * all privileged factions and combine their states by & (or in other
-	 * words to take the intersection over all alliances of all privileged
-	 * factions)
+	 * This is a helper method to set this.activeAlliances to a usefull value, if no faction or
+	 * group is active. The idea is to take all alliances of all privileged factions and combine
+	 * their states by & (or in other words to take the intersection over all alliances of all
+	 * privileged factions)
 	 */
 	private void setDefaultAlliances() {
 		activeAlliancesAreDefault = true;
@@ -1945,8 +1876,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		boolean privilegedWithoutAllies = false;
 
-		for(Iterator iter = data.factions().values().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = data.factions().values().iterator(); iter.hasNext();) {
 			Faction f = (Faction) iter.next();
 
 			if(f.isPrivileged()) {
@@ -1970,12 +1900,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			// privileged factions and adjust their states if necessary
 			boolean delEntry = false;
 
-			for(Iterator iter = activeAlliances.keySet().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = activeAlliances.keySet().iterator(); iter.hasNext();) {
 				ID id = (ID) iter.next();
 
-				for(int factionCount = 1;
-						factionCount < privilegedFactions.size();
+				for(int factionCount = 1; factionCount < privilegedFactions.size();
 						factionCount++) {
 					Faction f = (Faction) privilegedFactions.get(factionCount);
 
@@ -2020,10 +1948,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	protected void saveExpandProperties() {
-		settings.setProperty("EMapOverviewPanel.ExpandMode",
-							 String.valueOf(expandMode));
-		settings.setProperty("EMapOverviewPanel.ExpandTrustlevel",
-							 String.valueOf(expandTrustlevel));
+		settings.setProperty("EMapOverviewPanel.ExpandMode", String.valueOf(expandMode));
+		settings.setProperty("EMapOverviewPanel.ExpandTrustlevel", String.valueOf(expandTrustlevel));
 	}
 
 	protected void loadCollapseProperty() {
@@ -2035,8 +1961,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	}
 
 	protected void saveCollapseProperty() {
-		settings.setProperty("EMapOverviewPanel.CollapseMode",
-							 String.valueOf(collapseMode));
+		settings.setProperty("EMapOverviewPanel.CollapseMode", String.valueOf(collapseMode));
 	}
 
 	/**
@@ -2052,7 +1977,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
 			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
-			int								   i = ui2.getLeftChildIndent();
+			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
 		}
@@ -2083,16 +2008,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		return getString("shortcut.title");
 	}
 
-	private class EMapOverviewPreferences extends JPanel
-		implements ExtendedPreferencesAdapter
-	{
-		private class SkillPreferences extends JPanel
-			implements PreferencesAdapter
-		{
+	private class EMapOverviewPreferences extends JPanel implements ExtendedPreferencesAdapter {
+		private class SkillPreferences extends JPanel implements PreferencesAdapter {
 			/** TODO: DOCUMENT ME! */
-			public JList    skillList		  = null;
-			private JButton upButton		  = null;
-			private JButton downButton		  = null;
+			public JList skillList = null;
+			private JButton upButton = null;
+			private JButton downButton = null;
 			private JButton refreshListButton = null;
 
 			/**
@@ -2109,8 +2030,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(data != null) {
 					List v = CollectionFactory.createLinkedList();
 
-					for(Iterator iter = data.rules.getSkillTypeIterator();
-							iter.hasNext();) {
+					for(Iterator iter = data.rules.getSkillTypeIterator(); iter.hasNext();) {
 						SkillType type = (SkillType) iter.next();
 						v.add(type);
 					}
@@ -2123,13 +2043,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				this.add(new JScrollPane(skillList), BorderLayout.CENTER);
 
-				JPanel			   buttons = new JPanel(new GridBagLayout());
+				JPanel buttons = new JPanel(new GridBagLayout());
 				GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 															  GridBagConstraints.WEST,
 															  GridBagConstraints.HORIZONTAL,
-															  new Insets(0, 1,
-																		 2, 1),
-															  0, 0);
+															  new Insets(0, 1, 2, 1), 0, 0);
 
 				upButton = new JButton(getString("prefs.upbutton.caption"));
 				upButton.setPreferredSize(new Dimension(110, 40));
@@ -2146,9 +2064,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 								return;
 							}
 
-							List	  newData			 = CollectionFactory.createLinkedList();
-							ListModel oldData			 = skillList.getModel();
-							List	  newSelectedIndices = CollectionFactory.createLinkedList();
+							List newData = CollectionFactory.createLinkedList();
+							ListModel oldData = skillList.getModel();
+							List newSelectedIndices = CollectionFactory.createLinkedList();
 
 							for(int i = 0; i < oldData.getSize(); i++) {
 								Object o = oldData.getElementAt(i);
@@ -2156,9 +2074,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 								if(skillList.isSelectedIndex(i)) {
 									int newPos;
 
-									if((i > 0) &&
-										   !newSelectedIndices.contains(new Integer(i -
-																						1))) {
+									if((i > 0) && !newSelectedIndices.contains(new Integer(i - 1))) {
 										newPos = i - 1;
 									} else {
 										newPos = i;
@@ -2173,11 +2089,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 							skillList.setListData(newData.toArray());
 
-							int   selection[] = new int[newSelectedIndices.size()];
-							int   i = 0;
+							int selection[] = new int[newSelectedIndices.size()];
+							int i = 0;
 
-							for(Iterator iter = newSelectedIndices.iterator();
-									iter.hasNext(); i++) {
+							for(Iterator iter = newSelectedIndices.iterator(); iter.hasNext();
+									i++) {
 								selection[i] = ((Integer) iter.next()).intValue();
 							}
 
@@ -2204,9 +2120,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 								return;
 							}
 
-							List	  newData			 = CollectionFactory.createLinkedList();
-							ListModel oldData			 = skillList.getModel();
-							List	  newSelectedIndices = CollectionFactory.createLinkedList();
+							List newData = CollectionFactory.createLinkedList();
+							ListModel oldData = skillList.getModel();
+							List newSelectedIndices = CollectionFactory.createLinkedList();
 
 							for(int i = oldData.getSize() - 1; i >= 0; i--) {
 								Object o = oldData.getElementAt(i);
@@ -2215,8 +2131,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 									int newPos;
 
 									if((i < (oldData.getSize() - 1)) &&
-										   !newSelectedIndices.contains(new Integer(i +
-																						1))) {
+										   !newSelectedIndices.contains(new Integer(i + 1))) {
 										newPos = i + 1;
 										newData.add(1, o);
 									} else {
@@ -2232,11 +2147,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 							skillList.setListData(newData.toArray());
 
-							int   selection[] = new int[newSelectedIndices.size()];
-							int   i = 0;
+							int selection[] = new int[newSelectedIndices.size()];
+							int i = 0;
 
-							for(Iterator iter = newSelectedIndices.iterator();
-									iter.hasNext(); i++) {
+							for(Iterator iter = newSelectedIndices.iterator(); iter.hasNext();
+									i++) {
 								selection[i] = ((Integer) iter.next()).intValue();
 							}
 
@@ -2248,14 +2163,14 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				// add a filler
 				c.gridy++;
-				c.fill    = GridBagConstraints.BOTH;
+				c.fill = GridBagConstraints.BOTH;
 				c.weighty = 1;
 				buttons.add(new JPanel(), c);
 
 				c.anchor = GridBagConstraints.SOUTHWEST;
 				c.gridy++;
-				c.fill		    = GridBagConstraints.HORIZONTAL;
-				c.weighty	    = 0;
+				c.fill = GridBagConstraints.HORIZONTAL;
+				c.weighty = 0;
 				c.insets.bottom = 0;
 
 				refreshListButton = new JButton(getString("prefs.refreshlistbutton.caption"));
@@ -2268,10 +2183,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 							}
 
 							ListModel listData = skillList.getModel();
-							List	  v = CollectionFactory.createLinkedList();
+							List v = CollectionFactory.createLinkedList();
 
-							for(int index = 0; index < listData.getSize();
-									index++) {
+							for(int index = 0; index < listData.getSize(); index++) {
 								v.add(listData.getElementAt(index));
 							}
 
@@ -2325,8 +2239,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				for(int index = 0; index < listData.getSize(); index++) {
 					SkillType s = (SkillType) listData.getElementAt(index);
-					settings.setProperty("ClientPreferences.compareValue." +
-										 s.getID(), String.valueOf(index));
+					settings.setProperty("ClientPreferences.compareValue." + s.getID(),
+										 String.valueOf(index));
 
 					//pavkovic 2003.06.19: this is historical!settings.setProperty(type.getID() + ".compareValue", String.valueOf(index));
 				}
@@ -2362,13 +2276,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		public JRadioButton useTopmostSkill = null;
 
 		/** TODO: DOCUMENT ME! */
-		public JRadioButton		 rdbSortUnitsNames = null;
-		protected ExpandPanel    ePanel;
-		protected CollapsePanel  cPanel;
+		public JRadioButton rdbSortUnitsNames = null;
+		protected ExpandPanel ePanel;
+		protected CollapsePanel cPanel;
 		private SkillPreferences skillSort;
-		private List			 subAdapter;
-		private JList			 useList;
-		private JList			 elementsList;
+		private List subAdapter;
+		private JList useList;
+		private JList elementsList;
 
 		/**
 		 * Creates a new EMapOverviewPreferences object.
@@ -2382,20 +2296,17 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			rdbSortRegionsCoordinates = new JRadioButton(getString("prefs.sortbycoordinates"),
 														 settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-																			  "coordinates")
-																 .equals("coordinates"));
+																			  "coordinates").equals("coordinates"));
 			rdbSortRegionsIslands = new JRadioButton(getString("prefs.sortbyislands"),
 													 settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-																		  "coordinates")
-															 .equals("islands"));
+																		  "coordinates").equals("islands"));
 
 			ButtonGroup regionSortButtons = new ButtonGroup();
 			regionSortButtons.add(rdbSortRegionsCoordinates);
 			regionSortButtons.add(rdbSortRegionsIslands);
 
 			JPanel pnlRegionSortButtons = new JPanel();
-			pnlRegionSortButtons.setLayout(new BoxLayout(pnlRegionSortButtons,
-														 BoxLayout.Y_AXIS));
+			pnlRegionSortButtons.setLayout(new BoxLayout(pnlRegionSortButtons, BoxLayout.Y_AXIS));
 			pnlRegionSortButtons.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 															getString("prefs.regionsorting")));
 			pnlRegionSortButtons.add(chkSortRegions);
@@ -2412,8 +2323,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 1,
 														  GridBagConstraints.CENTER,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(2, 2, 2, 2),
-														  0, 0);
+														  new Insets(2, 2, 2, 2), 0, 0);
 			pnlTreeStructure.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 														getString("prefs.treestructure")));
 
@@ -2427,8 +2337,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			model.add(1, getString("prefs.treeStructure.element.group"));
 			model.add(2, getString("prefs.treeStructure.element.combat"));
 			model.add(3, getString("prefs.treeStructure.element.health"));
-			model.add(4,
-					  getString("prefs.treeStructure.element.factiondisguise"));
+			model.add(4, getString("prefs.treeStructure.element.factiondisguise"));
 			model.add(5, getString("prefs.treeStructure.element.trustlevel"));
 			elementsList = new JList(model);
 
@@ -2441,15 +2350,15 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 												getString("prefs.treeStructure.use")));
 
 			String criteria = settings.getProperty("EMapOverviewPanel.treeStructure",
-												   " " + TreeHelper.FACTION +
-												   " " + TreeHelper.GROUP);
+												   " " + TreeHelper.FACTION + " " +
+												   TreeHelper.GROUP);
 			StringTokenizer tokenizer = new StringTokenizer(criteria);
 			model = new DefaultListModel();
 
 			while(tokenizer.hasMoreTokens()) {
 				try {
 					String s = tokenizer.nextToken();
-					int    i = Integer.parseInt(s);
+					int i = Integer.parseInt(s);
 					s = "";
 
 					if(i == TreeHelper.FACTION) {
@@ -2473,13 +2382,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			useList = new JList(model);
 			useList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			pane		 = new JScrollPane(useList);
+			pane = new JScrollPane(useList);
 			c.gridheight = 4;
 			usePanel.add(pane, c);
 
 			c.gridheight = 1;
-			c.gridx		 = 1;
-			c.weightx    = 0;
+			c.gridx = 1;
+			c.weightx = 0;
 			usePanel.add(new JPanel(), c);
 
 			c.gridy++;
@@ -2488,7 +2397,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			JButton up = new JButton(getString("prefs.treeStructure.up"));
 			up.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int				 pos   = useList.getSelectedIndex();
+						int pos = useList.getSelectedIndex();
 						DefaultListModel model = (DefaultListModel) useList.getModel();
 
 						if(pos == 0) {
@@ -2508,7 +2417,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			JButton down = new JButton(getString("prefs.treeStructure.down"));
 			down.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int				 pos   = useList.getSelectedIndex();
+						int pos = useList.getSelectedIndex();
 						DefaultListModel model = (DefaultListModel) useList.getModel();
 
 						if(pos == (model.getSize() - 1)) {
@@ -2527,20 +2436,20 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			c.weighty = 1.0;
 			usePanel.add(new JPanel(), c);
 
-			c.gridx		 = 0;
-			c.gridy		 = 0;
+			c.gridx = 0;
+			c.gridy = 0;
 			c.gridheight = 4;
-			c.weightx    = 0.5;
-			c.weighty    = 0.5;
+			c.weightx = 0.5;
+			c.weighty = 0.5;
 			pnlTreeStructure.add(elementsPanel, c);
 
 			c.gridx = 2;
 			pnlTreeStructure.add(usePanel, c);
 
-			c.gridx		 = 1;
+			c.gridx = 1;
 			c.gridheight = 1;
-			c.weightx    = 0;
-			c.weighty    = 1.0;
+			c.weightx = 0;
+			c.weighty = 1.0;
 			pnlTreeStructure.add(new JPanel(), c);
 
 			c.gridy++;
@@ -2549,8 +2458,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			JButton right = new JButton("  -->  ");
 			right.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Object			   selection[] = elementsList.getSelectedValues();
-						DefaultListModel   model = (DefaultListModel) useList.getModel();
+						Object selection[] = elementsList.getSelectedValues();
+						DefaultListModel model = (DefaultListModel) useList.getModel();
 
 						for(int i = 0; i < selection.length; i++) {
 							if(!model.contains(selection[i])) {
@@ -2566,8 +2475,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			JButton left = new JButton("  <--  ");
 			left.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						DefaultListModel model		 = (DefaultListModel) useList.getModel();
-						Object			 selection[] = useList.getSelectedValues();
+						DefaultListModel model = (DefaultListModel) useList.getModel();
+						Object selection[] = useList.getSelectedValues();
 
 						for(int i = 0; i < selection.length; i++) {
 							model.removeElement(selection[i]);
@@ -2583,8 +2492,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			// Unit sorting
 			rdbSortUnitsUnsorted = new JRadioButton(getString("prefs.reportorder"),
 													settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-																		 "skills")
-															.equals("unsorted"));
+																		 "skills").equals("unsorted"));
 			rdbSortUnitsUnsorted.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						skillSort.setEnabled(false);
@@ -2594,8 +2502,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				});
 			rdbSortUnitsSkills = new JRadioButton(getString("prefs.sortbyskills"),
 												  settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-																	   "skills")
-														  .equals("skills"));
+																	   "skills").equals("skills"));
 			rdbSortUnitsSkills.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						skillSort.setEnabled(true);
@@ -2604,20 +2511,17 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 					}
 				});
 
-			boolean temp = settings.getProperty("EMapOverviewPanel.useBestSkill",
-												"true").equalsIgnoreCase("true");
-			useBestSkill = new JRadioButton(getString("prefs.usebestskill"),
-											temp);
-			useTopmostSkill = new JRadioButton(getString("prefs.usetopmostskill"),
-											   !temp);
+			boolean temp = settings.getProperty("EMapOverviewPanel.useBestSkill", "true")
+								   .equalsIgnoreCase("true");
+			useBestSkill = new JRadioButton(getString("prefs.usebestskill"), temp);
+			useTopmostSkill = new JRadioButton(getString("prefs.usetopmostskill"), !temp);
 
 			ButtonGroup whichSkillToUse = new ButtonGroup();
 			whichSkillToUse.add(useBestSkill);
 			whichSkillToUse.add(useTopmostSkill);
 			rdbSortUnitsNames = new JRadioButton(getString("prefs.sortbynames"),
 												 settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-																	  "skills")
-														 .equals("names"));
+																	  "skills").equals("names"));
 			rdbSortUnitsNames.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						skillSort.setEnabled(false);
@@ -2633,47 +2537,45 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 			JPanel pnlUnitSort = new JPanel();
 			pnlUnitSort.setLayout(new GridBagLayout());
-			c = new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1,
-									   GridBagConstraints.WEST,
-									   GridBagConstraints.NONE,
-									   new Insets(0, 0, 0, 0), 0, 0);
+			c = new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.WEST,
+									   GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
 			pnlUnitSort.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 												   getString("prefs.unitsorting")));
 			pnlUnitSort.add(rdbSortUnitsUnsorted, c);
 			c.gridy = 1;
 			pnlUnitSort.add(rdbSortUnitsSkills, c);
-			c.gridy  = 2;
+			c.gridy = 2;
 			c.insets = new Insets(0, 30, 0, 0);
 			pnlUnitSort.add(useBestSkill, c);
 			c.gridy = 3;
 			pnlUnitSort.add(useTopmostSkill, c);
-			c.gridy  = 4;
-			c.ipadx  = 0;
+			c.gridy = 4;
+			c.ipadx = 0;
 			c.insets = new Insets(0, 0, 0, 0);
 			pnlUnitSort.add(rdbSortUnitsNames, c);
 
 			this.setLayout(new GridBagLayout());
-			c.anchor     = GridBagConstraints.CENTER;
-			c.gridx		 = 0;
-			c.gridy		 = 0;
-			c.gridwidth  = 1;
+			c.anchor = GridBagConstraints.CENTER;
+			c.gridx = 0;
+			c.gridy = 0;
+			c.gridwidth = 1;
 			c.gridheight = 1;
-			c.fill		 = GridBagConstraints.HORIZONTAL;
-			c.weightx    = 1.0;
-			c.weighty    = 0.0;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weightx = 1.0;
+			c.weighty = 0.0;
 			this.add(pnlRegionSortButtons, c);
 
 			c.anchor = GridBagConstraints.WEST;
 			c.gridy++;
 			c.insets.left = 10;
-			c.fill		  = GridBagConstraints.NONE;
-			c.weightx     = 0.0;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
 			this.add(chkDisplayIslands, c);
 
 			c.insets.left = 0;
-			c.anchor	  = GridBagConstraints.CENTER;
+			c.anchor = GridBagConstraints.CENTER;
 			c.gridy++;
-			c.fill    = GridBagConstraints.HORIZONTAL;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			c.weightx = 1.0;
 			this.add(pnlTreeStructure, c);
 
@@ -2700,32 +2602,27 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 								 (new Boolean(chkSortRegions.isSelected())).toString());
 
 			if(rdbSortRegionsCoordinates.isSelected() == true) {
-				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria",
-									 "coordinates");
+				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates");
 			} else if(rdbSortRegionsIslands.isSelected() == true) {
-				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria",
-									 "islands");
+				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria", "islands");
 			}
 
 			settings.setProperty("EMapOverviewPanel.displayIslands",
 								 (new Boolean(chkDisplayIslands.isSelected())).toString());
 
 			if(rdbSortUnitsUnsorted.isSelected() == true) {
-				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria",
-									 "unsorted");
+				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "unsorted");
 			} else if(rdbSortUnitsSkills.isSelected() == true) {
-				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria",
-									 "skills");
+				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "skills");
 			} else if(rdbSortUnitsNames.isSelected() == true) {
-				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria",
-									 "names");
+				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "names");
 			}
 
 			settings.setProperty("EMapOverviewPanel.useBestSkill",
 								 String.valueOf(useBestSkill.isSelected()));
 
-			DefaultListModel model	    = (DefaultListModel) useList.getModel();
-			String			 definition = "";
+			DefaultListModel model = (DefaultListModel) useList.getModel();
+			String definition = "";
 
 			for(int i = 0; i < model.getSize(); i++) {
 				String s = (String) model.getElementAt(i);
@@ -2789,8 +2686,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		protected class ExpandPanel extends JPanel implements ActionListener {
 			protected JRadioButton radioButtons[];
-			protected JCheckBox    checkBox;
-			protected JTextField   trustlevel;
+			protected JCheckBox checkBox;
+			protected JTextField trustlevel;
 
 			/**
 			 * Creates a new ExpandPanel object.
@@ -2798,22 +2695,17 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			public ExpandPanel() {
 				super(new GridBagLayout());
 
-				GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 1,
-																0,
+				GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 																GridBagConstraints.NORTHWEST,
 																GridBagConstraints.NONE,
-																new Insets(0,
-																		   0,
-																		   0, 0),
-																0, 0);
+																new Insets(0, 0, 0, 0), 0, 0);
 				radioButtons = new JRadioButton[3];
 
 				ButtonGroup group = new ButtonGroup();
 
-				boolean     expanded = (expandMode & EXPAND_FLAG) != 0;
+				boolean expanded = (expandMode & EXPAND_FLAG) != 0;
 
-				radioButtons[0] = new JRadioButton(getString("prefs.expand.none"),
-												   !expanded);
+				radioButtons[0] = new JRadioButton(getString("prefs.expand.none"), !expanded);
 				group.add(radioButtons[0]);
 				this.add(radioButtons[0], con);
 
@@ -2823,15 +2715,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				con.fill = GridBagConstraints.NONE;
 
 				radioButtons[1] = new JRadioButton(getString("prefs.expand.faction"),
-												   (expanded &&
-												   ((expandMode >> 2) == 0)));
+												   (expanded && ((expandMode >> 2) == 0)));
 				group.add(radioButtons[1]);
 				con.gridy++;
 				this.add(radioButtons[1], con);
 
 				radioButtons[2] = new JRadioButton(getString("prefs.expand.full"),
-												   (expanded &&
-												   ((expandMode >> 2) == 3)));
+												   (expanded && ((expandMode >> 2) == 3)));
 				group.add(radioButtons[2]);
 				con.gridy++;
 				this.add(radioButtons[2], con);
@@ -2842,8 +2732,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				JPanel help = new JPanel();
 				help.add(Box.createRigidArea(new Dimension(20, 5)));
 
-				String s     = getString("prefs.expand.trustlevel");
-				int    index = s.indexOf("#T");
+				String s = getString("prefs.expand.trustlevel");
+				int index = s.indexOf("#T");
 
 				if(index == 0) {
 					help.add(trustlevel);
@@ -2892,8 +2782,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(checkBox.isSelected()) {
 					expandMode = expandMode | EXPAND_IFINSIDE_FLAG;
 				} else {
-					expandMode = expandMode &
-								 (0xFFFFFFFF ^ EXPAND_IFINSIDE_FLAG);
+					expandMode = expandMode & (0xFFFFFFFF ^ EXPAND_IFINSIDE_FLAG);
 				}
 
 				int i = expandMode >> 2;
@@ -2904,8 +2793,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 					i = 3;
 				}
 
-				expandMode = (expandMode &
-							 (EXPAND_FLAG | EXPAND_IFINSIDE_FLAG)) | (i << 2);
+				expandMode = (expandMode & (EXPAND_FLAG | EXPAND_IFINSIDE_FLAG)) | (i << 2);
 
 				try {
 					expandTrustlevel = Integer.parseInt(trustlevel.getText());
@@ -2928,7 +2816,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 		protected class CollapsePanel extends JPanel implements ActionListener {
 			protected JRadioButton radioButtons[];
-			protected JCheckBox    checkBox;
+			protected JCheckBox checkBox;
 
 			/**
 			 * Creates a new CollapsePanel object.
@@ -2938,56 +2826,47 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 
 				this.setBorder(new LeftBorder());
 
-				GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 1,
-																0,
+				GridBagConstraints con = new GridBagConstraints(0, 0, 1, 1, 1, 0,
 																GridBagConstraints.NORTHWEST,
 																GridBagConstraints.NONE,
-																new Insets(0,
-																		   3,
-																		   0, 0),
-																0, 0);
+																new Insets(0, 3, 0, 0), 0, 0);
 				radioButtons = new JRadioButton[3];
 
 				ButtonGroup group = new ButtonGroup();
 
-				boolean     collapse = (collapseMode & COLLAPSE_FLAG) != 0;
+				boolean collapse = (collapseMode & COLLAPSE_FLAG) != 0;
 
-				radioButtons[0] = new JRadioButton(getString("prefs.collapse.none"),
-												   !collapse);
+				radioButtons[0] = new JRadioButton(getString("prefs.collapse.none"), !collapse);
 				group.add(radioButtons[0]);
 				this.add(radioButtons[0], con);
 
 				con.gridy++;
-				con.fill	    = GridBagConstraints.HORIZONTAL;
+				con.fill = GridBagConstraints.HORIZONTAL;
 				con.insets.left = 0;
 				this.add(new JSeparator(JSeparator.HORIZONTAL), con);
 				con.insets.left = 3;
-				con.fill	    = GridBagConstraints.NONE;
+				con.fill = GridBagConstraints.NONE;
 
 				radioButtons[1] = new JRadioButton(getString("prefs.collapse.faction"),
-												   (collapse &&
-												   ((collapseMode >> 2) == 0)));
+												   (collapse && ((collapseMode >> 2) == 0)));
 				group.add(radioButtons[1]);
 				con.gridy++;
 				this.add(radioButtons[1], con);
 
 				radioButtons[2] = new JRadioButton(getString("prefs.collapse.full"),
-												   (collapse &&
-												   ((collapseMode >> 2) == 3)));
+												   (collapse && ((collapseMode >> 2) == 3)));
 				group.add(radioButtons[2]);
 				con.gridy++;
 				this.add(radioButtons[2], con);
 
 				con.gridy++;
 				checkBox = new JCheckBox(getString("prefs.collapse.onlyautoexpanded"),
-										 (collapseMode &
-										 COLLAPSE_ONLY_EXPANDED) != 0);
+										 (collapseMode & COLLAPSE_ONLY_EXPANDED) != 0);
 				this.add(checkBox, con);
 
 				// to make it equally high to ePanel
 				con.gridy++;
-				this.add(Box.createVerticalStrut(checkBox.getPreferredSize().height +
-												 5), con);
+				this.add(Box.createVerticalStrut(checkBox.getPreferredSize().height + 5), con);
 
 				/*con.gridx = 0;
 				con.gridheight = con.gridy + 1;
@@ -3038,8 +2917,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 					i = 3;
 				}
 
-				collapseMode = (collapseMode &
-							   (COLLAPSE_FLAG | COLLAPSE_ONLY_EXPANDED)) |
+				collapseMode = (collapseMode & (COLLAPSE_FLAG | COLLAPSE_ONLY_EXPANDED)) |
 							   (i << 2);
 
 				saveCollapseProperty();
@@ -3079,10 +2957,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 						in = new Insets(0, 0, 0, 0);
 					}
 
-					in.top    = 0;
+					in.top = 0;
 					in.bottom = 0;
-					in.right  = 0;
-					in.left   = sep.getPreferredSize().width;
+					in.right = 0;
+					in.left = sep.getPreferredSize().width;
 
 					return in;
 				}
@@ -3097,11 +2975,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				 * @param width TODO: DOCUMENT ME!
 				 * @param height TODO: DOCUMENT ME!
 				 */
-				public void paintBorder(Component c, Graphics g, int x, int y,
-										int width, int height) {
+				public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 					sep.setBounds(x, y, width, height);
-					SwingUtilities.paintComponent(g, sep, new JPanel(), x, y,
-												  width, height);
+					SwingUtilities.paintComponent(g, sep, new JPanel(), x, y, width, height);
 				}
 			}
 		}
@@ -3125,18 +3001,16 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		public void run() {
 			if(centerRect != null) {
 				Rectangle viewRect = scpTree.getViewport().getViewRect();
-				centerRect.x     = viewRect.x;
+				centerRect.x = viewRect.x;
 				centerRect.width = viewRect.width;
 
 				if(viewRect.contains(centerRect) == false) {
 					Point viewPos = new Point(0, centerRect.y);
 
 					if(centerRect.height < viewRect.height) {
-						viewPos.y = Math.min(tree.getHeight() -
-											 viewRect.height,
+						viewPos.y = Math.min(tree.getHeight() - viewRect.height,
 											 centerRect.y -
-											 ((viewRect.height -
-											 centerRect.height) / 2));
+											 ((viewRect.height - centerRect.height) / 2));
 					}
 
 					scpTree.getViewport().setViewPosition(viewPos);
@@ -3163,11 +3037,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			update(e.getUnit(), true);
 		}
 
-		protected synchronized void update(Unit u,
-										   boolean updateRelationPartners) {
+		protected synchronized void update(Unit u, boolean updateRelationPartners) {
 			if(unitNodes.containsKey(u.getID())) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) unitNodes.get(u.getID());
-				UnitNodeWrapper		   unw = (UnitNodeWrapper) node.getUserObject();
+				UnitNodeWrapper unw = (UnitNodeWrapper) node.getUserObject();
 				unw.clearBuffer();
 				treeModel.nodeChanged(node);
 
@@ -3178,8 +3051,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 						return;
 					}
 
-					unitRelations.put(u.getID(),
-									  CollectionFactory.createLinkedList());
+					unitRelations.put(u.getID(), CollectionFactory.createLinkedList());
 				}
 
 				Collection oldRelations = (Collection) unitRelations.get(u.getID());
@@ -3199,8 +3071,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 						} else {
 							oldRelations.add(o);
 
-							if(updateRelationPartners &&
-								   (o instanceof TransferRelation)) {
+							if(updateRelationPartners && (o instanceof TransferRelation)) {
 								update(((TransferRelation) o).target, false);
 							}
 						}
@@ -3213,8 +3084,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 							Object o = it.next();
 							oldRelations.remove(o);
 
-							if(updateRelationPartners &&
-								   (o instanceof TransferRelation)) {
+							if(updateRelationPartners && (o instanceof TransferRelation)) {
 								update(((TransferRelation) o).target, false);
 							}
 						}
@@ -3240,15 +3110,15 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		public final int COMMENTS = 8;
 
 		/** TODO: DOCUMENT ME! */
-		public final int   CREATE_ISLANDS = 16384;
-		private int		   mode = UNITS | BUILDINGS | SHIPS | COMMENTS;
-		private Map		   regionNodes;
-		private Map		   unitNodes;
-		private Map		   buildingNodes;
-		private Map		   shipNodes;
-		private Map		   activeAlliances;
+		public final int CREATE_ISLANDS = 16384;
+		private int mode = UNITS | BUILDINGS | SHIPS | COMMENTS;
+		private Map regionNodes;
+		private Map unitNodes;
+		private Map buildingNodes;
+		private Map shipNodes;
+		private Map activeAlliances;
 		private Comparator unitComparator;
-		private int		   treeStructure[];
+		private int treeStructure[];
 
 		/**
 		 * TODO: DOCUMENT ME!
@@ -3342,9 +3212,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				return;
 			}
 
-			buildTree(rootNode, sortRegions(data.regions().values()),
-					  data.units().values(), regionNodes, unitNodes,
-					  buildingNodes, shipNodes, unitComparator,
+			buildTree(rootNode, sortRegions(data.regions().values()), data.units().values(),
+					  regionNodes, unitNodes, buildingNodes, shipNodes, unitComparator,
 					  activeAlliances, treeStructure, data);
 		}
 
@@ -3363,24 +3232,21 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		 * @param treeStructure TODO: DOCUMENT ME!
 		 * @param data TODO: DOCUMENT ME!
 		 */
-		public void buildTree(DefaultMutableTreeNode rootNode,
-							  Collection regionCollection, Collection units,
-							  Map regionNodes, Map unitNodes,
-							  Map buildingNodes, Map shipNodes,
-							  Comparator unitSorting, Map activeAlliances,
+		public void buildTree(DefaultMutableTreeNode rootNode, Collection regionCollection,
+							  Collection units, Map regionNodes, Map unitNodes, Map buildingNodes,
+							  Map shipNodes, Comparator unitSorting, Map activeAlliances,
 							  int treeStructure[], GameData data) {
-			Iterator			   regions			   = regionCollection.iterator();
-			boolean				   unitInteresting     = (mode & UNITS) != 0;
-			boolean				   buildingInteresting = (mode & BUILDINGS) != 0;
-			boolean				   shipInteresting     = (mode & SHIPS) != 0;
-			boolean				   commentInteresting  = (mode & COMMENTS) != 0;
-			boolean				   createIslandNodes   = (mode &
-														 CREATE_ISLANDS) != 0;
+			Iterator regions = regionCollection.iterator();
+			boolean unitInteresting = (mode & UNITS) != 0;
+			boolean buildingInteresting = (mode & BUILDINGS) != 0;
+			boolean shipInteresting = (mode & SHIPS) != 0;
+			boolean commentInteresting = (mode & COMMENTS) != 0;
+			boolean createIslandNodes = (mode & CREATE_ISLANDS) != 0;
 
 			DefaultMutableTreeNode islandNode = null;
 			DefaultMutableTreeNode regionNode = null;
-			Region				   r		  = null;
-			Island				   curIsland  = null;
+			Region r = null;
+			Island curIsland = null;
 
 			while(regions.hasNext()) {
 				r = (Region) regions.next();
@@ -3388,8 +3254,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(!((unitInteresting && !r.units().isEmpty()) ||
 					   (buildingInteresting && !r.buildings().isEmpty()) ||
 					   (shipInteresting && !r.ships().isEmpty()) ||
-					   (commentInteresting &&
-					   !((r.comments == null) || (r.comments.size() == 0))))) {
+					   (commentInteresting && !((r.comments == null) || (r.comments.size() == 0))))) {
 					continue;
 				}
 
@@ -3412,7 +3277,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				if(createIslandNodes) {
 					if(r.getIsland() != null) {
 						if(!r.getIsland().equals(curIsland)) {
-							curIsland  = r.getIsland();
+							curIsland = r.getIsland();
 							islandNode = new DefaultMutableTreeNode(nodeWrapperFactory.createIslandNodeWrapper(curIsland));
 							rootNode.add(islandNode);
 						}
@@ -3454,8 +3319,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		treeBuilder.setShipNodes(shipNodes);
 		treeBuilder.setBuildingNodes(buildingNodes);
 		treeBuilder.setActiveAlliances(activeAlliances);
-		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters",
-																  "1")));
+		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters", "1")));
 
 		return treeBuilder;
 	}
@@ -3489,8 +3353,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			items = new JCheckBoxMenuItem[4];
 
 			for(int i = 0; i < 4; i++) {
-				items[i] = new JCheckBoxMenuItem(getString("menu.filter." +
-														   String.valueOf(i)));
+				items[i] = new JCheckBoxMenuItem(getString("menu.filter." + String.valueOf(i)));
 				items[i].setSelected((mode & (1 << i)) != 0);
 				items[i].addActionListener(this);
 				this.add(items[i]);
@@ -3521,8 +3384,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 				treeBuilder.setMode(mode);
 				rebuildTree();
 				settings.setProperty("EMapOverviewPanel.filters",
-									 String.valueOf(mode ^
-													treeBuilder.CREATE_ISLANDS));
+									 String.valueOf(mode ^ treeBuilder.CREATE_ISLANDS));
 			}
 		}
 	}
@@ -3531,8 +3393,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 	// we will create it every time the method is invoked since that should be
 	// only once...
 	public JMenu getMenu() {
-		return new OverviewMenu(getString("menu.caption"),
-								getString("menu.mnemonic").charAt(0));
+		return new OverviewMenu(getString("menu.caption"), getString("menu.mnemonic").charAt(0));
 	}
 
 	/**
@@ -3553,53 +3414,52 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 		return getString("menu.supertitle");
 	}
 
-	
 	/*
 	public String getComponentConfiguration() {
-		StringBuffer sb = new StringBuffer();
+	    StringBuffer sb = new StringBuffer();
 
-		sb.append("EMapOverviewPanel.treeHistorySplit");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.treeHistorySplit", "100"));
+	    sb.append("EMapOverviewPanel.treeHistorySplit");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.treeHistorySplit", "100"));
 
-		sb.append("_");
+	    sb.append("_");
 
-		sb.append("EMapOverviewPanel.displayIslands");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.displayIslands", "true"));
+	    sb.append("EMapOverviewPanel.displayIslands");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.displayIslands", "true"));
 
-		sb.append("_");
+	    sb.append("_");
 
-		sb.append("EMapOverviewPanel.sortRegions");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.sortRegions", "true"));
+	    sb.append("EMapOverviewPanel.sortRegions");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.sortRegions", "true"));
 
-		sb.append("_");
+	    sb.append("_");
 
-		sb.append("EMapOverviewPanel.sortRegionsCriteria");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates"));
+	    sb.append("EMapOverviewPanel.sortRegionsCriteria");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates"));
 
-		sb.append("_");
+	    sb.append("_");
 
-		sb.append("EMapOverviewPanel.sortUnitsCriteria");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills"));
+	    sb.append("EMapOverviewPanel.sortUnitsCriteria");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills"));
 
-		sb.append("_");
+	    sb.append("_");
 
-		sb.append("EMapOverviewPanel.useBestSkill");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.useBestSkill", "true"));
+	    sb.append("EMapOverviewPanel.useBestSkill");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.useBestSkill", "true"));
 
-		sb.append("_");
+	    sb.append("_");
 
-		sb.append("EMapOverviewPanel.treeStructure");
-		sb.append("=");
-		sb.append(settings.getProperty("EMapOverviewPanel.treeStructure",
-									   " " + TreeHelper.FACTION + " " + TreeHelper.GROUP));
+	    sb.append("EMapOverviewPanel.treeStructure");
+	    sb.append("=");
+	    sb.append(settings.getProperty("EMapOverviewPanel.treeStructure",
+	                                   " " + TreeHelper.FACTION + " " + TreeHelper.GROUP));
 
-		return sb.toString();
+	    return sb.toString();
 	}
 	*/
 
@@ -3629,78 +3489,57 @@ public class EMapOverviewPanel extends InternationalizedDataPanel
 			defaultTranslations.put("prefs.sortbynames", "By name");
 			defaultTranslations.put("prefs.unitsorting", "Unit sorting");
 
-			defaultTranslations.put("prefs.treestructure",
-									"Hierarchical tree structure");
-			defaultTranslations.put("prefs.treestructure.available",
-									"Available structure elements");
-			defaultTranslations.put("prefs.treestructure.element.faction",
-									"Faction");
+			defaultTranslations.put("prefs.treestructure", "Hierarchical tree structure");
+			defaultTranslations.put("prefs.treestructure.available", "Available structure elements");
+			defaultTranslations.put("prefs.treestructure.element.faction", "Faction");
 			defaultTranslations.put("prefs.treestructure.element.group", "Group");
-			defaultTranslations.put("prefs.treestructure.element.combat",
-									"Combat status");
-			defaultTranslations.put("prefs.treestructure.element.health",
-									"Health status");
+			defaultTranslations.put("prefs.treestructure.element.combat", "Combat status");
+			defaultTranslations.put("prefs.treestructure.element.health", "Health status");
 			defaultTranslations.put("prefs.treeStructure.element.factiondisguise",
 									"Faction disguised");
-			defaultTranslations.put("prefs.treeStructure.element.trustlevel",
-									"Trustlevel");
+			defaultTranslations.put("prefs.treeStructure.element.trustlevel", "Trustlevel");
 			defaultTranslations.put("prefs.treestructure.use", "Use");
 			defaultTranslations.put("prefs.treestructure.up", "Up");
 			defaultTranslations.put("prefs.treestructure.down", "Down");
 
 			defaultTranslations.put("prefs.showskillicons", "Show skill icons");
-			defaultTranslations.put("prefs.showcontainericons",
-									"Show building and ship icons");
+			defaultTranslations.put("prefs.showcontainericons", "Show building and ship icons");
 			defaultTranslations.put("prefs.uniticons", "Unit icons");
 			defaultTranslations.put("prefs.icontextcolor", "Color of icon text");
 			defaultTranslations.put("prefs.showskilllevel", "Show skill level");
 			defaultTranslations.put("prefs.skillorder", "Order of skills");
 			defaultTranslations.put("prefs.upbutton.caption", "Up");
 			defaultTranslations.put("prefs.downbutton.caption", "Down");
-			defaultTranslations.put("prefs.refreshlistbutton.caption",
-									"Alphabetical");
-			defaultTranslations.put("prefs.usebestskill",
-									"According to best skill");
-			defaultTranslations.put("prefs.usetopmostskill",
-									"According topmost skill in list");
+			defaultTranslations.put("prefs.refreshlistbutton.caption", "Alphabetical");
+			defaultTranslations.put("prefs.usebestskill", "According to best skill");
+			defaultTranslations.put("prefs.usetopmostskill", "According topmost skill in list");
 
 			defaultTranslations.put("icontextdialog.title", "Tree icons labels");
 			defaultTranslations.put("icontextdialog.txt.info.text",
 									"On the left, you can select the position of the icon labels (the center box indicates the position of the icon itself).");
 			defaultTranslations.put("icontextdialog.btn.ok.caption", "OK");
-			defaultTranslations.put("icontextdialog.btn.cancel.caption",
-									"Cancel");
+			defaultTranslations.put("icontextdialog.btn.cancel.caption", "Cancel");
 			defaultTranslations.put("icontextdialog.lbl.font.caption", "Font");
 			defaultTranslations.put("icontextdialog.chk.bold.caption", "Bold");
-			defaultTranslations.put("icontextdialog.chk.italic.caption",
-									"Italic");
-			defaultTranslations.put("icontextdialog.btn.color.caption",
-									"Font color");
-			defaultTranslations.put("icontextdialog.colorchooser.title",
-									"Font color of icon labels");
-			defaultTranslations.put("wrapperfactory.title",
-									"Region Tree Entries");
+			defaultTranslations.put("icontextdialog.chk.italic.caption", "Italic");
+			defaultTranslations.put("icontextdialog.btn.color.caption", "Font color");
+			defaultTranslations.put("icontextdialog.colorchooser.title", "Font color of icon labels");
+			defaultTranslations.put("wrapperfactory.title", "Region Tree Entries");
 			defaultTranslations.put("prefs.collapse.onlyautoexpanded",
 									"Collapse only auto-expanded elements");
 			defaultTranslations.put("prefs.collapse.full", "Full");
 			defaultTranslations.put("prefs.collapse.faction", "First level");
 			defaultTranslations.put("prefs.collapse.none", "No auto-collapse");
-			defaultTranslations.put("prefs.expand.ifinside",
-									"Only if own units in region");
-			defaultTranslations.put("prefs.expand.trustlevel",
-									"Only with trustlevel #T or higher");
+			defaultTranslations.put("prefs.expand.ifinside", "Only if own units in region");
+			defaultTranslations.put("prefs.expand.trustlevel", "Only with trustlevel #T or higher");
 			defaultTranslations.put("prefs.expand.full", "Full");
 			defaultTranslations.put("prefs.expand.faction", "First level");
 			defaultTranslations.put("prefs.expand.title", "Tree-Expansion");
 			defaultTranslations.put("prefs.expand.none", "No expansion");
-			defaultTranslations.put("shortcut.description.5",
-									"Backward through history");
-			defaultTranslations.put("shortcut.description.3",
-									"Backward through history");
-			defaultTranslations.put("shortcut.description.4",
-									"Forward through history");
-			defaultTranslations.put("shortcut.description.2",
-									"Forward through history");
+			defaultTranslations.put("shortcut.description.5", "Backward through history");
+			defaultTranslations.put("shortcut.description.3", "Backward through history");
+			defaultTranslations.put("shortcut.description.4", "Forward through history");
+			defaultTranslations.put("shortcut.description.2", "Forward through history");
 			defaultTranslations.put("shortcut.description.1", "Request Focus");
 			defaultTranslations.put("shortcut.description.0", "Request Focus");
 			defaultTranslations.put("shortcut.title", "Overview");

@@ -20,11 +20,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 
 /**
- * This enhancement enables a GridLayout to emulate a GridBagLayout. Especially
- * this layout allows components of different sizes. This code is extracted
- * from the <a
- * href="http://www.javaworld.com/javaworld/javatips/jw-javatip121.html">
- * JavaWorld Magazine</a>
+ * This enhancement enables a GridLayout to emulate a GridBagLayout. Especially this layout allows
+ * components of different sizes. This code is extracted from the <a
+ * href="http://www.javaworld.com/javaworld/javatips/jw-javatip121.html"> JavaWorld Magazine</a>
  */
 
 // Grid Layout which allows components of different sizes
@@ -37,8 +35,7 @@ public class GridLayout2 extends GridLayout {
 	}
 
 	/**
-	 * Generates a GridLayout with <tt>rows</tt> rows and <tt>cols</tt>
-	 * columns.
+	 * Generates a GridLayout with <tt>rows</tt> rows and <tt>cols</tt> columns.
 	 *
 	 * @param rows TODO: DOCUMENT ME!
 	 * @param cols TODO: DOCUMENT ME!
@@ -48,11 +45,10 @@ public class GridLayout2 extends GridLayout {
 	}
 
 	/**
-	 * Generates a GridLayout with <tt>rows</tt> row, <tt>cols</tt> columns,  a
-	 * horizontal gap of <tt>hgap</tt> and a vertical gap of <tt>vgap</tt> The
-	 * vertical gap is the distance between two objects in a column (y-axis)
-	 * The horizontal gap is the distance between two objects in a row
-	 * (x-axis)
+	 * Generates a GridLayout with <tt>rows</tt> row, <tt>cols</tt> columns,  a horizontal gap of
+	 * <tt>hgap</tt> and a vertical gap of <tt>vgap</tt> The vertical gap is the distance between
+	 * two objects in a column (y-axis) The horizontal gap is the distance between two objects in
+	 * a row (x-axis)
 	 *
 	 * @param rows TODO: DOCUMENT ME!
 	 * @param cols TODO: DOCUMENT ME!
@@ -64,14 +60,12 @@ public class GridLayout2 extends GridLayout {
 	}
 
 	/**
-	 * from the web page: "As you can see, the code is pretty straightforward.
-	 * You first ensure  that you have the right number of rows and columns to
-	 * lay out the  components. Then you find each component's preferred size.
-	 * Finally,  you compute each row's height as the row components' maximum
-	 * height.  You compute each column width as the maximum width of the row
-	 * components. The preferred layout size also accounts for the horizontal
-	 * and vertical gap sizes between components and the parent container
-	 * insets."
+	 * from the web page: "As you can see, the code is pretty straightforward. You first ensure
+	 * that you have the right number of rows and columns to lay out the  components. Then you
+	 * find each component's preferred size. Finally,  you compute each row's height as the row
+	 * components' maximum height.  You compute each column width as the maximum width of the row
+	 * components. The preferred layout size also accounts for the horizontal and vertical gap
+	 * sizes between components and the parent container insets."
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 *
@@ -80,10 +74,10 @@ public class GridLayout2 extends GridLayout {
 	public Dimension preferredLayoutSize(Container parent) {
 		//System.err.println("preferredLayoutSize");
 		synchronized(parent.getTreeLock()) {
-			Insets insets	   = parent.getInsets();
-			int    ncomponents = parent.getComponentCount();
-			int    nrows	   = getRows();
-			int    ncols	   = getColumns();
+			Insets insets = parent.getInsets();
+			int ncomponents = parent.getComponentCount();
+			int nrows = getRows();
+			int ncols = getColumns();
 
 			if(nrows > 0) {
 				ncols = ((ncomponents + nrows) - 1) / nrows;
@@ -91,14 +85,14 @@ public class GridLayout2 extends GridLayout {
 				nrows = ((ncomponents + ncols) - 1) / ncols;
 			}
 
-			int   w[] = new int[ncols];
-			int   h[] = new int[nrows];
+			int w[] = new int[ncols];
+			int h[] = new int[nrows];
 
 			for(int i = 0; i < ncomponents; i++) {
-				int		  r    = i / ncols;
-				int		  c    = i % ncols;
+				int r = i / ncols;
+				int c = i % ncols;
 				Component comp = parent.getComponent(i);
-				Dimension d    = comp.getPreferredSize();
+				Dimension d = comp.getPreferredSize();
 
 				if(w[c] < d.width) {
 					w[c] = d.width;
@@ -121,17 +115,14 @@ public class GridLayout2 extends GridLayout {
 				nh += h[i];
 			}
 
-			return new Dimension(insets.left + insets.right + nw +
-								 ((ncols - 1) * getHgap()),
-								 insets.top + insets.bottom + nh +
-								 ((nrows - 1) * getVgap()));
+			return new Dimension(insets.left + insets.right + nw + ((ncols - 1) * getHgap()),
+								 insets.top + insets.bottom + nh + ((nrows - 1) * getVgap()));
 		}
 	}
 
 	/**
-	 * From the web page:  "The code for minimumLayoutSize() is basically the
-	 * same as preferredLayoutSize(),  except you use the subcomponents'
-	 * minimum size dimensions."
+	 * From the web page:  "The code for minimumLayoutSize() is basically the same as
+	 * preferredLayoutSize(),  except you use the subcomponents' minimum size dimensions."
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 *
@@ -140,10 +131,10 @@ public class GridLayout2 extends GridLayout {
 	public Dimension minimumLayoutSize(Container parent) {
 		//System.err.println("minimumLayoutSize");
 		synchronized(parent.getTreeLock()) {
-			Insets insets	   = parent.getInsets();
-			int    ncomponents = parent.getComponentCount();
-			int    nrows	   = getRows();
-			int    ncols	   = getColumns();
+			Insets insets = parent.getInsets();
+			int ncomponents = parent.getComponentCount();
+			int nrows = getRows();
+			int ncols = getColumns();
 
 			if(nrows > 0) {
 				ncols = ((ncomponents + nrows) - 1) / nrows;
@@ -151,14 +142,14 @@ public class GridLayout2 extends GridLayout {
 				nrows = ((ncomponents + ncols) - 1) / ncols;
 			}
 
-			int   w[] = new int[ncols];
-			int   h[] = new int[nrows];
+			int w[] = new int[ncols];
+			int h[] = new int[nrows];
 
 			for(int i = 0; i < ncomponents; i++) {
-				int		  r    = i / ncols;
-				int		  c    = i % ncols;
+				int r = i / ncols;
+				int c = i % ncols;
 				Component comp = parent.getComponent(i);
-				Dimension d    = comp.getMinimumSize();
+				Dimension d = comp.getMinimumSize();
 
 				if(w[c] < d.width) {
 					w[c] = d.width;
@@ -181,36 +172,31 @@ public class GridLayout2 extends GridLayout {
 				nh += h[i];
 			}
 
-			return new Dimension(insets.left + insets.right + nw +
-								 ((ncols - 1) * getHgap()),
-								 insets.top + insets.bottom + nh +
-								 ((nrows - 1) * getVgap()));
+			return new Dimension(insets.left + insets.right + nw + ((ncols - 1) * getHgap()),
+								 insets.top + insets.bottom + nh + ((nrows - 1) * getVgap()));
 		}
 	}
 
 	/**
-	 * From the web page:  "Again, you first ensure you have the right number
-	 * of rows and columns to  lay out the components. Then you compute the
-	 * scaling factors on x and y  coordinates as the ratios between the
-	 * parent container's current height  and width and the height and width
-	 * of its preferred layout size. You find  each component's preferred size
-	 * and scale it using the scaling factors.  You also compute each row's
-	 * height as the maximum height of the scaled  components in the row. You
-	 * compute each column's width as the maximum  width of the scaled
-	 * components in the row. Finally, you lay out the  components,
-	 * considering the horizontal and vertical gap sizes between  components
-	 * and the parent container insets. You could also scale the horizontal
-	 * and vertical gap sizes."
+	 * From the web page:  "Again, you first ensure you have the right number of rows and columns
+	 * to  lay out the components. Then you compute the scaling factors on x and y  coordinates as
+	 * the ratios between the parent container's current height  and width and the height and
+	 * width of its preferred layout size. You find  each component's preferred size and scale it
+	 * using the scaling factors.  You also compute each row's height as the maximum height of the
+	 * scaled  components in the row. You compute each column's width as the maximum  width of the
+	 * scaled components in the row. Finally, you lay out the  components, considering the
+	 * horizontal and vertical gap sizes between  components and the parent container insets. You
+	 * could also scale the horizontal and vertical gap sizes."
 	 *
 	 * @param parent TODO: DOCUMENT ME!
 	 */
 	public void layoutContainer(Container parent) {
 		//System.err.println("layoutContainer");
 		synchronized(parent.getTreeLock()) {
-			Insets insets	   = parent.getInsets();
-			int    ncomponents = parent.getComponentCount();
-			int    nrows	   = getRows();
-			int    ncols	   = getColumns();
+			Insets insets = parent.getInsets();
+			int ncomponents = parent.getComponentCount();
+			int nrows = getRows();
+			int ncols = getColumns();
 
 			if(ncomponents == 0) {
 				return;
@@ -227,19 +213,19 @@ public class GridLayout2 extends GridLayout {
 
 			// scaling factors      
 			Dimension pd = preferredLayoutSize(parent);
-			double    sw = (1.0 * parent.getWidth()) / pd.width;
-			double    sh = (1.0 * parent.getHeight()) / pd.height;
+			double sw = (1.0 * parent.getWidth()) / pd.width;
+			double sh = (1.0 * parent.getHeight()) / pd.height;
 
 			// scale
-			int   w[] = new int[ncols];
-			int   h[] = new int[nrows];
+			int w[] = new int[ncols];
+			int h[] = new int[nrows];
 
 			for(int i = 0; i < ncomponents; i++) {
-				int		  r    = i / ncols;
-				int		  c    = i % ncols;
+				int r = i / ncols;
+				int c = i % ncols;
 				Component comp = parent.getComponent(i);
-				Dimension d    = comp.getPreferredSize();
-				d.width  = (int) (sw * d.width);
+				Dimension d = comp.getPreferredSize();
+				d.width = (int) (sw * d.width);
 				d.height = (int) (sh * d.height);
 
 				if(w[c] < d.width) {

@@ -24,12 +24,12 @@ public class IteratorEnumeration implements Enumeration {
 	private Iterator iter = null;
 
 	/**
-	 * Creates a new IteratorEnumeration providing an enumeration interface to
-	 * the specified iterator.
+	 * Creates a new IteratorEnumeration providing an enumeration interface to the specified
+	 * iterator.
 	 *
-	 * @param iterator the Iterator to enumerate. If iterator is null the
-	 * 		  hasMoreElements() method always returns false and the
-	 * 		  nextElement() method always throws an NoSuchElementException.
+	 * @param iterator the Iterator to enumerate. If iterator is null the hasMoreElements() method
+	 * 		  always returns false and the nextElement() method always throws an
+	 * 		  NoSuchElementException.
 	 */
 	public IteratorEnumeration(Iterator iterator) {
 		this.iter = iterator;

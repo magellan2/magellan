@@ -145,9 +145,9 @@ public class RegionType extends UnitContainerType {
 	}
 
 	/**
-	 * Indicates whether this RegionType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class RegionType
-	 * and o's id is equal to the id of this  RegionType object.
+	 * Indicates whether this RegionType object is equal to another object. Returns true only if o
+	 * is not null and an instance of class RegionType and o's id is equal to the id of this
+	 * RegionType object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -155,13 +155,12 @@ public class RegionType extends UnitContainerType {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof RegionType &&
-			   this.getID().equals(((RegionType) o).getID()));
+			   (o instanceof RegionType && this.getID().equals(((RegionType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on RegionType objects equivalent to the
-	 * natural ordering of their ids.
+	 * Imposes a natural ordering on RegionType objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

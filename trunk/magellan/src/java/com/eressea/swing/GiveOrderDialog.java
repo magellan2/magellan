@@ -34,15 +34,14 @@ import com.eressea.util.CollectionFactory;
 /**
  * DOCUMENT ME!
  *
- * @author Ulrich Küster A Dialog that asks the user for a string input
- * 		   (usually an eressea order). In Addition the user is asked, if the
- * 		   order shall extend or replace existing orders.
+ * @author Ulrich Küster A Dialog that asks the user for a string input (usually an eressea order).
+ * 		   In Addition the user is asked, if the order shall extend or replace existing orders.
  */
 public class GiveOrderDialog extends InternationalizedDialog {
-	private JCheckBox  replaceOrders;
+	private JCheckBox replaceOrders;
 	private JTextField order;
-	private JButton    ok;
-	private JButton    cancel;
+	private JButton ok;
+	private JButton cancel;
 
 	/**
 	 * Creates a new GiveOrderDialog object.
@@ -56,32 +55,30 @@ public class GiveOrderDialog extends InternationalizedDialog {
 		Container cp = getContentPane();
 		cp.setLayout(new GridBagLayout());
 
-		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 0, 0,
-													  GridBagConstraints.WEST,
+		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
 													  GridBagConstraints.BOTH,
-													  new Insets(3, 3, 3, 3),
-													  0, 0);
+													  new Insets(3, 3, 3, 3), 0, 0);
 
 		cp.add(new JLabel(getString("window.message")), c);
 
 		order = new JTextField();
 		order.setPreferredSize(new Dimension(200, 25));
-		c.gridx   = 1;
+		c.gridx = 1;
 		c.weightx = 0.5;
 		cp.add(order, c);
 
 		replaceOrders = new JCheckBox(getString("chkbox.replaceOrder.title"));
-		c.gridx		  = 0;
-		c.gridy		  = 1;
-		c.weightx     = 0;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 0;
 		cp.add(replaceOrders, c);
 
 		ok = new JButton(getString("btn.ok.caption"));
 		ok.setMnemonic(getString("btn.ok.mnemonic").charAt(0));
 
 		// actionListener is added in the show() method
-		c.gridx  = 0;
-		c.gridy  = 2;
+		c.gridx = 0;
+		c.gridy = 2;
 		c.anchor = GridBagConstraints.EAST;
 		cp.add(ok, c);
 
@@ -92,21 +89,20 @@ public class GiveOrderDialog extends InternationalizedDialog {
 					quit();
 				}
 			});
-		c.gridx  = 1;
+		c.gridx = 1;
 		c.anchor = GridBagConstraints.WEST;
 		cp.add(cancel, c);
 	}
 
 	/**
-	 * Shows the dialog and returns a String-Array with to values: - [0] : The
-	 * order that was given - [1] : A String represantative of the boolean
-	 * value for "replace Orders"
+	 * Shows the dialog and returns a String-Array with to values: - [0] : The order that was given
+	 * - [1] : A String represantative of the boolean value for "replace Orders"
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String[] showGiveOrderDialog() {
-		final String     retVal[]	    = new String[2];
-		ActionListener   okButtonAction = new ActionListener() {
+		final String retVal[] = new String[2];
+		ActionListener okButtonAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				retVal[0] = GiveOrderDialog.this.order.getText();
 				retVal[1] = String.valueOf(GiveOrderDialog.this.replaceOrders.isSelected());
@@ -140,8 +136,7 @@ public class GiveOrderDialog extends InternationalizedDialog {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("window.title", "Give order");
 			defaultTranslations.put("window.message", "Please insert an order:");
-			defaultTranslations.put("chkbox.replaceOrder.title",
-									"Replace existing orders");
+			defaultTranslations.put("chkbox.replaceOrder.title", "Replace existing orders");
 
 			defaultTranslations.put("btn.ok.caption", "OK");
 			defaultTranslations.put("btn.ok.mnemonic", "o");

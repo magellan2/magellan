@@ -18,8 +18,8 @@ import java.util.Map;
 import com.eressea.util.CollectionFactory;
 
 /**
- * A class establishing the uniqueness property through an integer. This class
- * assumes the representation of integers to be decimal in all cases.
+ * A class establishing the uniqueness property through an integer. This class assumes the
+ * representation of integers to be decimal in all cases.
  */
 public class IntegerID implements ID {
 	/** The Integer object this id is based on. */
@@ -37,8 +37,7 @@ public class IntegerID implements ID {
 	}
 
 	/**
-	 * Constructs a new IntegerID object based on an Integer object created
-	 * from the specified int.
+	 * Constructs a new IntegerID object based on an Integer object created from the specified int.
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 */
@@ -47,8 +46,7 @@ public class IntegerID implements ID {
 	}
 
 	/**
-	 * Creates a new IntegerID object by parsing the specified string for a
-	 * decimal integer.
+	 * Creates a new IntegerID object by parsing the specified string for a decimal integer.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 */
@@ -139,17 +137,16 @@ public class IntegerID implements ID {
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
-	 * @return true, if o is an instance of class IntegerID and the numerical
-	 * 		   values of this and the specified object are equal.
+	 * @return true, if o is an instance of class IntegerID and the numerical values of this and
+	 * 		   the specified object are equal.
 	 */
 	public boolean equals(Object o) {
-		return (this == o) ||
-			   (o instanceof IntegerID && (id == ((IntegerID) o).id));
+		return (this == o) || (o instanceof IntegerID && (id == ((IntegerID) o).id));
 	}
 
 	/**
-	 * Imposes a natural ordering on IntegerID objects which is based on the
-	 * natural ordering of the underlying integers.
+	 * Imposes a natural ordering on IntegerID objects which is based on the natural ordering of
+	 * the underlying integers.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -164,8 +161,7 @@ public class IntegerID implements ID {
 	/**
 	 * Returns a hash code for this object.
 	 *
-	 * @return a hash code value based on the hash code returned by the
-	 * 		   underlying Integer object.
+	 * @return a hash code value based on the hash code returned by the underlying Integer object.
 	 */
 	public int hashCode() {
 		return id;

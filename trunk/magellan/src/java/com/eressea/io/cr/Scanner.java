@@ -27,8 +27,8 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class Scanner {
-	private static final Logger log    = Logger.getInstance(Scanner.class);
-	private BufferedReader	    stream;
+	private static final Logger log = Logger.getInstance(Scanner.class);
+	private BufferedReader stream;
 
 	/** TODO: DOCUMENT ME! */
 	public int argc; // number of tokens
@@ -40,10 +40,10 @@ public class Scanner {
 	public boolean isString[]; // Is it a string? (enclosed in "")
 
 	/** TODO: DOCUMENT ME! */
-	public boolean   eof; // end of file reached?
+	public boolean eof; // end of file reached?
 
 	/** TODO: DOCUMENT ME! */
-	public int   lnr; // current line number
+	public int lnr; // current line number
 
 	/** TODO: DOCUMENT ME! */
 	public boolean isBlock; // Is this a begin of block token?
@@ -59,11 +59,11 @@ public class Scanner {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public Scanner(Reader in) throws IOException {
-		stream   = new BufferedReader(in);
-		argv     = new String[2];
+		stream = new BufferedReader(in);
+		argv = new String[2];
 		isString = new boolean[2];
-		lnr		 = 0;
-		eof		 = false;
+		lnr = 0;
+		eof = false;
 	}
 
 	/**
@@ -73,15 +73,15 @@ public class Scanner {
 	 */
 	public void getNextToken() throws IOException {
 		String line;
-		char   buf[];
-		int    len;
-		int    i;
-		int    start;
+		char buf[];
+		int len;
+		int i;
+		int start;
 
-		argv[0]   = null;
-		argv[1]   = null;
-		argc	  = 0;
-		isBlock   = false;
+		argv[0] = null;
+		argv[1] = null;
+		argc = 0;
+		isBlock = false;
 		isIdBlock = false;
 		lnr++;
 
@@ -129,8 +129,8 @@ public class Scanner {
 			}
 
 			if(buf[i] == '"') {
-				char  outbuf[] = new char[len];
-				int   outPtr = 0;
+				char outbuf[] = new char[len];
+				int outPtr = 0;
 				i++; // skip start "
 				start = i; // marker for begin of string
 
@@ -153,9 +153,7 @@ public class Scanner {
 				}
 
 				// pavkovic 2003.07.02: use String.intern() method to reduce memory consumption
-				argv[argc] = StringFactory.getFactory().intern(new String(outbuf,
-																		  0,
-																		  outPtr));
+				argv[argc] = StringFactory.getFactory().intern(new String(outbuf, 0, outPtr));
 				isString[argc] = true;
 				argc++;
 
@@ -163,14 +161,12 @@ public class Scanner {
 			} else {
 				start = i;
 
-				while((i < len) && (buf[i] != ';') && (buf[i] != '\r') &&
-						  (buf[i] != '\n')) {
+				while((i < len) && (buf[i] != ';') && (buf[i] != '\r') && (buf[i] != '\n')) {
 					i++;
 				}
 
 				// pavkovic 2003.07.02: use String.intern() method to reduce memory consumption
-				argv[argc] = StringFactory.getFactory().intern(line.substring(start,
-																			  i));
+				argv[argc] = StringFactory.getFactory().intern(line.substring(start, i));
 				isString[argc] = false;
 				argc++;
 			}

@@ -63,12 +63,9 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class Unit extends DescribedObject implements HasRegion, Sorted,
-													 Taggable
-{
-	private static final Logger log					 = Logger.getInstance(Unit.class);
-	private static final String CONFIRMEDTEMPCOMMENT = ";" +
-													   OrderWriter.CONFIRMEDTEMP;
+public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable {
+	private static final Logger log = Logger.getInstance(Unit.class);
+	private static final String CONFIRMEDTEMPCOMMENT = ";" + OrderWriter.CONFIRMEDTEMP;
 
 	/** The unit does not possess horses */
 	public static final int CAP_NO_HORSES = MovementEvaluator.CAP_NO_HORSES;
@@ -85,10 +82,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	/** TODO: DOCUMENT ME! */
 	public Race realRace = null;
 
-	/**
-	 * an object encapsulation  the orders of this unit as <tt>String</tt>
-	 * objects
-	 */
+	/** an object encapsulation  the orders of this unit as <tt>String</tt> objects */
 	protected Orders ordersObject = new Orders();
 
 	/**
@@ -148,8 +142,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Removes the order at position <tt>i</tt> and possibly refreshes the
-	 * relations
+	 * Removes the order at position <tt>i</tt> and possibly refreshes the relations
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 * @param refreshRelations TODO: DOCUMENT ME!
@@ -173,8 +166,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Adds the order at position <tt>i</tt> and possibly refreshes the
-	 * relations
+	 * Adds the order at position <tt>i</tt> and possibly refreshes the relations
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 * @param newOrders TODO: DOCUMENT ME!
@@ -302,15 +294,14 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public boolean isStarving = false; // hunger-Tag
 
 	/**
-	 * The cache object containing cached information that may be not related
-	 * enough to be encapsulated as a function and is time consuming to
-	 * gather.
+	 * The cache object containing cached information that may be not related enough to be
+	 * encapsulated as a function and is time consuming to gather.
 	 */
 	public com.eressea.util.Cache cache = null;
 
 	/**
-	 * Messages directly sent to this unit. The list contains instances of
-	 * class <tt>Message</tt> with type -1 and only the text set.
+	 * Messages directly sent to this unit. The list contains instances of class <tt>Message</tt>
+	 * with type -1 and only the text set.
 	 */
 	public List unitMessages = null;
 
@@ -318,8 +309,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	private TagMap externalMap = null;
 
 	/**
-	 * A list containing <tt>String</tt> objects, specifying effects on this
-	 * <tt>Unit</tt> object.
+	 * A list containing <tt>String</tt> objects, specifying effects on this <tt>Unit</tt> object.
 	 */
 	public List effects = null;
 
@@ -327,26 +317,25 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public boolean ordersConfirmed = false;
 
 	/** TODO: DOCUMENT ME! */
-	public Map		  skills	   = null; // maps SkillType.getID() objects to Skill objects
+	public Map skills = null; // maps SkillType.getID() objects to Skill objects
 	protected boolean skillsCopied = false;
 
 	/**
-	 * The items carried by this unit. The keys are the IDs of the item's type,
-	 * the values are the Item objects themselves.
+	 * The items carried by this unit. The keys are the IDs of the item's type, the values are the
+	 * Item objects themselves.
 	 */
 	public Map items = null;
 
 	/**
-	 * The spells known to this unit. The keys are the IDs of the spells, the
-	 * values are the Spell objects themselves.
+	 * The spells known to this unit. The keys are the IDs of the spells, the values are the Spell
+	 * objects themselves.
 	 */
 	public Map spells = null;
 
 	/**
-	 * Contains the spells this unit has set for use in a combat. This map
-	 * contains data if a unit has a magic skill and has actively set combat
-	 * spells. The values in this map are objects of type CombatSpell, the
-	 * keys are their ids.
+	 * Contains the spells this unit has set for use in a combat. This map contains data if a unit
+	 * has a magic skill and has actively set combat spells. The values in this map are objects of
+	 * type CombatSpell, the keys are their ids.
 	 */
 	public Map combatSpells = null;
 
@@ -392,8 +381,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the alias, i.e. the id of this unit it had in the last turn
-	 * (e.g. after a NUMMER order).
+	 * Returns the alias, i.e. the id of this unit it had in the last turn (e.g. after a NUMMER
+	 * order).
 	 *
 	 * @return the alias or null, if the id did not change.
 	 */
@@ -402,8 +391,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the item of the specified type if the unit owns such an item. If
-	 * not, null is returned.
+	 * Returns the item of the specified type if the unit owns such an item. If not, null is
+	 * returned.
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -414,17 +403,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Indicates that this unit belongs to a different faction than it pretends
-	 * to. A unit cannot disguise itself as a different faction and at the
-	 * same time be a spy of another faction, therefore, setting this
-	 * attribute to true results in having the guiseFaction attribute set to
-	 * null.
+	 * Indicates that this unit belongs to a different faction than it pretends to. A unit cannot
+	 * disguise itself as a different faction and at the same time be a spy of another faction,
+	 * therefore, setting this attribute to true results in having the guiseFaction attribute set
+	 * to null.
 	 */
 	private boolean isSpy = false;
 
 	/**
-	 * Sets whether is unit really belongs to its unit or only pretends to do
-	 * so. A
+	 * Sets whether is unit really belongs to its unit or only pretends to do so. A
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
@@ -446,16 +433,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * If this unit is disguised and pretends to belong to a different faction
-	 * this field holds that faction, else it is null.
+	 * If this unit is disguised and pretends to belong to a different faction this field holds
+	 * that faction, else it is null.
 	 */
 	private Faction guiseFaction = null;
 
 	/**
-	 * Sets the faction this unit pretends to belong to. A unit cannot disguise
-	 * itself as a different faction and at the same time be a spy of another
-	 * faction, therefore, setting a value other than null results in having
-	 * the spy attribute set to false.
+	 * Sets the faction this unit pretends to belong to. A unit cannot disguise itself as a
+	 * different faction and at the same time be a spy of another faction, therefore, setting a
+	 * value other than null results in having the spy attribute set to false.
 	 *
 	 * @param f TODO: DOCUMENT ME!
 	 */
@@ -468,8 +454,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the faction this unit pretends to belong to. If the unit is not
-	 * disguised null is returned.
+	 * Returns the faction this unit pretends to belong to. If the unit is not disguised null is
+	 * returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -478,8 +464,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Adds an item to the unit. If the unit already has an item of the same
-	 * type, the item is overwritten with the specified item object.
+	 * Adds an item to the unit. If the unit already has an item of the same type, the item is
+	 * overwritten with the specified item object.
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 *
@@ -509,12 +495,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the id the unit had when it was still a temp unit. This id is
-	 * only set in the turn after the unit turned from a temp unit into to a
-	 * real unit.
+	 * Returns the id the unit had when it was still a temp unit. This id is only set in the turn
+	 * after the unit turned from a temp unit into to a real unit.
 	 *
-	 * @return the temp id or null, if this unit was no temp unit in the
-	 * 		   previous turn.
+	 * @return the temp id or null, if this unit was no temp unit in the previous turn.
 	 */
 	public UnitID getTempID() {
 		return this.tempID;
@@ -524,9 +508,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	protected Region region = null;
 
 	/**
-	 * Sets the region this unit is in. If this unit already has a different
-	 * region set it removes itself from the collection of units in that
-	 * region.
+	 * Sets the region this unit is in. If this unit already has a different region set it removes
+	 * itself from the collection of units in that region.
 	 *
 	 * @param r TODO: DOCUMENT ME!
 	 */
@@ -557,9 +540,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	private Faction faction = null;
 
 	/**
-	 * Sets the faction for this unit. If this unit already has a different
-	 * faction set it removes itself from the collection of units in that
-	 * faction.
+	 * Sets the faction for this unit. If this unit already has a different faction set it removes
+	 * itself from the collection of units in that faction.
 	 *
 	 * @param faction TODO: DOCUMENT ME!
 	 */
@@ -590,9 +572,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	private Building building = null;
 
 	/**
-	 * Sets the building this unit is staying in. If the unit already is in
-	 * another building this method removes it from the unit collection of
-	 * that building.
+	 * Sets the building this unit is staying in. If the unit already is in another building this
+	 * method removes it from the unit collection of that building.
 	 *
 	 * @param building TODO: DOCUMENT ME!
 	 */
@@ -621,8 +602,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	private Ship ship = null;
 
 	/**
-	 * Sets the ship this unit is on. If the unit already is on another ship
-	 * this method removes it from the unit collection of that ship.
+	 * Sets the ship this unit is on. If the unit already is on another ship this method removes it
+	 * from the unit collection of that ship.
 	 *
 	 * @param ship TODO: DOCUMENT ME!
 	 */
@@ -651,8 +632,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	private int sortIndex = -1;
 
 	/**
-	 * Sets an index indicating how instances of class are sorted in the
-	 * report.
+	 * Sets an index indicating how instances of class are sorted in the report.
 	 *
 	 * @param index TODO: DOCUMENT ME!
 	 */
@@ -661,8 +641,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns an index indicating how instances of class are sorted in the
-	 * report.
+	 * Returns an index indicating how instances of class are sorted in the report.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -692,8 +671,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the name of this unit's race including the prefixes of itself,
-	 * its faction and group if it has such and those prefixes are set.
+	 * Returns the name of this unit's race including the prefixes of itself, its faction and group
+	 * if it has such and those prefixes are set.
 	 *
 	 * @param data TODO: DOCUMENT ME!
 	 *
@@ -705,13 +684,11 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 				return data.getTranslationOrKeyIfNull(this.getRaceNamePrefix()) +
 					   this.race.getName().toLowerCase();
 			} else {
-				if((this.group != null) &&
-					   (this.group.getRaceNamePrefix() != null)) {
+				if((this.group != null) && (this.group.getRaceNamePrefix() != null)) {
 					return data.getTranslationOrKeyIfNull(this.group.getRaceNamePrefix()) +
 						   this.race.getName().toLowerCase();
 				} else {
-					if((this.faction != null) &&
-						   (this.faction.getRaceNamePrefix() != null)) {
+					if((this.faction != null) && (this.faction.getRaceNamePrefix() != null)) {
 						return data.getTranslationOrKeyIfNull(this.faction.getRaceNamePrefix()) +
 							   this.race.getName().toLowerCase();
 					} else {
@@ -779,8 +756,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Removes a temp unit from the list of child temp units created by this
-	 * unit's orders.
+	 * Removes a temp unit from the list of child temp units created by this unit's orders.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
@@ -801,8 +777,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Clears the list of temp units created by this unit. Clears only the
-	 * caching collection, does not perform clean-up like deleteTemp() does.
+	 * Clears the list of temp units created by this unit. Clears only the caching collection, does
+	 * not perform clean-up like deleteTemp() does.
 	 */
 	public void clearTemps() {
 		if(tempUnits != null) {
@@ -812,8 +788,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns alle orders including the orders necessary to issue the creation
-	 * of all the child temp units of this unit.
+	 * Returns alle orders including the orders necessary to issue the creation of all the child
+	 * temp units of this unit.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -826,8 +802,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the orders necessary to issue the creation of all the child temp
-	 * units of this unit.
+	 * Returns the orders necessary to issue the creation of all the child temp units of this unit.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -837,8 +812,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		for(Iterator iter = tempUnits().iterator(); iter.hasNext();) {
 			TempUnit u = (TempUnit) iter.next();
 			cmds.add(getOrder(EresseaOrderConstants.O_MAKE) + " " +
-					 getOrder(EresseaOrderConstants.O_TEMP) + " " +
-					 u.getID().toString());
+					 getOrder(EresseaOrderConstants.O_TEMP) + " " + u.getID().toString());
 			cmds.addAll(u.getOrders());
 
 			if(u.ordersConfirmed) {
@@ -852,11 +826,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Creates a new temp unit with this unit as the parent. The temp unit is
-	 * fully initialised, i.e. it is added to the region units collection in
-	 * the specified game data,it inherits the faction, building or ship,
-	 * region, faction stealth status, group, race and combat status settings
-	 * and adds itself to the corresponding unit collections.
+	 * Creates a new temp unit with this unit as the parent. The temp unit is fully initialised,
+	 * i.e. it is added to the region units collection in the specified game data,it inherits the
+	 * faction, building or ship, region, faction stealth status, group, race and combat status
+	 * settings and adds itself to the corresponding unit collections.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
@@ -871,9 +844,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 		TempUnit t = new TempUnit(id, this);
 		this.addTemp(t);
-		t.persons		  = 0;
-		t.hideFaction     = this.hideFaction;
-		t.combatStatus    = this.combatStatus;
+		t.persons = 0;
+		t.hideFaction = this.hideFaction;
+		t.combatStatus = this.combatStatus;
 		t.ordersConfirmed = false;
 
 		if(this.race != null) {
@@ -906,8 +879,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Removes a temp unit with this unit as the parent completely from the
-	 * game data.
+	 * Removes a temp unit with this unit as the parent completely from the game data.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 * @param data TODO: DOCUMENT ME!
@@ -916,8 +888,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		TempUnit t = (TempUnit) this.removeTemp(id);
 
 		if(t != null) {
-			t.persons  = 0;
-			t.race     = null;
+			t.persons = 0;
+			t.race = null;
 			t.realRace = null;
 			t.setRegion(null);
 			t.setShip(null);
@@ -940,20 +912,19 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 */
 	private void invalidateCache() {
 		if(cache != null) {
-			cache.modifiedSkills     = null;
-			cache.modifiedItems		 = null;
-			cache.unitWeight		 = -1;
+			cache.modifiedSkills = null;
+			cache.modifiedItems = null;
+			cache.unitWeight = -1;
 			cache.modifiedUnitWeight = -1;
-			cache.modifiedPersons    = -1;
+			cache.modifiedPersons = -1;
 		}
 	}
 
 	/**
-	 * Returns a Collection over the relations this unit has to other units.
-	 * The iterator returns <tt>UnitRelation</tt> objects. An empty iterator
-	 * is returned if the relations have not been set up so far or if there
-	 * are no relations. To have the relations to other units properly set up
-	 * the refreshRelations() method has to be invoked.
+	 * Returns a Collection over the relations this unit has to other units. The iterator returns
+	 * <tt>UnitRelation</tt> objects. An empty iterator is returned if the relations have not been
+	 * set up so far or if there are no relations. To have the relations to other units properly
+	 * set up the refreshRelations() method has to be invoked.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -966,9 +937,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns a Collection over the relations this unit has to other units.
-	 * The collection consist of  <tt>UnitRelation</tt> objects.  The
-	 * UnitRelation objects are filtered by the given relation class.
+	 * Returns a Collection over the relations this unit has to other units. The collection consist
+	 * of  <tt>UnitRelation</tt> objects.  The UnitRelation objects are filtered by the given
+	 * relation class.
 	 *
 	 * @param relationClass TODO: DOCUMENT ME!
 	 *
@@ -1038,8 +1009,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public void getRelatedUnits(Collection units) {
 		units.add(this);
 
-		for(Iterator iter = this.getRelations(InterUnitRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = this.getRelations(InterUnitRelation.class).iterator(); iter.hasNext();) {
 			InterUnitRelation iur = (InterUnitRelation) iter.next();
 			units.add(iur.source);
 
@@ -1050,12 +1020,12 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Recursively retrieves all units that are related to this unit via one of
-	 * the specified relations.
+	 * Recursively retrieves all units that are related to this unit via one of the specified
+	 * relations.
 	 *
 	 * @param units all units gathered so far to prevent loops.
-	 * @param relations a set of classes naming the types of relations that are
-	 * 		  eligible for regarding a unit as related to some other unit.
+	 * @param relations a set of classes naming the types of relations that are eligible for
+	 * 		  regarding a unit as related to some other unit.
 	 */
 	public void getRelatedUnits(Set units, Set relations) {
 		units.add(this);
@@ -1064,7 +1034,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 			UnitRelation rel = (UnitRelation) iter.next();
 
 			if(relations.contains(rel.getClass())) {
-				Unit src    = rel.source;
+				Unit src = rel.source;
 				Unit target = null;
 
 				if(rel instanceof InterUnitRelation) {
@@ -1107,8 +1077,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Ship getModifiedShip() {
-		for(Iterator iter = getRelations(UnitContainerRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getRelations(UnitContainerRelation.class).iterator(); iter.hasNext();) {
 			UnitContainerRelation ucr = (UnitContainerRelation) iter.next();
 
 			if(ucr instanceof EnterRelation) {
@@ -1116,8 +1085,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 					// make fast return: first Ship-EnterRelation wins
 					return (Ship) ucr.target;
 				}
-			} else if(ucr instanceof LeaveRelation &&
-						  ucr.target.equals(getShip())) {
+			} else if(ucr instanceof LeaveRelation && ucr.target.equals(getShip())) {
 				// we only left our ship
 				return null;
 			}
@@ -1150,8 +1118,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the skills of this unit as they would appear after the orders
-	 * for person transfers are processed.
+	 * Returns the skills of this unit as they would appear after the orders for person transfers
+	 * are processed.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1168,10 +1136,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Updates the cache with the skills of this unit as they would appear
-	 * after the orders for person transfers are processed. If the cache
-	 * object or the modified skills field is still null after invoking this
-	 * function, the skill modifications cannot be determined accurately.
+	 * Updates the cache with the skills of this unit as they would appear after the orders for
+	 * person transfers are processed. If the cache object or the modified skills field is still
+	 * null after invoking this function, the skill modifications cannot be determined accurately.
 	 */
 	private synchronized void refreshModifiedSkills() {
 		// create the cache
@@ -1185,8 +1152,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		// you don't want to clear THAT
 		// that also means that this should be the only place where
 		// cache.modifiedSkills is modified
-		if((cache.modifiedSkills != null) &&
-			   (cache.modifiedSkills != this.skills)) {
+		if((cache.modifiedSkills != null) && (cache.modifiedSkills != this.skills)) {
 			cache.modifiedSkills.clear();
 		}
 
@@ -1199,7 +1165,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		}
 
 		// get all related units (as set) and sort it in a list afterwards
-		Set relatedUnits  = CollectionFactory.createHashSet();
+		Set relatedUnits = CollectionFactory.createHashSet();
 		Set relationTypes = CollectionFactory.createHashSet();
 		relationTypes.add(PersonTransferRelation.class);
 		relationTypes.add(RecruitmentRelation.class);
@@ -1214,23 +1180,21 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		Map clones = CollectionFactory.createHashtable();
 
 		for(Iterator iter = relatedUnits.iterator(); iter.hasNext();) {
-			Unit u     = (Unit) iter.next();
+			Unit u = (Unit) iter.next();
 			Unit clone = null;
 
 			try {
-				clone			 = new Unit((ID) u.getID().clone());
-				clone.persons    = u.getPersons();
-				clone.race		 = u.race;
-				clone.realRace   = u.realRace;
-				clone.region     = u.region;
+				clone = new Unit((ID) u.getID().clone());
+				clone.persons = u.getPersons();
+				clone.race = u.race;
+				clone.realRace = u.realRace;
+				clone.region = u.region;
 				clone.isStarving = u.isStarving;
 
-				for(Iterator skillIter = u.getSkills().iterator();
-						skillIter.hasNext();) {
+				for(Iterator skillIter = u.getSkills().iterator(); skillIter.hasNext();) {
 					Skill s = (Skill) skillIter.next();
-					clone.addSkill(new Skill(s.getSkillType(), s.getPoints(),
-											 s.getLevel(), clone.persons,
-											 s.noSkillPoints()));
+					clone.addSkill(new Skill(s.getSkillType(), s.getPoints(), s.getLevel(),
+											 clone.persons, s.noSkillPoints()));
 				}
 			} catch(CloneNotSupportedException e) {
 				// won't fail
@@ -1250,8 +1214,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		for(Iterator unitIter = sortedUnits.iterator(); unitIter.hasNext();) {
 			Unit srcUnit = (Unit) unitIter.next();
 
-			for(Iterator relationIter = srcUnit.getRelations().iterator();
-					relationIter.hasNext();) {
+			for(Iterator relationIter = srcUnit.getRelations().iterator(); relationIter.hasNext();) {
 				UnitRelation unitRel = (UnitRelation) relationIter.next();
 
 				if(!(unitRel.source.equals(srcUnit)) ||
@@ -1259,13 +1222,11 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 					continue;
 				}
 
-				PersonTransferRelation rel				  = (PersonTransferRelation) unitRel;
-				Unit				   srcClone			  = (Unit) clones.get(srcUnit.getID());
-				Unit				   targetUnit		  = (Unit) rel.target;
-				Unit				   targetClone		  = (Unit) clones.get(targetUnit.getID());
-				int					   transferredPersons = Math.max(0,
-																	 Math.min(srcClone.getPersons(),
-																			  rel.amount));
+				PersonTransferRelation rel = (PersonTransferRelation) unitRel;
+				Unit srcClone = (Unit) clones.get(srcUnit.getID());
+				Unit targetUnit = (Unit) rel.target;
+				Unit targetClone = (Unit) clones.get(targetUnit.getID());
+				int transferredPersons = Math.max(0, Math.min(srcClone.getPersons(), rel.amount));
 
 				if(transferredPersons == 0) {
 					continue;
@@ -1274,11 +1235,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 				/* modify the target clone */
 				/* first modify all skills that are available in the
 				 target clone */
-				for(Iterator skills = targetClone.getSkills().iterator();
-						skills.hasNext();) {
-					Skill targetSkill   = (Skill) skills.next();
-					Skill srcSkill	    = srcClone.getSkill(targetSkill.getSkillType());
-					int   skillModifier = targetSkill.getModifier(targetClone);
+				for(Iterator skills = targetClone.getSkills().iterator(); skills.hasNext();) {
+					Skill targetSkill = (Skill) skills.next();
+					Skill srcSkill = srcClone.getSkill(targetSkill.getSkillType());
+					int skillModifier = targetSkill.getModifier(targetClone);
 
 					if(srcSkill == null) {
 						/* skill exists only in the target clone, this
@@ -1287,10 +1247,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 						 confusion about level modifiers in case of
 						 noSkillPoints. If skill points are relevant
 						 this value is ignored anyway. */
-						srcSkill = new Skill(targetSkill.getSkillType(), 0,
-											 lostSkillLevel,
-											 srcClone.getPersons(),
-											 targetSkill.noSkillPoints());
+						srcSkill = new Skill(targetSkill.getSkillType(), 0, lostSkillLevel,
+											 srcClone.getPersons(), targetSkill.noSkillPoints());
 					}
 
 					if(targetSkill.noSkillPoints()) {
@@ -1298,12 +1256,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 						 skill level cannot drop below 0. This also
 						 important to handle the Integer.MIN_VALUE
 						 case below */
-						int transferredSkillFactor = Math.max(0,
-															  srcSkill.getLevel() -
+						int transferredSkillFactor = Math.max(0, srcSkill.getLevel() -
 															  skillModifier) * transferredPersons;
-						int targetSkillFactor = Math.max(0,
-														 targetSkill.getLevel() -
-														 skillModifier) * targetClone.getPersons();
+						int targetSkillFactor = Math.max(0, targetSkill.getLevel() - skillModifier) * targetClone.getPersons();
 						int newSkillLevel = (int) (((float) (transferredSkillFactor +
 											targetSkillFactor)) / (float) (transferredPersons +
 											targetClone.getPersons()));
@@ -1315,9 +1270,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 						 depending on the modifier. Thus
 						 lostSkillLevel is used to distinctly
 						 mark the staleness of this skill. */
-						targetSkill.setLevel((newSkillLevel > 0)
-											 ? (newSkillLevel + skillModifier)
-											 : lostSkillLevel);
+						targetSkill.setLevel((newSkillLevel > 0) ? (newSkillLevel + skillModifier)
+																 : lostSkillLevel);
 					} else {
 						targetSkill.setPoints(targetSkill.getPoints() +
 											  (int) (((float) srcSkill.getPoints() * (float) transferredPersons) / (float) srcClone.getPersons()));
@@ -1326,9 +1280,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 				/* now modify the skills that only exist in the source
 				 clone */
-				for(Iterator skills = srcClone.getSkills().iterator();
-						skills.hasNext();) {
-					Skill srcSkill    = (Skill) skills.next();
+				for(Iterator skills = srcClone.getSkills().iterator(); skills.hasNext();) {
+					Skill srcSkill = (Skill) skills.next();
 					Skill targetSkill = (Skill) targetClone.getSkill(srcSkill.getSkillType());
 
 					if(targetSkill == null) {
@@ -1338,10 +1291,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 						 confusion about level modifiers in case of
 						 noSkillPoints. If skill points are relevant
 						 this value is ignored anyway. */
-						targetSkill = new Skill(srcSkill.getSkillType(), 0,
-												lostSkillLevel,
-												targetClone.getPersons(),
-												srcSkill.noSkillPoints());
+						targetSkill = new Skill(srcSkill.getSkillType(), 0, lostSkillLevel,
+												targetClone.getPersons(), srcSkill.noSkillPoints());
 						targetClone.addSkill(targetSkill);
 
 						if(srcSkill.noSkillPoints()) {
@@ -1349,7 +1300,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 							 skill level cannot drop below 0. This also
 							 important to handle the lostSkillLevel
 							 case below */
-							int skillModifier		   = srcSkill.getModifier(srcClone);
+							int skillModifier = srcSkill.getModifier(srcClone);
 							int transferredSkillFactor = Math.max(0,
 																  srcSkill.getLevel() -
 																  skillModifier) * transferredPersons;
@@ -1364,8 +1315,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 							 lostSkillLevel is used to distinctly
 							 mark the staleness of this skill. */
 							targetSkill.setLevel((newSkillLevel > 0)
-												 ? (newSkillLevel +
-												 skillModifier) : lostSkillLevel);
+												 ? (newSkillLevel + skillModifier) : lostSkillLevel);
 						} else {
 							int newSkillPoints = (int) (srcSkill.getPoints() * (float) ((float) transferredPersons / (float) srcClone.getPersons()));
 							targetSkill.setPoints(newSkillPoints);
@@ -1376,8 +1326,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 					 loop for this) */
 					if(!srcSkill.noSkillPoints()) {
 						int transferredSkillPoints = (int) (((float) srcSkill.getPoints() * (float) transferredPersons) / (float) srcClone.getPersons());
-						srcSkill.setPoints(srcSkill.getPoints() -
-										   transferredSkillPoints);
+						srcSkill.setPoints(srcSkill.getPoints() - transferredSkillPoints);
 					}
 				}
 
@@ -1393,8 +1342,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		if(clone.getSkills().size() > 0) {
 			this.cache.modifiedSkills = CollectionFactory.createHashtable();
 
-			for(Iterator skills = clone.getSkills().iterator();
-					skills.hasNext();) {
+			for(Iterator skills = clone.getSkills().iterator(); skills.hasNext();) {
 				Skill skill = (Skill) skills.next();
 				skill.setPersons(clone.persons);
 
@@ -1416,17 +1364,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 				/* inject clone skills into real unit (no extra loop for
 				 this */
 				if((skill.getPoints() > 0) || (skill.getLevel() > 0)) {
-					this.cache.modifiedSkills.put(skill.getSkillType().getID(),
-												  skill);
+					this.cache.modifiedSkills.put(skill.getSkillType().getID(), skill);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Returns the unit container this unit is in. The type of unit container
-	 * returned (faction, region, building or ship) is equal to the class of
-	 * the uc parameter.
+	 * Returns the unit container this unit is in. The type of unit container returned (faction,
+	 * region, building or ship) is equal to the class of the uc parameter.
 	 *
 	 * @param uc TODO: DOCUMENT ME!
 	 *
@@ -1447,8 +1393,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the skill of the specified type if the unit has such a skill,
-	 * else null is returned.
+	 * Returns the skill of the specified type if the unit has such a skill, else null is returned.
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -1459,8 +1404,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Adds a skill to unit's collection of skills. If the unit already has a
-	 * skill of the same type it is overwritten with the the new skill object.
+	 * Adds a skill to unit's collection of skills. If the unit already has a skill of the same
+	 * type it is overwritten with the the new skill object.
 	 *
 	 * @param s TODO: DOCUMENT ME!
 	 *
@@ -1531,9 +1476,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 					continue;
 				}
 
-				Skill newSkill = new Skill(sk.getSkillType(), sk.getPoints(),
-										   sk.getLevel(), v.persons,
-										   sk.noSkillPoints());
+				Skill newSkill = new Skill(sk.getSkillType(), sk.getPoints(), sk.getLevel(),
+										   v.persons, sk.noSkillPoints());
 				v.addSkill(newSkill);
 			}
 		}
@@ -1560,11 +1504,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the item of the specified type as it would appear after the
-	 * orders of this unit have been processed, i.e. the amount of the item
-	 * might be modified by transfer orders. If the unit does not have an item
-	 * of the specified type nor is given one by some other unit, null is
-	 * returned.
+	 * Returns the item of the specified type as it would appear after the orders of this unit have
+	 * been processed, i.e. the amount of the item might be modified by transfer orders. If the
+	 * unit does not have an item of the specified type nor is given one by some other unit, null
+	 * is returned.
 	 *
 	 * @param type TODO: DOCUMENT ME!
 	 *
@@ -1594,8 +1537,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public List getItemTransferRelations(Item item) {
 		List ret = CollectionFactory.createArrayList(getRelations().size());
 
-		for(Iterator iter = getRelations(ItemTransferRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getRelations(ItemTransferRelation.class).iterator(); iter.hasNext();) {
 			ItemTransferRelation rel = (ItemTransferRelation) iter.next();
 
 			if(rel.itemType.equals(item.getItemType())) {
@@ -1634,8 +1576,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the items of this unit as they would appear after the orders of
-	 * this unit have been processed.
+	 * Returns the items of this unit as they would appear after the orders of this unit have been
+	 * processed.
 	 *
 	 * @return a collection of Item objects.
 	 */
@@ -1648,8 +1590,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Deduces the modified items from the current items and the relations
-	 * between this and other units.
+	 * Deduces the modified items from the current items and the relations between this and other
+	 * units.
 	 */
 	private synchronized void refreshModifiedItems() {
 		// 0. clear existing data structures
@@ -1666,8 +1608,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		}
 
 		// 1. check whether there is anything to do at all
-		if(((items == null) || (items.size() == 0)) &&
-			   getRelations().isEmpty()) {
+		if(((items == null) || (items.size() == 0)) && getRelations().isEmpty()) {
 			return;
 		}
 
@@ -1683,17 +1624,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 			UnitRelation rel = (UnitRelation) iter.next();
 
 			if(rel instanceof ItemTransferRelation) {
-				ItemTransferRelation itr		  = (ItemTransferRelation) rel;
-				Item				 modifiedItem = (Item) cache.modifiedItems.get(itr.itemType.getID());
+				ItemTransferRelation itr = (ItemTransferRelation) rel;
+				Item modifiedItem = (Item) cache.modifiedItems.get(itr.itemType.getID());
 
 				if(modifiedItem != null) { // the transferred item can be found among this unit's items
 
 					if(this.equals(itr.source)) {
-						modifiedItem.setAmount(modifiedItem.getAmount() -
-											   itr.amount);
+						modifiedItem.setAmount(modifiedItem.getAmount() - itr.amount);
 					} else {
-						modifiedItem.setAmount(modifiedItem.getAmount() +
-											   itr.amount);
+						modifiedItem.setAmount(modifiedItem.getAmount() + itr.amount);
 					}
 				} else { // the transferred item is not among the items the unit already has
 
@@ -1746,9 +1685,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the number of persons in this unit as it would be after the
-	 * orders of this and other units have been processed since it may be
-	 * modified by transfer orders.
+	 * Returns the number of persons in this unit as it would be after the orders of this and other
+	 * units have been processed since it may be modified by transfer orders.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1760,8 +1698,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		if(cache.modifiedPersons == -1) {
 			cache.modifiedPersons = this.getPersons();
 
-			for(Iterator iter = getPersonTransferRelations().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = getPersonTransferRelations().iterator(); iter.hasNext();) {
 				PersonTransferRelation ptr = (PersonTransferRelation) iter.next();
 
 				if(this.equals(ptr.source)) {
@@ -1776,8 +1713,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the weight of a unit with the specified number of persons, their
-	 * weight and the specified items in GE  100.
+	 * Returns the weight of a unit with the specified number of persons, their weight and the
+	 * specified items in GE  100.
 	 *
 	 * @param persons TODO: DOCUMENT ME!
 	 * @param personWeight TODO: DOCUMENT ME!
@@ -1793,8 +1730,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 			// pavkovic 2003.09.10: only take care about (possibly) modified items with positive amount
 			if(item.getAmount() > 0) {
-				weight += (item.getAmount() * (int) (item.getItemType()
-														 .getWeight() * 100));
+				weight += (item.getAmount() * (int) (item.getItemType().getWeight() * 100));
 			}
 		}
 
@@ -1815,9 +1751,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 		if(cache.unitWeight == -1) {
 			cache.unitWeight = getWeight(this.getPersons(),
-										 (this.realRace != null)
-										 ? this.realRace.getWeight()
-										 : this.race.getWeight(),
+										 (this.realRace != null) ? this.realRace.getWeight()
+																 : this.race.getWeight(),
 										 this.getItems().iterator());
 		}
 
@@ -1825,57 +1760,52 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the maximum payload in GE  100 of this unit when it travels by
-	 * horse. Horses, carts and persons are taken into account for this
-	 * calculation. If the unit has a sufficient skill in horse riding but
-	 * there are too many carts for the horses, the weight of the additional
+	 * Returns the maximum payload in GE  100 of this unit when it travels by horse. Horses, carts
+	 * and persons are taken into account for this calculation. If the unit has a sufficient skill
+	 * in horse riding but there are too many carts for the horses, the weight of the additional
 	 * carts are also already considered.
 	 *
-	 * @return the payload in GE  100, CAP_NO_HORSES if the unit does not
-	 * 		   possess horses or CAP_UNSKILLED if the unit is not sufficiently
-	 * 		   skilled in horse riding to travel on horseback.
+	 * @return the payload in GE  100, CAP_NO_HORSES if the unit does not possess horses or
+	 * 		   CAP_UNSKILLED if the unit is not sufficiently skilled in horse riding to travel on
+	 * 		   horseback.
 	 */
 	public int getPayloadOnHorse() {
-		return getRegion().getData().getGameSpecificStuff()
-				   .getMovementEvaluator().getPayloadOnHorse(this);
+		return getRegion().getData().getGameSpecificStuff().getMovementEvaluator()
+				   .getPayloadOnHorse(this);
 	}
 
 	/**
-	 * Returns the maximum payload in GE  100 of this unit when it travels on
-	 * foot. Horses, carts and persons are taken into account for this
-	 * calculation. If the unit has a sufficient skill in horse riding but
-	 * there are too many carts for the horses, the weight of the additional
-	 * carts are also already considered. The calculation also takes into
-	 * account that trolls can tow carts.
+	 * Returns the maximum payload in GE  100 of this unit when it travels on foot. Horses, carts
+	 * and persons are taken into account for this calculation. If the unit has a sufficient skill
+	 * in horse riding but there are too many carts for the horses, the weight of the additional
+	 * carts are also already considered. The calculation also takes into account that trolls can
+	 * tow carts.
 	 *
-	 * @return the payload in GE  100, CAP_UNSKILLED if the unit is not
-	 * 		   sufficiently skilled in horse riding to travel on horseback.
+	 * @return the payload in GE  100, CAP_UNSKILLED if the unit is not sufficiently skilled in
+	 * 		   horse riding to travel on horseback.
 	 */
 	public int getPayloadOnFoot() {
-		return getRegion().getData().getGameSpecificStuff()
-				   .getMovementEvaluator().getPayloadOnFoot(this);
+		return getRegion().getData().getGameSpecificStuff().getMovementEvaluator().getPayloadOnFoot(this);
 	}
 
 	/**
-	 * Returns the weight of all items of this unit that are not horses or
-	 * carts in GE  100.
+	 * Returns the weight of all items of this unit that are not horses or carts in GE  100.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getLoad() {
-		return getRegion().getData().getGameSpecificStuff()
-				   .getMovementEvaluator().getLoad(this);
+		return getRegion().getData().getGameSpecificStuff().getMovementEvaluator().getLoad(this);
 	}
 
 	/**
-	 * Returns the weight of all items of this unit that are not horses or
-	 * carts in GE  100 based on the modified items.
+	 * Returns the weight of all items of this unit that are not horses or carts in GE  100 based
+	 * on the modified items.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getModifiedLoad() {
-		int load = getRegion().getData().getGameSpecificStuff()
-					   .getMovementEvaluator().getModifiedLoad(this);
+		int load = getRegion().getData().getGameSpecificStuff().getMovementEvaluator()
+					   .getModifiedLoad(this);
 
 		// also take care of passengers 
 		Map passengers = getPassengers();
@@ -1889,14 +1819,14 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the number of regions this unit is able to travel within one
-	 * turn based on the riding skill, horses, carts and load of this unit.
+	 * Returns the number of regions this unit is able to travel within one turn based on the
+	 * riding skill, horses, carts and load of this unit.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getRadius() {
 		// pavkovic 2003.10.02: use modified load here...int load = getLoad();
-		int load    = getModifiedLoad();
+		int load = getModifiedLoad();
 		int payload = getPayloadOnHorse();
 
 		if((payload >= 0) && ((payload - load) >= 0)) {
@@ -1913,8 +1843,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns the overall weight (persons, items) of this unit in GE  100
-	 * based on the modified items and persons.
+	 * Returns the overall weight (persons, items) of this unit in GE  100 based on the modified
+	 * items and persons.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1926,10 +1856,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		if(cache.modifiedUnitWeight == -1) {
 			cache.modifiedUnitWeight = getWeight(this.getModifiedPersons(),
 												 (this.realRace != null)
-												 ? this.realRace.getWeight()
-												 : this.race.getWeight(),
-												 this.getModifiedItems()
-													 .iterator());
+												 ? this.realRace.getWeight() : this.race.getWeight(),
+												 this.getModifiedItems().iterator());
 		}
 
 		return cache.modifiedUnitWeight;
@@ -1943,8 +1871,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public Map getPassengers() {
 		Map passengers = CollectionFactory.createHashtable();
 
-		for(Iterator iter = getRelations(TransportRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getRelations(TransportRelation.class).iterator(); iter.hasNext();) {
 			TransportRelation tr = (TransportRelation) iter.next();
 
 			if(this.equals(tr.source)) {
@@ -1956,17 +1883,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns all units indicating by their orders that they would transport
-	 * this unit as a passanger (if there is more than one such unit, that is
-	 * a semantical error of course).
+	 * Returns all units indicating by their orders that they would transport this unit as a
+	 * passanger (if there is more than one such unit, that is a semantical error of course).
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Map getCarriers() {
 		Map carriers = CollectionFactory.createHashtable();
 
-		for(Iterator iter = getRelations(TransportRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getRelations(TransportRelation.class).iterator(); iter.hasNext();) {
 			TransportRelation tr = (TransportRelation) iter.next();
 
 			if(this.equals(tr.target)) {
@@ -1985,8 +1910,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public Collection getAttackVictims() {
 		Collection ret = CollectionFactory.createLinkedList();
 
-		for(Iterator iter = getRelations(AttackRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getRelations(AttackRelation.class).iterator(); iter.hasNext();) {
 			AttackRelation ar = (AttackRelation) iter.next();
 
 			if(ar.source.equals(this)) {
@@ -2005,8 +1929,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	public Collection getAttackAggressors() {
 		Collection ret = CollectionFactory.createLinkedList();
 
-		for(Iterator iter = getRelations(AttackRelation.class).iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getRelations(AttackRelation.class).iterator(); iter.hasNext();) {
 			AttackRelation ar = (AttackRelation) iter.next();
 
 			if(ar.target.equals(this)) {
@@ -2018,8 +1941,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * remove relations that are originating from us with a line number &gt;=
-	 * <tt>from</tt>
+	 * remove relations that are originating from us with a line number &gt;= <tt>from</tt>
 	 *
 	 * @param from TODO: DOCUMENT ME!
 	 */
@@ -2066,15 +1988,13 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Parses the orders of this unit and detects relations between units
-	 * established by those orders. When does this method have to be called?
-	 * No relation of a unit can affect an object outside the region that unit
-	 * is in. So when all relations regarding a certain unit as target or
-	 * source need to be determined, this method has to be called for each
-	 * unit in the same region. Since relations are defined by unit orders,
-	 * modified orders may lead to different relations. Therefore
-	 * refreshRelations() has to be invoked on a unit after its orders were
-	 * modified.
+	 * Parses the orders of this unit and detects relations between units established by those
+	 * orders. When does this method have to be called? No relation of a unit can affect an object
+	 * outside the region that unit is in. So when all relations regarding a certain unit as
+	 * target or source need to be determined, this method has to be called for each unit in the
+	 * same region. Since relations are defined by unit orders, modified orders may lead to
+	 * different relations. Therefore refreshRelations() has to be invoked on a unit after its
+	 * orders were modified.
 	 *
 	 * @param from TODO: DOCUMENT ME!
 	 */
@@ -2085,9 +2005,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 		invalidateCache();
 		removeRelationsOriginatingFromUs(from);
-		addAndSpreadRelations(getRegion().getData().getGameSpecificStuff()
-								  .getRelationFactory().createRelations(this,
-																		from));
+		addAndSpreadRelations(getRegion().getData().getGameSpecificStuff().getRelationFactory()
+								  .createRelations(this, from));
 	}
 
 	private void addAndSpreadRelations(Collection newRelations) {
@@ -2137,8 +2056,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		if(name != null) {
 			return name + " (" + this.id.toString() + ")";
 		} else {
-			return getString("unit") + " " + this.id.toString() + " (" +
-				   this.id.toString() + ")";
+			return getString("unit") + " " + this.id.toString() + " (" + this.id.toString() + ")";
 		}
 	}
 
@@ -2173,8 +2091,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns a locale specific string representation of the specified unit
-	 * combat status.
+	 * Returns a locale specific string representation of the specified unit combat status.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 *
@@ -2241,17 +2158,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Add a order to the unit's orders. This function ensures that TEMP units
-	 * are not affected by the operation.
+	 * Add a order to the unit's orders. This function ensures that TEMP units are not affected by
+	 * the operation.
 	 *
 	 * @param order the order to add.
-	 * @param replace if <tt>true</tt>, the order replaces any other of the
-	 * 		  unit's orders of the same type. If <tt>false</tt> the order is
-	 * 		  simply added.
-	 * @param length denotes the number of tokens that need to be equal for a
-	 * 		  replacement. E.g. specify 2 if order is "BENENNE EINHEIT abc"
-	 * 		  and all "BENENNE EINHEIT" orders should be replaced but not all
-	 * 		  "BENENNE" orders.
+	 * @param replace if <tt>true</tt>, the order replaces any other of the unit's orders of the
+	 * 		  same type. If <tt>false</tt> the order is simply added.
+	 * @param length denotes the number of tokens that need to be equal for a replacement. E.g.
+	 * 		  specify 2 if order is "BENENNE EINHEIT abc" and all "BENENNE EINHEIT" orders should
+	 * 		  be replaced but not all "BENENNE" orders.
 	 *
 	 * @return <tt>true</tt> if the order was successfully added.
 	 */
@@ -2262,10 +2177,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		}
 
 		// parse order until there are enough match tokens
-		int			   tokenCounter = 0;
-		Collection     matchTokens = CollectionFactory.createLinkedList();
-		OrderTokenizer ct		   = new OrderTokenizer(new StringReader(order));
-		OrderToken     t		   = ct.getNextToken();
+		int tokenCounter = 0;
+		Collection matchTokens = CollectionFactory.createLinkedList();
+		OrderTokenizer ct = new OrderTokenizer(new StringReader(order));
+		OrderToken t = ct.getNextToken();
 
 		while((t.ttype != OrderToken.TT_EOC) && (tokenCounter++ < length)) {
 			matchTokens.add(t);
@@ -2282,15 +2197,13 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 			boolean tempBlock = false;
 
 			// cycle through this unit's orders
-			for(ListIterator cmds = ordersObject.getOrders().listIterator();
-					cmds.hasNext();) {
+			for(ListIterator cmds = ordersObject.getOrders().listIterator(); cmds.hasNext();) {
 				String cmd = (String) cmds.next();
 				ct = new OrderTokenizer(new StringReader(cmd));
-				t  = ct.getNextToken();
+				t = ct.getNextToken();
 
 				// skip empty orders and comments
-				if((OrderToken.TT_EOC == t.ttype) ||
-					   (OrderToken.TT_COMMENT == t.ttype)) {
+				if((OrderToken.TT_EOC == t.ttype) || (OrderToken.TT_COMMENT == t.ttype)) {
 					continue;
 				}
 
@@ -2310,8 +2223,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 						boolean removeOrder = true;
 
 						for(Iterator iter = matchTokens.iterator();
-								iter.hasNext() &&
-								(t.ttype != OrderToken.TT_EOC);) {
+								iter.hasNext() && (t.ttype != OrderToken.TT_EOC);) {
 							OrderToken matchToken = (OrderToken) iter.next();
 
 							if(!(t.equalsToken(matchToken.getText()) ||
@@ -2353,22 +2265,19 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newUnit TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Unit curUnit, GameData newGD,
-							 Unit newUnit) {
+	public static void merge(GameData curGD, Unit curUnit, GameData newGD, Unit newUnit) {
 		/*
 		 * True, when curUnit is seen by the faction it belongs to and
 		 * is therefore fully specified.
 		 */
-		boolean curWellKnown = !curUnit.ordersAreNull() ||
-							   (curUnit.combatStatus != -1);
+		boolean curWellKnown = !curUnit.ordersAreNull() || (curUnit.combatStatus != -1);
 
 		/*
 		 * True, when newUnit is seen by the faction it belongs to and
 		 * is therefore fully specified. This is only meaningful in
 		 * the second pass.
 		 */
-		boolean newWellKnown = !newUnit.ordersAreNull() ||
-							   (newUnit.combatStatus != -1);
+		boolean newWellKnown = !newUnit.ordersAreNull() || (newUnit.combatStatus != -1);
 
 		/*
 		 * True, when newUnit is completely uninitialized, i.e. this
@@ -2417,8 +2326,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 				newUnit.combatSpells.clear();
 			}
 
-			for(Iterator iter = curUnit.combatSpells.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curUnit.combatSpells.values().iterator(); iter.hasNext();) {
 				CombatSpell curCS = (CombatSpell) iter.next();
 				CombatSpell newCS = null;
 
@@ -2434,12 +2342,13 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 		if(!curUnit.ordersAreNull() && (curUnit.getOrders().size() > 0)) {
 			Collection orders = CollectionFactory.createArrayList();
+
 			/*
 			if(!newUnit.ordersAreNull()) {
-				for(Iterator iter = newUnit.getOrders().iterator(); iter.hasNext(); ) {
-					String actOrder = (String) iter.next();
-					orders.add("; "+actOrder);
-				}
+			    for(Iterator iter = newUnit.getOrders().iterator(); iter.hasNext(); ) {
+			        String actOrder = (String) iter.next();
+			        orders.add("; "+actOrder);
+			    }
 			}
 			*/
 			orders.addAll(curUnit.getOrders());
@@ -2470,8 +2379,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 		if((curUnit.getGroup() != null) && (newUnit.getFaction() != null) &&
 			   (newUnit.getFaction().groups != null)) {
-			newUnit.setGroup((Group) newUnit.getFaction().groups.get(curUnit.getGroup()
-																			.getID()));
+			newUnit.setGroup((Group) newUnit.getFaction().groups.get(curUnit.getGroup().getID()));
 		}
 
 		if(curUnit.guard != -1) {
@@ -2482,8 +2390,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		 Since the guise faction can only be known by the 'owner
 		 faction' it should override the isSpy value */
 		if(curUnit.getGuiseFaction() != null) {
-			newUnit.setGuiseFaction(newGD.getFaction(curUnit.getGuiseFaction()
-															.getID()));
+			newUnit.setGuiseFaction(newGD.getFaction(curUnit.getGuiseFaction().getID()));
 		}
 
 		newUnit.isSpy = (curUnit.isSpy && (newUnit.getGuiseFaction() == null));
@@ -2507,13 +2414,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 					newUnit.items.clear();
 				}
 
-				for(Iterator iter = curUnit.items.values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curUnit.items.values().iterator(); iter.hasNext();) {
 					Item curItem = (Item) iter.next();
-					Item newItem = new Item(newGD.rules.getItemType(curItem.getItemType()
-																		   .getID(),
-																	true),
-											curItem.getAmount());
+					Item newItem = new Item(newGD.rules.getItemType(curItem.getItemType().getID(),
+																	true), curItem.getAmount());
 					newUnit.items.put(newItem.getItemType().getID(), newItem);
 				}
 			}
@@ -2536,8 +2440,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		}
 
 		if(curUnit.realRace != null) {
-			newUnit.realRace = newGD.rules.getRace(curUnit.realRace.getID(),
-												   true);
+			newUnit.realRace = newGD.rules.getRace(curUnit.realRace.getID(), true);
 		}
 
 		if(curUnit.getRegion() != null) {
@@ -2571,15 +2474,11 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		}
 
 		if((curUnit.skills != null) && (curUnit.skills.size() > 0)) {
-			for(Iterator iter = curUnit.skills.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curUnit.skills.values().iterator(); iter.hasNext();) {
 				Skill curSkill = (Skill) iter.next();
-				Skill newSkill = new Skill(newGD.rules.getSkillType(curSkill.getSkillType()
-																			.getID(),
-																	true),
-										   curSkill.getPoints(),
-										   curSkill.getLevel(),
-										   newUnit.getPersons(),
+				Skill newSkill = new Skill(newGD.rules.getSkillType(curSkill.getSkillType().getID(),
+																	true), curSkill.getPoints(),
+										   curSkill.getLevel(), newUnit.getPersons(),
 										   curSkill.noSkillPoints());
 
 				if(curSkill.isLevelChanged()) {
@@ -2593,8 +2492,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 				// NOTE: Maybe some decision about change-level computation in reports of
 				//       same date here
-				Skill oldSkill = (Skill) newUnit.skills.put(newSkill.getSkillType()
-																	.getID(),
+				Skill oldSkill = (Skill) newUnit.skills.put(newSkill.getSkillType().getID(),
 															newSkill);
 
 				if(newUnit.skillsCopied) {
@@ -2648,8 +2546,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 				newUnit.spells.clear();
 			}
 
-			for(Iterator iter = curUnit.spells.values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = curUnit.spells.values().iterator(); iter.hasNext();) {
 				Spell curSpell = (Spell) iter.next();
 				Spell newSpell = newGD.getSpell(curSpell.getID());
 				newUnit.spells.put(newSpell.getID(), newSpell);
@@ -2687,14 +2584,12 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 		// are from the same turn. Both conditions are tested by the
 		// following if statement
 		if(sameRound) {
-			if((curUnit.unitMessages != null) &&
-				   (curUnit.unitMessages.size() > 0)) {
+			if((curUnit.unitMessages != null) && (curUnit.unitMessages.size() > 0)) {
 				if(newUnit.unitMessages == null) {
 					newUnit.unitMessages = CollectionFactory.createLinkedList();
 				}
 
-				for(Iterator iter = curUnit.unitMessages.iterator();
-						iter.hasNext();) {
+				for(Iterator iter = curUnit.unitMessages.iterator(); iter.hasNext();) {
 					Message curMsg = (Message) iter.next();
 					Message newMsg = null;
 
@@ -2721,9 +2616,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Indicates whether this Unit object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Unit and o's id is
-	 * equal to the id of this Unit object.
+	 * Indicates whether this Unit object is equal to another object. Returns true only if o is not
+	 * null and an instance of class Unit and o's id is equal to the id of this Unit object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -2738,8 +2632,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Imposes a natural ordering on Unit objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Unit objects equivalent to the natural ordering of their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -2761,8 +2654,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Returns a translation for the specified order key in the specified
-	 * locale.
+	 * Returns a translation for the specified order key in the specified locale.
 	 *
 	 * @param key TODO: DOCUMENT ME!
 	 * @param locale TODO: DOCUMENT ME!
@@ -2774,50 +2666,45 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	}
 
 	/**
-	 * Scans this unit's orders for temp units to create. It constructs them as
-	 * TempUnit objects and removes the corresponding orders from this unit.
-	 * Uses the default order locale to parse the orders.
+	 * Scans this unit's orders for temp units to create. It constructs them as TempUnit objects
+	 * and removes the corresponding orders from this unit. Uses the default order locale to parse
+	 * the orders.
 	 *
-	 * @param sortIndex an index for sorting units (required to reconstruct the
-	 * 		  original order in the report) which is incremented with each new
-	 * 		  temp unit.
+	 * @param sortIndex an index for sorting units (required to reconstruct the original order in
+	 * 		  the report) which is incremented with each new temp unit.
 	 *
-	 * @return the new sort index. <tt>return value</tt> - sortIndex is the
-	 * 		   number of temp units read from this unit's orders.
+	 * @return the new sort index. <tt>return value</tt> - sortIndex is the number of temp units
+	 * 		   read from this unit's orders.
 	 */
 	public int extractTempUnits(int sortIndex) {
 		return extractTempUnits(sortIndex, Locales.getOrderLocale());
 	}
 
 	/**
-	 * Scans this unit's orders for temp units to create. It constructs them as
-	 * TempUnit objects and removes the corresponding orders from this unit.
+	 * Scans this unit's orders for temp units to create. It constructs them as TempUnit objects
+	 * and removes the corresponding orders from this unit.
 	 *
-	 * @param sortIndex an index for sorting units (required to reconstruct the
-	 * 		  original order in the report) which is incremented with each new
-	 * 		  temp unit.
+	 * @param sortIndex an index for sorting units (required to reconstruct the original order in
+	 * 		  the report) which is incremented with each new temp unit.
 	 * @param locale the locale to parse the orders with.
 	 *
-	 * @return the new sort index. <tt>return value</tt> - sortIndex is the
-	 * 		   number of temp units read from this unit's orders.
+	 * @return the new sort index. <tt>return value</tt> - sortIndex is the number of temp units
+	 * 		   read from this unit's orders.
 	 */
 	public int extractTempUnits(int sortIndex, Locale locale) {
 		if(!this.ordersAreNull()) {
 			TempUnit tempUnit = null;
 
-			for(Iterator cmdIterator = ordersObject.getOrders().iterator();
-					cmdIterator.hasNext();) {
-				String						    line  = (String) cmdIterator.next();
-				com.eressea.util.OrderTokenizer ct    = new com.eressea.util.OrderTokenizer(new StringReader(line));
-				com.eressea.util.OrderToken     token = ct.getNextToken();
+			for(Iterator cmdIterator = ordersObject.getOrders().iterator(); cmdIterator.hasNext();) {
+				String line = (String) cmdIterator.next();
+				com.eressea.util.OrderTokenizer ct = new com.eressea.util.OrderTokenizer(new StringReader(line));
+				com.eressea.util.OrderToken token = ct.getNextToken();
 
 				if(tempUnit == null) {
-					if(token.equalsToken(getOrder(EresseaOrderConstants.O_MAKE,
-													  locale))) {
+					if(token.equalsToken(getOrder(EresseaOrderConstants.O_MAKE, locale))) {
 						token = ct.getNextToken();
 
-						if(token.equalsToken(getOrder(EresseaOrderConstants.O_TEMP,
-														  locale))) {
+						if(token.equalsToken(getOrder(EresseaOrderConstants.O_TEMP, locale))) {
 							token = ct.getNextToken();
 
 							try {
@@ -2831,19 +2718,14 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 
 									if(token.ttype != com.eressea.util.OrderToken.TT_EOC) {
 										tempUnit.addOrders(getOrder(EresseaOrderConstants.O_NAME,
-																	locale) +
-														   " " +
+																	locale) + " " +
 														   getOrder(EresseaOrderConstants.O_UNIT,
-																	locale) +
-														   " " +
-														   token.getText(),
-														   false);
+																	locale) + " " +
+														   token.getText(), false);
 									}
 								} else {
-									log.warn("Unit.extractTempUnits(): region " +
-											 this.getRegion() +
-											 " already contains a temp unit with the id " +
-											 id +
+									log.warn("Unit.extractTempUnits(): region " + this.getRegion() +
+											 " already contains a temp unit with the id " + id +
 											 ". This temp unit remains in the orders of its parent " +
 											 "unit instead of being created as a unit in its own right.");
 								}
@@ -2854,8 +2736,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 				} else {
 					cmdIterator.remove();
 
-					if(token.equalsToken(getOrder(EresseaOrderConstants.O_END,
-													  locale))) {
+					if(token.equalsToken(getOrder(EresseaOrderConstants.O_END, locale))) {
 						tempUnit = null;
 					} else {
 						if(CONFIRMEDTEMPCOMMENT.equals(line.trim())) {
@@ -2974,7 +2855,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 * a (hopefully) small class for handling orders in the Unit object
 	 */
 	private static class Orders {
-		private List    orders  = null;
+		private List orders = null;
 		private boolean changed = false;
 
 		/**

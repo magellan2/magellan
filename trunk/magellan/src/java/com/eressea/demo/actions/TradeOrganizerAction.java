@@ -44,8 +44,7 @@ public class TradeOrganizerAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		new TradeOrganizer(client, client.getDispatcher(), client.getData(),
-						   client.getSettings(),
+		new TradeOrganizer(client, client.getDispatcher(), client.getData(), client.getSettings(),
 						   client.getSelectedRegions().values());
 	}
 

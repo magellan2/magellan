@@ -169,11 +169,9 @@ public class ReplacerHelp implements GameDataListener {
 		// comparators		
 		drf.putReplacer("not", NotReplacer.class);
 		drf.putReplacer("equals", StringEqualReplacer.class);
-		drf.putReplacer("equalsIgnoreCase", StringEqualReplacer.class,
-						Boolean.TRUE);
+		drf.putReplacer("equalsIgnoreCase", StringEqualReplacer.class, Boolean.TRUE);
 		drf.putReplacer("contains", StringIndexReplacer.class);
-		drf.putReplacer("containsIgnoreCase", StringIndexReplacer.class,
-						Boolean.TRUE);
+		drf.putReplacer("containsIgnoreCase", StringIndexReplacer.class, Boolean.TRUE);
 		drf.putReplacer("<", LessReplacer.class);
 		drf.putReplacer("null", NullReplacer.class);
 
@@ -191,9 +189,9 @@ public class ReplacerHelp implements GameDataListener {
 		}
 
 		for(Iterator iter = data.rules.getRegionTypeIterator(); iter.hasNext();) {
-			RegionType type  = (RegionType) iter.next();
-			Object     arg[] = new Object[1];
-			String     name  = "is" + type.getID().toString();
+			RegionType type = (RegionType) iter.next();
+			Object arg[] = new Object[1];
+			String name = "is" + type.getID().toString();
 			arg[0] = type;
 			defaultFactory.putReplacer(name, RegionTypeSwitch.class, arg);
 		}
@@ -242,11 +240,9 @@ public class ReplacerHelp implements GameDataListener {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static ReplacerSystem createReplacer(String def, String cmd,
-												String unknown) {
+	public static ReplacerSystem createReplacer(String def, String cmd, String unknown) {
 		if(defaultFactory != null) {
-			return DefinitionMaker.createDefinition(def, cmd, defaultFactory,
-													unknown);
+			return DefinitionMaker.createDefinition(def, cmd, defaultFactory, unknown);
 		}
 
 		return null;

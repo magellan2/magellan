@@ -29,7 +29,7 @@ import com.eressea.util.CollectionFactory;
  * @version
  */
 public class TipOfTheDayAction extends MenuAction {
-	private Frame	   parent;
+	private Frame parent;
 	private Properties settings;
 
 	/**
@@ -39,7 +39,7 @@ public class TipOfTheDayAction extends MenuAction {
 	 * @param settings TODO: DOCUMENT ME!
 	 */
 	public TipOfTheDayAction(Frame parent, Properties settings) {
-		this.parent   = parent;
+		this.parent = parent;
 		this.settings = settings;
 	}
 

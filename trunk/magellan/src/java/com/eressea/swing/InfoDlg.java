@@ -44,12 +44,12 @@ import com.eressea.util.VersionInfo;
  *
  */
 public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
-	private JPanel	    jPanel1;
-	private JButton     btn_OK;
-	private JButton     btn_Version;
-	private JLabel	    magallanImage;
+	private JPanel jPanel1;
+	private JButton btn_OK;
+	private JButton btn_Version;
+	private JLabel magallanImage;
 	private JScrollPane jScrollPane1;
-	private JTextArea   jTextArea1;
+	private JTextArea jTextArea1;
 
 	/**
 	 * Creates a new InfoDlg object.
@@ -62,7 +62,7 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 
 		magallanImage.setText("");
 
-		URL  url  = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
+		URL url = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
 		Icon icon = null;
 
 		if(url != null) {
@@ -75,17 +75,16 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 
 		// center
 		this.setLocation((getToolkit().getScreenSize().width - this.getWidth()) / 2,
-						 (getToolkit().getScreenSize().height -
-						 this.getHeight()) / 2);
+						 (getToolkit().getScreenSize().height - this.getHeight()) / 2);
 	}
 
 	private void initComponents() {
-		jPanel1		  = new JPanel();
-		btn_OK		  = new JButton();
-		btn_Version   = new JButton();
+		jPanel1 = new JPanel();
+		btn_OK = new JButton();
+		btn_Version = new JButton();
 		magallanImage = new JLabel();
-		jScrollPane1  = new JScrollPane();
-		jTextArea1    = new JTextArea();
+		jScrollPane1 = new JScrollPane();
+		jTextArea1 = new JTextArea();
 		getContentPane().setLayout(new GridBagLayout());
 
 		GridBagConstraints gridBagConstraints1;
@@ -106,9 +105,9 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 					checkVersion(evt);
 				}
 			});
-		gridBagConstraints3		   = new GridBagConstraints();
-		gridBagConstraints3.gridx  = 0;
-		gridBagConstraints3.gridy  = 2;
+		gridBagConstraints3 = new GridBagConstraints();
+		gridBagConstraints3.gridx = 0;
+		gridBagConstraints3.gridy = 2;
 		gridBagConstraints3.insets = new java.awt.Insets(5, 5, 5, 5);
 		gridBagConstraints3.anchor = GridBagConstraints.SOUTHWEST;
 		jPanel1.add(btn_Version, gridBagConstraints3);
@@ -120,9 +119,9 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 					quit();
 				}
 			});
-		gridBagConstraints2		   = new GridBagConstraints();
-		gridBagConstraints2.gridx  = 1;
-		gridBagConstraints2.gridy  = 2;
+		gridBagConstraints2 = new GridBagConstraints();
+		gridBagConstraints2.gridx = 1;
+		gridBagConstraints2.gridy = 2;
 		gridBagConstraints2.insets = new java.awt.Insets(0, 5, 5, 5);
 		gridBagConstraints2.anchor = GridBagConstraints.SOUTHEAST;
 		jPanel1.add(btn_OK, gridBagConstraints2);
@@ -132,19 +131,18 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 		magallanImage.setText("jLabel1");
 		magallanImage.setBackground(new Color(213, 169, 131));
 		magallanImage.setMaximumSize(new java.awt.Dimension(400, 200));
-		gridBagConstraints2		   = new GridBagConstraints();
+		gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.insets = new java.awt.Insets(5, 5, 0, 5);
 		jPanel1.add(magallanImage, gridBagConstraints2);
 
 		jScrollPane1.setBackground(new Color(213, 169, 131));
 
-		String text		 = getString("infotext");
-		Date   buildDate = VersionInfo.getBuildDate();
+		String text = getString("infotext");
+		Date buildDate = VersionInfo.getBuildDate();
 
 		if(buildDate != null) {
 			Object msgArgs[] = {
-								   DateFormat.getDateTimeInstance(DateFormat.FULL,
-																  DateFormat.SHORT)
+								   DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.SHORT)
 											 .format(buildDate)
 							   };
 			text += (new java.text.MessageFormat(getString("versiontext"))).format(msgArgs);
@@ -163,47 +161,44 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 		jTextArea1.setMinimumSize(new java.awt.Dimension(400, 200));
 		jScrollPane1.setViewportView(jTextArea1);
 
-		gridBagConstraints2			  = new GridBagConstraints();
-		gridBagConstraints2.gridx     = 0;
-		gridBagConstraints2.gridy     = 1;
+		gridBagConstraints2 = new GridBagConstraints();
+		gridBagConstraints2.gridx = 0;
+		gridBagConstraints2.gridy = 1;
 		gridBagConstraints2.gridwidth = 2;
-		gridBagConstraints2.fill	  = GridBagConstraints.BOTH;
-		gridBagConstraints2.insets    = new java.awt.Insets(5, 5, 5, 5);
-		gridBagConstraints2.weightx   = 1.0;
-		gridBagConstraints2.weighty   = 1.0;
+		gridBagConstraints2.fill = GridBagConstraints.BOTH;
+		gridBagConstraints2.insets = new java.awt.Insets(5, 5, 5, 5);
+		gridBagConstraints2.weightx = 1.0;
+		gridBagConstraints2.weighty = 1.0;
 		jPanel1.add(jScrollPane1, gridBagConstraints2);
 
-		gridBagConstraints1		    = new GridBagConstraints();
-		gridBagConstraints1.fill    = GridBagConstraints.BOTH;
+		gridBagConstraints1 = new GridBagConstraints();
+		gridBagConstraints1.fill = GridBagConstraints.BOTH;
 		gridBagConstraints1.weightx = 1.0;
 		gridBagConstraints1.weighty = 1.0;
 		getContentPane().add(jPanel1, gridBagConstraints1);
 	}
 
 	private void checkVersion(java.awt.event.ActionEvent evt) {
-		Date myDate     = VersionInfo.getBuildDate();
+		Date myDate = VersionInfo.getBuildDate();
 		Date serverDate = VersionInfo.getServerBuildDate();
 
 		if((myDate != null) && (serverDate != null)) {
 			if(!myDate.equals(serverDate)) {
 				Object msgArgs[] = {
 									   DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
-																	  DateFormat.SHORT)
-												 .format(serverDate)
+																	  DateFormat.SHORT).format(serverDate)
 								   };
 				JOptionPane.showMessageDialog(this,
 											  (new java.text.MessageFormat(getString("msg.newversion.text"))).format(msgArgs),
 											  getString("msg.newversion.title"),
 											  JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(this,
-											  getString("msg.versionuptodate.text"),
+				JOptionPane.showMessageDialog(this, getString("msg.versionuptodate.text"),
 											  getString("msg.versionuptodate.title"),
 											  JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else {
-			JOptionPane.showMessageDialog(this,
-										  getString("msg.versionunknown.text"),
+			JOptionPane.showMessageDialog(this, getString("msg.versionunknown.text"),
 										  getString("msg.versionunknown.title"),
 										  JOptionPane.ERROR_MESSAGE);
 		}
@@ -226,8 +221,7 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("window.title", "About Magellan");
 
-			defaultTranslations.put("btn.checkfornew.caption",
-									"Check for new version");
+			defaultTranslations.put("btn.checkfornew.caption", "Check for new version");
 			defaultTranslations.put("btn.close.caption", "Close");
 
 			defaultTranslations.put("infotext",
@@ -239,8 +233,7 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 			defaultTranslations.put("msg.newversion.title", "New version");
 			defaultTranslations.put("msg.versionuptodate.text",
 									"This version of Magellan is up to date.");
-			defaultTranslations.put("msg.versionuptodate.title",
-									"Latest version");
+			defaultTranslations.put("msg.versionuptodate.title", "Latest version");
 			defaultTranslations.put("msg.versionunknown.text",
 									"Unable to retrieve the version information from the Magellan server.");
 			defaultTranslations.put("msg.versionunknown.title", "Error");

@@ -60,8 +60,7 @@ public class InternationalizedDialog extends JDialog {
 	protected void processKeyEvent(KeyEvent e) {
 		super.processKeyEvent(e);
 
-		if((e.getID() == KeyEvent.KEY_PRESSED) &&
-		   (e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
+		if((e.getID() == KeyEvent.KEY_PRESSED) && (e.getKeyCode() == KeyEvent.VK_ESCAPE)) {
 			quit();
 		}
 	}

@@ -75,8 +75,7 @@ public class MessageType extends Identifiable {
 	}
 
 	/**
-	 * Returns the name of the category of messages this message type belongs
-	 * to.
+	 * Returns the name of the category of messages this message type belongs to.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -85,9 +84,9 @@ public class MessageType extends Identifiable {
 	}
 
 	/**
-	 * Indicates whether this MessageType object is equal to another object.
-	 * Returns true only if o is not null and an instance of class MessageType
-	 * and o's id is equal to the id of this MessageType object.
+	 * Indicates whether this MessageType object is equal to another object. Returns true only if o
+	 * is not null and an instance of class MessageType and o's id is equal to the id of this
+	 * MessageType object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -95,13 +94,12 @@ public class MessageType extends Identifiable {
 	 */
 	public boolean equals(Object o) {
 		return (this == o) ||
-			   (o instanceof MessageType &&
-			   this.getID().equals(((MessageType) o).getID()));
+			   (o instanceof MessageType && this.getID().equals(((MessageType) o).getID()));
 	}
 
 	/**
-	 * Imposes a natural ordering on MessageType objects equivalent to the
-	 * natural ordering of their ids.
+	 * Imposes a natural ordering on MessageType objects equivalent to the natural ordering of
+	 * their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -112,17 +110,15 @@ public class MessageType extends Identifiable {
 	}
 
 	/**
-	 * Transfers all available information from the current message type to the
-	 * new one.
+	 * Transfers all available information from the current message type to the new one.
 	 *
 	 * @param curGD fully loaded game data
 	 * @param curMsgType a fully initialized and valid message type
 	 * @param newGD the game data to be updated
-	 * @param newMsgType an uninitialized message type to be updated with the
-	 * 		  date from curMsgType
+	 * @param newMsgType an uninitialized message type to be updated with the date from curMsgType
 	 */
-	public static void merge(GameData curGD, MessageType curMsgType,
-							 GameData newGD, MessageType newMsgType) {
+	public static void merge(GameData curGD, MessageType curMsgType, GameData newGD,
+							 MessageType newMsgType) {
 		if(curMsgType.getPattern() != null) {
 			newMsgType.setPattern(curMsgType.getPattern());
 		}

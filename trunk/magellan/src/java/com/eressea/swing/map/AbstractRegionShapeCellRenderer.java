@@ -23,12 +23,10 @@ import com.eressea.Coordinate;
 import com.eressea.Region;
 
 /**
- * Abstract base class for renderers that want to paint regions as a colored
- * polygon.
+ * Abstract base class for renderers that want to paint regions as a colored polygon.
  */
 public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
-	protected AbstractRegionShapeCellRenderer(CellGeometry geo,
-											  java.util.Properties settings) {
+	protected AbstractRegionShapeCellRenderer(CellGeometry geo, java.util.Properties settings) {
 		super(geo, settings);
 	}
 
@@ -45,10 +43,10 @@ public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
 	 */
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
-			Region     r = (Region) obj;
+			Region r = (Region) obj;
 			Coordinate c = r.getCoordinate();
 
-			Point	   pos = cellGeo.getCellPosition(c.x, c.y);
+			Point pos = cellGeo.getCellPosition(c.x, c.y);
 			pos.translate(-offset.x, -offset.y);
 
 			Polygon p = cellGeo.getScaledPolygon();
@@ -94,10 +92,10 @@ public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
 			}
 		} else {
 			Rectangle bounds = p.getBounds();
-			int		  i;
-			int		  j;
-			int		  imax = bounds.x + bounds.width;
-			int		  jmax = bounds.y + bounds.height;
+			int i;
+			int j;
+			int imax = bounds.x + bounds.width;
+			int jmax = bounds.y + bounds.height;
 			;
 
 			for(i = bounds.x; i < imax; i++) {

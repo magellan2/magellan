@@ -28,23 +28,23 @@ import com.eressea.GameData;
 import com.eressea.Region;
 
 /**
- * Abstract base class for text renderers. Several possibilities to change the
- * output. New feature: Alignment.
+ * Abstract base class for text renderers. Several possibilities to change the output. New feature:
+ * Alignment.
  *
  * @author Andreas
  * @version 1.0
  */
 public abstract class AbstractTextCellRenderer extends HexCellRenderer {
-	protected Color		  fontColor		  = Color.black;
-	protected Font		  unscaledFont    = null;
-	protected Font		  font			  = null;
-	protected FontMetrics fontMetrics     = null;
-	protected int		  minimumFontSize = 10;
-	protected int		  fontHeight	  = 0;
-	protected boolean     isScalingFont   = false;
-	protected int		  hAlign		  = CENTER;
-	protected boolean     shortenStrings  = false;
-	protected String	  singleString[]  = new String[1];
+	protected Color fontColor = Color.black;
+	protected Font unscaledFont = null;
+	protected Font font = null;
+	protected FontMetrics fontMetrics = null;
+	protected int minimumFontSize = 10;
+	protected int fontHeight = 0;
+	protected boolean isScalingFont = false;
+	protected int hAlign = CENTER;
+	protected boolean shortenStrings = false;
+	protected String singleString[] = new String[1];
 
 	/** TODO: DOCUMENT ME! */
 	public static final int LEFT = 0;
@@ -88,7 +88,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 
 		// using deprecated getFontMetrics() to avoid Java2D methods
 		fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(this.font);
-		fontHeight  = this.fontMetrics.getHeight();
+		fontHeight = this.fontMetrics.getHeight();
 	}
 
 	protected boolean isScalingFont() {
@@ -118,8 +118,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 	protected FontMetrics getFontMetrics() {
 		if(fontMetrics == null) {
 			fontMetrics = Toolkit.getDefaultToolkit().getFontMetrics(new Font("TimesRoman",
-																			  Font.PLAIN,
-																			  10));
+																			  Font.PLAIN, 10));
 
 			//fontMetrics = graphics.getFontMetrics(new Font("TimesRoman", Font.PLAIN, 10));
 		}
@@ -190,11 +189,11 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 	 */
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
-			Region     r    = (Region) obj;
-			Coordinate c    = r.getCoordinate();
-			Rectangle  rect = cellGeo.getCellRect(c.x, c.y);
+			Region r = (Region) obj;
+			Coordinate c = r.getCoordinate();
+			Rectangle rect = cellGeo.getCellRect(c.x, c.y);
 
-			String     display[] = getText(r, rect);
+			String display[] = getText(r, rect);
 
 			if((display == null) || (display.length == 0)) {
 				singleString[0] = getSingleString(r, rect);
@@ -211,10 +210,10 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 			graphics.setFont(font);
 			graphics.setColor(fontColor);
 
-			int height  = (int) (fontHeight * 0.8);
+			int height = (int) (fontHeight * 0.8);
 			int middleX = (rect.x + (rect.width / 2)) - offset.x;
 			int middleY = (rect.y + (rect.height / 2) + 1) - offset.y;
-			int upperY  = middleY;
+			int upperY = middleY;
 
 			if(display.length == 1) {
 				upperY += (height / 4);
@@ -237,8 +236,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 				int leftX = middleX - (maxWidth / 2);
 
 				for(int i = 0; i < display.length; i++) {
-					graphics.drawString(display[i], leftX, upperY +
-										(i * height));
+					graphics.drawString(display[i], leftX, upperY + (i * height));
 				}
 
 				break;
@@ -248,8 +246,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 
 				for(int i = 0; i < display.length; i++) {
 					int l = fontMetrics.stringWidth(display[i]);
-					graphics.drawString(display[i], middleX - (l / 2),
-										upperY + (i * height));
+					graphics.drawString(display[i], middleX - (l / 2), upperY + (i * height));
 				}
 
 				break;
@@ -266,9 +263,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 				int rightX = middleX + (maxWidth / 2);
 
 				for(int i = 0; i < display.length; i++) {
-					graphics.drawString(display[i],
-										rightX -
-										fontMetrics.stringWidth(display[i]),
+					graphics.drawString(display[i], rightX - fontMetrics.stringWidth(display[i]),
 										upperY + (i * height));
 				}
 
@@ -282,9 +277,9 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 			for(int i = 0; i < str.length; i++) {
 				if(str[i] != null) {
 					if(fontMetrics.stringWidth(str[i]) > maxWidth) {
-						char  name[]    = str[i].toCharArray();
-						int   nameLen   = name.length;
-						int   nameWidth = 0;
+						char name[] = str[i].toCharArray();
+						int nameLen = name.length;
+						int nameWidth = 0;
 
 						for(; nameLen > 0; nameLen--) {
 							nameWidth = fontMetrics.charsWidth(name, 0, nameLen);
@@ -292,7 +287,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 							if(nameWidth < (maxWidth * 0.9)) {
 								if(nameLen < name.length) {
 									name[nameLen - 1] = '.';
-									name[nameLen]     = '.';
+									name[nameLen] = '.';
 									nameLen++;
 								}
 

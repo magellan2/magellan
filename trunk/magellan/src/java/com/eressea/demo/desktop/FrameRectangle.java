@@ -25,13 +25,11 @@ import java.awt.event.WindowListener;
  * @author Andreas
  * @version
  */
-public class FrameRectangle extends java.awt.Rectangle
-	implements ComponentListener, WindowListener
-{
-	protected Frame   myFrame;
-	protected String  frameTitle;
-	protected String  frameComponent;
-	protected int     state   = Frame.NORMAL;
+public class FrameRectangle extends java.awt.Rectangle implements ComponentListener, WindowListener {
+	protected Frame myFrame;
+	protected String frameTitle;
+	protected String frameComponent;
+	protected int state = Frame.NORMAL;
 	protected boolean visible = true;
 
 	/** Holds value of property configuration. */
@@ -44,7 +42,7 @@ public class FrameRectangle extends java.awt.Rectangle
 	 * @param fc TODO: DOCUMENT ME!
 	 */
 	public FrameRectangle(String ft, String fc) {
-		frameTitle     = ft;
+		frameTitle = ft;
 		frameComponent = fc;
 	}
 
@@ -82,9 +80,9 @@ public class FrameRectangle extends java.awt.Rectangle
 	 */
 	public void componentResized(java.awt.event.ComponentEvent p1) {
 		Rectangle rect = ((Component) p1.getSource()).getBounds();
-		x	   = rect.x;
-		y	   = rect.y;
-		width  = rect.width;
+		x = rect.x;
+		y = rect.y;
+		width = rect.width;
 		height = rect.height;
 	}
 
@@ -103,9 +101,9 @@ public class FrameRectangle extends java.awt.Rectangle
 	 */
 	public void componentMoved(java.awt.event.ComponentEvent p1) {
 		Rectangle rect = ((Component) p1.getSource()).getBounds();
-		x	   = rect.x;
-		y	   = rect.y;
-		width  = rect.width;
+		x = rect.x;
+		y = rect.y;
+		width = rect.width;
 		height = rect.height;
 	}
 

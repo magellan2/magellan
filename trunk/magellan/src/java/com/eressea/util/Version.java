@@ -43,8 +43,7 @@ public class Version implements Comparable {
 			build = Integer.parseInt(st.nextToken());
 		} else {
 			throw new NumberFormatException("Unable to parse the specified version string \"" +
-											str + "\" with the delimiter \"" +
-											delim + "\"");
+											str + "\" with the delimiter \"" + delim + "\"");
 		}
 	}
 
@@ -96,9 +95,9 @@ public class Version implements Comparable {
 	}
 
 	/**
-	 * Compares this object with the specified object for order.  Returns a
-	 * negative integer, zero, or a positive integer as this object is less
-	 * than, equal to, or greater than the specified object.
+	 * Compares this object with the specified object for order.  Returns a negative integer, zero,
+	 * or a positive integer as this object is less than, equal to, or greater than the specified
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *

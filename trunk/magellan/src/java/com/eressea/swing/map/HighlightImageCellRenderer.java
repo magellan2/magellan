@@ -68,17 +68,15 @@ public class HighlightImageCellRenderer extends ImageCellRenderer {
 	private void renderIt(Region r, String imgName) {
 		Coordinate c = r.getCoordinate();
 
-		Rectangle  rect = cellGeo.getImageRect(c.x, c.y);
+		Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 		rect.translate(-offset.x, -offset.y);
 
 		Image img = getImage(imgName);
 
 		if(img != null) {
-			graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height,
-							   null);
+			graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
 		} else {
-			log.warn("HighlightImageCellRenderer.render(): image " + imgName +
-					 " is null!");
+			log.warn("HighlightImageCellRenderer.render(): image " + imgName + " is null!");
 		}
 	}
 

@@ -18,7 +18,5 @@ package com.eressea.util;
  *
  * @deprecated dont use
  */
-public final class EresseaOrderConstants
-	extends com.eressea.gamebinding.eressea.EresseaConstants
-{
+public final class EresseaOrderConstants extends com.eressea.gamebinding.eressea.EresseaConstants {
 }

@@ -23,12 +23,10 @@ import com.eressea.util.filters.UnitFilter;
  * @author Andreas
  * @version
  */
-public class FilterSwitch implements ParameterReplacer, BranchReplacer,
-									 EnvironmentDependent
-{
-	protected Object			  branch;
+public class FilterSwitch implements ParameterReplacer, BranchReplacer, EnvironmentDependent {
+	protected Object branch;
 	protected ReplacerEnvironment env;
-	protected UnitFilter		  myFilter;
+	protected UnitFilter myFilter;
 
 	/**
 	 * Creates new Template
@@ -140,7 +138,7 @@ public class FilterSwitch implements ParameterReplacer, BranchReplacer,
 	}
 
 	protected class MyFilterClass extends UnitFilter {
-		int				   always = 0;
+		int always = 0;
 		protected Replacer rep = null;
 
 		/**

@@ -46,9 +46,7 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public abstract class DetailedPreferencesAdapter extends JPanel
-	implements PreferencesAdapter
-{
+public abstract class DetailedPreferencesAdapter extends JPanel implements PreferencesAdapter {
 	/** TODO: DOCUMENT ME! */
 	public static final String TRUE = "true";
 
@@ -56,18 +54,18 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 	public static final String FALSE = "false";
 
 	/** TODO: DOCUMENT ME! */
-	public boolean		   properties[];
-	protected JCheckBox    boxes[];
-	protected JPanel	   detailContainers[];
-	protected String	   detailHelps[];
-	protected String	   detailTitles[];
-	protected String	   settKeys[][];
-	protected String	   langKeys[];
-	protected Properties   settings;
-	protected String	   prefix;
-	protected int		   rows		  = 0;
-	protected int		   count	  = 0;
-	protected int		   subcount[];
+	public boolean properties[];
+	protected JCheckBox boxes[];
+	protected JPanel detailContainers[];
+	protected String detailHelps[];
+	protected String detailTitles[];
+	protected String settKeys[][];
+	protected String langKeys[];
+	protected Properties settings;
+	protected String prefix;
+	protected int rows = 0;
+	protected int count = 0;
+	protected int subcount[];
 
 	/**
 	 * Creates new DetailedPreferencesAdapter
@@ -80,9 +78,8 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 	 * @param lK TODO: DOCUMENT ME!
 	 * @param rows TODO: DOCUMENT ME!
 	 */
-	public DetailedPreferencesAdapter(int count, int subcount[], Properties p,
-									  String prefix, String sK[][],
-									  String lK[], int rows) {
+	public DetailedPreferencesAdapter(int count, int subcount[], Properties p, String prefix,
+									  String sK[][], String lK[], int rows) {
 		this(count, subcount, p, prefix, sK, lK, rows, false);
 	}
 
@@ -98,19 +95,17 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 	 * @param rows TODO: DOCUMENT ME!
 	 * @param waitWithInit TODO: DOCUMENT ME!
 	 */
-	public DetailedPreferencesAdapter(int count, int subcount[], Properties p,
-									  String prefix, String sK[][],
-									  String lK[], int rows,
-									  boolean waitWithInit) {
-		settings	  = p;
-		this.prefix   = prefix;
-		settKeys	  = sK;
-		langKeys	  = lK;
-		this.rows     = rows;
+	public DetailedPreferencesAdapter(int count, int subcount[], Properties p, String prefix,
+									  String sK[][], String lK[], int rows, boolean waitWithInit) {
+		settings = p;
+		this.prefix = prefix;
+		settKeys = sK;
+		langKeys = lK;
+		this.rows = rows;
 		this.subcount = subcount;
-		this.count    = count;
+		this.count = count;
 
-		int sum		  = 0;
+		int sum = 0;
 
 		if(subcount != null) {
 			for(int i = 0; i < count; i++) {
@@ -122,7 +117,7 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 		}
 
 		properties = new boolean[sum];
-		boxes	   = new JCheckBox[sum];
+		boxes = new JCheckBox[sum];
 
 		initProperties();
 
@@ -135,23 +130,23 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 		initBoxes();
 
 		detailContainers = new JPanel[count];
-		detailTitles     = new String[count];
-		detailHelps		 = new String[count];
+		detailTitles = new String[count];
+		detailHelps = new String[count];
 
 		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-		JPanel			   help   = new JPanel(new GridBagLayout());
+		JPanel help = new JPanel(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
-		con.gridwidth  = 1;
+		con.gridwidth = 1;
 		con.gridheight = 1;
-		con.fill	   = GridBagConstraints.NONE;
-		con.anchor     = GridBagConstraints.NORTHWEST;
-		con.gridx	   = 0;
-		con.gridy	   = 0;
+		con.fill = GridBagConstraints.NONE;
+		con.anchor = GridBagConstraints.NORTHWEST;
+		con.gridx = 0;
+		con.gridy = 0;
 
-		int			   cBox = 0;
-		ActionListener al     = new DetailListener(this);
-		String		   bTitle = getOwnString("button.title");
+		int cBox = 0;
+		ActionListener al = new DetailListener(this);
+		String bTitle = getOwnString("button.title");
 
 		for(int i = 0; i < count; i++) {
 			help.add(boxes[cBox], con);
@@ -174,12 +169,10 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 					detailContainers[i] = getExternalDetailContainer(i);
 				}
 
-				detailTitles[i] = getString("prefs.dialogs." +
-											String.valueOf(i) + ".title");
+				detailTitles[i] = getString("prefs.dialogs." + String.valueOf(i) + ".title");
 
 				try {
-					detailHelps[i] = getString("prefs.dialogs." +
-											   String.valueOf(i) + ".help");
+					detailHelps[i] = getString("prefs.dialogs." + String.valueOf(i) + ".help");
 				} catch(Exception mexc) {
 				}
 
@@ -210,8 +203,8 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 
 	protected void initProperties() {
 		for(int i = 0; i < properties.length; i++) {
-			properties[i] = settings.getProperty(prefix + "." + settKeys[i][0],
-												 settKeys[i][1]).equals(TRUE);
+			properties[i] = settings.getProperty(prefix + "." + settKeys[i][0], settKeys[i][1])
+									.equals(TRUE);
 		}
 	}
 
@@ -232,12 +225,10 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 		if(properties[i] != boxes[i].isSelected()) {
 			properties[i] = boxes[i].isSelected();
 
-			if((properties[i] && def.equals(TRUE)) ||
-				   (!properties[i] && def.equals(FALSE))) {
+			if((properties[i] && def.equals(TRUE)) || (!properties[i] && def.equals(FALSE))) {
 				settings.remove(prefix + "." + key);
 			} else {
-				settings.setProperty(prefix + "." + key,
-									 properties[i] ? TRUE : FALSE);
+				settings.setProperty(prefix + "." + key, properties[i] ? TRUE : FALSE);
 			}
 
 			return true;
@@ -292,8 +283,7 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 	protected abstract String getString(String key);
 
 	protected String getOwnString(String key) {
-		return com.eressea.util.Translations.getTranslation(DetailedPreferencesAdapter.class,
-															key);
+		return com.eressea.util.Translations.getTranslation(DetailedPreferencesAdapter.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -346,9 +336,9 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 				return;
 			}
 
-			java.awt.Component c	  = src.getTopLevelAncestor();
-			DetailsDialog	   dialog = null;
-			String			   title  = detailTitles[index];
+			java.awt.Component c = src.getTopLevelAncestor();
+			DetailsDialog dialog = null;
+			String title = detailTitles[index];
 
 			if(c instanceof java.awt.Frame) {
 				dialog = new DetailsDialog((java.awt.Frame) c, title);
@@ -408,8 +398,7 @@ public abstract class DetailedPreferencesAdapter extends JPanel
 				text.setBackground(getContentPane().getBackground());
 				text.setForeground(Color.black); // don't show in disabled color
 
-				JScrollPane pane = new JScrollPane(text,
-												   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane pane = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 												   JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 				pane.setBorder(BorderFactory.createTitledBorder(getOwnString("ddialog.help.title")));
 

@@ -65,15 +65,13 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public class ArmyStatsDialog extends InternationalizedDataDialog
-	implements ActionListener
-{
+public class ArmyStatsDialog extends InternationalizedDataDialog implements ActionListener {
 	protected ArmyStatsPanel panel;
-	protected JCheckBox		 categorize;
-	protected JButton		 excludeDialog;
-	protected List			 excludeSkills;
-	protected List			 excludeNames;
-	protected List			 excludeCombatStates;
+	protected JCheckBox categorize;
+	protected JButton excludeDialog;
+	protected List excludeSkills;
+	protected List excludeNames;
+	protected List excludeCombatStates;
 
 	/**
 	 * Creates new ArmyStatsDialog
@@ -83,8 +81,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 	 * @param data TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public ArmyStatsDialog(Frame owner, EventDispatcher ed, GameData data,
-						   Properties settings) {
+	public ArmyStatsDialog(Frame owner, EventDispatcher ed, GameData data, Properties settings) {
 		this(owner, ed, data, settings, null);
 	}
 
@@ -97,13 +94,13 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 	 * @param settings TODO: DOCUMENT ME!
 	 * @param selRegions TODO: DOCUMENT ME!
 	 */
-	public ArmyStatsDialog(Frame owner, EventDispatcher ed, GameData data,
-						   Properties settings, Collection selRegions) {
+	public ArmyStatsDialog(Frame owner, EventDispatcher ed, GameData data, Properties settings,
+						   Collection selRegions) {
 		super(owner, false, ed, data, settings);
 
 		LayoutManager lm = new FlowLayout(FlowLayout.CENTER);
 
-		JPanel		  help = new JPanel(lm);
+		JPanel help = new JPanel(lm);
 		help.add(categorize = new JCheckBox(getString("categorized"),
 											settings.getProperty("ArmyStatsDialog.Categorize",
 																 "true").equals("true")));
@@ -116,8 +113,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 
 		loadExclusionData();
 
-		inner.add(panel = new ArmyStatsPanel(ed, data, settings,
-											 categorize.isSelected(), selRegions),
+		inner.add(panel = new ArmyStatsPanel(ed, data, settings, categorize.isSelected(), selRegions),
 				  BorderLayout.CENTER);
 		panel.setExcludeNames(excludeNames);
 		panel.setExcludeSkills(excludeSkills);
@@ -141,10 +137,8 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 
 			if(st.countTokens() == 4) {
 				try {
-					setBounds(Integer.parseInt(st.nextToken()),
-							  Integer.parseInt(st.nextToken()),
-							  Integer.parseInt(st.nextToken()),
-							  Integer.parseInt(st.nextToken()));
+					setBounds(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()),
+							  Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
 				} catch(Exception exc) {
 					setBounds(100, 100, 600, 600);
 				}
@@ -181,9 +175,8 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			excludeSkills = CollectionFactory.createArrayList(st.countTokens());
 
 			while(st.hasMoreTokens()) {
-				String    skillName = st.nextToken();
-				SkillType skill = data.rules.getSkillType(StringID.create(skillName),
-														  false);
+				String skillName = st.nextToken();
+				SkillType skill = data.rules.getSkillType(StringID.create(skillName), false);
 
 				if(skill != null) {
 					excludeSkills.add(skill);
@@ -250,8 +243,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 				}
 			}
 
-			settings.setProperty("ArmyStatsDialog.ExcludedSkills",
-								 buf.toString());
+			settings.setProperty("ArmyStatsDialog.ExcludedSkills", buf.toString());
 		}
 
 		buf.setLength(0);
@@ -269,8 +261,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 				}
 			}
 
-			settings.setProperty("ArmyStatsDialog.ExcludedCombatStates",
-								 buf.toString());
+			settings.setProperty("ArmyStatsDialog.ExcludedCombatStates", buf.toString());
 		}
 	}
 
@@ -287,8 +278,8 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 		} else {
 			panel.quit();
 
-			StringBuffer buf  = new StringBuffer();
-			Rectangle    rect = getBounds();
+			StringBuffer buf = new StringBuffer();
+			Rectangle rect = getBounds();
 			buf.append(rect.x);
 			buf.append(',');
 			buf.append(rect.y);
@@ -310,18 +301,15 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			boolean state = categorize.isSelected();
 			panel.setCategorized(state);
 			panel.recreate(data);
-			settings.setProperty("ArmyStatsDialog.Categorize",
-								 state ? "true" : "false");
+			settings.setProperty("ArmyStatsDialog.Categorize", state ? "true" : "false");
 		} else if(e.getSource() == excludeDialog) {
 			if(data != null) {
-				ExcludeDialog ed = new ExcludeDialog(this,
-													 getString("exclude.title"),
-													 data, excludeNames,
-													 excludeSkills,
+				ExcludeDialog ed = new ExcludeDialog(this, getString("exclude.title"), data,
+													 excludeNames, excludeSkills,
 													 excludeCombatStates);
 				ed.show();
-				excludeNames	    = ed.getExcludedNames();
-				excludeSkills	    = ed.getExcludedSkills();
+				excludeNames = ed.getExcludedNames();
+				excludeSkills = ed.getExcludedSkills();
 				excludeCombatStates = ed.getExcludeCombatStates();
 				panel.setExcludeNames(excludeNames);
 				panel.setExcludeSkills(excludeSkills);
@@ -335,12 +323,12 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 	}
 
 	protected class ExcludeDialog extends JDialog implements ActionListener {
-		protected JList			 names;
-		protected JButton		 close;
-		protected JButton		 add;
-		protected JCheckBox		 skills[];
-		protected JCheckBox		 states[];
-		protected final String   KEY = "SKILLTYPE";
+		protected JList names;
+		protected JButton close;
+		protected JButton add;
+		protected JCheckBox skills[];
+		protected JCheckBox states[];
+		protected final String KEY = "SKILLTYPE";
 
 		/**
 		 * Creates a new ExcludeDialog object.
@@ -352,8 +340,8 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 		 * @param eSkills TODO: DOCUMENT ME!
 		 * @param eStates TODO: DOCUMENT ME!
 		 */
-		public ExcludeDialog(Dialog owner, String title, GameData data,
-							 List eNames, List eSkills, List eStates) {
+		public ExcludeDialog(Dialog owner, String title, GameData data, List eNames, List eSkills,
+							 List eStates) {
 			super(owner, title, true);
 
 			javax.swing.border.Border border = BorderFactory.createEtchedBorder();
@@ -375,13 +363,13 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			JPanel nPanel = new JPanel(new BorderLayout());
 			nPanel.add(new JScrollPane(names), BorderLayout.CENTER);
 
-			JPanel			   inner = new JPanel(new GridBagLayout());
+			JPanel inner = new JPanel(new GridBagLayout());
 			GridBagConstraints con = new GridBagConstraints();
-			con.gridwidth  = 1;
+			con.gridwidth = 1;
 			con.gridheight = 1;
-			con.fill	   = GridBagConstraints.HORIZONTAL;
-			con.weightx    = 1;
-			add			   = new JButton(getString("add") + "...");
+			con.fill = GridBagConstraints.HORIZONTAL;
+			con.weightx = 1;
+			add = new JButton(getString("add") + "...");
 			add.addActionListener(this);
 			inner.add(add, con);
 			con.gridy = 1;
@@ -390,12 +378,11 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			remove.addActionListener(this);
 			inner.add(remove, con);
 			nPanel.add(inner, BorderLayout.EAST);
-			nPanel.setBorder(new javax.swing.border.TitledBorder(border,
-																 getString("names")));
+			nPanel.setBorder(new javax.swing.border.TitledBorder(border, getString("names")));
 
 			// create skill-type check-boxes
 			Iterator it = data.rules.getSkillTypeIterator();
-			List     l = CollectionFactory.createLinkedList();
+			List l = CollectionFactory.createLinkedList();
 
 			while(it.hasNext()) {
 				l.add(it.next());
@@ -406,9 +393,9 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			if(l.size() > 0) {
 				Collections.sort(l);
 				skills = new JCheckBox[l.size()];
-				it     = l.iterator();
+				it = l.iterator();
 
-				int i  = 0;
+				int i = 0;
 
 				while(it.hasNext()) {
 					SkillType sk = (SkillType) it.next();
@@ -425,8 +412,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			}
 
 			JPanel statePanel = new JPanel(new GridLayout(0, 1));
-			statePanel.setBorder(new javax.swing.border.TitledBorder(border,
-																	 getString("states")));
+			statePanel.setBorder(new javax.swing.border.TitledBorder(border, getString("states")));
 			states = new JCheckBox[7];
 
 			for(int i = 0; i < 7; i++) {
@@ -454,8 +440,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 			help.add(nPanel);
 
 			JScrollPane scroll = new JScrollPane(sPanel);
-			scroll.setBorder(new javax.swing.border.TitledBorder(border,
-																 getString("skills")));
+			scroll.setBorder(new javax.swing.border.TitledBorder(border, getString("skills")));
 			help.add(scroll);
 			help.add(statePanel);
 			cont.add(help, BorderLayout.CENTER);
@@ -513,8 +498,7 @@ public class ArmyStatsDialog extends InternationalizedDataDialog
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public List getExcludedNames() {
-			List al = CollectionFactory.createArrayList(names.getModel()
-															 .getSize());
+			List al = CollectionFactory.createArrayList(names.getModel().getSize());
 
 			for(int i = 0; i < names.getModel().getSize(); i++) {
 				al.add(names.getModel().getElementAt(i));

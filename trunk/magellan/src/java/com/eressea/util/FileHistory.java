@@ -34,11 +34,11 @@ import com.eressea.demo.actions.FileHistoryAction;
  * @version
  */
 public class FileHistory {
-	protected Bucket     history;
-	protected JMenu		 historyMenu;
-	protected int		 insertionIndex;
+	protected Bucket history;
+	protected JMenu historyMenu;
+	protected int insertionIndex;
 	protected Properties settings;
-	protected Client     client;
+	protected Client client;
 
 	/**
 	 * Creates new FileHistory
@@ -49,15 +49,15 @@ public class FileHistory {
 	 * @param index TODO: DOCUMENT ME!
 	 */
 	public FileHistory(Client parent, Properties settings, JMenu menu, int index) {
-		this.settings  = settings;
-		client		   = parent;
-		historyMenu    = menu;
+		this.settings = settings;
+		client = parent;
+		historyMenu = menu;
 		insertionIndex = index;
 	}
 
 	/**
-	 * Adds a single file to the file history, as well to the file history
-	 * bucket as well to the file history menu.
+	 * Adds a single file to the file history, as well to the file history bucket as well to the
+	 * file history menu.
 	 *
 	 * @param f TODO: DOCUMENT ME!
 	 */
@@ -75,13 +75,11 @@ public class FileHistory {
 	 * Stores the current contents of the file history bucket to the settings.
 	 */
 	public void storeFileHistory() {
-		List files = CollectionFactory.createArrayList((history == null) ? 0
-																		 : history.size());
+		List files = CollectionFactory.createArrayList((history == null) ? 0 : history.size());
 
 		if(history != null) {
 			for(Iterator iter = history.iterator(); iter.hasNext();) {
-				files.add(((FileHistoryAction) iter.next()).getFile()
-						   .getAbsolutePath());
+				files.add(((FileHistoryAction) iter.next()).getFile().getAbsolutePath());
 			}
 
 			Collections.reverse(files);
@@ -98,11 +96,10 @@ public class FileHistory {
 			history = new Bucket(getMaxFileHistorySize());
 		}
 
-		for(Iterator iter = PropertiesHelper.getList(settings,
-													 "Client.fileHistory")
-											.iterator(); iter.hasNext();) {
+		for(Iterator iter = PropertiesHelper.getList(settings, "Client.fileHistory").iterator();
+				iter.hasNext();) {
 			String file = (String) iter.next();
-			File   f = new File(file);
+			File f = new File(file);
 
 			if(f.exists()) {
 				history.add(new FileHistoryAction(this, f));
@@ -111,8 +108,8 @@ public class FileHistory {
 	}
 
 	/**
-	 * Uses the current contents of the file history bucket to remove these
-	 * menu items from the file history menu.
+	 * Uses the current contents of the file history bucket to remove these menu items from the
+	 * file history menu.
 	 */
 	public void clearFileHistoryMenu() {
 		if(history != null) {
@@ -124,8 +121,8 @@ public class FileHistory {
 	}
 
 	/**
-	 * Inserts the contents of the fileHistory bucket to the file history menu
-	 * (it assumes that the menu has been cleared previously.
+	 * Inserts the contents of the fileHistory bucket to the file history menu (it assumes that the
+	 * menu has been cleared previously.
 	 */
 	public void buildFileHistoryMenu() {
 		if(history == null) {
@@ -146,8 +143,7 @@ public class FileHistory {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getMaxFileHistorySize() {
-		return Integer.parseInt(settings.getProperty("Client.fileHistory.size",
-													 "4"));
+		return Integer.parseInt(settings.getProperty("Client.fileHistory.size", "4"));
 	}
 
 	/**
@@ -160,14 +156,12 @@ public class FileHistory {
 			clearFileHistoryMenu();
 			history.setMaxSize(size);
 			buildFileHistoryMenu();
-			settings.setProperty("Client.fileHistory.size",
-								 Integer.toString(size));
+			settings.setProperty("Client.fileHistory.size", Integer.toString(size));
 		}
 	}
 
 	/**
-	 * Loads the the given file. This method should only be called by
-	 * FileHistoryAction objects.
+	 * Loads the the given file. This method should only be called by FileHistoryAction objects.
 	 *
 	 * @param file TODO: DOCUMENT ME!
 	 */
@@ -180,8 +174,7 @@ public class FileHistory {
 		addFileToHistory(file);
 
 		boolean bOpenEqualsSave = Boolean.valueOf(settings.getProperty("Client.openEqualsSave",
-																	   "false"))
-										 .booleanValue();
+																	   "false")).booleanValue();
 
 		if(bOpenEqualsSave) {
 			settings.setProperty("Client.lastCRSaved", file.getAbsolutePath());

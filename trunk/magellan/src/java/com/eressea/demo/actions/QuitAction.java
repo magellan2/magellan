@@ -40,8 +40,8 @@ public class QuitAction extends MenuAction {
 	}
 
 	/**
-	 * Called when the file->open menu is selected in order to open a certain
-	 * cr file. Displays a file chooser and loads the selected cr file.
+	 * Called when the file->open menu is selected in order to open a certain cr file. Displays a
+	 * file chooser and loads the selected cr file.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */

@@ -49,10 +49,10 @@ public class UnitSkillCountReplacer extends AbstractParameterReplacer
 	public static final int MODE_SKILL_SUM = 2;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int		    MODE_SKILL_SUM_MIN = 3;
-	protected int				    mode;
-	private static final int	    MODE_LENGTHS[] = { 1, 2, 1, 2 };
-	protected ReplacerEnvironment   environment;
+	public static final int MODE_SKILL_SUM_MIN = 3;
+	protected int mode;
+	private static final int MODE_LENGTHS[] = { 1, 2, 1, 2 };
+	protected ReplacerEnvironment environment;
 
 	/**
 	 * Creates new UnitSkillCountReplacer
@@ -76,12 +76,10 @@ public class UnitSkillCountReplacer extends AbstractParameterReplacer
 			return null;
 		}
 
-		boolean minMode = ((mode == MODE_SKILL_MIN) ||
-						  (mode == MODE_SKILL_SUM_MIN));
-		boolean sumMode = ((mode == MODE_SKILL_SUM) ||
-						  (mode == MODE_SKILL_SUM_MIN));
-		int     min   = 1;
-		String  skill = getParameter(0, o).toString();
+		boolean minMode = ((mode == MODE_SKILL_MIN) || (mode == MODE_SKILL_SUM_MIN));
+		boolean sumMode = ((mode == MODE_SKILL_SUM) || (mode == MODE_SKILL_SUM_MIN));
+		int min = 1;
+		String skill = getParameter(0, o).toString();
 
 		if(minMode) {
 			Object obj = getParameter(1, o);
@@ -102,19 +100,18 @@ public class UnitSkillCountReplacer extends AbstractParameterReplacer
 			return new Integer(0);
 		}
 
-		int		 count = 0;
+		int count = 0;
 		Iterator it = units.iterator();
 
 		while(it.hasNext()) {
-			Unit     u   = (Unit) it.next();
+			Unit u = (Unit) it.next();
 			Iterator it2 = u.getSkills().iterator();
 
 			while(it2.hasNext()) {
-				Skill     sk  = (Skill) it2.next();
+				Skill sk = (Skill) it2.next();
 				SkillType sty = sk.getSkillType();
 
-				if(sty.getName().equals(skill) ||
-					   sty.getID().toString().equals(skill)) {
+				if(sty.getName().equals(skill) || sty.getID().toString().equals(skill)) {
 					if(!minMode || (sk.getLevel() >= min)) {
 						if(sumMode) {
 							count += (u.persons * sk.getLevel());
@@ -137,9 +134,7 @@ public class UnitSkillCountReplacer extends AbstractParameterReplacer
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getDescription() {
-		return com.eressea.util.Translations.getTranslation(this,
-															"description." +
-															mode);
+		return com.eressea.util.Translations.getTranslation(this, "description." + mode);
 	}
 
 	/**

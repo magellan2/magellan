@@ -18,8 +18,7 @@ import com.eressea.Unit;
 import com.eressea.rules.Race;
 
 /**
- * A relation indicating that a unit transfers a certain amount of persons to
- * another unit.
+ * A relation indicating that a unit transfers a certain amount of persons to another unit.
  */
 public class PersonTransferRelation extends TransferRelation {
 	/** TODO: DOCUMENT ME! */

@@ -34,13 +34,12 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class OptionAction extends MenuAction {
-	private List   adapters;
+	private List adapters;
 	private Client client;
 
 	/**
-	 * This timer object is used to rebuild the PreferencesDialog in
-	 * background. If the actionPerformed method is called the dialog will be
-	 * discarded and recreated
+	 * This timer object is used to rebuild the PreferencesDialog in background. If the
+	 * actionPerformed method is called the dialog will be discarded and recreated
 	 */
 	private Timer t;
 
@@ -52,7 +51,7 @@ public class OptionAction extends MenuAction {
 	 */
 	public OptionAction(Client parent, List adapters) {
 		this.adapters = adapters;
-		client		  = parent;
+		client = parent;
 		initTimer();
 	}
 
@@ -86,9 +85,7 @@ public class OptionAction extends MenuAction {
 			return;
 		}
 
-		PreferencesDialog pd = new PreferencesDialog(client, true,
-													 client.getSettings(),
-													 adapters);
+		PreferencesDialog pd = new PreferencesDialog(client, true, client.getSettings(), adapters);
 
 		if(dialog == null) {
 			dialog = pd;

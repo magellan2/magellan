@@ -57,14 +57,12 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public class TipOfTheDay extends InternationalizedDialog
-	implements ActionListener
-{
+public class TipOfTheDay extends InternationalizedDialog implements ActionListener {
 	// the pane to display the text
-	protected JTextPane     tipText;
-	protected HTMLDocument  doc;
+	protected JTextPane tipText;
+	protected HTMLDocument doc;
 	protected HTMLEditorKit kit;
-	protected int		    lastNumber = -1;
+	protected int lastNumber = -1;
 
 	// a checkbox for marking the show state
 	protected JCheckBox showTips;
@@ -76,7 +74,7 @@ public class TipOfTheDay extends InternationalizedDialog
 	protected List allTips;
 
 	// current usable (non-shown) tips
-	protected List				  nonShown;
+	protected List nonShown;
 	protected static final String NEXT = "next";
 
 	/** TODO: DOCUMENT ME! */
@@ -129,8 +127,8 @@ public class TipOfTheDay extends InternationalizedDialog
 		if(DesktopEnvironment.getMode() == MagellanDesktop.MODE_FRAME) {
 			Dimension screen = getToolkit().getScreenSize();
 			Dimension size = getSize();
-			int		  x    = (screen.width - size.width) / 2;
-			int		  y    = (screen.height - size.height) / 2;
+			int x = (screen.width - size.width) / 2;
+			int y = (screen.height - size.height) / 2;
 			setLocation(x, y);
 		} else {
 			setLocationRelativeTo(parent);
@@ -151,15 +149,15 @@ public class TipOfTheDay extends InternationalizedDialog
 	 *
 	 **/
 	protected void initUI() {
-		Color  foreground = new Color(79, 63, 48);
-		Color  background = new Color(213, 169, 131);
+		Color foreground = new Color(79, 63, 48);
+		Color background = new Color(213, 169, 131);
 
 		JPanel panel = new JPanel(new BorderLayout(2, 2));
 		panel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		panel.setBackground(foreground);
 
 		// try to find the image
-		Icon   icon		 = null;
+		Icon icon = null;
 		JLabel iconLabel = null;
 
 		try {
@@ -181,13 +179,13 @@ public class TipOfTheDay extends InternationalizedDialog
 		}
 
 		JLabel didyouknow = new JLabel("    " + getString("didyouknow"));
-		Font   old = didyouknow.getFont();
+		Font old = didyouknow.getFont();
 		didyouknow.setFont(old.deriveFont(old.getStyle() | Font.ITALIC, 18f));
 		didyouknow.setForeground(foreground);
 		didyouknow.setBackground(background);
 		didyouknow.setOpaque(true);
 
-		kit     = new HTMLEditorKit();
+		kit = new HTMLEditorKit();
 		tipText = new JTextPane();
 		tipText.setEditorKit(kit);
 		tipText.setForeground(foreground);
@@ -206,8 +204,7 @@ public class TipOfTheDay extends InternationalizedDialog
 		panel.add(content, BorderLayout.CENTER);
 
 		showTips = new JCheckBox(getString("showTips"),
-								 settings.getProperty("TipOfTheDay.showTips",
-													  "true").equals("true"));
+								 settings.getProperty("TipOfTheDay.showTips", "true").equals("true"));
 		showTips.setBackground(background);
 		showTips.setForeground(foreground);
 
@@ -225,18 +222,16 @@ public class TipOfTheDay extends InternationalizedDialog
 		JPanel actions = new JPanel(new GridBagLayout());
 		actions.setBackground(background);
 
-		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 1,
-													  GridBagConstraints.WEST,
+		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.WEST,
 													  GridBagConstraints.NONE,
-													  new Insets(1, 1, 1, 1),
-													  0, 0);
+													  new Insets(1, 1, 1, 1), 0, 0);
 		actions.add(showTips, c);
 
 		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttons.setBackground(background);
 		buttons.add(next);
 		buttons.add(close);
-		c.gridx  = 1;
+		c.gridx = 1;
 		c.anchor = GridBagConstraints.EAST;
 		actions.add(buttons, c);
 
@@ -251,7 +246,7 @@ public class TipOfTheDay extends InternationalizedDialog
 	}
 
 	protected void initTips() {
-		allTips  = CollectionFactory.createLinkedList();
+		allTips = CollectionFactory.createLinkedList();
 		nonShown = CollectionFactory.createLinkedList();
 
 		// load all tips
@@ -270,7 +265,7 @@ public class TipOfTheDay extends InternationalizedDialog
 					if(s != null) {
 						Tip tip = new Tip();
 						tip.number = i;
-						tip.text   = s;
+						tip.text = s;
 						allTips.add(tip);
 					}
 				} catch(Exception exc2) {
@@ -284,7 +279,7 @@ public class TipOfTheDay extends InternationalizedDialog
 
 				while(st.hasMoreTokens()) {
 					try {
-						int		 num = Integer.parseInt(st.nextToken());
+						int num = Integer.parseInt(st.nextToken());
 						Iterator it = allTips.iterator();
 
 						while(it.hasNext()) {
@@ -342,8 +337,8 @@ public class TipOfTheDay extends InternationalizedDialog
 
 			if(firstTime) {
 				firstTime = false;
-				tip		  = new Tip();
-				tip.text  = getString("warningString");
+				tip = new Tip();
+				tip.text = getString("warningString");
 			} else {
 				int i = 0;
 
@@ -352,8 +347,7 @@ public class TipOfTheDay extends InternationalizedDialog
 
 					int pos = (int) (Math.random() * nonShown.size());
 					tip = (Tip) nonShown.get(pos);
-				} while((i < 10) && (nonShown.size() != 1) &&
-							(tip.number == lastNumber));
+				} while((i < 10) && (nonShown.size() != 1) && (tip.number == lastNumber));
 
 				lastNumber = tip.number;
 				nonShown.remove(tip);
@@ -368,13 +362,11 @@ public class TipOfTheDay extends InternationalizedDialog
 
 				if(tip.text.startsWith(E_KEY)) {
 					kit.insertHTML(doc2, 0,
-								   E_HTML_START + "<font size=+1>" +
-								   getString("tip.eressea") + "</font><br>" +
-								   tip.text.substring(E_KEY.length()) +
-								   E_HTML_END, 0, 0, null);
-				} else {
-					kit.insertHTML(doc2, 0, HTML_START + tip.text + HTML_END,
+								   E_HTML_START + "<font size=+1>" + getString("tip.eressea") +
+								   "</font><br>" + tip.text.substring(E_KEY.length()) + E_HTML_END,
 								   0, 0, null);
+				} else {
+					kit.insertHTML(doc2, 0, HTML_START + tip.text + HTML_END, 0, 0, null);
 				}
 
 				tipText.setStyledDocument(doc2);
@@ -429,7 +421,7 @@ public class TipOfTheDay extends InternationalizedDialog
 		setVisible(false);
 
 		StringBuffer buf = new StringBuffer();
-		Iterator     it = nonShown.iterator();
+		Iterator it = nonShown.iterator();
 
 		while(it.hasNext()) {
 			Tip tip = (Tip) it.next();
@@ -442,13 +434,12 @@ public class TipOfTheDay extends InternationalizedDialog
 
 		settings.setProperty("TipOfTheDay.Tips", buf.toString());
 
-		settings.setProperty("TipOfTheDay.showTips",
-							 showTips.isSelected() ? "true" : "false");
+		settings.setProperty("TipOfTheDay.showTips", showTips.isSelected() ? "true" : "false");
 	}
 
 	// simple pair of number and html text
 	protected class Tip {
-		protected int    number;
+		protected int number;
 		protected String text;
 	}
 

@@ -47,15 +47,13 @@ import com.eressea.util.CollectionFactory;
  * @author $author$
  * @version $Revision$
  */
-public class ResourceSettings extends InternationalizedPanel
-	implements ExtendedPreferencesAdapter
-{
-	private JButton    btnAdd     = null;
-	private JButton    btnRemove  = null;
-	private JButton    btnEdit    = null;
-	private JList	   lstPaths   = null;
-	private Properties settings   = null;
-	private List	   subAdapter;
+public class ResourceSettings extends InternationalizedPanel implements ExtendedPreferencesAdapter {
+	private JButton btnAdd = null;
+	private JButton btnRemove = null;
+	private JButton btnEdit = null;
+	private JList lstPaths = null;
+	private Properties settings = null;
+	private List subAdapter;
 
 	/**
 	 * Creates a new ResourceSettings object.
@@ -75,12 +73,11 @@ public class ResourceSettings extends InternationalizedPanel
 
 		GridBagConstraints c = new java.awt.GridBagConstraints();
 		c.gridheight = 3;
-		c.fill		 = GridBagConstraints.BOTH;
-		c.insets     = new java.awt.Insets(5, 5, 5, 5);
-		c.weightx    = 0.1;
-		c.weighty    = 0.1;
-		this.add(new JScrollPane(lstPaths,
-								 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new java.awt.Insets(5, 5, 5, 5);
+		c.weightx = 0.1;
+		c.weighty = 0.1;
+		this.add(new JScrollPane(lstPaths, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 								 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS), c);
 
 		this.btnAdd = new JButton(getString("btn.new.caption"));
@@ -91,12 +88,12 @@ public class ResourceSettings extends InternationalizedPanel
 			});
 
 		c.gridheight = 1;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.fill		 = java.awt.GridBagConstraints.HORIZONTAL;
-		c.insets     = new java.awt.Insets(5, 0, 5, 5);
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		c.insets = new java.awt.Insets(5, 0, 5, 5);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		this.add(btnAdd, c);
 
 		this.btnRemove = new JButton(getString("btn.remove.caption"));
@@ -106,8 +103,8 @@ public class ResourceSettings extends InternationalizedPanel
 				}
 			});
 
-		c.gridx  = 1;
-		c.gridy  = 1;
+		c.gridx = 1;
+		c.gridy = 1;
 		c.insets = new java.awt.Insets(0, 0, 5, 5);
 		add(btnRemove, c);
 
@@ -118,8 +115,8 @@ public class ResourceSettings extends InternationalizedPanel
 				}
 			});
 
-		c.gridx  = 1;
-		c.gridy  = 2;
+		c.gridx = 1;
+		c.gridy = 2;
 		c.insets = new java.awt.Insets(0, 0, 5, 5);
 		c.anchor = java.awt.GridBagConstraints.NORTH;
 		add(btnEdit, c);
@@ -147,25 +144,22 @@ public class ResourceSettings extends InternationalizedPanel
 			return;
 		}
 
-		Component  parent = this.getTopLevelAncestor();
+		Component parent = this.getTopLevelAncestor();
 		URLWrapper w = (URLWrapper) lstPaths.getSelectedValue();
 
 		if((w != null) && (w.url != null)) {
-			Object   selectionValues[] = { w.toString() };
-			String   input = (String) JOptionPane.showInputDialog(parent,
-																  getString("msg.edit.text"),
-																  getString("msg.edit.title"),
-																  JOptionPane.PLAIN_MESSAGE,
-																  null, null,
-																  selectionValues[0]);
+			Object selectionValues[] = { w.toString() };
+			String input = (String) JOptionPane.showInputDialog(parent, getString("msg.edit.text"),
+																getString("msg.edit.title"),
+																JOptionPane.PLAIN_MESSAGE, null,
+																null, selectionValues[0]);
 
 			if(input != null) {
 				if(input.startsWith("http")) {
 					try {
 						w.url = new URL(input);
 					} catch(MalformedURLException mue) {
-						JOptionPane.showMessageDialog(parent,
-													  getString("msg.invalidformat.text"));
+						JOptionPane.showMessageDialog(parent, getString("msg.invalidformat.text"));
 					}
 				} else {
 					File f = new File(input);
@@ -202,8 +196,8 @@ public class ResourceSettings extends InternationalizedPanel
 	}
 
 	private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
-		URLWrapper				 urlWrapper = null;
-		Component				 parent = this.getTopLevelAncestor();
+		URLWrapper urlWrapper = null;
+		Component parent = this.getTopLevelAncestor();
 
 		javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
 		fc.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
@@ -216,13 +210,11 @@ public class ResourceSettings extends InternationalizedPanel
 					if(file.isDirectory()) {
 						urlWrapper = new URLWrapper(file.toURL());
 					} else {
-						urlWrapper = new URLWrapper(new URL("jar:" +
-															file.toURL()
-																.toString() +
+						urlWrapper = new URLWrapper(new URL("jar:" + file.toURL().toString() +
 															"!/"));
 					}
 				} else {
-					String name		  = file.getName();
+					String name = file.getName();
 					String parentName = "";
 
 					if(file.getParentFile() != null) {
@@ -233,19 +225,17 @@ public class ResourceSettings extends InternationalizedPanel
 						// in this case the user double clicked a directory instead of just selecting it
 						urlWrapper = new URLWrapper(file.getParentFile().toURL());
 					} else {
-						JOptionPane.showMessageDialog(parent,
-													  getString("msg.nonexistingfile.text"));
+						JOptionPane.showMessageDialog(parent, getString("msg.nonexistingfile.text"));
 					}
 				}
 			} catch(MalformedURLException ex) {
 				JOptionPane.showMessageDialog(parent,
-											  getString("msg.urlexception.text") +
-											  " " + ex.toString());
+											  getString("msg.urlexception.text") + " " +
+											  ex.toString());
 			}
 		}
 
-		((DefaultListModel) this.lstPaths.getModel()).insertElementAt(urlWrapper,
-																	  0);
+		((DefaultListModel) this.lstPaths.getModel()).insertElementAt(urlWrapper, 0);
 	}
 
 	/**
@@ -253,7 +243,7 @@ public class ResourceSettings extends InternationalizedPanel
 	 */
 	public void applyPreferences() {
 		Collection resourcePaths = CollectionFactory.createLinkedList();
-		ListModel  listModel = this.lstPaths.getModel();
+		ListModel listModel = this.lstPaths.getModel();
 
 		for(int j = 0; j < listModel.getSize(); j++) {
 			URLWrapper wrapper = (URLWrapper) listModel.getElementAt(j);
@@ -264,8 +254,7 @@ public class ResourceSettings extends InternationalizedPanel
 		}
 
 		com.eressea.resource.ResourcePathClassLoader.setStaticPaths(resourcePaths);
-		com.eressea.resource.ResourcePathClassLoader.storePaths(resourcePaths,
-																this.settings);
+		com.eressea.resource.ResourcePathClassLoader.storePaths(resourcePaths, this.settings);
 	}
 
 	/**
@@ -356,12 +345,9 @@ public class ResourceSettings extends InternationalizedPanel
 									"The specified URL is not in a valid format. No resource path could be created from it.");
 			defaultTranslations.put("msg.usenonexisting.text",
 									"The specified file or directory could not be found. Do you want to use it as a resource path anyway?");
-			defaultTranslations.put("msg.usenonexisting.title",
-									"Confirm resource path");
-			defaultTranslations.put("msg.nonexistingfile.text",
-									"File or directory does not exist!");
-			defaultTranslations.put("msg.urlexception.text",
-									"Unable to convert to a valid URL:");
+			defaultTranslations.put("msg.usenonexisting.title", "Confirm resource path");
+			defaultTranslations.put("msg.nonexistingfile.text", "File or directory does not exist!");
+			defaultTranslations.put("msg.urlexception.text", "Unable to convert to a valid URL:");
 
 			defaultTranslations.put("title", "Resources");
 

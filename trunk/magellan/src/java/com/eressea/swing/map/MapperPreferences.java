@@ -70,8 +70,8 @@ import com.eressea.util.logging.Logger;
 /**
  * The pereferences panel providing a GUI to configure a Mapper object.
  */
-public class MapperPreferences extends InternationalizedPanel
-	implements PreferencesAdapter, ActionListener
+public class MapperPreferences extends InternationalizedPanel implements PreferencesAdapter,
+																		 ActionListener
 {
 	private static final Logger log = Logger.getInstance(MapperPreferences.class);
 
@@ -79,18 +79,18 @@ public class MapperPreferences extends InternationalizedPanel
 	private Mapper source = null;
 
 	// GUI elements
-	private JCheckBox   chkDeferPainting = null;
-	private JCheckBox   showTooltips;
+	private JCheckBox chkDeferPainting = null;
+	private JCheckBox showTooltips;
 	private JTabbedPane planes;
 
 	// the map holding the associations between planes and renderers
 	// maps RenderingPlane to MapCellRenderer
-	private Map		   planeMap		    = CollectionFactory.createHashMap();
+	private Map planeMap = CollectionFactory.createHashMap();
 	private Collection rendererAdapters = CollectionFactory.createLinkedList();
 
 	// for changing tooltips
 	private ToolTipSwitcherDialog ttsDialog;
-	private boolean				  dialogShown = false;
+	private boolean dialogShown = false;
 
 	/**
 	 * Creates a new MapperPreferences object.
@@ -105,8 +105,7 @@ public class MapperPreferences extends InternationalizedPanel
 	private void init() {
 		chkDeferPainting = new JCheckBox(getString("chk.deferpainting.caption"),
 										 source.isDeferringPainting());
-		showTooltips = new JCheckBox(getString("showtooltips.caption"),
-									 source.isShowingTooltip());
+		showTooltips = new JCheckBox(getString("showtooltips.caption"), source.isShowingTooltip());
 
 		JButton configureTooltips = new JButton(getString("showtooltips.configure.caption"));
 		configureTooltips.addActionListener(this);
@@ -114,15 +113,13 @@ public class MapperPreferences extends InternationalizedPanel
 		JPanel helpPanel = new JPanel(new GridBagLayout());
 		helpPanel.setBorder(BorderFactory.createTitledBorder(""));
 
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 2, 1, 1, 0,
-														GridBagConstraints.WEST,
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 2, 1, 1, 0, GridBagConstraints.WEST,
 														GridBagConstraints.HORIZONTAL,
-														new Insets(3, 3, 3, 3),
-														0, 0);
+														new Insets(3, 3, 3, 3), 0, 0);
 		helpPanel.add(chkDeferPainting, gbc);
 		gbc.gridy++;
 		gbc.gridwidth = 1;
-		gbc.weightx   = 0;
+		gbc.weightx = 0;
 		helpPanel.add(showTooltips, gbc);
 		gbc.gridx++;
 		gbc.fill = GridBagConstraints.NONE;
@@ -134,23 +131,21 @@ public class MapperPreferences extends InternationalizedPanel
 		rendererPanel.add(planes, BorderLayout.CENTER);
 
 		for(Iterator iter = source.getPlanes().listIterator(); iter.hasNext();) {
-			RenderingPlane plane			  = (RenderingPlane) iter.next();
-			JPanel		   aRendererPanel = new JPanel(new GridBagLayout());
-			gbc = new GridBagConstraints(0, 0, 1, 1, 0, 0,
-										 GridBagConstraints.CENTER,
-										 GridBagConstraints.BOTH,
-										 new Insets(3, 3, 3, 3), 0, 0);
+			RenderingPlane plane = (RenderingPlane) iter.next();
+			JPanel aRendererPanel = new JPanel(new GridBagLayout());
+			gbc = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.CENTER,
+										 GridBagConstraints.BOTH, new Insets(3, 3, 3, 3), 0, 0);
 
 			JComboBox availableRenderers = new JComboBox();
 			availableRenderers.setEditable(false);
 			availableRenderers.addItem(getString("cmb.renderers.disabled"));
 
 			final CardLayout cards = new CardLayout();
-			final JPanel     temp = new JPanel(cards);
+			final JPanel temp = new JPanel(cards);
 			temp.add(new JPanel(), "NONE");
 
-			for(Iterator iterator = source.getRenderers(plane.getIndex())
-										  .iterator(); iterator.hasNext();) {
+			for(Iterator iterator = source.getRenderers(plane.getIndex()).iterator();
+					iterator.hasNext();) {
 				MapCellRenderer r = (MapCellRenderer) iterator.next();
 				availableRenderers.addItem(r);
 
@@ -194,9 +189,9 @@ public class MapperPreferences extends InternationalizedPanel
 			gbc.weightx = 1;
 			aRendererPanel.add(availableRenderers, gbc);
 			gbc.gridy++;
-			gbc.gridx     = 0;
+			gbc.gridx = 0;
 			gbc.gridwidth = 2;
-			gbc.weighty   = 1;
+			gbc.weighty = 1;
 			aRendererPanel.add(temp, gbc);
 
 			MapCellRenderer r = null;
@@ -213,15 +208,13 @@ public class MapperPreferences extends InternationalizedPanel
 
 		setLayout(new GridBagLayout());
 
-		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 0,
-													  GridBagConstraints.CENTER,
+		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.CENTER,
 													  GridBagConstraints.HORIZONTAL,
-													  new Insets(3, 3, 3, 3),
-													  0, 0);
+													  new Insets(3, 3, 3, 3), 0, 0);
 		add(helpPanel, c);
 		c.gridy++;
 		c.weighty = 1;
-		c.fill    = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.BOTH;
 		add(rendererPanel, c);
 	}
 
@@ -317,75 +310,62 @@ public class MapperPreferences extends InternationalizedPanel
 			defaultTranslations.put("tooltipdialog.export", "Export...");
 			defaultTranslations.put("tooltipdialog.import", "Import...");
 			defaultTranslations.put("tooltipdialog.add", "Add...");
-			defaultTranslations.put("tooltipdialog.editbymask",
-									"Edit with mask...");
-			defaultTranslations.put("tooltipdialog.addbymask",
-									"Add with mask...");
-			defaultTranslations.put("tooltipdialog.addbymask.excludeocean",
-									"Exclude oceans");
+			defaultTranslations.put("tooltipdialog.editbymask", "Edit with mask...");
+			defaultTranslations.put("tooltipdialog.addbymask", "Add with mask...");
+			defaultTranslations.put("tooltipdialog.addbymask.excludeocean", "Exclude oceans");
 			defaultTranslations.put("tooltipdialog.addbymask.cancel", "Cancel");
 			defaultTranslations.put("tooltipdialog.addbymask.ok", "OK");
 			defaultTranslations.put("tooltipdialog.exportdialog.title", "Export");
 			defaultTranslations.put("tooltipdialog.importdialog.title", "Import");
 			defaultTranslations.put("tooltipdialog.tooltipinfo.title", "Info");
 			defaultTranslations.put("tooltipdialog.info", "Info...");
-			defaultTranslations.put("lbl.renderingplane.caption",
-									"Rendering plane: ");
+			defaultTranslations.put("lbl.renderingplane.caption", "Rendering plane: ");
 			defaultTranslations.put("lbl.renderer.caption", "Renderer: ");
 			defaultTranslations.put("border.rendereroptions", "Renderer options");
 			defaultTranslations.put("cmb.renderers.disabled", "<disabled>");
 			defaultTranslations.put("title", "Map");
-			defaultTranslations.put("tooltipdialog.addbymask.columns",
-									"Number of columns");
-			defaultTranslations.put("tooltipdialog.addbymask.rows",
-									"Number of rows");
-			defaultTranslations.put("tooltipdialog.addbymask.name",
-									"Name of Tooltip");
-			defaultTranslations.put("tooltipdialog.addbymask.title",
-									"Add by mask");
+			defaultTranslations.put("tooltipdialog.addbymask.columns", "Number of columns");
+			defaultTranslations.put("tooltipdialog.addbymask.rows", "Number of rows");
+			defaultTranslations.put("tooltipdialog.addbymask.name", "Name of Tooltip");
+			defaultTranslations.put("tooltipdialog.addbymask.title", "Add by mask");
 			defaultTranslations.put("tooltipdialog.tooltipinfo.ok", "OK");
-			defaultTranslations.put("tooltipdialog.addtooltipdialog.title2",
-									"Edit...");
+			defaultTranslations.put("tooltipdialog.addtooltipdialog.title2", "Edit...");
 			defaultTranslations.put("tooltipdialog.edit", "Edit...");
 			defaultTranslations.put("tooltipdialog.delete", "Delete");
 			defaultTranslations.put("addtooltipdialog.value", "Value");
 			defaultTranslations.put("addtooltipdialog.name", "Name");
-			defaultTranslations.put("tooltipdialog.addtooltipdialog.title",
-									"Add");
+			defaultTranslations.put("tooltipdialog.addtooltipdialog.title", "Add");
 			defaultTranslations.put("addtooltipdialog.Cancel", "Cancel");
 			defaultTranslations.put("addtooltipdialog.OK", "OK");
 			defaultTranslations.put("imexportdialog.ioerror", "I/O-Error:");
 			defaultTranslations.put("imexportdialog.fnf", "File not found!");
-			defaultTranslations.put("imexportdialog.nodeffound",
-									"No definitions found!");
+			defaultTranslations.put("imexportdialog.nodeffound", "No definitions found!");
 			defaultTranslations.put("imexportdialog.Cancel", "Cancel");
 			defaultTranslations.put("imexportdialog.OK", "OK");
 			defaultTranslations.put("showtooltips.caption", "Show tooltips");
 			defaultTranslations.put("tooltipdialog.title", "Choose Tool Tip");
 			defaultTranslations.put("tooltipdialog.ok", "OK");
-			defaultTranslations.put("tooltipdialog.notooltips",
-									"No tool tip definitions found.");
-			defaultTranslations.put("showtooltips.configure.caption",
-									"Choose...");
+			defaultTranslations.put("tooltipdialog.notooltips", "No tool tip definitions found.");
+			defaultTranslations.put("showtooltips.configure.caption", "Choose...");
 		}
 
 		return defaultTranslations;
 	}
 
-	protected class ToolTipSwitcherDialog extends JDialog
-		implements ActionListener, javax.swing.event.ListSelectionListener
+	protected class ToolTipSwitcherDialog extends JDialog implements ActionListener,
+																	 javax.swing.event.ListSelectionListener
 	{
 		/**
-		 * A simple info dialog consisting of a list on the left side, where
-		 * all currently known replacers are shown, and a text area on the
-		 * right that displays the description of the selected replacer.
+		 * A simple info dialog consisting of a list on the left side, where all currently known
+		 * replacers are shown, and a text area on the right that displays the description of the
+		 * selected replacer.
 		 */
 		protected class ToolTipReplacersInfo extends JDialog
 			implements javax.swing.event.ListSelectionListener, ActionListener
 		{
-			protected JList										 list;
-			protected JTextArea									 text;
-			protected List										 rList;
+			protected JList list;
+			protected JTextArea text;
+			protected List rList;
 			protected com.eressea.util.replacers.ReplacerFactory replacerMap;
 
 			/**
@@ -416,7 +396,7 @@ public class MapperPreferences extends InternationalizedPanel
 				text.setBackground(c.getBackground());
 				c.add(new JScrollPane(text), BorderLayout.CENTER);
 
-				JPanel  south = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				JPanel south = new JPanel(new FlowLayout(FlowLayout.CENTER));
 				JButton exit = new JButton(getString("tooltipdialog.tooltipinfo.ok"));
 				exit.addActionListener(this);
 				south.add(exit);
@@ -473,17 +453,16 @@ public class MapperPreferences extends InternationalizedPanel
 		}
 
 		/**
-		 * Imports/exports tooltips from/to text files. The text files are
-		 * interpreted two-line-wise. The first line acts as the name and the
-		 * second one as the definition.
+		 * Imports/exports tooltips from/to text files. The text files are interpreted
+		 * two-line-wise. The first line acts as the name and the second one as the definition.
 		 */
 		protected class ImExportDialog extends JDialog implements ActionListener {
-			protected JFileChooser   fileChooser;
-			protected Dialog		 parent;
-			protected JList			 list;
+			protected JFileChooser fileChooser;
+			protected Dialog parent;
+			protected JList list;
 			protected java.util.List data;
-			protected JButton		 ok;
-			protected boolean		 approved = false;
+			protected JButton ok;
+			protected boolean approved = false;
 
 			/**
 			 * Creates a new ImExportDialog object.
@@ -524,9 +503,9 @@ public class MapperPreferences extends InternationalizedPanel
 			 * @param doImport TODO: DOCUMENT ME!
 			 */
 			public void showDialog(boolean doImport) {
-				File		 file = null;
+				File file = null;
 				JFileChooser jfc = new JFileChooser(com.eressea.demo.Client.getMagellanDirectory());
-				int			 ret = 0;
+				int ret = 0;
 
 				if(doImport) {
 					ret = jfc.showOpenDialog(this);
@@ -542,16 +521,16 @@ public class MapperPreferences extends InternationalizedPanel
 						if(doImport) {
 							if(file.exists()) {
 								BufferedReader br = new BufferedReader(new FileReader(file));
-								String		   s1 = null;
-								String		   s2 = null;
+								String s1 = null;
+								String s2 = null;
 
 								try {
 									do {
 										s1 = br.readLine();
 										s2 = br.readLine();
 
-										if((s1 != null) && !s1.equals("") &&
-											   (s2 != null) && !s2.equals("")) {
+										if((s1 != null) && !s1.equals("") && (s2 != null) &&
+											   !s2.equals("")) {
 											data.add(s1);
 											data.add(s2);
 										}
@@ -575,10 +554,8 @@ public class MapperPreferences extends InternationalizedPanel
 									if(approved) {
 										int indices[] = list.getSelectedIndices();
 
-										if((indices != null) &&
-											   (indices.length > 0)) {
-											for(int i = 0; i < indices.length;
-													i++) {
+										if((indices != null) && (indices.length > 0)) {
+											for(int i = 0; i < indices.length; i++) {
 												source.addTooltipDefinition((String) data.get(indices[i] * 2),
 																			(String) data.get((indices[i] * 2) +
 																							  1));
@@ -590,8 +567,7 @@ public class MapperPreferences extends InternationalizedPanel
 																  getString("imexportdialog.nodeffound"));
 								}
 							} else { // file not found, show error
-								JOptionPane.showMessageDialog(this,
-															  getString("imexportdialog.fnf"));
+								JOptionPane.showMessageDialog(this, getString("imexportdialog.fnf"));
 							}
 						} else {
 							data = source.getAllTooltipDefinitions();
@@ -612,13 +588,12 @@ public class MapperPreferences extends InternationalizedPanel
 								int indices[] = list.getSelectedIndices();
 
 								if((indices != null) && (indices.length > 0)) {
-									PrintWriter bw    = new PrintWriter(new FileWriter(file));
-									ListModel   model = list.getModel();
+									PrintWriter bw = new PrintWriter(new FileWriter(file));
+									ListModel model = list.getModel();
 
 									for(int i = 0; i < indices.length; i++) {
 										bw.println(model.getElementAt(indices[i]));
-										bw.println(data.get((indices[i] * 2) +
-															1));
+										bw.println(data.get((indices[i] * 2) + 1));
 									}
 
 									bw.close();
@@ -649,20 +624,17 @@ public class MapperPreferences extends InternationalizedPanel
 		}
 
 		/**
-		 * A dialog for adding/editing tooltips. After successful editing(name
-		 * and definition != ""), all line breaks are terminated from the
-		 * value since they cause errors in the replacer engine(keywords can't
-		 * be recognized if divided by a line break character).
+		 * A dialog for adding/editing tooltips. After successful editing(name and definition !=
+		 * ""), all line breaks are terminated from the value since they cause errors in the
+		 * replacer engine(keywords can't be recognized if divided by a line break character).
 		 */
-		protected class AddTooltipDialog extends JDialog
-			implements ActionListener
-		{
-			protected JButton    cancel;
+		protected class AddTooltipDialog extends JDialog implements ActionListener {
+			protected JButton cancel;
 			protected JTextField name;
-			protected JTextArea  value;
-			protected boolean    existed   = false;
-			protected String     origName  = null;
-			protected int		 origIndex = -1;
+			protected JTextArea value;
+			protected boolean existed = false;
+			protected String origName = null;
+			protected int origIndex = -1;
 
 			/**
 			 * Creates a new AddTooltipDialog object.
@@ -673,45 +645,43 @@ public class MapperPreferences extends InternationalizedPanel
 			 * @param def TODO: DOCUMENT ME!
 			 * @param index TODO: DOCUMENT ME!
 			 */
-			public AddTooltipDialog(Dialog parent, String title, String name,
-									String def, int index) {
+			public AddTooltipDialog(Dialog parent, String title, String name, String def, int index) {
 				super(parent, title, true);
 
 				if((name != null) && (def != null)) {
-					existed   = true;
-					origName  = name;
+					existed = true;
+					origName = name;
 					origIndex = index;
 				}
 
-				JPanel			   center = new JPanel(new GridBagLayout());
+				JPanel center = new JPanel(new GridBagLayout());
 				GridBagConstraints gbc = new GridBagConstraints();
-				gbc.fill	   = GridBagConstraints.HORIZONTAL;
-				gbc.gridx	   = 0;
-				gbc.gridy	   = 0;
-				gbc.gridwidth  = 1;
+				gbc.fill = GridBagConstraints.HORIZONTAL;
+				gbc.gridx = 0;
+				gbc.gridy = 0;
+				gbc.gridwidth = 1;
 				gbc.gridheight = 1;
-				gbc.weightx    = 0;
-				gbc.anchor     = GridBagConstraints.WEST;
+				gbc.weightx = 0;
+				gbc.anchor = GridBagConstraints.WEST;
 
 				center.add(new JLabel(getString("addtooltipdialog.name")), gbc);
 				gbc.gridy++;
 				center.add(new JLabel(getString("addtooltipdialog.value")), gbc);
 
-				gbc.gridx   = 1;
-				gbc.gridy   = 0;
+				gbc.gridx = 1;
+				gbc.gridy = 0;
 				gbc.weightx = 1;
 				center.add(this.name = new JTextField(name, 20), gbc);
 				gbc.gridy++;
 				gbc.weighty = 1;
-				gbc.fill    = GridBagConstraints.BOTH;
-				center.add(new JScrollPane(value = new JTextArea(def, 5, 20)),
-						   gbc);
+				gbc.fill = GridBagConstraints.BOTH;
+				center.add(new JScrollPane(value = new JTextArea(def, 5, 20)), gbc);
 
 				value.setLineWrap(true);
 
 				this.getContentPane().add(center, BorderLayout.CENTER);
 
-				JPanel  s = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				JPanel s = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 				JButton b = new JButton(getString("addtooltipdialog.OK"));
 				b.addActionListener(this);
@@ -755,8 +725,7 @@ public class MapperPreferences extends InternationalizedPanel
 			public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
 				if(actionEvent.getSource() != cancel) {
 					if((name.getText() != null) && !name.getText().equals("") &&
-						   (value.getText() != null) &&
-						   !value.getText().equals("")) {
+						   (value.getText() != null) && !value.getText().equals("")) {
 						StringBuffer buf = new StringBuffer(value.getText());
 
 						//remove all '\n'
@@ -777,8 +746,7 @@ public class MapperPreferences extends InternationalizedPanel
 							l.set(origIndex + 1, buf.toString());
 							source.setAllTooltipDefinitions(l);
 						} else {
-							source.addTooltipDefinition(name.getText(),
-														buf.toString());
+							source.addTooltipDefinition(name.getText(), buf.toString());
 						}
 					}
 				}
@@ -787,21 +755,19 @@ public class MapperPreferences extends InternationalizedPanel
 			}
 		}
 
-		protected class AddByMaskDialog extends JDialog
-			implements ActionListener
-		{
-			protected JButton			 ok;
-			protected JButton			 cancel;
-			protected JTextField		 title;
-			protected JTextField		 table[][];
-			protected JCheckBox			 excludeOceans;
-			protected String			 name;
-			protected String			 leftPart     = null;
-			protected String			 midPart	  = null;
-			protected String			 rightPart    = null;
-			protected String			 tableAttribs = null;
-			protected int				 origIndex    = -1;
-			protected GridBagConstraints gbc		  = null;
+		protected class AddByMaskDialog extends JDialog implements ActionListener {
+			protected JButton ok;
+			protected JButton cancel;
+			protected JTextField title;
+			protected JTextField table[][];
+			protected JCheckBox excludeOceans;
+			protected String name;
+			protected String leftPart = null;
+			protected String midPart = null;
+			protected String rightPart = null;
+			protected String tableAttribs = null;
+			protected int origIndex = -1;
+			protected GridBagConstraints gbc = null;
 
 			/**
 			 * Creates a new AddByMaskDialog object.
@@ -818,13 +784,12 @@ public class MapperPreferences extends InternationalizedPanel
 			 */
 			public void show() {
 				// clear parts to flag that this is a new mask
-				leftPart  = null;
-				midPart   = null;
+				leftPart = null;
+				midPart = null;
 				rightPart = null;
 
 				// get name and size
-				name = JOptionPane.showInputDialog(this,
-												   getString("tooltipdialog.addbymask.name"));
+				name = JOptionPane.showInputDialog(this, getString("tooltipdialog.addbymask.name"));
 
 				if((name == null) || (name.length() < 1)) {
 					return;
@@ -832,7 +797,7 @@ public class MapperPreferences extends InternationalizedPanel
 
 				String s = JOptionPane.showInputDialog(this,
 													   getString("tooltipdialog.addbymask.rows"));
-				int    rows = 0;
+				int rows = 0;
 
 				try {
 					rows = Integer.parseInt(s);
@@ -844,8 +809,7 @@ public class MapperPreferences extends InternationalizedPanel
 					return;
 				}
 
-				s = JOptionPane.showInputDialog(this,
-												getString("tooltipdialog.addbymask.columns"));
+				s = JOptionPane.showInputDialog(this, getString("tooltipdialog.addbymask.columns"));
 
 				int columns = 0;
 
@@ -900,10 +864,10 @@ public class MapperPreferences extends InternationalizedPanel
 				 *
 				 * Assume: Start ... "<b><center>"title"</center></b>"..."<table"table data"</table>"...End
 				*/
-				name	  = tipName;
+				name = tipName;
 				origIndex = index;
 
-				int i     = tipDef.indexOf("<b><center>");
+				int i = tipDef.indexOf("<b><center>");
 
 				if(i == -1) { // not correct
 					i = tipDef.indexOf("<center><b>");
@@ -986,8 +950,8 @@ public class MapperPreferences extends InternationalizedPanel
 				// now get the table elements
 				String values[][] = new String[rows][columns];
 				rest = tData.substring(tData.indexOf('>') + 1);
-				i    = -1;
-				j    = 0;
+				i = -1;
+				j = 0;
 
 				while(rest.length() > 0) {
 					if(rest.indexOf('<') >= 0) {
@@ -1042,8 +1006,7 @@ public class MapperPreferences extends InternationalizedPanel
 							}
 
 							rest = rest.substring(3 +
-												  ((values[i][j] == null) ? 0
-																		  : values[i][j].length()));
+												  ((values[i][j] == null) ? 0 : values[i][j].length()));
 						}
 					} else {
 						rest = "";
@@ -1066,11 +1029,11 @@ public class MapperPreferences extends InternationalizedPanel
 			protected void initComponents(Container content) {
 				if(gbc == null) {
 					content.setLayout(new GridBagLayout());
-					gbc		    = new GridBagConstraints();
-					gbc.fill    = GridBagConstraints.HORIZONTAL;
-					gbc.anchor  = GridBagConstraints.CENTER;
+					gbc = new GridBagConstraints();
+					gbc.fill = GridBagConstraints.HORIZONTAL;
+					gbc.anchor = GridBagConstraints.CENTER;
 					gbc.weightx = 1;
-					gbc.insets  = new Insets(2, 2, 2, 2);
+					gbc.insets = new Insets(2, 2, 2, 2);
 				}
 
 				if(title == null) {
@@ -1095,14 +1058,13 @@ public class MapperPreferences extends InternationalizedPanel
 				}
 			}
 
-			protected void initUI(Container content, int rows, int cols,
-								  String titleS, String values[][],
-								  boolean showExclude) {
+			protected void initUI(Container content, int rows, int cols, String titleS,
+								  String values[][], boolean showExclude) {
 				// title
 				title.setText(titleS);
-				gbc.gridx	   = 0;
-				gbc.gridy	   = 0;
-				gbc.gridwidth  = 2;
+				gbc.gridx = 0;
+				gbc.gridy = 0;
+				gbc.gridwidth = 2;
 				gbc.gridheight = 1;
 				content.add(title, gbc);
 
@@ -1116,7 +1078,7 @@ public class MapperPreferences extends InternationalizedPanel
 
 					for(int j = 0; j < cols; j++) {
 						table[i][j] = new JTextField(20);
-						gbc.gridx   = j;
+						gbc.gridx = j;
 
 						if(values != null) {
 							table[i][j].setText(values[i][j]);
@@ -1136,7 +1098,7 @@ public class MapperPreferences extends InternationalizedPanel
 				south.add(ok);
 				south.add(cancel);
 				gbc.gridy++;
-				gbc.gridx     = 0;
+				gbc.gridx = 0;
 				gbc.gridwidth = 2;
 				content.add(south, gbc);
 			}
@@ -1164,9 +1126,8 @@ public class MapperPreferences extends InternationalizedPanel
 			}
 
 			/**
-			 * Creates the table out of the GUI mask. All text elements from
-			 * the fields are packed inside paragraph signs. Uses some default
-			 * things like bold title.
+			 * Creates the table out of the GUI mask. All text elements from the fields are packed
+			 * inside paragraph signs. Uses some default things like bold title.
 			 */
 			protected void createTable() {
 				if(leftPart == null) {
@@ -1177,10 +1138,10 @@ public class MapperPreferences extends InternationalizedPanel
 			}
 
 			protected void createEditedTable() {
-				String		 rowStart    = "<tr>";
-				String		 columnStart = "<td>§";
-				String		 columnEnd   = "§</td>";
-				String		 rowEnd		 = "</tr>";
+				String rowStart = "<tr>";
+				String columnStart = "<td>§";
+				String columnEnd = "§</td>";
+				String rowEnd = "</tr>";
 
 				StringBuffer buf = new StringBuffer();
 
@@ -1233,10 +1194,10 @@ public class MapperPreferences extends InternationalizedPanel
 			}
 
 			protected void createNewTable() {
-				String		 rowStart    = "<tr>";
-				String		 columnStart = "<td>§";
-				String		 columnEnd   = "§</td>";
-				String		 rowEnd		 = "</tr>";
+				String rowStart = "<tr>";
+				String columnStart = "<td>§";
+				String columnEnd = "§</td>";
+				String rowEnd = "</tr>";
 
 				StringBuffer buf = new StringBuffer("<html>");
 
@@ -1283,21 +1244,21 @@ public class MapperPreferences extends InternationalizedPanel
 			}
 		}
 
-		protected JList				   tooltipList;
-		protected java.util.List	   tooltips;
-		protected JButton			   add;
-		protected JButton			   edit;
-		protected JButton			   info;
-		protected JButton			   importT;
-		protected JButton			   exportT;
-		protected JButton			   delete;
-		protected JButton			   mask;
-		protected JButton			   editmask;
-		protected JTextField		   text;
-		protected Component			   listComp   = null;
-		protected Container			   listCont;
+		protected JList tooltipList;
+		protected java.util.List tooltips;
+		protected JButton add;
+		protected JButton edit;
+		protected JButton info;
+		protected JButton importT;
+		protected JButton exportT;
+		protected JButton delete;
+		protected JButton mask;
+		protected JButton editmask;
+		protected JTextField text;
+		protected Component listComp = null;
+		protected Container listCont;
 		protected ToolTipReplacersInfo infoDialog = null;
-		protected AddByMaskDialog	   maskDialog = null;
+		protected AddByMaskDialog maskDialog = null;
 
 		/**
 		 * Creates a new ToolTipSwitcherDialog object.
@@ -1325,32 +1286,29 @@ public class MapperPreferences extends InternationalizedPanel
 			Container content = getContentPane();
 			content.setLayout(new BorderLayout());
 
-			JButton					  b;
+			JButton b;
 
-			JPanel					  main   = new JPanel(new BorderLayout());
+			JPanel main = new JPanel(new BorderLayout());
 			javax.swing.border.Border border = new CompoundBorder(BorderFactory.createEtchedBorder(),
-																  new EmptyBorder(3,
-																				  3,
-																				  3,
-																				  3));
+																  new EmptyBorder(3, 3, 3, 3));
 
 			main.setBorder(border);
 
 			text = new JTextField(30);
 			main.add(text, BorderLayout.NORTH);
 
-			JPanel			   mInner = new JPanel(new BorderLayout());
+			JPanel mInner = new JPanel(new BorderLayout());
 
-			Container		   iButtons = new JPanel(new GridBagLayout());
+			Container iButtons = new JPanel(new GridBagLayout());
 
 			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.gridwidth  = 1;
+			gbc.gridwidth = 1;
 			gbc.gridheight = 2;
-			gbc.fill	   = GridBagConstraints.HORIZONTAL;
-			gbc.weightx    = 0.5;
-			gbc.insets     = new Insets(0, 1, 10, 1);
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 0.5;
+			gbc.insets = new Insets(0, 1, 10, 1);
 
-			JPanel normal  = new JPanel(new GridLayout(0, 1, 2, 3));
+			JPanel normal = new JPanel(new GridLayout(0, 1, 2, 3));
 			normal.setBorder(border);
 
 			b = new JButton(getString("tooltipdialog.add"));
@@ -1384,7 +1342,7 @@ public class MapperPreferences extends InternationalizedPanel
 			iButtons.add(normal, gbc);
 
 			gbc.gridheight = 1;
-			gbc.gridy	   = 4;
+			gbc.gridy = 4;
 			gbc.insets.left += 5;
 			gbc.insets.right += 5;
 			gbc.insets.bottom = 0;
@@ -1411,7 +1369,7 @@ public class MapperPreferences extends InternationalizedPanel
 			b.addActionListener(this);
 			east.add(b);
 
-			b    = new JButton(getString("tooltipdialog.info"));
+			b = new JButton(getString("tooltipdialog.info"));
 			info = b;
 			b.addActionListener(this);
 			east.add(b);
@@ -1450,7 +1408,7 @@ public class MapperPreferences extends InternationalizedPanel
 			}
 
 			java.util.List list = source.getAllTooltipDefinitions();
-			List		   v = CollectionFactory.createLinkedList();
+			List v = CollectionFactory.createLinkedList();
 			tooltips = CollectionFactory.createLinkedList();
 
 			Iterator it = list.iterator();
@@ -1499,16 +1457,13 @@ public class MapperPreferences extends InternationalizedPanel
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == importT) {
-				new ImExportDialog(this,
-								   getString("tooltipdialog.importdialog.title")).showDialog(true);
+				new ImExportDialog(this, getString("tooltipdialog.importdialog.title")).showDialog(true);
 				recreate();
 			} else if(e.getSource() == exportT) {
-				new ImExportDialog(this,
-								   getString("tooltipdialog.exportdialog.title")).showDialog(false);
+				new ImExportDialog(this, getString("tooltipdialog.exportdialog.title")).showDialog(false);
 			} else if(e.getSource() == add) {
-				new AddTooltipDialog(this,
-									 getString("tooltipdialog.addtooltipdialog.title"),
-									 null, null, -1).show();
+				new AddTooltipDialog(this, getString("tooltipdialog.addtooltipdialog.title"), null,
+									 null, -1).show();
 				recreate();
 			} else if(e.getSource() == mask) {
 				if(maskDialog == null) {
@@ -1519,8 +1474,7 @@ public class MapperPreferences extends InternationalizedPanel
 				maskDialog.show();
 				recreate();
 			} else if(e.getSource() == editmask) {
-				if((tooltipList != null) &&
-					   (tooltipList.getSelectedIndex() > -1)) {
+				if((tooltipList != null) && (tooltipList.getSelectedIndex() > -1)) {
 					int index = tooltipList.getSelectedIndex();
 
 					if(maskDialog == null) {
@@ -1534,13 +1488,10 @@ public class MapperPreferences extends InternationalizedPanel
 					recreate();
 				}
 			} else if(e.getSource() == edit) {
-				if((tooltipList != null) &&
-					   (tooltipList.getSelectedIndex() > -1)) {
+				if((tooltipList != null) && (tooltipList.getSelectedIndex() > -1)) {
 					int index = tooltipList.getSelectedIndex();
-					new AddTooltipDialog(this,
-										 getString("tooltipdialog.addtooltipdialog.title2"),
-										 tooltipList.getSelectedValue()
-													.toString(),
+					new AddTooltipDialog(this, getString("tooltipdialog.addtooltipdialog.title2"),
+										 tooltipList.getSelectedValue().toString(),
 										 (String) tooltips.get(index), index * 2).show();
 					recreate();
 				}

@@ -138,8 +138,7 @@ public class IfBranchReplacer implements BranchReplacer, ParameterReplacer {
 	 */
 	public String toString() {
 		try {
-			return "if " + criterion + " then " + branches[0] + " else " +
-				   branches[1];
+			return "if " + criterion + " then " + branches[0] + " else " + branches[1];
 		} catch(Exception exc) {
 		}
 

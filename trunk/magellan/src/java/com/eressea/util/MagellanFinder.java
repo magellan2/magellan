@@ -21,8 +21,8 @@ import java.util.zip.ZipFile;
 import com.eressea.util.logging.Logger;
 
 /**
- * Small class for start-up help. Two search functions: The Magellan directory
- * and the settings file.
+ * Small class for start-up help. Two search functions: The Magellan directory and the settings
+ * file.
  *
  * @author Andreas
  * @version
@@ -45,24 +45,22 @@ public class MagellanFinder {
 		if((settFileDir != null) && !settFileDir.equals(magDirectory)) {
 			magFile = new File(settFileDir, "magellan.ini");
 
-			if(magFile.exists() && !magFile.isDirectory() &&
-				   magFile.canWrite()) {
+			if(magFile.exists() && !magFile.isDirectory() && magFile.canWrite()) {
 				return settFileDir;
 			}
 		}
 
 		settFileDir = magDirectory;
-		magFile     = new File(settFileDir, "magellan.ini");
+		magFile = new File(settFileDir, "magellan.ini");
 		log.info("Searching for Magellan configuration:");
 
 		StringBuffer msg = new StringBuffer();
 		msg.append(settFileDir + "...");
 
-		if(!settFileDir.exists() || !settFileDir.canWrite() ||
-			   !magFile.exists()) {
+		if(!settFileDir.exists() || !settFileDir.canWrite() || !magFile.exists()) {
 			msg.append("Not found.");
 			log.info(msg);
-			msg		    = new StringBuffer();
+			msg = new StringBuffer();
 			settFileDir = new File(System.getProperty("user.home"));
 			msg.append(settFileDir + "...");
 			magFile = new File(settFileDir, "magellan.ini");
@@ -70,7 +68,7 @@ public class MagellanFinder {
 			if(!magFile.exists()) {
 				msg.append("Not found.");
 				log.info(msg);
-				msg		    = new StringBuffer();
+				msg = new StringBuffer();
 				settFileDir = new File(".");
 
 				if(!settFileDir.isDirectory()) {
@@ -97,8 +95,8 @@ public class MagellanFinder {
 		}
 
 		if(!magFile.exists()) {
-			msg.append("Not found.\nUsing default directory " +
-					   magDirectory.getAbsolutePath() + ".");
+			msg.append("Not found.\nUsing default directory " + magDirectory.getAbsolutePath() +
+					   ".");
 			log.info(msg);
 			settFileDir = magDirectory;
 		} else {
@@ -110,14 +108,13 @@ public class MagellanFinder {
 	}
 
 	/**
-	 * Searches for Magellan. This method scans the CLASSPATH and searches for
-	 * JARs containing "com.eressea.demo.Client" or correspoding directory
-	 * structures.
+	 * Searches for Magellan. This method scans the CLASSPATH and searches for JARs containing
+	 * "com.eressea.demo.Client" or correspoding directory structures.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static File findMagellanDirectory() {
-		String		    classPath = System.getProperty("java.class.path", ".");
+		String classPath = System.getProperty("java.class.path", ".");
 		StringTokenizer st = new StringTokenizer(classPath, ";,");
 
 		while(st.hasMoreTokens()) {
@@ -143,8 +140,7 @@ public class MagellanFinder {
 						if(list.length > 0) {
 							for(int i = 0; i < list.length; i++) {
 								if(checkJar(list[i])) {
-									log.info("Magellan directory: " + file +
-											 "(found JAR)");
+									log.info("Magellan directory: " + file + "(found JAR)");
 
 									return file;
 								}
@@ -195,8 +191,8 @@ public class MagellanFinder {
 	}
 
 	/**
-	 * Extracts the directory out of the given file. If any error occurs, the
-	 * current directory(".") is returned.
+	 * Extracts the directory out of the given file. If any error occurs, the current
+	 * directory(".") is returned.
 	 *
 	 * @param file TODO: DOCUMENT ME!
 	 *
@@ -223,9 +219,8 @@ public class MagellanFinder {
 	}
 
 	/**
-	 * Checks if the given file is a zip and contains a
-	 * "com/eressea/demo/Client.class". These are the conditions for the file
-	 * to be a valid magellan Java Archive (JAR).
+	 * Checks if the given file is a zip and contains a "com/eressea/demo/Client.class". These are
+	 * the conditions for the file to be a valid magellan Java Archive (JAR).
 	 *
 	 * @param file TODO: DOCUMENT ME!
 	 *
@@ -236,9 +231,8 @@ public class MagellanFinder {
 	}
 
 	/**
-	 * Checks if the given file is a zip and contains a
-	 * "com/eressea/demo/Client.class". These are the conditions for the file
-	 * to be a valid magellan Java Archive (JAR).
+	 * Checks if the given file is a zip and contains a "com/eressea/demo/Client.class". These are
+	 * the conditions for the file to be a valid magellan Java Archive (JAR).
 	 *
 	 * @param file TODO: DOCUMENT ME!
 	 *

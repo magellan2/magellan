@@ -35,9 +35,9 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class HelpAction extends MenuAction {
-	private static final Logger log		   = Logger.getInstance(HelpAction.class);
-	private Object			    helpBroker = null;
-	private Client			    client;
+	private static final Logger log = Logger.getInstance(HelpAction.class);
+	private Object helpBroker = null;
+	private Client client;
 
 	/**
 	 * Creates a new HelpAction object.
@@ -58,7 +58,7 @@ public class HelpAction extends MenuAction {
 		try {
 			ClassLoader loader = new com.eressea.resource.ResourcePathClassLoader(client.getSettings());
 
-			URL		    hsURL = loader.getResource("magellan.hs");
+			URL hsURL = loader.getResource("magellan.hs");
 
 			if(hsURL == null) {
 				JOptionPane.showMessageDialog(client,
@@ -68,7 +68,7 @@ public class HelpAction extends MenuAction {
 				return;
 			}
 
-			Class helpSetClass    = null;
+			Class helpSetClass = null;
 			Class helpBrokerClass = null;
 
 			if(this.helpBroker == null) {
@@ -98,20 +98,18 @@ public class HelpAction extends MenuAction {
 																			  null);
 
 				// this calls new javax.help.Helpset.createHelpBroker()
-				this.helpBroker = helpSetCreateHelpBrokerMethod.invoke(helpSet,
-																	   null);
+				this.helpBroker = helpSetCreateHelpBrokerMethod.invoke(helpSet, null);
 
-				Method initPresentationMethod = helpBrokerClass.getMethod("initPresentation",
-																		  null);
+				Method initPresentationMethod = helpBrokerClass.getMethod("initPresentation", null);
 
 				// this calls new javax.help.HelpBroker.initPresentation()
 				initPresentationMethod.invoke(this.helpBroker, null);
 			}
 
-			Class    setDisplayedMethodSignature[] = { boolean.class };
-			Method   setDisplayedMethod = this.helpBroker.getClass().getMethod("setDisplayed",
-																			   setDisplayedMethodSignature);
-			Object   setDisplayedMethodArgs[] = { new Boolean(true) };
+			Class setDisplayedMethodSignature[] = { boolean.class };
+			Method setDisplayedMethod = this.helpBroker.getClass().getMethod("setDisplayed",
+																			 setDisplayedMethodSignature);
+			Object setDisplayedMethodArgs[] = { new Boolean(true) };
 
 			// this calls new javax.help.HelpBroker.setDisplayed(true)
 			setDisplayedMethod.invoke(this.helpBroker, setDisplayedMethodArgs);

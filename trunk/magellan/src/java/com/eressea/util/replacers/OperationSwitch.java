@@ -19,8 +19,8 @@ package com.eressea.util.replacers;
  * @author Andreas
  * @version
  */
-public class OperationSwitch extends AbstractParameterReplacer
-	implements EnvironmentDependent, SwitchOnly
+public class OperationSwitch extends AbstractParameterReplacer implements EnvironmentDependent,
+																		  SwitchOnly
 {
 	protected ReplacerEnvironment environment;
 

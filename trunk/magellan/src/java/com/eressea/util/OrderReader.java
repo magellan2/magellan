@@ -41,17 +41,16 @@ import com.eressea.util.logging.Logger;
  * A class for reading a orders file for unit orders.
  */
 public class OrderReader {
-	private static final Logger log					    = Logger.getInstance(OrderReader.class);
-	private GameData		    data				    = null;
-	private LineNumberReader    stream				    = null;
-	private boolean			    autoConfirm			    = false;
-	private boolean			    ignoreSemicolonComments = false;
-	private Status			    status				    = null;
+	private static final Logger log = Logger.getInstance(OrderReader.class);
+	private GameData data = null;
+	private LineNumberReader stream = null;
+	private boolean autoConfirm = false;
+	private boolean ignoreSemicolonComments = false;
+	private Status status = null;
 
 	/**
-	 * Creates a new OrderReader object adding the read orders to the units it
-	 * can find in the specified game data object. This function clears the
-	 * caches of all units.
+	 * Creates a new OrderReader object adding the read orders to the units it can find in the
+	 * specified game data object. This function clears the caches of all units.
 	 *
 	 * @param g TODO: DOCUMENT ME!
 	 */
@@ -65,8 +64,7 @@ public class OrderReader {
 
 		// clear the caches in game data
 		if(data.units() != null) {
-			for(Iterator iter = data.units().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
 				if(u.cache != null) {
@@ -77,8 +75,7 @@ public class OrderReader {
 		}
 
 		if(data.regions() != null) {
-			for(Iterator iter = data.regions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
 				UnitContainer uc = (UnitContainer) iter.next();
 
 				if(uc.cache != null) {
@@ -90,14 +87,13 @@ public class OrderReader {
 	}
 
 	/**
-	 * Reads the orders from the specified Reader. Orders for multiple factions
-	 * can be read. Region lines are ignored. Unit are not created. If there
-	 * are orders for a unit that cannot be found in the game data these
-	 * orders are ignored. Lines containing ECHECK comments are always
-	 * ignored. Comments starting with a semicolon and containing the literal
-	 * 'bestaetigt' (case and umlaut insensitive) after an arbitrary number of
-	 * whitespace characters are never added to a unit's orders, instead they
-	 * set the order confirmation status of the unit to true.
+	 * Reads the orders from the specified Reader. Orders for multiple factions can be read. Region
+	 * lines are ignored. Unit are not created. If there are orders for a unit that cannot be
+	 * found in the game data these orders are ignored. Lines containing ECHECK comments are
+	 * always ignored. Comments starting with a semicolon and containing the literal 'bestaetigt'
+	 * (case and umlaut insensitive) after an arbitrary number of whitespace characters are never
+	 * added to a unit's orders, instead they set the order confirmation status of the unit to
+	 * true.
 	 *
 	 * @param in TODO: DOCUMENT ME!
 	 *
@@ -114,27 +110,24 @@ public class OrderReader {
 			if(tokenizer.hasMoreTokens()) {
 				String token = Umlaut.normalize(tokenizer.nextToken());
 
-				if(Translations.getOrderTranslation(EresseaOrderConstants.O_FACTION)
-								   .startsWith(token) ||
-					   Translations.getOrderTranslation(EresseaOrderConstants.O_ERESSEA)
-									   .startsWith(token)) {
+				if(Translations.getOrderTranslation(EresseaOrderConstants.O_FACTION).startsWith(token) ||
+					   Translations.getOrderTranslation(EresseaOrderConstants.O_ERESSEA).startsWith(token)) {
 					token = tokenizer.nextToken();
 
 					try {
-						ID	    fID = EntityID.createEntityID(token);
+						ID fID = EntityID.createEntityID(token);
 						Faction f = data.getFaction(fID);
 
 						if(f != null) {
 							readFaction(fID);
 						} else {
-							log.info("OrderReader.read(): The faction with id " +
-									 fID + " (" + token +
+							log.info("OrderReader.read(): The faction with id " + fID + " (" +
+									 token +
 									 ") is not present in the game data, skipping this faction.");
 						}
 					} catch(NumberFormatException e) {
 						log.error("OrderReader.read(): Unable to parse faction id: " +
-								  e.toString() + " at line " +
-								  stream.getLineNumber(), e);
+								  e.toString() + " at line " + stream.getLineNumber(), e);
 					}
 				}
 			}
@@ -150,9 +143,9 @@ public class OrderReader {
 			data.addFaction(new Faction(id, data));
 		}
 
-		String line			 = null; // the line read from the file
+		String line = null; // the line read from the file
 		Region currentRegion = null; // keeps track of the region we are in
-		Unit   currentUnit   = null; // keeps track of the unit which is currently processed
+		Unit currentUnit = null; // keeps track of the unit which is currently processed
 		Locale currentLocale = Locales.getOrderLocale(); // start out with the currently set default order locale
 
 		/* normalized orders that have to be checked often in the loop
@@ -181,8 +174,7 @@ public class OrderReader {
 			if(line.trim().startsWith(";")) {
 				if(currentUnit != null) {
 					// mark orders as confirmed on a ";bestaetigt" comment
-					String rest = Umlaut.normalize(line.substring(line.indexOf(';') +
-																  1).trim());
+					String rest = Umlaut.normalize(line.substring(line.indexOf(';') + 1).trim());
 
 					if(rest.equalsIgnoreCase(OrderWriter.CONFIRMED)) {
 						currentUnit.ordersConfirmed = true;
@@ -216,8 +208,7 @@ public class OrderReader {
 				break;
 			} else if(localeOrder.startsWith(token)) {
 				if(tokenizer.hasMoreTokens()) {
-					token		  = tokenizer.nextToken().replace('"', ' ')
-											 .trim();
+					token = tokenizer.nextToken().replace('"', ' ').trim();
 					currentLocale = new Locale(token, "");
 
 					/* update the locale dependent cached orders */
@@ -226,13 +217,11 @@ public class OrderReader {
 					localeOrder = Umlaut.normalize(Translations.getOrderTranslation(EresseaOrderConstants.O_LOCALE,
 																					currentLocale));
 				}
-			} else if(Translations.getOrderTranslation(EresseaOrderConstants.O_REGION,
-														   currentLocale)
+			} else if(Translations.getOrderTranslation(EresseaOrderConstants.O_REGION, currentLocale)
 									  .startsWith(token)) {
 				//ignore
 				currentUnit = null;
-			} else if(Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT,
-														   currentLocale)
+			} else if(Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT, currentLocale)
 									  .startsWith(token)) {
 				token = tokenizer.nextToken();
 
@@ -241,8 +230,8 @@ public class OrderReader {
 				try {
 					unitID = UnitID.createUnitID(token);
 				} catch(NumberFormatException e) {
-					log.error("OrderReader.readFaction(): " + e.toString() +
-							  " at line " + stream.getLineNumber(), e);
+					log.error("OrderReader.readFaction(): " + e.toString() + " at line " +
+							  stream.getLineNumber(), e);
 				}
 
 				if(unitID != null) {
@@ -269,14 +258,12 @@ public class OrderReader {
 						   temp units */
 						Collection victimIDs = CollectionFactory.createLinkedList();
 
-						for(Iterator tempIter = currentUnit.tempUnits()
-														   .iterator();
+						for(Iterator tempIter = currentUnit.tempUnits().iterator();
 								tempIter.hasNext();) {
 							victimIDs.add(((TempUnit) tempIter.next()).getID());
 						}
 
-						for(Iterator idIter = victimIDs.iterator();
-								idIter.hasNext();) {
+						for(Iterator idIter = victimIDs.iterator(); idIter.hasNext();) {
 							currentUnit.deleteTemp((ID) idIter.next(), data);
 						}
 					}
@@ -311,8 +298,8 @@ public class OrderReader {
 	}
 
 	/**
-	 * Returns whether all comments in the orders starting with a semicolon
-	 * (except confirmation comments) are ignored.
+	 * Returns whether all comments in the orders starting with a semicolon (except confirmation
+	 * comments) are ignored.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -321,8 +308,8 @@ public class OrderReader {
 	}
 
 	/**
-	 * Sets whether all comments in the orders starting with a semicolon
-	 * (except confirmation comments) are ignored.
+	 * Sets whether all comments in the orders starting with a semicolon (except confirmation
+	 * comments) are ignored.
 	 *
 	 * @param ignoreSemicolonComments TODO: DOCUMENT ME!
 	 */
@@ -331,8 +318,8 @@ public class OrderReader {
 	}
 
 	/**
-	 * Returns the number of factions and units that were read. This method
-	 * should only be called after reading the orders has finished.
+	 * Returns the number of factions and units that were read. This method should only be called
+	 * after reading the orders has finished.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

@@ -52,27 +52,26 @@ public class BuildingCellRenderer extends ImageCellRenderer {
 	 */
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
-			Region   r = (Region) obj;
+			Region r = (Region) obj;
 
 			Iterator iter = r.buildings().iterator();
 
 			if(iter.hasNext()) {
-				Coordinate c   = r.getCoordinate();
-				Point	   pos = new Point(cellGeo.getImagePosition(c.x, c.y));
+				Coordinate c = r.getCoordinate();
+				Point pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 				pos.translate(-offset.x, -offset.y);
 
 				Dimension size = cellGeo.getImageSize();
 
 				while(iter.hasNext()) {
-					Building		  b    = (Building) iter.next();
+					Building b = (Building) iter.next();
 					UnitContainerType type = b.getType();
 
 					if(type != null) {
 						Image img = getImage(type.getID().toString());
 
 						if(img != null) {
-							graphics.drawImage(img, pos.x, pos.y, size.width,
-											   size.height, null);
+							graphics.drawImage(img, pos.x, pos.y, size.width, size.height, null);
 						}
 					}
 				}

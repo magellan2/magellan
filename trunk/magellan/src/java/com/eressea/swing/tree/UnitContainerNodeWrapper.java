@@ -66,12 +66,11 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getIconNames() {
-		Object key		 = uc.getType().getID();
-		List   iconNames = (List) iconNamesLists.get(key);
+		Object key = uc.getType().getID();
+		List iconNames = (List) iconNamesLists.get(key);
 
 		if(iconNames == null) {
-			iconNames = CollectionFactory.singletonList(StringFactory.getFactory()
-																	 .intern(key.toString()));
+			iconNames = CollectionFactory.singletonList(StringFactory.getFactory().intern(key.toString()));
 			iconNamesLists.put(key, iconNames);
 		}
 
@@ -114,8 +113,7 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperDrawPolicy init(Properties settings,
-									  NodeWrapperDrawPolicy adapter) {
+	public NodeWrapperDrawPolicy init(Properties settings, NodeWrapperDrawPolicy adapter) {
 		return null;
 	}
 

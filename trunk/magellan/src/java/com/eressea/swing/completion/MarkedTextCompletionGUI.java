@@ -35,16 +35,14 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public class MarkedTextCompletionGUI extends AbstractCompletionGUI
-	implements KeyListener
-{
-	protected boolean		   addLinebreak   = false;
-	protected Completion	   lastCompletion = null;
-	protected JTextComponent   lastEditor     = null;
-	protected boolean		   markedText     = false;
-	protected boolean		   caretUpdate    = false;
-	protected int			   selectedArea[];
-	protected AutoCompletion   ac;
+public class MarkedTextCompletionGUI extends AbstractCompletionGUI implements KeyListener {
+	protected boolean addLinebreak = false;
+	protected Completion lastCompletion = null;
+	protected JTextComponent lastEditor = null;
+	protected boolean markedText = false;
+	protected boolean caretUpdate = false;
+	protected int selectedArea[];
+	protected AutoCompletion ac;
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -74,7 +72,7 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 			return;
 		}
 
-		int code	  = e.getKeyCode();
+		int code = e.getKeyCode();
 		int modifiers = e.getModifiers();
 
 		// no "real" key
@@ -104,20 +102,19 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 	}
 
 	/**
-	 * Initialize this GUI for use with the given AutoCompletion. This method
-	 * is called by AutoCompletion when the GUI is added to it.
+	 * Initialize this GUI for use with the given AutoCompletion. This method is called by
+	 * AutoCompletion when the GUI is added to it.
 	 *
 	 * @param ac TODO: DOCUMENT ME!
 	 */
 	public void init(AutoCompletion ac) {
-		this.ac		    = ac;
-		selectedArea    = new int[2];
+		this.ac = ac;
+		selectedArea = new int[2];
 		selectedArea[0] = -1;
 	}
 
 	/**
-	 * Should return true if this GUI is currently offering a completion to the
-	 * user.
+	 * Should return true if this GUI is currently offering a completion to the user.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -126,22 +123,20 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 	}
 
 	/**
-	 * Called the advice this GUI to offer the given completions in the given
-	 * Editor to the user.
+	 * Called the advice this GUI to offer the given completions in the given Editor to the user.
 	 *
 	 * @param editor TODO: DOCUMENT ME!
 	 * @param completions TODO: DOCUMENT ME!
 	 * @param stub TODO: DOCUMENT ME!
 	 */
-	public void offerCompletion(JTextComponent editor, Collection completions,
-								String stub) {
+	public void offerCompletion(JTextComponent editor, Collection completions, String stub) {
 		lastEditor = editor;
 		markedText = false;
 		editor.addKeyListener(this);
 
 		Completion cmp = (Completion) completions.iterator().next();
 
-		String     cpltStr = null;
+		String cpltStr = null;
 
 		if(startsWith(cmp.getValue(), stub)) {
 			cpltStr = cmp.getValue();
@@ -160,16 +155,14 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 			try {
 				int offset = editor.getCaretPosition();
 				selectedArea[0] = offset;
-				cpltStr		    = cpltStr.substring(stub.length(),
-													cpltStr.length());
-				markedText  = true;
+				cpltStr = cpltStr.substring(stub.length(), cpltStr.length());
+				markedText = true;
 				caretUpdate = true;
-				editor.getDocument().insertString(offset, cpltStr,
-												  new SimpleAttributeSet());
+				editor.getDocument().insertString(offset, cpltStr, new SimpleAttributeSet());
 				caretUpdate = true;
 				editor.select(offset, offset + cpltStr.length());
 				selectedArea[1] = editor.getSelectionEnd();
-				lastCompletion  = cmp;
+				lastCompletion = cmp;
 			} catch(Exception exc) {
 			}
 		}
@@ -198,14 +191,14 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 	 * @param stub TODO: DOCUMENT ME!
 	 * @param index TODO: DOCUMENT ME!
 	 */
-	public void cycleCompletion(JTextComponent editor, Collection completions,
-								String stub, int index) {
+	public void cycleCompletion(JTextComponent editor, Collection completions, String stub,
+								int index) {
 		if(!markedText || (editor.getSelectionStart() < 0)) { // offerCompletion broken
 
 			return;
 		}
 
-		Iterator   it  = completions.iterator();
+		Iterator it = completions.iterator();
 		Completion cmp = (Completion) it.next();
 
 		for(int i = 1; i <= index; i++) {
@@ -235,15 +228,15 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 			cpltStr = cpltStr.substring(stub.length(), cpltStr.length());
 
 			int pos = editor.getSelectionStart();
-			markedText	    = true;
-			caretUpdate     = true;
+			markedText = true;
+			caretUpdate = true;
 			selectedArea[0] = editor.getSelectionStart();
 			lastEditor.replaceSelection(cpltStr);
 			caretUpdate = true;
 			editor.select(pos, pos + cpltStr.length());
 			selectedArea[1] = editor.getSelectionEnd();
-			lastCompletion  = cmp;
-			lastEditor	    = editor; // shouldn't be necessary
+			lastCompletion = cmp;
+			lastEditor = editor; // shouldn't be necessary
 		}
 	}
 
@@ -270,8 +263,7 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 	}
 
 	/**
-	 * If this GUI needs some special keys the Key-Codes con be obtained by
-	 * this method.
+	 * If this GUI needs some special keys the Key-Codes con be obtained by this method.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -280,8 +272,8 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 	}
 
 	/**
-	 * When AutoCompletion recognizes a special key of getSpecialKeys(), this
-	 * method is called with the key found.
+	 * When AutoCompletion recognizes a special key of getSpecialKeys(), this method is called with
+	 * the key found.
 	 *
 	 * @param key TODO: DOCUMENT ME!
 	 */
@@ -289,9 +281,8 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 	}
 
 	/**
-	 * If the editor my lose the focus because of a GUI action(usually after
-	 * specialKeyPressed()), this method should return true to avoid
-	 * AutoCompletion calling stopOffer().
+	 * If the editor my lose the focus because of a GUI action(usually after specialKeyPressed()),
+	 * this method should return true to avoid AutoCompletion calling stopOffer().
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -301,8 +292,8 @@ public class MarkedTextCompletionGUI extends AbstractCompletionGUI
 
 	/**
 	 * If the editor my update the caret because of a GUI action(usually after
-	 * specialKeyPressed()), this method should return true to avoid
-	 * AutoCompletion calling stopOffer().
+	 * specialKeyPressed()), this method should return true to avoid AutoCompletion calling
+	 * stopOffer().
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

@@ -89,38 +89,41 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
 /**
- * A panel holding all UI components related to an Eressea map. The component
- * contains a Mapper object and additional controls. The policy of this class
- * is not to be concerned with map details like coordinates etc. as much as
- * possible and to provide a general and flexible interface to the mapper.
+ * A panel holding all UI components related to an Eressea map. The component contains a Mapper
+ * object and additional controls. The policy of this class is not to be concerned with map
+ * details like coordinates etc. as much as possible and to provide a general and flexible
+ * interface to the mapper.
  */
-public class MapperPanel extends InternationalizedDataPanel
-	implements ActionListener, SelectionListener, ChangeListener,
-			   ExtendedShortcutListener, PreferencesFactory, Initializable
+public class MapperPanel extends InternationalizedDataPanel implements ActionListener,
+																	   SelectionListener,
+																	   ChangeListener,
+																	   ExtendedShortcutListener,
+																	   PreferencesFactory,
+																	   Initializable
 {
 	private static final Logger log = Logger.getInstance(MapperPanel.class);
 
 	/** The map component in this panel. */
-	private Mapper	    mapper		  = null;
-	private JScrollPane scpMapper     = null;
-	private JLabel	    lblLevel	  = null;
-	private JComboBox   cmbLevel	  = null;
-	private JSlider     sldScaling    = null;
-	private JComboBox   cmbHotSpots   = null;
-	private Timer	    timer		  = null;
-	private Point	    dragStart     = null;
-	private boolean     dragValidated = false;
+	private Mapper mapper = null;
+	private JScrollPane scpMapper = null;
+	private JLabel lblLevel = null;
+	private JComboBox cmbLevel = null;
+	private JSlider sldScaling = null;
+	private JComboBox cmbHotSpots = null;
+	private Timer timer = null;
+	private Point dragStart = null;
+	private boolean dragValidated = false;
 
 	// minimap components
-	protected Minimapper    minimap;
-	protected JScrollPane   minimapPane;
-	private CellGeometry    minimapGeometry;
-	protected boolean	    resizeMinimap;
+	protected Minimapper minimap;
+	protected JScrollPane minimapPane;
+	private CellGeometry minimapGeometry;
+	protected boolean resizeMinimap;
 	protected MinimapScaler minimapScaler;
-	protected float		    lastScale = 1;
+	protected float lastScale = 1;
 
 	//shortcuts
-	private java.util.List  shortcuts;
+	private java.util.List shortcuts;
 	private TooltipShortcut tooltipShortcut;
 
 	/**
@@ -150,8 +153,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		cmbHotSpots.removeAllItems();
 
 		if((data != null) && (data.hotSpots() != null)) {
-			List hotSpots = CollectionFactory.createLinkedList(data.hotSpots()
-																   .values());
+			List hotSpots = CollectionFactory.createLinkedList(data.hotSpots().values());
 			Collections.sort(hotSpots,
 							 new Comparator() {
 					public int compare(Object o1, Object o2) {
@@ -175,12 +177,11 @@ public class MapperPanel extends InternationalizedDataPanel
 	 */
 	public void selectionChanged(com.eressea.event.SelectionEvent se) {
 		if(log.isDebugEnabled()) {
-			log.debug("MapperPanel.selectionChanged called with " +
-					  se.getActiveObject());
+			log.debug("MapperPanel.selectionChanged called with " + se.getActiveObject());
 		}
 
 		// update the currently selected item in the level combo box
-		Object     o		 = se.getActiveObject();
+		Object o = se.getActiveObject();
 		Coordinate newCenter = null;
 
 		if(o != null) {
@@ -255,7 +256,7 @@ public class MapperPanel extends InternationalizedDataPanel
 
 			if(!island.regions().isEmpty()) {
 				// first set right level
-				Region     r     = (Region) island.regions().iterator().next();
+				Region r = (Region) island.regions().iterator().next();
 				Coordinate coord = r.getCoordinate();
 
 				if(cmbLevel.isVisible()) {
@@ -268,7 +269,7 @@ public class MapperPanel extends InternationalizedDataPanel
 
 				// then set center rectangle on right pane
 				class ParamRunnable implements Runnable {
-					Island    island;
+					Island island;
 					Rectangle centerRect;
 
 					ParamRunnable(Island i) {
@@ -281,9 +282,8 @@ public class MapperPanel extends InternationalizedDataPanel
 					public void run() {
 						Rectangle islandBounds = null;
 
-						for(Iterator iter = island.regions().iterator();
-								iter.hasNext();) {
-							Region     r     = (Region) iter.next();
+						for(Iterator iter = island.regions().iterator(); iter.hasNext();) {
+							Region r = (Region) iter.next();
 							Coordinate coord = r.getCoordinate();
 
 							if(islandBounds == null) {
@@ -302,11 +302,9 @@ public class MapperPanel extends InternationalizedDataPanel
 
 						if(!scpMapper.getViewport().getViewRect().contains(centerRect)) {
 							/* FIX these numbers should get some bounding */
-							centerRect.x -= ((scpMapper.getViewport()
-													   .getViewRect().getWidth() -
+							centerRect.x -= ((scpMapper.getViewport().getViewRect().getWidth() -
 							centerRect.getWidth()) / 2);
-							centerRect.y -= ((scpMapper.getViewport()
-													   .getViewRect().getHeight() -
+							centerRect.y -= ((scpMapper.getViewport().getViewRect().getHeight() -
 							centerRect.getHeight()) / 2);
 							scpMapper.getViewport().setViewPosition(centerRect.getLocation());
 						}
@@ -318,7 +316,7 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	/** Action event handler for timer events related to the scaling slider. */
-	Cursor waitCursor    = new Cursor(Cursor.WAIT_CURSOR);
+	Cursor waitCursor = new Cursor(Cursor.WAIT_CURSOR);
 	Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	/**
@@ -330,8 +328,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		setCursor(waitCursor);
 		mapper.setCursor(waitCursor);
 
-		Coordinate center = mapper.getCenter(scpMapper.getViewport()
-													  .getViewRect());
+		Coordinate center = mapper.getCenter(scpMapper.getViewport().getViewRect());
 		mapper.setScaleFactor((float) ((sldScaling.getValue() / 50.0) + 0.3));
 		setCenter(center);
 		this.repaint();
@@ -347,8 +344,8 @@ public class MapperPanel extends InternationalizedDataPanel
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geo TODO: DOCUMENT ME!
 	 */
-	public MapperPanel(EventDispatcher ed, Properties p,
-					   Collection customRenderers, CellGeometry geo) {
+	public MapperPanel(EventDispatcher ed, Properties p, Collection customRenderers,
+					   CellGeometry geo) {
 		super(ed, p);
 
 		//final MapperPanel thisMapperPanel = this;
@@ -363,26 +360,24 @@ public class MapperPanel extends InternationalizedDataPanel
 		// map
 		mapper.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
-					dragStart     = e.getPoint();
+					dragStart = e.getPoint();
 					dragValidated = false;
 				}
 
 				public void mouseReleased(MouseEvent e) {
-					if(((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) ||
-						   !dragValidated ||
+					if(((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) || !dragValidated ||
 						   ((e.getModifiers() & InputEvent.CTRL_MASK) != 0)) {
 						return;
 					}
 
-					Rectangle bounds = new Rectangle(dragStart.x - 2,
-													 dragStart.y - 2, 4, 4);
+					Rectangle bounds = new Rectangle(dragStart.x - 2, dragStart.y - 2, 4, 4);
 
 					if(bounds.contains(e.getPoint())) {
 						return;
 					}
 
 					JViewport viewport = scpMapper.getViewport();
-					Point     viewPos = viewport.getViewPosition();
+					Point viewPos = viewport.getViewPosition();
 					dragStart.translate(-e.getPoint().x, -e.getPoint().y);
 					dragStart.translate(viewPos.x, viewPos.y);
 
@@ -415,8 +410,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		mapper.addMouseMotionListener(new MouseMotionAdapter() {
 				public void mouseDragged(MouseEvent e) {
 					if(!dragValidated) {
-						Rectangle bounds = new Rectangle(dragStart.x - 2,
-														 dragStart.y - 2, 4, 4);
+						Rectangle bounds = new Rectangle(dragStart.x - 2, dragStart.y - 2, 4, 4);
 
 						if(!bounds.contains(e.getPoint())) {
 							dragValidated = true;
@@ -432,8 +426,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.CTRL_MASK));
 		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK));
 		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_MASK));
-		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_H,
-											 KeyEvent.CTRL_MASK |
+		shortcuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_MASK |
 											 KeyEvent.SHIFT_MASK));
 
 		// fog of war
@@ -444,11 +437,11 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	protected void initMinimap() {
-		minimap		    = new Minimapper(dispatcher, settings);
+		minimap = new Minimapper(dispatcher, settings);
 		minimapGeometry = minimap.getCellGeometry();
 
-		Dimension d     = minimapGeometry.getCellSize();
-		int		  size = 10;
+		Dimension d = minimapGeometry.getCellSize();
+		int size = 10;
 
 		try {
 			size = Integer.parseInt(settings.getProperty("Minimap.Scale"));
@@ -457,9 +450,8 @@ public class MapperPanel extends InternationalizedDataPanel
 
 		lastScale = (float) (size / (float) d.width);
 		minimap.setScaleFactor(lastScale);
-		minimapPane   = new JScrollPane(minimap);
-		resizeMinimap = settings.getProperty("Minimap.AutoScale", "false")
-								.equals("true");
+		minimapPane = new JScrollPane(minimap);
+		resizeMinimap = settings.getProperty("Minimap.AutoScale", "false").equals("true");
 		minimapScaler = new MinimapScaler();
 		minimapPane.addComponentListener(minimapScaler);
 	}
@@ -560,32 +552,31 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Set a cell renderer object for its default rendering plane. See
-	 * com.eressea.swing.map.Mapper for further reference.
+	 * Set a cell renderer object for its default rendering plane. See com.eressea.swing.map.Mapper
+	 * for further reference.
 	 *
-	 * @param renderer the object responsible for rendering a     graphical
-	 * 		  representation of regions.
+	 * @param renderer the object responsible for rendering a     graphical representation of
+	 * 		  regions.
 	 */
 	public void setRenderer(HexCellRenderer renderer) {
 		mapper.setRenderer(renderer);
 	}
 
 	/**
-	 * Set a cell renderer object for a certain plane of the map. See
-	 * com.eressea.swing.map.Mapper for further reference.
+	 * Set a cell renderer object for a certain plane of the map. See com.eressea.swing.map.Mapper
+	 * for further reference.
 	 *
-	 * @param renderer the object responsible for rendering a     graphical
-	 * 		  representation of regions.
-	 * @param plane the plane the renderer will draw to. Lower     planes are
-	 * 		  painted over by higher planes.
+	 * @param renderer the object responsible for rendering a     graphical representation of
+	 * 		  regions.
+	 * @param plane the plane the renderer will draw to. Lower     planes are painted over by
+	 * 		  higher planes.
 	 */
 	public void setRenderer(HexCellRenderer renderer, int plane) {
 		mapper.setRenderer(renderer, plane);
 	}
 
 	/**
-	 * Get the selected Regions. The returned map can be empty but is never
-	 * null.
+	 * Get the selected Regions. The returned map can be empty but is never null.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -626,19 +617,15 @@ public class MapperPanel extends InternationalizedDataPanel
 	 * @param center the coordinate of the region to center the map on.
 	 */
 	public void setCenter(Coordinate center) {
-		Point newViewPosition = mapper.getCenteredViewPosition(scpMapper.getSize(),
-															   center);
+		Point newViewPosition = mapper.getCenteredViewPosition(scpMapper.getSize(), center);
 
 		if(newViewPosition != null) {
 			Dimension size = scpMapper.getViewport().getSize();
 			newViewPosition.x = Math.max(0, newViewPosition.x);
-			newViewPosition.x = Math.min(Math.max(0,
-												  mapper.getWidth() -
-												  size.width), newViewPosition.x);
+			newViewPosition.x = Math.min(Math.max(0, mapper.getWidth() - size.width),
+										 newViewPosition.x);
 			newViewPosition.y = Math.max(0, newViewPosition.y);
-			newViewPosition.y = Math.min(Math.max(0,
-												  mapper.getHeight() -
-												  size.height),
+			newViewPosition.y = Math.min(Math.max(0, mapper.getHeight() - size.height),
 										 newViewPosition.y);
 			scpMapper.getViewport().setViewPosition(newViewPosition);
 		}
@@ -650,33 +637,28 @@ public class MapperPanel extends InternationalizedDataPanel
 	 * @param center the coordinate of the region to center the map on.
 	 */
 	public void setMinimapCenter(Coordinate center) {
-		Point newViewPosition = minimap.getCenteredViewPosition(minimapPane.getSize(),
-																center);
+		Point newViewPosition = minimap.getCenteredViewPosition(minimapPane.getSize(), center);
 
 		if(newViewPosition != null) {
 			Dimension size = minimapPane.getViewport().getSize();
 			newViewPosition.x = Math.max(0, newViewPosition.x);
-			newViewPosition.x = Math.min(Math.max(0,
-												  minimap.getWidth() -
-												  size.width), newViewPosition.x);
+			newViewPosition.x = Math.min(Math.max(0, minimap.getWidth() - size.width),
+										 newViewPosition.x);
 			newViewPosition.y = Math.max(0, newViewPosition.y);
-			newViewPosition.y = Math.min(Math.max(0,
-												  minimap.getHeight() -
-												  size.height),
+			newViewPosition.y = Math.min(Math.max(0, minimap.getHeight() - size.height),
 										 newViewPosition.y);
 			minimapPane.getViewport().setViewPosition(newViewPosition);
 		}
 	}
 
 	/**
-	 * Assign the currently visible part of the map (the region at the center),
-	 * a hot spot, an id and add it to the list of hot spots.
+	 * Assign the currently visible part of the map (the region at the center), a hot spot, an id
+	 * and add it to the list of hot spots.
 	 *
 	 * @param name the id to assign to the hot spot.
 	 */
 	public void assignHotSpot(String name) {
-		Coordinate center = mapper.getCenter(scpMapper.getViewport()
-													  .getViewRect());
+		Coordinate center = mapper.getCenter(scpMapper.getViewport().getViewRect());
 
 		if(center != null) {
 			ID id = getNewHotSpotID();
@@ -692,8 +674,7 @@ public class MapperPanel extends InternationalizedDataPanel
 			h.setCenter(center);
 			data.setHotSpot(h);
 
-			List hotSpots = CollectionFactory.createLinkedList(data.hotSpots()
-																   .values());
+			List hotSpots = CollectionFactory.createLinkedList(data.hotSpots().values());
 			Collections.sort(hotSpots,
 							 new Comparator() {
 					public int compare(Object o1, Object o2) {
@@ -753,8 +734,8 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Get the cell geometry from the resources and make all renderers that use
-	 * images reload the graphics files.
+	 * Get the cell geometry from the resources and make all renderers that use images reload the
+	 * graphics files.
 	 */
 	public void reloadGraphicSet() {
 		mapper.reloadGraphicSet();
@@ -766,8 +747,7 @@ public class MapperPanel extends InternationalizedDataPanel
 	public void quit() {
 		settings.setProperty("Map.scaleFactor", Float.toString(getScaleFactor()));
 
-		Coordinate center = mapper.getCenter(scpMapper.getViewport()
-													  .getViewRect());
+		Coordinate center = mapper.getCenter(scpMapper.getViewport().getViewRect());
 
 		if(center != null) {
 			settings.setProperty("Map.lastCenterRegion", center.toString());
@@ -786,11 +766,11 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Creates random integer values until one is not already used as a key in
-	 * the game data's hot spot map.
+	 * Creates random integer values until one is not already used as a key in the game data's hot
+	 * spot map.
 	 *
-	 * @return an integer the Integer representation of which is not already
-	 * 		   used as a key in the current game data's hot spot map.
+	 * @return an integer the Integer representation of which is not already used as a key in the
+	 * 		   current game data's hot spot map.
 	 */
 	private ID getNewHotSpotID() {
 		ID i = null;
@@ -803,9 +783,8 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	private Container getMainPane(Collection renderers, CellGeometry geo) {
-		mapper    = new Mapper(dispatcher, settings, renderers, geo);
-		scpMapper = new JScrollPane(mapper,
-									ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		mapper = new Mapper(dispatcher, settings, renderers, geo);
+		scpMapper = new JScrollPane(mapper, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 									ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		JLabel lblScaling = new JLabel(getString("lbl.zoom.caption"));
@@ -868,8 +847,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		cmbHotSpots = new JComboBox();
 
 		if((data != null) && (data.hotSpots() != null)) {
-			for(Iterator iter = data.hotSpots().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot h = (HotSpot) iter.next();
 				cmbHotSpots.addItem(h);
 			}
@@ -887,82 +865,81 @@ public class MapperPanel extends InternationalizedDataPanel
 				}
 			});
 
-		JPanel			   mainPanel = new JPanel(new GridBagLayout());
+		JPanel mainPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		mainPanel.setBorder(new javax.swing.border.EmptyBorder(2, 2, 2, 2));
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		mainPanel.add(lblScaling, c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.insets     = new Insets(5, 0, 5, 0);
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 0, 5, 0);
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		mainPanel.add(sldScaling, c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 2;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.insets     = new Insets(0, 3, 0, 0);
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(0, 3, 0, 0);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		mainPanel.add(lblLevel, c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 3;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 3;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.insets     = new Insets(0, 0, 3, 0);
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(0, 0, 3, 0);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		mainPanel.add(cmbLevel, c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 4;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 4;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.insets     = new Insets(0, 5, 3, 0);
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 5, 3, 0);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		mainPanel.add(cmbHotSpots, c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 5;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 5;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.BOTH;
-		c.insets     = new Insets(0, 0, 0, 0);
-		c.weightx    = 0.2;
-		c.weighty    = 0.2;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(0, 0, 0, 0);
+		c.weightx = 0.2;
+		c.weighty = 0.2;
 		mainPanel.add(scpMapper, c);
 
 		return mainPanel;
 	}
 
 	/**
-	 * Called when the viewed rect of the main mapper changes. In further
-	 * implementations a rect of the visible bounds should be displayed in the
-	 * minimap.
+	 * Called when the viewed rect of the main mapper changes. In further implementations a rect of
+	 * the visible bounds should be displayed in the minimap.
 	 *
 	 * @param p1 TODO: DOCUMENT ME!
 	 */
@@ -979,8 +956,8 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Should return all short cuts this class want to be informed. The
-	 * elements should be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The elements should be of type
+	 * javax.swing.KeyStroke
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1059,16 +1036,14 @@ public class MapperPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns the current configuration of this mapper panel. The current
-	 * implementation divides all the information by "_". First the scale
-	 * factor is stored, then planes(plane index, renderer class name,
-	 * renderer configuration).
+	 * Returns the current configuration of this mapper panel. The current implementation divides
+	 * all the information by "_". First the scale factor is stored, then planes(plane index,
+	 * renderer class name, renderer configuration).
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public java.lang.String getComponentConfiguration() {
-		return mapper.getComponentConfiguration() + ":" +
-			   minimap.getComponentConfiguration();
+		return mapper.getComponentConfiguration() + ":" + minimap.getComponentConfiguration();
 	}
 
 	/**
@@ -1131,15 +1106,11 @@ public class MapperPanel extends InternationalizedDataPanel
 		return getString("shortcuts.description");
 	}
 
-	private class MapperPanelPreferences extends JPanel
-		implements ExtendedPreferencesAdapter
-	{
-		protected class MinimapPreferences extends JPanel
-			implements PreferencesAdapter
-		{
-			private JSlider			   sldZoom;
-			private JComboBox		   cmbDisplayMode;
-			private JCheckBox		   autoScale;
+	private class MapperPanelPreferences extends JPanel implements ExtendedPreferencesAdapter {
+		protected class MinimapPreferences extends JPanel implements PreferencesAdapter {
+			private JSlider sldZoom;
+			private JComboBox cmbDisplayMode;
+			private JCheckBox autoScale;
 			private PreferencesAdapter renderers;
 
 			/**
@@ -1150,11 +1121,11 @@ public class MapperPanel extends InternationalizedDataPanel
 
 				// display mode combo box
 				String items[] = new String[5];
-				items[0]	   = getString("prefs.minimapitems.terrain");
-				items[1]	   = getString("prefs.minimapitems.politics");
-				items[2]	   = getString("prefs.minimapitems.allfactions");
-				items[3]	   = getString("prefs.minimapitems.trustlevel");
-				items[4]	   = getString("prefs.minimapitems.trustlevelguard");
+				items[0] = getString("prefs.minimapitems.terrain");
+				items[1] = getString("prefs.minimapitems.politics");
+				items[2] = getString("prefs.minimapitems.allfactions");
+				items[3] = getString("prefs.minimapitems.trustlevel");
+				items[4] = getString("prefs.minimapitems.trustlevelguard");
 				cmbDisplayMode = new JComboBox(items);
 				cmbDisplayMode.setSelectedIndex(source.getMinimapMode());
 
@@ -1194,14 +1165,14 @@ public class MapperPanel extends InternationalizedDataPanel
 				this.setLayout(new GridBagLayout());
 
 				GridBagConstraints c = new GridBagConstraints();
-				c.anchor     = GridBagConstraints.CENTER;
-				c.gridx		 = 0;
-				c.gridy		 = 0;
-				c.gridwidth  = 4;
+				c.anchor = GridBagConstraints.CENTER;
+				c.gridx = 0;
+				c.gridy = 0;
+				c.gridwidth = 4;
 				c.gridheight = 1;
-				c.fill		 = GridBagConstraints.HORIZONTAL;
-				c.weightx    = 0.1;
-				c.weighty    = 1;
+				c.fill = GridBagConstraints.HORIZONTAL;
+				c.weightx = 0.1;
+				c.weighty = 1;
 				this.add(renderers.getComponent(), c);
 
 				/*this.add(lblDisplayMode, c);
@@ -1225,34 +1196,34 @@ public class MapperPanel extends InternationalizedDataPanel
 				c.weightx = 0;
 				c.weighty = 0;
 				this.add(btnSyncColors, c);*/
-				c.anchor     = GridBagConstraints.CENTER;
-				c.gridx		 = 0;
-				c.gridy		 = 1;
-				c.gridwidth  = 1;
+				c.anchor = GridBagConstraints.CENTER;
+				c.gridx = 0;
+				c.gridy = 1;
+				c.gridwidth = 1;
 				c.gridheight = 1;
-				c.fill		 = GridBagConstraints.HORIZONTAL;
-				c.weightx    = 0.1;
-				c.weighty    = 0;
+				c.fill = GridBagConstraints.HORIZONTAL;
+				c.weightx = 0.1;
+				c.weighty = 0;
 				this.add(lblZoom, c);
 
-				c.anchor     = GridBagConstraints.CENTER;
-				c.gridx		 = 1;
-				c.gridy		 = 1;
-				c.gridwidth  = 2;
+				c.anchor = GridBagConstraints.CENTER;
+				c.gridx = 1;
+				c.gridy = 1;
+				c.gridwidth = 2;
 				c.gridheight = 1;
-				c.fill		 = GridBagConstraints.HORIZONTAL;
-				c.weightx    = 1;
-				c.weighty    = 0;
+				c.fill = GridBagConstraints.HORIZONTAL;
+				c.weightx = 1;
+				c.weighty = 0;
 				this.add(sldZoom, c);
 
-				c.anchor     = GridBagConstraints.CENTER;
-				c.gridx		 = 3;
-				c.gridy		 = 1;
-				c.gridwidth  = 1;
+				c.anchor = GridBagConstraints.CENTER;
+				c.gridx = 3;
+				c.gridy = 1;
+				c.gridwidth = 1;
 				c.gridheight = 1;
-				c.fill		 = GridBagConstraints.NONE;
-				c.weightx    = 1;
-				c.weighty    = 0;
+				c.fill = GridBagConstraints.NONE;
+				c.weightx = 1;
+				c.weighty = 0;
 				this.add(autoScale, c);
 			}
 
@@ -1299,7 +1270,7 @@ public class MapperPanel extends InternationalizedDataPanel
 
 		// GUI elements
 		private PreferencesAdapter prefMapper = null;
-		private List			   subAdapter;
+		private List subAdapter;
 
 		/**
 		 * Creates a new MapperPanelPreferences object.
@@ -1308,7 +1279,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		 */
 		public MapperPanelPreferences(MapperPanel m) {
 			this.source = m;
-			prefMapper  = mapper.getPreferencesAdapter();
+			prefMapper = mapper.getPreferencesAdapter();
 
 			subAdapter = CollectionFactory.createArrayList(1);
 			subAdapter.add(new MinimapPreferences());
@@ -1370,7 +1341,7 @@ public class MapperPanel extends InternationalizedDataPanel
 				}
 
 				Dimension prefSize;
-				int		  loops = 0;
+				int loops = 0;
 
 				do {
 					loops++;
@@ -1448,8 +1419,7 @@ public class MapperPanel extends InternationalizedDataPanel
 		}
 
 		/**
-		 * This method is called when a shortcut from getShortCuts() is
-		 * recognized.
+		 * This method is called when a shortcut from getShortCuts() is recognized.
 		 *
 		 * @param shortcut TODO: DOCUMENT ME!
 		 */
@@ -1462,8 +1432,8 @@ public class MapperPanel extends InternationalizedDataPanel
 		}
 
 		/**
-		 * Should return all short cuts this class want to be informed. The
-		 * elements should be of type javax.swing.KeyStroke
+		 * Should return all short cuts this class want to be informed. The elements should be of
+		 * type javax.swing.KeyStroke
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
@@ -1518,26 +1488,20 @@ public class MapperPanel extends InternationalizedDataPanel
 			defaultTranslations.put("prefs.border.minimap", "Minimap");
 			defaultTranslations.put("prefs.minimapitems.terrain", "Terrain");
 			defaultTranslations.put("shortcuts.description.3", "Remove Hotspot");
-			defaultTranslations.put("shortcuts.description.5",
-									"Tooltip selection (0-9)");
-			defaultTranslations.put("shortcuts.description.4",
-									"Change Fog of War");
+			defaultTranslations.put("shortcuts.description.5", "Tooltip selection (0-9)");
+			defaultTranslations.put("shortcuts.description.4", "Change Fog of War");
 			defaultTranslations.put("shortcuts.description.2", "Assign Hotspot");
 			defaultTranslations.put("shortcuts.description.1", "Request Focus");
 			defaultTranslations.put("shortcuts.description.0", "Request Focus");
 			defaultTranslations.put("shortcuts.description", "Map");
 			defaultTranslations.put("shortcuts.tooltips", "Tooltips");
 			defaultTranslations.put("prefs.minimapitems.politics", "By faction");
-			defaultTranslations.put("prefs.minimapitems.allfactions",
-									"All factions");
-			defaultTranslations.put("prefs.minimapitems.trustlevel",
-									"Trust level");
-			defaultTranslations.put("prefs.minimapitems.trustlevelguard",
-									"Trust level (guard)");
+			defaultTranslations.put("prefs.minimapitems.allfactions", "All factions");
+			defaultTranslations.put("prefs.minimapitems.trustlevel", "Trust level");
+			defaultTranslations.put("prefs.minimapitems.trustlevelguard", "Trust level (guard)");
 			defaultTranslations.put("prefs.lbl.minimapoptions", "Options: ");
 			defaultTranslations.put("prefs.lbl.zoom", "Zoom: ");
-			defaultTranslations.put("prefs.lbl.synccolors.caption",
-									"Sync colors");
+			defaultTranslations.put("prefs.lbl.synccolors.caption", "Sync colors");
 		}
 
 		return defaultTranslations;

@@ -16,8 +16,8 @@ package com.eressea.event;
 import com.eressea.GameData;
 
 /**
- * An event indicating that the previous game data object is no longer valid
- * e.g. after the user loaded a report.
+ * An event indicating that the previous game data object is no longer valid e.g. after the user
+ * loaded a report.
  *
  * @see GameDataListener
  * @see EventDispatcher
@@ -33,7 +33,7 @@ public class GameDataEvent extends TimeStampedEvent {
 	 * @param data the new game data object.
 	 */
 	public GameDataEvent(Object source, GameData data) {
-		this(source,data,false);
+		this(source, data, false);
 	}
 
 	/**
@@ -58,11 +58,12 @@ public class GameDataEvent extends TimeStampedEvent {
 		return data;
 	}
 
-	/** 
-	 * Returns true if game data is freshly loaded (in contrast to 
-	 * a GameDataEvent with a changed game data object that is only thrown
-	 * if there are so many changes that single OrderConfirmEvent/
-	 * TempUnitEvent/UnitOrdersEvent) would bloat the event queue).
+	/**
+	 * Returns true if game data is freshly loaded (in contrast to  a GameDataEvent with a changed
+	 * game data object that is only thrown if there are so many changes that single
+	 * OrderConfirmEvent/ TempUnitEvent/UnitOrdersEvent) would bloat the event queue).
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public boolean isLoaded() {
 		return isLoaded;

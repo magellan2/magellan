@@ -32,9 +32,8 @@ public interface MapCellRenderer {
 	public String getName();
 
 	/**
-	 * Returns the index of the default rendering plane of this renderer. See
-	 * the constants specified in com.eressea.swing.map.Mapper for possible
-	 * values.
+	 * Returns the index of the default rendering plane of this renderer. See the constants
+	 * specified in com.eressea.swing.map.Mapper for possible values.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -53,22 +52,18 @@ public interface MapCellRenderer {
 	public void setCellGeometry(CellGeometry geo);
 
 	/**
-	 * Initializes the renderer for one rendering pass. All supplied
-	 * informations stays constant during a pass and is therefore not
-	 * transferred with each render() call.
+	 * Initializes the renderer for one rendering pass. All supplied informations stays constant
+	 * during a pass and is therefore not transferred with each render() call.
 	 */
-	public void init(com.eressea.GameData data, java.awt.Graphics g,
-					 java.awt.Point offset);
+	public void init(com.eressea.GameData data, java.awt.Graphics g, java.awt.Point offset);
 
 	/**
-	 * Tells the renderer that it should re-adjust the scale factor it uses for
-	 * rendering.
+	 * Tells the renderer that it should re-adjust the scale factor it uses for rendering.
 	 */
 	public void scale(float scaleFactor);
 
 	/**
-	 * Returns a component that allows to modify the preferences available for
-	 * this renderer.
+	 * Returns a component that allows to modify the preferences available for this renderer.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

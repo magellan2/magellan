@@ -13,7 +13,6 @@
 
 package com.eressea.swing.map;
 
-
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -67,22 +66,21 @@ import com.eressea.util.replacers.ReplacerHelp;
 import com.eressea.util.replacers.ReplacerSystem;
 
 /**
- * A component displaying a map based on a <tt>GameData</tt> object. The
- * appearance of the map is made configurable by using combinations of classes
- * implementing the <tt>CellRenderers</tt> interface.
+ * A component displaying a map based on a <tt>GameData</tt> object. The appearance of the map is
+ * made configurable by using combinations of classes implementing the <tt>CellRenderers</tt>
+ * interface.
  * 
  * <p>
  * <b>Note:</b>
  * </p>
  * 
  * <p>
- * This class avoids Java2D methods so it can be used with JDK version earlier
- * than 1.2.
+ * This class avoids Java2D methods so it can be used with JDK version earlier than 1.2.
  * </p>
  */
-public class Mapper extends InternationalizedDataPanel
-	implements SelectionListener, Scrollable, UnitOrdersListener,
-			   GameDataListener, Initializable
+public class Mapper extends InternationalizedDataPanel implements SelectionListener, Scrollable,
+																  UnitOrdersListener,
+																  GameDataListener, Initializable
 {
 	private static final Logger log = Logger.getInstance(Mapper.class);
 
@@ -108,23 +106,23 @@ public class Mapper extends InternationalizedDataPanel
 	public static final int PLANE_HIGHLIGHT = 6;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int  PLANE_MARKINGS     = 7;
-	private static final int PLANES			    = 8;
-	private RenderingPlane   planes[]		    = null;
-	private Collection		 availableRenderers = null;
-	private MediaTracker     tracker		    = null;
-	private Region			 prevDragRegion     = null;
-	private boolean			 doDraggingSelect   = false;
-	private Object			 activeObject	    = null;
-	private Region			 activeRegion	    = null;
-	private Map				 selectedRegions    = CollectionFactory.createHashtable();
-	private List			 pathRegions	    = CollectionFactory.createLinkedList();
-	private boolean			 pathPersistence    = false;
-	private Rectangle		 mapToScreenBounds  = null;
-	private int				 showLevel		    = 0;
-	private float			 scaleFactor	    = 1.0f;
-	private Rectangle		 currentBounds	    = null;
-	private Image			 buffer			    = null;
+	public static final int PLANE_MARKINGS = 7;
+	private static final int PLANES = 8;
+	private RenderingPlane planes[] = null;
+	private Collection availableRenderers = null;
+	private MediaTracker tracker = null;
+	private Region prevDragRegion = null;
+	private boolean doDraggingSelect = false;
+	private Object activeObject = null;
+	private Region activeRegion = null;
+	private Map selectedRegions = CollectionFactory.createHashtable();
+	private List pathRegions = CollectionFactory.createLinkedList();
+	private boolean pathPersistence = false;
+	private Rectangle mapToScreenBounds = null;
+	private int showLevel = 0;
+	private float scaleFactor = 1.0f;
+	private Rectangle currentBounds = null;
+	private Image buffer = null;
 
 	// The cell geometry used by the renderes, see setRenderer()
 	private CellGeometry cellGeometry = null;
@@ -133,16 +131,16 @@ public class Mapper extends InternationalizedDataPanel
 	private static boolean renderContextChanged;
 
 	//	protected StringBuffer tooltipBuffer=new StringBuffer();
-	protected boolean				 showTooltip			 = false;
-	protected ItemType				 silverItemType			 = null;
-	protected ReplacerSystem		 tooltipDefinition;
-	protected String				 tooltipDefinitionString = null;
+	protected boolean showTooltip = false;
+	protected ItemType silverItemType = null;
+	protected ReplacerSystem tooltipDefinition;
+	protected String tooltipDefinitionString = null;
 	protected static ReplacerFactory tooltipReplacers;
 
 	// region sublist for rendering
-	protected List regionList			   = null;
-	protected int  lastRegionRenderingType = -1;
-	protected int  inPaint				   = 0;
+	protected List regionList = null;
+	protected int lastRegionRenderingType = -1;
+	protected int inPaint = 0;
 
 	//context
 	protected MapContextMenu conMenu;
@@ -155,16 +153,14 @@ public class Mapper extends InternationalizedDataPanel
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geom TODO: DOCUMENT ME!
 	 */
-	public Mapper(EventDispatcher ed, Properties p, Collection customRenderers,
-				  CellGeometry geom) {
+	public Mapper(EventDispatcher ed, Properties p, Collection customRenderers, CellGeometry geom) {
 		super(ed, p);
 
 		conMenu = new MapContextMenu(ed, p);
 
 		setTooltipDefinition(settings.getProperty("Mapper.ToolTip.Definition",
 												  "<html><font=-1>§rname§</font></html>"));
-		setShowTooltip(settings.getProperty("Mapper.showTooltips", "false")
-							   .equals("true"));
+		setShowTooltip(settings.getProperty("Mapper.showTooltips", "false").equals("true"));
 
 		setDoubleBuffered(false); // we mainly use our own buffer
 
@@ -181,8 +177,7 @@ public class Mapper extends InternationalizedDataPanel
 		cellGeometry = geom;
 
 		// initialize renderers and planes (mark the order!)
-		availableRenderers = initAvailableRenderers(cellGeometry, settings,
-													customRenderers);
+		availableRenderers = initAvailableRenderers(cellGeometry, settings, customRenderers);
 		planes = initRenderingPlanes();
 
 		// determine the size of the map in component coordinates
@@ -207,9 +202,8 @@ public class Mapper extends InternationalizedDataPanel
 					Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
 															  mapToScreenBounds.x,
 															  me.getPoint().y +
-															  mapToScreenBounds.y,
-															  showLevel);
-					Region     r = data.getRegion(c);
+															  mapToScreenBounds.y, showLevel);
+					Region r = data.getRegion(c);
 
 					if(r != null) {
 						if((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
@@ -231,8 +225,7 @@ public class Mapper extends InternationalizedDataPanel
 							} else {
 								activeRegion = r;
 								activeObject = r;
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
-																					 null,
+								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null,
 																					 activeRegion,
 																					 SelectionEvent.ST_DEFAULT));
 								repaint();
@@ -269,13 +262,10 @@ public class Mapper extends InternationalizedDataPanel
 						Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
 																  mapToScreenBounds.x,
 																  me.getPoint().y +
-																  mapToScreenBounds.y,
-																  showLevel);
-						Region     r = data.getRegion(c);
+																  mapToScreenBounds.y, showLevel);
+						Region r = data.getRegion(c);
 
-						if((r != null) &&
-							   ((prevDragRegion == null) ||
-							   !prevDragRegion.equals(r))) {
+						if((r != null) && ((prevDragRegion == null) || !prevDragRegion.equals(r))) {
 							boolean regionAlreadySelected = selectedRegions.containsKey(c);
 							boolean doFire = false;
 
@@ -366,8 +356,7 @@ public class Mapper extends InternationalizedDataPanel
 					if(translationCoord != null) {
 						Coordinate c = new Coordinate(activeRegion.getCoordinate());
 						activeRegion = data.getRegion(c.translate(translationCoord));
-						dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
-																			 null,
+						dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null,
 																			 activeRegion,
 																			 SelectionEvent.ST_REGIONS));
 						repaint();
@@ -397,12 +386,10 @@ public class Mapper extends InternationalizedDataPanel
 	public String getToolTipText(MouseEvent e) {
 		if(tooltipDefinition != null) {
 			try {
-				Coordinate c = cellGeometry.getCoordinate(e.getPoint().x +
-														  mapToScreenBounds.x,
-														  e.getPoint().y +
-														  mapToScreenBounds.y,
+				Coordinate c = cellGeometry.getCoordinate(e.getPoint().x + mapToScreenBounds.x,
+														  e.getPoint().y + mapToScreenBounds.y,
 														  showLevel);
-				Region     r = data.getRegion(c);
+				Region r = data.getRegion(c);
 
 				if(r != null) {
 					Object ret = tooltipDefinition.getReplacement(r);
@@ -431,13 +418,12 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Add a cell renderer object to the mapper. Each cell renderer has a
-	 * rendering plane associated with it, so if there is already a renderer
-	 * in the rendering plane of the added renderer the old renderer is
-	 * removed.
+	 * Add a cell renderer object to the mapper. Each cell renderer has a rendering plane
+	 * associated with it, so if there is already a renderer in the rendering plane of the added
+	 * renderer the old renderer is removed.
 	 *
-	 * @param renderer the object responsible for rendering a     graphical
-	 * 		  representation of regions.
+	 * @param renderer the object responsible for rendering a     graphical representation of
+	 * 		  regions.
 	 */
 	public void setRenderer(MapCellRenderer renderer) {
 		if(renderer != null) {
@@ -448,15 +434,14 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Set a cell renderer object for a certain plane of the map. This function
-	 * can be used to override the renderes default rendering plane.
+	 * Set a cell renderer object for a certain plane of the map. This function can be used to
+	 * override the renderes default rendering plane.
 	 *
-	 * @param renderer the object responsible for rendering a     graphical
-	 * 		  representation of regions.
-	 * @param plane the plane the renderer will draw to. Lower     planes are
-	 * 		  painted over by higher planes. See the constants in
-	 * 		  com.eressea.swing.map.Mapper for possible values or choose a
-	 * 		  value between 0 and getRenderPlainCount() - 1.
+	 * @param renderer the object responsible for rendering a     graphical representation of
+	 * 		  regions.
+	 * @param plane the plane the renderer will draw to. Lower     planes are painted over by
+	 * 		  higher planes. See the constants in com.eressea.swing.map.Mapper for possible values
+	 * 		  or choose a value between 0 and getRenderPlainCount() - 1.
 	 */
 	public void setRenderer(MapCellRenderer renderer, int plane) {
 		if((plane >= 0) && (plane < planes.length)) {
@@ -480,16 +465,15 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Get the cell renderer objects that are available for a certain rendering
-	 * plane. It is suggested that these objects are used for calling one of
-	 * the setRenderer() methods.
+	 * Get the cell renderer objects that are available for a certain rendering plane. It is
+	 * suggested that these objects are used for calling one of the setRenderer() methods.
 	 *
-	 * @param plane the plane the renderer will draw to. Lower     planes are
-	 * 		  painted over by higher planes. See the constants in
-	 * 		  com.eressea.swing.map.Mapper for possible values.
+	 * @param plane the plane the renderer will draw to. Lower     planes are painted over by
+	 * 		  higher planes. See the constants in com.eressea.swing.map.Mapper for possible
+	 * 		  values.
 	 *
-	 * @return the renderer object associated with the specified rendering
-	 * 		   plane or null if no such association exists.
+	 * @return the renderer object associated with the specified rendering plane or null if no such
+	 * 		   association exists.
 	 */
 	public Collection getRenderers(int plane) {
 		Collection renderers = null;
@@ -512,8 +496,8 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns a list of object containing the rendering planes existing in
-	 * this Mapper object. The planes are sorted with ascending plane indices.
+	 * Returns a list of object containing the rendering planes existing in this Mapper object. The
+	 * planes are sorted with ascending plane indices.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -530,13 +514,12 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Set a path - a list of consecutive regions - to be rendered by the
-	 * renderer registered to the path rendering plane.
+	 * Set a path - a list of consecutive regions - to be rendered by the renderer registered to
+	 * the path rendering plane.
 	 *
-	 * @param path a list of <tt>Region</tt> objects to be rendered as a path
-	 * 		  on the map.
-	 * @param isPersistent if <tt>true</tt>, always render the path, else
-	 * 		  render the path only until a different region is selected.
+	 * @param path a list of <tt>Region</tt> objects to be rendered as a path on the map.
+	 * @param isPersistent if <tt>true</tt>, always render the path, else render the path only
+	 * 		  until a different region is selected.
 	 */
 	public void setPath(List path, boolean isPersistent) {
 		pathRegions.clear();
@@ -613,8 +596,7 @@ public class Mapper extends InternationalizedDataPanel
 			   (se.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = se.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = se.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -667,8 +649,7 @@ public class Mapper extends InternationalizedDataPanel
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public int getScrollableBlockIncrement(Rectangle visibleRect,
-										   int orientation, int direction) {
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
 		if(orientation == SwingConstants.HORIZONTAL) {
 			return visibleRect.width - cellGeometry.getCellSize().width;
 		} else {
@@ -703,8 +684,7 @@ public class Mapper extends InternationalizedDataPanel
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public int getScrollableUnitIncrement(Rectangle visibleRect,
-										  int orientation, int direction) {
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
 		if(orientation == SwingConstants.HORIZONTAL) {
 			return cellGeometry.getCellSize().width;
 		} else {
@@ -713,8 +693,8 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Creates a sublist of regions to render according to the state of the
-	 * given int. Values are interpreted as those of RenderingPlane.
+	 * Creates a sublist of regions to render according to the state of the given int. Values are
+	 * interpreted as those of RenderingPlane.
 	 *
 	 * @param condition TODO: DOCUMENT ME!
 	 * @param upperLeft TODO: DOCUMENT ME!
@@ -725,9 +705,8 @@ public class Mapper extends InternationalizedDataPanel
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	protected List createSubList(int condition, Coordinate upperLeft,
-								 Coordinate lowerRight, List regionList,
-								 int duration, int paintNumber) {
+	protected List createSubList(int condition, Coordinate upperLeft, Coordinate lowerRight,
+								 List regionList, int duration, int paintNumber) {
 		List main = null;
 
 		if((inPaint < 2) || (paintNumber == 0) || (duration > 0)) {
@@ -751,10 +730,10 @@ public class Mapper extends InternationalizedDataPanel
 
 		// just use visible regions as base
 		if((condition & RenderingPlane.VISIBLE_REGIONS) != 0) {
-			int		   xstart   = upperLeft.x - 2;
-			int		   xend     = lowerRight.x + 1;
-			int		   yCounter = 0;
-			Coordinate c	    = new Coordinate(0, 0, upperLeft.z);
+			int xstart = upperLeft.x - 2;
+			int xend = lowerRight.x + 1;
+			int yCounter = 0;
+			Coordinate c = new Coordinate(0, 0, upperLeft.z);
 
 			for(int y = upperLeft.y + 1; y >= (lowerRight.y - 1); y--) {
 				if((++yCounter % 2) == 0) {
@@ -793,8 +772,7 @@ public class Mapper extends InternationalizedDataPanel
 
 		// sort out according to other states, use AND
 		if((condition &
-			   (RenderingPlane.SELECTED_REGIONS |
-			   RenderingPlane.ACTIVE_OR_SELECTED |
+			   (RenderingPlane.SELECTED_REGIONS | RenderingPlane.ACTIVE_OR_SELECTED |
 			   RenderingPlane.ACTIVE_REGION | RenderingPlane.TAGGED_REGIONS)) != 0) {
 			Iterator it = main.iterator();
 
@@ -815,8 +793,7 @@ public class Mapper extends InternationalizedDataPanel
 								  !(r.equals(activeRegion) ||
 								  selectedRegions.containsKey(r.getID()))) {
 						it.remove();
-					} else if(((condition & RenderingPlane.TAGGED_REGIONS) != 0) &&
-								  !(r.hasTags())) {
+					} else if(((condition & RenderingPlane.TAGGED_REGIONS) != 0) && !(r.hasTags())) {
 						it.remove();
 					}
 				}
@@ -835,7 +812,7 @@ public class Mapper extends InternationalizedDataPanel
 		return lastRegionRenderingType;
 	}
 
-	private static final Cursor WAIT_CURSOR    = new Cursor(Cursor.WAIT_CURSOR);
+	private static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
 	private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
 	/**
@@ -866,19 +843,15 @@ public class Mapper extends InternationalizedDataPanel
 		int paintNumber = inPaint;
 		inPaint++;
 
-		int  duration = 0;
+		int duration = 0;
 		List regList = regionList;
 
 		//super.paint(g);
-		Point	   offset = new Point(mapToScreenBounds.x + clipBounds.x,
-									  mapToScreenBounds.y + clipBounds.y);
-		Coordinate upperLeftCorner = cellGeometry.getCoordinate(offset.x,
-																offset.y,
-																showLevel);
-		Coordinate lowerRightCorner = cellGeometry.getCoordinate(offset.x +
-																 clipBounds.width,
-																 offset.y +
-																 clipBounds.height,
+		Point offset = new Point(mapToScreenBounds.x + clipBounds.x,
+								 mapToScreenBounds.y + clipBounds.y);
+		Coordinate upperLeftCorner = cellGeometry.getCoordinate(offset.x, offset.y, showLevel);
+		Coordinate lowerRightCorner = cellGeometry.getCoordinate(offset.x + clipBounds.width,
+																 offset.y + clipBounds.height,
 																 showLevel);
 
 		// if nothing about the drawing area changed we can simply
@@ -894,8 +867,7 @@ public class Mapper extends InternationalizedDataPanel
 					buffer = null;
 				}
 
-				buffer = new BufferedImage(clipBounds.width,
-										   clipBounds.height,
+				buffer = new BufferedImage(clipBounds.width, clipBounds.height,
 										   BufferedImage.TYPE_INT_ARGB);
 			}
 
@@ -903,8 +875,7 @@ public class Mapper extends InternationalizedDataPanel
 			bg.setColor(getBackground());
 			bg.fillRect(0, 0, clipBounds.width, clipBounds.height);
 
-			for(int planeIndex = 0;
-					(planeIndex < 5) && (planeIndex < planes.length);
+			for(int planeIndex = 0; (planeIndex < 5) && (planeIndex < planes.length);
 					planeIndex++) {
 				if(planes[planeIndex] == null) {
 					continue;
@@ -919,9 +890,8 @@ public class Mapper extends InternationalizedDataPanel
 				// maybe another region set
 				if(planes[planeIndex].getRegionTypes() != getLastRegionRenderingType()) {
 					setLastRegionRenderingType(planes[planeIndex].getRegionTypes());
-					regList = createSubList(getLastRegionRenderingType(),
-											upperLeftCorner, lowerRightCorner,
-											regList, duration, paintNumber);
+					regList = createSubList(getLastRegionRenderingType(), upperLeftCorner,
+											lowerRightCorner, regList, duration, paintNumber);
 					duration++;
 				}
 
@@ -932,9 +902,9 @@ public class Mapper extends InternationalizedDataPanel
 				renderer.init(data, bg, offset);
 
 				for(Iterator iter = regList.iterator(); iter.hasNext();) {
-					Object  obj		 = iter.next();
+					Object obj = iter.next();
 					boolean selected = false;
-					boolean active   = false;
+					boolean active = false;
 
 					if(obj instanceof Region) {
 						Region r = (Region) obj;
@@ -977,9 +947,8 @@ public class Mapper extends InternationalizedDataPanel
 				if((planes[planeIndex].getRegionTypes() != getLastRegionRenderingType()) ||
 					   clipChanged) {
 					setLastRegionRenderingType(planes[planeIndex].getRegionTypes());
-					regList = createSubList(lastRegionRenderingType,
-											upperLeftCorner, lowerRightCorner,
-											regList, duration, paintNumber);
+					regList = createSubList(lastRegionRenderingType, upperLeftCorner,
+											lowerRightCorner, regList, duration, paintNumber);
 					duration++;
 				}
 
@@ -990,9 +959,9 @@ public class Mapper extends InternationalizedDataPanel
 				renderer.init(data, g, offset);
 
 				for(Iterator iter = regList.iterator(); iter.hasNext();) {
-					Object  obj		 = iter.next();
+					Object obj = iter.next();
 					boolean selected = false;
-					boolean active   = false;
+					boolean active = false;
 
 					if(obj instanceof Region) {
 						Region r = (Region) obj;
@@ -1037,9 +1006,9 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns the current scale or zoom factor. This value is a real factor,
-	 * i.e. 1.0 means that the components are painted according to the values
-	 * supplied by the underlying CellGeometry object.
+	 * Returns the current scale or zoom factor. This value is a real factor, i.e. 1.0 means that
+	 * the components are painted according to the values supplied by the underlying CellGeometry
+	 * object.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1048,9 +1017,9 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Sets the scale or zoom factor. This value is a real factor, i.e. 1.0
-	 * means that the components are painted according to the values supplied
-	 * by the underlying CellGeometry object.
+	 * Sets the scale or zoom factor. This value is a real factor, i.e. 1.0 means that the
+	 * components are painted according to the values supplied by the underlying CellGeometry
+	 * object.
 	 *
 	 * @param scaleFactor TODO: DOCUMENT ME!
 	 */
@@ -1083,9 +1052,8 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns a list containing all the different levels ('Eressea-Ebenen')
-	 * this Mapper knows of. The list contains Integer objects stating the
-	 * level number.
+	 * Returns a list containing all the different levels ('Eressea-Ebenen') this Mapper knows of.
+	 * The list contains Integer objects stating the level number.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1097,7 +1065,7 @@ public class Mapper extends InternationalizedDataPanel
 
 			while(iter.hasNext()) {
 				Coordinate c = ((Region) iter.next()).getCoordinate();
-				Integer    i = new Integer(c.z);
+				Integer i = new Integer(c.z);
 
 				if(levels.contains(i) == false) {
 					levels.add(i);
@@ -1109,13 +1077,13 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Sets the level ('Eressea-Ebene') this Mapper knows of. The list contains
-	 * Integer objects stating the level number.
+	 * Sets the level ('Eressea-Ebene') this Mapper knows of. The list contains Integer objects
+	 * stating the level number.
 	 *
 	 * @param level TODO: DOCUMENT ME!
 	 */
 	public void setLevel(int level) {
-		showLevel		  = level;
+		showLevel = level;
 		mapToScreenBounds = getMapToScreenBounds();
 		setSize(mapToScreenBounds.getSize());
 		setPreferredSize(getSize());
@@ -1139,8 +1107,7 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Get the selected Regions. The returned map can be empty but is never
-	 * null.
+	 * Get the selected Regions. The returned map can be empty but is never null.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1162,8 +1129,8 @@ public class Mapper extends InternationalizedDataPanel
 	 *
 	 * @param cell the coordinate of the region to be evaluated.
 	 *
-	 * @return the bounds (the upper left corner and the size) of the region
-	 * 		   cell in component coordinates.
+	 * @return the bounds (the upper left corner and the size) of the region cell in component
+	 * 		   coordinates.
 	 */
 	public Rectangle getCellRect(Coordinate cell) {
 		Rectangle bounds = null;
@@ -1179,11 +1146,10 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns the coordinate of the region that is at the center of the
-	 * currently displayed area.
+	 * Returns the coordinate of the region that is at the center of the currently displayed area.
 	 *
-	 * @param clipBounds the bounds indicating which part of the mappers
-	 * 		  drawing area is actually visible.
+	 * @param clipBounds the bounds indicating which part of the mappers drawing area is actually
+	 * 		  visible.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1197,8 +1163,7 @@ public class Mapper extends InternationalizedDataPanel
 										   (clipBounds.height / 2));
 
 			if(cellGeometry != null) {
-				center = cellGeometry.getCoordinate(centerScreen.x,
-													centerScreen.y, showLevel);
+				center = cellGeometry.getCoordinate(centerScreen.x, centerScreen.y, showLevel);
 			} else {
 				log.warn("Mapper.getCenter(): Unable to determine drawing area!");
 			}
@@ -1208,15 +1173,15 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns the location (upper left corner) of the drawing area so that a
-	 * certain region is at the center of the view port.
+	 * Returns the location (upper left corner) of the drawing area so that a certain region is at
+	 * the center of the view port.
 	 *
-	 * @param viewSize the size of the mappers viewport, i.e. the size of the
-	 * 		  part of the mappers drawing area that is actually visible.
+	 * @param viewSize the size of the mappers viewport, i.e. the size of the part of the mappers
+	 * 		  drawing area that is actually visible.
 	 * @param center the coordinate to center on.
 	 *
-	 * @return a Point with x and y so that a view port of size viewSize is
-	 * 		   centered over the specified region center.
+	 * @return a Point with x and y so that a view port of size viewSize is centered over the
+	 * 		   specified region center.
 	 */
 	public Point getCenteredViewPosition(Dimension viewSize, Coordinate center) {
 		Point viewPos = null;
@@ -1233,8 +1198,8 @@ public class Mapper extends InternationalizedDataPanel
 							  cellGeometry.getCellSize().height / 2);
 
 			// now get the view port
-			viewPos = new Point(cellPos.x - (viewSize.width / 2),
-								cellPos.y - (viewSize.height / 2));
+			viewPos = new Point(cellPos.x - (viewSize.width / 2), cellPos.y -
+								(viewSize.height / 2));
 		} else {
 			log.warn("Mapper.getCenteredViewPosition(): Unable to determine drawing area!");
 		}
@@ -1243,8 +1208,8 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Get the cell geometry from the resources and make all renderers that use
-	 * images reload the graphics files.
+	 * Get the cell geometry from the resources and make all renderers that use images reload the
+	 * graphics files.
 	 */
 	public void reloadGraphicSet() {
 		cellGeometry = new CellGeometry("cellgeometry.txt");
@@ -1269,10 +1234,9 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Returns whether deferred painting after loading and scaling images is
-	 * used or not. Together with the ImageCellRenderer class this option
-	 * tells the mapper/renderer whether to scale images synchronously and
-	 * introduce delays on painting or to scale images asynchronously and
+	 * Returns whether deferred painting after loading and scaling images is used or not. Together
+	 * with the ImageCellRenderer class this option tells the mapper/renderer whether to scale
+	 * images synchronously and introduce delays on painting or to scale images asynchronously and
 	 * trigger a redraw after a short amount of time.
 	 *
 	 * @return TODO: DOCUMENT ME!
@@ -1282,11 +1246,10 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Activates or de-activates deferred painting after loading and scaling
-	 * images. Together with the ImageCellRenderer class this option tells the
-	 * mapper/renderer whether to scale images synchronously and introduce
-	 * delays on painting or to scale images asynchronously and trigger a
-	 * redraw after a short amount of time.
+	 * Activates or de-activates deferred painting after loading and scaling images. Together with
+	 * the ImageCellRenderer class this option tells the mapper/renderer whether to scale images
+	 * synchronously and introduce delays on painting or to scale images asynchronously and
+	 * trigger a redraw after a short amount of time.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
@@ -1299,17 +1262,15 @@ public class Mapper extends InternationalizedDataPanel
 			}
 
 			ImageCellRenderer.setTracker(tracker);
-			settings.setProperty("Mapper.deferPainting",
-								 (new Boolean(bool)).toString());
+			settings.setProperty("Mapper.deferPainting", (new Boolean(bool)).toString());
 		}
 	}
 
 	/**
-	 * Returns a rectangle that indicates the offset and the size of the whole
-	 * map that is formed by data.regions(). The values returned are given in
-	 * pixels as returned by CellGeometry, i.e. if there is only region 0, 0
-	 * then the returned rectangle would be : x=0, y=0, width=cellwidth,
-	 * height=cellheight.
+	 * Returns a rectangle that indicates the offset and the size of the whole map that is formed
+	 * by data.regions(). The values returned are given in pixels as returned by CellGeometry,
+	 * i.e. if there is only region 0, 0 then the returned rectangle would be : x=0, y=0,
+	 * width=cellwidth, height=cellheight.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1318,8 +1279,8 @@ public class Mapper extends InternationalizedDataPanel
 			return null;
 		}
 
-		Point    upperLeft  = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
-		Point    lowerRight = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+		Point upperLeft = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		Point lowerRight = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
 		Iterator iter = data.regions().values().iterator();
 
@@ -1327,10 +1288,10 @@ public class Mapper extends InternationalizedDataPanel
 			Coordinate c = ((Region) iter.next()).getCoordinate();
 
 			if(c.z == showLevel) {
-				int x		 = cellGeometry.getCellPositionX(c.x, c.y);
+				int x = cellGeometry.getCellPositionX(c.x, c.y);
 				int y = cellGeometry.getCellPositionY(c.x, c.y);
-				upperLeft.x  = Math.min(x, upperLeft.x);
-				upperLeft.y  = Math.min(y, upperLeft.y);
+				upperLeft.x = Math.min(x, upperLeft.x);
+				upperLeft.y = Math.min(y, upperLeft.y);
 				lowerRight.x = Math.max(x, lowerRight.x);
 				lowerRight.y = Math.max(y, lowerRight.y);
 			}
@@ -1340,59 +1301,47 @@ public class Mapper extends InternationalizedDataPanel
 		lowerRight.y += (cellGeometry.getCellSize().height + 1);
 
 		return new Rectangle(upperLeft,
-							 new Dimension(lowerRight.x - upperLeft.x,
-										   lowerRight.y - upperLeft.y));
+							 new Dimension(lowerRight.x - upperLeft.x, lowerRight.y - upperLeft.y));
 	}
 
 	protected RenderingPlane[] initRenderingPlanes() {
 		RenderingPlane p[] = new RenderingPlane[PLANES];
-		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION,
-											 getString("plane.region.name"));
+		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION, getString("plane.region.name"));
 		p[PLANE_REGION].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
 																	 PLANE_REGION,
 																	 "com.eressea.swing.map.RegionImageCellRenderer")));
 
-		p[PLANE_BORDER] = new RenderingPlane(PLANE_BORDER,
-											 getString("plane.border.name"));
+		p[PLANE_BORDER] = new RenderingPlane(PLANE_BORDER, getString("plane.border.name"));
 		p[PLANE_BORDER].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
 																	 PLANE_BORDER,
 																	 "com.eressea.swing.map.BorderCellRenderer")));
 
-		p[PLANE_BUILDING] = new RenderingPlane(PLANE_BUILDING,
-											   getString("plane.building.name"));
+		p[PLANE_BUILDING] = new RenderingPlane(PLANE_BUILDING, getString("plane.building.name"));
 		p[PLANE_BUILDING].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
 																	   PLANE_BUILDING,
 																	   "com.eressea.swing.map.BuildingCellRenderer")));
 
-		p[PLANE_SHIP] = new RenderingPlane(PLANE_SHIP,
-										   getString("plane.ship.name"));
-		p[PLANE_SHIP].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																   PLANE_SHIP,
+		p[PLANE_SHIP] = new RenderingPlane(PLANE_SHIP, getString("plane.ship.name"));
+		p[PLANE_SHIP].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." + PLANE_SHIP,
 																   "com.eressea.swing.map.ShipCellRenderer")));
 
-		p[PLANE_TEXT] = new RenderingPlane(PLANE_TEXT,
-										   getString("plane.text.name"));
-		p[PLANE_TEXT].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																   PLANE_TEXT,
+		p[PLANE_TEXT] = new RenderingPlane(PLANE_TEXT, getString("plane.text.name"));
+		p[PLANE_TEXT].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." + PLANE_TEXT,
 																   "com.eressea.swing.map.TextCellRenderer")));
 
-		p[PLANE_PATH] = new RenderingPlane(PLANE_PATH,
-										   getString("plane.path.name"),
+		p[PLANE_PATH] = new RenderingPlane(PLANE_PATH, getString("plane.path.name"),
 										   RenderingPlane.ACTIVE_OBJECT);
-		p[PLANE_PATH].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																   PLANE_PATH,
+		p[PLANE_PATH].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." + PLANE_PATH,
 																   "com.eressea.swing.map.PathCellRenderer")));
 
-		p[PLANE_HIGHLIGHT] = new RenderingPlane(PLANE_HIGHLIGHT,
-												getString("plane.highlight.name"),
+		p[PLANE_HIGHLIGHT] = new RenderingPlane(PLANE_HIGHLIGHT, getString("plane.highlight.name"),
 												RenderingPlane.VISIBLE_REGIONS |
 												RenderingPlane.ACTIVE_OR_SELECTED);
 		p[PLANE_HIGHLIGHT].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
 																		PLANE_HIGHLIGHT,
 																		"com.eressea.swing.map.HighlightImageCellRenderer")));
 
-		p[PLANE_MARKINGS] = new RenderingPlane(PLANE_MARKINGS,
-											   getString("plane.markings.name"),
+		p[PLANE_MARKINGS] = new RenderingPlane(PLANE_MARKINGS, getString("plane.markings.name"),
 											   RenderingPlane.VISIBLE_REGIONS |
 											   RenderingPlane.TAGGED_REGIONS);
 		p[PLANE_MARKINGS].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
@@ -1402,8 +1351,7 @@ public class Mapper extends InternationalizedDataPanel
 		return p;
 	}
 
-	private Collection initAvailableRenderers(CellGeometry geo,
-											  Properties settings,
+	private Collection initAvailableRenderers(CellGeometry geo, Properties settings,
 											  Collection cRenderers) {
 		Collection renderers = CollectionFactory.createLinkedList();
 		renderers.add(new RegionImageCellRenderer(geo, settings));
@@ -1532,7 +1480,7 @@ public class Mapper extends InternationalizedDataPanel
 	 */
 	public void setTooltipDefinition(String tdef) {
 		tooltipDefinitionString = tdef;
-		tooltipDefinition	    = ReplacerHelp.createReplacer(tdef);
+		tooltipDefinition = ReplacerHelp.createReplacer(tdef);
 		settings.setProperty("Mapper.ToolTip.Definition", tdef);
 	}
 
@@ -1542,10 +1490,10 @@ public class Mapper extends InternationalizedDataPanel
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getAllTooltipDefinitions() {
-		String		    s = settings.getProperty("Mapper.ToolTip.Definitions",
-												 "Standard~<html><font=-1>§rname§</font></html>");
+		String s = settings.getProperty("Mapper.ToolTip.Definitions",
+										"Standard~<html><font=-1>§rname§</font></html>");
 		StringTokenizer st = new StringTokenizer(s, "~");
-		int			    j  = st.countTokens();
+		int j = st.countTokens();
 
 		if((j % 2) == 1) {
 			j--;
@@ -1619,15 +1567,14 @@ public class Mapper extends InternationalizedDataPanel
 	 */
 
 	/**
-	 * Returns the current configuration of this mapper panel. The current
-	 * implementation divides all the information by "_". First the scale
-	 * factor is stored, then planes(plane index, renderer class name,
-	 * renderer configuration).
+	 * Returns the current configuration of this mapper panel. The current implementation divides
+	 * all the information by "_". First the scale factor is stored, then planes(plane index,
+	 * renderer class name, renderer configuration).
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getComponentConfiguration() {
-		Iterator     it  = getPlanes().iterator();
+		Iterator it = getPlanes().iterator();
 		StringBuffer buf = new StringBuffer();
 		buf.append(getScaleFactor());
 		buf.append('_');
@@ -1665,8 +1612,7 @@ public class Mapper extends InternationalizedDataPanel
 	}
 
 	/**
-	 * Implemented for interface Initializable to set configuration data to 
-	 * this component.
+	 * Implemented for interface Initializable to set configuration data to  this component.
 	 *
 	 * @param p1 the configuration string from magellan_desktop.ini
 	 */
@@ -1684,11 +1630,11 @@ public class Mapper extends InternationalizedDataPanel
 
 		while(st.hasMoreTokens()) {
 			try {
-				String     index     = st.nextToken();
-				int		   iindex    = Integer.parseInt(index);
-				String     className = st.nextToken();
-				String     config    = st.nextToken();
-				Collection col		 = getRenderers(iindex);
+				String index = st.nextToken();
+				int iindex = Integer.parseInt(index);
+				String className = st.nextToken();
+				String config = st.nextToken();
+				Collection col = getRenderers(iindex);
 
 				if(col != null) {
 					Iterator it = col.iterator();

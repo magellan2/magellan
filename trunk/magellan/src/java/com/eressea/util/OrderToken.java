@@ -40,17 +40,17 @@ public class OrderToken {
 
 	/** A token making the order persistent */
 	public static final int TT_PERSIST = 7;
-	private String		    text  = null; // the string representing this order token
-	private int			    start = 0; // the start position of the token in the stream the token was read from, -1 indicates that the position is invalid
-	private int			    end   = 0; // the end position of the token in the stream the token was read from, -1 indicates that the position is invalid
+	private String text = null; // the string representing this order token
+	private int start = 0; // the start position of the token in the stream the token was read from, -1 indicates that the position is invalid
+	private int end = 0; // the end position of the token in the stream the token was read from, -1 indicates that the position is invalid
 
 	/** TODO: DOCUMENT ME! */
-	public int	    ttype		    = 0; // the type of the token
+	public int ttype = 0; // the type of the token
 	private boolean followedBySpace = false;
 
 	/**
-	 * Creates a new <tt>OrderToken</tt> object representing the specified
-	 * string, but with invalid start and end positions and undefined type.
+	 * Creates a new <tt>OrderToken</tt> object representing the specified string, but with invalid
+	 * start and end positions and undefined type.
 	 *
 	 * @param text the text this order token represents.
 	 */
@@ -59,8 +59,8 @@ public class OrderToken {
 	}
 
 	/**
-	 * Creates a new <tt>OrderToken</tt> object representing the specified
-	 * string and the specified start and end positions.
+	 * Creates a new <tt>OrderToken</tt> object representing the specified string and the specified
+	 * start and end positions.
 	 *
 	 * @param text the text this order token represents.
 	 * @param start the start position of the token in the underlying stream.
@@ -71,8 +71,8 @@ public class OrderToken {
 	}
 
 	/**
-	 * Creates a new <tt>OrderToken</tt> object representing the specified
-	 * string and the specified start and end positions.
+	 * Creates a new <tt>OrderToken</tt> object representing the specified string and the specified
+	 * start and end positions.
 	 *
 	 * @param text the text this order token represents.
 	 * @param start the start position of the token in the underlying stream.
@@ -84,23 +84,20 @@ public class OrderToken {
 	}
 
 	/**
-	 * Creates a new <tt>OrderToken</tt> object representing the specified
-	 * string with specific start and end positions and type.
+	 * Creates a new <tt>OrderToken</tt> object representing the specified string with specific
+	 * start and end positions and type.
 	 *
 	 * @param text the text this order token represents.
 	 * @param start the start position of the token in the underlying stream.
 	 * @param end the end position of the token in the underlying stream.
-	 * @param type the type of the token, the value must equal one the TT_XXX
-	 * 		  constants.
-	 * @param followedBySpace defines wether the token was followed by either
-	 * 		  '\r' '\n' '\t' or ' '
+	 * @param type the type of the token, the value must equal one the TT_XXX constants.
+	 * @param followedBySpace defines wether the token was followed by either '\r' '\n' '\t' or ' '
 	 */
-	public OrderToken(String text, int start, int end, int type,
-					  boolean followedBySpace) {
-		this.text			 = text;
-		this.start			 = start;
-		this.end			 = end;
-		this.ttype			 = type;
+	public OrderToken(String text, int start, int end, int type, boolean followedBySpace) {
+		this.text = text;
+		this.start = start;
+		this.end = end;
+		this.ttype = type;
 		this.followedBySpace = followedBySpace;
 	}
 
@@ -231,8 +228,8 @@ public class OrderToken {
 	}
 
 	/**
-	 * Compares the token and the specified keyword with respect to
-	 * abbreviations as used by the eressea game server.
+	 * Compares the token and the specified keyword with respect to abbreviations as used by the
+	 * eressea game server.
 	 *
 	 * @param strKeyword TODO: DOCUMENT ME!
 	 *

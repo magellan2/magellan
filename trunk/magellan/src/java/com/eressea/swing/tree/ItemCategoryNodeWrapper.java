@@ -21,7 +21,7 @@ import com.eressea.rules.ItemCategory;
  * @author Ulrich Küster
  */
 public class ItemCategoryNodeWrapper {
-	private int			 amount = -1;
+	private int amount = -1;
 	private ItemCategory cat = null;
 
 	/**
@@ -32,7 +32,7 @@ public class ItemCategoryNodeWrapper {
 	 */
 	public ItemCategoryNodeWrapper(ItemCategory category, int amount) {
 		this.amount = amount;
-		this.cat    = category;
+		this.cat = category;
 	}
 
 	/**

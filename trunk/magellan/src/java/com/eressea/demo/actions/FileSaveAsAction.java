@@ -44,8 +44,8 @@ import com.eressea.util.logging.Logger;
  * @version
  */
 public class FileSaveAsAction extends MenuAction {
-	private static final Logger log    = Logger.getInstance(FileSaveAsAction.class);
-	protected Client		    client;
+	private static final Logger log = Logger.getInstance(FileSaveAsAction.class);
+	protected Client client;
 
 	/**
 	 * Creates a new FileSaveAsAction object.
@@ -56,6 +56,11 @@ public class FileSaveAsAction extends MenuAction {
 		client = parent;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getIconName() {
 		return "saveas_edit";
 	}
@@ -76,7 +81,7 @@ public class FileSaveAsAction extends MenuAction {
 	}
 
 	protected void doSaveAsAction() {
-		Properties   settings = client.getSettings();
+		Properties settings = client.getSettings();
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
 
@@ -89,8 +94,7 @@ public class FileSaveAsAction extends MenuAction {
 		EresseaFileFilter bz2Filter = new EresseaFileFilter(EresseaFileFilter.BZ2_FILTER);
 		fc.addChoosableFileFilter(bz2Filter);
 
-		File selectedFile = new File(settings.getProperty("Client.lastCRSaved",
-														  ""));
+		File selectedFile = new File(settings.getProperty("Client.lastCRSaved", ""));
 		fc.setSelectedFile(selectedFile);
 
 		// select an active file filter
@@ -109,15 +113,13 @@ public class FileSaveAsAction extends MenuAction {
 
 		if(fc.showSaveDialog(client) == JFileChooser.APPROVE_OPTION) {
 			boolean bOpenEqualsSave = Boolean.valueOf(settings.getProperty("Client.openEqualsSave",
-																		   "false"))
-											 .booleanValue();
+																		   "false")).booleanValue();
 
 			if(bOpenEqualsSave) {
-				settings.setProperty("Client.lastCROpened",
-									 fc.getSelectedFile().getAbsolutePath());
+				settings.setProperty("Client.lastCROpened", fc.getSelectedFile().getAbsolutePath());
 			}
 
-			File			  dataFile  = fc.getSelectedFile();
+			File dataFile = fc.getSelectedFile();
 			EresseaFileFilter actFilter = (EresseaFileFilter) fc.getFileFilter();
 			dataFile = actFilter.addExtension(dataFile);
 
@@ -128,8 +130,7 @@ public class FileSaveAsAction extends MenuAction {
 					File backup = FileBackup.create(dataFile);
 					log.info("Created backupfile " + backup);
 				} catch(IOException ie) {
-					log.warn("Could not create backupfile for file " +
-							 dataFile);
+					log.warn("Could not create backupfile for file " + dataFile);
 				}
 			}
 
@@ -164,8 +165,7 @@ public class FileSaveAsAction extends MenuAction {
 			client.setReportChanged(false);
 			client.getData().filetype = filetype;
 			client.getData().resetToUnchanged();
-			client.getSettings().setProperty("Client.lastCRSaved",
-											 filetype.getName());
+			client.getSettings().setProperty("Client.lastCRSaved", filetype.getName());
 		} catch(IOException exc) {
 			log.error(exc);
 			JOptionPane.showMessageDialog(client, exc.toString(),
@@ -176,9 +176,8 @@ public class FileSaveAsAction extends MenuAction {
 	}
 
 	/**
-	 * this function delivers overwriteable FileType. In FileSaveAsAction it
-	 * shall deliver null, in FileSaveAction the file type of the gamedata if
-	 * exists.
+	 * this function delivers overwriteable FileType. In FileSaveAsAction it shall deliver null, in
+	 * FileSaveAction the file type of the gamedata if exists.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

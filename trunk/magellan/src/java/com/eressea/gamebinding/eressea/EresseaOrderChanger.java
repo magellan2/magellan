@@ -65,8 +65,7 @@ public class EresseaOrderChanger implements OrderChanger {
 
 	private String createNamingOrder(String name) {
 		return Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " +
-			   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-			   " \"" + name + "\"";
+			   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " \"" + name + "\"";
 	}
 
 	/**
@@ -94,8 +93,8 @@ public class EresseaOrderChanger implements OrderChanger {
 			order = Translations.getOrderTranslation(EresseaConstants.O_FACTION);
 		}
 
-		return Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " +
-			   order + " \"" + name + "\"";
+		return Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " + order + " \"" +
+			   name + "\"";
 	}
 
 	/**
@@ -105,8 +104,7 @@ public class EresseaOrderChanger implements OrderChanger {
 	 * @param uc TODO: DOCUMENT ME!
 	 * @param descr TODO: DOCUMENT ME!
 	 */
-	public void addDescribeUnitContainerOrder(Unit unit, UnitContainer uc,
-											  String descr) {
+	public void addDescribeUnitContainerOrder(Unit unit, UnitContainer uc, String descr) {
 		String suborder = createDescribeUnitContainerOrder(uc);
 		String order = suborder + " \"" + descr + "\"";
 		unit.addOrder(order, true, (suborder.indexOf(" ") >= 0) ? 2 : 1);
@@ -116,16 +114,13 @@ public class EresseaOrderChanger implements OrderChanger {
 		String order = null;
 
 		if(uc instanceof Building) {
-			order = Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-					" " +
+			order = Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
 					Translations.getOrderTranslation(EresseaConstants.O_CASTLE);
 		} else if(uc instanceof Ship) {
-			order = Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-					" " +
+			order = Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
 					Translations.getOrderTranslation(EresseaConstants.O_SHIP);
 		} else if(uc instanceof Region) {
-			order = Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-					" " +
+			order = Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
 					Translations.getOrderTranslation(EresseaConstants.O_REGION);
 		} else if(uc instanceof Faction) {
 			order = Translations.getOrderTranslation(EresseaConstants.O_BANNER);
@@ -146,10 +141,8 @@ public class EresseaOrderChanger implements OrderChanger {
 	}
 
 	private String createDescribeUnitPrivateOrder(String descr) {
-		return Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-			   " " +
-			   Translations.getOrderTranslation(EresseaConstants.O_PRIVATE) +
-			   " \"" + descr + "\"";
+		return Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
+			   Translations.getOrderTranslation(EresseaConstants.O_PRIVATE) + " \"" + descr + "\"";
 	}
 
 	/**
@@ -171,9 +164,8 @@ public class EresseaOrderChanger implements OrderChanger {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String createDescribeUnitOrder(String descr) {
-		return Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-			   " " + Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-			   " \"" + descr + "\"";
+		return Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
+			   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " \"" + descr + "\"";
 	}
 
 	/**
@@ -216,8 +208,7 @@ public class EresseaOrderChanger implements OrderChanger {
 	}
 
 	private String createHideOrder(String level) {
-		return Translations.getOrderTranslation(EresseaConstants.O_HIDE) + " " +
-			   level;
+		return Translations.getOrderTranslation(EresseaConstants.O_HIDE) + " " + level;
 	}
 
 	/**
@@ -232,8 +223,7 @@ public class EresseaOrderChanger implements OrderChanger {
 	}
 
 	private String getCombatOrder(Unit unit, int newState) {
-		String str = Translations.getOrderTranslation(EresseaConstants.O_COMBAT) +
-					 " ";
+		String str = Translations.getOrderTranslation(EresseaConstants.O_COMBAT) + " ";
 
 		switch(newState) {
 		case 0:
@@ -280,8 +270,8 @@ public class EresseaOrderChanger implements OrderChanger {
 	 * @param i TODO: DOCUMENT ME!
 	 */
 	public void addRecruitOrder(Unit unit, int i) {
-		String order = Translations.getOrderTranslation(EresseaConstants.O_RECRUIT) +
-					   " " + String.valueOf(i);
+		String order = Translations.getOrderTranslation(EresseaConstants.O_RECRUIT) + " " +
+					   String.valueOf(i);
 		unit.addOrders(order);
 	}
 
@@ -292,82 +282,54 @@ public class EresseaOrderChanger implements OrderChanger {
 	 */
 	public void addMultipleHideOrder(Unit unit) {
 		List orders = CollectionFactory.createLinkedList();
-		orders.add(Translations.getOrderTranslation(EresseaConstants.O_NUMBER) +
-				   " " +
-				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-				   " ");
-		orders.add(Translations.getOrderTranslation(EresseaConstants.O_NAME) +
-				   " " +
-				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-				   " \"\"");
-		orders.add(Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-				   " " +
-				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-				   " \"\"");
-		orders.add(Translations.getOrderTranslation(EresseaConstants.O_HIDE) +
-				   " " +
+		orders.add(Translations.getOrderTranslation(EresseaConstants.O_NUMBER) + " " +
+				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " ");
+		orders.add(Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " +
+				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " \"\"");
+		orders.add(Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
+				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " \"\"");
+		orders.add(Translations.getOrderTranslation(EresseaConstants.O_HIDE) + " " +
 				   Translations.getOrderTranslation(EresseaConstants.O_FACTION));
 
 		if(unit.getShip() != null) {
-			orders.add(Translations.getOrderTranslation(EresseaConstants.O_NUMBER) +
-					   " " +
+			orders.add(Translations.getOrderTranslation(EresseaConstants.O_NUMBER) + " " +
 					   Translations.getOrderTranslation(EresseaConstants.O_SHIP));
-			orders.add(Translations.getOrderTranslation(EresseaConstants.O_NAME) +
-					   " " +
-					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) +
-					   " \"\"");
-			orders.add(Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-					   " " +
-					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) +
-					   " \"\"");
+			orders.add(Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " +
+					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) + " \"\"");
+			orders.add(Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
+					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) + " \"\"");
 		}
 
-		orders.add("// " +
-				   Translations.getOrderTranslation(EresseaConstants.O_NUMBER) +
-				   " " +
-				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-				   " " + unit.getID());
-		orders.add("// " +
-				   Translations.getOrderTranslation(EresseaConstants.O_NAME) +
-				   " " +
-				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-				   " \"" + unit.getName() + "\"");
+		orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_NUMBER) + " " +
+				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " " + unit.getID());
+		orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " +
+				   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " \"" +
+				   unit.getName() + "\"");
 
 		if(unit.getDescription() != null) {
-			orders.add("// " +
-					   Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-					   " " +
-					   Translations.getOrderTranslation(EresseaConstants.O_UNIT) +
-					   " \"" + unit.getDescription() + "\"");
+			orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) + " " +
+					   Translations.getOrderTranslation(EresseaConstants.O_UNIT) + " \"" +
+					   unit.getDescription() + "\"");
 		}
 
 		if(!unit.hideFaction) {
-			orders.add("// " +
-					   Translations.getOrderTranslation(EresseaConstants.O_HIDE) +
-					   " " +
-					   Translations.getOrderTranslation(EresseaConstants.O_FACTION) +
-					   " " +
+			orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_HIDE) + " " +
+					   Translations.getOrderTranslation(EresseaConstants.O_FACTION) + " " +
 					   Translations.getOrderTranslation(EresseaConstants.O_NOT));
 		}
 
 		if(unit.getShip() != null) {
-			orders.add("// " +
-					   Translations.getOrderTranslation(EresseaConstants.O_NUMBER) +
-					   " " +
-					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) +
-					   " " + unit.getShip().getID().toString());
-			orders.add("// " +
-					   Translations.getOrderTranslation(EresseaConstants.O_NAME) +
-					   " " +
-					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) +
-					   " \"" + unit.getShip().getName() + "\"");
+			orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_NUMBER) + " " +
+					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) + " " +
+					   unit.getShip().getID().toString());
+			orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_NAME) + " " +
+					   Translations.getOrderTranslation(EresseaConstants.O_SHIP) + " \"" +
+					   unit.getShip().getName() + "\"");
 
 			if(unit.getShip().getDescription() != null) {
-				orders.add("// " +
-						   Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
-						   " " +
-						   Translations.getOrderTranslation(EresseaConstants.O_SHIP) +
-						   " \"" + unit.getShip().getDescription() + "\"");
+				orders.add("// " + Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE) +
+						   " " + Translations.getOrderTranslation(EresseaConstants.O_SHIP) + " \"" +
+						   unit.getShip().getDescription() + "\"");
 			}
 		}
 

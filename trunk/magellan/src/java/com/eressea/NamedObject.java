@@ -20,8 +20,7 @@ public abstract class NamedObject extends Identifiable implements Named {
 	protected String name = null;
 
 	/**
-	 * Constructs a new named object that is uniquely identifiable by the
-	 * specified id.
+	 * Constructs a new named object that is uniquely identifiable by the specified id.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 */

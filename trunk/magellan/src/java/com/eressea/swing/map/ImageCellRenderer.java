@@ -25,18 +25,17 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.ImageFactory;
 
 /**
- * A template for a renderer that uses images for rendering objects. This class
- * takes care of dynamic loading and proper scaling of the images. All images
- * are loaded from the images/map/ sub-directory of the current resource
- * bundle.
+ * A template for a renderer that uses images for rendering objects. This class takes care of
+ * dynamic loading and proper scaling of the images. All images are loaded from the images/map/
+ * sub-directory of the current resource bundle.
  */
 public abstract class ImageCellRenderer extends HexCellRenderer {
-	private Map				    images  = CollectionFactory.createHashMap();
+	private Map images = CollectionFactory.createHashMap();
 	private static MediaTracker tracker = null;
 
 	/**
-	 * Creates a new ImageCellRenderer with the specified cell geometry and a
-	 * Properties object to read the render settings from.
+	 * Creates a new ImageCellRenderer with the specified cell geometry and a Properties object to
+	 * read the render settings from.
 	 *
 	 * @param geo TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
@@ -48,8 +47,8 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	/**
 	 * Scale all images this renderer uses to a certain scale factor.
 	 *
-	 * @param scaleFactor the factor to scale the images with (a scaleFactor of
-	 * 		  1.0 would scale all images to their original size).
+	 * @param scaleFactor the factor to scale the images with (a scaleFactor of 1.0 would scale all
+	 * 		  images to their original size).
 	 */
 	public void scale(float scaleFactor) {
 		super.scale(scaleFactor);
@@ -64,9 +63,8 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	}
 
 	/**
-	 * Return a scaled version of the supplied using the current scale factor.
-	 * If there is no media tracker, this function enforces synchronous
-	 * scaling.
+	 * Return a scaled version of the supplied using the current scale factor. If there is no media
+	 * tracker, this function enforces synchronous scaling.
 	 *
 	 * @param img the img to scale
 	 *
@@ -74,13 +72,11 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	 */
 	public Image scale(Image img) {
 		if(img != null) {
-			Dimension size   = cellGeo.getImageSize();
-			Image     scaled = img.getScaledInstance(size.width, size.height,
-													 Image.SCALE_SMOOTH);
+			Dimension size = cellGeo.getImageSize();
+			Image scaled = img.getScaledInstance(size.width, size.height, Image.SCALE_SMOOTH);
 
 			if(tracker != null) {
-				tracker.addImage(scaled,
-								 (int) (Math.random() * Integer.MAX_VALUE));
+				tracker.addImage(scaled, (int) (Math.random() * Integer.MAX_VALUE));
 			} else {
 				ImageFactory.getFactory().waitForImage(img);
 			}
@@ -99,8 +95,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	}
 
 	/**
-	 * Set the cell geometry this renderer is based on and make it reload all
-	 * of its cached images.
+	 * Set the cell geometry this renderer is based on and make it reload all of its cached images.
 	 *
 	 * @param geo TODO: DOCUMENT ME!
 	 */
@@ -110,8 +105,8 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	}
 
 	/**
-	 * Set a media tracker that is used to track all images that are scaled. If
-	 * no media tracker is present scaling is synchronous.
+	 * Set a media tracker that is used to track all images that are scaled. If no media tracker is
+	 * present scaling is synchronous.
 	 *
 	 * @param t TODO: DOCUMENT ME!
 	 */
@@ -124,17 +119,16 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 	}
 
 	/**
-	 * Returns an image that is associated with name. If name has never been
-	 * supplied to this function before, it attempts to load an image with a
-	 * file name of name. If no such file exists, there will be no further
-	 * attempts to load the file when this function is called with the same
-	 * value for name.
+	 * Returns an image that is associated with name. If name has never been supplied to this
+	 * function before, it attempts to load an image with a file name of name. If no such file
+	 * exists, there will be no further attempts to load the file when this function is called
+	 * with the same value for name.
 	 *
-	 * @param name a name identifying the image to get. This name is also used
-	 * 		  as a file name without extension to load the image from a file.
+	 * @param name a name identifying the image to get. This name is also used as a file name
+	 * 		  without extension to load the image from a file.
 	 *
-	 * @return the image associated with name or null, if there is no such
-	 * 		   image and it cannot be loaded.
+	 * @return the image associated with name or null, if there is no such image and it cannot be
+	 * 		   loaded.
 	 */
 	protected Image getImage(String name) {
 		Image img = null;
@@ -179,7 +173,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 		 */
 		public ImageContainer(Image unscaled, Image scaled) {
 			this.unscaled = unscaled;
-			this.scaled   = scaled;
+			this.scaled = scaled;
 		}
 	}
 }

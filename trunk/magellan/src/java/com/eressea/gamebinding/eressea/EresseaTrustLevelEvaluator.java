@@ -37,8 +37,8 @@ public class EresseaTrustLevelEvaluator {
 	}
 
 	/**
-	 * A method to convert an alliance into a trustlevel. This method should be
-	 * uses when Magellan calculates trust levels on its own.
+	 * A method to convert an alliance into a trustlevel. This method should be uses when Magellan
+	 * calculates trust levels on its own.
 	 *
 	 * @param alliance TODO: DOCUMENT ME!
 	 *

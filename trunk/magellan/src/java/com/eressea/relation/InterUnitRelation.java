@@ -16,8 +16,7 @@ package com.eressea.relation;
 import com.eressea.Unit;
 
 /**
- * A (possibly abstract) relation indicating between a source and a target
- * unit.
+ * A (possibly abstract) relation indicating between a source and a target unit.
  */
 public class InterUnitRelation extends UnitRelation {
 	/** TODO: DOCUMENT ME! */

@@ -51,9 +51,9 @@ import com.eressea.util.JVMUtilities;
  * @version
  */
 public class ListCompletionGUI extends AbstractCompletionGUI {
-	protected ListPane		 listPane;
+	protected ListPane listPane;
 	protected AutoCompletion ac;
-	protected int			 specialKeys[];
+	protected int specialKeys[];
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -61,9 +61,9 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 	 * @param ac TODO: DOCUMENT ME!
 	 */
 	public void init(AutoCompletion ac) {
-		this.ac		   = ac;
-		listPane	   = new ListPane();
-		specialKeys    = new int[2];
+		this.ac = ac;
+		listPane = new ListPane();
+		specialKeys = new int[2];
 		specialKeys[0] = KeyEvent.VK_UP;
 		specialKeys[1] = KeyEvent.VK_DOWN;
 	}
@@ -75,8 +75,7 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 	 * @param completions TODO: DOCUMENT ME!
 	 * @param stub TODO: DOCUMENT ME!
 	 */
-	public void offerCompletion(JTextComponent editor, Collection completions,
-								String stub) {
+	public void offerCompletion(JTextComponent editor, Collection completions, String stub) {
 		listPane.choiceList.setListData(completions.toArray());
 		listPane.choiceList.setSelectedIndex(0);
 		listPane.choiceList.setVisibleRowCount(0);
@@ -84,20 +83,16 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		// align list pane
 		try {
 			Rectangle caretBounds = editor.modelToView(editor.getCaretPosition());
-			Point     p = new Point(editor.getLocationOnScreen());
+			Point p = new Point(editor.getLocationOnScreen());
 			p.translate(caretBounds.x, caretBounds.y + caretBounds.height);
 
-			if((p.getY() + listPane.getHeight()) > Toolkit.getDefaultToolkit()
-															  .getScreenSize()
+			if((p.getY() + listPane.getHeight()) > Toolkit.getDefaultToolkit().getScreenSize()
 															  .getHeight()) {
-				p.translate(0,
-							(int) (-listPane.getHeight() -
-							caretBounds.getHeight()));
+				p.translate(0, (int) (-listPane.getHeight() - caretBounds.getHeight()));
 			}
 
 			int outOfSight = (int) ((p.getX() + listPane.getWidth()) -
-							 Toolkit.getDefaultToolkit().getScreenSize()
-									.getWidth());
+							 Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 
 			if(outOfSight > 0) {
 				p.translate(-outOfSight, 0);
@@ -113,8 +108,8 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 	}
 
 	// sets the currently selected index in the list
-	public void cycleCompletion(JTextComponent editor, Collection completions,
-								String stub, int index) {
+	public void cycleCompletion(JTextComponent editor, Collection completions, String stub,
+								int index) {
 		listPane.setSelectedIndex(index);
 	}
 
@@ -188,8 +183,7 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void keyPressed(KeyEvent e) {
-			if((e.getKeyCode() == KeyEvent.VK_TAB) ||
-				   (e.getKeyCode() == KeyEvent.VK_ENTER)) {
+			if((e.getKeyCode() == KeyEvent.VK_TAB) || (e.getKeyCode() == KeyEvent.VK_ENTER)) {
 				insertCompletion();
 				this.getTopLevelAncestor().setVisible(false);
 				e.consume();

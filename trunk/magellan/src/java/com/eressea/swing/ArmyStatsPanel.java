@@ -68,29 +68,29 @@ import com.eressea.util.logging.Logger;
  * @author Andreas
  * @version
  */
-public class ArmyStatsPanel extends InternationalizedDataPanel
-	implements TreeSelectionListener, SelectionListener
+public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSelectionListener,
+																		  SelectionListener
 {
-	private static final Logger		 log				 = Logger.getInstance(ArmyStatsPanel.class);
-	protected NodeWrapperFactory     factory;
-	protected CopyTree				 tree;
-	protected CopyTree				 tree2;
+	private static final Logger log = Logger.getInstance(ArmyStatsPanel.class);
+	protected NodeWrapperFactory factory;
+	protected CopyTree tree;
+	protected CopyTree tree2;
 	protected DefaultMutableTreeNode treeRoot;
 	protected DefaultMutableTreeNode tree2Root;
-	protected JSplitPane			 content;
-	protected int					 dividerPos			 = Integer.MIN_VALUE;
-	protected List					 armies;
-	protected Map					 weapons;
-	protected ItemCategory			 weapon;
-	protected ItemCategory			 front;
-	protected ItemCategory			 back;
-	protected ItemCategory			 armourType;
-	protected ItemCategory			 shieldType;
-	protected boolean				 categorize			 = true;
-	protected List					 excludeSkills;
-	protected List					 excludeNames;
-	protected List					 excludeCombatStates;
-	protected Collection			 lastSelected;
+	protected JSplitPane content;
+	protected int dividerPos = Integer.MIN_VALUE;
+	protected List armies;
+	protected Map weapons;
+	protected ItemCategory weapon;
+	protected ItemCategory front;
+	protected ItemCategory back;
+	protected ItemCategory armourType;
+	protected ItemCategory shieldType;
+	protected boolean categorize = true;
+	protected List excludeSkills;
+	protected List excludeNames;
+	protected List excludeCombatStates;
+	protected Collection lastSelected;
 
 	/**
 	 * Creates new ArmyStatsPanel
@@ -100,8 +100,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	 * @param settings TODO: DOCUMENT ME!
 	 * @param doCategorize TODO: DOCUMENT ME!
 	 */
-	public ArmyStatsPanel(EventDispatcher ed, GameData data,
-						  Properties settings, boolean doCategorize) {
+	public ArmyStatsPanel(EventDispatcher ed, GameData data, Properties settings,
+						  boolean doCategorize) {
 		this(ed, data, settings, doCategorize, null);
 	}
 
@@ -114,17 +114,15 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	 * @param doCategorize TODO: DOCUMENT ME!
 	 * @param selRegions TODO: DOCUMENT ME!
 	 */
-	public ArmyStatsPanel(EventDispatcher ed, GameData data,
-						  Properties settings, boolean doCategorize,
-						  Collection selRegions) {
+	public ArmyStatsPanel(EventDispatcher ed, GameData data, Properties settings,
+						  boolean doCategorize, Collection selRegions) {
 		super(ed, data, settings);
 
 		lastSelected = selRegions;
 
 		ed.addSelectionListener(this);
 
-		factory = new NodeWrapperFactory(settings, "EMapOverviewPanel",
-										 "Dummy-Factory");
+		factory = new NodeWrapperFactory(settings, "EMapOverviewPanel", "Dummy-Factory");
 
 		String dPos = settings.getProperty("ArmyStatsPanel.DividerLoc");
 
@@ -199,7 +197,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
 			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
-			int								   i = ui2.getLeftChildIndent();
+			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
 		}
@@ -208,7 +206,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
 			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
-			int								   i = ui2.getLeftChildIndent();
+			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
 		}
@@ -239,8 +237,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	 * TODO: DOCUMENT ME!
 	 */
 	public void quit() {
-		settings.setProperty("ArmyStatsPanel.DividerLoc",
-							 String.valueOf(dividerPos));
+		settings.setProperty("ArmyStatsPanel.DividerLoc", String.valueOf(dividerPos));
 	}
 
 	protected void initTrees(EventDispatcher ed) {
@@ -255,14 +252,13 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		tree.addTreeSelectionListener(this);
 
 		tree2Root = new DefaultMutableTreeNode();
-		dtm		  = new DefaultTreeModel(tree2Root);
-		tree2     = new CopyTree(dtm, ed);
+		dtm = new DefaultTreeModel(tree2Root);
+		tree2 = new CopyTree(dtm, ed);
 		tree2.setRootVisible(false);
 		tree2.setCellRenderer(renderer);
 		tree2.addTreeSelectionListener(this);
 
-		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-										 new JScrollPane(tree),
+		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(tree),
 										 new JScrollPane(tree2));
 		content = pane;
 	}
@@ -280,8 +276,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		((DefaultTreeModel) tree2.getModel()).reload();
 	}
 
-	protected void addList(DefaultMutableTreeNode root, Collection list,
-						   boolean mode) {
+	protected void addList(DefaultMutableTreeNode root, Collection list, boolean mode) {
 		Iterator it = list.iterator();
 
 		while(it.hasNext()) {
@@ -306,7 +301,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		Iterator it = armies.armies.iterator();
 
 		while(it.hasNext()) {
-			IslandArmy			   iArmy = (IslandArmy) it.next();
+			IslandArmy iArmy = (IslandArmy) it.next();
 			DefaultMutableTreeNode iRoot = new DefaultMutableTreeNode(new SimpleNodeWrapper(iArmy,
 																							getArmyIcon(iArmy.owner)));
 			islRoot.add(iRoot);
@@ -347,8 +342,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		} else if(data != null) {
 			int minTrust = 255;
 
-			for(Iterator iter = data.factions().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				if(f.isPrivileged()) {
@@ -367,8 +361,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		return icon;
 	}
 
-	protected DefaultMutableTreeNode addWholeArmy(DefaultMutableTreeNode root,
-												  WholeArmy army) {
+	protected DefaultMutableTreeNode addWholeArmy(DefaultMutableTreeNode root, WholeArmy army) {
 		DefaultMutableTreeNode armRoot = new DefaultMutableTreeNode(new SimpleNodeWrapper(army,
 																						  getArmyIcon(army.owner)));
 		root.add(armRoot);
@@ -381,7 +374,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			if(obj instanceof Army) {
 				addArmy(armRoot, (Army) obj);
 			} else if(obj instanceof IslandArmy) {
-				IslandArmy			   ia    = (IslandArmy) obj;
+				IslandArmy ia = (IslandArmy) obj;
 				DefaultMutableTreeNode iRoot = new DefaultMutableTreeNode(new SimpleNodeWrapper(ia,
 																								"insel"));
 				armRoot.add(iRoot);
@@ -409,7 +402,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 		for(int i = 0; i < 2; i++) {
 			if(army.warLines[i] != null) {
-				WarLine				   wl	    = army.warLines[i];
+				WarLine wl = army.warLines[i];
 				DefaultMutableTreeNode lineRoot = new DefaultMutableTreeNode(wl);
 				armyRoot.add(lineRoot);
 
@@ -456,8 +449,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 			while(it.hasNext()) {
 				Unit u = (Unit) it.next();
-				root.add(new DefaultMutableTreeNode(factory.createUnitNodeWrapper(u,
-																				  u.persons)));
+				root.add(new DefaultMutableTreeNode(factory.createUnitNodeWrapper(u, u.persons)));
 			}
 		}
 	}
@@ -545,41 +537,40 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		Comparator nameComp = new com.eressea.util.comparator.NameComparator(null);
 		Comparator compare = com.eressea.util.comparator.FactionTrustComparator.DEFAULT_COMPARATOR;
 
-		List	   allRegions = null;
+		List allRegions = null;
 
 		if((regions != null) && (regions.size() > 0)) {
 			allRegions = CollectionFactory.createLinkedList(regions);
 		} else {
-			allRegions = CollectionFactory.createLinkedList(data.regions()
-																.values());
+			allRegions = CollectionFactory.createLinkedList(data.regions().values());
 		}
 
 		List islList = CollectionFactory.createLinkedList(data.islands().values());
 		Collections.sort(islList, nameComp);
 
-		Iterator islIt   = islList.iterator();
-		Map		 armyMap = CollectionFactory.createHashMap();
-		Map		 facMap  = CollectionFactory.createHashMap();
+		Iterator islIt = islList.iterator();
+		Map armyMap = CollectionFactory.createHashMap();
+		Map facMap = CollectionFactory.createHashMap();
 
 		if(islIt != null) {
 			while(islIt.hasNext()) {
 				armyMap.clear();
 
-				Island isl	    = (Island) islIt.next();
-				List   iregions = CollectionFactory.createLinkedList(isl.regions());
+				Island isl = (Island) islIt.next();
+				List iregions = CollectionFactory.createLinkedList(isl.regions());
 				Collections.sort(iregions, nameComp);
 
-				Iterator     regIt     = iregions.iterator();
+				Iterator regIt = iregions.iterator();
 				IslandArmies islArmies = new IslandArmies(isl);
 
 				while(regIt.hasNext()) {
 					Region reg = (Region) regIt.next();
 					allRegions.remove(reg);
 
-					Collection   col	   = createRegionArmies(reg, cat);
-					Iterator     colIt     = col.iterator();
+					Collection col = createRegionArmies(reg, cat);
+					Iterator colIt = col.iterator();
 					RegionArmies regArmies = new RegionArmies(reg);
-					Map			 map	   = CollectionFactory.createHashMap();
+					Map map = CollectionFactory.createHashMap();
 
 					while(colIt.hasNext()) {
 						Army army = (Army) colIt.next();
@@ -620,8 +611,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 						islArmies.addArmy(ia);
 
 						if(!facMap.containsKey(ia.owner)) {
-							facMap.put(ia.owner,
-									   CollectionFactory.createLinkedList());
+							facMap.put(ia.owner, CollectionFactory.createLinkedList());
 						}
 
 						((Collection) facMap.get(ia.owner)).add(ia);
@@ -638,17 +628,17 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		// rest
 		Collections.sort(allRegions, nameComp);
 
-		Iterator regIt		  = allRegions.iterator();
-		List     allRegArmies = CollectionFactory.createLinkedList();
+		Iterator regIt = allRegions.iterator();
+		List allRegArmies = CollectionFactory.createLinkedList();
 
 		while(regIt.hasNext()) {
-			Region     reg = (Region) regIt.next();
+			Region reg = (Region) regIt.next();
 			Collection col = createRegionArmies(reg, cat);
 
 			if(col.size() > 0) {
 				RegionArmies regArmies = new RegionArmies(reg);
-				Iterator     colIt = col.iterator();
-				Map			 map   = CollectionFactory.createHashMap();
+				Iterator colIt = col.iterator();
+				Map map = CollectionFactory.createHashMap();
 
 				while(colIt.hasNext()) {
 					Army army = (Army) colIt.next();
@@ -664,8 +654,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 					regArmies.addArmy(army);
 
 					if(!facMap.containsKey(army.owner)) {
-						facMap.put(army.owner,
-								   CollectionFactory.createLinkedList());
+						facMap.put(army.owner, CollectionFactory.createLinkedList());
 					}
 
 					((Collection) facMap.get(army.owner)).add(army);
@@ -686,21 +675,21 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			Iterator facIt = wholeList.iterator();
 
 			while(facIt.hasNext()) {
-				Faction   fac    = (Faction) facIt.next();
-				WholeArmy wa     = new WholeArmy(fac);
-				Iterator  facIt2 = ((Collection) facMap.get(fac)).iterator();
+				Faction fac = (Faction) facIt.next();
+				WholeArmy wa = new WholeArmy(fac);
+				Iterator facIt2 = ((Collection) facMap.get(fac)).iterator();
 
 				while(facIt2.hasNext()) {
 					Object o = facIt2.next();
 
 					if(o instanceof IslandArmy) {
-						IslandArmy ia     = (IslandArmy) o;
-						IslandArmy ia2    = new IslandArmy(ia.owner, ia.island);
-						Iterator   facIt3 = ia.armies.iterator();
+						IslandArmy ia = (IslandArmy) o;
+						IslandArmy ia2 = new IslandArmy(ia.owner, ia.island);
+						Iterator facIt3 = ia.armies.iterator();
 
 						while(facIt3.hasNext()) {
 							Army army = (Army) facIt3.next();
-							army			 = army.copy();
+							army = army.copy();
 							army.shortString = true;
 							ia2.addArmy(army);
 						}
@@ -709,7 +698,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 						wa.addIslandArmy(ia2);
 					} else if(o instanceof Army) {
 						Army army = (Army) o;
-						army			 = army.copy();
+						army = army.copy();
 						army.shortString = true;
 						wa.addArmy(army);
 					}
@@ -735,15 +724,14 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		}
 
 		front = r.getItemCategory(StringID.create("front weapons"), false);
-		back  = r.getItemCategory(StringID.create("distance weapons"), false);
+		back = r.getItemCategory(StringID.create("distance weapons"), false);
 		armourType = r.getItemCategory(StringID.create("armour"), false);
 		shieldType = r.getItemCategory(StringID.create("shield"), false);
 
 		for(Iterator iter = r.getItemTypeIterator(); iter.hasNext();) {
 			ItemType it = (ItemType) iter.next();
 
-			if((it.getCategory() != null) &&
-				   it.getCategory().isDescendant(weapon)) {
+			if((it.getCategory() != null) && it.getCategory().isDescendant(weapon)) {
 				Skill sk = it.getUseSkill();
 
 				if(!weapons.containsKey(sk)) {
@@ -763,23 +751,23 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			return col;
 		}
 
-		Iterator   unitIt		   = r.units().iterator();
-		Map		   facMap		   = CollectionFactory.createHashMap();
-		Map		   unitMap		   = null;
-		Collection unitSkills	   = null;
-		Collection armour		   = null;
+		Iterator unitIt = r.units().iterator();
+		Map facMap = CollectionFactory.createHashMap();
+		Map unitMap = null;
+		Collection unitSkills = null;
+		Collection armour = null;
 		Collection nonSkillWeapons = null;
 
 		while(unitIt.hasNext()) {
 			Unit unit = (Unit) unitIt.next();
 
 			if(excludeSkills != null) {
-				boolean  doContinue = true;
+				boolean doContinue = true;
 				Iterator it = excludeSkills.iterator();
 
 				while(doContinue && it.hasNext()) {
-					SkillType sk    = (SkillType) it.next();
-					Skill     skill = unit.getSkill(sk);
+					SkillType sk = (SkillType) it.next();
+					Skill skill = unit.getSkill(sk);
 
 					if(skill != null /* && skill.getLevel()>0) */   ) {
 						doContinue = false;
@@ -792,9 +780,9 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			}
 
 			if((unit.getName() != null) && (excludeNames != null)) {
-				boolean  doContinue = true;
-				Iterator it   = excludeNames.iterator();
-				String   name = unit.getName();
+				boolean doContinue = true;
+				Iterator it = excludeNames.iterator();
+				String name = unit.getName();
 
 				while(doContinue && it.hasNext()) {
 					String st = (String) it.next();
@@ -809,9 +797,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 				}
 			}
 
-			if(unit.getFaction().isPrivileged() &&
-				   (excludeCombatStates != null)) {
-				boolean  doContinue = true;
+			if(unit.getFaction().isPrivileged() && (excludeCombatStates != null)) {
+				boolean doContinue = true;
 				Iterator it = excludeCombatStates.iterator();
 
 				while(doContinue && it.hasNext()) {
@@ -826,17 +813,13 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 			boolean inFront = unit.combatStatus < 2;
 
-			unitMap = getSkillsWithWeapons(unit,
-										   unitSkills = getWeaponSkills(unit,
-																		unitSkills),
+			unitMap = getSkillsWithWeapons(unit, unitSkills = getWeaponSkills(unit, unitSkills),
 										   unitMap);
-			nonSkillWeapons = getNonSkillWeapons(unit, unitMap.keySet(),
-												 nonSkillWeapons);
+			nonSkillWeapons = getNonSkillWeapons(unit, unitMap.keySet(), nonSkillWeapons);
 			armour = getArmour(unit, armour);
 
 			if(unit.getFaction().trustLevel <= Faction.TL_PRIVILEGED) {
-				if((unitMap.size() == 0) && (nonSkillWeapons.size() <= 1) &&
-					   (armour.size() == 0)) {
+				if((unitMap.size() == 0) && (nonSkillWeapons.size() <= 1) && (armour.size() == 0)) {
 					continue;
 				}
 
@@ -852,11 +835,11 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			Army army = (Army) facMap.get(unit.getFaction());
 
 			if(cat) {
-				Collection col2			 = unitMap.keySet();
-				int		   persons		 = unit.persons;
-				int		   line			 = inFront ? 0 : 1;
-				int		   maxSkillLevel = 0;
-				Skill	   maxSkill		 = getHighestSkill(unit, col2);
+				Collection col2 = unitMap.keySet();
+				int persons = unit.persons;
+				int line = inFront ? 0 : 1;
+				int maxSkillLevel = 0;
+				Skill maxSkill = getHighestSkill(unit, col2);
 
 				if(maxSkill != null) {
 					maxSkillLevel = maxSkill.getLevel();
@@ -872,19 +855,18 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 						Iterator itemIt = col3.iterator();
 
 						while((persons > 0) && itemIt.hasNext()) {
-							Item item   = (Item) itemIt.next();
-							int  amount = Math.min(persons, item.getAmount());
+							Item item = (Item) itemIt.next();
+							int amount = Math.min(persons, item.getAmount());
 							persons -= amount;
-							addArmoured(unit, amount, maxSkill.getLevel(),
-										army, line, item.getItemType(), null,
-										armour, false, true);
+							addArmoured(unit, amount, maxSkill.getLevel(), army, line,
+										item.getItemType(), null, armour, false, true);
 						}
 					} else {
 						Iterator itemIt = nonSkillWeapons.iterator();
 
 						while((persons > 0) && itemIt.hasNext()) {
-							Item item   = (Item) itemIt.next();
-							int  amount = 0;
+							Item item = (Item) itemIt.next();
+							int amount = 0;
 
 							if(item != null) {
 								amount = Math.min(persons, item.getAmount());
@@ -893,22 +875,21 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 							}
 
 							persons -= amount;
-							addArmoured(unit, amount, maxSkillLevel - 2, army,
-										line,
-										(item != null) ? item.getItemType() : null,
-										null, armour, false, false);
+							addArmoured(unit, amount, maxSkillLevel - 2, army, line,
+										(item != null) ? item.getItemType() : null, null, armour,
+										false, false);
 						}
 					}
 				}
 			} else { // uncategorized
 
-				int		 persons  = unit.persons;
-				int		 unarmed  = persons;
+				int persons = unit.persons;
+				int unarmed = persons;
 				Iterator weaponIt = unitMap.values().iterator();
 
 				while((unarmed > 0) && weaponIt.hasNext()) {
-					Collection col2  = (Collection) weaponIt.next();
-					Iterator   colIt = col2.iterator();
+					Collection col2 = (Collection) weaponIt.next();
+					Iterator colIt = col2.iterator();
 
 					while((unarmed > 0) && colIt.hasNext()) {
 						Item item = (Item) colIt.next();
@@ -980,13 +961,12 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		return army.warLines[line];
 	}
 
-	protected boolean addArmoured(Unit unit, int amount, int skill, Army army,
-								  int line, ItemType weapon, ItemType armour,
-								  Collection armourCol, boolean shield,
-								  boolean hasSkill) {
+	protected boolean addArmoured(Unit unit, int amount, int skill, Army army, int line,
+								  ItemType weapon, ItemType armour, Collection armourCol,
+								  boolean shield, boolean hasSkill) {
 		Iterator aIt = armourCol.iterator();
 
-		boolean  ret = false; // something deleted within, need a new iterator
+		boolean ret = false; // something deleted within, need a new iterator
 
 		while((amount > 0) && aIt.hasNext()) {
 			Item aItem = (Item) aIt.next();
@@ -997,18 +977,18 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 					if(aAmount > amount) {
 						aItem.setAmount(aAmount - amount);
-						addPartUnit(unit, amount, skill, army, line, weapon,
-									armour, aItem.getItemType(), hasSkill, true);
+						addPartUnit(unit, amount, skill, army, line, weapon, armour,
+									aItem.getItemType(), hasSkill, true);
 						amount = 0;
 					} else if(aAmount == amount) {
 						aIt.remove();
-						addPartUnit(unit, amount, skill, army, line, weapon,
-									armour, aItem.getItemType(), hasSkill, true);
+						addPartUnit(unit, amount, skill, army, line, weapon, armour,
+									aItem.getItemType(), hasSkill, true);
 						amount = 0;
-						ret    = true;
+						ret = true;
 					} else {
-						addPartUnit(unit, aAmount, skill, army, line, weapon,
-									armour, aItem.getItemType(), hasSkill, true);
+						addPartUnit(unit, aAmount, skill, army, line, weapon, armour,
+									aItem.getItemType(), hasSkill, true);
 						aIt.remove();
 						amount -= aAmount;
 						ret = true;
@@ -1022,8 +1002,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 						aItem.setAmount(aAmount - amount);
 
 						if(addArmoured(unit, amount, skill, army, line, weapon,
-										   aItem.getItemType(), armourCol,
-										   true, hasSkill)) {
+										   aItem.getItemType(), armourCol, true, hasSkill)) {
 							aIt = armourCol.iterator();
 						}
 
@@ -1032,8 +1011,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 						aIt.remove();
 
 						if(addArmoured(unit, amount, skill, army, line, weapon,
-										   aItem.getItemType(), armourCol,
-										   true, hasSkill)) {
+										   aItem.getItemType(), armourCol, true, hasSkill)) {
 							aIt = armourCol.iterator();
 						}
 
@@ -1042,9 +1020,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 						aIt.remove();
 						amount -= aAmount;
 
-						if(addArmoured(unit, aAmount, skill, army, line,
-										   weapon, aItem.getItemType(),
-										   armourCol, true, hasSkill)) {
+						if(addArmoured(unit, aAmount, skill, army, line, weapon,
+										   aItem.getItemType(), armourCol, true, hasSkill)) {
 							aIt = armourCol.iterator();
 						}
 					}
@@ -1054,41 +1031,34 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 		if(amount > 0) {
 			if(shield) {
-				addPartUnit(unit, amount, skill, army, line, weapon, armour,
-							null, hasSkill, true);
+				addPartUnit(unit, amount, skill, army, line, weapon, armour, null, hasSkill, true);
 			} else {
-				addArmoured(unit, amount, skill, army, line, weapon, null,
-							armourCol, true, hasSkill);
+				addArmoured(unit, amount, skill, army, line, weapon, null, armourCol, true, hasSkill);
 			}
 		}
 
 		return ret;
 	}
 
-	protected void addPartUnit(Unit full, int persons, int skill, Army army,
-							   int line, ItemType weapon, ItemType armour,
-							   ItemType shield, boolean cat) {
-		addPartUnit(full, persons, skill, army, line, weapon, armour, shield,
-					true, cat);
+	protected void addPartUnit(Unit full, int persons, int skill, Army army, int line,
+							   ItemType weapon, ItemType armour, ItemType shield, boolean cat) {
+		addPartUnit(full, persons, skill, army, line, weapon, armour, shield, true, cat);
 	}
 
-	protected void addPartUnit(Unit full, int persons, int skill, Army army,
-							   int line, ItemType weapon, ItemType armour,
-							   ItemType shield, boolean hasSkill, boolean cat) {
-		WarLine     wl = getWarLine(army, line, cat);
+	protected void addPartUnit(Unit full, int persons, int skill, Army army, int line,
+							   ItemType weapon, ItemType armour, ItemType shield, boolean hasSkill,
+							   boolean cat) {
+		WarLine wl = getWarLine(army, line, cat);
 		WeaponGroup wg = getWeaponGroup(wl, weapon);
-		wg.addUnit(new PartUnit(full, weapon, persons, skill, armour, shield,
-								hasSkill));
+		wg.addUnit(new PartUnit(full, weapon, persons, skill, armour, shield, hasSkill));
 	}
 
-	protected void addUnit(Unit unit, int persons, int unarmed, Army army,
-						   int line) {
+	protected void addUnit(Unit unit, int persons, int unarmed, Army army, int line) {
 		WarLine wl = getWarLine(army, line, false);
 		wl.addUnit(unit, persons, unarmed);
 	}
 
-	protected Collection getNonSkillWeapons(Unit unit, Collection used,
-											Collection col) {
+	protected Collection getNonSkillWeapons(Unit unit, Collection used, Collection col) {
 		if(col == null) {
 			col = CollectionFactory.createLinkedList();
 		} else {
@@ -1110,15 +1080,14 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			it = used.iterator();
 
 			while((col.size() > 0) && it.hasNext()) {
-				SkillType st  = ((Skill) it.next()).getSkillType();
-				Iterator  it2 = col.iterator();
+				SkillType st = ((Skill) it.next()).getSkillType();
+				Iterator it2 = col.iterator();
 
 				while(it2.hasNext()) {
 					Item item = (Item) it2.next();
 
 					if((item.getItemType().getUseSkill() != null) &&
-						   st.equals(item.getItemType().getUseSkill()
-											 .getSkillType())) {
+						   st.equals(item.getItemType().getUseSkill().getSkillType())) {
 						it2.remove();
 					}
 				}
@@ -1196,8 +1165,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		return col;
 	}
 
-	protected Collection getWeaponsForSkill(Unit unit, Skill skill,
-											Collection col) {
+	protected Collection getWeaponsForSkill(Unit unit, Skill skill, Collection col) {
 		if(col == null) {
 			col = CollectionFactory.createLinkedList();
 		} else {
@@ -1205,7 +1173,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		}
 
 		Collection col2 = null;
-		Iterator   it = weapons.keySet().iterator();
+		Iterator it = weapons.keySet().iterator();
 
 		while(it.hasNext()) {
 			Skill sk = (Skill) it.next();
@@ -1245,7 +1213,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 	protected Map getSkillsWithWeapons(Unit unit, Collection skills, Map map) {
 		Collection col = null;
-		Iterator   it = skills.iterator();
+		Iterator it = skills.iterator();
 
 		if(map == null) {
 			map = CollectionFactory.createHashMap();
@@ -1266,9 +1234,9 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	}
 
 	protected Skill getHighestSkill(Unit unit, Collection col) {
-		Skill    maxSkill = null;
-		int		 maxValue = -1;
-		Iterator it		  = col.iterator();
+		Skill maxSkill = null;
+		int maxValue = -1;
+		Iterator it = col.iterator();
 
 		while(it.hasNext()) {
 			Skill sk = (Skill) it.next();
@@ -1294,14 +1262,12 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 			Object o2 = ((DefaultMutableTreeNode) o).getUserObject();
 
 			if(o2 instanceof UnitNodeWrapper) {
-				dispatcher.fire(new SelectionEvent(this, null,
-												   ((UnitNodeWrapper) o2).getUnit()));
+				dispatcher.fire(new SelectionEvent(this, null, ((UnitNodeWrapper) o2).getUnit()));
 			} else if(o2 instanceof SimpleNodeWrapper) {
 				Object o3 = ((SimpleNodeWrapper) o2).getText();
 
 				if(o3 instanceof PartUnit) {
-					dispatcher.fire(new SelectionEvent(this, null,
-													   ((PartUnit) o3).parent));
+					dispatcher.fire(new SelectionEvent(this, null, ((PartUnit) o3).parent));
 				} else if(o3 instanceof WeaponGroup) {
 					fireWeaponGroupSelection((WeaponGroup) o3);
 				} else if(o3 instanceof WarLine) {
@@ -1309,14 +1275,11 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 				} else if(o3 instanceof Army) {
 					fireArmySelection((Army) o3);
 				} else if(o3 instanceof RegionArmies) {
-					dispatcher.fire(new SelectionEvent(this, null,
-													   ((RegionArmies) o3).region));
+					dispatcher.fire(new SelectionEvent(this, null, ((RegionArmies) o3).region));
 				} else if(o3 instanceof IslandArmy) {
-					dispatcher.fire(new SelectionEvent(this, null,
-													   ((IslandArmy) o3).island));
+					dispatcher.fire(new SelectionEvent(this, null, ((IslandArmy) o3).island));
 				} else if(o3 instanceof IslandArmies) {
-					dispatcher.fire(new SelectionEvent(this, null,
-													   ((IslandArmies) o3).island));
+					dispatcher.fire(new SelectionEvent(this, null, ((IslandArmies) o3).island));
 				}
 			} else if(o2 instanceof WarLine) {
 				fireWareLineSelection((WarLine) o2);
@@ -1339,7 +1302,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	}
 
 	protected void fireWeaponGroupSelection(WeaponGroup w) {
-		Set    s = getWeaponGroupUnits(w, null);
+		Set s = getWeaponGroupUnits(w, null);
 		Object o = null;
 
 		if(s.size() > 0) {
@@ -1368,7 +1331,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	}
 
 	protected void fireWareLineSelection(WarLine w) {
-		Set    s = getWarLineUnits(w, null);
+		Set s = getWarLineUnits(w, null);
 		Object o = null;
 
 		if(s.size() > 0) {
@@ -1396,8 +1359,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
-		if((e.getSource() != this) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSource() != this) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			lastSelected = e.getSelectedObjects();
 			updateData(data, e.getSelectedObjects());
 		}
@@ -1407,10 +1369,10 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		protected ItemType weapon;
 		protected ItemType armour;
 		protected ItemType shield;
-		protected Unit     parent;
-		protected int	   persons  = 0;
-		protected int	   skill    = 0;
-		protected boolean  hasSkill = true;
+		protected Unit parent;
+		protected int persons = 0;
+		protected int skill = 0;
+		protected boolean hasSkill = true;
 
 		/**
 		 * Creates a new PartUnit object.
@@ -1423,15 +1385,14 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @param sh TODO: DOCUMENT ME!
 		 * @param has TODO: DOCUMENT ME!
 		 */
-		public PartUnit(Unit p, ItemType w, int persons, int s, ItemType a,
-						ItemType sh, boolean has) {
-			parent		 = p;
-			weapon		 = w;
-			shield		 = sh;
+		public PartUnit(Unit p, ItemType w, int persons, int s, ItemType a, ItemType sh, boolean has) {
+			parent = p;
+			weapon = w;
+			shield = sh;
 			this.persons = persons;
-			skill		 = s;
-			hasSkill     = has;
-			armour		 = a;
+			skill = s;
+			hasSkill = has;
+			armour = a;
 		}
 
 		/**
@@ -1498,7 +1459,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 	protected class WeaponGroup {
 		protected ItemType weapon;
-		protected List     units;
+		protected List units;
 
 		/**
 		 * Creates a new WeaponGroup object.
@@ -1507,7 +1468,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 */
 		public WeaponGroup(ItemType w) {
 			weapon = w;
-			units  = CollectionFactory.createLinkedList();
+			units = CollectionFactory.createLinkedList();
 		}
 
 		/**
@@ -1525,7 +1486,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public int getMen() {
-			int		 men = 0;
+			int men = 0;
 			Iterator it = units.iterator();
 
 			while(it.hasNext()) {
@@ -1562,11 +1523,11 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	}
 
 	protected class WarLine {
-		protected int     lineType;
-		protected List    groups;
+		protected int lineType;
+		protected List groups;
 		protected boolean categorized = true;
-		protected int     men		  = 0;
-		protected int     unarmed     = 0;
+		protected int men = 0;
+		protected int unarmed = 0;
 
 		/**
 		 * Creates a new WarLine object.
@@ -1574,7 +1535,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @param lt TODO: DOCUMENT ME!
 		 */
 		public WarLine(int lt) {
-			groups   = CollectionFactory.createLinkedList();
+			groups = CollectionFactory.createLinkedList();
 			lineType = lt;
 		}
 
@@ -1607,7 +1568,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 */
 		public int getMen() {
 			if(categorized) {
-				int		 men = 0;
+				int men = 0;
 				Iterator it = groups.iterator();
 
 				while(it.hasNext()) {
@@ -1628,7 +1589,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 */
 		public int getUnarmed() {
 			if(categorized) {
-				int		 unarmed = 0;
+				int unarmed = 0;
 				Iterator it = groups.iterator();
 
 				while(it.hasNext()) {
@@ -1679,10 +1640,10 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	}
 
 	protected class Army {
-		protected WarLine   warLines[];
-		protected Faction   owner;
-		protected Region    region;
-		protected boolean   shortString = false;
+		protected WarLine warLines[];
+		protected Faction owner;
+		protected Region region;
+		protected boolean shortString = false;
 
 		/**
 		 * Creates a new Army object.
@@ -1691,8 +1652,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @param r TODO: DOCUMENT ME!
 		 */
 		public Army(Faction o, Region r) {
-			owner    = o;
-			region   = r;
+			owner = o;
+			region = r;
 			warLines = new WarLine[2];
 		}
 
@@ -1785,9 +1746,9 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 	protected class RegionArmies {
 		protected Region region;
-		protected List   armies;
-		protected int    men     = 0;
-		protected int    unarmed = 0;
+		protected List armies;
+		protected int men = 0;
+		protected int unarmed = 0;
 
 		/**
 		 * Creates a new RegionArmies object.
@@ -1837,11 +1798,11 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 	protected class IslandArmy {
 		protected Faction owner;
-		protected Island  island;
-		protected List    armies;
+		protected Island island;
+		protected List armies;
 		protected boolean shortString = true;
-		protected int     men		  = 0;
-		protected int     unarmed     = 0;
+		protected int men = 0;
+		protected int unarmed = 0;
 
 		/**
 		 * Creates a new IslandArmy object.
@@ -1850,7 +1811,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @param i TODO: DOCUMENT ME!
 		 */
 		public IslandArmy(Faction o, Island i) {
-			owner  = o;
+			owner = o;
 			island = i;
 			armies = CollectionFactory.createLinkedList();
 		}
@@ -1868,8 +1829,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 		protected IslandArmy copy() {
 			IslandArmy o = new IslandArmy(owner, island);
-			o.armies  = armies;
-			o.men     = men;
+			o.armies = armies;
+			o.men = men;
 			o.unarmed = unarmed;
 
 			return o;
@@ -1908,10 +1869,10 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 	protected class IslandArmies {
 		protected Island island;
-		protected List   armies;
-		protected List   rarmies;
-		protected int    men     = 0;
-		protected int    unarmed = 0;
+		protected List armies;
+		protected List rarmies;
+		protected int men = 0;
+		protected int unarmed = 0;
 
 		/**
 		 * Creates a new IslandArmies object.
@@ -1919,8 +1880,8 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @param i TODO: DOCUMENT ME!
 		 */
 		public IslandArmies(Island i) {
-			island  = i;
-			armies  = CollectionFactory.createLinkedList();
+			island = i;
+			armies = CollectionFactory.createLinkedList();
 			rarmies = CollectionFactory.createLinkedList();
 		}
 
@@ -1961,9 +1922,9 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 
 	protected class WholeArmy {
 		protected Faction owner;
-		protected List    armies;
-		protected int     men     = 0;
-		protected int     unarmed = 0;
+		protected List armies;
+		protected int men = 0;
+		protected int unarmed = 0;
 
 		/**
 		 * Creates a new WholeArmy object.
@@ -1971,7 +1932,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 		 * @param o TODO: DOCUMENT ME!
 		 */
 		public WholeArmy(Faction o) {
-			owner  = o;
+			owner = o;
 			armies = CollectionFactory.createLinkedList();
 		}
 

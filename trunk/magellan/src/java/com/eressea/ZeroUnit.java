@@ -28,8 +28,8 @@ import com.eressea.util.Cache;
  */
 public class ZeroUnit extends Unit {
 	/**
-	 * This is the unit associated with the id 0. Used for UnitRelations for
-	 * commands like "give 0..."
+	 * This is the unit associated with the id 0. Used for UnitRelations for commands like "give
+	 * 0..."
 	 */
 	public static final ID ZERO_ID = UnitID.create(0);
 
@@ -84,8 +84,7 @@ public class ZeroUnit extends Unit {
 		}
 
 		if(cache.modifiedPersons == -1) {
-			cache.modifiedPersons = super.getModifiedPersons() -
-									getGivenPersons();
+			cache.modifiedPersons = super.getModifiedPersons() - getGivenPersons();
 		}
 
 		return cache.modifiedPersons;
@@ -95,8 +94,7 @@ public class ZeroUnit extends Unit {
 		// delivers the number of persons given to region via command "GIVE 0 x PERSONS"
 		int result = 0;
 
-		for(Iterator iter = getPersonTransferRelations().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = getPersonTransferRelations().iterator(); iter.hasNext();) {
 			PersonTransferRelation ptr = (PersonTransferRelation) iter.next();
 
 			if(!(ptr instanceof RecruitmentRelation)) {

@@ -83,40 +83,38 @@ import com.eressea.util.logging.Logger;
  *
  * @author Andreas Gampe, Ulrich Küster
  */
-public class AutoCompletion implements SelectionListener, KeyListener,
-									   ActionListener, CaretListener,
-									   FocusListener, GameDataListener,
+public class AutoCompletion implements SelectionListener, KeyListener, ActionListener,
+									   CaretListener, FocusListener, GameDataListener,
 									   CompleterSettingsProvider
 {
-	private static final Logger log				  = Logger.getInstance(AutoCompletion.class);
-	private OrderEditorList     editors;
-	private Vector			    completionGUIs;
-	private CompletionGUI	    currentGUI;
-	private Completer		    completer;
-	private int				    lastCaretPosition = 0;
+	private static final Logger log = Logger.getInstance(AutoCompletion.class);
+	private OrderEditorList editors;
+	private Vector completionGUIs;
+	private CompletionGUI currentGUI;
+	private Completer completer;
+	private int lastCaretPosition = 0;
 
 	/**
-	 * Keys for cycling, completing and breaking. completerKeys[]
-	 * completerKeys[][0]    completerKeys[1]     cycle forward modifier key
-	 * cycle backward        modifier key complete modifier key     break
-	 * modifier key
+	 * Keys for cycling, completing and breaking. completerKeys[] completerKeys[][0]
+	 * completerKeys[1]     cycle forward modifier key cycle backward        modifier key complete
+	 * modifier key     break modifier key
 	 */
-	private int		  completerKeys[][];
-	private Timer     timer;
-	private List	  completions		   = null;
-	private int		  completionIndex	   = 0;
-	private String    lastStub			   = null;
-	private boolean   enableAutoCompletion = true;
+	private int completerKeys[][];
+	private Timer timer;
+	private List completions = null;
+	private int completionIndex = 0;
+	private String lastStub = null;
+	private boolean enableAutoCompletion = true;
 
 	// limits the completion of the make-order to items
 	// whose resources are available
 	private boolean limitMakeCompletion = true;
 	private boolean emptyStubMode = false;
-	private String  activeGUI     = null;
-	private int     time		  = 150;
+	private String activeGUI = null;
+	private int time = 150;
 
 	// self defined completion objects (mapping a name (String) to a value (String))
-	private Hashtable    selfDefinedCompletions = new Hashtable();
+	private Hashtable selfDefinedCompletions = new Hashtable();
 	protected Properties settings;
 
 	/**
@@ -130,10 +128,10 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		d.addSelectionListener(this);
 		d.addGameDataListener(this);
 
-		editors		   = null;
+		editors = null;
 		completionGUIs = new Vector();
-		currentGUI     = null;
-		completer	   = null;
+		currentGUI = null;
+		completer = null;
 
 		loadSettings();
 		timer = new Timer(time, this);
@@ -164,18 +162,16 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			}
 		}
 
-		limitMakeCompletion = settings.getProperty("AutoCompletion.limitMakeCompletion",
-												   "true").equalsIgnoreCase("true");
+		limitMakeCompletion = settings.getProperty("AutoCompletion.limitMakeCompletion", "true")
+									  .equalsIgnoreCase("true");
 
-		String stubMode = settings.getProperty("AutoCompletion.EmptyStubMode",
-											   "true");
+		String stubMode = settings.getProperty("AutoCompletion.EmptyStubMode", "true");
 		emptyStubMode = stubMode.equalsIgnoreCase("true");
 
 		activeGUI = settings.getProperty("AutoCompletion.CompletionGUI", "List");
 
 		try {
-			time = Integer.parseInt(settings.getProperty("AutoCompletion.ActivationTime",
-														 "150"));
+			time = Integer.parseInt(settings.getProperty("AutoCompletion.ActivationTime", "150"));
 		} catch(Exception exc) {
 			time = 150;
 		}
@@ -227,18 +223,16 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		}
 
 		// load selfdefined completions
-		String s			   = (String) settings.get("AutoCompletion.SelfDefinedCompletions.count");
-		int    completionCount = 0;
+		String s = (String) settings.get("AutoCompletion.SelfDefinedCompletions.count");
+		int completionCount = 0;
 
 		if(s != null) {
 			completionCount = Integer.parseInt(s);
 		}
 
 		for(int i = 0; i < completionCount; i++) {
-			String name = (String) settings.get("AutoCompletion.SelfDefinedCompletions.name" +
-												i);
-			String value = (String) settings.get("AutoCompletion.SelfDefinedCompletions.value" +
-												 i);
+			String name = (String) settings.get("AutoCompletion.SelfDefinedCompletions.name" + i);
+			String value = (String) settings.get("AutoCompletion.SelfDefinedCompletions.value" + i);
 			selfDefinedCompletions.put(name, value);
 		}
 	}
@@ -380,9 +374,8 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	}
 
 	protected void offerCompletion(JTextComponent j) {
-		if(!enableAutoCompletion || (currentGUI == null) ||
-			   (completer == null) || (j == null) || (completer == null) ||
-			   !j.isVisible()) {
+		if(!enableAutoCompletion || (currentGUI == null) || (completer == null) || (j == null) ||
+			   (completer == null) || !j.isVisible()) {
 			return;
 		}
 
@@ -414,14 +407,12 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 
 		// run completer engine
 		if(editors.getCurrentUnit() != null) {
-			completions = completer.getCompletions(editors.getCurrentUnit(),
-												   line, completions);
+			completions = completer.getCompletions(editors.getCurrentUnit(), line, completions);
 
 			// determine, wheter the curser is in a word
 			boolean inWord = true;
 
-			if((j.getText().length() == j.getCaretPosition()) ||
-				   (j.getCaretPosition() == 0)) {
+			if((j.getText().length() == j.getCaretPosition()) || (j.getCaretPosition() == 0)) {
 				inWord = false;
 			} else {
 				char c = j.getText().charAt(j.getCaretPosition());
@@ -442,9 +433,8 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 				String stub = getStub(line);
 				lastStub = stub;
 
-				if((emptyStubMode || (stub.length() > 0)) &&
-					   (completions != null) && (completions.size() > 0) &&
-					   !inWord) {
+				if((emptyStubMode || (stub.length() > 0)) && (completions != null) &&
+					   (completions.size() > 0) && !inWord) {
 					currentGUI.offerCompletion(j, completions, stub);
 					completionIndex = 0;
 				}
@@ -456,8 +446,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 * TODO: DOCUMENT ME!
 	 */
 	public void cycleForward() {
-		if((completions == null) || (completions.size() == 1) ||
-			   (editors == null)) {
+		if((completions == null) || (completions.size() == 1) || (editors == null)) {
 			return;
 		}
 
@@ -465,8 +454,8 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		completionIndex %= completions.size();
 
 		if(currentGUI.isOfferingCompletion()) {
-			currentGUI.cycleCompletion(editors.getCurrentEditor(), completions,
-									   lastStub, completionIndex);
+			currentGUI.cycleCompletion(editors.getCurrentEditor(), completions, lastStub,
+									   completionIndex);
 		}
 	}
 
@@ -474,8 +463,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 * TODO: DOCUMENT ME!
 	 */
 	public void cycleBackward() {
-		if((completions == null) || (completions.size() == 1) ||
-			   (editors == null)) {
+		if((completions == null) || (completions.size() == 1) || (editors == null)) {
 			return;
 		}
 
@@ -488,8 +476,8 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		completionIndex %= completions.size();
 
 		if(currentGUI.isOfferingCompletion()) {
-			currentGUI.cycleCompletion(editors.getCurrentEditor(), completions,
-									   lastStub, completionIndex);
+			currentGUI.cycleCompletion(editors.getCurrentEditor(), completions, lastStub,
+									   completionIndex);
 		}
 	}
 
@@ -509,14 +497,14 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			currentGUI.stopOffer();
 		}
 
-		JTextComponent j	    = editors.getCurrentEditor();
-		int			   caretPos = j.getCaretPosition();
-		String		   line     = getCurrentLine(j);
-		String		   stub     = getStub(line);
-		int			   stubLen  = stub.length();
-		int			   stubBeg  = caretPos - stubLen;
-		String		   text     = j.getText();
-		int			   temp1    = text.indexOf('\n', caretPos);
+		JTextComponent j = editors.getCurrentEditor();
+		int caretPos = j.getCaretPosition();
+		String line = getCurrentLine(j);
+		String stub = getStub(line);
+		int stubLen = stub.length();
+		int stubBeg = caretPos - stubLen;
+		String text = j.getText();
+		int temp1 = text.indexOf('\n', caretPos);
 
 		if(temp1 == -1) {
 			temp1 = Integer.MAX_VALUE;
@@ -555,8 +543,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 
 		try {
 			j.getDocument().remove(stubBeg, stubLen);
-			j.getDocument().insertString(stubBeg, completion.getValue(),
-										 new SimpleAttributeSet());
+			j.getDocument().insertString(stubBeg, completion.getValue(), new SimpleAttributeSet());
 			j.getCaret().setDot((stubBeg + completion.getValue().length()) -
 								completion.getCursorOffset());
 
@@ -575,7 +562,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static String getCurrentLine(JTextComponent j) {
-		int offset		 = j.getCaretPosition();
+		int offset = j.getCaretPosition();
 		int lineBounds[] = getCurrentLineBounds(j.getText(), offset);
 
 		if(lineBounds[0] < 0) {
@@ -636,8 +623,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		for(int i = txt.length() - 1; i >= 0; i--) {
 			char c = txt.charAt(i);
 
-			if((c == '"') || (c == '_') || (c == '-') ||
-				   (Character.isLetterOrDigit(c) == true)) {
+			if((c == '"') || (c == '_') || (c == '-') || (Character.isLetterOrDigit(c) == true)) {
 				retVal.append(c);
 			} else {
 				break;
@@ -661,14 +647,13 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void keyPressed(java.awt.event.KeyEvent e) {
-		if(!enableAutoCompletion || (currentGUI == null) ||
-			   !currentGUI.isOfferingCompletion()) {
+		if(!enableAutoCompletion || (currentGUI == null) || !currentGUI.isOfferingCompletion()) {
 			return;
 		}
 
-		int     code	  = e.getKeyCode();
-		int     modifiers = e.getModifiers();
-		boolean plain     = (e.getModifiers() == 0);
+		int code = e.getKeyCode();
+		int modifiers = e.getModifiers();
+		boolean plain = (e.getModifiers() == 0);
 
 		if((completerKeys[0][0] == modifiers) && (completerKeys[0][1] == code)) {
 			cycleForward();
@@ -753,8 +738,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			log.debug("AutoCompletion.caretUpdate called with " + e);
 		}
 
-		if(enableAutoCompletion && (currentGUI != null) &&
-			   !currentGUI.editorMayUpdateCaret()) {
+		if(enableAutoCompletion && (currentGUI != null) && !currentGUI.editorMayUpdateCaret()) {
 			currentGUI.stopOffer();
 			timer.restart();
 		}
@@ -766,8 +750,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void gameDataChanged(GameDataEvent e) {
-		setCompleter(e.getGameData().getGameSpecificStuff().getCompleter(e.getGameData(),
-																		 this));
+		setCompleter(e.getGameData().getGameSpecificStuff().getCompleter(e.getGameData(), this));
 
 		if(currentGUI != null) {
 			currentGUI.stopOffer();
@@ -816,8 +799,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 */
 	public void setEnableAutoCompletion(boolean b) {
 		enableAutoCompletion = b;
-		settings.setProperty("AutoCompletion.Enabled",
-							 enableAutoCompletion ? "true" : "false");
+		settings.setProperty("AutoCompletion.Enabled", enableAutoCompletion ? "true" : "false");
 
 		if(!b && (currentGUI != null)) {
 			currentGUI.stopOffer();
@@ -840,8 +822,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 */
 	public void setLimitMakeCompletion(boolean value) {
 		limitMakeCompletion = value;
-		settings.setProperty("AutoCompletion.limitMakeCompletion",
-							 value ? "true" : "false");
+		settings.setProperty("AutoCompletion.limitMakeCompletion", value ? "true" : "false");
 	}
 
 	/**
@@ -860,8 +841,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	 */
 	public void setEmptyStubMode(boolean b) {
 		emptyStubMode = b;
-		settings.setProperty("AutoCompletion.EmptyStubMode",
-							 emptyStubMode ? "true" : "false");
+		settings.setProperty("AutoCompletion.EmptyStubMode", emptyStubMode ? "true" : "false");
 	}
 
 	/**
@@ -894,8 +874,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			time = 1;
 		}
 
-		settings.setProperty("AutoCompletion.ActivationTime",
-							 String.valueOf(time));
+		settings.setProperty("AutoCompletion.ActivationTime", String.valueOf(time));
 		timer.setDelay(time);
 	}
 
@@ -916,33 +895,27 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	public void setCompleterKeys(int ck[][]) {
 		completerKeys = ck;
 		settings.setProperty("AutoCompletion.Keys.Cycle.Forward",
-							 String.valueOf(ck[0][0]) + ',' +
-							 String.valueOf(ck[0][1]));
+							 String.valueOf(ck[0][0]) + ',' + String.valueOf(ck[0][1]));
 		settings.setProperty("AutoCompletion.Keys.Cycle.Backward",
-							 String.valueOf(ck[1][0]) + ',' +
-							 String.valueOf(ck[1][1]));
+							 String.valueOf(ck[1][0]) + ',' + String.valueOf(ck[1][1]));
 		settings.setProperty("AutoCompletion.Keys.Complete",
-							 String.valueOf(ck[2][0]) + ',' +
-							 String.valueOf(ck[2][1]));
+							 String.valueOf(ck[2][0]) + ',' + String.valueOf(ck[2][1]));
 		settings.setProperty("AutoCompletion.Keys.Break",
-							 String.valueOf(ck[3][0]) + ',' +
-							 String.valueOf(ck[3][1]));
+							 String.valueOf(ck[3][0]) + ',' + String.valueOf(ck[3][1]));
 	}
 
 	/**
-	 * Returns a Vector containing the self defined completions as Completion
-	 * objects.
+	 * Returns a Vector containing the self defined completions as Completion objects.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getSelfDefinedCompletions() {
 		List retVal = new Vector();
 
-		for(Iterator iter = selfDefinedCompletions.keySet().iterator();
-				iter.hasNext();) {
-			String     name  = (String) iter.next();
-			String     value = (String) selfDefinedCompletions.get(name);
-			Completion c     = new Completion(name, value, "", 0);
+		for(Iterator iter = selfDefinedCompletions.keySet().iterator(); iter.hasNext();) {
+			String name = (String) iter.next();
+			String value = (String) selfDefinedCompletions.get(name);
+			Completion c = new Completion(name, value, "", 0);
 			retVal.add(c);
 		}
 
@@ -953,12 +926,12 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		implements PreferencesAdapter
 	{
 		protected AutoCompletion source;
-		protected JCheckBox		 cEnable;
-		protected JCheckBox		 iPopup;
-		protected JCheckBox		 limitMakeCompletion;
-		protected JComboBox		 forGUIs;
-		protected JTextField     tTime;
-		protected KeyTextField   keyFields[];
+		protected JCheckBox cEnable;
+		protected JCheckBox iPopup;
+		protected JCheckBox limitMakeCompletion;
+		protected JComboBox forGUIs;
+		protected JTextField tTime;
+		protected KeyTextField keyFields[];
 
 		// a copy of AutoCompletion.selfDefinedCompletions
 		private Hashtable selfDefinedCompletions;
@@ -975,13 +948,12 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			GridBagConstraints c = new GridBagConstraints(0, 0, 2, 1, 0.1, 1.0,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(2, 2, 2, 2),
-														  0, 0);
+														  new Insets(2, 2, 2, 2), 0, 0);
 
 			this.add(new JPanel(), c);
 
 			c.gridwidth = 1;
-			c.weighty   = 0;
+			c.weighty = 0;
 			c.gridy++;
 			cEnable = new JCheckBox(getString("prefs.autocompletion"),
 									source.isEnableAutoCompletion());
@@ -993,14 +965,13 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			limitMakeCompletion.setToolTipText(getString("prefs.limitmakecompletion.tooltip"));
 			this.add(limitMakeCompletion, c);
 
-			iPopup = new JCheckBox(getString("prefs.stubmode"),
-								   source.getEmptyStubMode());
+			iPopup = new JCheckBox(getString("prefs.stubmode"), source.getEmptyStubMode());
 			c.gridy++;
 			this.add(iPopup, c);
 
 			c.gridy++;
 
-			JPanel			   inner = new JPanel(new GridBagLayout());
+			JPanel inner = new JPanel(new GridBagLayout());
 			GridBagConstraints con2 = new GridBagConstraints(0, 0, 1, 1, 0, 0,
 															 GridBagConstraints.WEST,
 															 GridBagConstraints.HORIZONTAL,
@@ -1010,11 +981,10 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			con2.gridy++;
 			inner.add(new JLabel(getString("prefs.gui") + ":"), con2);
 
-			con2.gridx   = 1;
-			con2.gridy   = 0;
+			con2.gridx = 1;
+			con2.gridy = 0;
 			con2.weightx = 1;
-			tTime		 = new JTextField(String.valueOf(source.getActivationTime()),
-										  5);
+			tTime = new JTextField(String.valueOf(source.getActivationTime()), 5);
 			inner.add(tTime, con2);
 			con2.gridy++;
 
@@ -1030,9 +1000,9 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			this.add(inner, c);
 
 			Component keys = createKeyComponents(s);
-			c.gridx		 = 1;
-			c.gridy		 = 1;
-			c.weightx    = 1;
+			c.gridx = 1;
+			c.gridy = 1;
+			c.weightx = 1;
 			c.gridheight = 4;
 			this.add(keys, c);
 
@@ -1044,19 +1014,19 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			// written back in applyPreferences()
 			this.selfDefinedCompletions = (Hashtable) source.selfDefinedCompletions.clone();
 
-			c.gridx		 = 0;
-			c.gridy		 = 5;
+			c.gridx = 0;
+			c.gridy = 5;
 			c.gridheight = 1;
-			c.gridwidth  = 2;
-			c.weighty    = 0;
-			c.insets     = new Insets(10, 0, 10, 0);
+			c.gridwidth = 2;
+			c.weighty = 0;
+			c.insets = new Insets(10, 0, 10, 0);
 			this.add(new JSeparator(SwingConstants.HORIZONTAL), c);
 
 			JPanel sDCPanel = getSelfDefinedCompletionPanel();
-			c.gridy   = 6;
+			c.gridy = 6;
 			c.weighty = 0.2;
-			c.fill    = GridBagConstraints.BOTH;
-			c.insets  = new Insets(0, 0, 0, 0);
+			c.fill = GridBagConstraints.BOTH;
+			c.insets = new Insets(0, 0, 0, 0);
 			this.add(sDCPanel, c);
 
 			c.weighty = 1;
@@ -1072,18 +1042,16 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 0.5, 0,
 														  GridBagConstraints.CENTER,
 														  GridBagConstraints.BOTH,
-														  new Insets(2, 2, 2, 2),
-														  0, 0);
-			sDCPanel.add(new JLabel(getString("prefs.SelfDefinedCompletions.title") +
-									":"), c);
+														  new Insets(2, 2, 2, 2), 0, 0);
+			sDCPanel.add(new JLabel(getString("prefs.SelfDefinedCompletions.title") + ":"), c);
 
 			final JLabel completionValue = new JLabel();
-			JScrollPane  temp = new JScrollPane(completionValue);
+			JScrollPane temp = new JScrollPane(completionValue);
 			temp.setBorder(new CompoundBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 															   getString("prefs.SelfDefinedCompletions.completionValue.title")),
 											  new EmptyBorder(5, 5, 5, 5)));
-			c.gridx   = 1;
-			c.gridy   = 1;
+			c.gridx = 1;
+			c.gridy = 1;
 			c.weighty = 0.5;
 			sDCPanel.add(temp, c);
 
@@ -1101,11 +1069,11 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			completionNames.addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
 						if(!e.getValueIsAdjusting()) {
-							String str     = (String) completionNames.getSelectedValue();
+							String str = (String) completionNames.getSelectedValue();
 							String display = "";
 
 							if(str != null) {
-								str     = (String) DetailAutoCompletionPreferencesAdapter.this.selfDefinedCompletions.get(str);
+								str = (String) DetailAutoCompletionPreferencesAdapter.this.selfDefinedCompletions.get(str);
 								display = "<html><b><p>";
 
 								for(int i = 0; i < str.length(); i++) {
@@ -1131,7 +1099,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			temp = new JScrollPane(completionNames);
 			temp.setBorder(new TitledBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED),
 											getString("prefs.SelfDefinedCompletions.completionNames.title")));
-			c.gridx		 = 0;
+			c.gridx = 0;
 			c.gridheight = 3;
 			sDCPanel.add(temp, c);
 
@@ -1145,7 +1113,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 
 			delete.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int    index = completionNames.getSelectedIndex();
+						int index = completionNames.getSelectedIndex();
 						String name = (String) completionNames.getSelectedValue();
 						((DefaultListModel) completionNames.getModel()).remove(index);
 
@@ -1168,9 +1136,9 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 										  .charAt(0));
 			newCompletion.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String   nameAndValue[] = (new DefineCompletionDialog(JOptionPane.getFrameForComponent(newCompletion))).getNewCompletionNameAndValue();
-						String   name  = nameAndValue[0];
-						String   value = nameAndValue[1];
+						String nameAndValue[] = (new DefineCompletionDialog(JOptionPane.getFrameForComponent(newCompletion))).getNewCompletionNameAndValue();
+						String name = nameAndValue[0];
+						String value = nameAndValue[1];
 
 						if(!name.equals("") && !value.equals("")) {
 							DetailAutoCompletionPreferencesAdapter.this.selfDefinedCompletions.put(name,
@@ -1190,11 +1158,11 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 					}
 				});
 
-			c.gridx		 = 1;
-			c.gridy		 = 2;
+			c.gridx = 1;
+			c.gridy = 2;
 			c.gridheight = 1;
-			c.fill		 = GridBagConstraints.HORIZONTAL;
-			c.weighty    = 0;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.weighty = 0;
 			sDCPanel.add(newCompletion, c);
 
 			c.gridy = 3;
@@ -1204,34 +1172,25 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 		}
 
 		protected Component createKeyComponents(AutoCompletion s) {
-			JPanel					    p = new JPanel(new java.awt.GridBagLayout());
-			java.awt.GridBagConstraints c = new java.awt.GridBagConstraints(0,
-																			0,
-																			1,
-																			1,
-																			0,
-																			0,
+			JPanel p = new JPanel(new java.awt.GridBagLayout());
+			java.awt.GridBagConstraints c = new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0,
 																			GridBagConstraints.WEST,
 																			GridBagConstraints.HORIZONTAL,
-																			new Insets(2,
-																					   2,
-																					   2,
-																					   2),
+																			new Insets(2, 2, 2, 2),
 																			0, 0);
 
 			for(int i = 0; i < 4; i++) {
 				c.gridy = i;
-				p.add(new JLabel(getString("prefs.keys." + String.valueOf(i))),
-					  c);
+				p.add(new JLabel(getString("prefs.keys." + String.valueOf(i))), c);
 			}
 
-			c.gridx   = 1;
+			c.gridx = 1;
 			keyFields = new KeyTextField[4];
 
 			int ck[][] = s.getCompleterKeys();
 
 			for(int i = 0; i < 4; i++) {
-				c.gridy		 = i;
+				c.gridy = i;
 				keyFields[i] = new KeyTextField();
 				keyFields[i].init(ck[i][0], ck[i][1]);
 				p.add(keyFields[i], c);
@@ -1310,26 +1269,23 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			/** Apply preferences for self defined completions */
 
 			// delete old entries out of settings file
-			String s			   = (String) settings.get("AutoCompletion.SelfDefinedCompletions.count");
-			int    completionCount = 0;
+			String s = (String) settings.get("AutoCompletion.SelfDefinedCompletions.count");
+			int completionCount = 0;
 
 			if(s != null) {
 				completionCount = Integer.parseInt(s);
 			}
 
 			for(int i = 0; i < completionCount; i++) {
-				settings.remove("AutoCompletion.SelfDefinedCompletions.name" +
-								i);
-				settings.remove("AutoCompletion.SelfDefinedCompletions.value" +
-								i);
+				settings.remove("AutoCompletion.SelfDefinedCompletions.name" + i);
+				settings.remove("AutoCompletion.SelfDefinedCompletions.value" + i);
 			}
 
 			// insert new values
 			completionCount = 0;
 
-			for(Iterator iter = selfDefinedCompletions.keySet().iterator();
-					iter.hasNext();) {
-				String name  = (String) iter.next();
+			for(Iterator iter = selfDefinedCompletions.keySet().iterator(); iter.hasNext();) {
+				String name = (String) iter.next();
 				String value = (String) selfDefinedCompletions.get(name);
 				settings.setProperty("AutoCompletion.SelfDefinedCompletions.name" +
 									 completionCount, name);
@@ -1365,10 +1321,10 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			 * @param key TODO: DOCUMENT ME!
 			 */
 			public void init(int modifiers, int key) {
-				this.key	   = key;
+				this.key = key;
 				this.modifiers = modifiers;
 
-				String s	   = KeyEvent.getKeyModifiersText(modifiers);
+				String s = KeyEvent.getKeyModifiersText(modifiers);
 
 				if((s != null) && (s.length() > 0)) {
 					s += ('+' + KeyEvent.getKeyText(key));
@@ -1395,12 +1351,11 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			 */
 			public void keyPressed(java.awt.event.KeyEvent p1) {
 				modifiers = p1.getModifiers();
-				key		  = p1.getKeyCode();
+				key = p1.getKeyCode();
 
 				// avoid double string
 				if((key == KeyEvent.VK_SHIFT) || (key == KeyEvent.VK_CONTROL) ||
-					   (key == KeyEvent.VK_ALT) ||
-					   (key == KeyEvent.VK_ALT_GRAPH)) {
+					   (key == KeyEvent.VK_ALT) || (key == KeyEvent.VK_ALT_GRAPH)) {
 					int xored = 0;
 
 					switch(key) {
@@ -1474,9 +1429,9 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 
 		private class DefineCompletionDialog extends InternationalizedDialog {
 			private JTextField name;
-			private JTextArea  value;
-			private JButton    ok;
-			private JButton    cancel;
+			private JTextArea value;
+			private JButton ok;
+			private JButton cancel;
 
 			private DefineCompletionDialog(Frame frame) {
 				super(frame, true);
@@ -1489,13 +1444,10 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 												new EmptyBorder(5, 5, 5, 5)));
 				cp.setLayout(new GridBagLayout());
 
-				GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1.0,
-															  0.0,
+				GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
 															  GridBagConstraints.CENTER,
 															  GridBagConstraints.HORIZONTAL,
-															  new Insets(2, 2,
-																		 2, 2),
-															  0, 0);
+															  new Insets(2, 2, 2, 2), 0, 0);
 
 				name = new JTextField();
 				name.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
@@ -1508,19 +1460,19 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 				JScrollPane temp = new JScrollPane(value);
 				temp.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 												AutoCompletion.getString("DefineCompletionDialog.valueField.title")));
-				c.gridy   = 1;
-				c.fill    = GridBagConstraints.BOTH;
+				c.gridy = 1;
+				c.fill = GridBagConstraints.BOTH;
 				c.weighty = 1.0;
 				cp.add(temp, c);
 
 				ok = new JButton(AutoCompletion.getString("DefineCompletionDialog.okButton.caption"));
 				ok.setMnemonic(AutoCompletion.getString("DefineCompletionDialog.okButton.mnemonic")
 											 .charAt(0));
-				c.gridy   = 0;
-				c.gridx   = 1;
+				c.gridy = 0;
+				c.gridx = 1;
 				c.weighty = 0.0;
 				c.weightx = 0.0;
-				c.fill    = GridBagConstraints.HORIZONTAL;
+				c.fill = GridBagConstraints.HORIZONTAL;
 				cp.add(ok, c);
 
 				cancel = new JButton(AutoCompletion.getString("DefineCompletionDialog.cancelButton.caption"));
@@ -1531,7 +1483,7 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 							DefineCompletionDialog.this.quit();
 						}
 					});
-				c.gridy  = 1;
+				c.gridy = 1;
 				c.anchor = GridBagConstraints.NORTH;
 				cp.add(cancel, c);
 
@@ -1577,10 +1529,8 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("prefs.autocompletion",
-									"activate auto completion");
-			defaultTranslations.put("prefs.limitmakecompletion",
-									"limit completion of MAKE");
+			defaultTranslations.put("prefs.autocompletion", "activate auto completion");
+			defaultTranslations.put("prefs.limitmakecompletion", "limit completion of MAKE");
 			defaultTranslations.put("prefs.limitmakecompletion.tooltip",
 									"Determines, whether the completions of the make order shall be limited " +
 									"to those items, whose resources are available.");
@@ -1589,37 +1539,25 @@ public class AutoCompletion implements SelectionListener, KeyListener,
 			defaultTranslations.put("prefs.gui", "Mode");
 			defaultTranslations.put("prefs.SelfDefinedCompletions.title",
 									"Selfdefined order completions");
-			defaultTranslations.put("prefs.SelfDefinedCompletions.completionValue.title",
-									"Value");
-			defaultTranslations.put("prefs.SelfDefinedCompletions.completionNames.title",
-									"Names");
-			defaultTranslations.put("prefs.SelfDefinedCompletions.deleteButton.caption",
-									"Delete");
-			defaultTranslations.put("prefs.SelfDefinedCompletions.deleteButton.mnemonic",
-									"d");
+			defaultTranslations.put("prefs.SelfDefinedCompletions.completionValue.title", "Value");
+			defaultTranslations.put("prefs.SelfDefinedCompletions.completionNames.title", "Names");
+			defaultTranslations.put("prefs.SelfDefinedCompletions.deleteButton.caption", "Delete");
+			defaultTranslations.put("prefs.SelfDefinedCompletions.deleteButton.mnemonic", "d");
 			defaultTranslations.put("prefs.SelfDefinedCompletions.newCompletionButton.caption",
 									"Add");
-			defaultTranslations.put("prefs.SelfDefinedCompletions.newCompletionButton.mnemonic",
-									"a");
+			defaultTranslations.put("prefs.SelfDefinedCompletions.newCompletionButton.mnemonic", "a");
 			defaultTranslations.put("prefs.keys.0", "Forward");
 			defaultTranslations.put("prefs.keys.1", "Backward");
 			defaultTranslations.put("prefs.keys.2", "Complete");
 			defaultTranslations.put("prefs.keys.3", "Cancel");
 			defaultTranslations.put("prefs.title", "Order Completion");
-			defaultTranslations.put("DefineCompletionDialog.title",
-									"Define new order completion...");
-			defaultTranslations.put("DefineCompletionDialog.nameField.title",
-									"Name");
-			defaultTranslations.put("DefineCompletionDialog.valueField.title",
-									"Value");
-			defaultTranslations.put("DefineCompletionDialog.okButton.caption",
-									"OK");
-			defaultTranslations.put("DefineCompletionDialog.okButton.mnemonic",
-									"o");
-			defaultTranslations.put("DefineCompletionDialog.cancelButton.caption",
-									"Cancel");
-			defaultTranslations.put("DefineCompletionDialog.cancelButton.mnemonic",
-									"C");
+			defaultTranslations.put("DefineCompletionDialog.title", "Define new order completion...");
+			defaultTranslations.put("DefineCompletionDialog.nameField.title", "Name");
+			defaultTranslations.put("DefineCompletionDialog.valueField.title", "Value");
+			defaultTranslations.put("DefineCompletionDialog.okButton.caption", "OK");
+			defaultTranslations.put("DefineCompletionDialog.okButton.mnemonic", "o");
+			defaultTranslations.put("DefineCompletionDialog.cancelButton.caption", "Cancel");
+			defaultTranslations.put("DefineCompletionDialog.cancelButton.mnemonic", "C");
 		}
 
 		return defaultTranslations;

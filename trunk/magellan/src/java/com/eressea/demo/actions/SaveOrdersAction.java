@@ -38,7 +38,7 @@ import com.eressea.util.Translations;
  */
 public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	private Client client;
-	private List   shortCuts;
+	private List shortCuts;
 
 	/**
 	 * Creates new OpenCRAction
@@ -49,11 +49,9 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 		client = parent;
 
 		shortCuts = CollectionFactory.createArrayList(2);
-		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-											 KeyEvent.CTRL_MASK |
+		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK |
 											 KeyEvent.SHIFT_MASK));
-		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-											 KeyEvent.CTRL_MASK |
+		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK |
 											 KeyEvent.SHIFT_MASK));
 		DesktopEnvironment.registerShortcutListener(this);
 	}
@@ -64,11 +62,9 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		OrderWriterDialog d = new OrderWriterDialog(client, true,
-													client.getData(),
+		OrderWriterDialog d = new OrderWriterDialog(client, true, client.getData(),
 													client.getSettings(),
-													client.getSelectedRegions()
-														  .values());
+													client.getSelectedRegions().values());
 		d.setVisible(true);
 	}
 
@@ -83,15 +79,13 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 		if((index >= 0) && (index < 3)) {
 			switch(index) {
 			case 0:
-				new OrderWriterDialog(client, true, client.getData(),
-									  client.getSettings(),
+				new OrderWriterDialog(client, true, client.getData(), client.getSettings(),
 									  client.getSelectedRegions().values()).runClipboard();
 
 				break;
 
 			case 1:
-				new OrderWriterDialog(client, true, client.getData(),
-									  client.getSettings(),
+				new OrderWriterDialog(client, true, client.getData(), client.getSettings(),
 									  client.getSelectedRegions().values()).runMail();
 
 				break;
@@ -100,8 +94,8 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	}
 
 	/**
-	 * Should return all short cuts this class want to be informed. The
-	 * elements should be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The elements should be of type
+	 * javax.swing.KeyStroke
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -119,9 +113,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	public java.lang.String getShortcutDescription(java.lang.Object obj) {
 		int index = shortCuts.indexOf(obj);
 
-		return Translations.getTranslation(this,
-										   "shortcuts.description." +
-										   String.valueOf(index));
+		return Translations.getTranslation(this, "shortcuts.description." + String.valueOf(index));
 	}
 
 	/**
@@ -130,8 +122,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public java.lang.String getListenerDescription() {
-		return com.eressea.util.Translations.getTranslation(this,
-															"shortcuts.title");
+		return com.eressea.util.Translations.getTranslation(this, "shortcuts.title");
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -156,8 +147,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 
 			defaultTranslations.put("shortcuts.title", "Fast save");
 			defaultTranslations.put("shortcuts.description.-1", "Save dialog");
-			defaultTranslations.put("shortcuts.description.0",
-									"Save to clipboard");
+			defaultTranslations.put("shortcuts.description.0", "Save to clipboard");
 			defaultTranslations.put("shortcuts.description.1", "Send e-mail");
 		}
 

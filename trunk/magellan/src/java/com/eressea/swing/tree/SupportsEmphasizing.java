@@ -16,20 +16,19 @@ package com.eressea.swing.tree;
 import java.util.List;
 
 /**
- * An interface to be implemented by wrapper classes. Helps to create useful
- * implementations of the emphasized method that is already defined in
- * CellObject. The List that can be retrieved via getSubordinatedElements is
- * supposed to contain those wrappers that are directly under the node that
- * contains this wrapper. This List should be used to determine the return
- * value of emphasized().
+ * An interface to be implemented by wrapper classes. Helps to create useful implementations of the
+ * emphasized method that is already defined in CellObject. The List that can be retrieved via
+ * getSubordinatedElements is supposed to contain those wrappers that are directly under the node
+ * that contains this wrapper. This List should be used to determine the return value of
+ * emphasized().
  *
  * @author Ulrich Küster
  */
 public interface SupportsEmphasizing {
 	/**
-	 * Retrieve the subordinate elements of this wrapper. They are supposed to
-	 * implement SupportsEmphasizing too. This way we can ask them and check
-	 * whether all subordinated elements are not emphasized.
+	 * Retrieve the subordinate elements of this wrapper. They are supposed to implement
+	 * SupportsEmphasizing too. This way we can ask them and check whether all subordinated
+	 * elements are not emphasized.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */

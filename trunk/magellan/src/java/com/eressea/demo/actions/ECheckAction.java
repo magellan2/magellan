@@ -36,7 +36,7 @@ import com.eressea.util.Translations;
  * @version
  */
 public class ECheckAction extends MenuAction implements ShortcutListener {
-	private Client    client;
+	private Client client;
 	private KeyStroke imStroke;
 
 	/**
@@ -45,10 +45,8 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	 * @param parent TODO: DOCUMENT ME!
 	 */
 	public ECheckAction(Client parent) {
-		client   = parent;
-		imStroke = KeyStroke.getKeyStroke(KeyEvent.VK_E,
-										  KeyEvent.CTRL_MASK |
-										  KeyEvent.SHIFT_MASK);
+		client = parent;
+		imStroke = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK);
 		DesktopEnvironment.registerShortcutListener(imStroke, this);
 	}
 
@@ -58,11 +56,8 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		ECheckDialog d = new ECheckDialog(client, false,
-										  client.getDispatcher(),
-										  client.getData(),
-										  client.getSettings(),
-										  client.getSelectedRegions().values());
+		ECheckDialog d = new ECheckDialog(client, false, client.getDispatcher(), client.getData(),
+										  client.getSettings(), client.getSelectedRegions().values());
 		d.setVisible(true);
 	}
 
@@ -72,11 +67,8 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	 * @param shortcut TODO: DOCUMENT ME!
 	 */
 	public void shortCut(javax.swing.KeyStroke shortcut) {
-		ECheckDialog d = new ECheckDialog(client, false,
-										  client.getDispatcher(),
-										  client.getData(),
-										  client.getSettings(),
-										  client.getSelectedRegions().values());
+		ECheckDialog d = new ECheckDialog(client, false, client.getDispatcher(), client.getData(),
+										  client.getSettings(), client.getSelectedRegions().values());
 		d.setVisible(true);
 		d.exec();
 	}
@@ -133,8 +125,7 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 			defaultTranslations.put("mnemonic", "e");
 			defaultTranslations.put("accelerator", "ctrl E");
 			defaultTranslations.put("tooltip", "");
-			defaultTranslations.put("shortcuts.description.1",
-									"Run ECheck immediately");
+			defaultTranslations.put("shortcuts.description.1", "Run ECheck immediately");
 			defaultTranslations.put("shortcuts.description.0", "Show dialog");
 			defaultTranslations.put("shortcuts.title", "ECheck");
 		}

@@ -48,9 +48,7 @@ import com.eressea.util.logging.Logger;
  * @author Andreas
  * @version
  */
-public class NodeWrapperFactory extends JTabbedPane
-	implements PreferencesFactory, ContextObserver
-{
+public class NodeWrapperFactory extends JTabbedPane implements PreferencesFactory, ContextObserver {
 	private static final Logger log = Logger.getInstance(NodeWrapperFactory.class);
 
 	/** TODO: DOCUMENT ME! */
@@ -84,15 +82,15 @@ public class NodeWrapperFactory extends JTabbedPane
 	public static final int GROUP = 9;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int			  SIMPLE	    = 10;
-	protected Properties			  settings;
-	protected boolean				  initialized[];
-	protected NodeWrapperDrawPolicy   adapters[];
-	protected JTabbedPane			  tabs;
-	protected String				  initString  = null;
-	protected String				  title		  = null;
-	protected JMenu					  contextMenu;
-	protected TreeUpdate			  source;
+	public static final int SIMPLE = 10;
+	protected Properties settings;
+	protected boolean initialized[];
+	protected NodeWrapperDrawPolicy adapters[];
+	protected JTabbedPane tabs;
+	protected String initString = null;
+	protected String title = null;
+	protected JMenu contextMenu;
+	protected TreeUpdate source;
 
 	/**
 	 * Creates new NodeWrapperFactory
@@ -110,8 +108,7 @@ public class NodeWrapperFactory extends JTabbedPane
 	 * @param initString TODO: DOCUMENT ME!
 	 * @param title TODO: DOCUMENT ME!
 	 */
-	public NodeWrapperFactory(Properties settings, String initString,
-							  String title) {
+	public NodeWrapperFactory(Properties settings, String initString, String title) {
 		super(JTabbedPane.LEFT);
 
 		this.initString = initString;
@@ -120,14 +117,14 @@ public class NodeWrapperFactory extends JTabbedPane
 			title = getString("title.unknown");
 		}
 
-		this.title    = title;
+		this.title = title;
 		this.settings = settings;
-		initialized   = new boolean[11];
-		adapters	  = new NodeWrapperDrawPolicy[11];
+		initialized = new boolean[11];
+		adapters = new NodeWrapperDrawPolicy[11];
 
 		for(int i = 0; i < 11; i++) {
 			initialized[i] = false;
-			adapters[i]    = null;
+			adapters[i] = null;
 		}
 
 		// init our Pref-Adapter interface
@@ -155,10 +152,9 @@ public class NodeWrapperFactory extends JTabbedPane
 		contextMenu.removeAll();
 
 		for(int i = 0; i < adapters.length; i++) {
-			if((adapters[i] != null) &&
-				   (adapters[i] instanceof ContextChangeable)) {
-				ContextChangeable cc   = (ContextChangeable) adapters[i];
-				JMenuItem		  item = cc.getContextAdapter();
+			if((adapters[i] != null) && (adapters[i] instanceof ContextChangeable)) {
+				ContextChangeable cc = (ContextChangeable) adapters[i];
+				JMenuItem item = cc.getContextAdapter();
 
 				if(item instanceof JMenu) {
 					contextMenu.add(item);
@@ -195,7 +191,7 @@ public class NodeWrapperFactory extends JTabbedPane
 		}
 
 		if(!initialized[index] && (o != null)) {
-			adapters[index]    = o;
+			adapters[index] = o;
 			initialized[index] = true;
 
 			if(o instanceof ContextChangeable) {
@@ -227,8 +223,7 @@ public class NodeWrapperFactory extends JTabbedPane
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public FactionNodeWrapper createFactionNodeWrapper(Faction f, Region r,
-													   Map alliances) {
+	public FactionNodeWrapper createFactionNodeWrapper(Faction f, Region r, Map alliances) {
 		FactionNodeWrapper fnw = new FactionNodeWrapper(f, r, alliances);
 		init(fnw, FACTION);
 
@@ -338,8 +333,7 @@ public class NodeWrapperFactory extends JTabbedPane
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public UnitNodeWrapper createUnitNodeWrapper(Unit unit, String prfx,
-												 int num, int mod) {
+	public UnitNodeWrapper createUnitNodeWrapper(Unit unit, String prfx, int num, int mod) {
 		UnitNodeWrapper unw = new UnitNodeWrapper(unit, prfx, num, mod);
 		init(unw, UNIT);
 
@@ -383,8 +377,7 @@ public class NodeWrapperFactory extends JTabbedPane
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public PotionNodeWrapper createPotionNodeWrapper(Potion potion,
-													 String postfix) {
+	public PotionNodeWrapper createPotionNodeWrapper(Potion potion, String postfix) {
 		PotionNodeWrapper pnw = new PotionNodeWrapper(potion, postfix);
 		init(pnw, POTION);
 
@@ -426,8 +419,7 @@ public class NodeWrapperFactory extends JTabbedPane
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public SkillNodeWrapper createSkillNodeWrapper(Unit unit, Skill skill,
-												   Skill modSkill) {
+	public SkillNodeWrapper createSkillNodeWrapper(Unit unit, Skill skill, Skill modSkill) {
 		SkillNodeWrapper snw = new SkillNodeWrapper(unit, skill, modSkill);
 		init(snw, SKILL);
 
@@ -472,8 +464,7 @@ public class NodeWrapperFactory extends JTabbedPane
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public SimpleNodeWrapper createSimpleNodeWrapper(Object text, Object icons,
-													 String clipValue) {
+	public SimpleNodeWrapper createSimpleNodeWrapper(Object text, Object icons, String clipValue) {
 		SimpleNodeWrapper snw = new SimpleNodeWrapper(text, icons, clipValue);
 		init(snw, SIMPLE);
 
@@ -524,9 +515,7 @@ public class NodeWrapperFactory extends JTabbedPane
 		return new NodeWrapperFactoryPreferences(adapters);
 	}
 
-	class NodeWrapperFactoryPreferences extends JTabbedPane
-		implements PreferencesAdapter
-	{
+	class NodeWrapperFactoryPreferences extends JTabbedPane implements PreferencesAdapter {
 		List myAdapters;
 
 		protected NodeWrapperFactoryPreferences(NodeWrapperDrawPolicy adapters[]) {
@@ -546,8 +535,8 @@ public class NodeWrapperFactory extends JTabbedPane
 			// try to enforce only one column
 			setPreferredSize(null);
 
-			java.awt.Dimension dim		 = getPreferredSize();
-			int				   tabHeight = getTabCount() * 30; // just approximate since there are no public functions :-(
+			java.awt.Dimension dim = getPreferredSize();
+			int tabHeight = getTabCount() * 30; // just approximate since there are no public functions :-(
 
 			if(dim.height < tabHeight) {
 				dim.height = tabHeight;

@@ -42,8 +42,8 @@ public class RulesReader {
 	}
 
 	/**
-	 * Reads the rules of the given gamedata. Right now it first tries to read
-	 * it from an xml. If this fails it  possibly reads the cr
+	 * Reads the rules of the given gamedata. Right now it first tries to read it from an xml. If
+	 * this fails it  possibly reads the cr
 	 *
 	 * @param gameName TODO: DOCUMENT ME!
 	 *
@@ -64,15 +64,13 @@ public class RulesReader {
 		String ending = new File("XML").exists() ? ".xml" : ".cr";
 
 		if(log.isDebugEnabled()) {
-			log.debug("loading rules for \"" + name + "\" (ending: " + ending +
-					  ")");
+			log.debug("loading rules for \"" + name + "\" (ending: " + ending + ")");
 		}
 
 		try {
-			FileType filetype = FileTypeFactory.singleton()
-											   .createInputStreamSourceFileType("rules/" +
-																				name +
-																				ending);
+			FileType filetype = FileTypeFactory.singleton().createInputStreamSourceFileType("rules/" +
+																							name +
+																							ending);
 
 			return new CRParser().readRules(filetype);
 		} catch(IOException e) {

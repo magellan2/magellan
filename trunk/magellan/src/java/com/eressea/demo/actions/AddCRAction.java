@@ -50,21 +50,20 @@ public class AddCRAction extends MenuAction {
 	}
 
 	/**
-	 * Called when the file->add menu is selected in order to add a certain cr
-	 * file to current game data. Displays a file chooser and adds the
-	 * selected cr file to the current game data.
+	 * Called when the file->add menu is selected in order to add a certain cr file to current game
+	 * data. Displays a file chooser and adds the selected cr file to the current game data.
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		final Client theclient = client;
-		Properties   settings = client.getSettings();
-		JFileChooser fc		  = new JFileChooser();
+		Properties settings = client.getSettings();
+		JFileChooser fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(true);
 
-		EresseaFileFilter gz  = new EresseaFileFilter(EresseaFileFilter.GZ_FILTER);
+		EresseaFileFilter gz = new EresseaFileFilter(EresseaFileFilter.GZ_FILTER);
 		EresseaFileFilter zip = new EresseaFileFilter(EresseaFileFilter.ZIP_FILTER);
-		EresseaFileFilter cr  = new EresseaFileFilter(EresseaFileFilter.CR_FILTER);
+		EresseaFileFilter cr = new EresseaFileFilter(EresseaFileFilter.CR_FILTER);
 		fc.addChoosableFileFilter(gz);
 		fc.addChoosableFileFilter(zip);
 		fc.addChoosableFileFilter(cr);
@@ -92,17 +91,15 @@ public class AddCRAction extends MenuAction {
 				i++;
 			}
 
-			settings.setProperty("Client.lastSelectedAddCRFileFilter",
-								 String.valueOf(i));
+			settings.setProperty("Client.lastSelectedAddCRFileFilter", String.valueOf(i));
 
 			// force user to choose a file on save
 			//client.setDataFile(null);
-			ReportMerger merger  = null;
-			File		 files[] = fc.getSelectedFiles();
+			ReportMerger merger = null;
+			File files[] = fc.getSelectedFiles();
 
 			if(files.length == 0) {
-				merger = new ReportMerger(client.getData(),
-										  fc.getSelectedFile(),
+				merger = new ReportMerger(client.getData(), fc.getSelectedFile(),
 										  new ReportMerger.Loader() {
 						// pavkovic 2002.11.05: prevent name clash with variable "file"
 						public GameData load(File aFile) {
@@ -114,8 +111,7 @@ public class AddCRAction extends MenuAction {
 							theclient.setData(_data);
 						}
 					});
-				settings.setProperty("Client.lastCRAdded",
-									 fc.getSelectedFile().getAbsolutePath());
+				settings.setProperty("Client.lastCRAdded", fc.getSelectedFile().getAbsolutePath());
 			} else {
 				merger = new ReportMerger(client.getData(), files,
 										  new ReportMerger.Loader() {
@@ -129,8 +125,7 @@ public class AddCRAction extends MenuAction {
 							theclient.setData(_data);
 						}
 					});
-				settings.setProperty("Client.lastCRAdded",
-									 files[files.length - 1].getAbsolutePath());
+				settings.setProperty("Client.lastCRAdded", files[files.length - 1].getAbsolutePath());
 			}
 
 			merger.merge(client);

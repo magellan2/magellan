@@ -33,11 +33,9 @@ import com.eressea.util.CollectionFactory;
  *
  * @author Ulrich Küster
  */
-public class FillSelectionAction extends MenuAction implements SelectionListener,
-															   GameDataListener
-{
+public class FillSelectionAction extends MenuAction implements SelectionListener, GameDataListener {
 	private Client client;
-	private Map    selectedRegions = CollectionFactory.createHashtable();
+	private Map selectedRegions = CollectionFactory.createHashtable();
 
 	/**
 	 * Creates a new FillSelectionAction object.
@@ -60,12 +58,10 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -96,8 +92,7 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 		int minY = Integer.MAX_VALUE;
 		int maxY = Integer.MIN_VALUE;
 
-		for(Iterator iter = selectedRegions.keySet().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
 			Coordinate c = (Coordinate) iter.next();
 
 			if(c.z == client.getLevel()) {
@@ -119,19 +114,16 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 			}
 		}
 
-		for(Iterator iter = client.getData().regions().keySet().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = client.getData().regions().keySet().iterator(); iter.hasNext();) {
 			Coordinate c = (Coordinate) iter.next();
 
-			if((c.z == client.getLevel()) && (c.x <= maxX) && (c.x >= minX) &&
-				   (c.y <= maxY) && (c.y >= minY)) {
+			if((c.z == client.getLevel()) && (c.x <= maxX) && (c.x >= minX) && (c.y <= maxY) &&
+				   (c.y >= minY)) {
 				selectedRegions.put(c, client.getData().regions().get(c));
 			}
 		}
 
-		client.getDispatcher().fire(new SelectionEvent(this,
-													   selectedRegions.values(),
-													   null,
+		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}
 

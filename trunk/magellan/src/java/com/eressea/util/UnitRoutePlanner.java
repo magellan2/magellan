@@ -97,7 +97,7 @@ public class UnitRoutePlanner {
 	public static boolean planUnitRoute(Unit unit, GameData data, Component ui,
 										Collection otherUnits) {
 		// check for island regions
-		Region     start  = unit.getRegion();
+		Region start = unit.getRegion();
 		Collection island = CollectionFactory.createLinkedList();
 
 		if(start.getIsland() != null) {
@@ -117,14 +117,13 @@ public class UnitRoutePlanner {
 		}
 
 		// get the data:
-		RoutingDialog.RetValue v = (new RoutingDialog(JOptionPane.getFrameForComponent(ui),
-													  data, island)).showRoutingDialog();
+		RoutingDialog.RetValue v = (new RoutingDialog(JOptionPane.getFrameForComponent(ui), data,
+													  island)).showRoutingDialog();
 
 		if(v != null) {
-			Map  excludeMap = Regions.getOceanRegionTypes(data.rules);
+			Map excludeMap = Regions.getOceanRegionTypes(data.rules);
 
-			List path = Regions.getPath(data.regions(), start.getCoordinate(),
-										v.dest, excludeMap);
+			List path = Regions.getPath(data.regions(), start.getCoordinate(), v.dest, excludeMap);
 
 			if((path != null) && (path.size() > 1)) {
 				int range = getModifiedRadius(unit);
@@ -134,15 +133,14 @@ public class UnitRoutePlanner {
 				} else {
 					if(range <= 0) {
 						// couldn't determine shiprange
-						JOptionPane.showMessageDialog(ui,
-													  getString("msg.unitrangeiszero.text"),
+						JOptionPane.showMessageDialog(ui, getString("msg.unitrangeiszero.text"),
 													  getString("msg.title"),
 													  JOptionPane.WARNING_MESSAGE);
 						range = Integer.MAX_VALUE;
 					}
 				}
 
-				List   orders = CollectionFactory.createLinkedList();
+				List orders = CollectionFactory.createLinkedList();
 				String order = "";
 
 				if(v.makeRoute) {
@@ -155,10 +153,10 @@ public class UnitRoutePlanner {
 					orders.add(order);
 				} else {
 					String nach = getOrder(EresseaOrderConstants.O_MOVE) + " ";
-					int    count   = 0;
-					int    after   = 0;
-					List   curPath = CollectionFactory.createLinkedList();
-					int    index   = 1;
+					int count = 0;
+					int after = 0;
+					List curPath = CollectionFactory.createLinkedList();
+					int index = 1;
 
 					do {
 						curPath.clear();
@@ -204,8 +202,7 @@ public class UnitRoutePlanner {
 							if(v.replaceOrders) {
 								u.setOrders(orders);
 							} else {
-								for(Iterator iter = orders.iterator();
-										iter.hasNext();) {
+								for(Iterator iter = orders.iterator(); iter.hasNext();) {
 									u.addOrder((String) iter.next(), false, 0);
 								}
 							}
@@ -216,10 +213,8 @@ public class UnitRoutePlanner {
 				return true;
 			} else {
 				// No path could be found from start to destination region.
-				JOptionPane.showMessageDialog(ui,
-											  getString("msg.nopathfound.text"),
-											  getString("msg.title"),
-											  JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(ui, getString("msg.nopathfound.text"),
+											  getString("msg.title"), JOptionPane.WARNING_MESSAGE);
 			}
 		}
 
@@ -227,8 +222,7 @@ public class UnitRoutePlanner {
 	}
 
 	private static String getString(String key) {
-		return com.eressea.util.Translations.getTranslation(UnitRoutePlanner.class,
-															key);
+		return com.eressea.util.Translations.getTranslation(UnitRoutePlanner.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -247,8 +241,7 @@ public class UnitRoutePlanner {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("msg.title", "Unit route scheduler");
-			defaultTranslations.put("msg.nopathfound.text",
-									"Error: No valid route found!");
+			defaultTranslations.put("msg.nopathfound.text", "Error: No valid route found!");
 			defaultTranslations.put("msg.unitrangeiszero.text",
 									"Warning: Unit range specified to zero - will be ignored!");
 		}

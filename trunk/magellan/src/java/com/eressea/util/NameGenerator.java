@@ -54,9 +54,9 @@ import com.eressea.swing.preferences.PreferencesFactory;
  * @version
  */
 public class NameGenerator implements PreferencesFactory {
-	boolean				 available = false;
-	List				 names;
-	static Properties    settings;
+	boolean available = false;
+	List names;
+	static Properties settings;
 	static NameGenerator gen;
 
 	/**
@@ -93,8 +93,7 @@ public class NameGenerator implements PreferencesFactory {
 
 	private NameGenerator(Properties settings) {
 		load(settings.getProperty("NameGenerator.Source"));
-		available = settings.getProperty("NameGenerator.active", "false")
-							.equals("true");
+		available = settings.getProperty("NameGenerator.active", "false").equals("true");
 
 		gen = this;
 	}
@@ -109,7 +108,7 @@ public class NameGenerator implements PreferencesFactory {
 		if((file != null) && !file.trim().equals("")) {
 			try {
 				BufferedReader in = new BufferedReader(new FileReader(file));
-				String		   s = null;
+				String s = null;
 
 				while((s = in.readLine()) != null) {
 					names.add(s.trim());
@@ -139,7 +138,7 @@ public class NameGenerator implements PreferencesFactory {
 
 				if(names != null) {
 					PrintWriter out = new PrintWriter(new FileWriter(file));
-					Iterator    it = names.iterator();
+					Iterator it = names.iterator();
 
 					while(it.hasNext()) {
 						out.println(it.next());
@@ -232,10 +231,8 @@ public class NameGenerator implements PreferencesFactory {
 		return new NameGenPrefAdapter();
 	}
 
-	protected class NameGenPrefAdapter extends JPanel
-		implements PreferencesAdapter, ActionListener
-	{
-		protected JCheckBox  active;
+	protected class NameGenPrefAdapter extends JPanel implements PreferencesAdapter, ActionListener {
+		protected JCheckBox active;
 		protected JTextField fileField;
 
 		/**
@@ -255,13 +252,11 @@ public class NameGenerator implements PreferencesFactory {
 
 			GridBagConstraints c = new GridBagConstraints();
 
-			c.insets.top    = 10;
+			c.insets.top = 10;
 			c.insets.bottom = 10;
-			GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER,
-										 1, 1.0, 1.0,
+			GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 1.0,
 										 GridBagConstraints.NORTHWEST,
-										 GridBagConstraints.HORIZONTAL,
-										 c.insets, 0, 0);
+										 GridBagConstraints.HORIZONTAL, c.insets, 0, 0);
 
 			// help panel
 			this.add(getNameGeneratorPanel(), c);
@@ -272,32 +267,27 @@ public class NameGenerator implements PreferencesFactory {
 			JPanel help = new JPanel();
 			help.setLayout(new GridBagLayout());
 			help.setBorder(new TitledBorder(new CompoundBorder(BorderFactory.createEtchedBorder(),
-															   new EmptyBorder(0,
-																			   3,
-																			   3,
-																			   3)),
+															   new EmptyBorder(0, 3, 3, 3)),
 											getString("prefs.title")));
 
 			GridBagConstraints c = new GridBagConstraints(0, 0, 2, 1, 1, 0,
 														  GridBagConstraints.WEST,
 														  GridBagConstraints.HORIZONTAL,
-														  new Insets(2, 10, 1,
-																	 10), 0, 0);
+														  new Insets(2, 10, 1, 10), 0, 0);
 
 			active = new JCheckBox(getString("prefs.active"), isActive());
 			help.add(active, c);
 
 			c.gridy++;
-			c.gridwidth    = 1;
+			c.gridwidth = 1;
 			c.insets.right = 1;
-			fileField	   = new JTextField(settings.getProperty("NameGenerator.Source"),
-											20);
+			fileField = new JTextField(settings.getProperty("NameGenerator.Source"), 20);
 			help.add(fileField, c);
 			c.gridx++;
 			c.insets.right = 10;
-			c.fill		   = GridBagConstraints.NONE;
+			c.fill = GridBagConstraints.NONE;
 
-			JButton b	   = new JButton("...");
+			JButton b = new JButton("...");
 			b.addActionListener(this);
 			help.add(b, c);
 
@@ -358,8 +348,8 @@ public class NameGenerator implements PreferencesFactory {
 				}
 			}
 
-			JFileChooser f   = new JFileChooser(s);
-			int			 ret = f.showOpenDialog(this);
+			JFileChooser f = new JFileChooser(s);
+			int ret = f.showOpenDialog(this);
 
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				fileField.setText(f.getSelectedFile().toString());

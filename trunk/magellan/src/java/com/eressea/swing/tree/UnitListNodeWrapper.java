@@ -18,19 +18,19 @@ import java.util.Collection;
 /**
  * DOCUMENT ME!
  *
- * @author Ulrich Küster A simple nodewrapper wrapping a list of units allowing
- * 		   acces to them via getUnits().
+ * @author Ulrich Küster A simple nodewrapper wrapping a list of units allowing acces to them via
+ * 		   getUnits().
  */
 public class UnitListNodeWrapper implements SupportsClipboard {
 	// identifies that this UnitListNodeWrapper contains a list of units that are
 	// some other unit's students
 
 	/** TODO: DOCUMENT ME! */
-	public static final int STUDENT_LIST   = 1;
-	private int			    type		   = 0;
-	protected Collection    units		   = null;
-	protected String	    text		   = null;
-	protected String	    clipboardValue = null;
+	public static final int STUDENT_LIST = 1;
+	private int type = 0;
+	protected Collection units = null;
+	protected String text = null;
+	protected String clipboardValue = null;
 
 	/**
 	 * Creates new UnitListNodeWrapper
@@ -40,8 +40,7 @@ public class UnitListNodeWrapper implements SupportsClipboard {
 	 * @param units TODO: DOCUMENT ME!
 	 * @param type TODO: DOCUMENT ME!
 	 */
-	public UnitListNodeWrapper(String text, String clipboardValue,
-							   Collection units, int type) {
+	public UnitListNodeWrapper(String text, String clipboardValue, Collection units, int type) {
 		this(text, clipboardValue, units);
 		this.type = type;
 	}
@@ -53,10 +52,9 @@ public class UnitListNodeWrapper implements SupportsClipboard {
 	 * @param clipboardValue TODO: DOCUMENT ME!
 	 * @param units TODO: DOCUMENT ME!
 	 */
-	public UnitListNodeWrapper(String text, String clipboardValue,
-							   Collection units) {
-		this.text		    = text;
-		this.units		    = units;
+	public UnitListNodeWrapper(String text, String clipboardValue, Collection units) {
+		this.text = text;
+		this.units = units;
 		this.clipboardValue = clipboardValue;
 	}
 

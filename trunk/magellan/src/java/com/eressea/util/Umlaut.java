@@ -22,19 +22,13 @@ import java.util.Map;
  * @version
  */
 public class Umlaut {
-	private static final char     UMLAUTS[]    = {
-													 'Ä', 'Ö', 'Ü', 'ä', 'ö',
-													 'ü', 'ß'
-												 };
-	private static final String   EXPANSIONS[] = {
-													 "Ae", "Oe", "Ue", "ae",
-													 "oe", "ue", "ss"
-												 };
+	private static final char UMLAUTS[] = { 'Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß' };
+	private static final String EXPANSIONS[] = { "Ae", "Oe", "Ue", "ae", "oe", "ue", "ss" };
 	private static final Map recodedStrings = CollectionFactory.createHashtable();
 
 	/**
-	 * Expand all umlauts in a string. Note that uppercase umlauts are
-	 * converted to mixed case expansions (Ä -> Ae).
+	 * Expand all umlauts in a string. Note that uppercase umlauts are converted to mixed case
+	 * expansions (Ä -> Ae).
 	 *
 	 * @param string TODO: DOCUMENT ME!
 	 *
@@ -45,17 +39,16 @@ public class Umlaut {
 	}
 
 	/**
-	 * Search <tt>string</tt> for a character contained in <tt>keys[]</tt> and
-	 * replace it with the corresponding string in <tt>values[]</tt>.
+	 * Search <tt>string</tt> for a character contained in <tt>keys[]</tt> and replace it with the
+	 * corresponding string in <tt>values[]</tt>.
 	 *
 	 * @param string the string to recode.
 	 * @param keys an array of chars to be replaced in     <tt>string</tt>.
-	 * @param values an array of the strings that are used as  replacements for
-	 * 		  the corresponding char in  <tt>keys</tt>.
+	 * @param values an array of the strings that are used as  replacements for the corresponding
+	 * 		  char in  <tt>keys</tt>.
 	 *
-	 * @return a string with all occurrences of an element of the <tt>keys</tt>
-	 * 		   array replaced by the corresponding     element in the
-	 * 		   <tt>values</tt> array.
+	 * @return a string with all occurrences of an element of the <tt>keys</tt> array replaced by
+	 * 		   the corresponding     element in the <tt>values</tt> array.
 	 */
 	public static String recode(String string, char keys[], String values[]) {
 		// recoding is kind of expensive, so store recoded strings 
@@ -70,9 +63,9 @@ public class Umlaut {
 	}
 
 	private static String recodeIt(String string, char keys[], String values[]) {
-		char		   chars[]     = string.toCharArray();
-		StringBuffer   sb		   = null;
-		boolean		   foundUmlaut = false;
+		char chars[] = string.toCharArray();
+		StringBuffer sb = null;
+		boolean foundUmlaut = false;
 
 		for(int i = 0; i < chars.length; i++) {
 			foundUmlaut = false;
@@ -82,8 +75,7 @@ public class Umlaut {
 			for(int j = 0; j < keys.length; j++) {
 				if(c == keys[j]) {
 					if(sb == null) {
-						sb = new StringBuffer(string.length() +
-											  values[j].length());
+						sb = new StringBuffer(string.length() + values[j].length());
 						sb.insert(0, chars, 0, i);
 					}
 
@@ -112,7 +104,6 @@ public class Umlaut {
 	 * @return the uppercase version of <tt>str</tt> with all umlauts expanded.
 	 */
 	public static String normalize(String str) {
-		return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str)
-													   .toUpperCase());
+		return StringFactory.getFactory().intern(Umlaut.convertUmlauts(str).toUpperCase());
 	}
 }

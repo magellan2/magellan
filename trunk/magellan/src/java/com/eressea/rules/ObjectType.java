@@ -33,8 +33,7 @@ public abstract class ObjectType extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this ObjectType object is equal to another object type
-	 * object.
+	 * Indicates whether this ObjectType object is equal to another object type object.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -46,6 +45,4 @@ public abstract class ObjectType extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public abstract int compareTo(Object o);
-
-
 }

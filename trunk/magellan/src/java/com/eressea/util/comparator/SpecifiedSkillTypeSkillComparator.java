@@ -22,38 +22,36 @@ import com.eressea.Skill;
 import com.eressea.rules.SkillType;
 
 /**
- * A comparator imposing an ordering on collections of Skill objects by
- * comparing the skills of the given SkillType available in each set.
+ * A comparator imposing an ordering on collections of Skill objects by comparing the skills of the
+ * given SkillType available in each set.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality.
  * </p>
  */
 public class SpecifiedSkillTypeSkillComparator implements Comparator {
 	private final Comparator skillCmp;
 	private final Comparator subCmp;
-	private ID				 skillTypeID;
+	private ID skillTypeID;
 
 	/**
 	 * Creates a new BestSkillComparator object.
 	 *
+	 * @param skillComparator used to determine the best skill in each of the two collections of
+	 * 		  skills to be compared.
 	 * @param skillComparator used to compare the two best skills.
-	 * @param skillComparator used to determine the best skill in each of the
-	 * 		  two collections of skills to be compared.
-	 * @param subComparator applied when the best skills are equal or cannot be
-	 * 		  determined.
+	 * @param subComparator applied when the best skills are equal or cannot be determined.
 	 */
-	public SpecifiedSkillTypeSkillComparator(SkillType skillType,
-											 Comparator skillComparator,
+	public SpecifiedSkillTypeSkillComparator(SkillType skillType, Comparator skillComparator,
 											 Comparator subComparator) {
 		this.skillTypeID = skillType.getID();
-		this.skillCmp    = skillComparator;
-		this.subCmp		 = subComparator;
+		this.skillCmp = skillComparator;
+		this.subCmp = subComparator;
 	}
 
 	/**
@@ -62,11 +60,11 @@ public class SpecifiedSkillTypeSkillComparator implements Comparator {
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return the result of the skill comparator applied to the - according to
-	 * 		   the given skilltype - smallest skills in o1 and o2.
+	 * @return the result of the skill comparator applied to the - according to the given skilltype
+	 * 		   - smallest skills in o1 and o2.
 	 */
 	public int compare(Object o1, Object o2) {
-		int   retVal = 0;
+		int retVal = 0;
 		Skill s1 = (Skill) ((Map) o1).get(skillTypeID);
 		Skill s2 = (Skill) ((Map) o2).get(skillTypeID);
 

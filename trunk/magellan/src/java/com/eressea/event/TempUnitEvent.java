@@ -24,9 +24,9 @@ public class TempUnitEvent extends TimeStampedEvent {
 	public static final int CREATED = 1;
 
 	/** An event indicating that a temp unit was deleted. */
-	public static final int		 DELETED   = 2;
-	private com.eressea.TempUnit tempUnit  = null;
-	private int					 eventType = 0;
+	public static final int DELETED = 2;
+	private com.eressea.TempUnit tempUnit = null;
+	private int eventType = 0;
 
 	/**
 	 * Creates an event object.
@@ -37,7 +37,7 @@ public class TempUnitEvent extends TimeStampedEvent {
 	 */
 	public TempUnitEvent(Object source, com.eressea.TempUnit temp, int type) {
 		super(source);
-		this.tempUnit  = temp;
+		this.tempUnit = temp;
 		this.eventType = type;
 	}
 

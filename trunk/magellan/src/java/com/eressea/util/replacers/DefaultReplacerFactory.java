@@ -116,8 +116,7 @@ public class DefaultReplacerFactory implements ReplacerFactory {
 				return (Replacer) repInfo.replacerClass.newInstance();
 			}
 
-			return (Replacer) repInfo.replacerClass.getConstructor(repInfo.argClasses)
-												   .newInstance(repInfo.args);
+			return (Replacer) repInfo.replacerClass.getConstructor(repInfo.argClasses).newInstance(repInfo.args);
 		} catch(Exception exc) {
 		}
 
@@ -145,9 +144,9 @@ public class DefaultReplacerFactory implements ReplacerFactory {
 	}
 
 	protected class ReplacerInfo {
-		Class   replacerClass;
-		Object  args[]		 = null;
-		Class   argClasses[] = null;
+		Class replacerClass;
+		Object args[] = null;
+		Class argClasses[] = null;
 
 		/**
 		 * Creates a new ReplacerInfo object.
@@ -164,7 +163,7 @@ public class DefaultReplacerFactory implements ReplacerFactory {
 		 * @param arg TODO: DOCUMENT ME!
 		 */
 		public void setArgs(Object arg[]) {
-			args	   = arg;
+			args = arg;
 			argClasses = new Class[args.length];
 
 			for(int i = 0; i < argClasses.length; i++) {

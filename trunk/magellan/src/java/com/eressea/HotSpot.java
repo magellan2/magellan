@@ -14,8 +14,7 @@
 package com.eressea;
 
 /**
- * A class encapsulating a hot spot, which represents a region of interest on
- * the map.
+ * A class encapsulating a hot spot, which represents a region of interest on the map.
  */
 public class HotSpot extends NamedObject {
 	private ID center = null;
@@ -30,8 +29,7 @@ public class HotSpot extends NamedObject {
 	}
 
 	/**
-	 * Returns the ID in the center of the region of interest this HotSpot
-	 * points to.
+	 * Returns the ID in the center of the region of interest this HotSpot points to.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -40,8 +38,8 @@ public class HotSpot extends NamedObject {
 	}
 
 	/**
-	 * Set the ID the is at the center of the region of interest this HotSpot
-	 * object should point to.
+	 * Set the ID the is at the center of the region of interest this HotSpot object should point
+	 * to.
 	 *
 	 * @param center TODO: DOCUMENT ME!
 	 */
@@ -59,9 +57,9 @@ public class HotSpot extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this HotSpot object is equal to another object.
-	 * Returns true only if o is not null and an instance of class HotSpot and
-	 * o's id is equal to the id of this  HotSpot object.
+	 * Indicates whether this HotSpot object is equal to another object. Returns true only if o is
+	 * not null and an instance of class HotSpot and o's id is equal to the id of this  HotSpot
+	 * object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -76,8 +74,8 @@ public class HotSpot extends NamedObject {
 	}
 
 	/**
-	 * Imposes a natural ordering on HotSpot objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on HotSpot objects equivalent to the natural ordering of their
+	 * ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -95,8 +93,7 @@ public class HotSpot extends NamedObject {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newHS TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, HotSpot curHS, GameData newGD,
-							 HotSpot newHS) {
+	public static void merge(GameData curGD, HotSpot curHS, GameData newGD, HotSpot newHS) {
 		if(curHS.getName() != null) {
 			newHS.setName(curHS.getName());
 		}

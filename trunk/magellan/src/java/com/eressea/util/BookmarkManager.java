@@ -46,24 +46,21 @@ import com.eressea.event.SelectionListener;
 /**
  * DOCUMENT ME!
  *
- * @author Ulrich Küster Manages setting an getting of Bookmarks. - CTRL + F2 :
- * 		   place a bookmark on the current activeObject or removes it if
- * 		   already bookmarked - F2 : go to next bookmark - Shift + F2 : go to
- * 		   prior bookmark
+ * @author Ulrich Küster Manages setting an getting of Bookmarks. - CTRL + F2 : place a bookmark on
+ * 		   the current activeObject or removes it if already bookmarked - F2 : go to next bookmark
+ * 		   - Shift + F2 : go to prior bookmark
  */
-public class BookmarkManager implements ShortcutListener, SelectionListener,
-										GameDataListener
-{
+public class BookmarkManager implements ShortcutListener, SelectionListener, GameDataListener {
 	private EventDispatcher dispatcher;
-	private List		    shortCuts    = CollectionFactory.createLinkedList();
-	private Object		    activeObject = null;
+	private List shortCuts = CollectionFactory.createLinkedList();
+	private Object activeObject = null;
 
 	// the list containing the bookmarked objects
 	private Vector bookmarks = new Vector();
 
 	// the number of the current bookmark
-	private int			   activeBookmark = 0;
-	private Properties     settings;
+	private int activeBookmark = 0;
+	private Properties settings;
 	private BookmarkDialog dialog;
 
 	/**
@@ -74,7 +71,7 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 	 */
 	public BookmarkManager(EventDispatcher dispatcher, Properties settings) {
 		this.dispatcher = dispatcher;
-		this.settings   = settings;
+		this.settings = settings;
 		dispatcher.addSelectionListener(this);
 
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
@@ -100,18 +97,16 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 	public void shortCut(KeyStroke shortCut) {
 		if(shortCut.equals(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0))) {
 			jumpForward();
-		} else if(shortCut.equals(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-															 KeyEvent.SHIFT_MASK))) {
+		} else if(shortCut.equals(KeyStroke.getKeyStroke(KeyEvent.VK_F2, KeyEvent.SHIFT_MASK))) {
 			jumpBackward();
-		} else if(shortCut.equals(KeyStroke.getKeyStroke(KeyEvent.VK_F2,
-															 KeyEvent.CTRL_MASK))) {
+		} else if(shortCut.equals(KeyStroke.getKeyStroke(KeyEvent.VK_F2, KeyEvent.CTRL_MASK))) {
 			toggleBookmark(activeObject);
 		}
 	}
 
 	/**
-	 * Bookmarks the given Object o, if it has not already been bookmarked. In
-	 * this case o is deleted from the bookmark list.
+	 * Bookmarks the given Object o, if it has not already been bookmarked. In this case o is
+	 * deleted from the bookmark list.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 */
@@ -141,8 +136,8 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 	}
 
 	/**
-	 * Differs from toggleBookmark in that way that it guarantees, that o is in
-	 * the bookmark list after the call
+	 * Differs from toggleBookmark in that way that it guarantees, that o is in the bookmark list
+	 * after the call
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 */
@@ -317,16 +312,12 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 					}
 				});
 
-			int width = Integer.parseInt(settings.getProperty("BookmarkManager.DialogWidth",
-															  "300"));
-			int height = Integer.parseInt(settings.getProperty("BookmarkManager.DialogHeight",
-															   "500"));
+			int width = Integer.parseInt(settings.getProperty("BookmarkManager.DialogWidth", "300"));
+			int height = Integer.parseInt(settings.getProperty("BookmarkManager.DialogHeight", "500"));
 			setSize(width, height);
 
-			int xPos = Integer.parseInt(settings.getProperty("BookmarkManager.DialogXPos",
-															 "400"));
-			int yPos = Integer.parseInt(settings.getProperty("BookmarkManager.DialogYPos",
-															 "200"));
+			int xPos = Integer.parseInt(settings.getProperty("BookmarkManager.DialogXPos", "400"));
+			int yPos = Integer.parseInt(settings.getProperty("BookmarkManager.DialogYPos", "200"));
 			setLocation(xPos, yPos);
 			list = new JList();
 			updateData();
@@ -336,10 +327,8 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 						if(!e.getValueIsAdjusting()) {
 							Object selectedValue = list.getSelectedValue();
 
-							if((selectedValue != null) &&
-								   (selectedValue != activeObject)) {
-								dispatcher.fire(new SelectionEvent(this, null,
-																   selectedValue));
+							if((selectedValue != null) && (selectedValue != activeObject)) {
+								dispatcher.fire(new SelectionEvent(this, null, selectedValue));
 							}
 						}
 					}
@@ -410,14 +399,10 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 		 * TODO: DOCUMENT ME!
 		 */
 		public void quit() {
-			settings.put("BookmarkManager.DialogWidth",
-						 String.valueOf(this.getWidth()));
-			settings.put("BookmarkManager.DialogHeight",
-						 String.valueOf(this.getHeight()));
-			settings.put("BookmarkManager.DialogXPos",
-						 String.valueOf(this.getX()));
-			settings.put("BookmarkManager.DialogYPos",
-						 String.valueOf(this.getY()));
+			settings.put("BookmarkManager.DialogWidth", String.valueOf(this.getWidth()));
+			settings.put("BookmarkManager.DialogHeight", String.valueOf(this.getHeight()));
+			settings.put("BookmarkManager.DialogXPos", String.valueOf(this.getX()));
+			settings.put("BookmarkManager.DialogYPos", String.valueOf(this.getY()));
 			dispose();
 		}
 	}
@@ -438,8 +423,7 @@ public class BookmarkManager implements ShortcutListener, SelectionListener,
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("shortcuts.title", "Bookmarks");
-			defaultTranslations.put("shortcuts.description.2",
-									"Set/reset bookmark on active object");
+			defaultTranslations.put("shortcuts.description.2", "Set/reset bookmark on active object");
 			defaultTranslations.put("shortcuts.description.1", "Last bookmark");
 			defaultTranslations.put("shortcuts.description.0", "Next bookmark");
 			defaultTranslations.put("bookmarkdialog.caption", "Bookmarks");

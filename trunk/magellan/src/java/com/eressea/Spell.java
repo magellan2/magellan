@@ -18,19 +18,18 @@ import java.util.Map;
 import com.eressea.util.CollectionFactory;
 
 /**
- * Container class for a spell based on its representation in a cr version >=
- * 42.
+ * Container class for a spell based on its representation in a cr version >= 42.
  */
 public class Spell extends DescribedObject {
-	private int     blockID    = -1; // this is the id of the ZAUBER block in the cr
-	private int     level	   = -1; // a mage's level has to be at least this value to be able to cast this spell
-	private int     rank	   = -1;
-	private String  type	   = null; // represents the 'class' tag, can't be named like that, though
-	private boolean onShip     = false;
-	private boolean onOcean    = false;
+	private int blockID = -1; // this is the id of the ZAUBER block in the cr
+	private int level = -1; // a mage's level has to be at least this value to be able to cast this spell
+	private int rank = -1;
+	private String type = null; // represents the 'class' tag, can't be named like that, though
+	private boolean onShip = false;
+	private boolean onOcean = false;
 	private boolean isFamiliar = false;
-	private boolean isFar	   = false;
-	private Map     components = null; // map of String objects
+	private boolean isFar = false;
+	private Map components = null; // map of String objects
 
 	/**
 	 * Creates a new Spell object.
@@ -65,8 +64,8 @@ public class Spell extends DescribedObject {
 	}
 
 	/**
-	 * Returns the level of this spell which indicates the lowest skill level a
-	 * mage must have to be able to cast this spell.
+	 * Returns the level of this spell which indicates the lowest skill level a mage must have to
+	 * be able to cast this spell.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -75,8 +74,8 @@ public class Spell extends DescribedObject {
 	}
 
 	/**
-	 * Sets the level of this spell which indicates the lowest skill level a
-	 * mage must have to be able to cast this spell.
+	 * Sets the level of this spell which indicates the lowest skill level a mage must have to be
+	 * able to cast this spell.
 	 *
 	 * @param level TODO: DOCUMENT ME!
 	 */
@@ -242,9 +241,8 @@ public class Spell extends DescribedObject {
 	}
 
 	/**
-	 * Indicates whether this Spell object is equal to another object. Returns
-	 * true only if o is not null and an instance of class Spell and o's id is
-	 * equal to the id of this Spell object.
+	 * Indicates whether this Spell object is equal to another object. Returns true only if o is
+	 * not null and an instance of class Spell and o's id is equal to the id of this Spell object.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -259,8 +257,7 @@ public class Spell extends DescribedObject {
 	}
 
 	/**
-	 * Imposes a natural ordering on Spell objects equivalent to the natural
-	 * ordering of their ids.
+	 * Imposes a natural ordering on Spell objects equivalent to the natural ordering of their ids.
 	 *
 	 * @param o TODO: DOCUMENT ME!
 	 *
@@ -278,8 +275,7 @@ public class Spell extends DescribedObject {
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newSpell TODO: DOCUMENT ME!
 	 */
-	public static void merge(GameData curGD, Spell curSpell, GameData newGD,
-							 Spell newSpell) {
+	public static void merge(GameData curGD, Spell curSpell, GameData newGD, Spell newSpell) {
 		if(curSpell.getBlockID() != -1) {
 			newSpell.setBlockID(curSpell.getBlockID());
 		}

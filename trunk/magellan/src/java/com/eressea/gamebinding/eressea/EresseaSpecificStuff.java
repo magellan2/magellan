@@ -36,8 +36,7 @@ import com.eressea.io.GameDataIO;
  */
 public class EresseaSpecificStuff implements GameSpecificStuff {
 	/**
-	 * This is a callback interface to let the  GameSpecificStuff create the
-	 * GameData object.
+	 * This is a callback interface to let the  GameSpecificStuff create the GameData object.
 	 *
 	 * @param rules TODO: DOCUMENT ME!
 	 * @param name TODO: DOCUMENT ME!

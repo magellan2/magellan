@@ -77,20 +77,18 @@ import com.eressea.util.comparator.NameComparator;
  *
  * @author Ulrich Küster
  */
-public class TradeOrganizer extends InternationalizedDataDialog
-	implements SelectionListener
-{
-	protected java.util.List regions				 = new LinkedList();
-	protected int			 minSellMultiplier		 = 1;
-	protected SellTable		 sell;
-	protected BuyTable		 buy;
-	protected StocksTable    stocks;
-	protected JComboBox		 luxuries;
-	protected JSlider		 minSellMultiplierSlider;
-	protected JLabel		 totalSellingVolume;
-	protected JLabel		 totalBuyingVolume;
-	protected JLabel		 averagePrice;
-	protected JList			 factionList;
+public class TradeOrganizer extends InternationalizedDataDialog implements SelectionListener {
+	protected java.util.List regions = new LinkedList();
+	protected int minSellMultiplier = 1;
+	protected SellTable sell;
+	protected BuyTable buy;
+	protected StocksTable stocks;
+	protected JComboBox luxuries;
+	protected JSlider minSellMultiplierSlider;
+	protected JLabel totalSellingVolume;
+	protected JLabel totalBuyingVolume;
+	protected JLabel averagePrice;
+	protected JList factionList;
 
 	/**
 	 * Creates a new TradeOrganizer object.
@@ -100,8 +98,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	 * @param data TODO: DOCUMENT ME!
 	 * @param settings TODO: DOCUMENT ME!
 	 */
-	public TradeOrganizer(Frame owner, EventDispatcher dispatcher,
-						  GameData data, Properties settings) {
+	public TradeOrganizer(Frame owner, EventDispatcher dispatcher, GameData data,
+						  Properties settings) {
 		this(owner, dispatcher, data, settings, null);
 	}
 
@@ -114,9 +112,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	 * @param settings TODO: DOCUMENT ME!
 	 * @param newRegions TODO: DOCUMENT ME!
 	 */
-	public TradeOrganizer(Frame owner, EventDispatcher dispatcher,
-						  GameData data, Properties settings,
-						  Collection newRegions) {
+	public TradeOrganizer(Frame owner, EventDispatcher dispatcher, GameData data,
+						  Properties settings, Collection newRegions) {
 		super(owner, false, dispatcher, data, settings);
 
 		// register for events
@@ -129,26 +126,20 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	protected void init() {
-		int width = Integer.parseInt(settings.getProperty("TradeOrganizer.width",
-														  "800"));
-		int height = Integer.parseInt(settings.getProperty("TradeOrganizer.height",
-														   "600"));
-		int xPos = Integer.parseInt(settings.getProperty("TradeOrganizer.xPos",
-														 "-1"));
-		int yPos = Integer.parseInt(settings.getProperty("TradeOrganizer.yPos",
-														 "-1"));
+		int width = Integer.parseInt(settings.getProperty("TradeOrganizer.width", "800"));
+		int height = Integer.parseInt(settings.getProperty("TradeOrganizer.height", "600"));
+		int xPos = Integer.parseInt(settings.getProperty("TradeOrganizer.xPos", "-1"));
+		int yPos = Integer.parseInt(settings.getProperty("TradeOrganizer.yPos", "-1"));
 
 		minSellMultiplier = Integer.parseInt(settings.getProperty("TradeOrganizer.minSellMultiplier",
 																  "1"));
 
 		if(xPos == -1) {
-			xPos = ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() -
-				   width) / 2;
+			xPos = ((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() - width) / 2;
 		}
 
 		if(yPos == -1) {
-			yPos = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() -
-				   height) / 2;
+			yPos = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - height) / 2;
 		}
 
 		setSize(width, height);
@@ -163,11 +154,9 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		topPanel.setBorder(new TitledBorder(""));
 		topPanel.setLayout(new GridBagLayout());
 
-		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 0, 0,
-													  GridBagConstraints.WEST,
+		GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.WEST,
 													  GridBagConstraints.NONE,
-													  new Insets(5, 5, 5, 5),
-													  0, 0);
+													  new Insets(5, 5, 5, 5), 0, 0);
 
 		topPanel.add(new JLabel(getString("minsellmultiplier")), c);
 		c.gridx++;
@@ -183,8 +172,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 
 		minSellMultiplierSlider.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent ce) {
-					minSellMultiplier = Math.max(minSellMultiplierSlider.getValue(),
-												 1);
+					minSellMultiplier = Math.max(minSellMultiplierSlider.getValue(), 1);
 					setSellTableRegions();
 				}
 			});
@@ -200,8 +188,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 
 		if((data != null) && (data.rules != null)) {
 			String help[] = new String[] {
-								"Balsam", "Gewürz", "Juwel", "Myrrhe", "Öl",
-								"Seide", "Weihrauch"
+								"Balsam", "Gewürz", "Juwel", "Myrrhe", "Öl", "Seide", "Weihrauch"
 							};
 
 			for(int i = 0; i < help.length; i++) {
@@ -221,22 +208,22 @@ public class TradeOrganizer extends InternationalizedDataDialog
 
 		JPanel help = new JPanel();
 		help.setLayout(new GridBagLayout());
-		c.insets		  = new Insets(0, 0, 0, 0);
-		c.gridx			  = 0;
-		c.weightx		  = 0;
+		c.insets = new Insets(0, 0, 0, 0);
+		c.gridx = 0;
+		c.weightx = 0;
 		totalBuyingVolume = new JLabel();
 		help.add(totalBuyingVolume, c);
 		c.gridx++;
 		totalSellingVolume = new JLabel();
 		help.add(totalSellingVolume, c);
 		c.gridx++;
-		c.weightx    = 1;
+		c.weightx = 1;
 		averagePrice = new JLabel();
 		help.add(averagePrice, c);
 
-		c.gridx     = 0;
-		c.gridy     = 1;
-		c.insets    = new Insets(5, 5, 5, 5);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 5, 5);
 		c.gridwidth = 2;
 		topPanel.add(help, c);
 
@@ -279,9 +266,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 
 		JScrollPane stocksTableScrollPane = new JScrollPane(stocks);
 
-		JSplitPane  split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-										   factionsScrollPane,
-										   stocksTableScrollPane);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, factionsScrollPane,
+										  stocksTableScrollPane);
 		split.setDividerLocation(0.4);
 
 		panel.setLayout(new BorderLayout());
@@ -295,8 +281,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	 */
 	private void updateFactions() {
 		Vector factionVector = new Vector(data.factions().values());
-		Collections.sort(factionVector,
-						 FactionTrustComparator.DEFAULT_COMPARATOR);
+		Collections.sort(factionVector, FactionTrustComparator.DEFAULT_COMPARATOR);
 
 		DefaultListModel model = new DefaultListModel();
 
@@ -333,8 +318,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	/**
-	 * Sets this classes region list. Filters out all regions, which trade
-	 * information is unknown.
+	 * Sets this classes region list. Filters out all regions, which trade information is unknown.
 	 *
 	 * @param newRegions TODO: DOCUMENT ME!
 	 */
@@ -359,9 +343,9 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	/**
-	 * Resets the regions, that the buytable shows. Also resets the information
-	 * about the total buying volume. Assumes, that the prices of all regions
-	 * contained in this class's region-list are known.
+	 * Resets the regions, that the buytable shows. Also resets the information about the total
+	 * buying volume. Assumes, that the prices of all regions contained in this class's
+	 * region-list are known.
 	 */
 	private void setBuyTableRegions() {
 		Object curLux = luxuries.getSelectedItem();
@@ -371,10 +355,10 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		}
 
 		LinkedList newRegions = new LinkedList();
-		int		   total = 0;
+		int total = 0;
 
 		for(Iterator iter = regions.iterator(); iter.hasNext();) {
-			Region	    region = (Region) iter.next();
+			Region region = (Region) iter.next();
 			LuxuryPrice price = (LuxuryPrice) region.prices.get(curLux);
 
 			if(price.getPrice() < 0) {
@@ -383,17 +367,15 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			}
 		}
 
-		totalBuyingVolume.setText(getString("totalBuyingVolume") + total +
-								  ", ");
+		totalBuyingVolume.setText(getString("totalBuyingVolume") + total + ", ");
 		buy.setRegions(newRegions);
 		buy.sort();
 	}
 
 	/**
-	 * Resets the regions, that the sell table shows. Also resets the
-	 * information about the total selling volume and the average price.
-	 * Assumes, that the prices of all regions contained in this class's
-	 * region-list are known.
+	 * Resets the regions, that the sell table shows. Also resets the information about the total
+	 * selling volume and the average price. Assumes, that the prices of all regions contained in
+	 * this class's region-list are known.
 	 */
 	private void setSellTableRegions() {
 		Object curLux = luxuries.getSelectedItem();
@@ -403,11 +385,11 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		}
 
 		LinkedList newRegions = new LinkedList();
-		int		   total	  = 0;
-		int		   totalPrice = 0;
+		int total = 0;
+		int totalPrice = 0;
 
 		for(Iterator iter = regions.iterator(); iter.hasNext();) {
-			Region	    region = (Region) iter.next();
+			Region region = (Region) iter.next();
 			LuxuryPrice price = (LuxuryPrice) region.prices.get(curLux);
 
 			if(checkPrice(price)) {
@@ -420,12 +402,10 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		}
 
 		sell.setRegions(newRegions);
-		totalSellingVolume.setText(getString("totalSellingVolume") + total +
-								   ", ");
+		totalSellingVolume.setText(getString("totalSellingVolume") + total + ", ");
 
 		if(total != 0) {
-			averagePrice.setText(getString("averagePrice") +
-								 (totalPrice / total));
+			averagePrice.setText(getString("averagePrice") + (totalPrice / total));
 		} else {
 			averagePrice.setText(getString("averagePrice") + 0);
 		}
@@ -434,8 +414,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	/**
-	 * Returns false iff price &lt; 0 or price/itemtype.getResources("Silber")
-	 * &lt; minSellMultiplier
+	 * Returns false iff price &lt; 0 or price/itemtype.getResources("Silber") &lt;
+	 * minSellMultiplier
 	 *
 	 * @param price TODO: DOCUMENT ME!
 	 *
@@ -467,14 +447,10 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	protected void quit() {
 		// store settings
 		settings.setProperty("TradeOrganizer.width", String.valueOf(getWidth()));
-		settings.setProperty("TradeOrganizer.height",
-							 String.valueOf(getHeight()));
-		settings.setProperty("TradeOrganizer.xPos",
-							 String.valueOf(getLocation().x));
-		settings.setProperty("TradeOrganizer.yPos",
-							 String.valueOf(getLocation().y));
-		settings.setProperty("TradeOrganizer.minSellMultiplier",
-							 String.valueOf(minSellMultiplier));
+		settings.setProperty("TradeOrganizer.height", String.valueOf(getHeight()));
+		settings.setProperty("TradeOrganizer.xPos", String.valueOf(getLocation().x));
+		settings.setProperty("TradeOrganizer.yPos", String.valueOf(getLocation().y));
+		settings.setProperty("TradeOrganizer.minSellMultiplier", String.valueOf(minSellMultiplier));
 
 		super.quit();
 	}
@@ -499,7 +475,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			this.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-						int    i = SellTable.this.getSelectedRow();
+						int i = SellTable.this.getSelectedRow();
 						Region r = model.getRegion(i);
 
 						if(r != null) {
@@ -513,8 +489,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			// sorting
 			this.getTableHeader().addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
-						int i = getTableHeader().getColumnModel()
-									.getColumnIndexAtX(e.getPoint().x);
+						int i = getTableHeader().getColumnModel().getColumnIndexAtX(e.getPoint().x);
 						model.sort(i);
 					}
 				});
@@ -547,7 +522,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	private class SellTableModel extends AbstractTableModel {
-		private int		   curSort	    = 1;
+		private int curSort = 1;
 		private LinkedList tableRegions = new LinkedList();
 
 		/**
@@ -717,7 +692,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			this.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-						int    i = BuyTable.this.getSelectedRow();
+						int i = BuyTable.this.getSelectedRow();
 						Region r = model.getRegion(i);
 
 						if(r != null) {
@@ -731,8 +706,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			// sorting
 			this.getTableHeader().addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
-						int i = getTableHeader().getColumnModel()
-									.getColumnIndexAtX(e.getPoint().x);
+						int i = getTableHeader().getColumnModel().getColumnIndexAtX(e.getPoint().x);
 						model.sort(i);
 					}
 				});
@@ -765,7 +739,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	private class BuyTableModel extends AbstractTableModel {
-		private int		   curSort	    = 1;
+		private int curSort = 1;
 		private LinkedList tableRegions = new LinkedList();
 
 		/**
@@ -905,7 +879,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			this.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-						int    i = StocksTable.this.getSelectedRow();
+						int i = StocksTable.this.getSelectedRow();
 						Region r = model.getRegion(i);
 
 						if(r != null) {
@@ -919,8 +893,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			// sorting
 			this.getTableHeader().addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
-						int i = getTableHeader().getColumnModel()
-									.getColumnIndexAtX(e.getPoint().x);
+						int i = getTableHeader().getColumnModel().getColumnIndexAtX(e.getPoint().x);
 						model.sort(i);
 					}
 				});
@@ -953,8 +926,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	private class StocksTableModel extends AbstractTableModel {
-		private int		   curSort		 = 1;
-		private LinkedList tableRegions  = new LinkedList();
+		private int curSort = 1;
+		private LinkedList tableRegions = new LinkedList();
 		private LinkedList tableFactions = new LinkedList();
 
 		// maps Region to Integer (available luxury in stock of selected factions)
@@ -1053,9 +1026,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		}
 
 		/**
-		 * Collects the information about how many units of the selected luxury
-		 * good is in stock in each region. If none is there, the region is
-		 * removed out of the region pool.
+		 * Collects the information about how many units of the selected luxury good is in stock in
+		 * each region. If none is there, the region is removed out of the region pool.
 		 */
 		private void updateStocksHashtable() {
 			stocks.clear();
@@ -1068,17 +1040,14 @@ public class TradeOrganizer extends InternationalizedDataDialog
 
 			ItemType luxury = data.rules.getItemType((ID) luxuries.getSelectedItem());
 
-			for(Iterator regionIter = tableRegions.iterator();
-					regionIter.hasNext();) {
-				Region r	  = (Region) regionIter.next();
-				int    amount = 0;
+			for(Iterator regionIter = tableRegions.iterator(); regionIter.hasNext();) {
+				Region r = (Region) regionIter.next();
+				int amount = 0;
 
-				for(Iterator unitIter = r.units().iterator();
-						unitIter.hasNext();) {
+				for(Iterator unitIter = r.units().iterator(); unitIter.hasNext();) {
 					Unit u = (Unit) unitIter.next();
 
-					if((u.getFaction() != null) &&
-						   tableFactions.contains(u.getFaction())) {
+					if((u.getFaction() != null) && tableFactions.contains(u.getFaction())) {
 						Item item = u.getItem(luxury);
 
 						if(item != null) {
@@ -1123,8 +1092,7 @@ public class TradeOrganizer extends InternationalizedDataDialog
 				break;
 
 			case 1:
-				Collections.sort(tableRegions,
-								 new RegionStockVolumeComparator(stocks));
+				Collections.sort(tableRegions, new RegionStockVolumeComparator(stocks));
 			}
 
 			TradeOrganizer.this.stocks.revalidate();
@@ -1133,8 +1101,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 	}
 
 	/**
-	 * Compares two regions using their stock volume of the current luxury. The
-	 * stock volume is retrieved out of the given Hashtable.
+	 * Compares two regions using their stock volume of the current luxury. The stock volume is
+	 * retrieved out of the given Hashtable.
 	 */
 	private class RegionStockVolumeComparator implements Comparator {
 		private Hashtable stocks;
@@ -1157,8 +1125,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public int compare(Object o1, Object o2) {
-			Region  r1 = (Region) o1;
-			Region  r2 = (Region) o2;
+			Region r1 = (Region) o1;
+			Region r2 = (Region) o2;
 			Integer i1 = (Integer) stocks.get(r1);
 			Integer i2 = (Integer) stocks.get(r2);
 
@@ -1183,8 +1151,8 @@ public class TradeOrganizer extends InternationalizedDataDialog
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public int compare(Object o1, Object o2) {
-			Region	    r1 = (Region) o1;
-			Region	    r2 = (Region) o2;
+			Region r1 = (Region) o1;
+			Region r2 = (Region) o2;
 			LuxuryPrice p1 = (LuxuryPrice) r1.prices.get(luxuries.getSelectedItem());
 			LuxuryPrice p2 = (LuxuryPrice) r2.prices.get(luxuries.getSelectedItem());
 
@@ -1240,11 +1208,9 @@ public class TradeOrganizer extends InternationalizedDataDialog
 			defaultTranslations.put("sellcolumnname2", "Volume");
 			defaultTranslations.put("buycolumnname3", "Volume");
 			defaultTranslations.put("luxury", "Trade good: ");
-			defaultTranslations.put("minsellmultiplier",
-									"Minimum multiplier for sale: ");
+			defaultTranslations.put("minsellmultiplier", "Minimum multiplier for sale: ");
 			defaultTranslations.put("totalBuyingVolume", "Total buying volume: ");
-			defaultTranslations.put("totalSellingVolume",
-									"Total selling volume: ");
+			defaultTranslations.put("totalSellingVolume", "Total selling volume: ");
 			defaultTranslations.put("averagePrice", "Average selling price: ");
 			defaultTranslations.put("stocks", "Stocks...");
 		}

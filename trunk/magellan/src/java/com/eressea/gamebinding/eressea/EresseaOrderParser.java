@@ -37,22 +37,21 @@ import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
- * A class for reading Eressea orders and checking their syntactical
- * correctness. A <tt>OrderParser</tt> object can register a
- * <tt>OrderCompleter</tt> object. In such a case the <tt>OrderParser</tt>
- * will call the corresponding methods of the <tt>OrderCompleter</tt> if it
+ * A class for reading Eressea orders and checking their syntactical correctness. A
+ * <tt>OrderParser</tt> object can register a <tt>OrderCompleter</tt> object. In such a case the
+ * <tt>OrderParser</tt> will call the corresponding methods of the <tt>OrderCompleter</tt> if it
  * encounters an incomplete order.
  */
 public class EresseaOrderParser implements OrderParser {
 	private static final Logger log = Logger.getInstance(EresseaOrderParser.class);
 
 	// this is not entirely true with dynamic bases but it probably doesn't really hurt
-	private static final int	  MAX_UID     = 1679615;
-	private String				  errMsg	  = null;
-	private TokenBucket			  tokenBucket = null;
-	private Iterator			  tokens	  = null;
-	private EresseaOrderCompleter completer   = null;
-	private Rules				  rules		  = null;
+	private static final int MAX_UID = 1679615;
+	private String errMsg = null;
+	private TokenBucket tokenBucket = null;
+	private Iterator tokens = null;
+	private EresseaOrderCompleter completer = null;
+	private Rules rules = null;
 
 	/**
 	 * Creates a new <tt>EresseaOrderParser</tt> object.
@@ -64,48 +63,46 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	/**
-	 * Creates a new <tt>EresseaOrderParser</tt> object and registers the
-	 * specified <tt>OrderCompleter</tt> object. This constructor should be
-	 * used only by the <tt>OrderCompleter</tt> class itself.
+	 * Creates a new <tt>EresseaOrderParser</tt> object and registers the specified
+	 * <tt>OrderCompleter</tt> object. This constructor should be used only by the
+	 * <tt>OrderCompleter</tt> class itself.
 	 *
 	 * @param rules TODO: DOCUMENT ME!
 	 * @param cc TODO: DOCUMENT ME!
 	 */
 	public EresseaOrderParser(Rules rules, EresseaOrderCompleter cc) {
 		tokenBucket = new TokenBucket();
-		completer   = cc;
-		this.rules  = rules;
+		completer = cc;
+		this.rules = rules;
 	}
 
 	/**
 	 * Returns the tokens read by the parser.
 	 *
-	 * @return all <tt>OrderToken</tt> object produced by the underlying
-	 * 		   <tt>OrderTokenizer</tt> by reading a order.
+	 * @return all <tt>OrderToken</tt> object produced by the underlying <tt>OrderTokenizer</tt> by
+	 * 		   reading a order.
 	 */
 	public List getTokens() {
 		return tokenBucket;
 	}
 
 	/**
-	 * Returns the error messages produced by the last invocation of the
-	 * <tt>read(Reader in)</tt> method.
+	 * Returns the error messages produced by the last invocation of the <tt>read(Reader in)</tt>
+	 * method.
 	 *
-	 * @return an error message if the last <tt>read</tt> returned
-	 * 		   <tt>false</tt>, <tt>null</tt> else.
+	 * @return an error message if the last <tt>read</tt> returned <tt>false</tt>, <tt>null</tt>
+	 * 		   else.
 	 */
 	public String getErrorMessage() {
 		return errMsg;
 	}
 
 	/**
-	 * Parses one line of text from the specified stream by tokenizing it and
-	 * checking the syntax.
+	 * Parses one line of text from the specified stream by tokenizing it and checking the syntax.
 	 *
 	 * @param in the stream to read the order from.
 	 *
-	 * @return <tt>true</tt> if the syntax of the order read is valid,
-	 * 		   <tt>false</tt> else.
+	 * @return <tt>true</tt> if the syntax of the order read is valid, <tt>false</tt> else.
 	 */
 	public boolean read(Reader in) {
 		errMsg = null;
@@ -1037,7 +1034,7 @@ public class EresseaOrderParser implements OrderParser {
 		boolean retVal = false;
 		token.ttype = OrderToken.TT_ID;
 
-		UnitID     uid = UnitID.createUnitID(token.getText());
+		UnitID uid = UnitID.createUnitID(token.getText());
 		OrderToken t = (OrderToken) tokens.next();
 
 		if(isNumeric(t.getText()) == true) {
@@ -1063,10 +1060,9 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	/**
-	 * For multiple-line-completion like the creation of give-orders for the
-	 * resources of an item in OrderCompleter.cmpltGibUIDAmount it is
-	 * necessary to save the unit's id and the amount to be given. This is
-	 * done by:
+	 * For multiple-line-completion like the creation of give-orders for the resources of an item
+	 * in OrderCompleter.cmpltGibUIDAmount it is necessary to save the unit's id and the amount to
+	 * be given. This is done by:
 	 *
 	 * @param token TODO: DOCUMENT ME!
 	 * @param uid the unit's id
@@ -1282,7 +1278,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		if(isNumeric(t.getText())) {
 			t.ttype = OrderToken.TT_NUMBER;
-			t	    = (OrderToken) tokens.next();
+			t = (OrderToken) tokens.next();
 
 			if(isString(t.getText())) {
 				retVal = readFinalString(t);
@@ -1338,20 +1334,17 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean readKaufeAmount(OrderToken token) {
-		boolean		 retVal		    = false;
-		ItemType     type		    = null;
+		boolean retVal = false;
+		ItemType type = null;
 		ItemCategory luxuryCategory = (rules != null)
-									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES)
-									  : null;
+									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
 		token.ttype = OrderToken.TT_NUMBER;
 
 		OrderToken t = (OrderToken) tokens.next();
 
 		// 
-		if((rules != null) &&
-			   ((type = rules.getItemType(t.getText())) != null) &&
-			   (luxuryCategory != null) &&
-			   luxuryCategory.equals(type.getCategory())) {
+		if((rules != null) && ((type = rules.getItemType(t.getText())) != null) &&
+			   (luxuryCategory != null) && luxuryCategory.equals(type.getCategory())) {
 			retVal = readFinalString(t);
 		} else {
 			if(completer != null) {
@@ -1438,7 +1431,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		if((rules != null) && (rules.getSkillType(t.getText()) != null)) {
 			t.ttype = OrderToken.TT_STRING;
-			t	    = (OrderToken) tokens.next();
+			t = (OrderToken) tokens.next();
 
 			if(isNumeric(t.getText()) == true) {
 				retVal = readFinalNumber(t);
@@ -1478,7 +1471,7 @@ public class EresseaOrderParser implements OrderParser {
 
 	//************* MACHE
 	private boolean readMache(OrderToken token) {
-		boolean		 retVal = false;
+		boolean retVal = false;
 		BuildingType type = null;
 		token.ttype = OrderToken.TT_KEYWORD;
 
@@ -1492,8 +1485,7 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readMacheTempID(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CASTLE))) {
 			retVal = readMacheBurg(t);
-		} else if((rules != null) &&
-					  ((type = rules.getBuildingType(t.getText())) != null) &&
+		} else if((rules != null) && ((type = rules.getBuildingType(t.getText())) != null) &&
 					  (!(type instanceof CastleType) ||
 					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CASTLE)))) {
 			retVal = readMacheBuilding(t);
@@ -1519,7 +1511,7 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean readMacheAmount(OrderToken token) {
-		boolean		 retVal = false;
+		boolean retVal = false;
 		BuildingType type = null;
 		token.ttype = OrderToken.TT_NUMBER;
 
@@ -1527,8 +1519,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CASTLE))) {
 			retVal = readMacheBurg(t);
-		} else if((rules != null) &&
-					  ((type = rules.getBuildingType(t.getText())) != null) &&
+		} else if((rules != null) && ((type = rules.getBuildingType(t.getText())) != null) &&
 					  !(type instanceof CastleType)) {
 			retVal = readMacheBuilding(t);
 		} else if((rules != null) && (rules.getShipType(t.getText()) != null)) {
@@ -1664,10 +1655,9 @@ public class EresseaOrderParser implements OrderParser {
 	private boolean readMacheAnything(OrderToken token) {
 		boolean retVal = true;
 
-		if((token.ttype != OrderToken.TT_EOC) &&
-			   (token.ttype != OrderToken.TT_COMMENT)) {
+		if((token.ttype != OrderToken.TT_EOC) && (token.ttype != OrderToken.TT_COMMENT)) {
 			token.ttype = OrderToken.TT_STRING;
-			retVal	    = checkNextFinal();
+			retVal = checkNextFinal();
 		}
 
 		return retVal;
@@ -2373,19 +2363,16 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean readVerkaufeAmount(OrderToken token) {
-		boolean		 retVal		    = false;
-		ItemType     type		    = null;
+		boolean retVal = false;
+		ItemType type = null;
 		ItemCategory luxuryCategory = (rules != null)
-									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES)
-									  : null;
+									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
 		token.ttype = OrderToken.TT_NUMBER;
 
 		OrderToken t = (OrderToken) tokens.next();
 
-		if((rules != null) &&
-			   ((type = rules.getItemType(t.getText())) != null) &&
-			   (luxuryCategory != null) &&
-			   type.getCategory().equals(luxuryCategory)) {
+		if((rules != null) && ((type = rules.getItemType(t.getText())) != null) &&
+			   (luxuryCategory != null) && type.getCategory().equals(luxuryCategory)) {
 			retVal = readFinalString(t);
 		} else {
 			if(completer != null) {
@@ -2399,19 +2386,16 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean readVerkaufeAlles(OrderToken token) {
-		boolean		 retVal		    = false;
-		ItemType     type		    = null;
+		boolean retVal = false;
+		ItemType type = null;
 		ItemCategory luxuryCategory = (rules != null)
-									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES)
-									  : null;
+									  ? rules.getItemCategory(EresseaConstants.C_LUXURIES) : null;
 		token.ttype = OrderToken.TT_KEYWORD;
 
 		OrderToken t = (OrderToken) tokens.next();
 
-		if((rules != null) &&
-			   ((type = rules.getItemType(t.getText())) != null) &&
-			   (type != null) && (luxuryCategory != null) &&
-			   luxuryCategory.equals(type.getCategory())) {
+		if((rules != null) && ((type = rules.getItemType(t.getText())) != null) && (type != null) &&
+			   (luxuryCategory != null) && luxuryCategory.equals(type.getCategory())) {
 			retVal = readFinalString(t);
 		} else {
 			if(completer != null) {
@@ -2478,7 +2462,7 @@ public class EresseaOrderParser implements OrderParser {
 		if(isNumeric(t.getText(), 10, Integer.MIN_VALUE, Integer.MAX_VALUE)) {
 			// y-coordinate
 			t.ttype = OrderToken.TT_NUMBER;
-			t	    = (OrderToken) tokens.next();
+			t = (OrderToken) tokens.next();
 
 			if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_LEVEL))) {
 				retVal = readZaubereRegionStufe(t);
@@ -2504,7 +2488,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		if(isNumeric(t.getText())) {
 			t.ttype = OrderToken.TT_NUMBER;
-			t	    = (OrderToken) tokens.next();
+			t = (OrderToken) tokens.next();
 
 			if(isString(t.getText())) {
 				retVal = readFinalString(t);
@@ -2528,7 +2512,7 @@ public class EresseaOrderParser implements OrderParser {
 
 		if(isNumeric(t.getText())) {
 			t.ttype = OrderToken.TT_NUMBER;
-			t	    = (OrderToken) tokens.next();
+			t = (OrderToken) tokens.next();
 
 			if(isString(t.getText())) {
 				retVal = readFinalString(t);
@@ -2692,9 +2676,8 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	/**
-	 * Checks whether the next token is the end of line or a comment, i.e. the
-	 * indicating a valid end of the order. Reports an unexpected token if
-	 * that is not the case.
+	 * Checks whether the next token is the end of line or a comment, i.e. the indicating a valid
+	 * end of the order. Reports an unexpected token if that is not the case.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -2711,17 +2694,15 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	/**
-	 * Checks whether the token t is the end of line or a comment, i.e. the
-	 * indicating a valid end of the order. Reports an unexpected token if
-	 * that is not the case.
+	 * Checks whether the token t is the end of line or a comment, i.e. the indicating a valid end
+	 * of the order. Reports an unexpected token if that is not the case.
 	 *
 	 * @param t TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private boolean checkFinal(OrderToken t) {
-		boolean retVal = ((t.ttype == OrderToken.TT_EOC) ||
-						 (t.ttype == OrderToken.TT_COMMENT));
+		boolean retVal = ((t.ttype == OrderToken.TT_EOC) || (t.ttype == OrderToken.TT_COMMENT));
 
 		if(retVal == false) {
 			unexpected(t);
@@ -2761,8 +2742,8 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean isTempID(String txt) {
-		boolean retVal   = false;
-		int     blankPos = txt.indexOf(" ");
+		boolean retVal = false;
+		int blankPos = txt.indexOf(" ");
 
 		if(blankPos == -1) {
 			blankPos = txt.indexOf("\t");
@@ -2772,26 +2753,23 @@ public class EresseaOrderParser implements OrderParser {
 			String temp = txt.substring(0, blankPos);
 			String nr = txt.substring(blankPos + 1);
 			retVal = (temp.equalsIgnoreCase("TEMP"));
-			retVal = retVal &&
-					 isNumeric(nr, IDBaseConverter.getBase(), 0, MAX_UID);
+			retVal = retVal && isNumeric(nr, IDBaseConverter.getBase(), 0, MAX_UID);
 		}
 
 		return retVal;
 	}
 
 	private boolean isRID(String txt) {
-		boolean retVal		   = false;
-		int     firstCommaPos  = txt.indexOf(",");
-		int     secondCommaPos = txt.lastIndexOf(",");
+		boolean retVal = false;
+		int firstCommaPos = txt.indexOf(",");
+		int secondCommaPos = txt.lastIndexOf(",");
 
 		if(firstCommaPos > -1) {
 			if(secondCommaPos > firstCommaPos) {
 				try {
 					Integer.parseInt(txt.substring(0, firstCommaPos));
-					Integer.parseInt(txt.substring(firstCommaPos + 1,
-												   secondCommaPos));
-					Integer.parseInt(txt.substring(secondCommaPos + 1,
-												   txt.length()));
+					Integer.parseInt(txt.substring(firstCommaPos + 1, secondCommaPos));
+					Integer.parseInt(txt.substring(secondCommaPos + 1, txt.length()));
 					retVal = true;
 				} catch(NumberFormatException e) {
 					log.warn("OrderEditor.getColor()", e);
@@ -2799,8 +2777,7 @@ public class EresseaOrderParser implements OrderParser {
 			} else {
 				try {
 					Integer.parseInt(txt.substring(0, firstCommaPos));
-					Integer.parseInt(txt.substring(firstCommaPos + 1,
-												   txt.length()));
+					Integer.parseInt(txt.substring(firstCommaPos + 1, txt.length()));
 					retVal = true;
 				} catch(NumberFormatException e) {
 					log.warn("OrderEditor.getColor()", e);
@@ -2824,10 +2801,9 @@ public class EresseaOrderParser implements OrderParser {
 			for(int i = 0; i < txt.length(); i++) {
 				char c = txt.charAt(i);
 
-				if(!(((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z')) ||
-					   (c == 'Ä') || (c == 'Ö') || (c == 'Ü') || (c == 'ä') ||
-					   (c == 'ö') || (c == 'ü') || (c == '~') || (c == '"') ||
-					   (c == 'ß'))) {
+				if(!(((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z')) || (c == 'Ä') ||
+					   (c == 'Ö') || (c == 'Ü') || (c == 'ä') || (c == 'ö') || (c == 'ü') ||
+					   (c == '~') || (c == '"') || (c == 'ß'))) {
 					retVal = false;
 
 					break;
@@ -2839,16 +2815,16 @@ public class EresseaOrderParser implements OrderParser {
 	}
 
 	private boolean isEmailAddress(String txt) {
-		boolean retVal  = true;
-		int     atIndex = txt.indexOf("@");
+		boolean retVal = true;
+		int atIndex = txt.indexOf("@");
 
 		if((atIndex > -1) && (atIndex == txt.lastIndexOf("@"))) {
 			for(int i = 0; i < txt.length(); i++) {
 				char c = txt.charAt(i);
 
 				if(!(((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'Z')) ||
-					   ((c >= 'a') && (c <= 'z')) || (c == '-') || (c == '_') ||
-					   (c == '.') || (c == '@'))) {
+					   ((c >= 'a') && (c <= 'z')) || (c == '-') || (c == '_') || (c == '.') ||
+					   (c == '@'))) {
 					retVal = false;
 
 					break;
@@ -2911,7 +2887,7 @@ class TokenBucket extends Vector {
 	 */
 	public int read(Reader in) {
 		OrderTokenizer tokenizer = new OrderTokenizer(in);
-		OrderToken     token = null;
+		OrderToken token = null;
 		clear();
 
 		do {
@@ -2923,8 +2899,7 @@ class TokenBucket extends Vector {
 	}
 
 	/**
-	 * Merges two tokens if the first one contains the string TEMP the second
-	 * one contains an id.
+	 * Merges two tokens if the first one contains the string TEMP the second one contains an id.
 	 *
 	 * @return the number of remaining tokens.
 	 */
@@ -2932,19 +2907,18 @@ class TokenBucket extends Vector {
 		if(size() > 1) {
 			for(int i = 0; i < (size() - 1); i++) {
 				OrderToken tempToken = tokenAt(i);
-				String     tempText = tempToken.getText();
+				String tempText = tempToken.getText();
 
 				if(tempText.equalsIgnoreCase("TEMP")) {
 					try {
 						OrderToken nrToken = tokenAt(i + 1);
-						String     nrText = nrToken.getText();
-						int		   nr     = IDBaseConverter.parse(nrText);
+						String nrText = nrToken.getText();
+						int nr = IDBaseConverter.parse(nrText);
 
 						if((nr >= 0) && (nr <= MAX_TEMP_NR)) {
 							tempToken.setText("TEMP " + nrText);
 
-							if((tempToken.getEnd() > -1) &&
-								   (nrToken.getEnd() > -1)) {
+							if((tempToken.getEnd() > -1) && (nrToken.getEnd() > -1)) {
 								tempToken.setEnd(nrToken.getEnd());
 							}
 

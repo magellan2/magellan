@@ -45,8 +45,7 @@ public class SetOriginAction extends MenuAction {
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		new SetOrigin(client, client.getData()).show();
-		client.getDispatcher().fire(new com.eressea.event.GameDataEvent(client,
-																		client.getData()));
+		client.getDispatcher().fire(new com.eressea.event.GameDataEvent(client, client.getData()));
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

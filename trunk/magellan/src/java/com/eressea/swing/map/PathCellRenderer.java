@@ -58,18 +58,18 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class PathCellRenderer extends ImageCellRenderer {
-	private static final Logger log				  = Logger.getInstance(PathCellRenderer.class);
-	private static final int    ACTIVE			  = 0;
-	private static final int    PASSIVE			  = 1;
-	private static final int    ACTIVEPAST		  = 2;
-	private static final int    PASSIVEPAST		  = 3;
-	private static final int    ALPHALEVEL		  = 100;
-	private boolean			    drawPassivePath   = false;
-	private boolean			    drawPastPath	  = false;
-	protected Map			    ownImages		  = CollectionFactory.createHashMap();
-	RGBImageFilter			    passiveFilter;
-	RGBImageFilter			    activePastFilter;
-	RGBImageFilter			    passivePastFilter;
+	private static final Logger log = Logger.getInstance(PathCellRenderer.class);
+	private static final int ACTIVE = 0;
+	private static final int PASSIVE = 1;
+	private static final int ACTIVEPAST = 2;
+	private static final int PASSIVEPAST = 3;
+	private static final int ALPHALEVEL = 100;
+	private boolean drawPassivePath = false;
+	private boolean drawPastPath = false;
+	protected Map ownImages = CollectionFactory.createHashMap();
+	RGBImageFilter passiveFilter;
+	RGBImageFilter activePastFilter;
+	RGBImageFilter passivePastFilter;
 
 	/**
 	 * Creates a new PathCellRenderer object.
@@ -81,13 +81,11 @@ public class PathCellRenderer extends ImageCellRenderer {
 		super(geo, settings);
 		drawPassivePath = (new Boolean(settings.getProperty("PathCellRenderer.drawPassivePath",
 															"true"))).booleanValue();
-		drawPastPath = (new Boolean(settings.getProperty("PathCellRenderer.drawPastPath",
-														 "true"))).booleanValue();
+		drawPastPath = (new Boolean(settings.getProperty("PathCellRenderer.drawPastPath", "true"))).booleanValue();
 
-		passiveFilter     = new GrayFilter(true, 50);
-		activePastFilter  = new AlphaFilter(ALPHALEVEL);
-		passivePastFilter = new AlphaFilter(ALPHALEVEL,
-											new GrayFilter(false, 50));
+		passiveFilter = new GrayFilter(true, 50);
+		activePastFilter = new AlphaFilter(ALPHALEVEL);
+		passivePastFilter = new AlphaFilter(ALPHALEVEL, new GrayFilter(false, 50));
 	}
 
 	/**
@@ -111,9 +109,9 @@ public class PathCellRenderer extends ImageCellRenderer {
 	}
 
 	/**
-	 * Checks the orders of the specified unit for movement orders and renders
-	 * arrows indicating the direction the unit is taking. Note that the
-	 * movement orders may not be abbreviated for this to work.
+	 * Checks the orders of the specified unit for movement orders and renders arrows indicating
+	 * the direction the unit is taking. Note that the movement orders may not be abbreviated for
+	 * this to work.
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 */
@@ -126,12 +124,10 @@ public class PathCellRenderer extends ImageCellRenderer {
 			List pastMovement = getPastMovement(u);
 
 			if(log.isDebugEnabled()) {
-				log.debug("render for unit u " + u + " travelled through " +
-						  pastMovement);
+				log.debug("render for unit u " + u + " travelled through " + pastMovement);
 			}
 
-			renderPath(u, pastMovement,
-					   isPastMovementPassive(u) ? PASSIVEPAST : ACTIVEPAST);
+			renderPath(u, pastMovement, isPastMovementPassive(u) ? PASSIVEPAST : ACTIVEPAST);
 		}
 
 		List activeMovement = getModifiedMovement(u);
@@ -145,15 +141,14 @@ public class PathCellRenderer extends ImageCellRenderer {
 
 			if(u.getModifiedShip() != null) {
 				// we are on a ship. try to render movemement from ship owner
-				passiveMovement = getModifiedMovement(u.getModifiedShip()
-													   .getOwnerUnit());
+				passiveMovement = getModifiedMovement(u.getModifiedShip().getOwnerUnit());
 			} else {
 				// the unit is not on a ship, search for carriers
 				Map carriers = u.getCarriers();
 
 				if(log.isDebugEnabled()) {
-					log.debug("PathCellRenderer.render: " + u + " has " +
-							  carriers.size() + " carriers");
+					log.debug("PathCellRenderer.render: " + u + " has " + carriers.size() +
+							  " carriers");
 				}
 
 				if(carriers.size() == 1) {
@@ -167,8 +162,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 	}
 
 	/**
-	 * this function inspects travelthru an travelthruship to find the movement
-	 * in the past
+	 * this function inspects travelthru an travelthruship to find the movement in the past
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 *
@@ -254,28 +248,23 @@ public class PathCellRenderer extends ImageCellRenderer {
 					if(transportMessageType.equals(m.getMessageType())) {
 						log.debug("PathCellRenderer(" + u + ") Message " + m);
 
-						if((m.attributes != null) &&
-							   (m.attributes.get("unit") != null)) {
+						if((m.attributes != null) && (m.attributes.get("unit") != null)) {
 							log.debug("PathCellRenderer(" + u + ") Unit   " +
 									  m.attributes.get("unit"));
 							log.debug("PathCellRenderer(" + u + ") UnitID " +
-									  UnitID.createUnitID((String) m.attributes.get("unit"),
-														  10));
+									  UnitID.createUnitID((String) m.attributes.get("unit"), 10));
 						}
 					}
 				}
 			}
 
-			if(transportMessageType.equals(m.getMessageType()) &&
-				   (m.attributes != null) &&
+			if(transportMessageType.equals(m.getMessageType()) && (m.attributes != null) &&
 				   (m.attributes.get("unit") != null) &&
-				   u.getID().equals(UnitID.createUnitID((String) m.attributes.get("unit"),
-															10))) {
+				   u.getID().equals(UnitID.createUnitID((String) m.attributes.get("unit"), 10))) {
 				// found a transport message; this is only valid in 
 				// units with active movement
 				if(log.isDebugEnabled()) {
-					log.debug("PathCellRenderer(" + u +
-							  "):false with message " + m);
+					log.debug("PathCellRenderer(" + u + "):false with message " + m);
 				}
 
 				return false;
@@ -296,23 +285,21 @@ public class PathCellRenderer extends ImageCellRenderer {
 	private void renderPath(Unit u, List coordinates, int imageType) {
 		if((coordinates != null) && (coordinates.size() > 0)) {
 			renderPath(u, (Coordinate) coordinates.get(0),
-					   Regions.getDirectionObjectsOfCoordinates(coordinates),
-					   imageType);
+					   Regions.getDirectionObjectsOfCoordinates(coordinates), imageType);
 		}
 	}
 
-	private void renderPath(Unit u, Coordinate start, List directions,
-							int imageType) {
+	private void renderPath(Unit u, Coordinate start, List directions, int imageType) {
 		if(log.isDebugEnabled()) {
-			log.debug("renderPath for unit " + u + " from " + start +
-					  " with list " + directions + ", imageType " + imageType);
+			log.debug("renderPath for unit " + u + " from " + start + " with list " + directions +
+					  ", imageType " + imageType);
 		}
 
 		Coordinate actCoord = new Coordinate(start); //  make Coordinate a copy 
 
 		for(Iterator iter = directions.iterator(); iter.hasNext();) {
 			Direction dirObj = (Direction) iter.next();
-			int		  dir = dirObj.getDir();
+			int dir = dirObj.getDir();
 
 			if(dir != -1) {
 				Rectangle rect = cellGeo.getImageRect(actCoord.x, actCoord.y);
@@ -321,8 +308,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 				Image img = getImage("Pfeil" + dir, imageType);
 
 				if(img != null) {
-					graphics.drawImage(img, rect.x, rect.y, rect.width,
-									   rect.height, null);
+					graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
 				}
 
 				actCoord.translate(Direction.toCoordinate(dir));
@@ -393,7 +379,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 	}
 
 	private class AlphaFilter extends RGBImageFilter {
-		private int			   level;
+		private int level;
 		private RGBImageFilter parent;
 
 		/**
@@ -412,7 +398,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 		 * @param parent TODO: DOCUMENT ME!
 		 */
 		public AlphaFilter(int level, RGBImageFilter parent) {
-			this.level  = level * 0x01000000;
+			this.level = level * 0x01000000;
 			this.parent = parent;
 
 			// canFilterIndexColorModel indicates whether or not it is acceptable
@@ -456,8 +442,8 @@ public class PathCellRenderer extends ImageCellRenderer {
 	/**
 	 * Scale all images this renderer uses to a certain scale factor.
 	 *
-	 * @param scaleFactor the factor to scale the images with (a scaleFactor of
-	 * 		  1.0 would scale all images to their original size).
+	 * @param scaleFactor the factor to scale the images with (a scaleFactor of 1.0 would scale all
+	 * 		  images to their original size).
 	 */
 	public void scale(float scaleFactor) {
 		super.scale(scaleFactor);
@@ -480,8 +466,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 	}
 
 	/**
-	 * Set the cell geometry this renderer is based on and make it reload all
-	 * of its cached images.
+	 * Set the cell geometry this renderer is based on and make it reload all of its cached images.
 	 *
 	 * @param geo TODO: DOCUMENT ME!
 	 */
@@ -515,10 +500,8 @@ public class PathCellRenderer extends ImageCellRenderer {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("name", "Path renderer");
-			defaultTranslations.put("drawpassivepath",
-									"draw path for passive transportation");
-			defaultTranslations.put("drawpastpath",
-									"draw path for past movement");
+			defaultTranslations.put("drawpassivepath", "draw path for passive transportation");
+			defaultTranslations.put("drawpastpath", "draw path for past movement");
 		}
 
 		return defaultTranslations;
@@ -531,8 +514,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 
 	private void setDrawPassivePath(boolean bool) {
 		drawPassivePath = bool;
-		settings.setProperty("PathCellRenderer.drawPassivePath",
-							 (new Boolean(bool)).toString());
+		settings.setProperty("PathCellRenderer.drawPassivePath", (new Boolean(bool)).toString());
 	}
 
 	private boolean getDrawPastPath() {
@@ -541,8 +523,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 
 	private void setDrawPastPath(boolean bool) {
 		drawPastPath = bool;
-		settings.setProperty("PathCellRenderer.drawPastPath",
-							 (new Boolean(bool)).toString());
+		settings.setProperty("PathCellRenderer.drawPastPath", (new Boolean(bool)).toString());
 	}
 
 	/**
@@ -575,15 +556,14 @@ public class PathCellRenderer extends ImageCellRenderer {
 		private void init() {
 			chkDrawPassivePath = new JCheckBox(getString("drawpassivepath"),
 											   source.getDrawPassivePath());
-			chkDrawPastPath = new JCheckBox(getString("drawpastpath"),
-											source.getDrawPastPath());
+			chkDrawPastPath = new JCheckBox(getString("drawpastpath"), source.getDrawPastPath());
 
 			this.setLayout(new GridBagLayout());
 
 			GridBagConstraints c = new GridBagConstraints();
 			c.anchor = GridBagConstraints.WEST;
-			c.gridx  = 0;
-			c.gridy  = 0;
+			c.gridx = 0;
+			c.gridy = 0;
 			this.add(chkDrawPassivePath, c);
 			c.gridx = 0;
 			c.gridy = 1;

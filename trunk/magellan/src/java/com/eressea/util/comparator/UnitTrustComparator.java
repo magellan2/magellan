@@ -18,16 +18,15 @@ import java.util.Comparator;
 import com.eressea.Unit;
 
 /**
- * A comparator imposing an ordering on Unit objects by comparing their health
- * status
+ * A comparator imposing an ordering on Unit objects by comparing their health status
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality.
  * </p>
  *
  * @author Ulrich Küster
@@ -38,8 +37,8 @@ public class UnitTrustComparator implements Comparator {
 	/**
 	 * Creates a new UnitTrustComparator object.
 	 *
-	 * @param subComparator if two units have the same health-status, this
-	 * 		  sub-comparator is applied if it is not <tt>null</tt>.
+	 * @param subComparator if two units have the same health-status, this sub-comparator is
+	 * 		  applied if it is not <tt>null</tt>.
 	 */
 	public UnitTrustComparator(Comparator subComparator) {
 		subCmp = subComparator;

@@ -56,12 +56,10 @@ import com.eressea.util.replacers.ReplacerSystem;
 /**
  * A GUI component displaying very basic data about regions.
  */
-public class BasicRegionPanel extends InternationalizedDataPanel
-	implements SelectionListener
-{
-	private static final Logger log		 = Logger.getInstance(BasicRegionPanel.class);
-	private ReplacerSystem	    replacer;
-	private HTMLLabel		    html;
+public class BasicRegionPanel extends InternationalizedDataPanel implements SelectionListener {
+	private static final Logger log = Logger.getInstance(BasicRegionPanel.class);
+	private ReplacerSystem replacer;
+	private HTMLLabel html;
 
 	//private JLabel html;
 	private String def;
@@ -131,11 +129,9 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 
 		GridBagConstraints c = new GridBagConstraints();
 
-		GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1,
-									 1.0, 1.0, /* different weighty!*/
-									 GridBagConstraints.NORTHWEST,
-									 GridBagConstraints.HORIZONTAL, c.insets,
-									 0, 0);
+		GridBagHelper.setConstraints(c, 0, 0, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
+									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+									 c.insets, 0, 0);
 
 		//html = new JLabel();
 		;
@@ -153,8 +149,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 	private static final int separatorDist = 2;
 
 	/**
-	 * this is a helper function to migrate the old stuff to the new html
-	 * layout
+	 * this is a helper function to migrate the old stuff to the new html layout
 	 *
 	 * @param def TODO: DOCUMENT ME!
 	 * @param filter TODO: DOCUMENT ME!
@@ -166,26 +161,23 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 		sb.append("<html>\n<body>\n<table  cellpadding=0 width=100%>\n");
 
 		if(log.isDebugEnabled()) {
-			log.debug("BasicRegionPanel.makeHTMLFromString: string (of length " +
-					  def.length() + "):\n" + def);
+			log.debug("BasicRegionPanel.makeHTMLFromString: string (of length " + def.length() +
+					  "):\n" + def);
 		}
 
-		for(Iterator iterRow = new BasicStringTokenizer(def, "\\\\");
-				iterRow.hasNext();) {
+		for(Iterator iterRow = new BasicStringTokenizer(def, "\\\\"); iterRow.hasNext();) {
 			// create new rows
 			String row = (String) iterRow.next();
 
 			if(log.isDebugEnabled()) {
-				log.debug("BasicRegionPanel.makeHTMLFromString: working on row " +
-						  row);
+				log.debug("BasicRegionPanel.makeHTMLFromString: working on row " + row);
 			}
 
 			sb.append("<tr>\n");
 
 			int i = 0;
 
-			for(Iterator iter = new BasicStringTokenizer(row, "&&");
-					iter.hasNext();) {
+			for(Iterator iter = new BasicStringTokenizer(row, "&&"); iter.hasNext();) {
 				String str = (String) iter.next();
 				sb.append("<td>");
 
@@ -212,21 +204,19 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 
 		if(log.isDebugEnabled()) {
 			log.debug("BasicRegionPanel.makeHTMLFromString: transforming string \n" +
-					  def.replace('§', '#') + "\" to " +
-					  htmlText.replace('§', '#'));
+					  def.replace('§', '#') + "\" to " + htmlText.replace('§', '#'));
 		}
 
 		return htmlText;
 	}
 
 	protected Dimension getDimension(String def) {
-		int cols    = 1;
-		int rows    = 1;
-		int index   = 0;
+		int cols = 1;
+		int rows = 1;
+		int index = 0;
 		int curcols = 1;
 
-		while((def.indexOf("&&", index) >= 0) ||
-				  (def.indexOf("\\\\", index) >= 0)) {
+		while((def.indexOf("&&", index) >= 0) || (def.indexOf("\\\\", index) >= 0)) {
 			int index1 = def.indexOf("&&", index);
 
 			if(index1 == -1) {
@@ -365,19 +355,18 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * This class emulates the behaviour of StringTokenizer with a string as
-	 * delimiter.
+	 * This class emulates the behaviour of StringTokenizer with a string as delimiter.
 	 */
 	public static class BasicStringTokenizer implements Iterator {
-		int    newPosition     = -1;
-		int    currentPosition = 0;
-		int    maxPosition     = 0;
+		int newPosition = -1;
+		int currentPosition = 0;
+		int maxPosition = 0;
 		String str;
 		String delim;
 
 		BasicStringTokenizer(String str, String delim) {
-			this.str    = delim + str + delim;
-			this.delim  = delim;
+			this.str = delim + str + delim;
+			this.delim = delim;
 			maxPosition = str.length();
 		}
 
@@ -393,9 +382,8 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 		}
 
 		/**
-		 * Skips ahead from startPos and returns the index of the next
-		 * delimiter character encountered, or maxPosition if no such
-		 * delimiter is found.
+		 * Skips ahead from startPos and returns the index of the next delimiter character
+		 * encountered, or maxPosition if no such delimiter is found.
 		 *
 		 * @param startPos TODO: DOCUMENT ME!
 		 *
@@ -412,8 +400,8 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 		}
 
 		/**
-		 * Skips delimiters starting from the specified position. Returns the
-		 * index of the first non-delimiter character at or after startPos.
+		 * Skips delimiters starting from the specified position. Returns the index of the first
+		 * non-delimiter character at or after startPos.
 		 *
 		 * @param startPos TODO: DOCUMENT ME!
 		 *
@@ -438,8 +426,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 		 * @throws java.util.NoSuchElementException TODO: DOCUMENT ME!
 		 */
 		public Object next() {
-			currentPosition = (newPosition > 0) ? newPosition
-												: skipDelims(currentPosition);
+			currentPosition = (newPosition > 0) ? newPosition : skipDelims(currentPosition);
 
 			if(currentPosition >= maxPosition) {
 				throw new java.util.NoSuchElementException();
@@ -473,7 +460,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 	 * @version $Revision$
 	 */
 	public static class HTMLLabel extends JComponent {
-		private String		   text;
+		private String text;
 		private transient View view;
 
 		/**
@@ -483,8 +470,8 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 		 */
 		public HTMLLabel(String text) {
 			// we need to install the LookAndFeel Fonts from the beginning
-			LookAndFeel.installColorsAndFont(this, "Label.background",
-											 "Label.foreground", "Label.font");
+			LookAndFeel.installColorsAndFont(this, "Label.background", "Label.foreground",
+											 "Label.font");
 			setText(text);
 		}
 
@@ -500,8 +487,8 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 		 */
 		public void updateUI() {
 			super.updateUI();
-			LookAndFeel.installColorsAndFont(this, "Label.background",
-											 "Label.foreground", "Label.font");
+			LookAndFeel.installColorsAndFont(this, "Label.background", "Label.foreground",
+											 "Label.font");
 		}
 
 		/**
@@ -547,7 +534,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 				return super.getMinimumSize();
 			}
 
-			Insets    i = getInsets();
+			Insets i = getInsets();
 
 			Dimension d = new Dimension(i.left + i.right, i.top + i.bottom);
 
@@ -567,7 +554,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 				return super.getPreferredSize();
 			}
 
-			Insets    i = getInsets();
+			Insets i = getInsets();
 
 			Dimension d = new Dimension(i.left + i.right, i.top + i.bottom);
 
@@ -587,7 +574,7 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 				return super.getMaximumSize();
 			}
 
-			Insets    i = getInsets();
+			Insets i = getInsets();
 
 			Dimension d = new Dimension(i.left + i.right, i.top + i.bottom);
 
@@ -662,16 +649,16 @@ public class BasicRegionPanel extends InternationalizedDataPanel
 				return null;
 			}
 
-			Rectangle rect   = r;
-			Insets    insets = c.getInsets();
+			Rectangle rect = r;
+			Insets insets = c.getInsets();
 
 			if(rect == null) {
 				rect = new Rectangle();
 			}
 
-			rect.x	    = insets.left;
-			rect.y	    = insets.top;
-			rect.width  = c.getWidth() - insets.left - insets.right;
+			rect.x = insets.left;
+			rect.y = insets.top;
+			rect.width = c.getWidth() - insets.left - insets.right;
 			rect.height = c.getHeight() - insets.top - insets.bottom;
 
 			return rect;

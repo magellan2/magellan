@@ -14,8 +14,8 @@
 package com.eressea.swing.map;
 
 /**
- * Simple interface to get connected to a mapper. Should be used by renderers
- * which want to set some Mapper properties.
+ * Simple interface to get connected to a mapper. Should be used by renderers which want to set
+ * some Mapper properties.
  *
  * @author Andreas
  * @version

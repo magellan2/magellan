@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * This class encapsulates some occuring exceptions as IOException.
  */
 public class XMLIOException extends IOException {
-	private Exception		    exception;
+	private Exception exception;
 	private static final String EXCEPTION_SEPARATOR = "______________ORIGINAL EXCEPTION____________";
 
 	/**

@@ -85,17 +85,17 @@ import com.eressea.util.logging.Logger;
 /**
  * A panel for showing statistics about factions.
  */
-public class FactionStatsPanel extends InternationalizedDataPanel
-	implements SelectionListener, TreeSelectionListener
+public class FactionStatsPanel extends InternationalizedDataPanel implements SelectionListener,
+																			 TreeSelectionListener
 {
-	private static final Logger    log				  = Logger.getInstance(FactionStatsPanel.class);
-	private Map					   factions			  = null;
-	private Map					   regions			  = null;
-	private DefaultTreeModel	   treeModel		  = null;
-	private DefaultMutableTreeNode rootNode			  = null;
-	private CopyTree			   tree				  = null;
-	private NodeWrapperFactory     nodeWrapperFactory;
-	private Units				   unitsTools		  = null;
+	private static final Logger log = Logger.getInstance(FactionStatsPanel.class);
+	private Map factions = null;
+	private Map regions = null;
+	private DefaultTreeModel treeModel = null;
+	private DefaultMutableTreeNode rootNode = null;
+	private CopyTree tree = null;
+	private NodeWrapperFactory nodeWrapperFactory;
+	private Units unitsTools = null;
 
 	/**
 	 * Creates a new FactionStatsPanel object.
@@ -109,10 +109,9 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 		this.setLayout(new BorderLayout());
 		this.add(getStatPanel(), BorderLayout.CENTER);
 		factions = CollectionFactory.createHashtable(data.factions());
-		regions  = CollectionFactory.createHashtable(data.regions());
+		regions = CollectionFactory.createHashtable(data.regions());
 		dispatcher.addSelectionListener(this);
-		unitsTools		   = (data != null) ? new Units(data.rules)
-											: new Units(null);
+		unitsTools = (data != null) ? new Units(data.rules) : new Units(null);
 		nodeWrapperFactory = new NodeWrapperFactory(settings);
 
 		// to get the pref-adapter
@@ -120,10 +119,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 		nodeWrapperFactory.createUnitNodeWrapper(temp);
 		nodeWrapperFactory.createSkillNodeWrapper(temp,
 												  new Skill(new SkillType(StringID.create("Test")),
-															0, 0, 0, false),
-												  null);
-		nodeWrapperFactory.createItemNodeWrapper(new Item(new ItemType(StringID.create("Test")),
-														  0));
+															0, 0, 0, false), null);
+		nodeWrapperFactory.createItemNodeWrapper(new Item(new ItemType(StringID.create("Test")), 0));
 	}
 
 	/**
@@ -135,8 +132,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 		data = e.getGameData();
 
 		/**
-		 * Don't clear factions as the SelectionEvent of the updated List in
-		 * FactionStatsDialog might be processed befor the GameDataEvent
+		 * Don't clear factions as the SelectionEvent of the updated List in FactionStatsDialog
+		 * might be processed befor the GameDataEvent
 		 */
 
 		// factions.clear();
@@ -156,12 +153,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			return;
 		}
 
-		if((e.getSelectedObjects() != null) &&
-			   (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if((e.getSelectedObjects() != null) && (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			List regions = CollectionFactory.createLinkedList();
 
-			for(Iterator iter = e.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = e.getSelectedObjects().iterator(); iter.hasNext();) {
 				Object o = iter.next();
 
 				if(o instanceof Region) {
@@ -170,14 +165,12 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			}
 
 			/**
-			 * Ulrich Küster: (!) Special care has to be taken. Generelly it
-			 * can not be differed, if SelectionEvents come from the faction
-			 * list in FactionStatsDialog or from other components of Magellan
-			 * (except if a special SelectionType has been defined in
-			 * SelectionEvent and is used). To keep the faction list in
-			 * FactionStatsDialog consistent to the displayed data in this
-			 * FactionStatsPanel object, setFaction() should be _never_ called
-			 * by this selectionChanged()-method, but directly by the
+			 * Ulrich Küster: (!) Special care has to be taken. Generelly it can not be differed,
+			 * if SelectionEvents come from the faction list in FactionStatsDialog or from other
+			 * components of Magellan (except if a special SelectionType has been defined in
+			 * SelectionEvent and is used). To keep the faction list in FactionStatsDialog
+			 * consistent to the displayed data in this FactionStatsPanel object, setFaction()
+			 * should be _never_ called by this selectionChanged()-method, but directly by the
 			 * valueChanged()-method of FactionStatsDialog.
 			 */
 			setRegions(regions);
@@ -251,30 +244,29 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 	 */
 
 	/**
-	 * Ulrich Küster: The algorithm wasn't correct as it is wrong to count the
-	 * number of persons in the temp units to get the number of recruited
-	 * persons. a) Temp units always have zero persons b) 'normal' units can
-	 * recruit persons So it is necessary to look at all unit's
-	 * RecruitmentRelations in the units's cache-object. I changed that. (Of
-	 * course this doesn't consider, that persons can be given to '0'.)
+	 * Ulrich Küster: The algorithm wasn't correct as it is wrong to count the number of persons in
+	 * the temp units to get the number of recruited persons. a) Temp units always have zero
+	 * persons b) 'normal' units can recruit persons So it is necessary to look at all unit's
+	 * RecruitmentRelations in the units's cache-object. I changed that. (Of course this doesn't
+	 * consider, that persons can be given to '0'.)
 	 */
 	private void updateTree() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		DefaultMutableTreeNode n					 = null;
-		DefaultMutableTreeNode m					 = null;
-		DefaultMutableTreeNode o					 = null;
-		Map					   units				 = CollectionFactory.createHashtable();
-		int					   personCounter		 = 0;
-		int					   modifiedUnitsCounter  = 0;
-		int					   tempUnitsCounter		 = 0;
-		int					   modifiedPersonCounter = 0;
-		Faction				   f					 = null;
+		DefaultMutableTreeNode n = null;
+		DefaultMutableTreeNode m = null;
+		DefaultMutableTreeNode o = null;
+		Map units = CollectionFactory.createHashtable();
+		int personCounter = 0;
+		int modifiedUnitsCounter = 0;
+		int tempUnitsCounter = 0;
+		int modifiedPersonCounter = 0;
+		Faction f = null;
 		rootNode.removeAllChildren();
 
 		/**
-		 * Used to collect persons of different race than their faction. Key:
-		 * String (racename), Value: List containing the units
+		 * Used to collect persons of different race than their faction. Key: String (racename),
+		 * Value: List containing the units
 		 */
 		Map specialPersons = CollectionFactory.createHashtable();
 
@@ -314,10 +306,9 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 					}
 
 					/**
-					 * poorly it is necessary to refresh all relations, as at
-					 * this time it is not assured that they are always up to
-					 * date. Possibly it would be better, to calculate them
-					 * only, if orders are loaded or changed...
+					 * poorly it is necessary to refresh all relations, as at this time it is not
+					 * assured that they are always up to date. Possibly it would be better, to
+					 * calculate them only, if orders are loaded or changed...
 					 */
 					u.getRegion().refreshUnitRelations();
 
@@ -333,19 +324,16 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			}
 		}
 
-		n = new DefaultMutableTreeNode(getString("node.units") +
-									   (units.size() - tempUnitsCounter) +
+		n = new DefaultMutableTreeNode(getString("node.units") + (units.size() - tempUnitsCounter) +
 									   " (" + modifiedUnitsCounter + ")");
 		rootNode.add(n);
-		n = new DefaultMutableTreeNode(getString("node.persons") +
-									   personCounter + " (" +
+		n = new DefaultMutableTreeNode(getString("node.persons") + personCounter + " (" +
 									   modifiedPersonCounter + ")");
 		rootNode.add(n);
 
 		if(f != null) {
 			if(f.getType() != null) {
-				n = new DefaultMutableTreeNode(getString("node.race") +
-											   f.getType().getName());
+				n = new DefaultMutableTreeNode(getString("node.race") + f.getType().getName());
 				rootNode.add(n);
 			}
 
@@ -353,11 +341,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 				n = new DefaultMutableTreeNode(getString("node.otherrace"));
 				rootNode.add(n);
 
-				for(Iterator iter = specialPersons.keySet().iterator();
-						iter.hasNext();) {
-					Object obj   = iter.next();
-					List   v     = (List) specialPersons.get(obj);
-					int    count = 0;
+				for(Iterator iter = specialPersons.keySet().iterator(); iter.hasNext();) {
+					Object obj = iter.next();
+					List v = (List) specialPersons.get(obj);
+					int count = 0;
 
 					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
 						count += ((Unit) iterator.next()).persons;
@@ -374,24 +361,20 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			}
 
 			if(f.spellSchool != null) {
-				n = new DefaultMutableTreeNode(getString("node.magicschool") +
-											   f.spellSchool);
+				n = new DefaultMutableTreeNode(getString("node.magicschool") + f.spellSchool);
 				rootNode.add(n);
 			}
 
 			String description = f.getDescription();
 
 			if((description != null) && (description.length() > 0)) {
-				n = new DefaultMutableTreeNode(getString("node.banner") +
-											   description);
+				n = new DefaultMutableTreeNode(getString("node.banner") + description);
 				rootNode.add(n);
 			}
 
 			if(f.email != null) {
 				n = new DefaultMutableTreeNode(new SimpleNodeWrapper(getString("node.e-mail") +
-																	 f.email,
-																	 null,
-																	 f.email));
+																	 f.email, null, f.email));
 				rootNode.add(n);
 			}
 
@@ -401,17 +384,14 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			rootNode.add(n);
 
 			if(f.score > 0) {
-				n = new DefaultMutableTreeNode(getString("node.score") +
-											   f.score + "/" + f.averageScore +
-											   " (" +
-											   (int) ((100.0 * f.score) / f.averageScore) +
-											   "%)");
+				n = new DefaultMutableTreeNode(getString("node.score") + f.score + "/" +
+											   f.averageScore + " (" +
+											   (int) ((100.0 * f.score) / f.averageScore) + "%)");
 				rootNode.add(n);
 			}
 
 			if(f.migrants > 0) {
-				n = new DefaultMutableTreeNode(getString("node.migrants") +
-											   f.migrants + "/" +
+				n = new DefaultMutableTreeNode(getString("node.migrants") + f.migrants + "/" +
 											   f.maxMigrants);
 				rootNode.add(n);
 			}
@@ -432,8 +412,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 				n = new DefaultMutableTreeNode(getString("node.groups"));
 				rootNode.add(n);
 
-				for(Iterator iter = f.groups.values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = f.groups.values().iterator(); iter.hasNext();) {
 					Group g = (Group) iter.next();
 					m = new DefaultMutableTreeNode(g);
 					n.add(m);
@@ -458,10 +437,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			// 4 = am Handel
 			// 5 = Diebstahl
 			// 6 = Zauberei
-			int     earned[]	  = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-			int     wanted[]	  = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-			int     spentForTrade = 0;
-			Faction faction		  = (Faction) fIter.next();
+			int earned[] = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+			int wanted[] = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+			int spentForTrade = 0;
+			Faction faction = (Faction) fIter.next();
 
 			if(faction.messages != null) {
 				Iterator iter = faction.messages.iterator();
@@ -475,12 +454,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 
 						if(value != null) {
 							String regionCoordinate = value;
-							ID     coordinate = Coordinate.parse(regionCoordinate,
-																 ",");
+							ID coordinate = Coordinate.parse(regionCoordinate, ",");
 
 							if(coordinate == null) {
-								coordinate = Coordinate.parse(regionCoordinate,
-															  " ");
+								coordinate = Coordinate.parse(regionCoordinate, " ");
 							}
 
 							if(!regions.containsKey(coordinate)) {
@@ -494,8 +471,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 
 							if(value != null) {
 								String number = value;
-								UnitID id   = UnitID.createUnitID(number, 10);
-								Unit   unit = (Unit) data.units().get(id);
+								UnitID id = UnitID.createUnitID(number, 10);
+								Unit unit = (Unit) data.units().get(id);
 
 								if(unit != null) {
 									Region r = unit.getRegion();
@@ -556,19 +533,15 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			}
 
 			if((totalIncome != 0) || (totalWanted != 0)) {
-				Object msgArgs[] = {
-									   new Integer(totalIncome),
-									   new Integer(totalWanted)
-								   };
+				Object msgArgs[] = { new Integer(totalIncome), new Integer(totalWanted) };
 				n = new DefaultMutableTreeNode((new java.text.MessageFormat(getString("node.income"))).format(msgArgs));
 				rootNode.add(n);
 			}
 
 			for(int i = 0; i < earned.length; i++) {
 				if((earned[i] != 0) || (wanted[i] != 0)) {
-					Object   msgArgs[] = { new Integer(earned[i]) };
-					String   s = (new java.text.MessageFormat(getString("node.income" +
-																		i)).format(msgArgs));
+					Object msgArgs[] = { new Integer(earned[i]) };
+					String s = (new java.text.MessageFormat(getString("node.income" + i)).format(msgArgs));
 
 					if(earned[i] != wanted[i]) {
 						msgArgs = new Object[] { new Integer(wanted[i]) };
@@ -581,32 +554,29 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			}
 
 			if(spentForTrade != 0) {
-				Object   msgArgs[] = { new Integer(-spentForTrade) };
-				String   s = (new java.text.MessageFormat(getString("node.spentfortrade")).format(msgArgs));
+				Object msgArgs[] = { new Integer(-spentForTrade) };
+				String s = (new java.text.MessageFormat(getString("node.spentfortrade")).format(msgArgs));
 				m = new DefaultMutableTreeNode(s);
 				n.add(m);
 			}
 		}
 
 		// show items and clear categories
-		unitsTools.addCategorizedUnitItems(units.values(), rootNode, null,
-										   null, true);
+		unitsTools.addCategorizedUnitItems(units.values(), rootNode, null, null, true);
 
 		// add buildings
 		// maps BuildingTypes to a List, containing the single buildings
 		Map buildingsCounter = CollectionFactory.createHashtable();
 
 		// collect the buildings
-		for(Iterator iterator = regions.values().iterator();
-				iterator.hasNext();) {
+		for(Iterator iterator = regions.values().iterator(); iterator.hasNext();) {
 			Region r = (Region) iterator.next();
 
 			for(Iterator iter = r.buildings().iterator(); iter.hasNext();) {
 				Building building = (Building) iter.next();
 
 				if((building.getOwnerUnit() != null) &&
-					   factions.containsKey(building.getOwnerUnit().getFaction()
-														.getID())) {
+					   factions.containsKey(building.getOwnerUnit().getFaction().getID())) {
 					if(!buildingsCounter.containsKey(building.getType())) {
 						buildingsCounter.put(building.getType(),
 											 CollectionFactory.createLinkedList());
@@ -623,15 +593,13 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			rootNode.add(n);
 		}
 
-		for(Iterator iter = buildingsCounter.keySet().iterator();
-				iter.hasNext();) {
+		for(Iterator iter = buildingsCounter.keySet().iterator(); iter.hasNext();) {
 			UnitContainerType buildingType = (UnitContainerType) iter.next();
 			m = new DefaultMutableTreeNode(buildingType.getName() + ": " +
 										   ((List) buildingsCounter.get(buildingType)).size());
 			n.add(m);
 
-			for(Iterator i = ((List) buildingsCounter.get(buildingType)).iterator();
-					i.hasNext();) {
+			for(Iterator i = ((List) buildingsCounter.get(buildingType)).iterator(); i.hasNext();) {
 				UnitContainerNodeWrapper uc = nodeWrapperFactory.createUnitContainerNodeWrapper((Building) i.next());
 				m.add(new DefaultMutableTreeNode(uc));
 			}
@@ -642,19 +610,16 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 		Map shipsCounter = CollectionFactory.createHashtable();
 
 		// collect the ships
-		for(Iterator iterator = regions.values().iterator();
-				iterator.hasNext();) {
+		for(Iterator iterator = regions.values().iterator(); iterator.hasNext();) {
 			Region r = (Region) iterator.next();
 
 			for(Iterator iter = r.ships().iterator(); iter.hasNext();) {
 				Ship ship = (Ship) iter.next();
 
 				if((ship.getOwnerUnit() != null) &&
-					   factions.containsKey(ship.getOwnerUnit().getFaction()
-													.getID())) {
+					   factions.containsKey(ship.getOwnerUnit().getFaction().getID())) {
 					if(!shipsCounter.containsKey(ship.getType())) {
-						shipsCounter.put(ship.getType(),
-										 CollectionFactory.createLinkedList());
+						shipsCounter.put(ship.getType(), CollectionFactory.createLinkedList());
 					}
 
 					((List) shipsCounter.get(ship.getType())).add(ship);
@@ -674,8 +639,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 										   ((List) shipsCounter.get(shipType)).size());
 			n.add(m);
 
-			for(Iterator i = ((List) shipsCounter.get(shipType)).iterator();
-					i.hasNext();) {
+			for(Iterator i = ((List) shipsCounter.get(shipType)).iterator(); i.hasNext();) {
 				UnitContainerNodeWrapper uc = nodeWrapperFactory.createUnitContainerNodeWrapper((Ship) i.next());
 				m.add(new DefaultMutableTreeNode(uc));
 			}
@@ -689,15 +653,13 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			rootNode.add(n);
 
 			for(Iterator iter = sortedSkillTypes.iterator(); iter.hasNext();) {
-				SkillType type		   = (SkillType) iter.next();
-				List	  sortedSkills = skillStats.getKnownSkills(type);
+				SkillType type = (SkillType) iter.next();
+				List sortedSkills = skillStats.getKnownSkills(type);
 
 				for(Iterator i = sortedSkills.iterator(); i.hasNext();) {
 					Skill skill = (Skill) i.next();
-					m = new DefaultMutableTreeNode(new SimpleNodeWrapper(type.getName() +
-																		 " T" +
-																		 skill.getLevel() +
-																		 ": " +
+					m = new DefaultMutableTreeNode(new SimpleNodeWrapper(type.getName() + " T" +
+																		 skill.getLevel() + ": " +
 																		 skillStats.getPersonNumber(skill),
 																		 type.getName()));
 					n.add(m);
@@ -705,24 +667,21 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 					List unitList = skillStats.getUnits(skill);
 
 					// now sort the units and add them as nodes...
-					Comparator idCmp   = new IDComparator();
+					Comparator idCmp = new IDComparator();
 					Comparator unitCmp = new UnitSkillComparator(new SpecifiedSkillTypeSkillComparator(type,
 																									   new SkillComparator(),
 																									   null),
 																 idCmp);
 					Collections.sort(unitList, unitCmp);
 
-					for(Iterator iterator = unitList.iterator();
-							iterator.hasNext();) {
-						Unit   u    = (Unit) iterator.next();
+					for(Iterator iterator = unitList.iterator(); iterator.hasNext();) {
+						Unit u = (Unit) iterator.next();
 						String text = u.toString();
 
 						if(!data.noSkillPoints) {
-							int bonus	    = u.race.getSkillBonus(type);
-							int currentDays = u.getSkill(type)
-											   .getPointsPerPerson();
-							int nextLevelDays = Skill.getPointsAtLevel(skill.getLevel() -
-																	   bonus +
+							int bonus = u.race.getSkillBonus(type);
+							int currentDays = u.getSkill(type).getPointsPerPerson();
+							int nextLevelDays = Skill.getPointsAtLevel(skill.getLevel() - bonus +
 																	   1);
 							int pointsToLearn = nextLevelDays - currentDays;
 							int turnsToLearn = pointsToLearn / 30;
@@ -731,13 +690,11 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 								turnsToLearn++;
 							}
 
-							text += (": " + " [" + currentDays + " -> " +
-							nextLevelDays + " {" + turnsToLearn + "}], " +
-							u.persons);
+							text += (": " + " [" + currentDays + " -> " + nextLevelDays + " {" +
+							turnsToLearn + "}], " + u.persons);
 						}
 
-						UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u,
-																					 text);
+						UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u, text);
 						m.add(new DefaultMutableTreeNode(w));
 					}
 				}
@@ -760,12 +717,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 						String regionCoordinate = (String) msg.attributes.get("region");
 
 						if(regionCoordinate != null) {
-							ID coordinate = Coordinate.parse(regionCoordinate,
-															 ",");
+							ID coordinate = Coordinate.parse(regionCoordinate, ",");
 
 							if(coordinate == null) {
-								coordinate = Coordinate.parse(regionCoordinate,
-															  " ");
+								coordinate = Coordinate.parse(regionCoordinate, " ");
 							}
 
 							if(!regions.containsKey(coordinate)) {
@@ -776,10 +731,9 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 						// find a valid amount
 						if((msg.getMessageType() != null) &&
 							   (msg.getMessageType().getSection() != null) &&
-							   msg.getMessageType().getSection()
-									  .equalsIgnoreCase("production")) {
-							String value  = (String) msg.attributes.get("amount");
-							int    amount = 0;
+							   msg.getMessageType().getSection().equalsIgnoreCase("production")) {
+							String value = (String) msg.attributes.get("amount");
+							int amount = 0;
 
 							if(value != null) {
 								amount = Integer.parseInt(value);
@@ -796,7 +750,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 
 								if(resource != null) {
 									// find the category
-									ItemType     itemType     = data.rules.getItemType(StringID.create(resource));
+									ItemType itemType = data.rules.getItemType(StringID.create(resource));
 									ItemCategory itemCategory = null;
 
 									if(itemType != null) {
@@ -831,11 +785,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 											number = Integer.parseInt(value);
 
 											UnitID id = UnitID.createUnitID(number);
-											Unit   u = data.getUnit(id);
+											Unit u = data.getUnit(id);
 
 											if(u != null) {
-												p.units.put(u,
-															new Integer(amount));
+												p.units.put(u, new Integer(amount));
 											}
 										}
 									}
@@ -855,20 +808,19 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			m = new DefaultMutableTreeNode();
 			prodNode.add(m);
 
-			Map h		    = (Map) production.get(iCategory);
+			Map h = (Map) production.get(iCategory);
 			int totalAmount = 0;
 
 			for(Iterator iterator = h.keySet().iterator(); iterator.hasNext();) {
-				String		    resource = (String) iterator.next();
+				String resource = (String) iterator.next();
 				ProductionStats stats = (ProductionStats) h.get(resource);
 				totalAmount += stats.totalAmount;
-				o = new DefaultMutableTreeNode(resource + ": " +
-											   stats.totalAmount);
+				o = new DefaultMutableTreeNode(resource + ": " + stats.totalAmount);
 				m.add(o);
 
 				for(Iterator i = stats.units.keySet().iterator(); i.hasNext();) {
-					Unit u	    = (Unit) i.next();
-					int  amount = ((Integer) stats.units.get(u)).intValue();
+					Unit u = (Unit) i.next();
+					int amount = ((Integer) stats.units.get(u)).intValue();
 					o.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u,
 																							  amount)));
 				}
@@ -901,17 +853,16 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 	}
 
 	private Container getStatPanel() {
-		rootNode  = new DefaultMutableTreeNode(null);
+		rootNode = new DefaultMutableTreeNode(null);
 		treeModel = new DefaultTreeModel(rootNode);
-		tree	  = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel, dispatcher);
 		tree.setRootVisible(false);
 		tree.addTreeSelectionListener(this);
 
 		CellRenderer tr = new CellRenderer(settings);
 		tree.setCellRenderer(tr);
 
-		JScrollPane treeScrollPane = new JScrollPane(tree,
-													 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane treeScrollPane = new JScrollPane(tree, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 													 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		treeScrollPane.setMinimumSize(new Dimension(100, 50));
 
@@ -959,12 +910,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 			defaultTranslations.put("node.income5", "Theft: {0} silver");
 			defaultTranslations.put("node.income6", "Magic: {0} silver");
 			defaultTranslations.put("node.incomewanted", " of {0} silver");
-			defaultTranslations.put("node.spentfortrade",
-									"Expenses for Trade: {0} silver");
+			defaultTranslations.put("node.spentfortrade", "Expenses for Trade: {0} silver");
 			defaultTranslations.put("node.buildings", "Buildings");
 			defaultTranslations.put("node.ships", "Ships");
-			defaultTranslations.put("node.racenameprefix",
-									"Prefix for race name: ");
+			defaultTranslations.put("node.racenameprefix", "Prefix for race name: ");
 			defaultTranslations.put("node.skills", "Skills");
 			defaultTranslations.put("node.production", "Production");
 			defaultTranslations.put("node.otherrace", "Persons of other race");
@@ -974,8 +923,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel
 	}
 
 	/**
-	 * A little class used to store information about production statistics for
-	 * a certain resource
+	 * A little class used to store information about production statistics for a certain resource
 	 */
 	private class ProductionStats {
 		// mapping units who produced the special resource (Unit) to the according amounts (Integer)

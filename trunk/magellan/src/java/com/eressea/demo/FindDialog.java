@@ -84,25 +84,25 @@ import com.eressea.util.logging.Logger;
 public class FindDialog extends InternationalizedDataDialog
 	implements javax.swing.event.ListSelectionListener, SelectionListener
 {
-	private static final Logger log					    = Logger.getInstance(FindDialog.class);
-	private JComboBox		    txtPattern			    = null;
-	private JCheckBox		    chkIDs				    = null;
-	private JCheckBox		    chkNames			    = null;
-	private JCheckBox		    chkDescs			    = null;
-	private JCheckBox		    chkCmds				    = null;
-	private JCheckBox		    chkMessages			    = null;
-	private JCheckBox		    chkItems			    = null;
-	private JComboBox		    factionCombo		    = null;
-	private JCheckBox		    addUnits			    = null;
-	private JCheckBox		    addRegions			    = null;
-	private JCheckBox		    addBuildings		    = null;
-	private JCheckBox		    addShips			    = null;
-	private JCheckBox		    addTraitors			    = null;
-	private JCheckBox		    addOnlyUnconfirmedUnits = null;
-	private JCheckBox		    addFactions			    = null;
-	private JList			    resultList			    = null;
-	private JPanel			    pnlResults			    = null;
-	private List			    history;
+	private static final Logger log = Logger.getInstance(FindDialog.class);
+	private JComboBox txtPattern = null;
+	private JCheckBox chkIDs = null;
+	private JCheckBox chkNames = null;
+	private JCheckBox chkDescs = null;
+	private JCheckBox chkCmds = null;
+	private JCheckBox chkMessages = null;
+	private JCheckBox chkItems = null;
+	private JComboBox factionCombo = null;
+	private JCheckBox addUnits = null;
+	private JCheckBox addRegions = null;
+	private JCheckBox addBuildings = null;
+	private JCheckBox addShips = null;
+	private JCheckBox addTraitors = null;
+	private JCheckBox addOnlyUnconfirmedUnits = null;
+	private JCheckBox addFactions = null;
+	private JList resultList = null;
+	private JPanel pnlResults = null;
+	private List history;
 
 	// selected regions that are stored as region-objects!
 	private List selectedRegions = CollectionFactory.createLinkedList();
@@ -115,18 +115,17 @@ public class FindDialog extends InternationalizedDataDialog
 	 * @param dispatcher TODO: DOCUMENT ME!
 	 * @param d TODO: DOCUMENT ME!
 	 * @param p TODO: DOCUMENT ME!
-	 * @param regions A collection of region objects that were selected on the
-	 * 		  map. Up to the next SelectionEvent with type ST_REGIONS any
-	 * 		  search will be limited to these regions.
+	 * @param regions A collection of region objects that were selected on the map. Up to the next
+	 * 		  SelectionEvent with type ST_REGIONS any search will be limited to these regions.
 	 */
-	public FindDialog(Frame owner, boolean modal, EventDispatcher dispatcher,
-					  GameData d, Properties p, Collection regions) {
+	public FindDialog(Frame owner, boolean modal, EventDispatcher dispatcher, GameData d,
+					  Properties p, Collection regions) {
 		super(owner, modal, dispatcher, d, p);
 		dispatcher.addSelectionListener(this);
 		dispatcher.addGameDataListener(this);
 		selectedRegions.addAll(regions);
-		data		    = d;
-		settings	    = p;
+		data = d;
+		settings = p;
 		this.dispatcher = dispatcher;
 
 		setTitle(getString("window.title"));
@@ -134,13 +133,10 @@ public class FindDialog extends InternationalizedDataDialog
 		setSize(420, 500);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int		  x = Integer.parseInt(settings.getProperty("FindDialog.x",
-															((screen.width -
-															getWidth()) / 2) +
-															""));
+		int x = Integer.parseInt(settings.getProperty("FindDialog.x",
+													  ((screen.width - getWidth()) / 2) + ""));
 		int y = Integer.parseInt(settings.getProperty("FindDialog.y",
-													  ((screen.height -
-													  getHeight()) / 2) + ""));
+													  ((screen.height - getHeight()) / 2) + ""));
 		setLocation(x, y);
 	}
 
@@ -159,8 +155,7 @@ public class FindDialog extends InternationalizedDataDialog
 			// it is assumed that selections of this type contain only regions
 			selectedRegions.clear();
 
-			for(Iterator iter = s.getSelectedObjects().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = s.getSelectedObjects().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 				selectedRegions.add(r);
 			}
@@ -187,7 +182,7 @@ public class FindDialog extends InternationalizedDataDialog
 			return;
 		}
 
-		Object o		  = resultList.getSelectedValue();
+		Object o = resultList.getSelectedValue();
 		Object fireObject = null;
 
 		if(o != null) {
@@ -206,9 +201,9 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	private JPanel getMainPane() {
-		JPanel			   main    = new JPanel();
-		GridBagLayout	   gridbag = new GridBagLayout();
-		GridBagConstraints c	   = new GridBagConstraints();
+		JPanel main = new JPanel();
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
 		main.setLayout(gridbag);
 		main.setBorder(new EmptyBorder(4, 4, 4, 4));
 
@@ -222,8 +217,7 @@ public class FindDialog extends InternationalizedDataDialog
 		history.add("");
 
 		if(settings.containsKey("FindDialog.History")) {
-			StringTokenizer st = new StringTokenizer(settings.getProperty("FindDialog.History"),
-													 "~");
+			StringTokenizer st = new StringTokenizer(settings.getProperty("FindDialog.History"), "~");
 
 			while(st.hasMoreTokens()) {
 				history.add(st.nextToken());
@@ -246,108 +240,99 @@ public class FindDialog extends InternationalizedDataDialog
 		pnlPattern.add(txtPattern, BorderLayout.CENTER);
 
 		chkIDs = new JCheckBox(getString("chk.ids.caption"),
-							   settings.getProperty("FindDialog.IDs", "true")
-									   .equals("true"));
+							   settings.getProperty("FindDialog.IDs", "true").equals("true"));
 		chkIDs.setMnemonic(getString("chk.ids.mnemonic").charAt(0));
 
 		chkNames = new JCheckBox(getString("chk.names.caption"),
-								 settings.getProperty("FindDialog.Names", "true")
-										 .equals("true"));
+								 settings.getProperty("FindDialog.Names", "true").equals("true"));
 		chkNames.setMnemonic(getString("chk.names.mnemonic").charAt(0));
 
 		chkDescs = new JCheckBox(getString("chk.descriptions.caption"),
-								 settings.getProperty("FindDialog.Descriptions",
-													  "true").equals("true"));
+								 settings.getProperty("FindDialog.Descriptions", "true").equals("true"));
 		chkDescs.setMnemonic(getString("chk.descriptions.mnemonic").charAt(0));
 
 		chkCmds = new JCheckBox(getString("chk.orders.caption"),
-								settings.getProperty("FindDialog.Orders", "true")
-										.equals("true"));
+								settings.getProperty("FindDialog.Orders", "true").equals("true"));
 		chkCmds.setMnemonic(getString("chk.orders.mnemonic").charAt(0));
 
 		chkMessages = new JCheckBox(getString("chk.msgsandeffects.caption"),
-									settings.getProperty("FindDialog.Msgs",
-														 "true").equals("true"));
+									settings.getProperty("FindDialog.Msgs", "true").equals("true"));
 		chkMessages.setMnemonic(getString("chk.msgsandeffects.mnemonic").charAt(0));
 
 		chkItems = new JCheckBox(getString("chk.items.caption"),
-								 settings.getProperty("FindDialog.Items", "true")
-										 .equals("true"));
+								 settings.getProperty("FindDialog.Items", "true").equals("true"));
 		chkItems.setMnemonic(getString("chk.items.mnemonic").charAt(0));
 
 		JPanel pnlAttributeCheckBoxes = new JPanel(new GridBagLayout());
 
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlAttributeCheckBoxes.add(chkIDs, c);
 
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.NONE;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		pnlAttributeCheckBoxes.add(chkNames, c);
 
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlAttributeCheckBoxes.add(chkDescs, c);
 
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 1;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlAttributeCheckBoxes.add(chkCmds, c);
 
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 0;
-		c.gridy		 = 2;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlAttributeCheckBoxes.add(chkMessages, c);
 
-		c.anchor     = GridBagConstraints.WEST;
-		c.gridx		 = 1;
-		c.gridy		 = 2;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.1;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
+		c.weighty = 0.0;
 		pnlAttributeCheckBoxes.add(chkItems, c);
 
-		List factions = CollectionFactory.createLinkedList(data.factions()
-															   .values());
+		List factions = CollectionFactory.createLinkedList(data.factions().values());
 		Collections.sort(factions, new NameComparator(new IDComparator()));
 		factionCombo = new JComboBox(factions.toArray());
 		factionCombo.addItem("");
 		factionCombo.setSelectedIndex(factionCombo.getItemCount() - 1);
 
-		JLabel factionLabel = new JLabel(getString("lbl.faction.caption") +
-										 ": ");
-		factionLabel.setDisplayedMnemonic(getString("lbl.faction.mnemonic")
-											  .charAt(0));
+		JLabel factionLabel = new JLabel(getString("lbl.faction.caption") + ": ");
+		factionLabel.setDisplayedMnemonic(getString("lbl.faction.mnemonic").charAt(0));
 		factionLabel.setLabelFor(factionCombo);
 
 		JPanel pnlFaction = new JPanel(new BorderLayout());
@@ -377,42 +362,34 @@ public class FindDialog extends InternationalizedDataDialog
 		pnlButtons.add(cancelButton);
 
 		addUnits = new JCheckBox(getString("chk.units.caption"),
-								 settings.getProperty("FindDialog.Units", "true")
-										 .equals("true"));
+								 settings.getProperty("FindDialog.Units", "true").equals("true"));
 		addUnits.setMnemonic(getString("chk.units.mnemonic").charAt(0));
 		addRegions = new JCheckBox(getString("chk.regions.caption"),
-								   settings.getProperty("FindDialog.Regions",
-														"false").equals("true"));
+								   settings.getProperty("FindDialog.Regions", "false").equals("true"));
 		addRegions.setMnemonic(getString("chk.regions.mnemonic").charAt(0));
 		addBuildings = new JCheckBox(getString("chk.buildings.caption"),
-									 settings.getProperty("FindDialog.Buildings",
-														  "false").equals("true"));
+									 settings.getProperty("FindDialog.Buildings", "false").equals("true"));
 		addBuildings.setMnemonic(getString("chk.buildings.mnemonic").charAt(0));
 		addShips = new JCheckBox(getString("chk.ships.caption"),
-								 settings.getProperty("FindDialog.Ships",
-													  "false").equals("true"));
+								 settings.getProperty("FindDialog.Ships", "false").equals("true"));
 		addShips.setMnemonic(getString("chk.ships.mnemonic").charAt(0));
 		addTraitors = new JCheckBox(getString("chk.traitors.caption"),
-									settings.getProperty("FindDialog.Traitors",
-														 "false").equals("true"));
+									settings.getProperty("FindDialog.Traitors", "false").equals("true"));
 		addTraitors.setMnemonic(getString("chk.traitors.mnemonic").charAt(0));
 		addOnlyUnconfirmedUnits = new JCheckBox(getString("chk.addonlyunconfirmedunits.caption"),
 												settings.getProperty("FindDialog.OnlyUnconfirmedUnits",
-																	 "false")
-														.equals("true"));
+																	 "false").equals("true"));
 		addOnlyUnconfirmedUnits.setMnemonic(getString("chk.addonlyunconfirmedunits.mnemonic")
 												.charAt(0));
 		addFactions = new JCheckBox(getString("chk.factions.caption"),
-									settings.getProperty("FindDialog.Factions",
-														 "true").equals("true"));
+									settings.getProperty("FindDialog.Factions", "true").equals("true"));
 		addFactions.setMnemonic(getString("chk.factions.mnemonic").charAt(0));
 
-		JPanel			   pnlItems = new JPanel(new GridBagLayout());
+		JPanel pnlItems = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0, 0,
 														GridBagConstraints.CENTER,
 														GridBagConstraints.HORIZONTAL,
-														new Insets(2, 2, 2, 2),
-														0, 0);
+														new Insets(2, 2, 2, 2), 0, 0);
 		pnlItems.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 											getString("frm.objects")));
 
@@ -437,8 +414,7 @@ public class FindDialog extends InternationalizedDataDialog
 		resultList.addListSelectionListener(this);
 
 		//resultList.setCellRenderer(new IconListCellRenderer());
-		JScrollPane scroller = new JScrollPane(resultList,
-											   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane scroller = new JScrollPane(resultList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 											   JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroller.setBorder(new LineBorder(Color.black));
 
@@ -454,8 +430,7 @@ public class FindDialog extends InternationalizedDataDialog
 							o = ((UnitWrapper) o).getUnit();
 						}
 
-						((Client) FindDialog.this.getOwner()).getBookmarkManager()
-						 .addBookmark(o);
+						((Client) FindDialog.this.getOwner()).getBookmarkManager().addBookmark(o);
 					}
 				}
 			});
@@ -465,52 +440,52 @@ public class FindDialog extends InternationalizedDataDialog
 		pnlResults.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 											  getString("frm.results")));
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		main.add(pnlPattern, c);
 
-		c.anchor     = GridBagConstraints.NORTH;
-		c.gridx		 = 1;
-		c.gridy		 = 0;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.NORTH;
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
 		c.gridheight = 2;
-		c.fill		 = GridBagConstraints.NONE;
-		c.insets     = new Insets(2, 2, 2, 2);
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.insets = new Insets(2, 2, 2, 2);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		main.add(pnlButtons, c);
 
-		c.anchor     = GridBagConstraints.CENTER;
-		c.gridx		 = 0;
-		c.gridy		 = 1;
-		c.gridwidth  = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.fill		 = GridBagConstraints.HORIZONTAL;
-		c.insets     = new Insets(0, 0, 0, 0);
-		c.weightx    = 0.0;
-		c.weighty    = 0.0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 0, 0, 0);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		main.add(pnlAttributes, c);
 
-		c.anchor  = GridBagConstraints.CENTER;
-		c.gridx   = 0;
-		c.gridy   = 2;
-		c.fill    = GridBagConstraints.HORIZONTAL;
-		c.insets  = new Insets(0, 0, 0, 0);
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 0, 0, 0);
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		main.add(pnlItems, c);
 
-		c.anchor  = GridBagConstraints.CENTER;
-		c.gridx   = 0;
-		c.gridy   = 3;
-		c.fill    = GridBagConstraints.BOTH;
-		c.insets  = new Insets(0, 0, 0, 0);
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 3;
+		c.fill = GridBagConstraints.BOTH;
+		c.insets = new Insets(0, 0, 0, 0);
 		c.weightx = 0.5;
 		c.weighty = 0.5;
 		main.add(pnlResults, c);
@@ -519,9 +494,9 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	private Collection find() {
-		Collection hits    = CollectionFactory.createHashSet();
-		Collection items   = CollectionFactory.createLinkedList();
-		String     pattern = "";
+		Collection hits = CollectionFactory.createHashSet();
+		Collection items = CollectionFactory.createLinkedList();
+		String pattern = "";
 
 		if(txtPattern.getSelectedItem() != null) {
 			pattern = txtPattern.getSelectedItem().toString();
@@ -551,7 +526,7 @@ public class FindDialog extends InternationalizedDataDialog
 			}
 		}
 
-		Collection	    patterns = CollectionFactory.createLinkedList();
+		Collection patterns = CollectionFactory.createLinkedList();
 		StreamTokenizer st = new StreamTokenizer(new StringReader(pattern));
 		st.ordinaryChars('0', '9');
 		st.ordinaryChar('.');
@@ -568,23 +543,20 @@ public class FindDialog extends InternationalizedDataDialog
 				log.error(e);
 			}
 
-			if((st.ttype == StreamTokenizer.TT_WORD) || (st.ttype == '\'') ||
-				   (st.ttype == '"')) {
+			if((st.ttype == StreamTokenizer.TT_WORD) || (st.ttype == '\'') || (st.ttype == '"')) {
 				patterns.add(st.sval);
 
 				//				System.out.println(st.sval);
 			} else if(st.ttype != StreamTokenizer.TT_EOF) {
 				log.warn("Found uncexpected TokenType (" + st.ttype +
-						 ") in FindDialog.find() while parsing token: " +
-						 st.toString());
+						 ") in FindDialog.find() while parsing token: " + st.toString());
 			}
 		} while(st.ttype != StreamTokenizer.TT_EOF);
 
 		// determine the items to search
 		if(addUnits.isSelected() == true) {
 			// items.addAll(data.units().values()); TempUnits were forgotten...
-			for(Iterator iter = data.units().values().iterator();
-					iter.hasNext();) {
+			for(Iterator iter = data.units().values().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
 				if((selectedRegions == null) || selectedRegions.isEmpty() ||
@@ -594,8 +566,7 @@ public class FindDialog extends InternationalizedDataDialog
 							items.add(u);
 						}
 
-						for(Iterator iterator = u.tempUnits().iterator();
-								iterator.hasNext();) {
+						for(Iterator iterator = u.tempUnits().iterator(); iterator.hasNext();) {
 							Unit tu = (Unit) iterator.next();
 
 							if(!tu.ordersConfirmed) {
@@ -622,8 +593,7 @@ public class FindDialog extends InternationalizedDataDialog
 			if((selectedRegions == null) || selectedRegions.isEmpty()) {
 				items.addAll(data.buildings().values());
 			} else {
-				for(Iterator iter = data.buildings().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.buildings().values().iterator(); iter.hasNext();) {
 					Building b = (Building) iter.next();
 
 					if(selectedRegions.contains(b.getRegion())) {
@@ -637,8 +607,7 @@ public class FindDialog extends InternationalizedDataDialog
 			if((selectedRegions == null) || selectedRegions.isEmpty()) {
 				items.addAll(data.ships().values());
 			} else {
-				for(Iterator iter = data.ships().values().iterator();
-						iter.hasNext();) {
+				for(Iterator iter = data.ships().values().iterator(); iter.hasNext();) {
 					Ship s = (Ship) iter.next();
 
 					if(selectedRegions.contains(s.getRegion())) {
@@ -671,7 +640,7 @@ public class FindDialog extends InternationalizedDataDialog
 		}
 
 		// determine the faction to limit the search to
-		Faction  faction = getFactionFromCombo();
+		Faction faction = getFactionFromCombo();
 
 		Iterator i = items.iterator();
 
@@ -698,8 +667,7 @@ public class FindDialog extends InternationalizedDataDialog
 				hits.add(item);
 			}
 
-			if(chkMessages.isSelected() &&
-				   (filterMessage(item, patterns) == true)) {
+			if(chkMessages.isSelected() && (filterMessage(item, patterns) == true)) {
 				hits.add(item);
 			}
 
@@ -717,7 +685,7 @@ public class FindDialog extends InternationalizedDataDialog
 		}
 
 		boolean retVal = false;
-		String  id = getID(item).toLowerCase();
+		String id = getID(item).toLowerCase();
 
 		for(Iterator iter = patterns.iterator(); iter.hasNext();) {
 			if(id.equals((String) iter.next())) {
@@ -741,15 +709,13 @@ public class FindDialog extends InternationalizedDataDialog
 			Unit u = (Unit) item;
 
 			if(u.items != null) {
-				for(Iterator iterator = u.items.values().iterator();
-						iterator.hasNext();) {
+				for(Iterator iterator = u.items.values().iterator(); iterator.hasNext();) {
 					String name = getName(((Item) iterator.next()).getItemType());
 
 					if(name != null) {
 						name = name.toLowerCase();
 
-						for(Iterator iter = patterns.iterator();
-								iter.hasNext();) {
+						for(Iterator iter = patterns.iterator(); iter.hasNext();) {
 							if(name.indexOf((String) iter.next()) > -1) {
 								retVal = true;
 
@@ -778,7 +744,7 @@ public class FindDialog extends InternationalizedDataDialog
 
 	private boolean filterName(Object item, Collection patterns) {
 		boolean retVal = false;
-		String  name = getName(item);
+		String name = getName(item);
 
 		if(name != null) {
 			name = name.toLowerCase();
@@ -807,7 +773,7 @@ public class FindDialog extends InternationalizedDataDialog
 
 	private boolean filterDesc(Object item, Collection patterns) {
 		boolean retVal = false;
-		String  desc = getDesc(item);
+		String desc = getDesc(item);
 
 		if(desc != null) {
 			desc = desc.toLowerCase();
@@ -835,15 +801,14 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	private boolean filterCmd(Object item, Collection patterns) {
-		boolean    retVal = false;
+		boolean retVal = false;
 		Collection cmds = getCmds(item);
 
 		if(cmds != null) {
 			for(Iterator cmdsIter = cmds.iterator(); cmdsIter.hasNext();) {
 				String cmd = ((String) cmdsIter.next()).toLowerCase();
 
-				for(Iterator ptrnIter = patterns.iterator();
-						ptrnIter.hasNext();) {
+				for(Iterator ptrnIter = patterns.iterator(); ptrnIter.hasNext();) {
 					if(cmd.indexOf((String) ptrnIter.next()) > -1) {
 						retVal = true;
 
@@ -881,12 +846,12 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	private boolean filterMessage(Object item, Collection patterns) {
-		boolean    retVal = false;
+		boolean retVal = false;
 		Collection msgs = getMessages(item);
 
 		if(msgs != null) {
 			for(Iterator msgsIter = msgs.iterator(); msgsIter.hasNext();) {
-				Object o   = msgsIter.next();
+				Object o = msgsIter.next();
 				String msg = "";
 
 				if(o instanceof String) {
@@ -897,8 +862,7 @@ public class FindDialog extends InternationalizedDataDialog
 
 				msg = msg.toLowerCase();
 
-				for(Iterator ptrnIter = patterns.iterator();
-						ptrnIter.hasNext();) {
+				for(Iterator ptrnIter = patterns.iterator(); ptrnIter.hasNext();) {
 					if(msg.indexOf((String) ptrnIter.next()) > -1) {
 						retVal = true;
 
@@ -970,7 +934,7 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	private boolean filterFaction(Object item, Faction pattern) {
-		boolean retVal  = true;
+		boolean retVal = true;
 		Faction faction = getFaction(item);
 
 		if((faction == null) || (faction.equals(pattern) == false)) {
@@ -1002,7 +966,7 @@ public class FindDialog extends InternationalizedDataDialog
 
 	private Collection wrap(Collection items) {
 		Collection wrappers = CollectionFactory.createLinkedList();
-		Iterator   i = items.iterator();
+		Iterator i = items.iterator();
 
 		while(i.hasNext() == true) {
 			Object item = i.next();
@@ -1025,8 +989,8 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	private Faction getFactionFromCombo() {
-		Faction f    = null;
-		Object  item = factionCombo.getSelectedItem();
+		Faction f = null;
+		Object item = factionCombo.getSelectedItem();
 
 		if((item != null) && item instanceof Faction) {
 			f = (Faction) item;
@@ -1036,8 +1000,7 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	/**
-	 * A class wrapping a Region object, customizing the toString() needs for
-	 * the tree.
+	 * A class wrapping a Region object, customizing the toString() needs for the tree.
 	 */
 	private class RegionWrapper {
 		private Region region = null;
@@ -1071,8 +1034,7 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	/**
-	 * A class wrapping a Unit object, customizing the toString() needs for the
-	 * tree.
+	 * A class wrapping a Unit object, customizing the toString() needs for the tree.
 	 */
 	private class UnitWrapper {
 		private Unit unit = null;
@@ -1134,14 +1096,13 @@ public class FindDialog extends InternationalizedDataDialog
 	}
 
 	protected void storeCheckbox(JCheckBox box, String key) {
-		settings.setProperty("FindDialog." + key,
-							 box.isSelected() ? "true" : "false");
+		settings.setProperty("FindDialog." + key, box.isSelected() ? "true" : "false");
 	}
 
 	protected void storeHistory() {
 		if((history != null) && (history.size() > 0)) {
 			StringBuffer buf = new StringBuffer();
-			Iterator     it = history.iterator();
+			Iterator it = history.iterator();
 
 			while(it.hasNext()) {
 				buf.append(it.next());
@@ -1161,8 +1122,8 @@ public class FindDialog extends InternationalizedDataDialog
 		Collection results = find();
 		resultList.setListData(results.toArray());
 		pnlResults.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
-											  getString("frm.results") + " (" +
-											  results.size() + ")"));
+											  getString("frm.results") + " (" + results.size() +
+											  ")"));
 
 		if(results.size() > 0) {
 			resultList.requestFocus();
@@ -1207,8 +1168,7 @@ public class FindDialog extends InternationalizedDataDialog
 			defaultTranslations.put("chk.descriptions.mnemonic", "d");
 			defaultTranslations.put("chk.orders.caption", "Orders");
 			defaultTranslations.put("chk.orders.mnemonic", "o");
-			defaultTranslations.put("chk.msgsandeffects.caption",
-									"Messages and effects");
+			defaultTranslations.put("chk.msgsandeffects.caption", "Messages and effects");
 			defaultTranslations.put("chk.msgsandeffects.mnemonic", "m");
 			defaultTranslations.put("chk.units.caption", "Units");
 			defaultTranslations.put("chk.units.mnemonic", "u");
@@ -1224,8 +1184,7 @@ public class FindDialog extends InternationalizedDataDialog
 			defaultTranslations.put("chk.items.mnemonic", "e");
 			defaultTranslations.put("chk.factions.caption", "Factions");
 			defaultTranslations.put("chk.factions.mnemonic", "f");
-			defaultTranslations.put("chk.addonlyunconfirmedunits.caption",
-									"Only unconfirmed");
+			defaultTranslations.put("chk.addonlyunconfirmedunits.caption", "Only unconfirmed");
 			defaultTranslations.put("chk.addonlyunconfirmedunits.mnemonic", "u");
 		}
 

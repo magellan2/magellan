@@ -19,19 +19,18 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 
 /**
- * A comparator imposing an ordering on Unit and TempUnit objects by sorting
- * them according to a parent-child relation.
+ * A comparator imposing an ordering on Unit and TempUnit objects by sorting them according to a
+ * parent-child relation.
  * 
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
  * 
  * <p>
- * In order to overcome the inconsistency with equals this comparator allows
- * the introduction of a sub-comparator which is applied in cases of equality.
- * I.e. if the two compared units do not have a parent- child relation,
- * instead of 0 the result of either the unit sub-comparator's or the
- * same-parent sub-comparator's comparison is returned.
+ * In order to overcome the inconsistency with equals this comparator allows the introduction of a
+ * sub-comparator which is applied in cases of equality. I.e. if the two compared units do not
+ * have a parent- child relation, instead of 0 the result of either the unit sub-comparator's or
+ * the same-parent sub-comparator's comparison is returned.
  * </p>
  */
 public class UnitTempUnitComparator implements Comparator {
@@ -41,17 +40,14 @@ public class UnitTempUnitComparator implements Comparator {
 	/**
 	 * Creates a new UnitTempUnitComparator object.
 	 *
-	 * @param sameParentSubComparator if two units with the same parent unit
-	 * 		  are compared, this sub-comparator is applied if it is not
-	 * 		  <tt>null</tt>.
-	 * @param unitSubComparator if two units do not have the same parent unit
-	 * 		  and do not have a parent-child relation, this sub- comparator is
-	 * 		  applied if it is not <tt>null</tt>.
+	 * @param sameParentSubComparator if two units with the same parent unit are compared, this
+	 * 		  sub-comparator is applied if it is not <tt>null</tt>.
+	 * @param unitSubComparator if two units do not have the same parent unit and do not have a
+	 * 		  parent-child relation, this sub- comparator is applied if it is not <tt>null</tt>.
 	 */
-	public UnitTempUnitComparator(Comparator sameParentSubComparator,
-								  Comparator unitSubComparator) {
+	public UnitTempUnitComparator(Comparator sameParentSubComparator, Comparator unitSubComparator) {
 		this.sameParentSubCmp = sameParentSubComparator;
-		this.unitSubCmp		  = unitSubComparator;
+		this.unitSubCmp = unitSubComparator;
 	}
 
 	/**
@@ -60,17 +56,14 @@ public class UnitTempUnitComparator implements Comparator {
 	 * @param o1 TODO: DOCUMENT ME!
 	 * @param o2 TODO: DOCUMENT ME!
 	 *
-	 * @return a value less than zero if o1 is.an instance of class
-	 * 		   <tt>Unit</tt> and o2 an instance of class <tt>TempUnit</tt> and
-	 * 		   o1 is o2's parent. Conversely, if o1 is an instance of class
-	 * 		   <tt>TempUnit</tt> and o2 an instance of class <tt>Unit</tt> and
-	 * 		   o2 is the parent of o1, a value greater than zero is returned.
-	 * 		   When o1 and o2 have the same parent the result of the
-	 * 		   sameparentsubcomparator is applied if it is not null, else 0 is
-	 * 		   returned. If not both, o1 and o2, are instances of class
-	 * 		   TempUnit or they are but have different parents they or their
-	 * 		   parents respectively are compared with the unitsubcomparator if
-	 * 		   it is not null, else 0 is returned.
+	 * @return a value less than zero if o1 is.an instance of class <tt>Unit</tt> and o2 an
+	 * 		   instance of class <tt>TempUnit</tt> and o1 is o2's parent. Conversely, if o1 is an
+	 * 		   instance of class <tt>TempUnit</tt> and o2 an instance of class <tt>Unit</tt> and
+	 * 		   o2 is the parent of o1, a value greater than zero is returned. When o1 and o2 have
+	 * 		   the same parent the result of the sameparentsubcomparator is applied if it is not
+	 * 		   null, else 0 is returned. If not both, o1 and o2, are instances of class TempUnit
+	 * 		   or they are but have different parents they or their parents respectively are
+	 * 		   compared with the unitsubcomparator if it is not null, else 0 is returned.
 	 */
 	public int compare(Object o1, Object o2) {
 		Unit u1 = (Unit) o1;

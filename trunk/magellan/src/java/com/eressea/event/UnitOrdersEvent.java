@@ -39,7 +39,7 @@ public class UnitOrdersEvent extends TimeStampedEvent {
 	 */
 	public UnitOrdersEvent(Object source, Unit unit) {
 		super(source);
-		this.unit		  = unit;
+		this.unit = unit;
 		this.relatedUnits = CollectionFactory.createHashSet();
 		unit.getRelatedUnits(relatedUnits);
 	}

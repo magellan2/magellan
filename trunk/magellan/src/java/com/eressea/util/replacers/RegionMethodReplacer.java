@@ -32,8 +32,8 @@ public class RegionMethodReplacer extends AbstractRegionReplacer {
 
 	/** TODO: DOCUMENT ME! */
 	public static final int MODE_POSITIVE = 2;
-	protected Method	    method;
-	protected int		    mode;
+	protected Method method;
+	protected int mode;
 
 	/**
 	 * Creates a new RegionMethodReplacer object.
@@ -45,11 +45,9 @@ public class RegionMethodReplacer extends AbstractRegionReplacer {
 	 */
 	public RegionMethodReplacer(String method, int mode) {
 		try {
-			this.method = Class.forName("com.eressea.Region").getMethod(method,
-																		null);
+			this.method = Class.forName("com.eressea.Region").getMethod(method, null);
 		} catch(Exception exc) {
-			throw new RuntimeException("Error retrieving region method " +
-									   method);
+			throw new RuntimeException("Error retrieving region method " + method);
 		}
 
 		this.mode = mode;
