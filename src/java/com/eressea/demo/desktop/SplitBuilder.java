@@ -112,6 +112,9 @@ public class SplitBuilder extends Object {
 		left.x = sourceRect.x;
 		left.y = sourceRect.y;
 
+		// remove border for less space waste
+		jsp.setBorder(null);
+
 		if(current.isAbsolute()) {
 			int divider = (int) Math.round(current.getPercentage());
 			divider = checkDividerInRectangle(divider, orient, sourceRect);
@@ -124,7 +127,7 @@ public class SplitBuilder extends Object {
 
 		// pavkovic 2003.06.04: reduce divider size, remove one touch expander
 		jsp.setOneTouchExpandable(false);
-		jsp.setDividerSize(3);
+		//jsp.setDividerSize(3);
 
 		// connect the split pane and the node
 		current.connectToSplitPane(jsp);

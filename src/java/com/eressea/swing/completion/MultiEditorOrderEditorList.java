@@ -192,6 +192,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		// content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 		scpContent = new JScrollPane(content);
+		// ClearLook suggests to remove the border
+		scpContent.setBorder(null);
 
 		buttons = new ButtonPanel();
 

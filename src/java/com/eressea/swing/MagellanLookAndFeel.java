@@ -213,6 +213,7 @@ public class MagellanLookAndFeel {
 				//	defaultLafCache.add(defaultMap.get(iter.next()));
 				//}
 			}
+
 		}
 
 		return Collections.unmodifiableMap(lafCache);
@@ -228,6 +229,56 @@ public class MagellanLookAndFeel {
 
 	private static Class getSkinLFClass() throws ClassNotFoundException {
 		return Class.forName("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
+	}
+
+	
+	private static Class getClearLookManagerClass() throws ClassNotFoundException {
+		return Class.forName("com.jgoodies.clearlook.ClearLookManager");
+	}
+
+	private static Class getClearLookModeClass() throws ClassNotFoundException {
+		return Class.forName("com.jgoodies.clearlook.ClearLookMode");
+	}
+
+	public static boolean enableClearLookDebug() {
+		return enableClearLook("DEBUG");
+	}
+	
+// 	public static boolean enableClearLookVerbose() {
+// 		return enableClearLook("VERBOSE");
+// 	}
+
+	static {
+		MagellanLookAndFeel.enableClearLookOn();
+	}
+
+	public static boolean enableClearLookOn() {
+		return enableClearLook("ON");
+	}
+
+	private static boolean enableClearLook(String fieldName) {
+		try {
+			// call method public static void ClearLookManager.setMode(fieldName)
+			// fieldName may be "ON", "OFF", "VERBOSE" or "DEBUG"
+			getClearLookManagerClass().getMethod("setMode", new Class[] { getClearLookModeClass() }).
+				invoke(null, new Object[] { getClearLookModeClass().getField(fieldName).get(null) });
+			log.debug("Enabled ClearLookDebug.");
+			return true;
+		} catch(ClassNotFoundException e) {
+			log.error(e);
+		} catch(IllegalAccessException e) {
+			log.error(e);
+		} catch(NoSuchFieldException e) {
+			log.error(e);
+		} catch(NoSuchMethodException e) {
+			log.error(e);
+		} catch(InvocationTargetException e) {
+			log.error(e);
+		} catch(Error e) {
+			log.error(e);
+		}
+		log.debug("Failed to invoke ClearLookDebug.");
+		return false;
 	}
 
 	/**
