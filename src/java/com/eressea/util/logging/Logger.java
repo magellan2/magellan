@@ -59,6 +59,9 @@ public class Logger {
 		//ivTraceLog = Category.getInstance(aBase);
 	}
 
+	private static Logger DEFAULT = new Logger("");
+	
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -73,8 +76,7 @@ public class Logger {
 		if(aClass == null) {
 			throw new NullPointerException();
 		}
-
-		return new Logger(aClass.getName());
+		return getInstance(aClass.getName());
 	}
 
 	/**
@@ -85,7 +87,16 @@ public class Logger {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static Logger getInstance(String aBase) {
-		return new Logger(aBase);
+		// be fail-fast
+		if(aBase == null) {
+			throw new NullPointerException();
+		}
+
+		// pavkovic 2004.02.04: we dont take any advantage 
+		// of different loggers, so reduce memory footprint
+		// of Magellan
+		// return new Logger(aBase);
+		return DEFAULT;
 	}
 
 	/**

@@ -1081,12 +1081,11 @@ public class CRWriter extends BufferedWriter {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public void writeSkill(Skill skill, int persons) throws IOException {
-		if(getServerConformance() || !skill.isLevelChanged()) {
-			write(skill.getPoints() + " " + skill.getLevel() + ";" + skill.getSkillType().getID());
-		} else {
-			write(skill.getPoints() + " " + skill.getLevel() + " " + skill.getChangeLevel() + ";" +
-				  skill.getSkillType().getID());
+		write(skill.getPoints() + " " + skill.getRealLevel());
+		if(!getServerConformance() && skill.isLevelChanged()) {
+			write(" " + skill.getChangeLevel());
 		}
+		write(";" + skill.getSkillType().getID());
 
 		newLine();
 	}

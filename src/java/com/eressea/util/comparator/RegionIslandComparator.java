@@ -67,9 +67,41 @@ public class RegionIslandComparator implements Comparator {
 	 * 		   one. If both islands are null the no-island sub-comparator is applied.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = 0;
 		Region r1 = (Region) o1;
 		Region r2 = (Region) o2;
+
+		if(r1.getIsland() == null) {
+			if(r2.getIsland() == null) {
+				// r1.getIsland == null, r2.getIsland == null
+				return noIslandSubCmp != null ? noIslandSubCmp.compare(o1, o2) : 0;
+			} else {
+				// r1.getIsland == null, r2.getIsland != null
+				return 1;
+			}
+		} else {
+			if(r2.getIsland() == null) {
+				// r1.getIsland != null, r2.getIsland == null
+				return -1;
+			} else {
+				// r1.getIsland != null, r2.getIsland != null
+				int retVal = 0;
+				if(islandCmp != null) {
+					retVal = islandCmp.compare(r1.getIsland(), r2.getIsland());
+				} else {
+					retVal = r1.getIsland().compareTo(r2.getIsland());
+				}
+				
+				if(retVal == 0) {
+					if(sameIslandSubCmp != null) {
+						retVal = sameIslandSubCmp.compare(o1, o2);
+					}
+				}
+				return retVal;
+			}
+		}
+
+		/*
+		int retVal = 0;
 
 		if((r1.getIsland() == null) && (r2.getIsland() != null)) {
 			retVal = Integer.MAX_VALUE;
@@ -98,6 +130,7 @@ public class RegionIslandComparator implements Comparator {
 		}
 
 		return retVal;
+		*/
 	}
 
 	/**

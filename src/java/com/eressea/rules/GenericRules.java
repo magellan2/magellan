@@ -855,52 +855,53 @@ public class GenericRules implements Rules {
 	 */
 	private ObjectType changeName(ID id, String name) {
 		ObjectType ot = null;
-
-		/*
-		if ((ot = getBuildingType(id)) != null) {
-		    if (!ot.getName().equals(name)) {
-		        buildingTypeNames.remove(Umlaut.normalize(ot.getName()));
-		        ot.setName(name);
-		        addObject(ot, buildingTypes, buildingTypeNames);
-		    }
-		} else
-		if ((ot = getItemType(id)) != null) {
-		    if (!ot.getName().equals(name)) {
-		        itemTypeNames.remove(Umlaut.normalize(ot.getName()));
-		        ot.setName(name);
-		        addObject(ot, itemTypes, itemTypeNames);
-		    }
-		} else
-		if ((ot = getRace(id)) != null) {
-		    if (!ot.getName().equals(name)) {
-		        raceNames.remove(Umlaut.normalize(ot.getName()));
-		        ot.setName(name);
-		        addObject(ot, races, raceNames);
-		    }
-		} else
-		if ((ot = getRegionType(id)) != null) {
-		    if (!ot.getName().equals(name)) {
-		        regionTypeNames.remove(Umlaut.normalize(ot.getName()));
-		        ot.setName(name);
-		        addObject(ot, regionTypes, regionTypeNames);
-		    }
-		} else
-		if ((ot = getShipType(id)) != null) {
-		    if (!ot.getName().equals(name)) {
-		        shipTypeNames.remove(Umlaut.normalize(ot.getName()));
-		        ot.setName(name);
-		        addObject(ot, shipTypes, shipTypeNames);
-		    }
-		} else
-		if ((ot = getSkillType(id)) != null) {
-		    if (!ot.getName().equals(name)) {
-		        skillTypeNames.remove(Umlaut.normalize(ot.getName()));
-		        ot.setName(name);
-		        addObject(ot, skillTypes, skillTypeNames);
-		    }
+		
+		ot = changeName(id, name, mapUnitContainerType, mapUnitContainerTypeNames);
+		if(ot != null) {
+			return ot;
 		}
-		*/
-		return ot;
+
+		ot = changeName(id, name, mapItemType, mapItemTypeNames);
+		if(ot != null) {
+			return ot;
+		}
+
+		ot = changeName(id, name, mapAllianceCategory, mapAllianceCategoryNames);
+		if(ot != null) {
+			return ot;
+		}
+		
+		ot = changeName(id, name, mapOptionCategory, mapOptionCategoryNames);
+		if(ot != null) {
+			return ot;
+		}
+		
+		ot = changeName(id, name, mapItemCategory, mapItemCategoryNames);
+		if(ot != null) {
+			return ot;
+		}
+		
+		ot = changeName(id, name, mapSkillCategory, mapSkillCategoryNames);
+		if(ot != null) {
+			return ot;
+		}
+
+		ot = changeName(id, name, mapSkillType, mapSkillTypeNames);
+		if(ot != null) {
+			return ot;
+		}
+		
+		return null;
+	}
+
+	protected ObjectType changeName(ID id, String name, Map mapObjectType, Map mapObjectTypeNames) {
+		ObjectType ot = (ObjectType) mapObjectType.get(id);
+		if(ot != null) {
+			mapObjectTypeNames.remove(Umlaut.normalize(ot.getName()));
+			ot.setName(name);
+	        addObject(ot, mapObjectType, mapObjectTypeNames);
+		}
+		return null;
 	}
 
 	/**
@@ -912,15 +913,15 @@ public class GenericRules implements Rules {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private ObjectType addObject(ObjectType o, Map m, Map n) {
+	private ObjectType addObject(ObjectType o, Map mapObjectType, Map mapObjectTypeNames) {
 		if(log.isDebugEnabled()) {
 			log.debug("GenericRules.addObject(" + o.getClass().toString() + "," + o.getID() + ")");
 		}
 
-		m.put(o.getID(), o);
+		mapObjectType.put(o.getID(), o);
 
 		if(o.getName() != null) {
-			n.put(Umlaut.normalize(o.getName()), o);
+			mapObjectTypeNames.put(Umlaut.normalize(o.getName()), o);
 		}
 
 		return o;

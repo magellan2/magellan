@@ -36,6 +36,7 @@ import com.eressea.Region;
  */
 public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 	protected Color fontColor = Color.black;
+	protected Color brighterColor = Color.black.brighter();
 	protected Font unscaledFont = null;
 	protected Font font = null;
 	protected FontMetrics fontMetrics = null;
@@ -71,6 +72,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 
 	protected void setFontColor(Color col) {
 		fontColor = col;
+		brighterColor = fontColor.brighter();
 	}
 
 	protected Font getFont() {
@@ -221,55 +223,60 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 				upperY -= (((display.length - 1) * height) / 4);
 			}
 
-			int maxWidth = -1;
 
 			switch(hAlign) {
 			// left
-			case 0:
+			case LEFT:
+
+
+				int leftX = middleX - (getMaxWidth(display) / 2);
 
 				for(int i = 0; i < display.length; i++) {
-					if(fontMetrics.stringWidth(display[i]) > maxWidth) {
-						maxWidth = fontMetrics.stringWidth(display[i]);
-					}
-				}
-
-				int leftX = middleX - (maxWidth / 2);
-
-				for(int i = 0; i < display.length; i++) {
-					graphics.drawString(display[i], leftX, upperY + (i * height));
+					drawString(graphics, display[i], leftX, upperY + (i * height));
 				}
 
 				break;
 
 			// center
-			case 1:
+			case CENTER:
 
 				for(int i = 0; i < display.length; i++) {
 					int l = fontMetrics.stringWidth(display[i]);
-					graphics.drawString(display[i], middleX - (l / 2), upperY + (i * height));
+					drawString(graphics, display[i], middleX - (l / 2), upperY + (i * height));
 				}
 
 				break;
 
 			// right
-			case 2:
+			case RIGHT:
+
+				int rightX = middleX + (getMaxWidth(display) / 2);
 
 				for(int i = 0; i < display.length; i++) {
-					if(fontMetrics.stringWidth(display[i]) > maxWidth) {
-						maxWidth = fontMetrics.stringWidth(display[i]);
-					}
-				}
-
-				int rightX = middleX + (maxWidth / 2);
-
-				for(int i = 0; i < display.length; i++) {
-					graphics.drawString(display[i], rightX - fontMetrics.stringWidth(display[i]),
-										upperY + (i * height));
+					drawString(graphics, display[i], rightX - fontMetrics.stringWidth(display[i]),
+							   upperY + (i * height));
 				}
 
 				break;
 			}
 		}
+	}
+		
+	private int getMaxWidth(String[] display) {
+		int maxWidth = -1;
+		for(int i = 0; i < display.length; i++) {
+			if(fontMetrics.stringWidth(display[i]) > maxWidth) {
+				maxWidth = fontMetrics.stringWidth(display[i]);
+			}
+		}
+		return maxWidth;
+	}
+	
+	private void drawString(Graphics graphic, String text, int X, int Y) {
+		//graphics.setColor(brighterColor);
+		//graphics.drawString(text, X+1, Y+1);
+		graphics.setColor(fontColor);
+		graphics.drawString(text, X, Y);
 	}
 
 	protected void shortenStrings(String str[], int maxWidth) {
