@@ -1300,16 +1300,15 @@ public class Region extends UnitContainer {
 			}
 		}
 
-		// pavkovic 2002.04.12: This logic seems to be more reasonable:
-		// prerequisites: there are borders in the current region
-		// if there are no borders in the new region
-		//   -> the borders of the current region are added to the new region
-		// if there are borders in the new region *and* there is at least one
-		//    person in the current region
-		//   -> the borders of the current region are added to the new region
+		// pavkovic 2004.06.03: This logic seems to be more reasonable:
+		// 
+		// |new.units| == 0, |current.units| == 0, : merge/current
+		// |new.units| == 0, |current.units| != 0: current
+		// |new.units| != 0, |current.units| == 0: sameTurn ? new : current
+		// |new.units| != 0, |current.units| != 0: sameTurn ? (merge/current) : current
 		//
-		if(!curRegion.borders().isEmpty() &&
-			   (newRegion.borders().isEmpty() || !curRegion.units().isEmpty())) {
+		// FIXME(pavkovic) bug# 819
+		if( ! (!newRegion.units().isEmpty() && curRegion.units().isEmpty() && sameTurn) ) {
 			newRegion.clearBorders();
 
 			for(Iterator iter = curRegion.borders().iterator(); iter.hasNext();) {
