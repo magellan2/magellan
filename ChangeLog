@@ -1,3 +1,11 @@
+2004-03-22  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/Client.java: Removed property 
+	"Client.checkVersionOnStartup" and attached logic.
+
+	* src/java/com/eressea/demo/Client.java: Added exception handling
+	for wrongly built caption. (for tracking bugzilla bug #798).
+
 2004-03-18  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/rules/GenericRules.java: Make alliance

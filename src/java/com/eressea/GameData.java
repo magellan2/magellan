@@ -1262,7 +1262,7 @@ public abstract class GameData implements Cloneable {
 			// first merge step
 			if(curUnit1 != null) {
 				if(sameRound) { // full merge
-					Unit.merge(gd1, curUnit1, newGD, newUnit);
+					Unit.merge(gd1, curUnit1, newGD, newUnit, sameRound);
 				} else { // only copy the skills to get change-level base
 
 					if((curUnit2.skills != null) || (curUnit1.getFaction().isPrivileged())) {
@@ -1273,7 +1273,7 @@ public abstract class GameData implements Cloneable {
 
 			// second merge step
 			if(curUnit2 != null) {
-				Unit.merge(gd2, curUnit2, newGD, newUnit);
+				Unit.merge(gd2, curUnit2, newGD, newUnit, sameRound);
 			}
 		}
 

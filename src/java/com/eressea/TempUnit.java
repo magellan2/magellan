@@ -81,9 +81,10 @@ public class TempUnit extends Unit {
 	 * @param curTemp TODO: DOCUMENT ME!
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newTemp TODO: DOCUMENT ME!
+	 * @param sameRound notifies if both game data objects have been from the same round
 	 */
-	public static void merge(GameData curGD, TempUnit curTemp, GameData newGD, TempUnit newTemp) {
-		Unit.merge(curGD, curTemp, newGD, newTemp);
+	public static void merge(GameData curGD, TempUnit curTemp, GameData newGD, TempUnit newTemp, boolean sameRound) {
+		Unit.merge(curGD, curTemp, newGD, newTemp, sameRound);
 
 		if(curTemp.getParent() != null) {
 			newTemp.setParent(newGD.getUnit(curTemp.getParent().getID()));

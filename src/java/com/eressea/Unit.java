@@ -2269,8 +2269,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @param curUnit TODO: DOCUMENT ME!
 	 * @param newGD TODO: DOCUMENT ME!
 	 * @param newUnit TODO: DOCUMENT ME!
+	 * @param sameRound notifies if both game data objects have been from the same round
 	 */
-	public static void merge(GameData curGD, Unit curUnit, GameData newGD, Unit newUnit) {
+	public static void merge(GameData curGD, Unit curUnit, GameData newGD, Unit newUnit, boolean sameRound) {
 		/*
 		 * True, when curUnit is seen by the faction it belongs to and
 		 * is therefore fully specified.
@@ -2292,8 +2293,6 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		//boolean firstPass = (newUnit.getPersons() == 0);
 		boolean firstPass = newUnit.getRegion() == null;
-
-		boolean sameRound = curGD.getDate().equals(newGD.getDate());
 
 		if(curUnit.getName() != null) {
 			newUnit.setName(curUnit.getName());
@@ -2488,16 +2487,14 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				//       same date here
 				Skill oldSkill = (Skill) newUnit.skills.put(newSkillType.getID(), newSkill);
 
-				if(!firstPass) {
-					// notify change if we are not in the same round.
+				if(!sameRound) {
+					// notify change as we are not in the same round.
 					if(oldSkill != null) {
 						int dec = oldSkill.getLevel();
 						newSkill.setChangeLevel(newSkill.getLevel() - dec);
 					} else {
-						if(!sameRound) {
-  							// the skill is new as we did not have it before
-							newSkill.setLevelChanged(true);
-						}
+						// the skill is new as we did not have it before
+						newSkill.setLevelChanged(true);
 					}
 				}
 
@@ -2512,7 +2509,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		// pavkovic 2003.05.13: ...but never remove skills from the same round (as before with items)
 		// andreasg 2003.10.05: ...but if old skills from earlier date!
 		// pavkovic 2004.01.27: now we remove oldSkills only if the round changed.
-		if(!firstPass) {
+		if(!sameRound) {
 			// Now remove all skills that are lost
 			for(Iterator iter = oldSkills.iterator(); iter.hasNext();) {
 				Skill oldSkill = (Skill) iter.next();

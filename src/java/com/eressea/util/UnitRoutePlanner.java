@@ -11,11 +11,6 @@
  *
  */
 
-/*
- * ShipRoutePlanner.java
- *
- * Created on 7. April 2002, 15:34
- */
 package com.eressea.util;
 
 import java.awt.Component;
@@ -218,7 +213,7 @@ public class UnitRoutePlanner {
 	}
 
 	private static String getString(String key) {
-		return com.eressea.util.Translations.getTranslation(UnitRoutePlanner.class, key);
+		return Translations.getTranslation(UnitRoutePlanner.class, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
