@@ -607,9 +607,22 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 *
 	 * @param level TODO: DOCUMENT ME!
 	 */
-	public void setLevel(int level) {
-		mapper.setLevel(level);
-	}
+			 public void setLevel(int level) {
+					 minimap.setLevel(level);
+					 mapper.setLevel(level);
+					 // when there was a change from level 1 to level 0
+					 // i.e. from Astralraum back to normal map we
+					 // try to intelligently center the map
+					 if (mapper.getActiveRegion() != null) {
+							 Coordinate c = mapper.getActiveRegion().getCoordinate();
+							 if (c.z == level) {
+									 setCenter(c);
+							 } else if (c.z == 1 && level == 0) {
+									 Coordinate newCoordinate = new Coordinate(c.x * 4, c.y * 4, 0);
+									 setCenter(newCoordinate);
+							 }
+					 }
+			 }
 
 	/**
 	 * Centers the map on a certain region.
@@ -835,8 +848,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 					Integer level = (Integer) ((JComboBox) ae.getSource()).getSelectedItem();
 
 					if(level != null) {
-						mapper.setLevel(level.intValue());
-						minimap.setLevel(level.intValue());
+							setLevel(level.intValue());
 					}
 				}
 			});
