@@ -182,7 +182,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private AutoCompletion orders = null;
 	private MultiEditorOrderEditorList editor;
 	private Region lastRegion = null;
-	private boolean showFactionItemCategories = true;
 	private Units unitsTools = null;
 
 	/**
@@ -260,11 +259,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		weightNumberFormat.setMinimumFractionDigits(0);
 		unitsTools = (data != null) ? new Units(data.rules) : new Units(null);
 		dispatcher.addSelectionListener(this);
-
-		// load settings
-		showFactionItemCategories = Boolean.valueOf(settings.getProperty("EMapDetailsPanel.showFactionItemCategories",
-																		 Boolean.TRUE.toString()))
-										   .booleanValue();
 
 		// name text area
 		name = new JTextArea();
@@ -1381,32 +1375,25 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(createSimpleNode(i + " " + race, "person"));
 		}
 
-		if(showFactionItemCategories) {
-			Collection catNodes = unitsTools.addCategorizedUnitItems(units, parent, null, null,
-																	 true, nodeWrapperFactory);
-
-			if(catNodes != null) {
-				for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
-					DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
-					Object o = node.getUserObject();
-					ItemCategory cat = null;
-
-					if(o instanceof ItemCategoryNodeWrapper) {
-						cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
-					} else {
-						cat = (ItemCategory) o;
-					}
-
-					expandableNodes.add(new NodeWrapper(node,
-														"EMapDetailsPanel." +
-														cat.getID().toString() + "Expanded"));
+		// categorized items
+		Collection catNodes = unitsTools.addCategorizedUnitItems(units, parent, null, null,
+																 true, nodeWrapperFactory);
+		if(catNodes != null) {
+			for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
+				Object o = node.getUserObject();
+				ItemCategory cat = null;
+				
+				if(o instanceof ItemCategoryNodeWrapper) {
+					cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
+				} else {
+					cat = (ItemCategory) o;
 				}
+				
+				expandableNodes.add(new NodeWrapper(node,
+													"EMapDetailsPanel." +
+													cat.getID().toString() + "Expanded"));
 			}
-		} else {
-			DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(getString("node.items"));
-			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.FactionItemsExpanded"));
-			parent.add(itemsNode);
-			unitsTools.addUnitItems(units, itemsNode, null, null, true, nodeWrapperFactory);
 		}
 
 		if(skills.size() > 0) {
@@ -1506,39 +1493,32 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			}
 
-			if(showFactionItemCategories) {
-				Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits, parent, null,
-																		 null, true,
-																		 nodeWrapperFactory);
-
-				if(catNodes != null) {
-					for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
-						DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
-
-						if(log.isDebugEnabled()) {
-							log.debug("EmapDetailPanel.appendGroupInfo: found class " +
-									  node.getUserObject().getClass() + " (expected ItemCategory)");
-						}
-
-						Object o = node.getUserObject();
-						ItemCategory cat = null;
-
-						if(o instanceof ItemCategoryNodeWrapper) {
-							cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
-						} else {
-							cat = (ItemCategory) o;
-						}
-
-						expandableNodes.add(new NodeWrapper(node,
-															"EMapDetailsPanel." +
-															cat.getID().toString() + "Expanded"));
+			// categorized items
+			Collection catNodes = unitsTools.addCategorizedUnitItems(regionUnits, parent, null,
+																	 null, true,
+																	 nodeWrapperFactory);
+			if(catNodes != null) {
+				for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
+					
+					if(log.isDebugEnabled()) {
+						log.debug("EmapDetailPanel.appendGroupInfo: found class " +
+								  node.getUserObject().getClass() + " (expected ItemCategory)");
 					}
+					
+					Object o = node.getUserObject();
+					ItemCategory cat = null;
+					
+					if(o instanceof ItemCategoryNodeWrapper) {
+						cat = ((ItemCategoryNodeWrapper) o).getItemCategory();
+					} else {
+						cat = (ItemCategory) o;
+					}
+					
+					expandableNodes.add(new NodeWrapper(node,
+														"EMapDetailsPanel." +
+														cat.getID().toString() + "Expanded"));
 				}
-			} else {
-				n = new DefaultMutableTreeNode(getString("node.items"));
-				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.RegionItemsExpanded"));
-				parent.add(n);
-				unitsTools.addUnitItems(regionUnits, n, null, null, true, nodeWrapperFactory);
 			}
 
 			if(skills.size() > 0) {
@@ -1904,8 +1884,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(itemsNode);
 			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.UnitItemsExpanded"));
 
-			// FIXME: use this way to build itemsnode ? unitsTools.addUnitItems(Collections.singleton(u), itemsNode, null, null, false, nodeWrapperFactory);				
-
+			// FIXME: use this way to build itemsnode ? 
+			// unitsTools.addCategorizedUnitItems(Collections.singleton(u), itemsNode, null, null, false, nodeWrapperFactory);	
 			for(Iterator items = u.getModifiedItems().iterator(); items.hasNext();) {
 				Item modItem = (Item) items.next();
 				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(nodeWrapperFactory.createItemNodeWrapper(u,
@@ -3250,32 +3230,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	  }*/
 
 	/**
-	 * When showing a faction this controls whether the items of all units of this faction in the
-	 * previously selected region are displayed as a flat collection or below an additional node
-	 * level of item categories.
-	 *
-	 * @param bool TODO: DOCUMENT ME!
-	 */
-	public void showFactionItemCategories(boolean bool) {
-		if(showFactionItemCategories != bool) {
-			showFactionItemCategories = bool;
-			settings.setProperty("EMapDetailsPanel.units.showDetailedSkills",
-								 (new Boolean(showFactionItemCategories)).toString());
-		}
-	}
-
-	/**
-	 * Returns whether the items of all units of the selected faction in the previously selected
-	 * region are displayed as a flat collection or below an additional node level of item
-	 * categories.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean isShowingFactionItemCategories() {
-		return showFactionItemCategories;
-	}
-
-	/**
 	 * Should return all short cuts this class want to be informed. The elements should be of type
 	 * javax.swing.KeyStroke
 	 *
@@ -3552,7 +3506,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		private EMapDetailsPanel source = null;
 		private List subAdapters;
 		private PreferencesAdapter regionPref;
-		private JCheckBox chkshowFactionItemCategories = null;
 		private JCheckBox chkShowTagButtons;
 
 		/**
@@ -3608,17 +3561,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 														  GridBagConstraints.HORIZONTAL,
 														  new Insets(3, 3, 3, 3), 0, 0);
 
-			chkshowFactionItemCategories = new JCheckBox(getString("prefs.factionItemCategories"),
-														 source.isShowingFactionItemCategories());
 			c.anchor = GridBagConstraints.WEST;
 			c.gridx = 0;
 			c.gridy = 0;
 			c.fill = GridBagConstraints.HORIZONTAL;
 			c.weightx = 0.1;
-			help.add(chkshowFactionItemCategories, c);
 			chkShowTagButtons = new JCheckBox(getString("prefs.showTagButtons"),
 											  source.isShowingTagButtons());
-			c.gridy = 1;
 			help.add(chkShowTagButtons, c);
 
 			return help;
@@ -3635,7 +3584,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// preferences adapter code:
 		public void applyPreferences() {
-			source.showFactionItemCategories(chkshowFactionItemCategories.isSelected());
 			source.setShowTagButtons(chkShowTagButtons.isSelected());
 			regionPref.applyPreferences();
 		}
@@ -4280,8 +4228,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("menu.units", "Units");
 
 			defaultTranslations.put("prefs.title", "Details");
-			defaultTranslations.put("prefs.factionItemCategories",
-									"Group a faction's items by category (herbs, weapons, etc.)");
 			defaultTranslations.put("prefs.showNextSkillLevelPoints",
 									"Show the number of points required to reach the next skill level with units");
 			defaultTranslations.put("prefs.showNextSkillLevelLearnTurns",

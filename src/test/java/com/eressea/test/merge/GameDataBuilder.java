@@ -165,6 +165,11 @@ public class GameDataBuilder {
 		return skill;
 	}
 
+	public static Message createMessage(String text) {
+		// EINHEITSBOTSCHAFTEN
+		// "Eine Botschaft von Kräuterlager (ax1a): 'MessMach99§99§99!Wundsalbe!xxxx'"
+		return new Message(text);
+	}
 
 	public Border addRoad(Region region, int id, int direction, int buildRatio) {
 		// GRENZE 1
