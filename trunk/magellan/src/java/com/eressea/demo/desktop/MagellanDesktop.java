@@ -1859,6 +1859,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 */
 	public void setAllVisible(boolean visible) {
 		if(mode == MODE_FRAME) {
+			// ensure frame existence. bug #820
+			initFrames();
+			
 			inFront = true;
 			timer.start();
 

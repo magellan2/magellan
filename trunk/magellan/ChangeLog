@@ -1,5 +1,8 @@
 2004-06-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
-
+	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: Prevent
+	NPE on unconnected frame in FrameRectangle (ensure initFrames(). 
+	bug #820
+	
 	* src/java/com/eressea/Region.java: Border merging possibly fixed. 
 	bug #819
 
