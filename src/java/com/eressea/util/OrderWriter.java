@@ -178,7 +178,7 @@ public class OrderWriter {
 			writeln(stream, "; ECHECK " + echeckOptions);
 		}
 
-		if(VersionInfo.getVersion() != null) {
+		if(!addECheckComments && VersionInfo.getVersion() != null) {
 			writeln(stream, "; VERSION Magellan " + VersionInfo.getVersion());
 		}
 
