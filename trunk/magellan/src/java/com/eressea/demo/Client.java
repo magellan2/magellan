@@ -56,7 +56,6 @@ import com.eressea.IntegerID;
 import com.eressea.Message;
 import com.eressea.MissingData;
 import com.eressea.Unit;
-import com.eressea.cr.Loader;
 import com.eressea.demo.actions.AbortAction;
 import com.eressea.demo.actions.AddCRAction;
 import com.eressea.demo.actions.AddSelectionAction;
@@ -114,6 +113,10 @@ import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
 import com.eressea.extern.ExternalModule;
 import com.eressea.extern.ExternalModule2;
+import com.eressea.io.GameDataReader;
+import com.eressea.io.MissingInputException;
+import com.eressea.io.file.FileBackup;
+import com.eressea.io.file.FileTypeFactory;
 import com.eressea.main.MagellanContext;
 import com.eressea.rules.EresseaDate;
 import com.eressea.swing.InternationalizedDataPanel;
@@ -141,7 +144,6 @@ import com.eressea.util.SelectionHistory;
 import com.eressea.util.SelfCleaningProperties;
 import com.eressea.util.TrustLevels;
 import com.eressea.util.VersionInfo;
-import com.eressea.util.file.FileBackup;
 import com.eressea.util.logging.Logger;
 
 public class Client extends JFrame implements ShortcutListener, PreferencesFactory {
@@ -980,14 +982,18 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	 * @param fileName The file name to be loaded.
 	 * @return a new <tt>GameData</tt> object filled with the data from the CR.
 	 */
-	public com.eressea.GameData loadCR(java.lang.String fileName) {
+	public GameData loadCR(String fileName) {
 		GameData d = null;
 		try {
-			d = new Loader().doLoadCR(fileName);
+			//d = new Loader().loadCR(fileName);
+			// TODO: implement FileTypeFactory.FileChooser to provide a gui way to choose a subfile
+			d = new GameDataReader().readGameData(FileTypeFactory.singleton().createFileType(fileName));
 			everLoadedReport = true;
-		} catch (Loader.MissingCRException e) {
+		} catch (MissingInputException e) {
 			JOptionPane.showMessageDialog(this, getString("msg.loadcr.missingcr.text.1") + fileName + getString("msg.loadcr.missingcr.text.2"), getString("msg.loadcr.error.title"), JOptionPane.ERROR_MESSAGE);
-		} catch (IOException exc) {
+		} catch (Exception exc) {
+			// here we also catch RuntimeExceptions on purpose!
+			//		} catch (IOException exc) {
 			JOptionPane.showMessageDialog(this, getString("msg.loadcr.error.text") + exc.toString(), getString("msg.loadcr.error.title"), JOptionPane.ERROR_MESSAGE);
 			log.error(exc);
 		}

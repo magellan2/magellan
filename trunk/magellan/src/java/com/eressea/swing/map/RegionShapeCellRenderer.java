@@ -1,5 +1,5 @@
 // ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Gˆtz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
+// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan GÅˆtz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
 // ---
 // This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
 // ---
@@ -230,7 +230,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 	 * Puts default values for some region-types to the region-color
 	 * table. Currently the following region-types are implemented:
 	 * <ul>
-	 * <li>Ebene</li><li>Sumpf</li><li>Wald</li><li>W¸ste</li>
+	 * <li>Ebene</li><li>Sumpf</li><li>Wald</li><li>WÅ¸ste</li>
 	 * <li>Ozean</li><li>Feuerwand</li><li>Hochebene</li>
 	 * <li>Berge</li><li>Gletscher</li>
 	 * </ul>
@@ -239,7 +239,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 		regionColors.put(StringID.create("Ebene"),new Color(49,230,0));
 		regionColors.put(StringID.create("Sumpf"),new Color(0,180,160));
 		regionColors.put(StringID.create("Wald"),new Color(36,154,0));
-		regionColors.put(StringID.create("W¸ste"),new Color(244,230,113));
+		regionColors.put(StringID.create("WÅ¸ste"),new Color(244,230,113));
 		regionColors.put(StringID.create("Ozean"),new Color(128,128,255));
 		regionColors.put(StringID.create("Feuerwand"),new Color(255,79,0));
 		regionColors.put(StringID.create("Hochebene"),new Color(166,97,56));
@@ -619,7 +619,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 		if (factions.size()<2) {
 			if (factions.size() == 0) {
 				singleColorArray[0] = getUnknownColor();
-				if (r.getType().getID().toString().equals("Ozean")) {
+				if (r.getRegionType().isOcean()) {
 					singleColorArray[0] = getOceanColor();
 				}
 			} else {
@@ -756,13 +756,18 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 	 */
 	protected Color getPoliticsColor(Region r) {
 		Unit unit=r.getOwnerUnit();
-		if (unit!=null)
+		if (unit!=null) {
 			return getFactionColor(unit.getFaction());
+		}
 		Faction f=getMaxPeopleFaction(r);
-		if (f!=null)
+
+		if (f!=null) {
 			return getFactionColor(f);
-		if (r.getType().getName().equalsIgnoreCase("Ozean"))
+		}
+		if (r.getRegionType().isOcean()) {
 			return oceanColor;
+		}
+
 		return unknownColor;
 	}
 	

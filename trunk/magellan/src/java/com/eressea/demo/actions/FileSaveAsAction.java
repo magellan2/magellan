@@ -18,13 +18,14 @@ import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.eressea.cr.CRWriter;
 import com.eressea.demo.Client;
+import com.eressea.io.cr.CRWriter;
+import com.eressea.io.file.FileBackup;
+import com.eressea.io.file.FileType;
+import com.eressea.io.file.FileTypeFactory;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
-import com.eressea.util.file.FileBackup;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -97,7 +98,20 @@ public class FileSaveAsAction extends MenuAction {
 					log.warn("Could not create backupfile for file "+dataFile);
 				}
 			}
-			doSaveAction(FileType.createFileType(dataFile));
+			
+			doSaveAction(dataFile);
+		}
+	}
+
+	protected void doSaveAction(File file) {
+		try {
+			doSaveAction(FileTypeFactory.singleton().createFileType(file));
+		} catch (IOException exc) {
+			log.error(exc);
+			JOptionPane.showMessageDialog(client,
+										  exc.toString(),
+										  Translations.getTranslation(FileSaveAction.class,"msg.filesave.error.title"),
+										  JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -126,6 +140,7 @@ public class FileSaveAsAction extends MenuAction {
 										  JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
 	/** this function delivers overwriteable FileType. In FileSaveAsAction it shall deliver null,
 	 * in FileSaveAction the file type of the gamedata if exists.
 	 */

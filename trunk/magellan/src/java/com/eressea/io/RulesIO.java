@@ -1,11 +1,13 @@
 package com.eressea.io;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import com.eressea.Rules;
+import com.eressea.io.file.FileType;
 
 public interface RulesIO {
-	public Rules readRules(InputStream is) throws IOException;
-
+	/** 
+	 * Reads the rules from a FileType.
+	 */
+	public Rules readRules(FileType filetype) throws IOException;
 }

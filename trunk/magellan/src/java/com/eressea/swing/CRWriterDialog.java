@@ -48,10 +48,10 @@ import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Unit;
-import com.eressea.cr.CRWriter;
+import com.eressea.io.cr.CRWriter;
+import com.eressea.io.file.FileTypeFactory;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.PropertiesHelper;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -170,7 +170,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 			public void actionPerformed(ActionEvent e) {
 				File outputFile = new File((String)comboOutputFile.getSelectedItem());
 				try {
-					write(FileType.createFileType(outputFile).createWriter());
+					write(FileTypeFactory.singleton().createFileType(outputFile).createWriter());
 					quit();
 				} catch (IOException ioe) {
 					Object[] msgArgs = {

@@ -5,11 +5,13 @@ import com.eressea.Rules;
 import com.eressea.completion.Completer;
 import com.eressea.completion.CompleterSettingsProvider;
 import com.eressea.completion.OrderParser;
+import com.eressea.io.GameDataIO;
 
 public interface GameSpecificStuff {
 	
-	// for Unit
-	
+	// for io binding
+	public GameData   createGameData(Rules rules, String name);
+	public GameDataIO getGameDataIO();
 
 	// for GameData
 	/**

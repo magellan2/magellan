@@ -100,16 +100,16 @@ public class Islands {
 	
 	public static Map getIsland(Rules rules, Map regions, Region r) {
 		Map checked = CollectionFactory.createHashtable();
-		Map unchecked = CollectionFactory.createHashtable();
-		com.eressea.rules.RegionType oceanType = rules.getRegionType(StringID.create("Ozean"));
-		if (oceanType == null) {
-			log.warn("Islands.getIsland(): unable to determine the ocean region type!");
+
+		Map excludedRegionTypes = Regions.getOceanRegionTypes(rules);
+		
+		if (excludedRegionTypes.isEmpty()) {
+			log.warn("Islands.getIsland(): unable to determine ocean region types!");
 			return null;
 		}
-		Map excludedRegionTypes = CollectionFactory.createHashtable();
-		excludedRegionTypes.put(oceanType.getID(), oceanType);
-		
-		if (!r.getType().equals(oceanType)) {
+
+		Map unchecked = CollectionFactory.createHashtable();		
+		if (!r.getRegionType().isOcean()) {
 			unchecked.put(r.getID(), r);
 		}
 		
@@ -117,7 +117,7 @@ public class Islands {
 			Region currentRegion = (Region)unchecked.remove(unchecked.keySet().iterator().next());
 			checked.put(currentRegion.getID(), currentRegion);
 			
-			Map neighbours = Regions.getAllNeighbours(regions, currentRegion.getCoordinate(), 1, excludedRegionTypes);
+			Map neighbours = Regions.getAllNeighbours(regions, currentRegion.getID(), 1, excludedRegionTypes);
 			for (Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 				Region neighbour = (Region)iter.next();
 				if (!checked.containsKey(neighbour.getID())) {

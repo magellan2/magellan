@@ -16,7 +16,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Writer;
 
-import com.eressea.util.file.FileType;
+import com.eressea.io.file.FileType;
 
 public class Log {
 	private File baseDir = null;

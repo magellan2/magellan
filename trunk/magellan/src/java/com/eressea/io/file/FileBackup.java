@@ -1,4 +1,4 @@
-package com.eressea.util.file;
+package com.eressea.io.file;
 
 import java.io.File;
 import java.io.IOException;

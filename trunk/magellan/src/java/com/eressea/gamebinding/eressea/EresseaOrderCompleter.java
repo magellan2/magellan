@@ -746,13 +746,13 @@ public class EresseaOrderCompleter implements Completer {
 			if (unit.combatSpells != null && unit.combatSpells.size() > 0) {
 				completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_NOT), "", 8));
 			}
-			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(StringID.create("Ozean"))), true);
+			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(EresseaConstants.RT_OCEAN)), true);
 		}
 	}
 
 	void cmpltKampfzauberStufe() {
 		if (unit.spells != null && unit.spells.size() > 0) {
-			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(StringID.create("Ozean"))), true);
+			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(EresseaConstants.RT_OCEAN)), true);
 		}
 	}
 
@@ -1201,13 +1201,13 @@ public class EresseaOrderCompleter implements Completer {
 		if (unit.spells != null && unit.spells.size() > 0) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_REGION), " ", 8));
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_LEVEL), " ", 8));
-			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(StringID.create("Ozean"))), false);
+			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(EresseaConstants.RT_OCEAN)), false);
 		}
 	}
 
 	void cmpltZaubereStufe() {
 		if (unit.spells != null && unit.spells.size() > 0) {
-			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(StringID.create("Ozean"))), false);
+			addFilteredSpells(unit.spells.values(), false, region.getType().equals(data.rules.getRegionType(EresseaConstants.RT_OCEAN)), false);
 		}
 	}
 
@@ -1245,13 +1245,13 @@ public class EresseaOrderCompleter implements Completer {
 	void cmpltZaubereRegionCoor() {
 		if (unit.spells != null && unit.spells.size() > 0) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_LEVEL), " ", 8));
-			addFilteredSpells(unit.spells.values(), true, region.getType().equals(data.rules.getRegionType(StringID.create("Ozean"))), false);
+			addFilteredSpells(unit.spells.values(), true, region.getType().equals(data.rules.getRegionType(EresseaConstants.RT_OCEAN)), false);
 		}
 	}
 
 	void cmpltZaubereRegionStufe() {
 		if (unit.spells != null && unit.spells.size() > 0) {
-			addFilteredSpells(unit.spells.values(), true, region.getType().equals(data.rules.getRegionType(StringID.create("Ozean"))), false);
+			addFilteredSpells(unit.spells.values(), true, region.getType().equals(data.rules.getRegionType(EresseaConstants.RT_OCEAN)), false);
 		}
 	}
 
@@ -1426,7 +1426,7 @@ public class EresseaOrderCompleter implements Completer {
 			radius = 1;
 		}
 
-		com.eressea.rules.RegionType oceanType = data.rules.getRegionType(StringID.create("Ozean"));
+		com.eressea.rules.RegionType oceanType = data.rules.getRegionType(EresseaConstants.RT_OCEAN);
 		if (oceanType == null) {
 			log.warn("EresseaOrderCompleter.addSurroundingRegions(): unable to retrieve ocean region type from rules!");
 			return;

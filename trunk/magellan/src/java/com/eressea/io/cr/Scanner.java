@@ -6,7 +6,7 @@
 // $Id$
 // ===
 
-package com.eressea.cr;
+package com.eressea.io.cr;
 
 import java.io.BufferedReader;
 import java.io.IOException;

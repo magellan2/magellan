@@ -11,7 +11,9 @@ package com.eressea;
 import java.util.Locale;
 import java.util.Map;
 
+import com.eressea.gamebinding.GameSpecificStuff;
 import com.eressea.util.CollectionFactory;
+
 
 
 
@@ -93,5 +95,9 @@ public class CompleteData extends GameData {
 	
 	public CompleteData(Rules rules, String name) {
 		super(rules, name);
+	}
+
+	public CompleteData(Rules rules, String name, GameSpecificStuff gameSpecificStuff) {
+		super(rules, name, gameSpecificStuff);
 	}
 }

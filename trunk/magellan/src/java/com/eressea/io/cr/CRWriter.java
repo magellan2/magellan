@@ -6,7 +6,7 @@
 // $Id$
 // ===
 
-package com.eressea.cr;
+package com.eressea.io.cr;
 
 
 import java.io.BufferedWriter;
@@ -47,6 +47,7 @@ import com.eressea.Spell;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitID;
+import com.eressea.io.file.FileType;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.MessageType;
 import com.eressea.rules.OptionCategory;
@@ -57,7 +58,6 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.Umlaut;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.SortIndexComparator;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 

@@ -64,12 +64,12 @@ import com.eressea.GameData;
 import com.eressea.Group;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
+import com.eressea.io.file.FileType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FixedWidthWriter;
 import com.eressea.util.OrderWriter;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.comparator.NameComparator;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**

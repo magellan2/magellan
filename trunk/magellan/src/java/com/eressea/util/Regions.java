@@ -22,6 +22,7 @@ import com.eressea.GameData;
 import com.eressea.ID;
 import com.eressea.Message;
 import com.eressea.Region;
+import com.eressea.Rules;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
@@ -592,4 +593,14 @@ public class Regions {
 		return false;
 	}
 
+	public static Map getOceanRegionTypes(Rules rules) {
+		Map ret = CollectionFactory.createHashtable();
+		for(Iterator iter = rules.getRegionTypeIterator(); iter.hasNext(); ) {
+			RegionType rt = (RegionType) iter.next();
+			if(rt.isOcean()) {
+				ret.put(rt.getID(), rt);
+			}
+		}
+		return ret;
+	}
 }
