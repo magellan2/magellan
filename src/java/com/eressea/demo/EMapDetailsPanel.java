@@ -3022,9 +3022,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel
 
 			for(Iterator iter = s.getComponents().keySet().iterator();
 					iter.hasNext();) {
-				String				   key	    = (String) iter.next();
-				String				   val	    = (String) s.getComponents()
-															.get(key);
+				String				   key = (String) iter.next();
+				String				   val = (String) s.getComponents().get(key);
 				DefaultMutableTreeNode compNode;
 
 				if(key.equalsIgnoreCase("Aura")) {
