@@ -13,7 +13,6 @@ import com.eressea.UnitContainer;
 import com.eressea.gamebinding.OrderChanger;
 import com.eressea.rules.Race;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.Translations;
 
 public class EresseaOrderChanger implements OrderChanger {

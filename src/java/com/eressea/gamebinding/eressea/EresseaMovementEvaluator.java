@@ -8,7 +8,6 @@ import com.eressea.gamebinding.MovementEvaluator;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
 import com.eressea.rules.SkillType;
-import com.eressea.util.EresseaRaceConstants;
 
 public class EresseaMovementEvaluator implements MovementEvaluator {
 	//private final static Logger log = Logger.getInstance(EresseaMovementEvaluator.class);

@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import com.eressea.gamebinding.MovementEvaluator;
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
@@ -56,14 +57,16 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	private final static String CONFIRMEDTEMPCOMMENT = ";"+OrderWriter.CONFIRMEDTEMP;
 
 	/** The unit does not possess horses */
-	public static final int CAP_NO_HORSES = Integer.MIN_VALUE;
+	public static final int CAP_NO_HORSES = MovementEvaluator.CAP_NO_HORSES;
 	/** The unit is not sufficiently skilled in horse riding */
-	public static final int CAP_UNSKILLED = CAP_NO_HORSES + 1;
+	public static final int CAP_UNSKILLED = MovementEvaluator.CAP_UNSKILLED;
 	public String privDesc = null; // private description
 	public Race race = null;
 	public Race realRace = null;
 
-	/** an object encapsulation  the orders of this unit as <tt>String</tt> objects */
+	/** 
+	 * an object encapsulation  the orders of this unit as <tt>String</tt> objects 
+	 */
 	protected Orders ordersObject = new Orders();
 
 	public boolean ordersAreNull() {

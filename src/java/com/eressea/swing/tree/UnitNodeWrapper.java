@@ -251,15 +251,15 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 			Skill s = (Skill)iter.next();
 			ge=null;
 			if (isShowingIconText()) {
-				ge=new GraphicsElement(new Integer(s.getLevel()),null,null,s.getType().getID().toString());
+				ge=new GraphicsElement(new Integer(s.getLevel()),null,null,s.getSkillType().getID().toString());
 				if (s.isLostSkill()) {
 					ge.setObject("-");
 				}
 			}
 			else {
-				ge=new GraphicsElement(null,null,s.getType().getID().toString());
+				ge=new GraphicsElement(null,null,s.getSkillType().getID().toString());
 			}
-			ge.setTooltip(s.getType().getName());
+			ge.setTooltip(s.getSkillType().getName());
 			ge.setType(GraphicsElement.ADDITIONAL);
 			if (isShowingChanges() && s.isLevelChanged()) {
 				if (isShowingChangesStyled()) {

@@ -608,8 +608,8 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 		for (Iterator iter = messages.iterator(); iter.hasNext(); ) {
 			Message message = (Message)iter.next();
 			String section = null;
-			if (message.getType() != null) {
-				section = message.getType().getSection();
+			if (message.getMessageType() != null) {
+				section = message.getMessageType().getSection();
 			}
 			if (section == null) {
 				section = getString("node.others");

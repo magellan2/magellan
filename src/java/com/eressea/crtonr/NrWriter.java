@@ -200,7 +200,7 @@ public class NrWriter
 			Iterator mit = myFac.messages.iterator();
 			while (mit.hasNext()) {
 				Message msg = (Message)mit.next();
-				if (msg.getType().getSection().equals(sections[i])) {
+				if (msg.getMessageType().getSection().equals(sections[i])) {
 					if (!found)
 					{
 						out.println();

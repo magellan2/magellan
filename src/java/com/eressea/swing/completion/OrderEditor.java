@@ -50,11 +50,10 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-import com.eressea.rules.Eressea;
+import com.eressea.gamebinding.OrderParser;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.MergeLineReader;
-import com.eressea.util.OrderParser;
 import com.eressea.util.OrderToken;
 import com.eressea.util.logging.Logger;
 
@@ -96,7 +95,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		setEditorKit(new OrderEditorKit());
 		this.settings = settings;
 
-		this.parser = new OrderParser(data != null ? (Eressea)data.rules : null);
+		this.parser = data != null ? data.getGameSpecificStuff().getOrderParser(data.rules) : null;
 		
 		this.undoMgr = _undoMgr;
 		

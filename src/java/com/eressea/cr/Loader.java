@@ -185,8 +185,8 @@ public class Loader {
 				if (f.messages != null) {
 					for (Iterator iter = f.messages.iterator(); iter.hasNext(); ) {
 						Message m = (Message)iter.next();
-						if (m.getType() != null) {
-							switch ((((IntegerID)m.getType().getID()).intValue())) {
+						if (m.getMessageType() != null) {
+							switch ((((IntegerID)m.getMessageType().getID()).intValue())) {
 							case 1511758069:
 							case 18362:
 								// a herb was found in a region
@@ -205,7 +205,7 @@ public class Loader {
 											ItemType type = data.rules.getItemType(StringID.create(value), true);
 											r.herb = type;
 										}
-										if((((IntegerID)m.getType().getID()).intValue()) == 1349776898) {
+										if((((IntegerID)m.getMessageType().getID()).intValue()) == 1349776898) {
 											// a certain amount of herbs has been detected in a region
 											String amount = (String) m.attributes.get("amount");
 											if (amount != null) {

@@ -881,7 +881,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		while(it.hasNext()) {
 			Skill sk = (Skill)it.next();
 			if (sk != null) {
-				Skill usk = unit.getSkill(sk.getType());
+				Skill usk = unit.getSkill(sk.getSkillType());
 				if (usk != null && usk.getLevel()>=sk.getLevel())  {
 					col.add(usk);
 				}
@@ -900,7 +900,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		Iterator it = weapons.keySet().iterator();
 		while(it.hasNext()) {
 			Skill sk = (Skill)it.next();
-			if (sk.getType().equals(skill.getType()) && skill.getLevel() >= sk.getLevel()) {
+			if (sk.getSkillType().equals(skill.getSkillType()) && skill.getLevel() >= sk.getLevel()) {
 				if (col2 == null) {
 					col2 = (Collection)weapons.get(sk);
 				} else if (weapons.containsValue(col2)) {

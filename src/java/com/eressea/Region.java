@@ -304,7 +304,6 @@ public class Region extends UnitContainer {
 	}
 
 
-	// TODO: remove this method
 	public RegionResource removeResource(ID id) {
 		if (this.resources == null) {
 			return null;
@@ -1200,7 +1199,7 @@ public class Region extends UnitContainer {
 							for (Iterator skillIterator = unit.skills.values().iterator(); skillIterator.hasNext() && !found; ) {
 								Skill skill = (Skill)skillIterator.next();
 								Skill makeSkill = newRes.getType().getMakeSkill();
-								if (makeSkill != null && skill.getType().equals(makeSkill.getType())) {
+								if (makeSkill != null && skill.getSkillType().equals(makeSkill.getSkillType())) {
 									// found a unit with right skill, level high enough?
 									if (skill.getLevel() >= newRes.getSkillLevel()) {
 										found = true;

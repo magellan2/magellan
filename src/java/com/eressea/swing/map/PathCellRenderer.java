@@ -197,7 +197,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 			Message m = (Message) iter.next();
 			if(false) {
 				if(log.isDebugEnabled()) {
-					if(transportMessageType.equals(m.getType())) {
+					if(transportMessageType.equals(m.getMessageType())) {
 						log.debug("PathCellRenderer("+u+") Message "+m);
 						if(m.attributes != null && m.attributes.get("unit") != null) {
 							log.debug("PathCellRenderer("+u+") Unit   "+m.attributes.get("unit"));
@@ -206,7 +206,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 					}
 				}
 			}
-			if(transportMessageType.equals(m.getType()) && 
+			if(transportMessageType.equals(m.getMessageType()) && 
 			   m.attributes != null &&
 			   m.attributes.get("unit") != null &&
 			   u.getID().equals(UnitID.createUnitID((String) m.attributes.get("unit"), 10))) {

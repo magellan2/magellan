@@ -45,29 +45,20 @@ public class MessageTypeSectionComparator implements Comparator {
 	 * sub-comparator's comparison is returned.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = 0;
 
 		String s1 = ((MessageType)o1).getSection();
 		String s2 = ((MessageType)o2).getSection();
 
 		if (s1 == null) {
-			if (s2 == null) {
-				retVal = 0;
-			} else {
-				retVal = Integer.MAX_VALUE;
-			}
+			return s2 == null ? 0 : 1;
 		} else {
 			if (s2 == null) {
-				retVal = Integer.MIN_VALUE;
+				return -1;
 			} else {
-				retVal = s1.compareTo(s2);
-				if (retVal == 0 && sameSectionSubCmp != null) {
-					retVal = sameSectionSubCmp.compare(o1, o2);
-				}
+				int retVal = s1.compareTo(s2);
+				return (retVal == 0 && sameSectionSubCmp != null) ? sameSectionSubCmp.compare(o1, o2) : retVal;
 			}
 		}
-
-		return retVal;
 	}
 
 	/**

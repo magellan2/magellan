@@ -29,11 +29,10 @@ public class MessageTypeComparator implements Comparator {
 	 * message types.
 	 */
 	public MessageTypeComparator (Comparator typeComparator) {
-		if (typeComparator != null) {
-			typeCmp = typeComparator;
-		} else {
-			throw new IllegalArgumentException("MessageTypeComparator: invalid type comparator specified");
+		if(typeComparator == null) {
+			throw new NullPointerException();
 		}
+		typeCmp = typeComparator;
 	}
 
 	/**
@@ -41,26 +40,15 @@ public class MessageTypeComparator implements Comparator {
 	 * @returns the result specified message type comparator.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = 0;
 
-		MessageType t1 = ((Message)o1).getType();
-		MessageType t2 = ((Message)o2).getType();
+		MessageType t1 = ((Message)o1).getMessageType();
+		MessageType t2 = ((Message)o2).getMessageType();
 
 		if (t1 == null) {
-			if (t2 == null) {
-				retVal = 0;
-			} else {
-				retVal = Integer.MAX_VALUE;
-			}
+			return t2 == null ? 0 : 1;
 		} else {
-			if (t2 == null) {
-				retVal = Integer.MIN_VALUE;
-			} else {
-				retVal = typeCmp.compare(t1, t2);
-			}
+			return t2 == null ? -1 : typeCmp.compare(t1, t2);
 		}
-
-		return retVal;
 	}
 
 	/**

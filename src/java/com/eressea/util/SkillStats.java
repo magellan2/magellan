@@ -47,7 +47,7 @@ public class SkillStats {
 	 * at the specified level
 	 */
 	public List getUnits(Skill skill) {
-		SkillStorage skillStorage = (SkillStorage)skillData.get(skill.getType());
+		SkillStorage skillStorage = (SkillStorage)skillData.get(skill.getSkillType());
 		if (skillStorage == null) {
 			return CollectionFactory.createLinkedList();
 		} else {
@@ -68,7 +68,7 @@ public class SkillStats {
 	 * will not consider persons, that master this skill at a higher level
 	 */
 	public int getPersonNumber(Skill skill) {
-		SkillStorage skillStorage = (SkillStorage)skillData.get(skill.getType());
+		SkillStorage skillStorage = (SkillStorage)skillData.get(skill.getSkillType());
 		if (skillStorage == null) {
 			return 0;
 		} else {
@@ -101,7 +101,7 @@ public class SkillStats {
 		int retVal = 0;
 		for (Iterator iter = getUnits(skill).iterator(); iter.hasNext(); ) {
 			Unit u = (Unit)iter.next();
-			retVal += u.getSkill(skill.getType()).getPoints();
+			retVal += u.getSkill(skill.getSkillType()).getPoints();
 		}
 		return retVal;
 	}
@@ -239,10 +239,10 @@ public class SkillStats {
 	public void addUnit(Unit u) {
 		for (Iterator iter = u.getSkills().iterator(); iter.hasNext(); ) {
 			Skill skill = (Skill)iter.next();
-			SkillStorage skillStorage = (SkillStorage)skillData.get(skill.getType());
+			SkillStorage skillStorage = (SkillStorage)skillData.get(skill.getSkillType());
 			if (skillStorage == null) {
 				skillStorage = new SkillStorage();
-				skillData.put(skill.getType(), skillStorage);
+				skillData.put(skill.getSkillType(), skillStorage);
 			}
 			Map levelTable = skillStorage.levelTable;
 			UnitVector uv = (UnitVector)levelTable.get(new Integer(skill.getLevel()));
@@ -253,8 +253,8 @@ public class SkillStats {
 			uv.units.add(u);
 			uv.personCounter += u.persons;
 			skillStorage.personCounter += u.persons;
-			skillStorage.skillPointCounter += u.getSkill(skill.getType()).getPoints();
-			skillStorage.skillLevelCounter += u.getSkill(skill.getType()).getLevel() * u.persons;
+			skillStorage.skillPointCounter += u.getSkill(skill.getSkillType()).getPoints();
+			skillStorage.skillLevelCounter += u.getSkill(skill.getSkillType()).getLevel() * u.persons;
 		}
 	}
 

@@ -10,16 +10,13 @@ package com.eressea.demo.actions;
 
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.eressea.demo.Client;
-import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesDialog;
-import com.eressea.swing.preferences.PreferencesFactory;
 import com.eressea.util.CollectionFactory;
 
 /**
