@@ -15,6 +15,7 @@ package com.eressea.gamebinding.eressea;
 
 import java.io.StringReader;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -85,15 +86,23 @@ public class EresseaRelationFactory implements RelationFactory {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List createRelations(Unit u, int from) {
-		List rels = CollectionFactory.createArrayList(5);
+		return createRelations(u, u.getOrders().iterator(), from);
+	}
 
+	public List createRelations(Unit u, List orders) {
+		return createRelations(u, orders.iterator(), 0);
+	}
+
+	private List createRelations(Unit u, Iterator orders, int from) {
+		List rels = CollectionFactory.createArrayList(5);
+		
 		GameData data = u.getRegion().getData();
 		Map modItems = null; // needed to track changes in the items for GIB orders
 		int modPersons = u.getPersons();
-
+		
 		// clone u unit's items
 		modItems = CollectionFactory.createHashtable();
-
+		
 		if(u.items != null) {
 			for(Iterator iter = u.items.values().iterator(); iter.hasNext();) {
 				Item i = (Item) iter.next();
@@ -105,10 +114,10 @@ public class EresseaRelationFactory implements RelationFactory {
 		EresseaOrderParser parser = new EresseaOrderParser(data.rules);
 		boolean tempOrders = false;
 		int line = 0;
-
-		for(Iterator iter = u.getOrders().iterator(); iter.hasNext();) {
+		
+		for(Iterator iter = orders; iter.hasNext();) {
 			String order = (String) iter.next();
-
+			
 			line++; // keep track of line
 
 			if(line < from) {
@@ -279,8 +288,8 @@ public class EresseaRelationFactory implements RelationFactory {
 									} else if(itemName.length() > 0) {
 										// TODO(pavkovic): korrigieren!!! Hier soll eigentlich das Item über den 
 										// übersetzten Namen gefunden werden!!!
-										// ItemType iType = ((Eressea)data.rules).getItemType(itemName);
-										ItemType iType = data.rules.getItemType(StringID.create(itemName));
+										ItemType iType = data.rules.getItemType(itemName);
+										//ItemType iType = data.rules.getItemType(StringID.create(itemName));
 
 										if(iType != null) {
 											// get the item from the list of modified items

@@ -94,13 +94,13 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public RegionType getRegionType(ID id, boolean add) {
-		Object uct = mapUnitContainerType.get(id);
+		Object uct = getObjectType(mapUnitContainerType, mapUnitContainerTypeNames, id.toString());
 
 		if((uct != null) && !(uct instanceof RegionType)) {
 			return null;
 		}
 
-		RegionType r = (RegionType) mapUnitContainerType.get(id);
+		RegionType r = (RegionType) uct;
 
 		if((r == null) && add) {
 			r = (RegionType) addObject(new RegionType(id), mapUnitContainerType,
@@ -167,13 +167,13 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ShipType getShipType(ID id, boolean add) {
-		Object uct = mapUnitContainerType.get(id);
+		Object uct = getObjectType(mapUnitContainerType, mapUnitContainerTypeNames, id.toString());
 
 		if((uct != null) && !(uct instanceof ShipType)) {
 			return null;
 		}
 
-		ShipType r = (ShipType) mapUnitContainerType.get(id);
+		ShipType r = (ShipType) uct;
 
 		if((r == null) && add) {
 			r = (ShipType) addObject(new ShipType(id), mapUnitContainerType,
@@ -240,13 +240,13 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public BuildingType getBuildingType(ID id, boolean add) {
-		Object uct = mapUnitContainerType.get(id);
+		Object uct = getObjectType(mapUnitContainerType, mapUnitContainerTypeNames, id.toString());
 
 		if((uct != null) && !(uct instanceof BuildingType)) {
 			return null;
 		}
 
-		BuildingType r = (BuildingType) mapUnitContainerType.get(id);
+		BuildingType r = (BuildingType) uct;
 
 		if((r == null) && add) {
 			r = (BuildingType) addObject(new BuildingType(id), mapUnitContainerType,
@@ -313,13 +313,13 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public CastleType getCastleType(ID id, boolean add) {
-		Object uct = mapUnitContainerType.get(id);
+		Object uct = getObjectType(mapUnitContainerType, mapUnitContainerTypeNames, id.toString());
 
 		if((uct != null) && !(uct instanceof CastleType)) {
 			return null;
 		}
 
-		CastleType r = (CastleType) mapUnitContainerType.get(id);
+		CastleType r = (CastleType) uct;
 
 		if((r == null) && add) {
 			r = (CastleType) addObject(new CastleType(id), mapUnitContainerType,
@@ -386,13 +386,13 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Race getRace(ID id, boolean add) {
-		Object uct = mapUnitContainerType.get(id);
+		Object uct = getObjectType(mapUnitContainerType, mapUnitContainerTypeNames, id.toString());
 
 		if((uct != null) && !(uct instanceof Race)) {
 			return null;
 		}
 
-		Race r = (Race) mapUnitContainerType.get(id);
+		Race r = (Race) uct;
 
 		if((r == null) && add) {
 			r = (Race) addObject(new Race(id), mapUnitContainerType, mapUnitContainerTypeNames);
@@ -458,7 +458,7 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ItemType getItemType(ID id, boolean add) {
-		ItemType r = (ItemType) mapItemType.get(id);
+		ItemType r = (ItemType) getObjectType(mapItemType, mapItemTypeNames, id.toString());
 
 		if((r == null) && add) {
 			r = (ItemType) addObject(new ItemType(id), mapItemType, mapItemTypeNames);
@@ -524,8 +524,7 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public AllianceCategory getAllianceCategory(ID id, boolean add) {
-		AllianceCategory r = (AllianceCategory) mapAllianceCategory.get(id);
-
+		AllianceCategory r = (AllianceCategory) getObjectType(mapAllianceCategory, mapAllianceCategoryNames, id.toString());
 		if((r == null) && add) {
 			r = (AllianceCategory) addObject(new AllianceCategory(id), mapAllianceCategory,
 											 mapAllianceCategoryNames);
@@ -591,7 +590,7 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public OptionCategory getOptionCategory(ID id, boolean add) {
-		OptionCategory r = (OptionCategory) mapOptionCategory.get(id);
+		OptionCategory r = (OptionCategory) getObjectType(mapOptionCategory, mapOptionCategoryNames, id.toString());
 
 		if((r == null) && add) {
 			r = (OptionCategory) addObject(new OptionCategory(id), mapOptionCategory,
@@ -658,7 +657,7 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public SkillCategory getSkillCategory(ID id, boolean add) {
-		SkillCategory r = (SkillCategory) mapSkillCategory.get(id);
+		SkillCategory r = (SkillCategory) getObjectType(mapSkillCategory, mapSkillCategoryNames, id.toString());
 
 		if((r == null) && add) {
 			r = (SkillCategory) addObject(new SkillCategory(id), mapSkillCategory,
@@ -725,7 +724,7 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ItemCategory getItemCategory(ID id, boolean add) {
-		ItemCategory r = (ItemCategory) mapItemCategory.get(id);
+		ItemCategory r = (ItemCategory) getObjectType(mapItemCategory, mapItemCategoryNames, id.toString());
 
 		if((r == null) && add) {
 			r = (ItemCategory) addObject(new ItemCategory(id), mapItemCategory, mapItemCategoryNames);
@@ -791,7 +790,7 @@ public class GenericRules implements Rules {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public SkillType getSkillType(ID id, boolean add) {
-		SkillType r = (SkillType) mapSkillType.get(id);
+		SkillType r = (SkillType) getObjectType(mapSkillType, mapSkillTypeNames, id.toString());
 
 		if((r == null) && add) {
 			r = (SkillType) addObject(new SkillType(id), mapSkillType, mapSkillTypeNames);
