@@ -164,6 +164,24 @@ public class GameDataBuilder {
 
 		return skill;
 	}
-	
+
+
+	public Border addRoad(Region region, int id, int direction, int buildRatio) {
+		// GRENZE 1
+		// "Straﬂe";typ
+		// 0;richtung
+		// 100;prozent
+		Border road = new Border(IntegerID.create(id));
+		
+		road.direction  = direction;
+		road.buildRatio = buildRatio;
+		road.type = "Straﬂe";
+		
+
+		region.addBorder(road);
+
+		return road;
+	}
+
 
 }
