@@ -1,4 +1,31 @@
 -------------------------------------------------------------------------------
+Hier mal ein paar Anregungen für Ilja:
+1. Tags sollten viel stärker benutzt werden. Z.B. alle Einheiten mit einem
+auszuwählenden Tag be-/entstätigen.
+2. Die Details sollten immer die Statistik für alle im Baum enthaltenen
+Einheiten anzeigen. Dh. für Vertrauenslevel, Inseln, etc.
+3. Die Detailanzeige sollte immer abhängig sein von den Talenten der
+ausgewählten Einheit.
+4. Die Befehlsvervollständigung dürfte gerne etwas mehr bieten als einfache
+Stringersetzung. Toll wäre, wenn ich Magellan beibringen kann, dass als
+nächstes eine Nummer einer Einheit aus der Region/Gruppe/mit bestimmten
+Tag/... kommt und ich die übliche Auswahl treffen kann wie bei normalen
+Befehlen.
+5. Schiffe betreten: Stelle ich mir so vor: Schiffe lassen sich 'dauerhaft'
+auswählen. Dann rechtsklicke ich auf eine Einheit der Region und wähle
+'Betrete ausgewählte Flotte' aus. Irgendwie muss auch noch Silber
+berücksichtigt werden, sollen ja nicht verhungern, wenn die ablegen.
+Logisch, dass ich die Flotte auch mit einem einzigen Befehl ablegen lassen
+will - nicht, dass man nachher noch im ROUTE einen Fehler einbaut.
+
+Danach können wir wegen Handel telefonieren :)
+
+Grüße,
+Helge
+
+
+
+-------------------------------------------------------------------------------
 Track all calls to Eventdispatcher and ensure that the given objects are still
 referenced by the caller to make WeakReference logic work
 

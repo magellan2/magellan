@@ -578,10 +578,10 @@ public class JECheck extends Reader {
 
 		try {
 			br = new BufferedReader(new JECheck(eCheckExe, null, "-h"));
-			line = br.readLine();
+			line = br.readLine().toLowerCase();
 			br.close();
 
-			int verStart = line.indexOf("Version ") + "Version ".length();
+			int verStart = line.indexOf("version ") + "version ".length();
 			int verEnd = line.indexOf(",", verStart);
 
 			if((verStart > 0) && (verEnd > verStart)) {
