@@ -1055,7 +1055,6 @@ public abstract class GameData implements Cloneable {
 		 *       that are also in the second report are added to the new one and
 		 *       temp units are ignored. IDs are used for comparism.
 		*/
-		Map parentUnits1 = CollectionFactory.createHashtable();
 
 		if(gd1.units() != null) {
 			for(Iterator iter = gd1.units().values().iterator(); iter.hasNext();) {
@@ -1068,20 +1067,8 @@ public abstract class GameData implements Cloneable {
 						log.error(e);
 					}
 				}
-
-				if(sameRound && !u.tempUnits().isEmpty()) {
-					parentUnits1.put(u.getID(), u);
-					u.setOrders(u.getCompleteOrders(), false);
-
-					// temp units are not deleted, assume that the
-					// old game data is thrown away anyway
-					// FIXME(pavkovic): this is NOT the case if we
-					// use export cr for exporting
-				}
 			}
 		}
-
-		Map parentUnits2 = CollectionFactory.createHashtable();
 
 		if(gd2.units() != null) {
 			for(Iterator iter = gd2.units().values().iterator(); iter.hasNext();) {
@@ -1095,18 +1082,6 @@ public abstract class GameData implements Cloneable {
 					}
 				}
 
-				/*
-				 * Ilja Pavkovic 2001.10.18: even if we don't add this Unit to the newGD,
-				 * because it is already added from the GameData 01, the temp units have to
-				 * be folded into the original unit (and extracted after the merge).
-				 */
-				if(!u.tempUnits().isEmpty()) {
-					parentUnits2.put(u.getID(), u);
-					u.setOrders(u.getCompleteOrders(), false);
-
-					// temp units are not deleted, assume that the
-					// old game data is thrown away anyway
-				}
 			}
 		}
 
@@ -1274,29 +1249,6 @@ public abstract class GameData implements Cloneable {
 			// second merge step
 			if(curUnit2 != null) {
 				Unit.merge(gd2, curUnit2, newGD, newUnit, sameRound);
-			}
-		}
-
-		// TEMP UNITS
-		for(Iterator iter = parentUnits1.values().iterator(); iter.hasNext();) {
-			Unit curParent = (Unit) iter.next();
-			Unit newParent = newGD.getUnit(curParent.getID());
-
-			if(newParent != null) {
-				newParent.extractTempUnits(0);
-			} else {
-				log.warn("Parent unit " + curParent + " not found");
-			}
-		}
-
-		for(Iterator iter = parentUnits2.values().iterator(); iter.hasNext();) {
-			Unit curParent = (Unit) iter.next();
-			Unit newParent = newGD.getUnit(curParent.getID());
-
-			if(newParent != null) {
-				newParent.extractTempUnits(0);
-			} else {
-				log.warn("Parent unit " + curParent + " not found");
 			}
 		}
 
