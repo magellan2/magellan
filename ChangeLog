@@ -1,3 +1,8 @@
+2004-09-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/OrderWriter.java: #tag EINHEIT instead
+	of #tag Einheit...
+
 2004-09-09  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/util/comparator/SortIndexComparator.java:

@@ -246,8 +246,10 @@ public class OrderWriter {
 		if(addECheckComments) {
 			int money = 0;
 			// pavkovic 2004.06.28: now use modified item
-			unit.getRegion().refreshUnitRelations();
-			Item silver = unit.getModifiedItem(world.rules.getItemType(StringID.create("Silber"), true));
+			// unit.getRegion().refreshUnitRelations();
+			//Item silver = unit.getModifiedItem(world.rules.getItemType(StringID.create("Silber"), true));
+			// pavkovic 2004.09.13: dont use modified items as it creates some bugs
+			Item silver = unit.getItem(world.rules.getItemType(StringID.create("Silber"), true));
 
 			if(silver != null) {
 				money = silver.getAmount();
@@ -294,7 +296,7 @@ public class OrderWriter {
 		if(writeUnitTagsAsVorlageComment && unit.hasTags()) {
 			for(Iterator iter = unit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
 				String tag = (String) iter.next();
-				writeln(stream, "// #after 1 { #tag Einheit "+tag.replace(' ','~')+" "+unit.getTag(tag).replace(' ','~')+" }");
+				writeln(stream, "// #after 1 { #tag EINHEIT "+tag.replace(' ','~')+" '"+unit.getTag(tag)+"' }");
 			}
 		}
 		
