@@ -1,3 +1,7 @@
+2003-12-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/TempUnit.java: fixed bug #771.
+
 2003-12-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/io/file/*.java: added new boolean readonly 
