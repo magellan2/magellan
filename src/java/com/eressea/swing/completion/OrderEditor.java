@@ -67,9 +67,7 @@ import com.eressea.util.logging.Logger;
  * A text pane for convenient editing and handling of Eressea orders.
  */
 public class OrderEditor extends JTextPane implements DocumentListener, KeyListener,
-													  SelectionListener, FocusListener,
-													  GameDataListener
-{
+													  SelectionListener, FocusListener {
 	private static final Logger log = Logger.getInstance(OrderEditor.class);
 
 	// Style name constants
@@ -99,7 +97,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 	private boolean highlightSyntax = true;
 	private boolean ignoreModifications = false;
 	private EventDispatcher dispatcher = null;
-	private GameData data = null;
+	//private GameData data = null;
 	private UndoManager undoMgr = null;
 	private DocumentUpdateRunnable docUpdateThread = new DocumentUpdateRunnable(null); // keep this udpate runnable instead of re-creating it over and over again
 	private OrderEditorCaret myCaret = null;
@@ -119,8 +117,6 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		myCaret = new OrderEditorCaret();
 		setCaret(myCaret);
 
-		this.data = data;
-
 		// for new DefaultEditorKit
 		setEditorKit(new OrderEditorKit());
 		this.settings = settings;
@@ -130,7 +126,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		this.undoMgr = _undoMgr;
 
 		this.dispatcher = d;
-		this.dispatcher.addGameDataListener(this);
+		//this.dispatcher.addGameDataListener(this);
 
 		highlightSyntax = (new Boolean(settings.getProperty("OrderEditor.highlightSyntax", "true")).booleanValue());
 
@@ -729,15 +725,6 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		if(log.isDebugEnabled()) {
 			log.debug("OrderEditor.formatTokens(): formatting done");
 		}
-	}
-
-	/**
-	 * Update the game data.
-	 *
-	 * @param e TODO: DOCUMENT ME!
-	 */
-	public void gameDataChanged(GameDataEvent e) {
-		this.data = e.getGameData();
 	}
 
 	/**

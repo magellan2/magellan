@@ -1,5 +1,17 @@
 2004-03-25  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/event/EventDispatcher.java: Added support
+	for using WeakReference logic.
+
+	* src/java/com/eressea/event/EventDispatcher.java: Prevent
+	ConcurrentModificationException while running the Notifier Thread
+	by cloning the listener lists. Also switched to ArrayLists for a
+	probable slight performance increase.
+	
+
+	* src/java/com/eressea/swing/completion/OrderEditor.java: Remove
+	implementation of GameDataListener and dependency to GameData.
+
 	* src/java/com/eressea/Unit.java: Merging bug: Level change of
 	new skills (without level change information) will now be evaluated. 
 
