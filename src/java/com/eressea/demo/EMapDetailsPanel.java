@@ -2635,7 +2635,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					//modLoad += u.getModifiedWeight();
 				}
 
-				load += u.getWeight();
+				// FIXME: pavkovic2004.07.01: check this out: load += u.getModifiedWeight();
+ 				load += u.getWeight();
 				text.append(u.toString()).append(": ").append(weightNumberFormat.format(weight));
 
 				if(weight.equals(modWeight) == false) {
@@ -2693,13 +2694,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 											: weightNumberFormat.format(new Float(load / 100.0F));
 
 			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
-			int intCap = s.getMaxCapacity();
 
-			String strCap = Integer.toString(intCap);
+			String strCap = Integer.toString(s.getMaxCapacity());
 
 			if(log.isDebugEnabled()) {
-				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(intCap " +
-						  intCap + ")");
+				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(strCap " +
+						  strCap + ")");
 			}
 
 			loadNode.setUserObject(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +

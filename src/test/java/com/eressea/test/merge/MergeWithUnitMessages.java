@@ -3,8 +3,6 @@ package com.eressea.test.merge;
 import junit.framework.TestCase;
 
 import com.eressea.GameData;
-import com.eressea.Region;
-import com.eressea.Skill;
 import com.eressea.Unit;
 
 import com.eressea.util.CollectionFactory;

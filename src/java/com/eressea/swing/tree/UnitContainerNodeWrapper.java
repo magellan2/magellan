@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.eressea.Ship;
 import com.eressea.UnitContainer;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
@@ -29,14 +30,21 @@ import com.eressea.util.StringFactory;
  */
 public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	private UnitContainer uc = null;
+	private boolean showFreeLoad = false;
+
+	public UnitContainerNodeWrapper(UnitContainer uc) {
+// 		this(uc, false);
+ 		this(uc, true);
+	}
 
 	/**
 	 * Creates a new UnitContainerNodeWrapper object.
 	 *
 	 * @param uc TODO: DOCUMENT ME!
 	 */
-	public UnitContainerNodeWrapper(UnitContainer uc) {
+	public UnitContainerNodeWrapper(UnitContainer uc, boolean showFreeLoad) {
 		this.uc = uc;
+		this.showFreeLoad = showFreeLoad;
 	}
 
 	/**
@@ -54,7 +62,14 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return uc.toString();
+		if(showFreeLoad && uc instanceof Ship) {
+			int free = ((Ship) uc).getMaxCapacity()*100 - ((Ship) uc).getModifiedLoad();
+			String strFree = String.valueOf(free/100F);
+			return uc.toString() + ": "+ strFree;
+ 		} else {
+			return uc.toString();
+		}
+
 	}
 
 	private static Map iconNamesLists = CollectionFactory.createHashtable();
