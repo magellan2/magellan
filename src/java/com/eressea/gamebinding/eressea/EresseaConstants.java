@@ -184,4 +184,27 @@ public final class EresseaConstants {
 	public static final ID S_WAGENBAU             = StringID.create("WAGENBAU");
 	public static final ID S_WAHRNEHMUNG          = StringID.create("WAHRNEHMUNG");
 
+	/** A state selector for the "Helfe Silber" state. */
+	public static final int A_SILVER = 1 << 0;
+
+	/** A state selector for the "Helfe Kämpfe" state. */
+	public static final int A_COMBAT = 1 << 1;
+
+	/** A state selector for the "Helfe Gib" state. */
+	public static final int A_GIVE = 1 << 3;
+
+	/** A state selector for the "Helfe Bewache" state. */
+	public static final int A_GUARD = 1 << 4;
+
+	/** A state selector for the "Helfe Parteitarnung" state. */
+	public static final int A_GUISE = 1 << 5;
+
+	/** A state selector for the "Helfe ?" state. */
+	public static final int A_WHATEVER = 1 << 6;
+
+	/** A state selector for all of the alliance states. */
+	// public static final int A_ALL = 0x003B;
+	public static final int A_ALL = A_SILVER | A_COMBAT | A_GIVE | A_GUARD | A_GUISE | A_WHATEVER; // (binary value should be: 111101 (#123) )
+
+
 }

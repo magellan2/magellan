@@ -27,7 +27,7 @@ public class TradeOrganizerAction extends MenuAction{
 	}
 
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		TradeOrganizer to = new TradeOrganizer(client, client.getDispatcher(), client.getData(), client.getSettings(), client.getSelectedRegions().values());
+		new TradeOrganizer(client, client.getDispatcher(), client.getData(), client.getSettings(), client.getSelectedRegions().values());
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

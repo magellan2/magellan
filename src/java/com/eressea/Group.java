@@ -244,7 +244,7 @@ public class Group extends NamedObject {
 			for (Iterator iter = curGroup.allies.values().iterator(); iter.hasNext();) {
 				Alliance alliance = (Alliance)iter.next();
 				Faction ally = newGD.getFaction(alliance.getFaction().getID());
-				newGroup.allies.put(ally.getID(), new Alliance(ally, alliance.getState()));
+				newGroup.allies.put(ally.getID(), new Alliance(ally, newGD.rules, alliance.getState()));
 			}
 		}
 		if (curGroup.getFaction() != null) {

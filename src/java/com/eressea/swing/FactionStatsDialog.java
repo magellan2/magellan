@@ -69,7 +69,6 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 	private JSplitPane splFaction = null;
 	private JTabbedPane tabPane = null;
 	//private EresseaOptionPanel optionPanel = null;
-	private Faction lastSelectedFaction = null;
 
 	private static FactionTrustComparator factionTrustComparator = FactionTrustComparator.DEFAULT_COMPARATOR;
 	private static NameComparator nameComparator = new NameComparator(new IDComparator());

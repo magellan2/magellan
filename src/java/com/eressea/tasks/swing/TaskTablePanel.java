@@ -295,7 +295,6 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 
 		// TODO : find better solution!
 		public void clearProblems() {
-			Vector dataVector = getDataVector();
 			for(int i=getRowCount()-1 ;i>=0;i--) {
 				removeRow(i);
 			}

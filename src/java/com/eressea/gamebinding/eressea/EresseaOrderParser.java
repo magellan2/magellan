@@ -10,7 +10,6 @@ package com.eressea.gamebinding.eressea;
 
 
 import java.io.Reader;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -1000,9 +999,6 @@ public class EresseaOrderParser implements OrderParser {
 		return retVal;
 	}
 
-	private boolean readGibUIDAmount(OrderToken token) {
-		return readGibUIDAmount(token, null, 0);
-	}
 
 	private boolean readGibUIDAlles(OrderToken token) {
 		boolean retVal = false;
@@ -2334,15 +2330,6 @@ public class EresseaOrderParser implements OrderParser {
 		return retVal;
 	}
 
-	private boolean isNextEOC() {
-		OrderToken t = (OrderToken)tokens.next();
-		return isEOC(t);
-	}
-
-	private boolean isEOC(OrderToken t) {
-		return (t.ttype == OrderToken.TT_EOC);
-	}
-
 	private void unexpected(OrderToken t) {
 		errMsg = "Unexpected token " + t.toString();
 	}
@@ -2385,23 +2372,22 @@ public class EresseaOrderParser implements OrderParser {
 
 	private boolean isRID(String txt) {
 		boolean retVal = false;
-		int x = 0, y = 0, z = 0;
 		int firstCommaPos = txt.indexOf(",");
 		int secondCommaPos = txt.lastIndexOf(",");
 		if (firstCommaPos > -1) {
 			if (secondCommaPos > firstCommaPos) {
 				try {
-					x = Integer.parseInt(txt.substring(0, firstCommaPos));
-					y = Integer.parseInt(txt.substring(firstCommaPos + 1, secondCommaPos));
-					z = Integer.parseInt(txt.substring(secondCommaPos + 1, txt.length()));
+					Integer.parseInt(txt.substring(0, firstCommaPos));
+					Integer.parseInt(txt.substring(firstCommaPos + 1, secondCommaPos));
+					Integer.parseInt(txt.substring(secondCommaPos + 1, txt.length()));
 					retVal = true;
 				} catch (NumberFormatException e) {
 					log.warn("OrderEditor.getColor()",e);
 				}
 			} else {
 				try {
-					x = Integer.parseInt(txt.substring(0, firstCommaPos));
-					y = Integer.parseInt(txt.substring(firstCommaPos + 1, txt.length()));
+					Integer.parseInt(txt.substring(0, firstCommaPos));
+					Integer.parseInt(txt.substring(firstCommaPos + 1, txt.length()));
 					retVal = true;
 				} catch (NumberFormatException e) {
 					log.warn("OrderEditor.getColor()",e);
@@ -2456,21 +2442,6 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = false;
 		}
 		return retVal;
-	}
-
-
-	/**
-	 * Case-insensitive comparator
-	 */
-	private class IgnrCsComp implements Comparator {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String)o1, s2 = (String)o2;
-			return s1.compareToIgnoreCase(s2);
-		}
-
-		public boolean equals(Object obj) {
-			return false;
-		}
 	}
 }
 

@@ -1408,23 +1408,7 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer imp
 			//initColors();
 			
 			showCard(getPaintMode());
-		}
-		
-		private void initColors() {
-			// region colors
-			Iterator it = regionColors.entrySet().iterator();
-			while(it.hasNext()) {
-				Map.Entry entry = (Map.Entry)it.next();
-				addColor(0,entry.getKey().toString(),(Color)entry.getValue());
-			}
-			// faction colors
-			it = factionColors.entrySet().iterator();
-			while(it.hasNext()) {
-				Map.Entry entry = (Map.Entry)it.next();
-				addColor(1,(String)entry.getKey(),(Color)entry.getValue());
-			}
-			
-		}
+		}		
 		
 		/** Adds a new pair to the indexed ModePanel.
 		 * @param index the ModePanel to use - 0 for RegionType, 1 for Politics

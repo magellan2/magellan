@@ -99,7 +99,6 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	
 	private Rectangle currentBounds = null;
 	private Image buffer = null;
-	private Point lastClickPos = null;
 	
 	// The cell geometry used by the renderes, see setRenderer()
 	private CellGeometry cellGeometry = null;

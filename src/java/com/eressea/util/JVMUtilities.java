@@ -92,7 +92,7 @@ public class JVMUtilities {
 	public final static boolean setExtendedState(Frame aObj, int state) {
 		if(state == UNKNOWN) return false;
 		try {
-			Object result = aObj.getClass().getMethod("setExtendedState", new Class[] { Integer.TYPE }).
+			aObj.getClass().getMethod("setExtendedState", new Class[] { Integer.TYPE }).
 				invoke(aObj, new Object[] { new Integer(state) });
 			log.debug("JVMUtitities : successfully called Window.setExtendedState("+state+")!");
 			return true;

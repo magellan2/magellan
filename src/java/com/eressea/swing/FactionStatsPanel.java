@@ -199,7 +199,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		DefaultMutableTreeNode n = null, m = null, o = null;
 		Map units = CollectionFactory.createHashtable();
-		int personCounter = 0, silverCounter = 0;
+		int personCounter = 0;
 		int modifiedUnitsCounter = 0;
 		int tempUnitsCounter = 0;
 		int modifiedPersonCounter = 0;

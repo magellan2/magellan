@@ -763,9 +763,9 @@ public class EresseaOrderCompleter implements Completer {
 	}
 
 	void cmpltKontaktiere() {
-		Alliance alliance = new Alliance(unit.getFaction());
-		alliance.setState(Alliance.GIVE);
-		alliance.setState(Alliance.GUARD);
+		Alliance alliance = new Alliance(unit.getFaction(), unit.getRegion().getData().rules);
+		alliance.setState(EresseaConstants.A_GIVE);
+		alliance.setState(EresseaConstants.A_GUARD);
 		addNotAlliedUnits(alliance, "");
 	}
 
@@ -1476,15 +1476,6 @@ public class EresseaOrderCompleter implements Completer {
 		}
 	}
 
-	private void addAll(List l, String postfix) {
-		Iterator i = l.iterator();
-		while (i.hasNext() == true) {
-			Completion c = new Completion((Completion)i.next());
-			c.setPostfix(postfix);
-			completions.add(c);
-		}
-	}
-
 	private void addUnit(Unit u, String postfix) {
 		addUnit(u, postfix, 0);
 	}
@@ -1592,18 +1583,6 @@ public class EresseaOrderCompleter implements Completer {
 	}
 
 	/**
-	 * Adds an item by name.
-	 */
-	private void addItem(String id, String postfix) {
-		if (data != null && data.rules != null) {
-			ItemType t = data.rules.getItemType(StringID.create(id));
-			if (t != null) {
-				addItem(t, postfix);
-			}
-		}
-	}
-
-	/**
 	 * Adds an item by type
 	 */
 	private void addItem(ItemType iType, String postfix) {
@@ -1613,10 +1592,6 @@ public class EresseaOrderCompleter implements Completer {
 			quotedName = "\"" + name + "\"";
 		}
 		completions.add(new Completion(name, quotedName, postfix));
-	}
-
-	private void addItem(String id) {
-		addItem(id, null);
 	}
 
 	/**

@@ -15,7 +15,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.eressea.Coordinate;
-import com.eressea.util.logging.Logger;
 
 
 /**
@@ -27,7 +26,6 @@ import com.eressea.util.logging.Logger;
  * relative coordinate representation (coordinate with x = -1, y = 1).
  */
 public class Direction {
-	private final static Logger log = Logger.getInstance(Direction.class);
 	
 	/** Invalid/unknown direction */
 	public final static int DIR_INVALID = -1;

@@ -61,10 +61,12 @@ public class SelfCleaningProperties extends OrderedOutputProperties {
 		name = doExpandValue(name,  "Client.fileHistory", "|");
 		name = renameProperty(name, "DirectoryHistory", "HistoryAccessory.directoryHistory" );
 		name = doExpandValue(name,  "HistoryAccessory.directoryHistory", "|");
-		// name = doExpandFactionColors(name, "GeomRenderer.FactionColors");
-		// name = doExpandFactionColors(name, "Minimap.FactionColors");
-		// name = doExpandFactionColors(name, "Minimap.RegionColors");
-
+		if(1==2) {
+			// TODO!!
+name = doExpandFactionColors(name, "GeomRenderer.FactionColors");
+ name = doExpandFactionColors(name, "Minimap.FactionColors");
+ name = doExpandFactionColors(name, "Minimap.RegionColors");
+		}
 	}
 
 	/** 

@@ -10,14 +10,12 @@ import java.util.Map;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.filters.UnitFactionTLFilter;
-import com.eressea.util.logging.Logger;
 /**
  *
  * @author  Andreas
  * @version
  */
 public class TrustlevelSwitch extends AbstractParameterReplacer implements EnvironmentDependent, SwitchOnly {
-	private final static Logger log = Logger.getInstance(TrustlevelSwitch.class);
 	
 	protected ReplacerEnvironment environment;
 	

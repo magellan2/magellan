@@ -1285,7 +1285,6 @@ public class CRParser {
 
 		EntityID id = EntityID.createEntityID(sc.argv[0].substring(8), 10);
 		sc.getNextToken();
-		String name = null;
 		int state = -1;
 		while (!sc.eof && !sc.isBlock) {
 			if (sc.argc == 2 &&
@@ -1302,7 +1301,7 @@ public class CRParser {
 		}
 		if (state != -1) {
 			Faction faction = getAddFaction(world, id);
-			Alliance alliance = new Alliance(faction, state);
+			Alliance alliance = new Alliance(faction, world.rules, state);
 			allies.put(faction.getID(), alliance);
 		}
 
@@ -1634,7 +1633,6 @@ public class CRParser {
 		Unit unit = getAddUnit(world, UnitID.createUnitID(sc.argv[0].substring(8), 10));
 		EntityID factionID = EntityID.createEntityID(-1);
 		ID groupID = null;
-		String factionName = null;
 		if (region != unit.getRegion()) {
 			unit.setRegion(region);
 		}
@@ -1689,7 +1687,6 @@ public class CRParser {
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Parteiname") == true) {
-				factionName = sc.argv[0];
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Parteitarnung") == true) {
@@ -1724,7 +1721,7 @@ public class CRParser {
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Burg") == true) {
-				int id = java.lang.Integer.parseInt(sc.argv[0]);
+				Integer.parseInt(sc.argv[0]);
 				Building b =
 					getAddBuilding(world,
 						EntityID.createEntityID(sc.argv[0], 10));
@@ -2502,7 +2499,6 @@ public class CRParser {
 	 */
 
 	public synchronized GameData read(Reader in, GameData world) throws IOException {
-		int i, j;
 		boolean bCorruptReportMsg = false;
 		int regionSortIndex = 0;
 		this.world = world;

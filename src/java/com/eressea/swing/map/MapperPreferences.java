@@ -707,8 +707,6 @@ public class MapperPreferences extends InternationalizedPanel implements Prefere
 				if (i==-1 || j==-1)
 					return;
 
-				String midPart=rest.substring(0,i);
-
 				String tData=rest.substring(i,j);
 
 				rest=rest.substring(j+8);

@@ -109,7 +109,7 @@ public class IDBaseConverter {
 		}
 		
 		public void gameDataChanged(GameDataEvent e) {
-			int oldbase = IDBaseConverter.getBase();
+			IDBaseConverter.getBase();
 			try {
 				IDBaseConverter.setBase(e.getGameData().base);
 			} catch(IllegalArgumentException iae) {

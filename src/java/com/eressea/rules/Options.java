@@ -37,7 +37,6 @@ public class Options {
 	
 	public int getBitMap() {
 		int bitMap = 0;
-		int i = 0;
 		
 		for (Iterator iter = options.values().iterator(); iter.hasNext();) {
 			OptionCategory o = (OptionCategory)iter.next();

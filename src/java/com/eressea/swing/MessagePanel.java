@@ -69,7 +69,6 @@ import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.MessageTypeComparator;
-import com.eressea.util.comparator.MessageTypeSectionComparator;
 
 /**
  * A class for displaying Eressea messages for regions or factions.
@@ -80,7 +79,6 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 	private DefaultTreeModel treeModel = null;
 	private DefaultMutableTreeNode rootNode = null;
 
-	private Comparator msgTypeComparator = new MessageTypeComparator(new MessageTypeSectionComparator(null));	// often used comparator
 
 	protected NodeWrapperFactory nodeFactory;
 	protected LineWrapCellRenderer lineRenderer;
@@ -528,7 +526,6 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 	 */
 	private void show(String s, DefaultMutableTreeNode parent) {
 		DefaultMutableTreeNode node = null;
-		DefaultMutableTreeNode subNode = null;
 
 		node = new DefaultMutableTreeNode(s);
 		parent.add(node);

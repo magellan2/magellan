@@ -64,7 +64,6 @@ import com.eressea.demo.actions.ArmyStatsAction;
 import com.eressea.demo.actions.ChangeFactionConfirmationAction;
 import com.eressea.demo.actions.ConfirmAction;
 import com.eressea.demo.actions.ECheckAction;
-//import com.eressea.demo.actions.EresseaOptionsAction;
 import com.eressea.demo.actions.ExportCRAction;
 import com.eressea.demo.actions.ExternalModuleAction;
 import com.eressea.demo.actions.FactionStatsAction;
@@ -157,7 +156,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	/** @deprecated, use info from GameData */
 	private File dataFile = null;
 	private EventDispatcher dispatcher = null;
-	private boolean foundSkinClass = false;
 	private boolean everLoadedReport = false;	// indicates that the user loaded a report at least once in order to decide about showing a save dialog when quitting
 	private FileHistory fileHistory;
 	private JMenu factionOrdersMenu;
@@ -183,7 +181,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	// Directories
 	private static File filesDirectory = null; // Magellan directory
 	private static File settingsDirectory = null; // Directory of "magellan.ini"
-	private File skinDir = null;
 	
 	// show order status in title
 	protected boolean showStatus = false;
@@ -1003,7 +1000,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	 */
 	private void postProcessLoadedCR(GameData loadedData) {
 		
-		Object data = null; // this should make unvoluntary access the class member data obvious. it is unused on purpose!
 		// show a warning if no password is set for any of the privileged factions
 		boolean privFacsWoPwd = true;
 		if (loadedData != null && loadedData.factions() != null) {

@@ -258,7 +258,6 @@ public class RoutingDialog extends InternationalizedDialog {
 		ActionListener okButtonAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int x = 0, y = 0;
-				boolean exception = false;
 				try {
 					x = Integer.parseInt(xCor.getText());
 					y = Integer.parseInt(yCor.getText());

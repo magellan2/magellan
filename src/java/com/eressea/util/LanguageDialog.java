@@ -51,8 +51,7 @@ public class LanguageDialog {
 	}
 	
 	protected void findLanguages(File baseDir) {
-		int selIndex = 0;
-		
+	
 		Locale sysDefault = Locale.getDefault();
 		
 		// collect all jars in the base directory

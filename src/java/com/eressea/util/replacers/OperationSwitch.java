@@ -6,14 +6,12 @@
 
 package com.eressea.util.replacers;
 
-import com.eressea.util.logging.Logger;
 /**
  *
  * @author  Andreas
  * @version
  */
 public class OperationSwitch extends AbstractParameterReplacer implements EnvironmentDependent, SwitchOnly {
-	private final static Logger log = Logger.getInstance(FactionSwitch.class);
 	
 	protected ReplacerEnvironment environment;
 	

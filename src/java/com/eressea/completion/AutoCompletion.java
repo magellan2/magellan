@@ -631,7 +631,7 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 		protected JCheckBox limitMakeCompletion;
 		protected JComboBox forGUIs;
 		protected JTextField tTime;
-		private JScrollPane sPane;
+
 		protected KeyTextField keyFields[];
 
 		// a copy of AutoCompletion.selfDefinedCompletions

@@ -1149,7 +1149,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private void appendGroupInfo(Group g, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		if (lastRegion != null) {
 			int personCount = 0;
-			Map items = CollectionFactory.createHashtable();
 			Map skills = CollectionFactory.createHashtable();
 			Iterator units = lastRegion.units().iterator();
 			Collection regionUnits = CollectionFactory.createLinkedList();

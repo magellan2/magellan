@@ -30,11 +30,8 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.Regions;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.SortIndexComparator;
-import com.eressea.util.logging.Logger;
 
 public class EresseaPostProcessor {
-
-	private final static Logger log = Logger.getInstance(EresseaPostProcessor.class);
 
 	private EresseaPostProcessor() {
 	}

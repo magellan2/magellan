@@ -34,8 +34,6 @@ public class HelpAction extends MenuAction {
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		// SG: had a lot of fun when I implemented this :-)
 		try {
-			Class[] cParamArray = new Class[1];
-			Object[] paramArray = new Object[2];
 			ClassLoader loader = new com.eressea.resource.ResourcePathClassLoader(client.getSettings());
 			
 			URL hsURL = loader.getResource("magellan.hs");
@@ -46,13 +44,12 @@ public class HelpAction extends MenuAction {
 			}
 
 			Class helpSetClass = null;
-			Class displayHelpFromSourceClass = null;
 			Class helpBrokerClass = null;
 			
 			if (this.helpBroker == null) {
 				try {
 					helpSetClass = loader.loadClass("javax.help.HelpSet");
-					displayHelpFromSourceClass = loader.loadClass("javax.help.CSH$DisplayHelpFromSource");
+					loader.loadClass("javax.help.CSH$DisplayHelpFromSource");
 					helpBrokerClass = loader.loadClass("javax.help.HelpBroker");
 				} catch (ClassNotFoundException ex) {
 					JOptionPane.showMessageDialog(client, Translations.getTranslation(this,"msg.javahelpnotfound.text"));

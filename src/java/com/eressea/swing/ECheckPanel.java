@@ -59,8 +59,8 @@ import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.gamebinding.eressea.EresseaConstants;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.EresseaOrderConstants;
 import com.eressea.util.JECheck;
 import com.eressea.util.JVMUtilities;
 import com.eressea.util.OrderWriter;
@@ -213,7 +213,6 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 		// run ECheck and display the ECheck output
 		try {
 			LineNumberReader r = new LineNumberReader(new JECheck(exeFile, orderFile, options));
-			String line = null;
 			StringBuffer sb = new StringBuffer();
 			while (r.ready()) {
 				sb.append(r.readLine()).append("\n");
@@ -544,7 +543,7 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 		if (f.getType() != null && f.getRace().getRecruitmentCosts() > 0) {
 			options += " -r" + f.getRace().getRecruitmentCosts();
 		}
-		if (f.options != null && f.options.isActive(StringID.create(EresseaOrderConstants.O_SILVERPOOL))) {
+		if (f.options != null && f.options.isActive(StringID.create(EresseaConstants.O_SILVERPOOL))) {
 			options += " -l";
 		}
 		if (f.getLocale() != null) {

@@ -516,7 +516,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					activeAlliancesAreDefault = false;
 					// add the selected faction to be able to show, on whose alliances
 					// the current colors of the icons of a faction node depend
-					activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
+					activeAlliances.put(f.getID(), new Alliance(f, data.rules, Integer.MAX_VALUE));
 					tree.repaint();
 				}
 			} else if (o instanceof GroupNodeWrapper) {
@@ -542,7 +542,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					if (g.getFaction() == null) {
 						log.warn("Found group without set faction: " + g.getName());
 					} else {
-						activeAlliances.put(g.getFaction().getID(), new Alliance(g.getFaction(), Integer.MAX_VALUE));
+						activeAlliances.put(g.getFaction().getID(), new Alliance(g.getFaction(), data.rules, Integer.MAX_VALUE));
 					}
 					tree.repaint();
 				}
@@ -574,7 +574,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 						activeAlliances.putAll(f.allies);
 						// add the selected faction to be able to show, on whose alliances
 						// the current colors of the icons of a faction node depend
-						activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
+						activeAlliances.put(f.getID(), new Alliance(f, data.rules, Integer.MAX_VALUE));
 						tree.repaint();
 					}
 				} else {
@@ -591,7 +591,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 						if (g.getFaction() == null) {
 							log.warn("Found group without set faction: " + g.getName());
 						} else {
-							activeAlliances.put(g.getFaction().getID(), new Alliance(g.getFaction(), Integer.MAX_VALUE));
+							activeAlliances.put(g.getFaction().getID(), new Alliance(g.getFaction(), data.rules, Integer.MAX_VALUE));
 						}
 						tree.repaint();
 					}
@@ -1010,7 +1010,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 							activeAlliances.putAll(f.allies);
 							// add the selected faction to be able to show, on whose alliances
 							// the current colors of the icons of a faction node depend
-							activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
+							activeAlliances.put(f.getID(), new Alliance(f, data.rules, Integer.MAX_VALUE));
 							tree.repaint();
 						}
 					} else {
@@ -1027,7 +1027,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 							if (g.getFaction() == null) {
 								log.warn("Found group without set faction: " + g.getName());
 							} else {
-								activeAlliances.put(g.getFaction().getID(), new Alliance(g.getFaction(), Integer.MAX_VALUE));
+								activeAlliances.put(g.getFaction().getID(), new Alliance(g.getFaction(), data.rules, Integer.MAX_VALUE));
 							}
 							tree.repaint();
 						}
@@ -1561,7 +1561,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		// now add all privileged factions with alliance state Integer.MAX_VALUE
 		for (Iterator iter = privilegedFactions.iterator(); iter.hasNext(); ) {
 			Faction f = (Faction)iter.next();
-			activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
+			activeAlliances.put(f.getID(), new Alliance(f, data.rules,Integer.MAX_VALUE));
 		}
 	}
 
