@@ -46,6 +46,15 @@ public abstract class NamedObject extends Identifiable implements Named {
 		return this.name;
 	}
 
+	/** 
+	 * Returns the (possibly) modified name of this object.
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public String getModifiedName() {
+		return this.name;
+	}
+
 	/**
 	 * Returns a String representation of this object.
 	 *

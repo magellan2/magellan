@@ -13,6 +13,7 @@
 
 package com.eressea;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 import com.eressea.rules.ShipType;
@@ -104,7 +105,16 @@ public class Ship extends UnitContainer implements HasRegion {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getMaxCapacity() {
-		return (capacity != -1) ? capacity : getShipType().getCapacity();
+		return (capacity != -1) ? capacity : getMaxCapacity(getShipType().getCapacity());
+	}
+	
+	/** 
+	 * Returns the maximimum capacity with respect to damages of the ship.
+	 */
+	private int getMaxCapacity(int maxCapacity) {
+		return new BigDecimal(maxCapacity).multiply(new BigDecimal(100 - damageRatio))
+			.divide(new BigDecimal(100), BigDecimal.ROUND_DOWN)
+			.intValue();
 	}
 
 	/**

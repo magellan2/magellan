@@ -31,6 +31,7 @@ import com.eressea.rules.MessageType;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
+import com.eressea.util.Locales;
 import com.eressea.util.Regions;
 import com.eressea.util.logging.Logger;
 
@@ -1417,6 +1418,9 @@ public abstract class GameData implements Cloneable {
 			return;
 		}
 
+		// enforce locale to be non-null
+		postProcessLocale();
+		
 		// attach Regions to Islands
 		Island.postProcess(this);
 
@@ -1425,6 +1429,17 @@ public abstract class GameData implements Cloneable {
 
 		getGameSpecificStuff().postProcess(this);
 		postProcessed = true;
+	}
+
+	/** 
+	 * Adds the order locale of Magellan if locale is null.
+	 * This should prevent some NPE with the sideeffect to 
+	 * store a locale in a locale-less game data object.
+	 */
+	private void postProcessLocale() {
+		if(getLocale() == null) {
+			setLocale(Locales.getOrderLocale());
+		}
 	}
 
 	/**
