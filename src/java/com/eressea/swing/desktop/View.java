@@ -13,6 +13,7 @@
 
 package com.eressea.swing.desktop;
 
+import java.awt.Image;
 import javax.swing.JPanel;
 
 /**
@@ -23,16 +24,23 @@ public interface View {
 	/**
 	 * Returns the (localized) name of the View
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return name of the view
 	 */
 	public String getName();
 
+	/**
+	 * Returns the image associated with the view 
+	 * 
+	 * @return image of te view
+	 */
+	public Image getImage();
+	
 	/**
 	 * Returns the unique identifier name of the View
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public String getIdentifier();
+	//public String getIdentifier();
 
 	/**
 	 * returns a Panel of this view

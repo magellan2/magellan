@@ -1,3 +1,12 @@
+2005-03-30  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\swing\desktop: Some more documentation.
+	 
+	* src/java/com/eressea/util/logging: Added some helper classes for
+	Event logging.
+	 
+	* .classpath: added some more libraries.
+
 2005-03-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/event/EventDispatcher.java: remove

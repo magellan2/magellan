@@ -63,7 +63,7 @@ public class WorkSpace extends JPanel {
 
 	private void initUI(ButtonGroup buttonGroup) {
 		contentPanel = createContentPanel();
-		setContent(new EmptyPerspective().build());
+		setContent(new EmptyPerspective().getJPanel());
 
 		this.setLayout(new BorderLayout());
 		this.add(contentPanel,BorderLayout.CENTER);
