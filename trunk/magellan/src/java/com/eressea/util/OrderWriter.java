@@ -164,7 +164,7 @@ public class OrderWriter {
 		writeln(stream, " \"" + faction.password + "\"");
 		writeln(stream, "; TIMESTAMP " + getTimeStamp());
 
-		if(addECheckComments == true) {
+		if(addECheckComments) {
 			writeln(stream, "; ECHECK " + echeckOptions);
 		}
 
@@ -233,9 +233,11 @@ public class OrderWriter {
 		stream.write(Translations.getOrderTranslation(EresseaOrderConstants.O_UNIT) + " " +
 					 unit.getID().toString());
 
-		if(addECheckComments == true) {
+		if(addECheckComments) {
 			int money = 0;
-			Item silver = unit.getItem(world.rules.getItemType(StringID.create("Silber"), true));
+			// pavkovic 2004.06.28: now use modified item
+			unit.getRegion().refreshUnitRelations();
+			Item silver = unit.getModifiedItem(world.rules.getItemType(StringID.create("Silber"), true));
 
 			if(silver != null) {
 				money = silver.getAmount();

@@ -16,12 +16,6 @@ package com.eressea.main;
 import java.util.Properties;
 
 import com.eressea.event.EventDispatcher;
-import com.eressea.resource.ResourcePathClassLoader;
-import com.eressea.util.IDBaseConverter;
-import com.eressea.util.ImageFactory;
-import com.eressea.util.Locales;
-import com.eressea.util.NameGenerator;
-import com.eressea.util.Translations;
 
 /**
  * This class keeps all anchors to global resources e.g. EventDispatcher, Properties, perhaps different stuff<br>

@@ -45,10 +45,15 @@ public class GameDataBuilder {
 
 		Island island = addIsland(data,"1","Island_1");
 
-		Region region = addRegion(data,"0 0", "Region_0_0","Gletscher",1);
-		region.setIsland(island);
+		Region region_0_0 = addRegion(data,"0 0", "Region_0_0","Gletscher",1);
+		region_0_0.setIsland(island);
 
-		Unit unit = addUnit(data, "1", "Unit_1", faction, region);
+		Region region_1_0 = addRegion(data,"1 0", "Region_1_0","Ebene",2);
+		region_1_0.setIsland(island);
+
+		Region region_0_1 = addRegion(data,"0 1", "Region_0_1","Ozean",2);
+
+		Unit unit = addUnit(data, "1", "Unit_1", faction, region_0_0);
 
 		if(postProcess) {
 			data.postProcess();
