@@ -17,6 +17,7 @@ import java.io.File;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -81,6 +82,10 @@ public class ReportMerger extends java.lang.Object {
 
 		// maps region names to region coordinate
 		Map regionMap = null;
+
+		// maps schemes (region names) to a Collection of astral regions
+		// which contain that scheme
+		Map schemeMap = null;
 
 		// already merged with another report
 		boolean merged = false;
@@ -405,11 +410,13 @@ public class ReportMerger extends java.lang.Object {
 			report.data.setCurTempID(-1);
 		}
 
+		// it is safe to assume, that when regionMap is null, schemeMap is null, too
 		if(report.regionMap == null) {
 			iProgress += 1;
 			ui.setProgress(report.file.getName() + " - " + getString("status.processing"), iProgress);
 
 			report.regionMap = CollectionFactory.createHashMap();
+			report.schemeMap = CollectionFactory.createHashMap();
 
 			for(Iterator iter = report.data.regions().values().iterator(); iter.hasNext();) {
 				Region region = (Region) iter.next();
@@ -421,6 +428,17 @@ public class ReportMerger extends java.lang.Object {
 					report.regionMap.put(region.getName(), region);
 
 					//}
+				}
+				if (region.getCoordinate().z == 1) {
+					for (Iterator schemes = region.schemes().iterator(); schemes.hasNext(); ) {
+						Scheme scheme = (Scheme)schemes.next();
+						Collection col = (Collection)report.schemeMap.get(scheme.getName());
+						if (col == null) {
+							col = CollectionFactory.createLinkedList();
+							report.schemeMap.put(scheme.getName(), col);
+						}
+						col.add(region);
+					}
 				}
 			}
 		}
@@ -470,39 +488,60 @@ public class ReportMerger extends java.lang.Object {
 			} else if (coord.z == 1) {
 				// Now try to find an astral space region that matches this region
 				// We can't use region name for this, since all astral space
-				// regions are named "Nebel". Try to use the units in the region.
-				Region foundRegion = null;
-				System.out.println("Marke: Dealing with region " + region);
-				for (Iterator units = region.units().iterator(); units.hasNext(); ) {
-					Unit u = (Unit)units.next();
-					System.out.println("Marke: Dealing with unit " + u);
-					Unit foundUnit = report.data.getUnit(u.getID());
-					if (foundUnit != null) {
-						System.out.println("Marke: Found this unit in other report");
-						foundRegion = foundUnit.getRegion();
-						System.out.println("Marke: Region there is " + foundRegion);
-						// I guess when we found a single unit that matches
-						// we can boil out.
-						break;
+				// regions are named "Nebel". We use the schemes instead.
+				// Since all schemes have to match it's sufficient to look at the
+				// first one to find a possible match. To check whether that
+				// match really is one, we have to look at all schemes.
+				if (!region.schemes().isEmpty()) {
+					Scheme scheme = (Scheme)region.schemes().iterator().next();
+					Object o = report.schemeMap.get(scheme.getName());
+					if (o != null) {
+						// we found some astral region that shares at least
+						// one scheme with the actual region. However, this
+						// doesn't mean a lot, since schemes belong to several
+						// astral regions.
+						// check whether any of those regions shares all schemes
+						for (Iterator regIter = ((Collection)o).iterator(); regIter.hasNext(); ) {
+							Region foundRegion = (Region)regIter.next();
+							if (foundRegion.schemes().size() == region.schemes().size()) {
+								// at least the size fits
+								boolean mismatch = false;
+								for (Iterator schemes1 = region.schemes().iterator();
+									schemes1.hasNext() && !mismatch; ) {
+									Scheme s1 = (Scheme)schemes1.next();
+									boolean found = false;
+									for (Iterator schemes2 = foundRegion.schemes().iterator();
+										schemes2.hasNext() && !found; ) {
+										Scheme s2 = (Scheme)schemes2.next();
+										if (s1.getName().equals(s2.getName())) {
+											found = true; // found a scheme match
+										}
+									}
+									if (!found) {
+										mismatch = true;
+									}
+								}
+								if (!mismatch) {
+									// allright, seems we found a valid translation
+									Coordinate foundCoord = foundRegion.getCoordinate();
+									Coordinate translation = new Coordinate(foundCoord.x - coord.x,
+										foundCoord.y - coord.y, 1);
+									Integer count = (Integer)astralTranslationMap.get(translation);
+									if (count == null) {
+										count = new Integer(1);
+									} else {
+										count = new Integer(count.intValue() + 1);
+									}
+									astralTranslationMap.put(translation, count);
+								}
+							}
+						}
 					}
-				}
-				if (foundRegion != null) {
-					Coordinate foundCoord = foundRegion.getCoordinate();
-					Coordinate translation = new Coordinate(foundCoord.x - coord.x,
-						foundCoord.y - coord.y, 1);
-					Integer count = (Integer)astralTranslationMap.get(translation);
-					if (count == null) {
-						count = new Integer(1);
-					} else {
-						count = new Integer(count.intValue() + 1);
-					}
-					astralTranslationMap.put(translation, count);
-					System.out.println("Marke: Found astral translation: " + translation + "(" + count + ")");
 				}
 			}
-		}
+		} // end of search for translations, now check the found ones
 
-		/* check whether any of the translations is impossible by
+		/* check whether any of the normal space translations is impossible by
 		   comparing the terrains */
 		int maxTerrainMismatches = (int) (Math.max(data.regions().size(),
 												   report.data.regions().size()) * 0.02);
@@ -675,10 +714,10 @@ public class ReportMerger extends java.lang.Object {
 		}
 		if (bestHitCount <= 0) {
 			System.out.println("Warning: ReportMerger: Couldn't find a good translation for astral space coordinate systems. Merge results on level 1 may be poor and undefined!");
+		} else if (astralTranslationMap.size() > 0) {
+			System.out.println("ReportMerger: Found " + astralTranslationMap.size() + " possible translations for astral space. Using this one: " + bestAstralTranslation);
 		}
 
-		System.out.println("Marke: Found " + astralTranslationMap.keySet().size() + " astral translations");
-		System.out.println("Marke: Considered best is: " + bestAstralTranslation);
 
 		// use astral space translation anyway
 		if((data.getDate() == null) || (report.data.getDate() == null)) {
@@ -693,7 +732,6 @@ public class ReportMerger extends java.lang.Object {
 
 		// valid translation?
 		if((iCount > 0) && (!bEqual)) {
-			System.out.println("Marke: Translating");
 			iProgress += 1;
 			ui.setProgress(report.file.getName() + " - " + getString("status.merging"), iProgress);
 
