@@ -13,6 +13,8 @@ import java.awt.event.*;
 
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -50,6 +52,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		d.addSelectionListener(this);
 
 		initGUI();
+		initTimer();
 		initInspectors();
 	}
 
@@ -82,14 +85,82 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 						JTable target = (JTable)e.getSource();
 						int row = target.getSelectedRow();
 						log.debug("TaskTablePanel: Double click on row "+row);
+						selectObjectOnRow(row);
 					}
              }
 			});
-		
-		this.add(new JScrollPane(table));
+
+		this.setLayout(new BorderLayout());
+		this.add(new JScrollPane(table),BorderLayout.CENTER);
 
 	}
+
+
+	private void selectObjectOnRow(int row) {
+		Vector v = (Vector) model.getDataVector().get(row);
+		Object obj = v.get(TaskTableModel.OBJECT_POS);
+		dispatcher.fire(new SelectionEvent(this,null,obj));
+	}
+
+	private final static int RECALL_IN_MS = 10;
+	private final static boolean REGIONS_WITH_UNCONFIRMED_UNITS_ONLY=true;
+
+	private Timer timer;
+	private Iterator regionsIterator;
+
+	private void initTimer() {
+		if(model != null) {
+			model.clearProblems();
+		}
+		if(data != null && data.regions() != null) {
+			regionsIterator = data.regions().values().iterator();
+			if(timer == null) {
+				timer = new Timer(true);
+				timer.scheduleAtFixedRate(new TimerTask() {
+						public void run() {
+							inspectNextRegion();
+						}
+					} , RECALL_IN_MS, RECALL_IN_MS);
+			}
+		} else {
+			regionsIterator = null;
+			if(timer != null) {
+				timer.cancel();
+				timer = null;
+			}
+		}
+	}
 	
+	private boolean inspectNextRegion() {
+		Region r=getNextRegion();
+		if(r != null) {
+			reviewRegionAndUnits(r);
+		}
+		return r != null;
+	}
+
+	private Region getNextRegion() {
+		if(regionsIterator == null) return null;
+		// find next interesting region
+		while(regionsIterator.hasNext()) {
+			Region r = (Region) regionsIterator.next();
+			if(r.units() != null && !r.units().isEmpty()) {
+				if(REGIONS_WITH_UNCONFIRMED_UNITS_ONLY) {
+					// only show regions with unconfirmed units
+					for(Iterator iter = r.units().iterator(); iter.hasNext(); ) {
+						Unit u = (Unit) iter.next();
+						if(!u.ordersConfirmed) {
+							return r;
+						}
+					}
+				} else {
+					return r;
+				}
+			}
+		}
+		return null;
+	}
+
 	private void initInspectors() {
 		inspectors = CollectionFactory.createArrayList();
 		inspectors.add(ToDoInspector.getInstance());
@@ -108,11 +179,12 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	
 	public void gameDataChanged(GameDataEvent e) {
 		super.gameDataChanged(e);
-		// TODO: delete warning list
+		// rebuild warning list
+		initTimer();
 	}
 
 	public void selectionChanged(SelectionEvent e) {
-		if(e.getSelectionType() == SelectionEvent.ST_REGIONS) {
+		if(e.getSource()==this || e.getSelectionType() == SelectionEvent.ST_REGIONS) {
 			// ignore multiple region selections
 			return;
 		}
@@ -130,14 +202,31 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 				r = (Region) e.getActiveObject();
 			} catch(ClassCastException cce) {}
 		}
-
-		reviewObjects(u,r);
+		reviewRegionAndUnits(r);
+		reviewObjects(u,null);
 	}
 
 	public void unitOrdersChanged(UnitOrdersEvent e) {
 		// TODO: rebuild warning list for given unit
 		reviewObjects(e.getUnit(), e.getUnit().getRegion());
 	}
+
+	private void reviewRegionAndUnits(Region r) {
+		if(r ==null) return;
+		if(log.isDebugEnabled()) {
+			log.debug("TaskTablePanel.reviewRegionAndUnits("+r+") called");
+		}
+		reviewObjects(null,r);
+
+		if(r.units() == null) {
+			return;
+		}
+		for(Iterator iter = r.units().iterator(); iter.hasNext(); ) {
+			Unit u = (Unit) iter.next();
+			reviewObjects(u,null);
+		}
+	}
+
 
 	private void reviewObjects(Unit u, Region r) {
 		for(Iterator iter = inspectors.iterator(); iter.hasNext(); ) {
@@ -183,6 +272,14 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 			return false;
 		}
 
+		// TODO : find better solution!
+		public void clearProblems() {
+			Vector dataVector = getDataVector();
+			for(int i=getRowCount()-1 ;i>=0;i--) {
+				removeRow(i);
+			}
+		}
+
 		public void addProblems(List p) {
 			for(Iterator iter = p.iterator(); iter.hasNext(); ) {
 				addProblem((Problem) iter.next());
@@ -191,6 +288,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 
 			
 		private final static int PROBLEM_POS = 2;
+		private final static int OBJECT_POS = 3;
 		public void addProblem(Problem p) {
 			
 			Vector v = new Vector(6);

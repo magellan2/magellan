@@ -59,11 +59,16 @@ public class TaskTableDialog extends InternationalizedDataDialog {
 	}
 	
 	private Container getMainPane() {
-		panel = new TaskTablePanel(dispatcher, data, settings);
+		if(panel == null) {
+			panel = new TaskTablePanel(dispatcher, data, settings);
+		} 
+		return panel;
 		
+		/*
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(panel);
 		return mainPanel;
+		*/
 	}
 	
 	private void storeSettings() {
