@@ -41,6 +41,7 @@ import javax.swing.ToolTipManager;
 import com.eressea.Building;
 import com.eressea.Coordinate;
 import com.eressea.Region;
+import com.eressea.Scheme;
 import com.eressea.Ship;
 import com.eressea.Unit;
 
@@ -66,22 +67,21 @@ import com.eressea.util.replacers.ReplacerHelp;
 import com.eressea.util.replacers.ReplacerSystem;
 
 /**
- * A component displaying a map based on a <tt>GameData</tt> object. The appearance of the map is
- * made configurable by using combinations of classes implementing the <tt>CellRenderers</tt>
- * interface.
- * 
+ * A component displaying a map based on a <tt>GameData</tt> object. The
+ * appearance of the map is made configurable by using combinations of classes
+ * implementing the <tt>CellRenderers</tt> interface.
+ *
  * <p>
  * <b>Note:</b>
  * </p>
- * 
+ *
  * <p>
  * This class avoids Java2D methods so it can be used with JDK version earlier than 1.2.
  * </p>
  */
-public class Mapper extends InternationalizedDataPanel implements SelectionListener, Scrollable,
-																  UnitOrdersListener,
-																  GameDataListener, Initializable
-{
+public class Mapper extends InternationalizedDataPanel implements
+	SelectionListener, Scrollable, UnitOrdersListener,
+	GameDataListener, Initializable {
 	private static final Logger log = Logger.getInstance(Mapper.class);
 
 	/** TODO: DOCUMENT ME! */
@@ -107,7 +107,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 	/** TODO: DOCUMENT ME! */
 	public static final int PLANE_MARKINGS = 7;
-	private static final int PLANES = 8;
+
+	public static final int PLANE_SCHEMES = 8;
+
+	private static final int PLANES = 9;
 	private RenderingPlane planes[] = null;
 	private Collection availableRenderers = null;
 	private MediaTracker tracker = null;
@@ -153,14 +156,16 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geom TODO: DOCUMENT ME!
 	 */
-	public Mapper(EventDispatcher ed, Properties p, Collection customRenderers, CellGeometry geom) {
+	public Mapper(EventDispatcher ed, Properties p, Collection customRenderers,
+				  CellGeometry geom) {
 		super(ed, p);
 
 		conMenu = new MapContextMenu(ed, p);
 
 		setTooltipDefinition(settings.getProperty("Mapper.ToolTip.Definition",
-												  "<html><font=-1>§rname§</font></html>"));
-		setShowTooltip(settings.getProperty("Mapper.showTooltips", "false").equals("true"));
+			"<html><font=-1>§rname§</font></html>"));
+		setShowTooltip(settings.getProperty("Mapper.showTooltips", "false")
+					   .equals("true"));
 
 		setDoubleBuffered(false); // we mainly use our own buffer
 
@@ -168,7 +173,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		// set the tracker used to repaint when loading and scaling images takes a while
 		// TODO: remove this decision from options. This is a developer decision!!!
-		if((new Boolean(settings.getProperty("Mapper.deferPainting", "true"))).booleanValue()) {
+		if ((new Boolean(settings.getProperty("Mapper.deferPainting", "true"))).
+			booleanValue()) {
 			tracker = new MediaTracker(this);
 			ImageCellRenderer.setTracker(tracker);
 		}
@@ -177,134 +183,145 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		cellGeometry = geom;
 
 		// initialize renderers and planes (mark the order!)
-		availableRenderers = initAvailableRenderers(cellGeometry, settings, customRenderers);
+		availableRenderers = initAvailableRenderers(cellGeometry, settings,
+			customRenderers);
 		planes = initRenderingPlanes();
 
 		// determine the size of the map in component coordinates
 		mapToScreenBounds = getMapToScreenBounds();
 
-		if(mapToScreenBounds != null) {
+		if (mapToScreenBounds != null) {
 			setPreferredSize(mapToScreenBounds.getSize());
 		}
 
 		addMouseListener(new MouseAdapter() {
-				public void mousePressed(MouseEvent me) {
-					requestFocus();
+			public void mousePressed(MouseEvent me) {
+				requestFocus();
 
-					if(!pathPersistence) {
+				if (!pathPersistence) {
+					pathRegions.clear();
+				}
+
+				if ((cellGeometry == null) || (mapToScreenBounds == null)) {
+					return;
+				}
+
+				Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
+					mapToScreenBounds.x,
+					me.getPoint().y +
+					mapToScreenBounds.y,
+					showLevel);
+				Region r = data.getRegion(c);
+
+				if (r != null) {
+					if ((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
+						if ((me.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
+							if (selectedRegions.containsKey(c) == false) {
+								doDraggingSelect = true;
+								selectedRegions.put(c, r);
+							} else {
+								doDraggingSelect = false;
+								selectedRegions.remove(c);
+							}
+
+							dispatcher.fire(new com.eressea.event.
+											SelectionEvent(mapper,
+								selectedRegions.values(),
+								null,
+								SelectionEvent.ST_REGIONS));
+							repaint();
+							prevDragRegion = r;
+						} else {
+							activeRegion = r;
+							activeObject = r;
+							dispatcher.fire(new com.eressea.event.
+											SelectionEvent(mapper,
+								null,
+								activeRegion,
+								SelectionEvent.ST_DEFAULT));
+							repaint();
+						}
+					} else if ((me.getModifiers() & MouseEvent.BUTTON3_MASK) !=
+							   0) {
+						conMenu.init(r, selectedRegions.values());
+						conMenu.show(Mapper.this, me.getX(), me.getY());
+					}
+				} else if ((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+					conMenu.clear();
+					conMenu.show(Mapper.this, me.getX(), me.getY());
+				}
+			}
+
+			public void mouseRelease(MouseEvent me) {
+				if ((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
+					prevDragRegion = null;
+				}
+			}
+		});
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent me) {
+				if (((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) &&
+					((me.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+					if (!pathPersistence) {
 						pathRegions.clear();
 					}
 
-					if((cellGeometry == null) || (mapToScreenBounds == null)) {
+					if (cellGeometry == null) {
 						return;
 					}
 
 					Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
-															  mapToScreenBounds.x,
-															  me.getPoint().y +
-															  mapToScreenBounds.y, showLevel);
+						mapToScreenBounds.x,
+						me.getPoint().y +
+						mapToScreenBounds.y,
+						showLevel);
 					Region r = data.getRegion(c);
 
-					if(r != null) {
-						if((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
-							if((me.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
-								if(selectedRegions.containsKey(c) == false) {
-									doDraggingSelect = true;
-									selectedRegions.put(c, r);
-								} else {
-									doDraggingSelect = false;
-									selectedRegions.remove(c);
-								}
+					if ((r != null) &&
+						((prevDragRegion == null) ||
+						 !prevDragRegion.equals(r))) {
+						boolean regionAlreadySelected = selectedRegions.
+							containsKey(c);
+						boolean doFire = false;
 
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
-																					 selectedRegions.values(),
-																					 null,
-																					 SelectionEvent.ST_REGIONS));
-								repaint();
-								prevDragRegion = r;
-							} else {
-								activeRegion = r;
-								activeObject = r;
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null,
-																					 activeRegion,
-																					 SelectionEvent.ST_DEFAULT));
-								repaint();
+						if (!regionAlreadySelected) {
+							if (doDraggingSelect) {
+								selectedRegions.put(c, r);
+								doFire = true;
 							}
-						} else if((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-							conMenu.init(r, selectedRegions.values());
-							conMenu.show(Mapper.this, me.getX(), me.getY());
-						}
-					} else if((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-						conMenu.clear();
-						conMenu.show(Mapper.this, me.getX(), me.getY());
-					}
-				}
-
-				public void mouseRelease(MouseEvent me) {
-					if((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
-						prevDragRegion = null;
-					}
-				}
-			});
-
-		addMouseMotionListener(new MouseMotionAdapter() {
-				public void mouseDragged(MouseEvent me) {
-					if(((me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) &&
-						   ((me.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-						if(!pathPersistence) {
-							pathRegions.clear();
-						}
-
-						if(cellGeometry == null) {
-							return;
-						}
-
-						Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
-																  mapToScreenBounds.x,
-																  me.getPoint().y +
-																  mapToScreenBounds.y, showLevel);
-						Region r = data.getRegion(c);
-
-						if((r != null) && ((prevDragRegion == null) || !prevDragRegion.equals(r))) {
-							boolean regionAlreadySelected = selectedRegions.containsKey(c);
-							boolean doFire = false;
-
-							if(!regionAlreadySelected) {
-								if(doDraggingSelect) {
-									selectedRegions.put(c, r);
-									doFire = true;
-								}
-							} else {
-								if(!doDraggingSelect) {
-									selectedRegions.remove(c);
-									doFire = true;
-								}
+						} else {
+							if (!doDraggingSelect) {
+								selectedRegions.remove(c);
+								doFire = true;
 							}
-
-							if(doFire) {
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
-																					 selectedRegions.values(),
-																					 null,
-																					 SelectionEvent.ST_REGIONS));
-							}
-
-							repaint();
 						}
 
-						prevDragRegion = r;
+						if (doFire) {
+							dispatcher.fire(new com.eressea.event.
+											SelectionEvent(mapper,
+								selectedRegions.values(),
+								null,
+								SelectionEvent.ST_REGIONS));
+						}
+
+						repaint();
 					}
+
+					prevDragRegion = r;
 				}
-			});
+			}
+		});
 
 		addKeyListener(new KeyAdapter() {
-				public void keyPressed(KeyEvent e) {
-					if(activeRegion == null) {
-						return;
-					}
+			public void keyPressed(KeyEvent e) {
+				if (activeRegion == null) {
+					return;
+				}
 
-					Coordinate translationCoord = null;
+				Coordinate translationCoord = null;
 
-					switch(e.getKeyCode()) {
+				switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP:
 					case KeyEvent.VK_NUMPAD9:
 						translationCoord = new Coordinate(0, 1);
@@ -325,7 +342,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 					case KeyEvent.VK_LEFT:
 					case KeyEvent.VK_NUMPAD4:
-						translationCoord = new Coordinate(-1, 0);
+						translationCoord = new Coordinate( -1, 0);
 
 						break;
 
@@ -335,7 +352,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 						break;
 
 					case KeyEvent.VK_NUMPAD7:
-						translationCoord = new Coordinate(-1, 1);
+						translationCoord = new Coordinate( -1, 1);
 
 						break;
 
@@ -345,24 +362,25 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 						break;
 
 					case KeyEvent.VK_NUMPAD8:
-						translationCoord = new Coordinate(-1, 2);
+						translationCoord = new Coordinate( -1, 2);
 
 						break;
 
 					default:
 						break;
-					}
-
-					if(translationCoord != null) {
-						Coordinate c = new Coordinate(activeRegion.getCoordinate());
-						activeRegion = data.getRegion(c.translate(translationCoord));
-						dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null,
-																			 activeRegion,
-																			 SelectionEvent.ST_REGIONS));
-						repaint();
-					}
 				}
-			});
+
+				if (translationCoord != null) {
+					Coordinate c = new Coordinate(activeRegion.getCoordinate());
+					activeRegion = data.getRegion(c.translate(translationCoord));
+					dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
+						null,
+						activeRegion,
+						SelectionEvent.ST_REGIONS));
+					repaint();
+				}
+			}
+		});
 
 		this.dispatcher.addSelectionListener(this);
 		this.dispatcher.addUnitOrdersListener(this);
@@ -373,7 +391,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 	protected void reprocessTooltipDefinition() {
 		setTooltipDefinition(settings.getProperty("Mapper.ToolTip.Definition",
-												  "<html><font=-1>§rname§</font></html>"));
+			"<html><font=-1>§rname§</font></html>"));
 	}
 
 	/**
@@ -384,23 +402,26 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getToolTipText(MouseEvent e) {
-		if(tooltipDefinition != null) {
+		if (tooltipDefinition != null) {
 			try {
-				Coordinate c = cellGeometry.getCoordinate(e.getPoint().x + mapToScreenBounds.x,
-														  e.getPoint().y + mapToScreenBounds.y,
-														  showLevel);
+				Coordinate c = cellGeometry.getCoordinate(e.getPoint().x +
+					mapToScreenBounds.x,
+					e.getPoint().y +
+					mapToScreenBounds.y,
+					showLevel);
 				Region r = data.getRegion(c);
 
-				if(r != null) {
+				if (r != null) {
 					Object ret = tooltipDefinition.getReplacement(r);
 
-					if(ret != null) {
+					if (ret != null) {
 						return ret.toString();
 					} else {
 						return "-?-";
 					}
 				}
-			} catch(Exception exc) {
+			}
+			catch (Exception exc) {
 			}
 		}
 
@@ -418,15 +439,16 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Add a cell renderer object to the mapper. Each cell renderer has a rendering plane
-	 * associated with it, so if there is already a renderer in the rendering plane of the added
-	 * renderer the old renderer is removed.
+	 * Add a cell renderer object to the mapper. Each cell renderer has a
+	 * rendering plane associated with it, so if there is already a renderer
+	 * in the rendering plane of the added renderer the old renderer is
+	 * removed.
 	 *
-	 * @param renderer the object responsible for rendering a     graphical representation of
-	 * 		  regions.
+	 * @param renderer the object responsible for rendering a     graphical
+	 * 		  representation of regions.
 	 */
 	public void setRenderer(MapCellRenderer renderer) {
-		if(renderer != null) {
+		if (renderer != null) {
 			setRenderer(renderer, renderer.getPlaneIndex());
 		} else {
 			log.warn("Mapper.setRenderer(): null renderer set has been set for unknown rendering plane!");
@@ -434,18 +456,19 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Set a cell renderer object for a certain plane of the map. This function can be used to
-	 * override the renderes default rendering plane.
+	 * Set a cell renderer object for a certain plane of the map. This function
+	 * can be used to override the renderes default rendering plane.
 	 *
-	 * @param renderer the object responsible for rendering a     graphical representation of
-	 * 		  regions.
-	 * @param plane the plane the renderer will draw to. Lower     planes are painted over by
-	 * 		  higher planes. See the constants in com.eressea.swing.map.Mapper for possible values
-	 * 		  or choose a value between 0 and getRenderPlainCount() - 1.
+	 * @param renderer the object responsible for rendering a     graphical
+	 * 		  representation of regions.
+	 * @param plane the plane the renderer will draw to. Lower     planes are
+	 * 		  painted over by higher planes. See the constants in
+	 * 		  com.eressea.swing.map.Mapper for possible values or choose a
+	 * 		  value between 0 and getRenderPlainCount() - 1.
 	 */
 	public void setRenderer(MapCellRenderer renderer, int plane) {
-		if((plane >= 0) && (plane < planes.length)) {
-			if(planes[plane] == null) {
+		if ((plane >= 0) && (plane < planes.length)) {
+			if (planes[plane] == null) {
 				planes[plane] = new RenderingPlane(plane, "Zusatzplane");
 			}
 
@@ -453,59 +476,62 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 			String className = "none";
 
-			if(renderer != null) {
+			if (renderer != null) {
 				className = renderer.getClass().getName();
 			}
 
 			settings.setProperty("Mapper.Planes." + plane, className);
 			conMenu.updateRenderers(this);
 		} else {
-			log.warn("Mapper.setRenderer(): invalid argument: plane out of bounds");
+			log.warn(
+				"Mapper.setRenderer(): invalid argument: plane out of bounds");
 		}
 	}
 
 	/**
-	 * Get the cell renderer objects that are available for a certain rendering plane. It is
-	 * suggested that these objects are used for calling one of the setRenderer() methods.
+	 * Get the cell renderer objects that are available for a certain rendering
+	 * plane. It is suggested that these objects are used for calling one of
+	 * the setRenderer() methods.
 	 *
-	 * @param plane the plane the renderer will draw to. Lower     planes are painted over by
-	 * 		  higher planes. See the constants in com.eressea.swing.map.Mapper for possible
-	 * 		  values.
+	 * @param plane the plane the renderer will draw to. Lower     planes are
+	 * 		  painted over by higher planes. See the constants in
+	 * 		  com.eressea.swing.map.Mapper for possible values.
 	 *
-	 * @return the renderer object associated with the specified rendering plane or null if no such
-	 * 		   association exists.
+	 * @return the renderer object associated with the specified rendering
+	 * 		   plane or null if no such association exists.
 	 */
 	public Collection getRenderers(int plane) {
 		Collection renderers = null;
 
-		if((plane >= 0) && (plane < planes.length)) {
+		if ((plane >= 0) && (plane < planes.length)) {
 			renderers = CollectionFactory.createLinkedList();
 
-			for(Iterator iter = availableRenderers.iterator(); iter.hasNext();) {
-				MapCellRenderer r = (MapCellRenderer) iter.next();
+			for (Iterator iter = availableRenderers.iterator(); iter.hasNext(); ) {
+				MapCellRenderer r = (MapCellRenderer)iter.next();
 
-				if(r.getPlaneIndex() == plane) {
+				if (r.getPlaneIndex() == plane) {
 					renderers.add(r);
 				}
 			}
 		} else {
-			log.warn("Mapper.getRenderers(): invalid argument: plane out of bounds");
+			log.warn(
+				"Mapper.getRenderers(): invalid argument: plane out of bounds");
 		}
 
 		return renderers;
 	}
 
 	/**
-	 * Returns a list of object containing the rendering planes existing in this Mapper object. The
-	 * planes are sorted with ascending plane indices.
+	 * Returns a list of object containing the rendering planes existing in
+	 * this Mapper object. The planes are sorted with ascending plane indices.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getPlanes() {
 		List p = CollectionFactory.createLinkedList();
 
-		for(int planeIndex = 0; planeIndex < planes.length; planeIndex++) {
-			if(planes[planeIndex] != null) {
+		for (int planeIndex = 0; planeIndex < planes.length; planeIndex++) {
+			if (planes[planeIndex] != null) {
 				p.add(planes[planeIndex]);
 			}
 		}
@@ -514,12 +540,13 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Set a path - a list of consecutive regions - to be rendered by the renderer registered to
-	 * the path rendering plane.
+	 * Set a path - a list of consecutive regions - to be rendered by the
+	 * renderer registered to the path rendering plane.
 	 *
-	 * @param path a list of <tt>Region</tt> objects to be rendered as a path on the map.
-	 * @param isPersistent if <tt>true</tt>, always render the path, else render the path only
-	 * 		  until a different region is selected.
+	 * @param path a list of <tt>Region</tt> objects to be rendered as a path
+	 * 		  on the map.
+	 * @param isPersistent if <tt>true</tt>, always render the path, else
+	 * 		  render the path only until a different region is selected.
 	 */
 	public void setPath(List path, boolean isPersistent) {
 		pathRegions.clear();
@@ -539,7 +566,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		mapToScreenBounds = getMapToScreenBounds();
 
-		if(mapToScreenBounds != null) {
+		if (mapToScreenBounds != null) {
 			setSize(mapToScreenBounds.getSize());
 		}
 
@@ -558,57 +585,58 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @param se TODO: DOCUMENT ME!
 	 */
 	public void selectionChanged(com.eressea.event.SelectionEvent se) {
-		if(se.getSource() == this) {
+		if (se.getSource() == this) {
 			return;
 		}
 
 		activeObject = se.getActiveObject();
 
-		if(activeObject != null) {
+		if (activeObject != null) {
 			Region newRegion = null;
 
-			if(activeObject instanceof Region) {
-				newRegion = (Region) activeObject;
-			} else if(activeObject instanceof Building) {
-				newRegion = ((Building) activeObject).getRegion();
-			} else if(activeObject instanceof Ship) {
-				newRegion = ((Ship) activeObject).getRegion();
-			} else if(activeObject instanceof Unit) {
-				newRegion = ((Unit) activeObject).getRegion();
+			if (activeObject instanceof Region) {
+				newRegion = (Region)activeObject;
+			} else if (activeObject instanceof Building) {
+				newRegion = ((Building)activeObject).getRegion();
+			} else if (activeObject instanceof Ship) {
+				newRegion = ((Ship)activeObject).getRegion();
+			} else if (activeObject instanceof Unit) {
+				newRegion = ((Unit)activeObject).getRegion();
 			}
 
-			if(newRegion != null) {
+			if (newRegion != null) {
 				activeRegion = newRegion;
 
 				Coordinate c = activeRegion.getCoordinate();
 
-				if(c.z != showLevel) {
+				if (c.z != showLevel) {
 					setLevel(c.z);
 				}
 			}
 		}
 
-		if(log.isDebugEnabled()) {
+		if (log.isDebugEnabled()) {
 			log.debug("Mapper.selectionChanged on region " + activeRegion);
 		}
 
-		if((se.getSelectedObjects() != null) &&
-			   (se.getSelectionType() == SelectionEvent.ST_REGIONS)) {
+		if ((se.getSelectedObjects() != null) &&
+			(se.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			selectedRegions.clear();
 
-			for(Iterator iter = se.getSelectedObjects().iterator(); iter.hasNext();) {
+			for (Iterator iter = se.getSelectedObjects().iterator();
+								 iter.hasNext(); ) {
 				Object o = iter.next();
 
-				if(o instanceof Region) {
-					Region r = (Region) o;
+				if (o instanceof Region) {
+					Region r = (Region)o;
 					selectedRegions.put(r.getID(), r);
 				}
 			}
 		}
 
-		if((activeObject != null) ||
-			   ((se.getSelectedObjects() != null) &&
-			   (se.getSelectionType() == SelectionEvent.ST_REGIONS))) {
+		if ((activeObject != null) ||
+			((se.getSelectedObjects() != null) &&
+			 (se.getSelectionType() == SelectionEvent.ST_REGIONS))) {
 			repaint();
 		}
 	}
@@ -649,8 +677,9 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-		if(orientation == SwingConstants.HORIZONTAL) {
+	public int getScrollableBlockIncrement(Rectangle visibleRect,
+										   int orientation, int direction) {
+		if (orientation == SwingConstants.HORIZONTAL) {
 			return visibleRect.width - cellGeometry.getCellSize().width;
 		} else {
 			return visibleRect.height - cellGeometry.getCellSize().height;
@@ -684,8 +713,9 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-		if(orientation == SwingConstants.HORIZONTAL) {
+	public int getScrollableUnitIncrement(Rectangle visibleRect,
+										  int orientation, int direction) {
+		if (orientation == SwingConstants.HORIZONTAL) {
 			return cellGeometry.getCellSize().width;
 		} else {
 			return cellGeometry.getCellSize().height;
@@ -693,8 +723,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Creates a sublist of regions to render according to the state of the given int. Values are
-	 * interpreted as those of RenderingPlane.
+	 * Creates a sublist of regions to render according to the state of the
+	 * given int. Values are interpreted as those of RenderingPlane.
 	 *
 	 * @param condition TODO: DOCUMENT ME!
 	 * @param upperLeft TODO: DOCUMENT ME!
@@ -705,23 +735,24 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	protected List createSubList(int condition, Coordinate upperLeft, Coordinate lowerRight,
-								 List regionList, int duration, int paintNumber) {
+	protected List createSubList(int condition, Coordinate upperLeft,
+								 Coordinate lowerRight, List regionList,
+								 int duration, int paintNumber) {
 		List main = null;
 
-		if((inPaint < 2) || (paintNumber == 0) || (duration > 0)) {
+		if ((inPaint < 2) || (paintNumber == 0) || (duration > 0)) {
 			main = regionList;
 		}
 
-		if(main == null) {
+		if (main == null) {
 			main = CollectionFactory.createLinkedList();
 		} else {
 			main.clear();
 		}
 
-		if((condition & RenderingPlane.ACTIVE_OBJECT) != 0) {
+		if ((condition & RenderingPlane.ACTIVE_OBJECT) != 0) {
 			//simply add the first region found
-			if(activeObject != null) {
+			if (activeObject != null) {
 				main.add(activeObject);
 			}
 
@@ -729,24 +760,24 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		}
 
 		// just use visible regions as base
-		if((condition & RenderingPlane.VISIBLE_REGIONS) != 0) {
+		if ((condition & RenderingPlane.VISIBLE_REGIONS) != 0) {
 			int xstart = upperLeft.x - 2;
 			int xend = lowerRight.x + 1;
 			int yCounter = 0;
 			Coordinate c = new Coordinate(0, 0, upperLeft.z);
 
-			for(int y = upperLeft.y + 1; y >= (lowerRight.y - 1); y--) {
-				if((++yCounter % 2) == 0) {
+			for (int y = upperLeft.y + 1; y >= (lowerRight.y - 1); y--) {
+				if ((++yCounter % 2) == 0) {
 					xstart += 1;
 				}
 
-				for(int x = xstart; x < xend; x++) {
+				for (int x = xstart; x < xend; x++) {
 					c.x = x;
 					c.y = y;
 
 					Region r = data.getRegion(c);
 
-					if(r != null) {
+					if (r != null) {
 						main.add(r);
 					}
 				}
@@ -761,43 +792,49 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		else {
 			Iterator it = data.regions().values().iterator();
 
-			while(it.hasNext()) {
-				Region r = (Region) it.next();
+			while (it.hasNext()) {
+				Region r = (Region)it.next();
 
-				if(r.getCoordinate().z == upperLeft.z) {
+				if (r.getCoordinate().z == upperLeft.z) {
 					main.add(r);
 				}
 			}
 		}
 
 		// sort out according to other states, use AND
-		if((condition &
-			   (RenderingPlane.SELECTED_REGIONS | RenderingPlane.ACTIVE_OR_SELECTED |
-			   RenderingPlane.ACTIVE_REGION | RenderingPlane.TAGGED_REGIONS)) != 0) {
+		if ((condition &
+			 (RenderingPlane.SELECTED_REGIONS |
+			  RenderingPlane.ACTIVE_OR_SELECTED |
+			  RenderingPlane.ACTIVE_REGION | RenderingPlane.TAGGED_REGIONS)) !=
+			0) {
 			Iterator it = main.iterator();
 
-			/* Note: On some computers this occasionally throws Concurrent Mod Exceptions.
+				/* Note: On some computers this occasionally throws Concurrent Mod Exceptions.
 			 *       In this case stop out-sorting an return.
 			 */
 			try {
-				while(it.hasNext()) {
-					Region r = (Region) it.next();
+				while (it.hasNext()) {
+					Region r = (Region)it.next();
 
-					if(((condition & RenderingPlane.SELECTED_REGIONS) != 0) &&
-						   !selectedRegions.containsKey(r.getID())) {
+					if (((condition & RenderingPlane.SELECTED_REGIONS) != 0) &&
+						!selectedRegions.containsKey(r.getID())) {
 						it.remove();
-					} else if(((condition & RenderingPlane.ACTIVE_REGION) != 0) &&
-								  !(r.equals(activeRegion))) {
+					} else if (((condition & RenderingPlane.ACTIVE_REGION) != 0) &&
+							   !(r.equals(activeRegion))) {
 						it.remove();
-					} else if(((condition & RenderingPlane.ACTIVE_OR_SELECTED) != 0) &&
-								  !(r.equals(activeRegion) ||
-								  selectedRegions.containsKey(r.getID()))) {
+					} else if (((condition & RenderingPlane.ACTIVE_OR_SELECTED) !=
+								0) &&
+							   !(r.equals(activeRegion) ||
+								 selectedRegions.containsKey(r.getID()))) {
 						it.remove();
-					} else if(((condition & RenderingPlane.TAGGED_REGIONS) != 0) && !(r.hasTags())) {
+					} else if (((condition & RenderingPlane.TAGGED_REGIONS) !=
+								0) &&
+							   !(r.hasTags())) {
 						it.remove();
 					}
 				}
-			} catch(Exception exc) {
+			}
+			catch (Exception exc) {
 			}
 		}
 
@@ -813,7 +850,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	private static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
-	private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+	private static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.
+		DEFAULT_CURSOR);
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -822,11 +860,11 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 */
 	public void paint(Graphics g) {
 		//long start = System.currentTimeMillis();
-		if(mapToScreenBounds == null) {
+		if (mapToScreenBounds == null) {
 			return;
 		}
 
-		if(cellGeometry == null) {
+		if (cellGeometry == null) {
 			log.warn("Mapper.paint(): Unable to determine drawing area!");
 
 			return;
@@ -834,7 +872,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		Rectangle clipBounds = g.getClipBounds();
 
-		if((clipBounds.width <= 0) || (clipBounds.height <= 0)) {
+		if ((clipBounds.width <= 0) || (clipBounds.height <= 0)) {
 			return;
 		}
 
@@ -849,25 +887,30 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		//super.paint(g);
 		Point offset = new Point(mapToScreenBounds.x + clipBounds.x,
 								 mapToScreenBounds.y + clipBounds.y);
-		Coordinate upperLeftCorner = cellGeometry.getCoordinate(offset.x, offset.y, showLevel);
-		Coordinate lowerRightCorner = cellGeometry.getCoordinate(offset.x + clipBounds.width,
-																 offset.y + clipBounds.height,
-																 showLevel);
+		Coordinate upperLeftCorner = cellGeometry.getCoordinate(offset.x,
+			offset.y,
+			showLevel);
+		Coordinate lowerRightCorner = cellGeometry.getCoordinate(offset.x +
+			clipBounds.width,
+			offset.y +
+			clipBounds.height,
+			showLevel);
 
 		// if nothing about the drawing area changed we can simply
 		// paint our buffer
-		if(!clipBounds.equals(currentBounds) || isRenderContextChanged()) {
+		if (!clipBounds.equals(currentBounds) || isRenderContextChanged()) {
 			setRenderContextChanged(false);
 
-			if((buffer == null) || !clipBounds.equals(currentBounds)) {
-				setLastRegionRenderingType(-1); // full redraw
+			if ((buffer == null) || !clipBounds.equals(currentBounds)) {
+				setLastRegionRenderingType( -1); // full redraw
 
-				if(buffer != null) {
+				if (buffer != null) {
 					buffer.flush();
 					buffer = null;
 				}
 
-				buffer = new BufferedImage(clipBounds.width, clipBounds.height,
+				buffer = new BufferedImage(clipBounds.width,
+										   clipBounds.height,
 										   BufferedImage.TYPE_INT_ARGB);
 			}
 
@@ -875,43 +918,48 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			bg.setColor(getBackground());
 			bg.fillRect(0, 0, clipBounds.width, clipBounds.height);
 
-			for(int planeIndex = 0; (planeIndex < 5) && (planeIndex < planes.length);
-					planeIndex++) {
-				if(planes[planeIndex] == null) {
+			for (int planeIndex = 0;
+								  (planeIndex < 5) &&
+								  (planeIndex < planes.length);
+								  planeIndex++) {
+				if (planes[planeIndex] == null) {
 					continue;
 				}
 
 				MapCellRenderer renderer = planes[planeIndex].getRenderer();
 
-				if(renderer == null) {
+				if (renderer == null) {
 					continue;
 				}
 
 				// maybe another region set
-				if(planes[planeIndex].getRegionTypes() != getLastRegionRenderingType()) {
-					setLastRegionRenderingType(planes[planeIndex].getRegionTypes());
-					regList = createSubList(getLastRegionRenderingType(), upperLeftCorner,
-											lowerRightCorner, regList, duration, paintNumber);
+				if (planes[planeIndex].getRegionTypes() !=
+					getLastRegionRenderingType()) {
+					setLastRegionRenderingType(planes[planeIndex].
+											   getRegionTypes());
+					regList = createSubList(getLastRegionRenderingType(),
+											upperLeftCorner, lowerRightCorner,
+											regList, duration, paintNumber);
 					duration++;
 				}
 
-				if((regList == null) || (regList.size() == 0)) {
+				if ((regList == null) || (regList.size() == 0)) {
 					continue;
 				}
 
 				renderer.init(data, bg, offset);
 
-				for(Iterator iter = regList.iterator(); iter.hasNext();) {
+				for (Iterator iter = regList.iterator(); iter.hasNext(); ) {
 					Object obj = iter.next();
 					boolean selected = false;
 					boolean active = false;
 
-					if(obj instanceof Region) {
-						Region r = (Region) obj;
+					if (obj instanceof Region) {
+						Region r = (Region)obj;
 
 						selected = selectedRegions.containsKey(r.getID());
 
-						if(activeRegion != null) {
+						if (activeRegion != null) {
 							active = activeRegion.equals(r);
 						}
 					}
@@ -930,45 +978,48 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		offset.y = mapToScreenBounds.y;
 
 		// there are some every time repaint things
-		if(planes.length > 5) {
+		if (planes.length > 5) {
 			boolean clipChanged = !clipBounds.equals(currentBounds);
 
-			for(int planeIndex = 5; planeIndex < planes.length; planeIndex++) {
-				if(planes[planeIndex] == null) {
+			for (int planeIndex = 5; planeIndex < 8; planeIndex++) {
+				if (planes[planeIndex] == null) {
 					continue;
 				}
 
 				MapCellRenderer renderer = planes[planeIndex].getRenderer();
 
-				if(renderer == null) {
+				if (renderer == null) {
 					continue;
 				}
 
-				if((planes[planeIndex].getRegionTypes() != getLastRegionRenderingType()) ||
-					   clipChanged) {
-					setLastRegionRenderingType(planes[planeIndex].getRegionTypes());
-					regList = createSubList(lastRegionRenderingType, upperLeftCorner,
-											lowerRightCorner, regList, duration, paintNumber);
+				if ((planes[planeIndex].getRegionTypes() !=
+					 getLastRegionRenderingType()) ||
+					clipChanged) {
+					setLastRegionRenderingType(planes[planeIndex].
+											   getRegionTypes());
+					regList = createSubList(lastRegionRenderingType,
+											upperLeftCorner, lowerRightCorner,
+											regList, duration, paintNumber);
 					duration++;
 				}
 
-				if((regList == null) || (regList.size() == 0)) {
+				if ((regList == null) || (regList.size() == 0)) {
 					continue;
 				}
 
 				renderer.init(data, g, offset);
 
-				for(Iterator iter = regList.iterator(); iter.hasNext();) {
+				for (Iterator iter = regList.iterator(); iter.hasNext(); ) {
 					Object obj = iter.next();
 					boolean selected = false;
 					boolean active = false;
 
-					if(obj instanceof Region) {
-						Region r = (Region) obj;
+					if (obj instanceof Region) {
+						Region r = (Region)obj;
 
 						selected = selectedRegions.containsKey(r.getID());
 
-						if(activeRegion != null) {
+						if (activeRegion != null) {
 							active = activeRegion.equals(r);
 						}
 					}
@@ -976,25 +1027,65 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 					renderer.render(obj, active, selected);
 				}
 			}
+
+			/**
+			 * Paint the schemes-plane
+			 */
+			// Is there any need to mark schemes?
+			if (activeRegion != null && getLevel() == 0) {
+				if (activeRegion.getCoordinate().z == 1) {
+					// "Astralraum"-region is active
+					// contains all schemes of the active region
+					Collection regionSchemeList = CollectionFactory.
+												  createLinkedList();
+					// collect schemes
+					if (activeRegion.schemes() != null &&
+						!activeRegion.schemes().isEmpty()) {
+						for (Iterator iter = activeRegion.schemes().iterator();
+											 iter.hasNext(); ) {
+							Scheme scheme = (Scheme)iter.next();
+							Region r = data.getRegion(scheme.getID());
+							if (r != null) {
+								regionSchemeList.add(r);
+							}
+						}
+						// now render the regions with the SchemeCellRenderer
+						MapCellRenderer renderer = planes[PLANE_SCHEMES].
+							getRenderer();
+						if (renderer != null) {
+							renderer.init(data, g, offset);
+							for (Iterator iter = regionSchemeList.iterator();
+												 iter.hasNext(); ) {
+								renderer.render(iter.next(), true, true);
+							}
+						}
+
+					}
+				}
+			}
+			/**
+			 * End of paint scheme-markings
+			 */
 		}
 
 		currentBounds = clipBounds;
 
-		if(isDeferringPainting() && !tracker.checkAll()) {
+		if (isDeferringPainting() && !tracker.checkAll()) {
 			(new Thread() {
-					public void run() {
-						if(!tracker.checkAll()) {
-							try {
-								tracker.waitForAll();
-								Thread.sleep(500);
-							} catch(InterruptedException e) {
-							}
-
-							currentBounds.x = -1;
-							repaint();
+				public void run() {
+					if (!tracker.checkAll()) {
+						try {
+							tracker.waitForAll();
+							Thread.sleep(500);
 						}
+						catch (InterruptedException e) {
+						}
+
+						currentBounds.x = -1;
+						repaint();
 					}
-				}).start();
+				}
+			}).start();
 		}
 
 		inPaint--;
@@ -1006,9 +1097,9 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Returns the current scale or zoom factor. This value is a real factor, i.e. 1.0 means that
-	 * the components are painted according to the values supplied by the underlying CellGeometry
-	 * object.
+	 * Returns the current scale or zoom factor. This value is a real factor,
+	 * i.e. 1.0 means that the components are painted according to the values
+	 * supplied by the underlying CellGeometry object.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1017,9 +1108,9 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Sets the scale or zoom factor. This value is a real factor, i.e. 1.0 means that the
-	 * components are painted according to the values supplied by the underlying CellGeometry
-	 * object.
+	 * Sets the scale or zoom factor. This value is a real factor, i.e. 1.0
+	 * means that the components are painted according to the values supplied
+	 * by the underlying CellGeometry object.
 	 *
 	 * @param scaleFactor TODO: DOCUMENT ME!
 	 */
@@ -1029,45 +1120,46 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		mapToScreenBounds = getMapToScreenBounds();
 
-		if(mapToScreenBounds != null) {
+		if (mapToScreenBounds != null) {
 			setSize(mapToScreenBounds.getSize());
 			setPreferredSize(mapToScreenBounds.getSize());
 		}
 
-		if(currentBounds != null) {
-			currentBounds.setSize(-1, -1);
+		if (currentBounds != null) {
+			currentBounds.setSize( -1, -1);
 		}
 
-		for(int planeIndex = 0; planeIndex < planes.length; planeIndex++) {
-			if(planes[planeIndex] == null) {
+		for (int planeIndex = 0; planeIndex < planes.length; planeIndex++) {
+			if (planes[planeIndex] == null) {
 				continue;
 			}
 
 			MapCellRenderer renderer = planes[planeIndex].getRenderer();
 
-			if(renderer != null) {
+			if (renderer != null) {
 				renderer.scale(scaleFactor);
 			}
 		}
 	}
 
 	/**
-	 * Returns a list containing all the different levels ('Eressea-Ebenen') this Mapper knows of.
-	 * The list contains Integer objects stating the level number.
+	 * Returns a list containing all the different levels ('Eressea-Ebenen')
+	 * this Mapper knows of. The list contains Integer objects stating the
+	 * level number.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public List getLevels() {
 		List levels = CollectionFactory.createLinkedList();
 
-		if(data != null) {
+		if (data != null) {
 			Iterator iter = data.regions().values().iterator();
 
-			while(iter.hasNext()) {
-				Coordinate c = ((Region) iter.next()).getCoordinate();
+			while (iter.hasNext()) {
+				Coordinate c = ((Region)iter.next()).getCoordinate();
 				Integer i = new Integer(c.z);
 
-				if(levels.contains(i) == false) {
+				if (levels.contains(i) == false) {
 					levels.add(i);
 				}
 			}
@@ -1077,8 +1169,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Sets the level ('Eressea-Ebene') this Mapper knows of. The list contains Integer objects
-	 * stating the level number.
+	 * Sets the level ('Eressea-Ebene') this Mapper knows of. The list contains
+	 * Integer objects stating the level number.
 	 *
 	 * @param level TODO: DOCUMENT ME!
 	 */
@@ -1087,10 +1179,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		mapToScreenBounds = getMapToScreenBounds();
 		setSize(mapToScreenBounds.getSize());
 		setPreferredSize(getSize());
-		activeRegion = null;
+		// activeRegion = null;
 
-		if(currentBounds != null) {
-			currentBounds.setSize(-1, -1);
+		if (currentBounds != null) {
+			currentBounds.setSize( -1, -1);
 		}
 
 		invalidate();
@@ -1107,7 +1199,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Get the selected Regions. The returned map can be empty but is never null.
+	 * Get the selected Regions. The returned map can be empty but is never
+	 * null.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1129,15 +1222,15 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @param cell the coordinate of the region to be evaluated.
 	 *
-	 * @return the bounds (the upper left corner and the size) of the region cell in component
-	 * 		   coordinates.
+	 * @return the bounds (the upper left corner and the size) of the region
+	 * 		   cell in component coordinates.
 	 */
 	public Rectangle getCellRect(Coordinate cell) {
 		Rectangle bounds = null;
 
-		if(cellGeometry != null) {
+		if (cellGeometry != null) {
 			bounds = cellGeometry.getCellRect(cell.x, cell.y);
-			bounds.translate(-mapToScreenBounds.x, -mapToScreenBounds.y);
+			bounds.translate( -mapToScreenBounds.x, -mapToScreenBounds.y);
 		} else {
 			log.warn("Mapper.getCellRect(): Unable to determine cell bounds!");
 		}
@@ -1146,26 +1239,29 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Returns the coordinate of the region that is at the center of the currently displayed area.
+	 * Returns the coordinate of the region that is at the center of the
+	 * currently displayed area.
 	 *
-	 * @param clipBounds the bounds indicating which part of the mappers drawing area is actually
-	 * 		  visible.
+	 * @param clipBounds the bounds indicating which part of the mappers
+	 * 		  drawing area is actually visible.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Coordinate getCenter(Rectangle clipBounds) {
 		Coordinate center = null;
 
-		if(mapToScreenBounds != null) {
+		if (mapToScreenBounds != null) {
 			Point centerScreen = new Point(mapToScreenBounds.x + clipBounds.x +
 										   (clipBounds.width / 2),
 										   mapToScreenBounds.y + clipBounds.y +
 										   (clipBounds.height / 2));
 
-			if(cellGeometry != null) {
-				center = cellGeometry.getCoordinate(centerScreen.x, centerScreen.y, showLevel);
+			if (cellGeometry != null) {
+				center = cellGeometry.getCoordinate(centerScreen.x,
+					centerScreen.y, showLevel);
 			} else {
-				log.warn("Mapper.getCenter(): Unable to determine drawing area!");
+				log.warn(
+					"Mapper.getCenter(): Unable to determine drawing area!");
 			}
 		}
 
@@ -1173,49 +1269,50 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Returns the location (upper left corner) of the drawing area so that a certain region is at
-	 * the center of the view port.
+	 * Returns the location (upper left corner) of the drawing area so that a
+	 * certain region is at the center of the view port.
 	 *
-	 * @param viewSize the size of the mappers viewport, i.e. the size of the part of the mappers
-	 * 		  drawing area that is actually visible.
+	 * @param viewSize the size of the mappers viewport, i.e. the size of the
+	 * 		  part of the mappers drawing area that is actually visible.
 	 * @param center the coordinate to center on.
 	 *
-	 * @return a Point with x and y so that a view port of size viewSize is centered over the
-	 * 		   specified region center.
+	 * @return a Point with x and y so that a view port of size viewSize is
+	 * 		   centered over the specified region center.
 	 */
 	public Point getCenteredViewPosition(Dimension viewSize, Coordinate center) {
 		Point viewPos = null;
 
-		if((cellGeometry != null) && (viewSize != null) && (center != null)) {
+		if ((cellGeometry != null) && (viewSize != null) && (center != null)) {
 			// get the cell position as relative screen coordinates
 			Rectangle cellPos = cellGeometry.getCellRect(center.x, center.y);
 
 			// transform cell position into absolute screen coordinates on this component
-			cellPos.translate(-mapToScreenBounds.x, -mapToScreenBounds.y);
+			cellPos.translate( -mapToScreenBounds.x, -mapToScreenBounds.y);
 
 			// shift the cell position by half a cell size to get to its center
 			cellPos.translate(cellGeometry.getCellSize().width / 2,
 							  cellGeometry.getCellSize().height / 2);
 
 			// now get the view port
-			viewPos = new Point(cellPos.x - (viewSize.width / 2), cellPos.y -
-								(viewSize.height / 2));
+			viewPos = new Point(cellPos.x - (viewSize.width / 2),
+								cellPos.y - (viewSize.height / 2));
 		} else {
-			log.warn("Mapper.getCenteredViewPosition(): Unable to determine drawing area!");
+			log.warn(
+				"Mapper.getCenteredViewPosition(): Unable to determine drawing area!");
 		}
 
 		return viewPos;
 	}
 
 	/**
-	 * Get the cell geometry from the resources and make all renderers that use images reload the
-	 * graphics files.
+	 * Get the cell geometry from the resources and make all renderers that use
+	 * images reload the graphics files.
 	 */
 	public void reloadGraphicSet() {
 		cellGeometry = new CellGeometry("cellgeometry.txt");
 
-		for(int i = 0; i < planes.length; i++) {
-			if((planes[i] != null) && (planes[i].getRenderer() != null)) {
+		for (int i = 0; i < planes.length; i++) {
+			if ((planes[i] != null) && (planes[i].getRenderer() != null)) {
 				planes[i].getRenderer().setCellGeometry(cellGeometry);
 			}
 		}
@@ -1234,9 +1331,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Returns whether deferred painting after loading and scaling images is used or not. Together
-	 * with the ImageCellRenderer class this option tells the mapper/renderer whether to scale
-	 * images synchronously and introduce delays on painting or to scale images asynchronously and
+	 * Returns whether deferred painting after loading and scaling images is
+	 * used or not. Together with the ImageCellRenderer class this option
+	 * tells the mapper/renderer whether to scale images synchronously and
+	 * introduce delays on painting or to scale images asynchronously and
 	 * trigger a redraw after a short amount of time.
 	 *
 	 * @return TODO: DOCUMENT ME!
@@ -1246,36 +1344,39 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Activates or de-activates deferred painting after loading and scaling images. Together with
-	 * the ImageCellRenderer class this option tells the mapper/renderer whether to scale images
-	 * synchronously and introduce delays on painting or to scale images asynchronously and
-	 * trigger a redraw after a short amount of time.
+	 * Activates or de-activates deferred painting after loading and scaling
+	 * images. Together with the ImageCellRenderer class this option tells the
+	 * mapper/renderer whether to scale images synchronously and introduce
+	 * delays on painting or to scale images asynchronously and trigger a
+	 * redraw after a short amount of time.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
 	public void deferPainting(boolean bool) {
-		if(bool != isDeferringPainting()) {
-			if(bool) {
+		if (bool != isDeferringPainting()) {
+			if (bool) {
 				tracker = new MediaTracker(this);
 			} else {
 				tracker = null;
 			}
 
 			ImageCellRenderer.setTracker(tracker);
-			settings.setProperty("Mapper.deferPainting", (new Boolean(bool)).toString());
+			settings.setProperty("Mapper.deferPainting",
+								 (new Boolean(bool)).toString());
 		}
 	}
 
 	/**
-	 * Returns a rectangle that indicates the offset and the size of the whole map that is formed
-	 * by data.regions(). The values returned are given in pixels as returned by CellGeometry,
-	 * i.e. if there is only region 0, 0 then the returned rectangle would be : x=0, y=0,
-	 * width=cellwidth, height=cellheight.
+	 * Returns a rectangle that indicates the offset and the size of the whole
+	 * map that is formed by data.regions(). The values returned are given in
+	 * pixels as returned by CellGeometry, i.e. if there is only region 0, 0
+	 * then the returned rectangle would be : x=0, y=0, width=cellwidth,
+	 * height=cellheight.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Rectangle getMapToScreenBounds() {
-		if((data == null) || (cellGeometry == null)) {
+		if ((data == null) || (cellGeometry == null)) {
 			return null;
 		}
 
@@ -1284,10 +1385,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		Iterator iter = data.regions().values().iterator();
 
-		while(iter.hasNext()) {
-			Coordinate c = ((Region) iter.next()).getCoordinate();
+		while (iter.hasNext()) {
+			Coordinate c = ((Region)iter.next()).getCoordinate();
 
-			if(c.z == showLevel) {
+			if (c.z == showLevel) {
 				int x = cellGeometry.getCellPositionX(c.x, c.y);
 				int y = cellGeometry.getCellPositionY(c.x, c.y);
 				upperLeft.x = Math.min(x, upperLeft.x);
@@ -1301,57 +1402,86 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		lowerRight.y += (cellGeometry.getCellSize().height + 1);
 
 		return new Rectangle(upperLeft,
-							 new Dimension(lowerRight.x - upperLeft.x, lowerRight.y - upperLeft.y));
+							 new Dimension(lowerRight.x - upperLeft.x,
+										   lowerRight.y - upperLeft.y));
 	}
 
 	protected RenderingPlane[] initRenderingPlanes() {
 		RenderingPlane p[] = new RenderingPlane[PLANES];
-		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION, getString("plane.region.name"));
-		p[PLANE_REGION].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																	 PLANE_REGION,
-																	 "com.eressea.swing.map.RegionImageCellRenderer")));
+		p[PLANE_REGION] = new RenderingPlane(PLANE_REGION,
+											 getString("plane.region.name"));
+		p[PLANE_REGION].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_REGION,
+			"com.eressea.swing.map.RegionImageCellRenderer")));
 
-		p[PLANE_BORDER] = new RenderingPlane(PLANE_BORDER, getString("plane.border.name"));
-		p[PLANE_BORDER].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																	 PLANE_BORDER,
-																	 "com.eressea.swing.map.BorderCellRenderer")));
+		p[PLANE_BORDER] = new RenderingPlane(PLANE_BORDER,
+											 getString("plane.border.name"));
+		p[PLANE_BORDER].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_BORDER,
+			"com.eressea.swing.map.BorderCellRenderer")));
 
-		p[PLANE_BUILDING] = new RenderingPlane(PLANE_BUILDING, getString("plane.building.name"));
-		p[PLANE_BUILDING].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																	   PLANE_BUILDING,
-																	   "com.eressea.swing.map.BuildingCellRenderer")));
+		p[PLANE_BUILDING] = new RenderingPlane(PLANE_BUILDING,
+											   getString("plane.building.name"));
+		p[PLANE_BUILDING].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_BUILDING,
+			"com.eressea.swing.map.BuildingCellRenderer")));
 
-		p[PLANE_SHIP] = new RenderingPlane(PLANE_SHIP, getString("plane.ship.name"));
-		p[PLANE_SHIP].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." + PLANE_SHIP,
-																   "com.eressea.swing.map.ShipCellRenderer")));
+		p[PLANE_SHIP] = new RenderingPlane(PLANE_SHIP,
+										   getString("plane.ship.name"));
+		p[PLANE_SHIP].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_SHIP,
+			"com.eressea.swing.map.ShipCellRenderer")));
 
-		p[PLANE_TEXT] = new RenderingPlane(PLANE_TEXT, getString("plane.text.name"));
-		p[PLANE_TEXT].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." + PLANE_TEXT,
-																   "com.eressea.swing.map.TextCellRenderer")));
+		p[PLANE_TEXT] = new RenderingPlane(PLANE_TEXT,
+										   getString("plane.text.name"));
+		p[PLANE_TEXT].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_TEXT,
+			"com.eressea.swing.map.TextCellRenderer")));
 
-		p[PLANE_PATH] = new RenderingPlane(PLANE_PATH, getString("plane.path.name"),
+		p[PLANE_PATH] = new RenderingPlane(PLANE_PATH,
+										   getString("plane.path.name"),
 										   RenderingPlane.ACTIVE_OBJECT);
-		p[PLANE_PATH].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." + PLANE_PATH,
-																   "com.eressea.swing.map.PathCellRenderer")));
+		p[PLANE_PATH].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_PATH,
+			"com.eressea.swing.map.PathCellRenderer")));
 
-		p[PLANE_HIGHLIGHT] = new RenderingPlane(PLANE_HIGHLIGHT, getString("plane.highlight.name"),
+		p[PLANE_HIGHLIGHT] = new RenderingPlane(PLANE_HIGHLIGHT,
+												getString(
+			"plane.highlight.name"),
 												RenderingPlane.VISIBLE_REGIONS |
-												RenderingPlane.ACTIVE_OR_SELECTED);
-		p[PLANE_HIGHLIGHT].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																		PLANE_HIGHLIGHT,
-																		"com.eressea.swing.map.HighlightImageCellRenderer")));
+												RenderingPlane.
+												ACTIVE_OR_SELECTED);
+		p[PLANE_HIGHLIGHT].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_HIGHLIGHT,
+			"com.eressea.swing.map.HighlightImageCellRenderer")));
 
-		p[PLANE_MARKINGS] = new RenderingPlane(PLANE_MARKINGS, getString("plane.markings.name"),
+		p[PLANE_MARKINGS] = new RenderingPlane(PLANE_MARKINGS,
+											   getString("plane.markings.name"),
 											   RenderingPlane.VISIBLE_REGIONS |
 											   RenderingPlane.TAGGED_REGIONS);
-		p[PLANE_MARKINGS].setRenderer(getRenderer(settings.getProperty("Mapper.Planes." +
-																	   PLANE_MARKINGS,
-																	   "com.eressea.swing.map.MarkingsImageCellRenderer")));
+		p[PLANE_MARKINGS].setRenderer(getRenderer(settings.getProperty(
+			"Mapper.Planes." +
+			PLANE_MARKINGS,
+			"com.eressea.swing.map.MarkingsImageCellRenderer")));
+
+		p[PLANE_SCHEMES] = new RenderingPlane(PLANE_SCHEMES,
+											  getString("plane.schemes.name"),
+											  RenderingPlane.VISIBLE_REGIONS);
+		p[PLANE_SCHEMES].setRenderer(getRenderer(
+			"com.eressea.swing.map.SchemeCellRenderer"));
 
 		return p;
 	}
 
-	private Collection initAvailableRenderers(CellGeometry geo, Properties settings,
+	private Collection initAvailableRenderers(CellGeometry geo,
+											  Properties settings,
 											  Collection cRenderers) {
 		Collection renderers = CollectionFactory.createLinkedList();
 		renderers.add(new RegionImageCellRenderer(geo, settings));
@@ -1367,13 +1497,14 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		renderers.add(new HighlightImageCellRenderer(geo, settings));
 		renderers.add(new HighlightShapeCellRenderer(geo, settings));
 		renderers.add(new MarkingsImageCellRenderer(geo, settings));
+		renderers.add(new SchemeCellRenderer(geo, settings));
 
-		if(cRenderers != null) {
-			for(Iterator iter = cRenderers.iterator(); iter.hasNext();) {
-				MapCellRenderer map = (MapCellRenderer) iter.next();
+		if (cRenderers != null) {
+			for (Iterator iter = cRenderers.iterator(); iter.hasNext(); ) {
+				MapCellRenderer map = (MapCellRenderer)iter.next();
 
-				if(map instanceof HexCellRenderer) {
-					((HexCellRenderer) map).settings = settings;
+				if (map instanceof HexCellRenderer) {
+					((HexCellRenderer)map).settings = settings;
 				}
 
 				map.setCellGeometry(geo);
@@ -1382,11 +1513,11 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		}
 
 		// look for Mapper-aware renderers. Add Mapper if Interface MapperAware is implemented
-		for(Iterator iter = renderers.iterator(); iter.hasNext();) {
+		for (Iterator iter = renderers.iterator(); iter.hasNext(); ) {
 			Object o = iter.next();
 
-			if(o instanceof MapperAware) {
-				((MapperAware) o).setMapper(this);
+			if (o instanceof MapperAware) {
+				((MapperAware)o).setMapper(this);
 			}
 		}
 
@@ -1396,11 +1527,11 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	private MapCellRenderer getRenderer(String className) {
 		MapCellRenderer renderer = null;
 
-		if(!className.equals("none")) {
-			for(Iterator iter = availableRenderers.iterator(); iter.hasNext();) {
-				MapCellRenderer r = (MapCellRenderer) iter.next();
+		if (!className.equals("none")) {
+			for (Iterator iter = availableRenderers.iterator(); iter.hasNext(); ) {
+				MapCellRenderer r = (MapCellRenderer)iter.next();
 
-				if(r.getClass().getName().equals(className)) {
+				if (r.getClass().getName().equals(className)) {
 					renderer = r;
 
 					break;
@@ -1446,7 +1577,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	public void setShowTooltip(boolean b) {
 		showTooltip = b;
 
-		if(b) {
+		if (b) {
 			ToolTipManager.sharedInstance().registerComponent(this);
 			settings.setProperty("Mapper.showTooltips", "true");
 		} else {
@@ -1491,18 +1622,18 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 */
 	public List getAllTooltipDefinitions() {
 		String s = settings.getProperty("Mapper.ToolTip.Definitions",
-										"Standard~<html><font=-1>§rname§</font></html>");
+			"Standard~<html><font=-1>§rname§</font></html>");
 		StringTokenizer st = new StringTokenizer(s, "~");
 		int j = st.countTokens();
 
-		if((j % 2) == 1) {
+		if ((j % 2) == 1) {
 			j--;
 		}
 
 		List al = CollectionFactory.createArrayList(j);
 
-		if(st.countTokens() > 1) {
-			for(int i = 0; i < (j / 2); i++) {
+		if (st.countTokens() > 1) {
+			for (int i = 0; i < (j / 2); i++) {
 				al.add(st.nextToken());
 				al.add(st.nextToken());
 			}
@@ -1518,16 +1649,15 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 */
 	public void setAllTooltipDefinitions(List l) {
 		StringBuffer buf = new StringBuffer();
-
-		if(l.size() > 1) {
+		if (l.size() > 1) {
 			Iterator it = l.iterator();
 
-			for(int i = 0; i < (l.size() / 2); i++) {
+			for (int i = 0; i < (l.size() / 2); i++) {
 				buf.append(it.next());
 				buf.append('~');
 				buf.append(it.next());
 
-				if(i < (l.size() - 1)) {
+				if (i < (l.size() - 1)) {
 					buf.append('~');
 				}
 			}
@@ -1549,7 +1679,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	public void addTooltipDefinition(String name, String def) {
 		settings.setProperty("Mapper.ToolTip.Definitions",
 							 settings.getProperty("Mapper.ToolTip.Definitions",
-												  "Standard~<html><font=-1>§rname§</font></html>") +
+			"Standard~<html><font=-1>§rname§</font></html>") +
 							 "~" + name + "~" + def);
 
 		conMenu.updateTooltips(this);
@@ -1559,7 +1689,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * desktop init methods
 	 *
 	 * NOTE: Since the mapper panel is registered as the MAP component, these
-	 * methods are not called by the desktop manager for the normal map. They have
+		 * methods are not called by the desktop manager for the normal map. They have
 	 * to be delegated to this.
 	 *
 	 * But the MINIMAP component uses this feature itself since it is kind of a
@@ -1567,9 +1697,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 */
 
 	/**
-	 * Returns the current configuration of this mapper panel. The current implementation divides
-	 * all the information by "_". First the scale factor is stored, then planes(plane index,
-	 * renderer class name, renderer configuration).
+	 * Returns the current configuration of this mapper panel. The current
+	 * implementation divides all the information by "_". First the scale
+	 * factor is stored, then planes(plane index, renderer class name,
+	 * renderer configuration).
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1579,22 +1710,23 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		buf.append(getScaleFactor());
 		buf.append('_');
 
-		while(it.hasNext()) {
-			RenderingPlane rp = (RenderingPlane) it.next();
+		while (it.hasNext()) {
+			RenderingPlane rp = (RenderingPlane)it.next();
 
-			if((rp == null) || (rp.getRenderer() == null)) {
+			if ((rp == null) || (rp.getRenderer() == null)) {
 				continue;
 			}
 
 			buf.append(rp.getIndex());
 			buf.append('_');
-			buf.append(((Object) rp.getRenderer()).getClass().getName());
+			buf.append(((Object)rp.getRenderer()).getClass().getName());
 			buf.append('_');
 
-			if(rp.getRenderer() instanceof Initializable) {
-				String config = ((Initializable) rp.getRenderer()).getComponentConfiguration();
+			if (rp.getRenderer()instanceof Initializable) {
+				String config = ((Initializable)rp.getRenderer()).
+								getComponentConfiguration();
 
-				if((config == null) || (config.length() < 1)) {
+				if ((config == null) || (config.length() < 1)) {
 					buf.append("NI");
 				} else {
 					buf.append(config);
@@ -1603,7 +1735,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 				buf.append("NI");
 			}
 
-			if(it.hasNext()) {
+			if (it.hasNext()) {
 				buf.append('_');
 			}
 		}
@@ -1612,12 +1744,13 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	}
 
 	/**
-	 * Implemented for interface Initializable to set configuration data to  this component.
+	 * Implemented for interface Initializable to set configuration data to
+	 * this component.
 	 *
 	 * @param p1 the configuration string from magellan_desktop.ini
 	 */
 	public void initComponent(String p1) {
-		if((p1 == null) || (p1.length() == 0)) {
+		if ((p1 == null) || (p1.length() == 0)) {
 			return;
 		}
 
@@ -1625,10 +1758,11 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 		try {
 			setScaleFactor(Float.parseFloat(st.nextToken()));
-		} catch(Exception exc) {
+		}
+		catch (Exception exc) {
 		}
 
-		while(st.hasMoreTokens()) {
+		while (st.hasMoreTokens()) {
 			try {
 				String index = st.nextToken();
 				int iindex = Integer.parseInt(index);
@@ -1636,25 +1770,26 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 				String config = st.nextToken();
 				Collection col = getRenderers(iindex);
 
-				if(col != null) {
+				if (col != null) {
 					Iterator it = col.iterator();
 
-					while(it.hasNext()) {
-						MapCellRenderer mcp = (MapCellRenderer) it.next();
+					while (it.hasNext()) {
+						MapCellRenderer mcp = (MapCellRenderer)it.next();
 
-						if(className.equals(((Object) mcp).getClass().getName())) {
+						if (className.equals(((Object)mcp).getClass().getName())) {
 							setRenderer(mcp, iindex);
 
-							if((config != null) && !config.equals("NI") &&
-								   (mcp instanceof Initializable)) {
-								((Initializable) mcp).initComponent(config);
+							if ((config != null) && !config.equals("NI") &&
+								(mcp instanceof Initializable)) {
+								((Initializable)mcp).initComponent(config);
 							}
 
 							break;
 						}
 					}
 				}
-			} catch(Exception exc) {
+			}
+			catch (Exception exc) {
 			}
 		}
 	}
@@ -1672,7 +1807,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public static synchronized Map getDefaultTranslations() {
-		if(defaultTranslations == null) {
+		if (defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("plane.region.name", "Regions");
 			defaultTranslations.put("plane.border.name", "Roads");
@@ -1682,6 +1817,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			defaultTranslations.put("plane.path.name", "Paths");
 			defaultTranslations.put("plane.highlight.name", "Markers");
 			defaultTranslations.put("plane.markings.name", "Addit. Markers");
+			defaultTranslations.put("plane.schemes.name", "Schemes");
 		}
 
 		return defaultTranslations;
