@@ -865,6 +865,8 @@ public class CRWriter extends BufferedWriter {
 			write(faction.trustLevel + ";trustlevel");
 			newLine();
 		}
+		
+		writeItems(faction.getItems().iterator());
 
 		if(faction.options != null) {
 			write(faction.options);

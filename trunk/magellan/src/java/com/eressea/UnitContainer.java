@@ -67,6 +67,12 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 	public Cache cache = null;
 
 	/**
+	 * The items carried by this unitcontainer. The keys are the IDs of the item's type, the values are the
+	 * Item objects themselves.
+	 */
+	protected Map items = null;
+
+	/**
 	 * A map storing all unknown tags for all UnitContainer objects. Keys are IDs of these objects,
 	 * values are Maps(should be TagMaps).
 	 */
@@ -81,6 +87,34 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 	public UnitContainer(ID id, GameData data) {
 		super(id);
 		this.data = data;
+	}
+
+
+	/**
+	 * Adds an item to the unitcontainer. If the unitcontainer already has an item of the same type, the item is
+	 * overwritten with the specified item object.
+	 *
+	 * @param i TODO: DOCUMENT ME!
+	 *
+	 * @return the specified item i.
+	 */
+	public Item addItem(Item i) {
+		if(items == null) {
+			items = CollectionFactory.createOrderedHashtable();
+		}
+
+		items.put(i.getItemType().getID(), i);
+
+		return i;
+	}
+
+	/**
+	 * Returns all the items this unit possesses.
+	 *
+	 * @return a collection of Item objects.
+	 */
+	public Collection getItems() {
+		return CollectionFactory.unmodifiableCollection(this.items);
 	}
 
 	/**

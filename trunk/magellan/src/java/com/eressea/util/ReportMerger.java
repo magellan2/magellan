@@ -151,7 +151,9 @@ public class ReportMerger extends Object {
 		 * TODO: DOCUMENT ME!
 		 */
 		public void show() {
-			dlg.setVisible(true);
+			new Thread(new Runnable() {public void run() {
+				SwingUserInterface.this.dlg.setVisible(true);
+			}}).start();
 		}
 
 		private class Confirm implements Runnable {
@@ -287,14 +289,11 @@ public class ReportMerger extends Object {
 	public GameData merge(UserInterface aUI, boolean async) {
 		ui = aUI;
 		if(async) {
-			if(ui != null) { 
-				ui.show();
-			}
 			new Thread(new Runnable() {
 					public void run() {
 						ReportMerger.this.mergeThread();
 					}
-				}).run();
+				}).start();
 			return null;
 		} else {
 			return this.mergeThread();
@@ -313,6 +312,9 @@ public class ReportMerger extends Object {
 	}
 
 	private GameData mergeThread() {
+		if(ui != null) {
+			ui.show();
+		}
 		try {
 			int iPosition = 0;
 			int iFailedConnectivity = 0;

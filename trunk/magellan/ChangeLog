@@ -1,3 +1,18 @@
+2005-02-07  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/map/ShipCellRenderer.java: add
+	support for ship travel trough informations.
+
+	* src/java/com/eressea/swing/map/Mapper.java: some useless code
+	cleanups. This paintComponent method should be cleaned out
+	someday.
+
+	* src/java/com/eressea/UnitContainer.java: prelimary support for
+	items on unitcontainer level.
+	
+	* src/java/com/eressea/util/ReportMerger.java: bugfix for strange
+	gui behaviour.
+
 2005-01-29  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/resource/ResourcePathClassLoader.java:
