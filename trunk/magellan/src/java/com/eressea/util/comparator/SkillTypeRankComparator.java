@@ -15,19 +15,21 @@ package com.eressea.util.comparator;
 
 import java.util.Comparator;
 import java.util.Properties;
+import java.util.Hashtable;
 
 import com.eressea.Skill;
 
 import com.eressea.rules.SkillType;
 
 /**
- * A comparator imposing an ordering on SkillType objects by comparing their user modifiable
- * ranking.
- * 
+ * A comparator imposing an ordering on SkillType or Skill objects by
+ * comparing their user modifiable ranking. (In case of skill objects the
+ * skill's type is compared).
+ *
  * <p>
  * Note: this comparator can impose orderings that are inconsistent with equals.
  * </p>
- * 
+ *
  * <p>
  * In order to overcome the inconsistency with equals this comparator allows the introduction of a
  * sub-comparator which is applied in cases of equality. I.e. if the two compared objects have the
@@ -40,6 +42,15 @@ import com.eressea.rules.SkillType;
 public class SkillTypeRankComparator implements Comparator {
 	private final Comparator subCmp;
 	private final Properties settings;
+	// avoid unnecessary object creation
+	private SkillType s1, s2;
+
+	/**
+	 * To reduces memory consumption the ranks of
+	 * the various skills are cached.
+	 * Keys are SkillTypeIDs, values are Integers.
+	 */
+	private Hashtable skillRanks = new Hashtable();
 
 	/**
 	 * Creates a new SkillTypeRankComparator object.
@@ -66,18 +77,18 @@ public class SkillTypeRankComparator implements Comparator {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int compare(Object o1, Object o2) {
-		if(o1 instanceof Skill) {
-			o1 = ((Skill) o1).getSkillType();
+		if (o1 instanceof Skill) {
+			s1 = ((Skill)o1).getType();
+		} else {
+			s1 = (SkillType)o1;
+		}
+		if (o2 instanceof Skill) {
+			s2 = ((Skill)o2).getType();
+		} else {
+			s2 = (SkillType)o2;
 		}
 
-		if(o2 instanceof Skill) {
-			o2 = ((Skill) o2).getSkillType();
-		}
-
-		SkillType s1 = (SkillType) o1;
-		SkillType s2 = (SkillType) o2;
-
-		int retVal = getProperty(s1) - getProperty(s2);
+		int retVal = getValue(s1) - getValue(s2);
 
 		if((retVal == 0) && (subCmp != null)) {
 			retVal = subCmp.compare(s1, s2);
@@ -86,11 +97,14 @@ public class SkillTypeRankComparator implements Comparator {
 		return retVal;
 	}
 
-	private int getProperty(SkillType s) {
-		// FIXME(pavkovic): fallback should only be -1 !
-		String fallback = settings.getProperty(s.getID() + ".compareValue", "-1");
-		String prop = settings.getProperty("ClientPreferences.compareValue." + s.getID(), fallback);
+	private int getValue(SkillType s) {
+		Integer retVal = (Integer)skillRanks.get(s.getID());
+		if (retVal == null) {
+			String prop = settings.getProperty("ClientPreferences.compareValue." + s.getID(), "-1");
+			retVal = new Integer(Integer.parseInt(prop));
+			skillRanks.put(s.getID(), retVal);
+		}
+		return retVal.intValue();
 
-		return Integer.parseInt(prop);
 	}
 }

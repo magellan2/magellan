@@ -30,11 +30,11 @@ import com.eressea.util.CollectionFactory;
  * there is only one skill oject in both maps and the skilltype and value is the same) the
  * sub-comparator is used for comparison. Note: Skilltype rankings can be defined in the
  * preferences and are available through SkillTypeRankComparator.
- * 
+ *
  * <p>
  * Note: this comparator imposes orderings that are inconsistent with equals.
  * </p>
- * 
+ *
  * <p>
  * In order to overcome the inconsistency with equals this comparator allows the introduction of a
  * sub-comparator which is applied in cases of equality.
@@ -68,10 +68,21 @@ public class TopmostRankedSkillComparator implements Comparator {
 		int rank = 0;
 		Map map1 = (Map) o1;
 		Map map2 = (Map) o2;
+		// sort maps according to skill type ranking
+		List list1 = CollectionFactory.createLinkedList(map1.values());
+		List list2 = CollectionFactory.createLinkedList(map2.values());
+		Collections.sort(list1, rankCmp);
+		Collections.sort(list2, rankCmp);
 
 		while(true) {
-			Skill s1 = getRankedSkill(map1, rank);
-			Skill s2 = getRankedSkill(map2, rank);
+			Skill s1 = null;
+			if (list1.size() > rank) {
+				s1 = (Skill)list1.get(rank);
+			}
+			Skill s2 = null;
+			if (list2.size() > rank) {
+				s2 = (Skill)list2.get(rank);
+			}
 
 			if((s1 == null) && (s2 != null)) {
 				return Integer.MAX_VALUE;
@@ -114,26 +125,6 @@ public class TopmostRankedSkillComparator implements Comparator {
 		}
 	}
 
-	/**
-	 * To retrieve the skill with the specified rank in the map. For example getRankedSkill(skills,
-	 * 0) returns the topmost ranked skill in the map. If there are less skills than rank in the
-	 * map, null is returned.
-	 *
-	 * @param skills TODO: DOCUMENT ME!
-	 * @param rank TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	private Skill getRankedSkill(Map skills, int rank) {
-		if((skills == null) || (skills.size() <= rank)) {
-			return null;
-		}
-
-		List v = CollectionFactory.createLinkedList(skills.values());
-		Collections.sort(v, rankCmp);
-
-		return (Skill) v.get(rank);
-	}
 
 	/**
 	 * Checks the Object <tt>o</tt> for equality.
