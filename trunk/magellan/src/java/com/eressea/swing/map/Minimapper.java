@@ -25,7 +25,7 @@ import com.eressea.util.CollectionFactory;
  * @author Andreas
  * @version
  */
-public class Minimapper extends com.eressea.swing.map.Mapper {
+public class Minimapper extends Mapper {
 	private RegionShapeCellRenderer myRenderer;
 	protected int minimapLastType = -1;
 
