@@ -1,5 +1,15 @@
 2004-01-30    <Ulrich.Kuester@uni-jena.de>
 
+	*  New Feature/Bugfix: When merging reports so far a
+	translation of the coordinate systems of the different
+	reports/factions has only been performed for level 0, the
+	normal world, but NOT for level 1, the astral space.
+	However, the coordinate systems of astral space are
+	independent of those of normal space, thus such a trans-
+	lation is necessary. It is now performed, too.
+	
+2004-01-30    <Ulrich.Kuester@uni-jena.de>
+
 	*  New Feature: Displaying of multiple units in 
 	EMapDetailsPanel. Up to now only selections of multiple
 	regions or factions were supported.
