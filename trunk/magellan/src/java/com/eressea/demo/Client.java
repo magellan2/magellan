@@ -225,8 +225,8 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		filesDirectory = fileDir;
 		settingsDirectory = settingsDir;
 
-		// get active event dispatcher (creates a new one if not existing)
-		dispatcher = EventDispatcher.getDispatcher();
+		// get  new dispatcher
+		dispatcher = new EventDispatcher();
 
 		startWindow.progress(1,
 							 (startBundle != null) ? startBundle.getString("1")
@@ -240,7 +240,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		dispatcher.addSelectionListener(SelectionHistory.getEventHook());
 		bookmarkManager = new BookmarkManager(dispatcher, settings);
 		undoMgr = new MagellanUndoManager();
-		reportState = new ReportObserver();
+		reportState = new ReportObserver(dispatcher);
 		com.eressea.util.replacers.ReplacerHelp.init(gd);
 
 		// init components
@@ -263,12 +263,16 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 		// do it here because we need the desktop menu
 		setJMenuBar(createMenuBar(topLevelComponents));
+		
+		// enable EventDisplayer
+		// new com.eressea.util.logging.EventDisplayDialog(this,false,dispatcher).setVisible(true);
 	}
 
 	//////////////////////////
 	// BASIC initialization //
 	//////////////////////////
 
+	MagellanContext context;
 	/**
 	 * Load the file fileName in the given directory into the settings object.
 	 *
@@ -300,7 +304,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			newFile = true;
 		}
 
-		MagellanContext context = new MagellanContext();
+		context = new MagellanContext();
 		context.setProperties(settings);
 		context.setEventDispatcher(dispatcher);
 		context.init();
@@ -322,9 +326,16 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the MagellanContext 
+	 */
+	public MagellanContext getMagellanContext() {
+	    return context;
+	}
+
+	/**
+	 * Returns the application icon
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the application icon
 	 */
 	public static Image getApplicationIcon() {
 		// set the application icon
@@ -640,18 +651,6 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		return map;
 	}
 
-	/*protected JMenu createTreeMenu() {
-	    JMenu tree = new JMenu(getString("menu.tree.caption"));
-	    tree.setMnemonic(getString("menu.tree.mnemonic").charAt(0));
-	    Iterator it = nodeWrapperFactories.iterator();
-	    while(it.hasNext()) {
-	        JMenu m = ((com.eressea.swing.tree.NodeWrapperFactory)it.next()).getContextMenu();
-	        if (m != null) {
-	            tree.add(m);
-	        }
-	    }
-	    return tree;
-	}*/
 	protected JMenu createBookmarkMenu() {
 		JMenu bookmarks = new JMenu(getString("menu.bookmarks.caption"));
 		bookmarks.setMnemonic(getString("menu.bookmarks.mnemonic").charAt(0));
@@ -1882,7 +1881,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	public PreferencesAdapter createPreferencesAdapter() {
 		return new ClientPreferences(settings, this);
 	}
-
+	
 	///////////////////
 	// INNER Classes //
 	///////////////////
@@ -1924,8 +1923,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		/**
 		 * Creates a new ReportObserver object.
 		 */
-		public ReportObserver() {
-			EventDispatcher e = EventDispatcher.getDispatcher();
+		public ReportObserver(EventDispatcher e) {
 
 			e.addGameDataListener(this);
 			e.addOrderConfirmListener(this);

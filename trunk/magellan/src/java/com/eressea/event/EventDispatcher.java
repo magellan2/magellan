@@ -13,7 +13,6 @@
 
 package com.eressea.event;
 
-import java.lang.ref.WeakReference;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +43,7 @@ public class EventDispatcher {
 	private static final int PRIORITIES[] = { 0, 4, 1, 1, 1 };
 	private EQueue queue;
 
-	private EventDispatcher() {
+	public EventDispatcher() {
 		listeners = new List[PRIORITIES.length];
 		notifierIsAliveOnList = new boolean[PRIORITIES.length];
 
@@ -66,49 +65,17 @@ public class EventDispatcher {
 	/**
 	 * Returns the shared instance of the event dispatcher. This will create a new one if there's
 	 * no current one. This is the Singleton pattern.
+	 * 
+	 * @deprecated: don't use it as the <tt>MagellanContext</tt> should take care about 
+	 * the dispatcher noch
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the EventDispatcher
 	 */
+	/*
 	public static EventDispatcher getDispatcher() {
 		return INSTANCE;
 	}
-
-	private static class EqualizedWeakReference extends WeakReference {
-		/**
-		 * Creates a new EqualizedWeakReference object.
-		 *
-		 * @param o TODO: DOCUMENT ME!
-		 */
-		public EqualizedWeakReference(Object o) {
-			super(o);
-		}
-
-		/**
-		 * TODO: DOCUMENT ME!
-		 *
-		 * @return TODO: DOCUMENT ME!
-		 */
-		public int hashCode() {
-			Object o1 = get();
-
-			return (o1 != null) ? o1.hashCode() : super.hashCode();
-		}
-
-		/**
-		 * TODO: DOCUMENT ME!
-		 *
-		 * @param o2 TODO: DOCUMENT ME!
-		 *
-		 * @return TODO: DOCUMENT ME!
-		 */
-		public boolean equals(Object o2) {
-			Object o1 = get();
-
-			return (o1 != null) ? o1.equals(o2) : super.equals(o2);
-		}
-	}
-
-	private static boolean weakReferenced = false;
+	*/
 
 	/**
 	 * Clones the List (and remove WeakReference objects with null target)
@@ -118,45 +85,27 @@ public class EventDispatcher {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private List cloneList(List list) {
-		if(weakReferenced) {
-			List ret = CollectionFactory.createArrayList(list.size());
-
-			for(Iterator iter = list.iterator(); iter.hasNext();) {
-				WeakReference ref = (WeakReference) iter.next();
-
-				if(ref.get() != null) {
-					ret.add(ref);
-				}
-			}
-
-			return ret;
-		} else {
-			return CollectionFactory.createArrayList(list);
-		}
+	    return CollectionFactory.createArrayList(list);
 	}
 
-	private Object encapsulate(Object o) {
-		return weakReferenced ? new EqualizedWeakReference(o) : o;
-	}
-
-	private void addListener(int pos, Object l) {
+	private void addListener(int pos, Object obj) {
 		if(notifierIsAliveOnList[pos]) {
 			// clone list before changing
 			listeners[pos] = cloneList(listeners[pos]);
 			log.error("The following exception shall be reported to bugzilla!", new Exception());
 		}
 
-		listeners[pos].add(encapsulate(l));
+		listeners[pos].add(obj);
 	}
 
-	private void addPriorityListener(int pos, Object l) {
+	private void addPriorityListener(int pos, Object obj) {
 		if(notifierIsAlive) {
 			// clone list before changing
 			listeners[pos] = cloneList(listeners[pos]);
 			log.error("The following exception shall be reported to bugzilla!", new Exception());
 		}
 
-		listeners[pos].add(0, encapsulate(l));
+		listeners[pos].add(0, obj);
 	}
 
 	private boolean removeListener(int pos, Object l) {
@@ -633,10 +582,6 @@ public class EventDispatcher {
 					//Object o = ((WeakReference) iter.next()).get();
 					Object o = iter.next();
 
-					if(weakReferenced) {
-						o = ((WeakReference) o).get();
-					}
-
 					if(o != null) {
 						eventsDispatched++;
 						try {
@@ -661,10 +606,6 @@ public class EventDispatcher {
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					//Object o = ((WeakReference) iter.next()).get();
 					Object o = iter.next();
-
-					if(weakReferenced) {
-						o = ((WeakReference) o).get();
-					}
 
 					if(o != null) {
 						eventsDispatched++;
@@ -691,10 +632,6 @@ public class EventDispatcher {
 					//Object o = ((WeakReference) iter.next()).get();
 					Object o = iter.next();
 
-					if(weakReferenced) {
-						o = ((WeakReference) o).get();
-					}
-
 					if(o != null) {
 						eventsDispatched++;
 						try {
@@ -720,10 +657,6 @@ public class EventDispatcher {
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					//Object o = ((WeakReference) iter.next()).get();
 					Object o = iter.next();
-
-					if(weakReferenced) {
-						o = ((WeakReference) o).get();
-					}
 
 					if(o != null) {
 						eventsDispatched++;
@@ -757,10 +690,6 @@ public class EventDispatcher {
 						iter.hasNext() && !EventDispatcher.this.stopNotification;) {
 					//Object o = ((WeakReference) iter.next()).get();
 					Object o = iter.next();
-
-					if(weakReferenced) {
-						o = ((WeakReference) o).get();
-					}
 
 					if(o != null) {
 						eventsDispatched++;
