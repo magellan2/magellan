@@ -20,9 +20,7 @@ import com.eressea.Item;
 import com.eressea.Skill;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.gamebinding.MovementEvaluator;
-
 import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
 import com.eressea.rules.SkillType;

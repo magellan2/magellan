@@ -17,7 +17,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -30,12 +29,9 @@ import com.eressea.GameData;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.UnitOrdersEvent;
-
 import com.eressea.swing.FactionStatsDialog;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ShipRoutePlanner;
 

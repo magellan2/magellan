@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 
 import com.eressea.rules.ShipType;
-
 import com.eressea.util.logging.Logger;
 
 /**

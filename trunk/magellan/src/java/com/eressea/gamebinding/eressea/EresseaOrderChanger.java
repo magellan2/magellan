@@ -23,11 +23,8 @@ import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
-
 import com.eressea.gamebinding.OrderChanger;
-
 import com.eressea.rules.Race;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 

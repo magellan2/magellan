@@ -17,11 +17,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-
 import java.net.URL;
-
 import java.text.DateFormat;
-
 import java.util.Date;
 import java.util.Map;
 

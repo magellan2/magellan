@@ -22,7 +22,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -55,7 +54,6 @@ import com.eressea.swing.MagellanLookAndFeel;
 import com.eressea.swing.layout.GridBagHelper;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Locales;

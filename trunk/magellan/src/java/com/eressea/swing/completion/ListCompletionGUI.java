@@ -26,7 +26,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Collection;
 import java.util.Map;
 
@@ -40,7 +39,6 @@ import javax.swing.text.JTextComponent;
 
 import com.eressea.completion.AutoCompletion;
 import com.eressea.completion.Completion;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.JVMUtilities;
 

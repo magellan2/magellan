@@ -22,7 +22,6 @@ import com.eressea.IntegerID;
 import com.eressea.Island;
 import com.eressea.Region;
 import com.eressea.Rules;
-
 import com.eressea.util.logging.Logger;
 
 /**

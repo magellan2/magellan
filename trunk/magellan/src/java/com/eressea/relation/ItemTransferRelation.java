@@ -14,7 +14,6 @@
 package com.eressea.relation;
 
 import com.eressea.Unit;
-
 import com.eressea.rules.ItemType;
 
 /**

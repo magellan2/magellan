@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.util.CollectionFactory;
 
 /**

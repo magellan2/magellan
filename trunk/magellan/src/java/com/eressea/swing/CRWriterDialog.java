@@ -23,14 +23,12 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -54,10 +52,8 @@ import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Unit;
-
 import com.eressea.io.cr.CRWriter;
 import com.eressea.io.file.FileTypeFactory;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.logging.Logger;

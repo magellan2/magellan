@@ -30,7 +30,6 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -52,11 +51,8 @@ import javax.swing.ListSelectionModel;
 
 import com.eressea.GameData;
 import com.eressea.StringID;
-
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.rules.SkillType;
-
 import com.eressea.util.CollectionFactory;
 
 /**

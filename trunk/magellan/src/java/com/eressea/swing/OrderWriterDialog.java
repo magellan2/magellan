@@ -31,7 +31,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +40,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -62,23 +60,21 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.apache.tools.mail.MailMessage;
+
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
-
 import com.eressea.io.file.FileType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FixedWidthWriter;
 import com.eressea.util.OrderWriter;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.logging.Logger;
-
-import org.apache.tools.mail.MailMessage;
 
 /**
  * A GUI for writing orders to a file or copy them to the clipboard. This class can be used as a

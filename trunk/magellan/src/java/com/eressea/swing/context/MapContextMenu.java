@@ -19,7 +19,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -36,15 +35,12 @@ import com.eressea.HotSpot;
 import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Region;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
-
 import com.eressea.swing.map.MapCellRenderer;
 import com.eressea.swing.map.Mapper;
 import com.eressea.swing.map.RenderingPlane;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -14,7 +14,6 @@
 package com.eressea.demo.desktop;
 
 import java.awt.event.ActionListener;
-
 import java.util.Iterator;
 import java.util.List;
 

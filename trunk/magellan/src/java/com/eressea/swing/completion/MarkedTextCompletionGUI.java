@@ -16,7 +16,6 @@ package com.eressea.swing.completion;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,7 +25,6 @@ import javax.swing.text.SimpleAttributeSet;
 
 import com.eressea.completion.AutoCompletion;
 import com.eressea.completion.Completion;
-
 import com.eressea.util.CollectionFactory;
 
 /**

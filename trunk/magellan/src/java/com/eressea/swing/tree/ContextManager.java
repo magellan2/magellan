@@ -18,7 +18,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,9 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.eressea.GameData;
-
 import com.eressea.swing.context.ContextFactory;
-
 import com.eressea.util.logging.Logger;
 
 /**

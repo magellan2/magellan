@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -50,14 +49,10 @@ import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.ID;
 import com.eressea.IntegerID;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
-import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.TrustLevels;
 import com.eressea.util.comparator.FactionTrustComparator;

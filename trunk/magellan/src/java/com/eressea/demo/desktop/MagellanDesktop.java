@@ -39,16 +39,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowListener;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-
 import java.text.Collator;
 import java.text.MessageFormat;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -90,7 +87,6 @@ import javax.swing.table.TableColumn;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
@@ -901,7 +897,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 						String wS = st.nextToken();
 						String hS = st.nextToken();
 						String id = st.nextToken();
-						String name = st.nextToken();
+						/* String name = */ st.nextToken();
 						String status = st.nextToken();
 						int x = 0;
 						int y = 0;

@@ -16,7 +16,6 @@ package com.eressea.swing.tree;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,10 +33,8 @@ import com.eressea.Faction;
 import com.eressea.Item;
 import com.eressea.Skill;
 import com.eressea.Unit;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.SkillComparator;
 import com.eressea.util.comparator.SkillTypeComparator;

@@ -27,11 +27,29 @@
 
 package com.eressea.skillchart;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.util.*;
-import com.jrefinery.chart.event.*;
-import com.jrefinery.chart.*;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
+
+import com.jrefinery.chart.Axis;
+import com.jrefinery.chart.AxisNotCompatibleException;
+import com.jrefinery.chart.Bar;
+import com.jrefinery.chart.BarPlot;
+import com.jrefinery.chart.CategoryAxis;
+import com.jrefinery.chart.CategoryDataSource;
+import com.jrefinery.chart.DataSource;
+import com.jrefinery.chart.DataSources;
+import com.jrefinery.chart.HorizontalAxis;
+import com.jrefinery.chart.JFreeChart;
+import com.jrefinery.chart.NumberAxis;
+import com.jrefinery.chart.VerticalAxis;
+import com.jrefinery.chart.VerticalNumberAxis;
+import com.jrefinery.chart.VerticalValuePlot;
 
 /**
  * A Plot that displays data in the form of a bar chart, using data from any class that
@@ -142,9 +160,7 @@ public class VerticalBarPlot extends BarPlot implements VerticalValuePlot {
    */
   public double getCategoryCoordinate(int category, Rectangle2D area) {
 
-	int categoryCount = getDataSource().getCategoryCount();
 	int seriesCount = getDataSource().getSeriesCount();
-	int barCount = categoryCount*seriesCount;
 	double barWidth = calculateBarWidth(area);
 	return area.getX()+introGap
 		   +(category*(categoryGap+(seriesCount-1)*(seriesGap)+(seriesCount*barWidth)))
@@ -271,9 +287,7 @@ public class VerticalBarPlot extends BarPlot implements VerticalValuePlot {
 
 	if (data!=null) {
 	  // series, category and bar counts
-	  int categoryCount = data.getCategoryCount();
 	  int seriesCount = data.getSeriesCount();
-	  int barCount = categoryCount*seriesCount;
 
 	  // the width of the bars
 	  double barWidth = calculateBarWidth(plotArea);

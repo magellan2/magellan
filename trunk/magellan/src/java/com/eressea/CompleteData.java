@@ -16,8 +16,6 @@ package com.eressea;
 import java.util.Locale;
 import java.util.Map;
 
-import com.eressea.gamebinding.GameSpecificStuff;
-
 import com.eressea.util.CollectionFactory;
 
 /**

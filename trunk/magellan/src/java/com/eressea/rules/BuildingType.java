@@ -19,7 +19,6 @@ import java.util.Map;
 
 import com.eressea.ID;
 import com.eressea.Item;
-
 import com.eressea.util.CollectionFactory;
 
 /**

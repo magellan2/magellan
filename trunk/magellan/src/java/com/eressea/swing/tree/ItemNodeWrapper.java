@@ -25,7 +25,6 @@ import java.util.Properties;
 import com.eressea.Faction;
 import com.eressea.Item;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
 

@@ -14,7 +14,6 @@
 package com.eressea.util.replacers;
 
 import com.eressea.Unit;
-
 import com.eressea.util.filters.UnitFilter;
 
 /**

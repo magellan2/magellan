@@ -20,7 +20,6 @@ import java.util.Properties;
 import com.eressea.Island;
 import com.eressea.Region;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 
 /**

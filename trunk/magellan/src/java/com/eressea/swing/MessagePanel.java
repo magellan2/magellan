@@ -19,9 +19,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-
 import java.net.URL;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -59,14 +57,11 @@ import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
 import com.eressea.swing.tree.CellRenderer;
@@ -76,7 +71,6 @@ import com.eressea.swing.tree.MixedTreeCellRenderer;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.RegionNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.MessageTypeComparator;

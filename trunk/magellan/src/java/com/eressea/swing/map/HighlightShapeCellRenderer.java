@@ -23,7 +23,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -34,9 +33,7 @@ import javax.swing.JPanel;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
-
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 

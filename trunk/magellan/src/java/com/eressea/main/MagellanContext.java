@@ -16,9 +16,7 @@ package com.eressea.main;
 import java.util.Properties;
 
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.ImageFactory;
 import com.eressea.util.Locales;

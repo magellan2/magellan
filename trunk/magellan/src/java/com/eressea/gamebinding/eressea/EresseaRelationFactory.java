@@ -14,8 +14,6 @@
 package com.eressea.gamebinding.eressea;
 
 import java.io.StringReader;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +27,7 @@ import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
-
 import com.eressea.gamebinding.RelationFactory;
-
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.ItemTransferRelation;
@@ -42,10 +38,8 @@ import com.eressea.relation.RecruitmentRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
-
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.OrderToken;

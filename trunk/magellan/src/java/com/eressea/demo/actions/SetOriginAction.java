@@ -17,7 +17,6 @@ import java.util.Map;
 
 import com.eressea.demo.Client;
 import com.eressea.demo.SetOrigin;
-
 import com.eressea.util.CollectionFactory;
 
 /**

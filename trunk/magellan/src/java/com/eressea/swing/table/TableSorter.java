@@ -64,7 +64,6 @@ package com.eressea.swing.table;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Date;
 import java.util.Vector;
 

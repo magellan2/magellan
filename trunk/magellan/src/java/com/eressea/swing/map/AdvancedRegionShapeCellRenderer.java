@@ -40,12 +40,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -79,15 +77,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 
 import com.eressea.Region;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.Locales;

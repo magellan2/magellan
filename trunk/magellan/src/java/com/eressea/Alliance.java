@@ -16,7 +16,6 @@ package com.eressea;
 import java.util.Iterator;
 
 import com.eressea.rules.AllianceCategory;
-
 import com.eressea.util.Translations;
 
 /**

@@ -20,7 +20,6 @@ import java.util.Map;
 
 import com.eressea.rules.Options;
 import com.eressea.rules.Race;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

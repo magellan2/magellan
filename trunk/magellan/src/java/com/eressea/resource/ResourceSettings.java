@@ -15,12 +15,9 @@ package com.eressea.resource;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-
 import java.io.File;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +35,6 @@ import javax.swing.ListSelectionModel;
 import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PathPreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 
 /**

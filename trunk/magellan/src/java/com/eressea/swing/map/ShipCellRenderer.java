@@ -16,7 +16,6 @@ package com.eressea.swing.map;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -24,7 +23,6 @@ import java.util.Properties;
 import com.eressea.Coordinate;
 import com.eressea.Region;
 import com.eressea.Ship;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.Skill;
-
 import com.eressea.util.CollectionFactory;
 
 /**

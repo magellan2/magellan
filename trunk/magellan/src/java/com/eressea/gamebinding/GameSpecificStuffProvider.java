@@ -13,10 +13,7 @@
 
 package com.eressea.gamebinding;
 
-import com.eressea.Rules;
-
 import com.eressea.gamebinding.eressea.EresseaSpecificStuff;
-
 import com.eressea.util.logging.Logger;
 
 /**

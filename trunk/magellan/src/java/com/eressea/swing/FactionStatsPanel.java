@@ -18,7 +18,6 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,25 +50,21 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.Race;
 import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
-
 import com.eressea.swing.tree.CellRenderer;
 import com.eressea.swing.tree.CopyTree;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.SkillStats;
 import com.eressea.util.Units;

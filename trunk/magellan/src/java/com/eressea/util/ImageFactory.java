@@ -20,9 +20,7 @@ import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
-
 import java.net.URL;
-
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -30,9 +28,7 @@ import javax.swing.ImageIcon;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.logging.Logger;
 
 /**

@@ -24,7 +24,6 @@ import java.util.Map;
 
 import com.eressea.Region;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 
 /**

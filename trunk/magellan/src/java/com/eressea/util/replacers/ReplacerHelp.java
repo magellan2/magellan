@@ -16,11 +16,9 @@ package com.eressea.util.replacers;
 import java.util.Iterator;
 
 import com.eressea.GameData;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-
 import com.eressea.rules.RegionType;
 
 /**

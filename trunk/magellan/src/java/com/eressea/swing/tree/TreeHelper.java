@@ -30,7 +30,6 @@ import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.BuildingTypeComparator;
 import com.eressea.util.comparator.FactionTrustComparator;

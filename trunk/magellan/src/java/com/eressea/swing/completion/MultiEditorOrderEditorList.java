@@ -38,7 +38,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -86,13 +83,11 @@ import com.eressea.StringID;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitID;
-
 import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.demo.EMapOverviewPanel;
 import com.eressea.demo.desktop.DesktopEnvironment;
-
-import com.eressea.event.GameDataEvent;
 import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataEvent;
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.OrderConfirmListener;
 import com.eressea.event.SelectionEvent;
@@ -100,12 +95,9 @@ import com.eressea.event.SelectionListener;
 import com.eressea.event.TempUnitEvent;
 import com.eressea.event.TempUnitListener;
 import com.eressea.event.UnitOrdersEvent;
-
 import com.eressea.rules.ItemType;
-
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.Cache;
 import com.eressea.util.CacheHandler;
 import com.eressea.util.CollectionFactory;
@@ -242,45 +234,6 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 	}
 
 
-	private static final int RECALL_IN_MS = 2;
-	private static final boolean REGIONS_WITH_UNCONFIRMED_UNITS_ONLY = true;
-	private Timer timer;
-	private Iterator unitsIterator;
-	private void startTimer() {
-		if((data != null) && (data.regions() != null)) {
-			unitsIterator = data.units().values().iterator();
-
-			if(timer == null) {
-				timer = new Timer(true);
-				timer.scheduleAtFixedRate(new TimerTask() {
-						public void run() {
-							inspectNextUnit();
-						}
-					}, RECALL_IN_MS, RECALL_IN_MS);
-			}
-		} else {
-			stopTimer();
-		}
-	}
-	private void stopTimer() {
-		unitsIterator = null;
-
-		if(timer != null) {
-			timer.cancel();
-			timer = null;
-		}
-	}
-	private void inspectNextUnit() {
-		if(unitsIterator.hasNext()) {
-			Unit unit = (Unit) unitsIterator.next();
-			if(EMapDetailsPanel.isPrivilegedAndNoSpy(unit) && !unit.ordersConfirmed) {
-				buildOrderEditor(unit);
-			}
-		} else {
-			stopTimer();
-		}
-	}
-	
 	public void gameDataChanged(GameDataEvent e) {
 		super.gameDataChanged(e);
 
@@ -2138,7 +2091,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					parentUnit = ((TempUnit) currentUnit).getParent();
 				}
 
-				UnitID id = Unit.createTempID(data, settings, parentUnit);
+				UnitID id = UnitID.createTempID(data, settings, parentUnit);
 				createTempImpl(parentUnit, id, parentUnit.getRegion());
 			}
 		}

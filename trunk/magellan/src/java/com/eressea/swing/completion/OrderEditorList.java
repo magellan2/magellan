@@ -20,7 +20,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.JTextComponent;
 
 import com.eressea.Unit;
-
 import com.eressea.swing.preferences.PreferencesAdapter;
 
 /**

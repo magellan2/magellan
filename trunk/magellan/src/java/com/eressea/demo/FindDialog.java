@@ -25,10 +25,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -62,14 +60,11 @@ import com.eressea.Ship;
 import com.eressea.Unique;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.swing.InternationalizedDataDialog;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;

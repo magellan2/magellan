@@ -31,10 +31,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -68,19 +66,15 @@ import javax.swing.event.ListSelectionListener;
 
 import com.eressea.GameData;
 import com.eressea.Region;
-
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ExtendedShortcutListener;
 import com.eressea.demo.desktop.ShortcutListener;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.replacers.ReplacerHelp;
 import com.eressea.util.replacers.ReplacerSystem;

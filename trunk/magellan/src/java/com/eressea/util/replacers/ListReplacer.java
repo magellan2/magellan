@@ -19,7 +19,6 @@
 package com.eressea.util.replacers;
 
 import java.text.NumberFormat;
-
 import java.util.Iterator;
 import java.util.List;
 

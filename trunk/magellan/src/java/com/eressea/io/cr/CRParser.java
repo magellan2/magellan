@@ -15,7 +15,6 @@ package com.eressea.io.cr;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -49,11 +48,9 @@ import com.eressea.Spell;
 import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.UnitID;
-
 import com.eressea.io.GameDataIO;
 import com.eressea.io.RulesIO;
 import com.eressea.io.file.FileType;
-
 import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
@@ -71,7 +68,6 @@ import com.eressea.rules.Resource;
 import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

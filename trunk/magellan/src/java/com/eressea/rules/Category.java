@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.eressea.ID;
-
 import com.eressea.util.CollectionFactory;
 
 /**

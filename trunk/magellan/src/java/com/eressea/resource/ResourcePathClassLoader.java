@@ -16,10 +16,8 @@ package com.eressea.resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;

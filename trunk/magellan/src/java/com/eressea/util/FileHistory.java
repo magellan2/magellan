@@ -14,7 +14,6 @@
 package com.eressea.util;
 
 import java.io.File;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.Properties;
 import javax.swing.JMenu;
 
 import com.eressea.GameData;
-
 import com.eressea.demo.Client;
 import com.eressea.demo.actions.FileHistoryAction;
 

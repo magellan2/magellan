@@ -15,7 +15,6 @@ package com.eressea.io.xml;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -23,12 +22,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.eressea.util.logging.Logger;
-
 import org.w3c.dom.Document;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.eressea.util.logging.Logger;
 
 /**
  * TODO: DOCUMENT ME!

@@ -14,7 +14,6 @@
 package com.eressea.util;
 
 import java.awt.Component;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -24,15 +23,12 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.rules.BuildingType;
-
 import com.eressea.swing.RoutingDialog;
 
 /**

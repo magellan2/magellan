@@ -14,13 +14,10 @@
 package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
-
 import java.util.Map;
 
 import com.eressea.demo.Client;
-
 import com.eressea.tasks.swing.TaskTableDialog;
-
 import com.eressea.util.CollectionFactory;
 
 /**

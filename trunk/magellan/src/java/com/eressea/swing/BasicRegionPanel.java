@@ -23,7 +23,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -39,15 +38,12 @@ import javax.swing.text.View;
 
 import com.eressea.HasRegion;
 import com.eressea.Region;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.swing.layout.GridBagHelper;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 import com.eressea.util.replacers.ReplacerHelp;

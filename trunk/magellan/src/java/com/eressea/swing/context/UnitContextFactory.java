@@ -14,9 +14,7 @@
 package com.eressea.swing.context;
 
 import com.eressea.Unit;
-
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.swing.tree.UnitNodeWrapper;
 
 /**

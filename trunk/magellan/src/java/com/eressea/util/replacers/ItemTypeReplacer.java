@@ -20,9 +20,7 @@ import java.util.Map;
 import com.eressea.Item;
 import com.eressea.Region;
 import com.eressea.Unit;
-
 import com.eressea.rules.ItemType;
-
 import com.eressea.util.CollectionFactory;
 
 /**

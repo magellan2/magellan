@@ -16,7 +16,6 @@ package com.eressea.io;
 import java.io.IOException;
 
 import com.eressea.Rules;
-
 import com.eressea.io.file.FileType;
 
 /**

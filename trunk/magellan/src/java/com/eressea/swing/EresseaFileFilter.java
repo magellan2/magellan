@@ -14,7 +14,6 @@
 package com.eressea.swing;
 
 import java.io.File;
-
 import java.util.Map;
 
 import com.eressea.util.CollectionFactory;

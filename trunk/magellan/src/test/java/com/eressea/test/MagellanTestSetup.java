@@ -4,8 +4,6 @@ import java.util.Properties;
 
 import com.eressea.main.MagellanContext;
 
-import com.eressea.test.merge.MergeTestSuite;
-
 import junit.extensions.TestSetup;
 import junit.framework.TestSuite;
 

@@ -34,7 +34,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -84,7 +83,6 @@ import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

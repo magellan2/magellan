@@ -26,7 +26,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -41,7 +40,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.eressea.swing.InternationalizedDialog;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.JVMUtilities;
 import com.eressea.util.NameGenerator;

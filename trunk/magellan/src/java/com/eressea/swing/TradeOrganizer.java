@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,14 +59,11 @@ import com.eressea.LuxuryPrice;
 import com.eressea.Region;
 import com.eressea.StringID;
 import com.eressea.Unit;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.rules.ItemType;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.NameComparator;

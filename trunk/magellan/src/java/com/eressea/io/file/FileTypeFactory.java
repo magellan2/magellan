@@ -15,7 +15,6 @@ package com.eressea.io.file;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 

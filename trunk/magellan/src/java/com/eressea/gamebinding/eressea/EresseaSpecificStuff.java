@@ -16,16 +16,13 @@ package com.eressea.gamebinding.eressea;
 import com.eressea.CompleteData;
 import com.eressea.GameData;
 import com.eressea.Rules;
-
 import com.eressea.completion.Completer;
 import com.eressea.completion.CompleterSettingsProvider;
 import com.eressea.completion.OrderParser;
-
 import com.eressea.gamebinding.GameSpecificStuff;
 import com.eressea.gamebinding.MovementEvaluator;
 import com.eressea.gamebinding.OrderChanger;
 import com.eressea.gamebinding.RelationFactory;
-
 import com.eressea.io.GameDataIO;
 
 /**

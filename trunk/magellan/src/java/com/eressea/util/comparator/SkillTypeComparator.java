@@ -16,7 +16,6 @@ package com.eressea.util.comparator;
 import java.util.Comparator;
 
 import com.eressea.Skill;
-
 import com.eressea.rules.SkillType;
 
 /**

@@ -16,7 +16,6 @@ package com.eressea.swing;
 import java.util.Properties;
 
 import com.eressea.GameData;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;

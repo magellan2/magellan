@@ -16,7 +16,6 @@ package com.eressea.util.replacers;
 import java.util.Map;
 
 import com.eressea.Region;
-
 import com.eressea.util.CollectionFactory;
 
 /**

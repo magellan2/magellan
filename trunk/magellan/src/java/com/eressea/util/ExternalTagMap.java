@@ -14,12 +14,10 @@
 package com.eressea.util;
 
 import java.lang.reflect.Method;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import com.eressea.ID;
-
 import com.eressea.util.logging.Logger;
 
 /**

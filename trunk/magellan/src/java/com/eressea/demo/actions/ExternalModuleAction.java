@@ -19,10 +19,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import com.eressea.demo.Client;
-
 import com.eressea.extern.ExternalModule;
 import com.eressea.extern.ExternalModule2;
-
 import com.eressea.util.logging.Logger;
 
 /**

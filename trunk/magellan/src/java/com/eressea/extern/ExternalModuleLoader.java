@@ -15,12 +15,9 @@ package com.eressea.extern;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.net.URL;
-
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -31,7 +28,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

@@ -16,7 +16,6 @@ package com.eressea.swing.map;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.Rectangle;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,13 +26,10 @@ import javax.swing.JPanel;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;
-
 import com.eressea.rules.UnitContainerType;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 

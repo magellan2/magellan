@@ -17,16 +17,12 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
-
 import java.util.Map;
 import java.util.Properties;
 
 import com.eressea.GameData;
-
 import com.eressea.event.EventDispatcher;
-
 import com.eressea.swing.InternationalizedDataDialog;
-
 import com.eressea.util.CollectionFactory;
 
 /**

@@ -24,13 +24,11 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Writer;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -61,14 +59,11 @@ import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.StringID;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
-
 import com.eressea.gamebinding.eressea.EresseaConstants;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.JECheck;
 import com.eressea.util.JVMUtilities;

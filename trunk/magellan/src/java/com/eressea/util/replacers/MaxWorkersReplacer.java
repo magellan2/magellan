@@ -14,7 +14,6 @@
 package com.eressea.util.replacers;
 
 import com.eressea.Region;
-
 import com.eressea.rules.RegionType;
 
 /**

@@ -14,14 +14,10 @@
 package com.eressea.swing;
 
 import java.awt.Color;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.lang.reflect.InvocationTargetException;
-
 import java.net.URL;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +34,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.MetalTheme;
 
 import com.eressea.demo.desktop.DesktopEnvironment;
-
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
 import com.eressea.util.JVMUtilities;

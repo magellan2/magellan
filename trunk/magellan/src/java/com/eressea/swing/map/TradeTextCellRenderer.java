@@ -15,7 +15,6 @@ package com.eressea.swing.map;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,17 +27,13 @@ import com.eressea.ID;
 import com.eressea.LuxuryPrice;
 import com.eressea.Region;
 import com.eressea.StringID;
-
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
-
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
-
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
-
 import com.eressea.util.CollectionFactory;
 
 /**

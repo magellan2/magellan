@@ -14,7 +14,6 @@
 package com.eressea.util;
 
 import java.io.File;
-
 import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
 

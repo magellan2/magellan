@@ -14,7 +14,6 @@
 package com.eressea.swing;
 
 import java.awt.GridBagConstraints;
-
 import java.util.Map;
 import java.util.Properties;
 
