@@ -153,7 +153,7 @@
             </remove>
             <treatDifferent>
                 <methodClass>false</methodClass>
-                <methodClassIfWrapped>false</methodClassIfWrapped>
+                <methodClassIfWrapped>true</methodClassIfWrapped>
             </treatDifferent>
         </braces>
         <chunks>

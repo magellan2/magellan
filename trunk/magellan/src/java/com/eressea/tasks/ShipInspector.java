@@ -2,6 +2,7 @@
 package com.eressea.tasks;
 
 import com.eressea.*;
+import com.eressea.rules.*;
 import com.eressea.util.*;
 
 import com.eressea.tasks.*;
@@ -56,6 +57,11 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 	}
 	
 	private List reviewShip(Region r, Ship s) {
+		int nominalShipSize = ((ShipType)s.getType()).getMaxSize();
+		if (s.size != nominalShipSize) {
+			// ship will be build, so dont review ship
+			return Collections.EMPTY_LIST;
+		}
 		if(s.modifiedUnits().isEmpty()) {
 			return Collections.singletonList(new CriticizedError(r, s,this,"Ship has no crew!"));
 		}

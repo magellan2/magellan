@@ -8,22 +8,33 @@
 
 package com.eressea.demo.actions;
 
+import java.awt.Image;
+
 import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import com.eressea.util.ImageFactory;
 import com.eressea.util.Translations;
+
+import com.eressea.util.logging.Logger;
 
 /**
  * A common super class for all menu actions. It offers all necessary
  * information to build a menu with it.
  */
 public abstract class MenuAction extends AbstractAction {
+	private final static Logger log = Logger.getInstance(MenuAction.class);
 	/**
 	 * Creates a new MenuAction object reading its name, mnemonic and
 	 * accelerator from the dictionary.
 	 */
 	public MenuAction() {
 		this.setName(getNameTranslated());
+
+		this.setIcon(getIconName());
 
 		if(getMnemonicTranslated() != null) {
 			this.putValue("mnemonic"   , new Character(getMnemonicTranslated().charAt(0)));
@@ -61,14 +72,42 @@ public abstract class MenuAction extends AbstractAction {
 	 * Sets the name of this menu action.
 	 */
 	public void setName(String name) {
-		this.putValue(javax.swing.Action.NAME, name);
+		this.putValue(Action.NAME, name);
 	}
-	
+
 	/**
 	 * Returns the name of this menu action.
 	 */
 	public String getName() {
-		return (String)this.getValue(javax.swing.Action.NAME);
+		return (String)this.getValue(Action.NAME);
+	}
+
+	/** 
+	 * Sets the icon of this menu action by iconname.
+	 */
+	public void setIcon(String aName) {
+		Icon icon = null;
+		if(log.isDebugEnabled()) {
+			log.debug("MenuAction.setIcon("+aName+") called");
+		}
+		if(aName != null) {
+			String name="images/gui/actions/"+aName;
+			Image imageIcon = ImageFactory.getFactory().loadImage(name);
+			if(imageIcon != null) {
+				icon = new ImageIcon(imageIcon);
+			}
+		}
+		this.putValue(Action.SMALL_ICON, icon);
+	}
+
+	/**
+	 *
+	 */
+	public String getIconName() {
+		//String className = this.getClass().getName().toLowerCase();
+		//int pos = className.lastIndexOf(".");
+		//return pos == -1 ? className : className.substring(pos+1);
+		return null;
 	}
 	
 	/**
@@ -94,8 +133,8 @@ public abstract class MenuAction extends AbstractAction {
 	 * @returns the accelerator or null, if the menu has no
 	 * accelerator.
 	 */
-	public javax.swing.KeyStroke getAccelerator() {
-		return (javax.swing.KeyStroke)this.getValue("accelerator");
+	public KeyStroke getAccelerator() {
+		return (KeyStroke)this.getValue("accelerator");
 	}
 	
 	/**

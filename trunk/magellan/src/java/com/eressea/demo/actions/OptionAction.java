@@ -49,8 +49,8 @@ public class OptionAction extends MenuAction {
 
 	PreferencesDialog dialog=null;
 	public void actionPerformed(ActionEvent e) {
-		while(dialog == null) {
-			Thread.currentThread().yield();
+		if(dialog==null) {
+			buildDialog();
 		}
 		dialog.show();
 		dialog = null;
@@ -62,7 +62,7 @@ public class OptionAction extends MenuAction {
 				public void run() {
 					buildDialog();
 				}
-			} , 1000, 2000);
+			} , 1000, 1000);
 	}
 
 	private void buildDialog() {
@@ -77,7 +77,9 @@ public class OptionAction extends MenuAction {
 				pd.addTab(((PreferencesFactory)obj).createPreferencesAdapter());
 			}
 		}
-		dialog = pd;
+		if(dialog==null) {
+			dialog = pd;
+		}
 	}
 
 	public void updateLaF() {
