@@ -1,3 +1,8 @@
+2004-01-26  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/GameData.java (mergeIt) : added checks
+	for empty GameData collections
+
 2004-01-26    <Ulrich.Kuester@uni-jena.de>
 
 	* ChangeLog: New Renderer SchemeCellRenderer. When activating an
