@@ -105,11 +105,9 @@ public class EresseaRelationFactory implements RelationFactory {
 		// clone u unit's items
 		modItems = CollectionFactory.createHashtable();
 
-		if(u.items != null) {
-			for(Iterator iter = u.items.values().iterator(); iter.hasNext();) {
-				Item i = (Item) iter.next();
-				modItems.put(i.getItemType().getID(), new Item(i.getItemType(), i.getAmount()));
-			}
+		for(Iterator iter = u.getItems().iterator(); iter.hasNext();) {
+			Item i = (Item) iter.next();
+			modItems.put(i.getItemType().getID(), new Item(i.getItemType(), i.getAmount()));
 		}
 
 		// 4. parse the orders and create new relations
@@ -245,7 +243,7 @@ public class EresseaRelationFactory implements RelationFactory {
 							// if the 'amount' is HERBS then create relations for all herbs the unit carries
 							ItemCategory herbCategory = data.rules.getItemCategory(StringID.create(("HERBS")));
 
-							if((herbCategory != null) && (u.items != null)) {
+							if((herbCategory != null)) {
 								for(Iterator items = modItems.values().iterator(); items.hasNext();) {
 									Item i = (Item) items.next();
 
