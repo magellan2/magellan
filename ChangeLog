@@ -1,3 +1,8 @@
+2004-01-29    <Ulrich.Kuester@uni-jena.de>
+
+	* FactionStatsDialog doesn't crash any longer when 
+	jfreechart.jar is not in classpath
+
 2004-01-27  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/io/file/FileType.java: added boolean to 
