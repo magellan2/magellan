@@ -70,13 +70,13 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/** The unit is not sufficiently skilled in horse riding */
 	public static final int CAP_UNSKILLED = MovementEvaluator.CAP_UNSKILLED;
 
-	/** TODO: DOCUMENT ME! */
+	/** The private description of the unit. */
 	public String privDesc = null; // private description
 
-	/** TODO: DOCUMENT ME! */
+	/** The displayed race of the unit. */
 	public Race race = null;
 
-	/** TODO: DOCUMENT ME! */
+	/** The real race of the (daemon) unit */
 	public Race realRace = null;
 
 	/** an object encapsulation  the orders of this unit as <tt>String</tt> objects */
@@ -119,7 +119,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/**
 	 * Clears the orders and possibly refreshes the relations
 	 *
-	 * @param refreshRelations TODO: DOCUMENT ME!
+	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void clearOrders(boolean refreshRelations) {
 		ordersObject.clearOrders();
@@ -142,7 +142,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * Removes the order at position <tt>i</tt> and possibly refreshes the relations
 	 *
 	 * @param i TODO: DOCUMENT ME!
-	 * @param refreshRelations TODO: DOCUMENT ME!
+	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void removeOrderAt(int i, boolean refreshRelations) {
 		ordersObject.removeOrderAt(i);
@@ -167,7 +167,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 *
 	 * @param i TODO: DOCUMENT ME!
 	 * @param newOrders TODO: DOCUMENT ME!
-	 * @param refreshRelations TODO: DOCUMENT ME!
+	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	protected void addOrderAt(int i, String newOrders, boolean refreshRelations) {
 		ordersObject.addOrderAt(i, newOrders);
@@ -190,7 +190,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * Adds the order and possibly refreshes the relations
 	 *
 	 * @param newOrders TODO: DOCUMENT ME!
-	 * @param refreshRelations TODO: DOCUMENT ME!
+	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void addOrders(String newOrders, boolean refreshRelations) {
 		addOrders(Collections.singleton(newOrders), refreshRelations);
@@ -209,7 +209,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * Adds the orders and possibly refreshes the relations
 	 *
 	 * @param newOrders TODO: DOCUMENT ME!
-	 * @param refreshRelations TODO: DOCUMENT ME!
+	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void addOrders(Collection newOrders, boolean refreshRelations) {
 		int newPos = ordersObject.addOrders(newOrders);
@@ -232,7 +232,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * Sets the orders and possibly refreshes the relations
 	 *
 	 * @param newOrders TODO: DOCUMENT ME!
-	 * @param refreshRelations TODO: DOCUMENT ME!
+	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void setOrders(Collection newOrders, boolean refreshRelations) {
 		ordersObject.setOrders(newOrders);
@@ -251,7 +251,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		return CollectionFactory.unmodifiableCollection(ordersObject.getOrders());
 	}
 
-	/** TODO: DOCUMENT ME! */
+	/** The number of persons of the unit */
 	public int persons = 1;
 
 	/** TODO: DOCUMENT ME! */
@@ -266,10 +266,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/** TODO: DOCUMENT ME! */
 	public int stealth = -1; // getarnt
 
-	/** TODO: DOCUMENT ME! */
+	/** the current amount of aura */
 	public int aura = -1;
 
-	/** TODO: DOCUMENT ME! */
+	/** the maximum amount of aura */
 	public int auraMax = -1;
 
 	/** TODO: DOCUMENT ME! */
@@ -294,7 +294,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * The cache object containing cached information that may be not related enough to be
 	 * encapsulated as a function and is time consuming to gather.
 	 */
-	public com.eressea.util.Cache cache = null;
+	public Cache cache = null;
 
 	/**
 	 * Messages directly sent to this unit. The list contains instances of class <tt>Message</tt>
@@ -342,7 +342,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/**
 	 * Sets the group this unit belongs to.
 	 *
-	 * @param g TODO: DOCUMENT ME!
+	 * @param g the group of the unit
 	 */
 	public void setGroup(Group g) {
 		if(this.group != null) {
@@ -359,7 +359,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/**
 	 * Returns the group this unit belongs to.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the group this unit belongs to
 	 */
 	public Group getGroup() {
 		return this.group;
@@ -371,7 +371,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/**
 	 * Sets an alias id for this unit.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param id the alias id for this unit
 	 */
 	public void setAlias(UnitID id) {
 		this.alias = id;
@@ -408,7 +408,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	private boolean isSpy = false;
 
 	/**
-	 * Sets whether is unit really belongs to its unit or only pretends to do so. A
+	 * Sets whether is unit really belongs to its unit or only pretends to do so.
 	 *
 	 * @param bool TODO: DOCUMENT ME!
 	 */
@@ -423,7 +423,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/**
 	 * Returns whether this unit only pretends to belong to its faction.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return true if the unit is identified as spy
 	 */
 	public boolean isSpy() {
 		return this.isSpy;
@@ -2495,6 +2495,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 					} else {
 						// the skill is new as we did not have it before
 						newSkill.setLevelChanged(true);
+						newSkill.setChangeLevel(newSkill.getLevel());
 					}
 				}
 
