@@ -1384,7 +1384,9 @@ public abstract class GameData implements Cloneable {
 		// remove double messages
 		postProcessMessages();
 
+		// do game specific post processing 
 		getGameSpecificStuff().postProcess(this);
+
 		postProcessed = true;
 	}
 

@@ -97,7 +97,7 @@ public class Region extends UnitContainer {
 	 */
 	public int wage = -1;
 
-	/** TODO: DOCUMENT ME! */
+	/** the wage persons have been able to earn in the past. */
 	public int oldWage = -1;
 
 	/** TODO: DOCUMENT ME! */
@@ -1302,13 +1302,20 @@ public class Region extends UnitContainer {
 
 		// pavkovic 2004.06.03: This logic seems to be more reasonable:
 		// 
-		// |new.units| == 0, |current.units| == 0, : merge/current
+		// |new.units| == 0, |current.units| == 0: current
 		// |new.units| == 0, |current.units| != 0: current
-		// |new.units| != 0, |current.units| == 0: sameTurn ? new : current
+		// |new.units| != 0, |current.units| == 0: new
 		// |new.units| != 0, |current.units| != 0: sameTurn ? (merge/current) : current
 		//
 		// FIXME(pavkovic) bug# 819
-		if( ! (!newRegion.units().isEmpty() && curRegion.units().isEmpty() && sameTurn) ) {
+		//  the problem:
+		// we have a region with one person and one road not in the same turn
+		// and add a region with no person and no road: Who wins?
+		// If I would know that in the elder game data did exist a person the elder information
+		// wins.
+		// 
+		// nice try but still buggy:
+		if(!curRegion.units().isEmpty() || (newRegion.units().isEmpty() && curRegion.borders != null &&!(curRegion.borders.isEmpty()))) {
 			newRegion.clearBorders();
 
 			for(Iterator iter = curRegion.borders().iterator(); iter.hasNext();) {

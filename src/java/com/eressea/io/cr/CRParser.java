@@ -643,6 +643,7 @@ public class CRParser implements RulesIO, GameDataIO {
 	 */
 	private void parseIslands(GameData world) throws IOException {
 		while(!sc.eof && sc.isBlock && sc.argv[0].startsWith("ISLAND ")) {
+			//ID id = StringID.create(sc.argv[0].substring(7));
 			ID id = IntegerID.create(sc.argv[0].substring(7));
 			Island island = world.getIsland(id);
 
@@ -2301,14 +2302,20 @@ public class CRParser implements RulesIO, GameDataIO {
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Insel")) {
 				try {
+					//ID islandID = StringID.create(sc.argv[0]);
 					ID islandID = IntegerID.create(sc.argv[0]);
-					Island i = world.getIsland(islandID);
-					region.setIsland(i);
+					Island island = world.getIsland(islandID);
 
-					if(i == null) {
+					if(island == null) {
 						log.warn("CRParser.parseRegion(): unknown island " + sc.argv[0] +
-								 " with region " + region + " in line " + sc.lnr);
+								 " with region " + region + " in line " + sc.lnr+ ", creating it dynamically.");
+						// FIXME: ID MUST STAY INTEGERID
+// 						island = new Island(islandID, world);
+// 						island.setName(islandID);
+// 						world.addIsland(island);
 					}
+					region.setIsland(island);
+
 				} catch(NumberFormatException nfe) {
 					log.warn("CRParser.parseRegion(): unknown island " + sc.argv[0] +
 							 " with region " + region + " in line " + sc.lnr);

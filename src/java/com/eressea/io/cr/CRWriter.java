@@ -767,7 +767,10 @@ public class CRWriter extends BufferedWriter {
 		// also factions aren't necessary; maybe this needs further
 		// specification
 		if(includeUnits) {
-			for(Iterator iter = map.values().iterator(); iter.hasNext();) {
+			List sorted = CollectionFactory.createLinkedList(map.values());
+			Collections.sort(sorted, sortIndexComparator);
+
+			for(Iterator iter = sorted.iterator(); iter.hasNext();) {
 				writeFaction((Faction) iter.next());
 			}
 		}
