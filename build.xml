@@ -366,9 +366,12 @@
   <target name="distribution" depends="clean, release, release.src">
     <mkdir dir="${DISTRIBUTION}"/>
 
+<!-- pavkovic 2004.01.26: now we have a dependency to jfreechart.jar so we do
+     not distribute the jar file anymore.
     <copy 
       tofile="${DISTRIBUTION}/magellan_${VERSION}.jar" 
       file="${BUILD}/build/magellan.jar"/>
+-->
 
 	<zip
 	  destfile="${DISTRIBUTION}/magellan_${VERSION}.zip" 
