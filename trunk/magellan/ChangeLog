@@ -1,3 +1,19 @@
+2004-02-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/logging/Logger.java: reduce logger to
+	singleton object.
+
+	* src/java/com/eressea/rules/GenericRules.java: reactivated
+	support for I8N.
+
+2004-02-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/gamebinding/eressea/EresseaOrderCompleter.java: 
+	prevent NPE in IgnrCsComp.
+
+	* src/java/com/eressea/demo/MagellanUndoManager.java: catched
+	exceptions while undo/redo to keep system alive.
+
 2004-01-30    <Ulrich.Kuester@uni-jena.de>
 
 	*  New Feature/Bugfix: When merging reports so far a
@@ -14,14 +30,16 @@
 	EMapDetailsPanel. Up to now only selections of multiple
 	regions or factions were supported.
 
+2004-01-29  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
-2004-01-29    <Ulrich.Kuester@uni-jena.de>
+	* src/java/com/eressea/demo/Client.java: Put version information
+	in frame title.
 
-	*  Schemes are no fully interpreted. Scheme regions are added
+2004-01-29  Ulrich Kuester  <Ulrich.Kuester@uni-jena.de>
+
+	*  Schemes are now fully interpreted. Scheme regions are added
 	to the game data as regions with unknown (unbekannt) region 
 	type.
-
-2004-01-29    <Ulrich.Kuester@uni-jena.de>
 
 	* FactionStatsDialog doesn't crash any longer when 
 	jfreechart.jar is not in classpath

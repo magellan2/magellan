@@ -16,8 +16,13 @@ package com.eressea.demo;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
+
+import com.eressea.util.logging.Logger;
+
 
 /**
  * TODO: undo/redo seems broken
@@ -25,6 +30,8 @@ import javax.swing.undo.UndoableEdit;
  * @author Andreas
  */
 public class MagellanUndoManager extends UndoManager {
+	private final static Logger log = Logger.getInstance(MagellanUndoManager.class);
+
 	/** TODO: DOCUMENT ME! */
 	public static final String UNDO = "Undo_Changed";
 
@@ -85,20 +92,28 @@ public class MagellanUndoManager extends UndoManager {
 	public synchronized void undo() {
 		// TODO: implement undo history?
 		// String oldUndo=getUndoPresentationName(),oldRedo=getRedoPresentationName();
-		super.undo();
-		list.firePropertyChange(REDO, false, canRedo());
-		list.firePropertyChange(UNDO, false, canUndo());
+		try {
+			super.undo();
+			list.firePropertyChange(REDO, false, canRedo());
+			list.firePropertyChange(UNDO, false, canUndo());
+		} catch (CannotUndoException e) {
+			log.error("MagellanUndoManager.undo: catched exception",e);
+		}
 	}
 
 	/**
 	 * TODO: DOCUMENT ME!
 	 */
 	public synchronized void redo() {
-		// TODO: implement redo history?
-		// String oldUndo=getUndoPresentationName(),oldRedo=getRedoPresentationName();
-		super.redo();
-		list.firePropertyChange(REDO, false, canRedo());
-		list.firePropertyChange(UNDO, false, canUndo());
+		try {
+			// TODO: implement redo history?
+			// String oldUndo=getUndoPresentationName(),oldRedo=getRedoPresentationName();
+			super.redo();
+			list.firePropertyChange(REDO, false, canRedo());
+			list.firePropertyChange(UNDO, false, canUndo());
+		} catch (CannotRedoException e) {
+			log.error("MagellanUndoManager.redo: catched exception",e);
+		}
 	}
 
 	/**
