@@ -131,6 +131,8 @@ public class GameDataBuilder {
 		
 		unit.setRegion(region);
 		
+		unit.setOrders(Collections.singleton(""));
+
 		return unit;
 	}
 	

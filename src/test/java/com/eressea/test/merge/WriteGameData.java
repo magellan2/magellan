@@ -1,6 +1,6 @@
 package com.eressea.test.merge;
 
-import java.util.Properties;
+import java.io.IOException;
 
 import junit.framework.TestCase;
 
@@ -8,7 +8,6 @@ import com.eressea.GameData;
 
 import com.eressea.io.cr.*;
 import com.eressea.io.file.*;
-import com.eressea.main.*;
 
 public class WriteGameData extends TestCase {
 
@@ -16,25 +15,23 @@ public class WriteGameData extends TestCase {
 		super(aName);
 	}
 
-	public void setUp() throws Exception {
-		MagellanContext.getInstance().init(new Properties());
-	}
-
-	public void tearDown() throws Exception {
-	}
-
 	public void testWriteCR() throws Exception {
 		GameData data = new GameDataBuilder().createSimpleGameData();
 
 		String file = data.getDate().getDate()+"_testWriteCR.cr";
 
+		WriteGameData.writeCR(data, file);
+	}
+
+	public final static String FILE_PREFIX="build/build/test/";
+
+	public static void writeCR(GameData data, String fName) throws IOException {
+		String file = FILE_PREFIX + fName;
+		// System.out.println("Writing file "+file);
 		FileType ft = FileTypeFactory.singleton().createFileType(file, false);
 		ft.setCreateBackup(false);
 		CRWriter crw = new CRWriter(ft);
 		crw.write(data);
 		crw.close();
-		
 	}
-
-
 }
