@@ -27,7 +27,7 @@ import javax.swing.*;
 public class Desktop extends JPanel {
 	private JPanel contentPanel;
 	private JPanel content;
-	private JToolBar chooserBar;
+	private JPanel chooser;
 
 	// private Perspective[] perspectives;
 
@@ -54,7 +54,7 @@ public class Desktop extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.add(contentPanel,BorderLayout.CENTER);
 
-		JPanel chooser = createChooser(buttonGroup);
+		chooser = createChooser(buttonGroup);
 		if(chooser != null) {
 			this.add(chooser,BorderLayout.WEST);
 		}
@@ -95,7 +95,7 @@ public class Desktop extends JPanel {
 		JPanel ret = new JPanel(new BorderLayout());
 		Color sepColor = UIManager.getColor("Separator.foreground");
 		ret.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, sepColor));
-		chooserBar = new JToolBar(SwingConstants.VERTICAL);
+		JToolBar chooserBar = new JToolBar(SwingConstants.VERTICAL);
 		// may not float into a different position
 		chooserBar.setFloatable(false);
 		ButtonGroup group = new ButtonGroup();
@@ -149,12 +149,6 @@ public class Desktop extends JPanel {
 		contentPanel.add(newContent);
 	}
 
-	// 	private JPanel createPanel() {
-	// 		JPanel panel = new JPanel();
-	// 		panel.setBorder(EMPTY_BORDER);
-	// 		return panel;
-	// 	}
-	// 	private final static Border EMPTY_BORDER =new EmptyBorder(5,5,5,5);
 	public static void main(String args[]) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
@@ -168,30 +162,30 @@ public class Desktop extends JPanel {
 
 	/**
 	 * This class represents a self bordering JPanel that keeps the size of the border in sync with
-	 * a JSplitPane divider size
+	 * a JSplitPane divider size.
 	 */
 	private static class JSplitPaneBorderedJPanel extends JPanel {
 		/**
 		 * Creates a new JSplitPaneBorderedJPanel object.
 		 *
-		 * @param layout TODO: DOCUMENT ME!
+		 * @param layout a Layout for this panel.
 		 */
 		public JSplitPaneBorderedJPanel(LayoutManager layout) {
 			super(layout);
 			setBorderToJSplitpaneDivider();
 		}
 
-		private void setBorderToJSplitpaneDivider() {
-			int size = new JSplitPane().getDividerSize();
-			setBorder(BorderFactory.createEmptyBorder(size, size, size, size));
-		}
-
 		/**
-		 * TODO: DOCUMENT ME!
+		 * called from UIManager.setLookAndFeel
 		 */
 		public void updateUI() {
 			super.updateUI();
 			setBorderToJSplitpaneDivider();
+		}
+
+		private void setBorderToJSplitpaneDivider() {
+			int size = new JSplitPane().getDividerSize();
+			setBorder(BorderFactory.createEmptyBorder(size, size, size, size));
 		}
 	}
 }

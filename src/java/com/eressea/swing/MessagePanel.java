@@ -649,7 +649,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 	private void initTree() {
 		rootNode = new DefaultMutableTreeNode("Rootnode");
 		treeModel = new DefaultTreeModel(rootNode);
-		tree = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel);
 		tree.setRootVisible(false);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(this);

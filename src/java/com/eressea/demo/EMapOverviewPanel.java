@@ -256,7 +256,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		// create tree and add it to this panel within a scroll pane
 		rootNode = new DefaultMutableTreeNode(null);
 		treeModel = new DefaultTreeModel(rootNode);
-		tree = new CopyTree(treeModel, dispatcher);
+		tree = new CopyTree(treeModel);
 		tree.setRootVisible(false);
 
 		// pavkovic 2005.05.28: enable handle for root nodes
@@ -1646,7 +1646,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			// the selectionChanged() method would reject
 			// the event since it originates from this.
 			selectionChanged(new SelectionEvent(u, null, u));
-			dispatcher.fire(new SelectionEvent(this, null, u));
+			// pavkovic 2004.04.28: we dont need to fire an event here as
+			// treeValueChanged already does this for us
+			// dispatcher.fire(new SelectionEvent(this, null, u));
 
 			// 			final Unit u2 = u;
 			// 			SwingUtilities.invokeLater(new Runnable() {

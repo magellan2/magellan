@@ -58,8 +58,6 @@ import com.eressea.util.CollectionFactory;
  * @author Ulrich Küster
  */
 public class RoutingDialog extends InternationalizedDialog {
-	// be careful, this object doesn't listen for GameDataEvents!
-	private GameData data;
 	private JButton ok;
 	private JButton cancel;
 	private JRadioButton createRoute;
@@ -104,7 +102,6 @@ public class RoutingDialog extends InternationalizedDialog {
 	 */
 	public RoutingDialog(Frame owner, GameData data, Collection destRegions, boolean excludeUnnamed) {
 		super(owner, true);
-		this.data = data;
 		setTitle(getString("window.title"));
 
 		Container cp = getContentPane();

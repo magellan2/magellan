@@ -30,6 +30,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Collection;
@@ -61,8 +63,6 @@ import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -164,7 +164,6 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class EMapDetailsPanel extends InternationalizedDataPanel implements SelectionListener,
-																			TreeSelectionListener,
 																			ShortcutListener,
 																			ActionListener,
 																			TreeUpdate,
@@ -426,8 +425,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// tree
 		rootNode = new DefaultMutableTreeNode(null);
 		treeModel = new DefaultTreeModel(rootNode);
-		tree = new CopyTree(treeModel, dispatcher);
-		tree.addTreeSelectionListener(this);
+		tree = new CopyTree(treeModel);
+		tree.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount() == 2) {
+						handleValueChange();
+					}
+				}
+			});
+
 		tree.setRootVisible(false);
 		tree.setEditable(true);
 		tree.setCellRenderer(new com.eressea.swing.tree.CellRenderer(settings));
@@ -3140,12 +3146,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		return wage;
 	}
 
-	/**
-	 * TreeSelection event handler, notifies unit-listeners, if a unit has been selected.
-	 *
-	 * @param e TODO: DOCUMENT ME!
+	/** 
+	 * handles a value change annotated by double click (TODO: and return).
 	 */
-	public void valueChanged(TreeSelectionEvent e) {
+	private void handleValueChange() {
 		removeTag.setEnabled(false);
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
@@ -3202,8 +3206,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 		}
 
-		// TODO: valueChanged is the worst selection event to change objects
-		// dont know how to mimic it. Double click would be nice
 		if(fireObj != null) {
 			dispatcher.fire(new com.eressea.event.SelectionEvent(this, null, fireObj));
 		}

@@ -1,3 +1,16 @@
+2004-04-28  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/completion/MultiEditorOrderEditorList.java: 
+	Removed unwanted EventDispatcher.fire calls to increase performance.
+
+2004-04-23  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/EMapDetailsPanel.java: change entities
+	with double click.
+
+	* src/java/com/eressea/swing/tree/CopyTree.java: cleaned out
+	unnecessary code.
+
 2004-04-07  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/*: changed gui, added quick-change bar for

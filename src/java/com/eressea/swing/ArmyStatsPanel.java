@@ -242,14 +242,14 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 		treeRoot = new DefaultMutableTreeNode();
 
 		DefaultTreeModel dtm = new DefaultTreeModel(treeRoot);
-		tree = new CopyTree(dtm, ed);
+		tree = new CopyTree(dtm);
 		tree.setRootVisible(false);
 		tree.setCellRenderer(renderer);
 		tree.addTreeSelectionListener(this);
 
 		tree2Root = new DefaultMutableTreeNode();
 		dtm = new DefaultTreeModel(tree2Root);
-		tree2 = new CopyTree(dtm, ed);
+		tree2 = new CopyTree(dtm);
 		tree2.setRootVisible(false);
 		tree2.setCellRenderer(renderer);
 		tree2.addTreeSelectionListener(this);

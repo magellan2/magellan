@@ -489,6 +489,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 				// pavkovic 2002.02.15: here we don't request focus in an invokeLater runnable
 				// because this would lead to intense focus change between parent and temp unit.
 				e.getTempUnit().cache.orderEditor.requestFocus();
+				//requestFocus(e.getTempUnit().cache.orderEditor);
 			}
 		}
 	}
@@ -2122,7 +2123,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 				// don't show any dialogs, simply create the tempunit and finish.
 				TempUnit tempUnit = parentUnit.createTemp(UnitID.createUnitID(-newIDInt));
 				dispatcher.fire(new TempUnitEvent(this, tempUnit, TempUnitEvent.CREATED));
-				dispatcher.fire(new SelectionEvent(this, null, tempUnit));
+				//dispatcher.fire(new SelectionEvent(this, null, tempUnit));
 			} else {
 				// do all the tempunit-dialog-stuff
 				newID = UnitID.createUnitID(newIDInt);
@@ -2257,7 +2258,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 								// data update
 								dispatcher.fire(new TempUnitEvent(this, tempUnit,
 																  TempUnitEvent.CREATED));
-								dispatcher.fire(new SelectionEvent(this, null, tempUnit));
+								//TODO: reallay fire an update here?
+								//dispatcher.fire(new SelectionEvent(this, null, tempUnit));
 
 								return;
 							} else {
