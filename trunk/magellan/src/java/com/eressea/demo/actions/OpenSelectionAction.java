@@ -105,6 +105,10 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 						break;
 					}
 
+					if(line.indexOf(SaveSelectionAction.COMMENT) != -1) {
+						// remove trailing comment
+						line = line.substring(0,line.indexOf(SaveSelectionAction.COMMENT));
+					}
 					coordinates.add(Coordinate.parse(line, SaveSelectionAction.DELIMITER));
 				}
 

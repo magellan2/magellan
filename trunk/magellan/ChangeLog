@@ -1,5 +1,8 @@
 2004-02-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/demo/actions/OpenSelectionAction.java: add
+	support for comments in selection file (; as in lisp).
+
 	* src/java/com/eressea/io/cr/CRParser.java: Automagically add
 	missing faction for "anderepartei" if not in found in the cr
 	(bugzilla bug 794).

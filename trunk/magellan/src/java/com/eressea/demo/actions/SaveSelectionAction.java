@@ -48,7 +48,7 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 	private static final Logger log = Logger.getInstance(SaveSelectionAction.class);
 
 	// FIXME: 
-	// Move to EresseaFileFilter, 
+	// TODO: Move to EresseaFileFilter, 
 	// add descriptions to res/lang/com-eressea-swing-eresseafilefilter.properties
 	// add descriptions to res/lang/com-eressea-swing-eresseafilefilter_en.properties
 
@@ -60,9 +60,10 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 
 	/** TODO: DOCUMENT ME! */
 	public static final String DELIMITER = " ";
+	public static final char   COMMENT   = ';';
+
 	private Client client;
 
-	// pavkovic 2002.12.21: use TreeMap instead of Hashtable, to make the output being sorted
 	private Map selectedRegions = CollectionFactory.createTreeMap();
 
 	/**
