@@ -485,7 +485,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			case TreeHelper.GROUP:
 
 				// pavkovic 2004.01.04: we dont want to sort groups by group id but name;
-				// if they are sorted by id this would make tree hierarchy 
+				// if they are sorted by id this would make tree hierarchy
 				// (trustlevel, group) somehow uninteresting
 				// Side effect: Groups are sorted by name
 				help = new UnitGroupComparator(new NameComparator(null), cmp, cmp);
@@ -563,7 +563,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 	 * @param tse TODO: DOCUMENT ME!
 	 */
 	public void valueChanged(TreeSelectionEvent tse) {
-		if(ignoreTreeSelections == true) {
+		if(ignoreTreeSelections) {
 			return;
 		}
 
@@ -577,7 +577,6 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		for(int i = 0; i < paths.length; i++) {
 			if(selectionTransfer.contains(paths[i])) {
 				removed = true;
-
 				break;
 			}
 		}
@@ -585,7 +584,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		if(removed) { // some selection transfer detected
 			selectionTransfer.clear();
 
-			return;
+			/**
+			 * Do not return, since tree selections will not be
+			 * cleared after a user collapses a node that contains
+			 * selected subelements.
+			 */
+			// return;
 
 			/* Note: This is perhaps not the best way because there may be
 			 *       other nodes than that from collapse. But "normally"
@@ -627,20 +631,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 				Faction f = (Faction) activeObject;
 
-				if((f.allies == null) && (activeAlliances.size() > 0)) {
-					activeAlliances.clear();
-					activeAlliancesAreDefault = false;
-					tree.repaint();
-				} else if((f.allies != null) && !activeAlliances.equals(f.allies)) {
-					activeAlliances.clear();
-					activeAlliances.putAll(f.allies);
-					activeAlliancesAreDefault = false;
+				setAlliances(f.allies, f);
 
-					// add the selected faction to be able to show, on whose alliances
-					// the current colors of the icons of a faction node depend
-					activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
-					tree.repaint();
-				}
 			} else if(o instanceof GroupNodeWrapper) {
 				// group node selected?
 				Group g = ((GroupNodeWrapper) o).getGroup();
@@ -655,26 +647,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
-				if((g.allies() == null) && (activeAlliances.values().size() > 0)) {
-					activeAlliances.clear();
-					activeAlliancesAreDefault = false;
-					tree.repaint();
-				} else if((g.allies() != null) && !activeAlliances.equals(g.allies())) {
-					activeAlliances.clear();
-					activeAlliancesAreDefault = false;
-					activeAlliances.putAll(g.allies());
+				setAlliances(g.allies(), g.getFaction());
 
-					// add the group's faction to be able to show, on whose alliances
-					// the current colors of the icons of a faction node depend
-					if(g.getFaction() == null) {
-						log.warn("Found group without set faction: " + g.getName());
-					} else {
-						activeAlliances.put(g.getFaction().getID(),
-											new Alliance(g.getFaction(), Integer.MAX_VALUE));
-					}
-
-					tree.repaint();
-				}
 			} else if(o instanceof UnitNodeWrapper) {
 				// unit node selected?
 				activeObject = ((UnitNodeWrapper) o).getUnit();
@@ -688,52 +662,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					dispatcher.fire(new SelectionEvent(this, null, selectedRegion));
 				}
 
-				/*
-				Region selectedRegion = ((Unit)activeObject).getRegion();
-				if (selectedRegion != null && selectedRegion.equals(previousRegion) == false) {
-				    previousRegion = selectedRegion;
-
-				    }*/
 				Group g = ((Unit) activeObject).getGroup();
 
 				if(g == null) {
 					Faction f = ((Unit) activeObject).getFaction();
-
-					if((f.allies == null) && (activeAlliances.values().size() > 0)) {
-						activeAlliances.clear();
-						activeAlliancesAreDefault = false;
-						tree.repaint();
-					} else if((f.allies != null) && !activeAlliances.equals(f.allies)) {
-						activeAlliances.clear();
-						activeAlliancesAreDefault = false;
-						activeAlliances.putAll(f.allies);
-
-						// add the selected faction to be able to show, on whose alliances
-						// the current colors of the icons of a faction node depend
-						activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
-						tree.repaint();
-					}
+					setAlliances(f.allies, f);
 				} else {
-					if((g.allies() == null) && (activeAlliances.values().size() > 0)) {
-						activeAlliances.clear();
-						activeAlliancesAreDefault = false;
-						tree.repaint();
-					} else if((g.allies() != null) && !g.allies().equals(activeAlliances)) {
-						activeAlliances.clear();
-						activeAlliancesAreDefault = false;
-						activeAlliances.putAll(g.allies());
-
-						// add the group's faction to be able to show, on whose alliances
-						// the current colors of the icons of a faction node depend
-						if(g.getFaction() == null) {
-							log.warn("Found group without set faction: " + g.getName());
-						} else {
-							activeAlliances.put(g.getFaction().getID(),
-												new Alliance(g.getFaction(), Integer.MAX_VALUE));
-						}
-
-						tree.repaint();
-					}
+					setAlliances(g.allies(), g.getFaction());
 				}
 			} else if(o instanceof UnitContainerNodeWrapper) {
 				// building node selected?
@@ -841,6 +776,30 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		}
 
 		dispatcher.fire(new SelectionEvent(this, selectedObjects, activeObject));
+	}
+
+	/**
+	 * Sets the active alliance status that are used to paint
+	 * the faction or group nodes in the tree.
+	 * @param allies The alliances map to be used
+	 * @param f The faction whose alliances are used
+	 */
+	private void setAlliances(Map allies, Faction f) {
+		if ((allies == null) && (activeAlliances.size() > 0)) {
+			// can't determine new specific alliances
+			// set default alliances
+			activeAlliances.clear();
+			activeAlliancesAreDefault = false;
+		} else if((allies != null) && !activeAlliances.equals(allies)) {
+			// set new active alliances
+			activeAlliances.clear();
+			activeAlliances.putAll(allies);
+			activeAlliancesAreDefault = false;
+			// add the selected group or faction to be able to show, on whose alliances
+			// the current colors of the icons of a faction node depend
+			activeAlliances.put(f.getID(), new Alliance(f, Integer.MAX_VALUE));
+		}
+		tree.repaint();
 	}
 
 	private Region getSelectedRegion(DefaultMutableTreeNode node) {
@@ -1741,7 +1700,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 				Unit u = uw.getUnit();
 
 				// pavkovic 2003.06.17: foreign units have their ordersConfirmed set to false!
-				// we use uw.emphasized() to find a *candidate* for selecting. 
+				// we use uw.emphasized() to find a *candidate* for selecting.
 				// The candidate needs to have ordersConfirmed set to false.
 				if(uw.emphasized() && !u.ordersConfirmed) {
 					ret = u;
