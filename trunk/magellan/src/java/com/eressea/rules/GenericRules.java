@@ -21,6 +21,9 @@ import com.eressea.ID;
 import com.eressea.Rules;
 import com.eressea.StringID;
 
+import com.eressea.gamebinding.GameSpecificStuff;
+import com.eressea.gamebinding.GameSpecificStuffProvider;
+
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
@@ -958,6 +961,25 @@ public class GenericRules implements Rules {
 		return null;
 	}
 
+	
+	private String gameSpecificStuffClassName;
+	
+	public void setGameSpecificStuffClassName(String className) {
+		gameSpecificStuffClassName = className;
+	}
+
+	private GameSpecificStuff gameSpecificStuff;
+	public GameSpecificStuff getGameSpecificStuff() {
+		if(gameSpecificStuff == null) {
+			gameSpecificStuff = new GameSpecificStuffProvider().getGameSpecificStuff(gameSpecificStuffClassName);
+		}
+		return gameSpecificStuff;
+	}
+
+	/** 
+	 * An iterator implementation to iterate a Map of objects and return only 
+	 * returns object instances of the given Class.
+	 */
 	private static class ClassIterator implements Iterator {
 		private Class givenClass;
 		private Iterator givenIterator;

@@ -1,5 +1,8 @@
-VERSION 41
+VERSION 42
 RULES "$Id$"
+
+MAGELLAN
+"com.eressea.gamebinding.eressea.EresseaSpecificStuff";class
 
 OPTIONCATEGORY "REPORT"
 "REPORT";name

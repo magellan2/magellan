@@ -1386,19 +1386,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				null, true,
 				nodeWrapperFactory);
 
-			for (Iterator catIter = catNodes.iterator(); catIter.hasNext(); ) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode)catIter.
-											  next();
-				Object o = node.getUserObject();
-				ItemCategory cat = null;
-				if (o instanceof ItemCategoryNodeWrapper) {
-					cat = ((ItemCategoryNodeWrapper)o).getItemCategory();
-				} else {
-					cat = (ItemCategory)o;
+			if(catNodes != null) {
+				for (Iterator catIter = catNodes.iterator(); catIter.hasNext(); ) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode)catIter.
+						next();
+					Object o = node.getUserObject();
+					ItemCategory cat = null;
+					if (o instanceof ItemCategoryNodeWrapper) {
+						cat = ((ItemCategoryNodeWrapper)o).getItemCategory();
+					} else {
+						cat = (ItemCategory)o;
+					}
+					
+					expandableNodes.add(new NodeWrapper(node, "EMapDetailsPanel." +
+														cat.getID().toString() + "Expanded"));
 				}
-
-				expandableNodes.add(new NodeWrapper(node, "EMapDetailsPanel." +
-					cat.getID().toString() + "Expanded"));
 			}
 		} else {
 			DefaultMutableTreeNode itemsNode = new DefaultMutableTreeNode(
@@ -1518,26 +1520,28 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					null, true,
 					nodeWrapperFactory);
 
-				for (Iterator catIter = catNodes.iterator(); catIter.hasNext(); ) {
-					DefaultMutableTreeNode node = (DefaultMutableTreeNode)catIter.next();
-
-					if (log.isDebugEnabled()) {
-						log.debug("EmapDetailPanel.appendGroupInfo: found class " +
-								  node.getUserObject().getClass() + " (expected ItemCategory)");
+				if(catNodes != null) {
+					for (Iterator catIter = catNodes.iterator(); catIter.hasNext(); ) {
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)catIter.next();
+						
+						if (log.isDebugEnabled()) {
+							log.debug("EmapDetailPanel.appendGroupInfo: found class " +
+									  node.getUserObject().getClass() + " (expected ItemCategory)");
+						}
+						
+						Object o = node.getUserObject();
+						ItemCategory cat = null;
+						
+						if (o instanceof ItemCategoryNodeWrapper) {
+							cat = ((ItemCategoryNodeWrapper)o).getItemCategory();
+						} else {
+							cat = (ItemCategory)o;
+						}
+						
+						expandableNodes.add(new NodeWrapper(node,
+															"EMapDetailsPanel." +
+															cat.getID().toString() + "Expanded"));
 					}
-
-					Object o = node.getUserObject();
-					ItemCategory cat = null;
-
-					if (o instanceof ItemCategoryNodeWrapper) {
-						cat = ((ItemCategoryNodeWrapper)o).getItemCategory();
-					} else {
-						cat = (ItemCategory)o;
-					}
-
-					expandableNodes.add(new NodeWrapper(node,
-						"EMapDetailsPanel." +
-						cat.getID().toString() + "Expanded"));
 				}
 			} else {
 				n = new DefaultMutableTreeNode(getString("node.items"));

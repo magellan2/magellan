@@ -15,6 +15,8 @@ package com.eressea;
 
 import java.util.Iterator;
 
+import com.eressea.gamebinding.GameSpecificStuff;
+
 import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
@@ -519,4 +521,10 @@ public interface Rules {
 	 * 		   id.
 	 */
 	public ObjectType changeName(String from, String to);
+
+
+	public void setGameSpecificStuffClassName(String className);
+	public GameSpecificStuff getGameSpecificStuff();
+
+
 }

@@ -181,14 +181,4 @@ public class CompleteData extends GameData {
 		super(rules, name);
 	}
 
-	/**
-	 * Creates a new CompleteData object.
-	 *
-	 * @param rules TODO: DOCUMENT ME!
-	 * @param name TODO: DOCUMENT ME!
-	 * @param gameSpecificStuff TODO: DOCUMENT ME!
-	 */
-	public CompleteData(Rules rules, String name, GameSpecificStuff gameSpecificStuff) {
-		super(rules, name, gameSpecificStuff);
-	}
 }
