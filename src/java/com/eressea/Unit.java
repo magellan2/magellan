@@ -1547,17 +1547,17 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	/**
 	 * Returns a collection of the itemrelations concerning the given Item.
 	 *
-	 * @param item TODO: DOCUMENT ME!
+	 * @param type TODO: DOCUMENT ME!
 	 *
 	 * @return a collection of ItemTransferRelation objects.
 	 */
-	public List getItemTransferRelations(Item item) {
+	public List getItemTransferRelations(ItemType type) {
 		List ret = CollectionFactory.createArrayList(getRelations().size());
 
 		for(Iterator iter = getRelations(ItemTransferRelation.class).iterator(); iter.hasNext();) {
 			ItemTransferRelation rel = (ItemTransferRelation) iter.next();
 
-			if(rel.itemType.equals(item.getItemType())) {
+			if(rel.itemType.equals(type)) {
 				ret.add(rel);
 			}
 		}

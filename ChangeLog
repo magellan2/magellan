@@ -1,3 +1,8 @@
+2004-06-17  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/demo/EMapDetailsPanel.java: unified display
+	of items: They are always categorized now.
+
 2004-06-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/Unit.java: changed merging of unit messages.

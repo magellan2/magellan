@@ -27,10 +27,12 @@ import com.eressea.Item;
 import com.eressea.Rules;
 import com.eressea.StringID;
 import com.eressea.Unit;
+import com.eressea.relation.ItemTransferRelation;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
+import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -191,6 +193,7 @@ public class Units {
 	public Collection addCategorizedUnitItems(Collection units, DefaultMutableTreeNode parentNode,
 											  Comparator itemComparator, Comparator unitComparator,
 											  boolean showUnits, NodeWrapperFactory factory) {
+
 		DefaultMutableTreeNode catNode = null;
 		Collection catNodes = CollectionFactory.createLinkedList();
 
@@ -221,18 +224,58 @@ public class Units {
 
 				int catNumber = 0;
 
+				Unit u = null;
+				if(units.size() == 1) {
+					u = (Unit) units.iterator().next();
+				}
 				for(Iterator iter = sortedItems.iterator(); iter.hasNext();) {
 					StatItem si = (StatItem) iter.next();
 					catNumber += si.getAmount();
 
-					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType()
-																												   .getName() +
-																												 ": " +
-																												 si.getAmount(),
-																												 "items/" +
-																												 si.getItemType()
-																												   .getIconName()));
+					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createItemNodeWrapper(u,si));
+
+// 					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType()
+// 																												   .getName() +
+// 																												 ": " +
+// 																												 si.getAmount(),
+// 																												 "items/" +
+// 																												 si.getItemType()
+// 																												   .getIconName()));
 					catNode.add(itemNode);
+
+					if(!showUnits && units.size() == 1) {
+						boolean addItemNode = false;
+
+						for(Iterator iter2 = u.getItemTransferRelations(si.getItemType()).iterator(); iter2.hasNext();) {
+							ItemTransferRelation itr = (ItemTransferRelation) iter2.next();
+							String prefix = String.valueOf(itr.amount) + " ";
+							String addIcon = null;
+							Unit u2 = null;
+							
+							if(itr.source == u) {
+								addIcon = "get";
+								u2 = itr.target;
+							} else if(itr.target == u) {
+								addIcon = "give";
+								u2 = itr.source;
+							}
+							
+							UnitNodeWrapper unw = factory.createUnitNodeWrapper(u2, prefix,
+																				u2.getPersons(),
+																				u2.getModifiedPersons());
+							unw.setAdditionalIcon(addIcon);
+							unw.setReverseOrder(true);
+
+
+							itemNode.add(new DefaultMutableTreeNode(unw));
+
+							addItemNode = true;
+						}
+						if(addItemNode) {
+							// FIXME: we return different objects here!!
+							catNode.add(itemNode);
+						}
+					}
 
 					if(showUnits && (si.units != null)) {
 						Collections.sort(si.units, new UnitWrapperComparator(unitComparator));
@@ -244,7 +287,7 @@ public class Units {
 						}
 					}
 				}
-
+					
 				if((catNumber > 0) &&
 					   !sic.category.equals(rules.getItemCategory(StringID.create("misc")))) {
 					wrapper.setAmount(catNumber);
