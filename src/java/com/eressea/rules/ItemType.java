@@ -9,6 +9,7 @@
 package com.eressea.rules;
 
 
+import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.ID;
@@ -73,7 +74,7 @@ public class ItemType extends ObjectType {
 		resources.put(i.getItemType().getID(), i);
 	}
 
-	public ROIterator getResources() {
+	public Iterator getResources() {
 		if (resources != null) {
 			return new ROIterator(resources.values().iterator());
 		} else {

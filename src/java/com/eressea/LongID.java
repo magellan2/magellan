@@ -78,6 +78,13 @@ public class LongID implements ID {
 	public String toString() {
 		return Long.toString(id);
 	}
+
+	/**
+	 * Returns a string representation of the underlying integer.
+	 */
+	public String toString(String delim) {
+		return toString();
+	}
 	
 	/**
 	 * Returns the value of this LongID as an int.

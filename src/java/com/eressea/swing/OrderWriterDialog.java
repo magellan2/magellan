@@ -31,7 +31,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -669,19 +668,6 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		return true;
-	}
-
-	public static void main(String args[]) {
-		if (args.length > 0) {
-			try {
-				File crFile = new File(args[0]);
-				GameData data = (new com.eressea.cr.CRParser()).read(new FileReader(crFile), new com.eressea.CompleteData(new com.eressea.rules.Eressea()));
-				OrderWriterDialog d = new OrderWriterDialog(data);
-				d.setVisible(true);
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
 	}
 
 	private boolean checkPassword() {

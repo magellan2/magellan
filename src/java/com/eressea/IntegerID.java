@@ -79,6 +79,13 @@ public class IntegerID implements ID {
 	public String toString() {
 		return Integer.toString(id);
 	}
+
+	/**
+	 * Returns a string representation of the underlying integer.
+	 */
+	public String toString(String delim) {
+		return toString();
+	}
 	
 	/**
 	 * Returns the value of this IntegerID as an int.

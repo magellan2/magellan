@@ -18,6 +18,14 @@ public interface ID extends Comparable, Cloneable {
 	 * user friendly manner.
 	 */
 	public String toString();
+
+	/**
+	 * Returns a String representation of the ID formatted in a 
+	 * user friendly manner with a given seperator. Right now only
+     * Coordinate should implement this, all others should invoke
+	 * toString()!
+	 */
+	public String toString(String delim);
 	
 	/**
 	 * Compares this object to the specified object. The result is

@@ -74,6 +74,10 @@ public class StringID implements ID {
 	public String toString() {
 		return originalString;
 	}
+
+	public String toString(String delim) {
+		return toString();
+	}
 	
 	/**
 	 * Indicates whether this id is "equal to" some other object.

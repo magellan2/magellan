@@ -1,0 +1,46 @@
+-----------------------------------------------------------------------
+Introduction
+-----------------------------------------------------------------------
+This document briefly describes the necessary steps for 
+
+
+-----------------------------------------------------------------------
+The version numbering system
+-----------------------------------------------------------------------
+
+The version is split into 3 parts:
+Major - minor - sub
+
+Major represents a major release. Major will only be changed for 
+heavy changes.
+
+Minor represents the minor release. Odd Minor numbers represent a
+development version while equal numbers represent stable versions.
+
+Sub represents an increasing number starting with 1 for releases of
+the major development/stable version.
+
+Examples:
+
+1.1.3 represents a development release number 3 of the major version 1.
+1.2.1 represents a stable release number 1 of the major version 1.
+
+This is quite how the linux kernel is versioned.
+
+
+-----------------------------------------------------------------------
+The steps
+-----------------------------------------------------------------------
+To create a new release do the following steps:
+
+1. Update your local cvs repository to get the actual version in the cvs:
+   cvs update -P -d
+2. Change build.xml to reflect your new MAJOR, MINOR and SUB number.
+3. Run ant target "dist".
+4. If everything was fine proceed with the next step otherwise abort.
+5. Checkin build.xml:
+   cvs commit -m "creating a new version" build.xml
+6. Tag the files with "v<MAJOR>_<MINOR>_<SUB>":
+   
+   cvs tag -R -r "v<MAJOR>_<MINOR>_<SUB>"
+7. Distribute the files created in build.

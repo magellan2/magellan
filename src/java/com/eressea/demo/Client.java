@@ -679,7 +679,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		preferencesAdapterList.add(new com.eressea.resource.ResourceSettingsFactory(this.settings));
 		optionAction = new OptionAction(this, preferencesAdapterList);
 		addMenuItem(extras, optionAction);
-		addMenuItem(extras, new EresseaOptionsAction(this));
+		// TODO(pavkovic): currently EresseaOptionPanel is broken, I deactivated it.
 		extras.addSeparator();
 		addMenuItem(extras, new HelpAction(this));
 		addMenuItem(extras, new TipOfTheDayAction(this, settings));
@@ -986,7 +986,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	public com.eressea.GameData loadCR(java.lang.String fileName) {
 		GameData d = null;
 		try {
-			d = Loader.loadCR(fileName);
+			d = new Loader().doLoadCR(fileName);
 			everLoadedReport = true;
 		} catch (Loader.MissingCRException e) {
 			JOptionPane.showMessageDialog(this, getString("msg.loadcr.missingcr.text.1") + fileName + getString("msg.loadcr.missingcr.text.2"), getString("msg.loadcr.error.title"), JOptionPane.ERROR_MESSAGE);

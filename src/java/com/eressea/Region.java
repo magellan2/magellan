@@ -20,6 +20,7 @@ import com.eressea.rules.RegionType;
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ROCollection;
+import com.eressea.util.Regions;
 import com.eressea.util.logging.Logger;
 
 
@@ -834,7 +835,7 @@ public class Region extends UnitContainer {
 		} else {
 			sb.append(getName());
 		}
-		sb.append(" (").append(((Coordinate)this.getID()).toString(", ")).append(")");
+		sb.append(" (").append(this.getID().toString()).append(")");
 		return sb.toString();
 	}
 
@@ -1398,5 +1399,38 @@ public class Region extends UnitContainer {
 		} else {
 			return super.getUnit(id);
 		}
+	}
+
+
+	private Collection neighbours;
+
+	/** 
+	 * Sets the collection of ids for reachable regions to <tt>neighbours</tt>. 
+	 * If <tt>neighbours</tt> is null they will be evaluated.
+	 */
+	public void setNeighbours(Collection neighbours) {
+		this.neighbours = neighbours;
+	}
+	
+	/** 
+	 * returns a collection of ids for reachable neighbours. This may be set by setNeighbours()
+	 * if neighbours is null it will be calculated from the game data). This function
+	 * may be necessary for new xml reports.
+	 */
+	public Collection getNeighbours() {
+		if(neighbours == null) {
+			neighbours = evaluateNeighbours();
+		}
+		return neighbours;
+	}
+
+	private Collection evaluateNeighbours() {
+		if(getData() == null || getData().regions() == null) {
+			return null;
+		}
+		
+		Collection c = Regions.getAllNeighbours(getData().regions(), getID(), 1 , null).keySet();
+		c.remove(getID());
+		return c;
 	}
 }

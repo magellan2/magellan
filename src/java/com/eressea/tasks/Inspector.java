@@ -6,8 +6,7 @@ import com.eressea.Region;
 import com.eressea.Unit;
 
 /** 
- * An Inspector review the given resource (TODO: Unit, region or whole gamedata?) 
- * and returns a list of problems
+ * An Inspector review the given resource and returns a list of problems
  */
 public interface Inspector {
 

@@ -26,6 +26,7 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 import com.eressea.UnitID;
+import com.eressea.rules.GenericRules;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -48,7 +49,7 @@ public class OrderReader {
 		data = g;
 		if (data == null) {
 			log.info("OrderReader.OrderReader(): game data is null! Creating empty game data to proceed.");
-			data = new CompleteData(new com.eressea.rules.Eressea());
+			data = new CompleteData(new GenericRules());
 		}
 
 		// clear the caches in game data

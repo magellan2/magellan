@@ -46,12 +46,13 @@ import com.eressea.Unit;
 import com.eressea.UnitID;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
-import com.eressea.rules.Eressea;
 import com.eressea.rules.EresseaDate;
+import com.eressea.rules.GenericRules;
 import com.eressea.rules.Herb;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.rules.MessageType;
+import com.eressea.rules.OptionCategory;
 import com.eressea.rules.Options;
 import com.eressea.rules.Race;
 import com.eressea.rules.RegionType;
@@ -377,8 +378,6 @@ public class CRParser {
 					if (msg.attributes == null) {
 						msg.attributes = CollectionFactory.createOrderedHashtable();
 					}
-					// pavkovic 2003.07.04: remove object pair as it is obviously redundant
-					// msg.attributes.put(sc.argv[1], new ObjectPair(sc.argv[1], sc.argv[0]));
 					msg.attributes.put(sc.argv[1], sc.argv[0]);
 				}
 				sc.getNextToken();
@@ -409,7 +408,7 @@ public class CRParser {
 	 **/
 	private List parseBattles(GameData world, List list) throws IOException {
 		while (!sc.eof && sc.argv[0].startsWith("BATTLE ")) {
-			Coordinate c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+			ID c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
 			if (c == null) {
 				unknown("BATTLE", true);
 				continue;
@@ -434,7 +433,7 @@ public class CRParser {
 	 **/
 	private List parseBattleSpecs(GameData world, List list) throws IOException {
 		while (!sc.eof && sc.argv[0].startsWith("BATTLESPEC ")) {
-			Coordinate c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+			ID c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
 			if (c == null) {
 				unknown("BATTLESPEC", true);
 				continue;
@@ -1196,8 +1195,8 @@ public class CRParser {
 	 * @param in The reader that will read the file for us.
 	 * @return a ruleset object, or null, if the file hasn't been a ruleset.
 	 */
-	public synchronized com.eressea.Rules readRules(java.io.Reader in) throws java.io.IOException {
-		com.eressea.Rules rules = new com.eressea.rules.Eressea();
+	public synchronized Rules readRules(Reader in) throws java.io.IOException {
+		Rules rules = new GenericRules();
 		sc = new Scanner(in);
 		sc.getNextToken();
 		if (!sc.argv[0].startsWith("VERSION ") || sc.argc != 1) {
@@ -1236,11 +1235,43 @@ public class CRParser {
 				parseItemCategory(rules);
 			} else if (sc.argv[0].startsWith("SKILLCATEGORY ")) {
 				parseSkillCategory(rules);
+			} else if (sc.argv[0].startsWith("OPTIONCATEGORY ")) {
+				parseOptionCategory(rules);
 			} else {
 				break;
 			}
 		}
 	}
+
+	private void parseOptionCategory(Rules rules) throws IOException {
+		int f = sc.argv[0].indexOf("\"", 0);
+		int t = sc.argv[0].indexOf("\"", f + 1);
+		ID id = StringID.create(sc.argv[0].substring(f + 1, t));
+		OptionCategory opt = rules.getOptionCategory(id, true);
+		sc.getNextToken();	  // skip OPTIONCATEGORY xx
+		while (!sc.eof) {
+			if (sc.argc == 2 &&
+				sc.argv[1].equalsIgnoreCase("name")) {
+				opt.setName(sc.argv[0]);
+				sc.getNextToken();
+			} else if (sc.argc == 2 &&
+				sc.argv[1].equalsIgnoreCase("order")) {
+				opt.setOrder(sc.argv[0].equals("true"));
+				sc.getNextToken();
+			} else if (sc.argc == 2 &&
+				sc.argv[1].equalsIgnoreCase("bitmask")) {
+				opt.setBitMask( 1 << Integer.parseInt(sc.argv[0]));
+				sc.getNextToken();
+			} else if (sc.argc == 2) {
+				unknown("OPTIONCATEGORY", true);
+			} else {
+				break;
+			}
+		}
+	}
+
+
+
 
 	/*
 	 * This is the new version, the old is called "ALLIERTE"
@@ -1329,9 +1360,9 @@ public class CRParser {
 				sc.argv[1].equalsIgnoreCase("Runde") == true) {
 				com.eressea.rules.Date d = world.getDate();
 				if (d == null) {
-					world.setDate(new EresseaDate(java.lang.Integer.parseInt(sc.argv[0])));
+					world.setDate(new EresseaDate(Integer.parseInt(sc.argv[0])));
 				} else {
-					d.setDate(java.lang.Integer.parseInt(sc.argv[0]));
+					d.setDate(Integer.parseInt(sc.argv[0]));
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
@@ -1341,7 +1372,7 @@ public class CRParser {
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Optionen") == true) {
 				if (faction.options == null) {
-					faction.options = new Options();
+					faction.options = new Options(world.rules);
 				}
 				faction.options.setValues(java.lang.Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
@@ -1444,12 +1475,14 @@ public class CRParser {
 				faction.allies = parseAlliance(faction.allies); // newer syntax
 			} else if (sc.isBlock && sc.argv[0].equals("ADRESSEN")) {
 				parseAdressen();
+				/*
 			} else if (sc.isBlock && sc.argv[0].equals("OPTIONEN")) {
 				// ignore this block, if there are options, they are
 				// encoded as a bit field whereas these string
 				// representation is not fixed and eventually leads
 				// to trouble
 				parseOptions(null);
+				*/
 			} else if (sc.isBlock && sc.argv[0].startsWith("GRUPPE ")) {
 				faction.groups = parseGroup(faction.groups, faction, groupSortIndex++);
 			} else if (sc.argc == 1 && sc.argv[0].equals("COMMENTS")) {
@@ -1475,6 +1508,7 @@ public class CRParser {
 		return faction;
 	}
 
+	/*
 	private Options parseOptions(Options options) throws IOException {
 		sc.getNextToken();	  // skip OPTIONEN
 		if (options == null) {
@@ -1492,6 +1526,7 @@ public class CRParser {
 
 		return options;
 	}
+	*/
 
 	private Map parseGroup(Map groups, Faction faction, int sortIndex) throws IOException {
 		ID id = IntegerID.create(sc.argv[0].substring(7));
@@ -2099,7 +2134,7 @@ public class CRParser {
 		int unitSortIndex = 0;
 		int shipSortIndex = 0;
 		int buildingSortIndex = 0;
-		Coordinate c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+		ID c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
 		if (c == null) {
 			unknown("REGION", true);
 			return;
@@ -2503,11 +2538,8 @@ public class CRParser {
 
 	private void parseTranslation(GameData data) throws IOException {
 		sc.getNextToken();
-		Eressea eressea = (Eressea)data.rules;
 		while (!sc.eof) {
 			if (sc.argc == 2) {
-				StringID typeID = StringID.create(sc.argv[1]);
-				eressea.changeName(typeID, sc.argv[0]);
 				data.addTranslation(sc.argv[1], sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.isBlock) {

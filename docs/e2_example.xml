@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eressea faction="8yg" game="Eressea" date="1068592611" turn="2">
+  <server replyto="mailto" subject="mailcmd"/>
+  <faction id="8yg" name="Partei 8yg" email="enno" locale="de">
+    <option name="AUSWERTUNG"/>
+    <option name="COMPUTER"/>
+    <option name="ZUGVORLAGE"/>
+    <option name="SILBERPOOL"/>
+    <option name="STATISTIK"/>
+    <option name="ZIPPED"/>
+    <option name="ADRESSEN"/>
+    <race name="Zwerge"/>
+  </faction>
+  <faction id="8qc" name="Partei 8qc" email="8yg@eressea.de"/>
+  <region visibility="neighbour" id="LL4" terrain="plain">
+    <connect direction="northwest" region="2rg"/>
+    <connect direction="northeast" region="mhe"/>
+    <connect direction="east" region="dtg"/>
+    <connect direction="southeast" region="958"/>
+    <connect direction="southwest" region="eb7"/>
+    <connect direction="west" region="kja"/>
+    <name>Decupot</name>
+  </region>
+  <region visibility="neighbour" id="mhe" terrain="glacier">
+    <connect direction="northwest" region="bwq"/>
+    <connect direction="northeast" region="6ir"/>
+    <connect direction="east" region="e3s"/>
+    <connect direction="southeast" region="dtg"/>
+    <connect direction="southwest" region="LL4"/>
+    <connect direction="west" region="2rg"/>
+    <name>Bodiket</name>
+  </region>
+  <region visibility="neighbour" id="bwq" terrain="plain">
+    <connect direction="northwest" region="kqn"/>
+    <connect direction="northeast" region="fm0"/>
+    <connect direction="east" region="6ir"/>
+    <connect direction="southeast" region="mhe"/>
+    <connect direction="southwest" region="2rg"/>
+    <connect direction="west" region="m1g"/>
+    <name>Cugàtcedkas</name>
+  </region>
+  <region visibility="neighbour" id="mhL" terrain="ocean">
+    <connect direction="northwest" region="91h"/>
+    <connect direction="northeast" region="jiq"/>
+    <connect direction="east" region="2hn"/>
+    <connect direction="southeast" region="gxn"/>
+    <connect direction="southwest" region="2ca"/>
+    <connect direction="west" region="6ae"/>
+  </region>
+  <region visibility="neighbour" id="gxn" terrain="ocean">
+    <connect direction="northwest" region="mhL"/>
+    <connect direction="northeast" region="2hn"/>
+    <connect direction="east" region="kja"/>
+    <connect direction="southeast" region="cro"/>
+    <connect direction="southwest" region="hmo"/>
+    <connect direction="west" region="2ca"/>
+  </region>
+  <region visibility="neighbour" id="kja" terrain="plain">
+    <connect direction="northwest" region="2hn"/>
+    <connect direction="northeast" region="2rg"/>
+    <connect direction="east" region="LL4"/>
+    <connect direction="southeast" region="eb7"/>
+    <connect direction="southwest" region="cro"/>
+    <connect direction="west" region="gxn"/>
+    <name>Sôpur</name>
+  </region>
+  <region visibility="unit" id="2rg" terrain="plain">
+    <connect direction="northwest" region="m1g"/>
+    <connect direction="northeast" region="bwq"/>
+    <connect direction="east" region="mhe"/>
+    <connect direction="southeast" region="LL4"/>
+    <connect direction="southwest" region="kja"/>
+    <connect direction="west" region="2hn"/>
+    <name>Tipir</name>
+  </region>
+  <region visibility="neighbour" id="m1g" terrain="volcano">
+    <connect direction="northwest" region="f8n"/>
+    <connect direction="northeast" region="kqn"/>
+    <connect direction="east" region="bwq"/>
+    <connect direction="southeast" region="2rg"/>
+    <connect direction="southwest" region="2hn"/>
+    <connect direction="west" region="jiq"/>
+    <name>Posubernol</name>
+  </region>
+  <region visibility="neighbour" id="jiq" terrain="ocean">
+    <connect direction="northwest" region="nL0"/>
+    <connect direction="northeast" region="f8n"/>
+    <connect direction="east" region="m1g"/>
+    <connect direction="southeast" region="2hn"/>
+    <connect direction="southwest" region="mhL"/>
+    <connect direction="west" region="91h"/>
+  </region>
+  <region visibility="unit" id="2hn" terrain="plain">
+    <connect direction="northwest" region="jiq"/>
+    <connect direction="northeast" region="m1g"/>
+    <connect direction="east" region="2rg"/>
+    <connect direction="southeast" region="kja"/>
+    <connect direction="southwest" region="gxn"/>
+    <connect direction="west" region="mhL"/>
+    <name>Bógîn</name>
+  </region>
+</eressea>

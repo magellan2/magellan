@@ -10,15 +10,8 @@ package com.eressea.swing.map;
 
 
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,29 +20,13 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import com.eressea.Building;
 import com.eressea.Coordinate;
-import com.eressea.EntityID;
-import com.eressea.Faction;
-import com.eressea.GameData;
-import com.eressea.ID;
-import com.eressea.Message;
 import com.eressea.Region;
-import com.eressea.Ship;
-import com.eressea.Skill;
-import com.eressea.StringID;
-import com.eressea.Unit;
-import com.eressea.rules.BuildingType;
-import com.eressea.rules.RegionType;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.context.ContextChangeable;
 import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.EresseaSkillConstants;
-import com.eressea.util.Regions;
-import com.eressea.util.comparator.IDComparator;
-import com.eressea.util.comparator.SortIndexComparator;
 import com.eressea.util.logging.Logger;
 
 public class RegionImageCellRenderer extends ImageCellRenderer implements ContextChangeable{
@@ -119,91 +96,6 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 
 	public int getPlaneIndex() {
 		return Mapper.PLANE_REGION;
-	}
-
-	public void init(com.eressea.GameData data, Graphics g, Point offset) {
-		// initialize fog-of-war cache
-		if (fogOfWar) {
-			// intialize the fog-of-war cache for all regions that are covered by lighthouses
-			if (data.buildings() != null) {
-				BuildingType type = data.rules.getBuildingType(StringID.create("Leuchtturm"));
-				RegionType oceanType = data.rules.getRegionType(StringID.create("Ozean"));
-				Comparator sortIndexComparator = new SortIndexComparator(new IDComparator());
-				if (type != null) {
-					for (Iterator iter = data.buildings().values().iterator(); iter.hasNext();) {
-						Building b = (Building)iter.next();
-						if (type.equals(b.getType()) && b.getSize() >= 10) {
-							int personCounter = 0;
-							int perceptionSkillLevel = 0;
-							List sortedInmates = CollectionFactory.createLinkedList(b.units());
-							Collections.sort(sortedInmates, sortIndexComparator);
-							for (Iterator inmates = sortedInmates.iterator(); inmates.hasNext() && personCounter < 4; personCounter++) {
-								Unit inmate = (Unit)inmates.next();
-								Skill perceptionSkill = inmate.getSkill(data.rules.getSkillType(EresseaSkillConstants.S_WAHRNEHMUNG, true));
-								if (perceptionSkill != null) {
-									perceptionSkillLevel = Math.max(perceptionSkill.getLevel(), perceptionSkillLevel);
-								}
-							}
-							int maxRadius = (int)Math.min((Math.log(b.getSize())/Math.log(10)) + 1, perceptionSkillLevel / 3);
-							if (maxRadius > 0) {
-								Map regions = Regions.getAllNeighbours(data.regions(), b.getRegion().getCoordinate(), maxRadius, null);
-								for (Iterator regionIter = regions.values().iterator(); regionIter.hasNext();) {
-									Region r = (Region)regionIter.next();
-									if (oceanType == null || oceanType.equals(r.getType())) {
-										r.setFogOfWar(0);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			// intialize the fog-of-war cache for all regions where units or ships traveled through
-			for (Iterator iterator = data.regions().values().iterator(); iterator.hasNext(); ) {
-				Region r = (Region)iterator.next();
-				if (r.travelThru!=null) {
-					initTravelThru(data, r, r.travelThru);
-				}
-				if (r.travelThruShips!=null) {
-					initTravelThru(data, r, r.travelThruShips);
-				}
-			}
-		}
-		this.data = data;
-		graphics = g;
-		this.offset = offset;
-	}
-
-	private void initTravelThru(GameData data, Region region, Collection travelThru) {
-		for (Iterator iter = travelThru.iterator(); iter.hasNext();) {
-			Message mes = (Message) iter.next();
-			// fetch ID of Unit or Ship from Message of type "<name> (<id>)"
-			String s = mes.getText();
-			int startpos = s.lastIndexOf("(") + 1;
-			int endpos = s.length() - 1;
-			if (startpos>-1 && endpos>startpos) {
-				try {
-					ID id = EntityID.createEntityID(s.substring(startpos, endpos));
-					if (data.getUnit(id)!=null && data.getUnit(id).getFaction().trustLevel>=Faction.TL_PRIVILEGED) {
-						// fast return
-						region.setFogOfWar(0);
-						return;
-					} else {
-						Ship ship = data.getShip(id);
-						if (ship!=null) {
-							for (Iterator i = ship.units().iterator(); i.hasNext(); ) {
-								if (((Unit)i.next()).getFaction().trustLevel>=Faction.TL_PRIVILEGED) {
-									// fast return
-									region.setFogOfWar(0);
-									return;
-								}
-							}
-						}
-					}
-				} catch (NumberFormatException e) {
-				}
-			}
-		}
 	}
 
 	public boolean getFogOfWar() {

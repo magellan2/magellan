@@ -8,18 +8,14 @@
 
 package com.eressea.rules;
 
-
 import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.ID;
 import com.eressea.NamedObject;
 import com.eressea.Rules;
-import com.eressea.Skill;
 import com.eressea.StringID;
-import com.eressea.Unit;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.EresseaSkillConstants;
 import com.eressea.util.ROIterator;
 import com.eressea.util.Umlaut;
 
@@ -29,8 +25,11 @@ import com.eressea.util.Umlaut;
  * collects all the well-known object-types which in turn provide
  * information about their properties as they are defined in the
  * rules of Eressea.
+ * In fact, there is nothing eressea specific in Rules anymore, so this is
+ * the generic rules object.
  */
-public class Eressea extends Rules {
+public class GenericRules implements Rules {
+
 	private Map races = CollectionFactory.createHashtable();
 	private Map raceNames = CollectionFactory.createHashtable();
 	private Map shipTypes = CollectionFactory.createHashtable();
@@ -47,13 +46,16 @@ public class Eressea extends Rules {
 	private Map itemCategorieNames = CollectionFactory.createHashtable();
 	private Map skillCategories = CollectionFactory.createHashtable();
 	private Map skillCategorieNames = CollectionFactory.createHashtable();
+	private Map optionCategories = CollectionFactory.createHashtable();
+	private Map optionCategorieNames = CollectionFactory.createHashtable();
+
 
 	public Race addRace(Race t) {
 		addObject(t, races, raceNames);
 		return t;
 	}
 
-	public ROIterator getRaces() {
+	public Iterator getRaces() {
 		return new ROIterator(races.values().iterator());
 	}
 
@@ -79,7 +81,7 @@ public class Eressea extends Rules {
 		return t;
 	}
 
-	public ROIterator getShipTypes() {
+	public Iterator getShipTypes() {
 		return new ROIterator(shipTypes.values().iterator());
 	}
 
@@ -105,7 +107,7 @@ public class Eressea extends Rules {
 		return t;
 	}
 
-	public ROIterator getBuildingTypes() {
+	public Iterator getBuildingTypes() {
 		return new ROIterator(buildingTypes.values().iterator());
 	}
 
@@ -131,7 +133,7 @@ public class Eressea extends Rules {
 		return t;
 	}
 
-	public ROIterator getRegionTypes() {
+	public Iterator getRegionTypes() {
 		return new ROIterator(regionTypes.values().iterator());
 	}
 
@@ -157,7 +159,7 @@ public class Eressea extends Rules {
 		return t;
 	}
 
-	public ROIterator getItemTypes() {
+	public Iterator getItemTypes() {
 		return new ROIterator(itemTypes.values().iterator());
 	}
 
@@ -183,7 +185,7 @@ public class Eressea extends Rules {
 		return t;
 	}
 
-	public ROIterator getSkillTypes() {
+	public Iterator getSkillTypes() {
 		return new ROIterator(skillTypes.values().iterator());
 	}
 
@@ -209,7 +211,7 @@ public class Eressea extends Rules {
 		return t;
 	}
 
-	public ROIterator getItemCategories() {
+	public Iterator getItemCategories() {
 		return new ROIterator(itemCategories.values().iterator());
 	}
 
@@ -226,7 +228,7 @@ public class Eressea extends Rules {
 		return r;
 	}
 
-	public ROIterator getSkillCategories() {
+	public Iterator getSkillCategories() {
 		return new ROIterator(skillCategories.values().iterator());
 	}
 	
@@ -248,20 +250,39 @@ public class Eressea extends Rules {
 		return getSkillCategory(id, false);
 	}
 
+	public OptionCategory getOptionCategory(ID id, boolean add) {
+		OptionCategory r = (OptionCategory)optionCategories.get(id);
+		if (r == null && add) {
+			r = this.addOptionCategory(new OptionCategory(id));
+			r.setName(id.toString());
+		}
+		return r;
+	}
 	
+	public OptionCategory addOptionCategory(OptionCategory t) {
+		optionCategories.put(t.getID(), t);
+		return t;
+	}
+
+	public Iterator getOptionCategories() {
+		return new ROIterator(optionCategories.values().iterator());
+	}
+	
+	public ObjectType changeName(String from, String to) {
+		return changeName(StringID.create(from), to);
+	}
+
 	/**
 	 * Changes the name of an object identified by the specified id.
+	 * 
 	 * This method serves as a convenience as it relieves the
 	 * implementor of the arduous task of determining the kind of
 	 * object type (ItemType, SkillType etc.) and accessing the
 	 * corresponding data structures. It also ensures that the object
 	 * is also accessible by calling the getXXX methods with the new
 	 * name.
-	 *
-	 * @returns the modified object type or null, if no object type is
-	 * registered with the specified id.
 	 */
-	public ObjectType changeName(ID id, String name) {
+	private ObjectType changeName(ID id, String name) {
 		ObjectType ot = null;
 		if ((ot = getBuildingType(id)) != null) {
 			if (!ot.getName().equals(name)) {
@@ -343,54 +364,4 @@ public class Eressea extends Rules {
 		return null;
 	}
 
-	/**
-	 * @return the cost to lern a skill
-	 * @param skillType the skill to be learned
-	 */
-	public int getSkillCost(SkillType skillType) {
-		return getSkillCost(skillType, null);
-	}
-
-	/**
-	 * @return the cost to learn a skill for the given unit. If the
-	 *  unit has no persons the cost for one person is returned.
-	 * @param skillType the skill to be learned
-	 * @param unit the Unit
-	 */
-	public int getSkillCost(SkillType skillType, Unit unit) {
-		int cost = 0;
-		if (skillType.getID().equals(EresseaSkillConstants.S_TAKTIK)
-			|| skillType.getID().equals(EresseaSkillConstants.S_KRAEUTERKUNDE)
-			|| skillType.getID().equals(EresseaSkillConstants.S_ALCHEMIE)) {
-			cost = 200;
-		} else if (skillType.getID().equals(EresseaSkillConstants.S_SPIONAGE)) {
-			cost = 100;
-		} else if (skillType.getID().equals(EresseaSkillConstants.S_MAGIE)) {
-			// get magiclevel without modifier
-			int level = 0;
-			Skill skill = unit != null ? unit.getSkill(skillType) : null;
-			if (skill != null) {
-				if (skill.noSkillPoints()) {
-					level = skill.getLevel() - skill.getModifier(unit);
-				} else {
-					int days = unit.getSkill(skillType).getPointsPerPerson();
-					level = (int)Math.floor(Math.sqrt(days / 15.0 + 0.25) - 0.5);
-				}
-			}
-			int nextLevel = level + 1;
-			cost = (int)(50 + 50 * (1 + nextLevel) * (nextLevel) / 2.0);
-		}
-		if (unit != null) {
-			if (unit.getBuilding() != null && unit.getBuilding().getType().equals(this.getBuildingType(StringID.create("Akademie")))) {
-				if (cost == 0) {
-					cost = 50;
-				} else {
-					cost *= 2;
-				}
-			}
-			cost *= Math.max(1, unit.getModifiedPersons());
-		}
-
-		return cost;
-	}	
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Aenderungen: 
+     - <eressea> nach <atlantis> 
+     - <server> und <attr> aufgesplittet
+     - visibility entfernt
+     - distance="Entfernung zur nächsten einheitenbefuellten region"
+     - <name> als attribut
+-->
+<atlantis faction="8yg" game="eressea" date="1068592611" turn="2">
+  <server>
+    <attr name="mailto">eressea@eressea.upb.de</attr>
+    <attr name="mailsubject">eressea befehle</attr>
+  </server>
+  <faction id="8yg" name="Partei 8yg" email="enno" locale="de">
+    <option name="AUSWERTUNG"/>
+    <option name="COMPUTER"/>
+    <option name="ZUGVORLAGE"/>
+    <option name="SILVERPOOL"/>
+    <option name="STATISTIK"/>
+    <option name="ZIPPED"/>
+    <option name="ADRESSEN"/>
+    <race name="dwarves"/>
+  </faction>
+  <faction id="8qc" name="Partei 8qc" email="8yg@eressea.de"/>
+  <region distance="1" id="LL4" terrain="plain" name="Decupot">
+    <connect direction="northwest" region="2rg"/>
+    <connect direction="northeast" region="mhe"/>
+    <connect direction="east" region="dtg"/>
+    <connect direction="southeast" region="958"/>
+    <connect direction="southwest" region="eb7"/>
+    <connect direction="west" region="kja"/>
+  </region>
+  <region distance="1" id="mhe" terrain="glacier" name="Bodiket">
+    <connect direction="northwest" region="bwq"/>
+    <connect direction="northeast" region="6ir"/>
+    <connect direction="east" region="e3s"/>
+    <connect direction="southeast" region="dtg"/>
+    <connect direction="southwest" region="LL4"/>
+    <connect direction="west" region="2rg"/>
+  </region>
+  <region distance="1" id="bwq" terrain="plain" name="CugÃ tcedkas">
+    <connect direction="northwest" region="kqn"/>
+    <connect direction="northeast" region="fm0"/>
+    <connect direction="east" region="6ir"/>
+    <connect direction="southeast" region="mhe"/>
+    <connect direction="southwest" region="2rg"/>
+    <connect direction="west" region="m1g"/>
+  </region>
+  <region distance="1" id="mhL" terrain="ocean">
+    <connect direction="northwest" region="91h"/>
+    <connect direction="northeast" region="jiq"/>
+    <connect direction="east" region="2hn"/>
+    <connect direction="southeast" region="gxn"/>
+    <connect direction="southwest" region="2ca"/>
+    <connect direction="west" region="6ae"/>
+  </region>
+  <region distance="1" id="gxn" terrain="ocean">
+    <connect direction="northwest" region="mhL"/>
+    <connect direction="northeast" region="2hn"/>
+    <connect direction="east" region="kja"/>
+    <connect direction="southeast" region="cro"/>
+    <connect direction="southwest" region="hmo"/>
+    <connect direction="west" region="2ca"/>
+  </region>
+  <region distance="1" id="kja" terrain="plain" name="SÃ´pur">
+    <connect direction="northwest" region="2hn"/>
+    <connect direction="northeast" region="2rg"/>
+    <connect direction="east" region="LL4"/>
+    <connect direction="southeast" region="eb7"/>
+    <connect direction="southwest" region="cro"/>
+    <connect direction="west" region="gxn"/>
+  </region>
+  <region distance="0" id="2rg" terrain="plain" name="Tipir">
+    <connect direction="northwest" region="m1g"/>
+    <connect direction="northeast" region="bwq"/>
+    <connect direction="east" region="mhe"/>
+    <connect direction="southeast" region="LL4"/>
+    <connect direction="southwest" region="kja"/>
+    <connect direction="west" region="2hn"/>
+  </region>
+  <region distance="1" id="m1g" terrain="volcano" name="Posubernol">
+    <connect direction="northwest" region="f8n"/>
+    <connect direction="northeast" region="kqn"/>
+    <connect direction="east" region="bwq"/>
+    <connect direction="southeast" region="2rg"/>
+    <connect direction="southwest" region="2hn"/>
+    <connect direction="west" region="jiq"/>
+  </region>
+  <region distance="1" id="jiq" terrain="ocean">
+    <connect direction="northwest" region="nL0"/>
+    <connect direction="northeast" region="f8n"/>
+    <connect direction="east" region="m1g"/>
+    <connect direction="southeast" region="2hn"/>
+    <connect direction="southwest" region="mhL"/>
+    <connect direction="west" region="91h"/>
+  </region>
+  <region distance="0" id="2hn" terrain="plain" name="BÃ³gÃ®n">
+    <connect direction="northwest" region="jiq"/>
+    <connect direction="northeast" region="m1g"/>
+    <connect direction="east" region="2rg"/>
+    <connect direction="southeast" region="kja"/>
+    <connect direction="southwest" region="gxn"/>
+    <connect direction="west" region="mhL"/>
+  </region>
+  <translations locale="de">
+    <translation from="ocean"     to="Ozean"/>
+    <translation from="glacier"   to="Gletscher"/>
+    <translation from="volcano"   to="Vulkan"/>
+    <translation from="plain"     to="Ebene"/>
+    <translation from="dwarfs"    to="Zwerge"/>
+    <translation from="east"      to="Ost"/>
+    <translation from="southeast" to="Südost"/>
+    <translation from="south"     to="Süd"/>
+    <translation from="southwest" to="Südwest"/>
+    <translation from="west"      to="West"/>
+    <translation from="northwest" to="Nordwest"/>
+    <translation from="north"     to="Nord"/>
+    <translation from="SILVERPOOL" to="Silberpool"/>
+  </translations>
+</atlantis>

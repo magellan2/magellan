@@ -61,11 +61,11 @@ public class Coordinate implements ID {
 
 	/**
 	 * Returns a String representation of this corrdinate. The x, y
-	 * and z components are seperated by blanks and the z component is
+	 * and z components are seperated by semicolon with a blank and the z component is
 	 * ommitted if it equals 0.
 	 */
 	public String toString() {
-		return toString(" ", false);
+		return toString(", ", false);
 	}
 
 	/**

@@ -853,7 +853,7 @@ public class FindDialog extends InternationalizedDataDialog implements javax.swi
 		}
 
 		public String toString() {
-			return region.getName() + " (" + region.getCoordinate().toString(", ") + ")";
+			return region.toString();
 		}
 	}
 

@@ -1,0 +1,241 @@
+We try to move from GPL to LGPL:
+
+Right now we have permissions from
+Andreas Gampe
+Ilja Pavkovic
+Ulrich Küster
+
+
+We need to write to the following persons:
+      11 hershoff - hershoff@upb.de
+      21 hertel   - eressea@readonly.de
+      35 klaas    -
+      47 mmueller - 
+      65 butenuth - butenuth@sdm.de
+      86 enno     - enno@eressea.de
+     335 tusk     - tusk@snafu.de
+     345 pappert  - sebastian@sitegeist.de
+     560 rbehme   - eressea@behme.space.net
+    1536 goetz    - noone.else@gmx.de
+
+The email addresses may be found in http://eressea.upb.de/bugzilla. For unknown
+email addresses we could contact Enno (enno@despammed.com)
+
+
+
+Appendix:
+------------------------------------------------------------------------------
+
+
+Permission from Ilja Pavkovic:
+------------------------------------------------------------------------------
+I did write this document, so I allowed myself to change the license to
+LGPL. Cool, eh? ;-)
+
+
+Permission from Andreas Gampe:
+------------------------------------------------------------------------------
+Return-Path: <andgampe@web.de>
+X-Original-To: eressea@pavkovic.de
+Delivered-To: malloc@gumblfarz.de
+Received: by dominion.gumblfarz.de (Postfix, from userid 10)
+	id 6DE403CA1; Mon, 10 Nov 2003 16:00:10 +0100 (CET)
+Received: from mx-1.tng.de (mx-1.tng.de [213.178.66.81])
+	by morr.kel.de.core.tng.de (Postfix) with ESMTP id 9E2C35E80F4
+	for <eressea@pavkovic.de>; Mon, 10 Nov 2003 15:56:30 +0100 (CET)
+Received: from localhost (mailprotect.tng.de [127.0.0.1])
+	by mx-1.tng.de (Postfix) with ESMTP id 510A22F91F8
+	for <eressea@pavkovic.de>; Mon, 10 Nov 2003 16:01:17 +0100 (CET)
+Received: from mx-1.tng.de ([127.0.0.1])
+ by localhost (merrill2 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 32069-06 for <eressea@pavkovic.de>; Mon, 10 Nov 2003 16:01:16 +0100 (CET)
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by mx-1.tng.de (Postfix) with SMTP id 7C9AE2F9120
+	for <eressea@pavkovic.de>; Mon, 10 Nov 2003 16:01:16 +0100 (CET)
+Received: (qmail 14623 invoked by alias); 10 Nov 2003 14:59:07 -0000
+Delivered-To: GMX delivery to noeskadu@gmx.de
+Received: (qmail 14603 invoked by uid 65534); 10 Nov 2003 14:59:07 -0000
+Received: from smtp05.web.de (EHLO smtp.web.de) (217.72.192.209)
+  by mx0.gmx.net (mx030-rz3) with SMTP; 10 Nov 2003 15:59:07 +0100
+Received: from [217.3.222.68] (helo=217.3.222.68)
+	by smtp.web.de with esmtp (WEB.DE 4.99 #516)
+	id 1AJDVM-0000y2-00; Mon, 10 Nov 2003 15:59:05 +0100
+Date: Mon, 10 Nov 2003 15:58:54 +0100
+From: Andreas Gampe <andgampe@web.de>
+X-Mailer: The Bat! (v1.60q)
+Reply-To: Andreas Gampe <andgampe@web.de>
+X-Priority: 3 (Normal)
+Message-ID: <1974120595.20031110155854@web.de>
+To: noeskadu@gmx.de
+Cc: =?ISO-8859-1?B?VWxyaWNoX0v8c3Rlcg==?= <Ulrich.Kuester@uni-jena.de>
+Subject: Re[2]: [Magellan] Neues Ersetzersystem
+In-Reply-To: <001c01c3a458$ad64af40$1fb1a8c0@LAPIP>
+References: <200311061104.hA6B4uQ24493@mailgate5.cinetic.de>
+ <001c01c3a458$ad64af40$1fb1a8c0@LAPIP>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Sender: andgampe@web.de
+X-GMX-Antispam: 0 (Mail was not recognized as spam)
+X-Resent-By: Forwarder <forwarder@gmx.de>
+X-Resent-For: noeskadu@gmx.de
+X-Resent-To: eressea@pavkovic.de, supermalloc@web.de
+
+Hi Ilja,
+
+Vom Donnerstag, 6. November 2003, 12:25:26:
+
+> Vielleicht sollte man das Laden des alten Replacersystemes dalassen und eine
+> Schreibmethode in das neue Intepretersystem einbauen?
+Wie meinst Du das?
+
+Beide  Systeme weiterleben zu lassen, finde ich ziemlich schlecht. Das
+hat sowas baustellenartiges und ist nicht gut zu warten.
+
+> richtet Euch übrigens mal accounts bei sourceforge.net ein, dort wird nun
+> weiterentwickelt, denke ich.
+Du  könntest  mir  mal  den  Umgang  damit  erklären(hab zu wenig Zeit
+momentan).  Einen  Account  müßte  ich  schon  haben(bekomme zumindest
+allmonatlich den Newsletter).
+
+> Ich möchte übrigens die Sourcen unter die LGPL stellen und benötige Eure
+> Erlaubnis dazu.
+Ich habe schon bei der letzten Änderung gesagt, daß es mir so ziemlich
+egal ist.
+
+MfG
+Andreas
+
+
+Return-Path: <andgampe@web.de>
+X-Original-To: eressea@pavkovic.de
+Delivered-To: malloc@gumblfarz.de
+Received: by dominion.gumblfarz.de (Postfix, from userid 10)
+	id 6F5B25F4C; Tue, 11 Nov 2003 07:45:13 +0100 (CET)
+Received: from mx-1.tng.de (mx-1.tng.de [213.178.66.81])
+	by morr.kel.de.core.tng.de (Postfix) with ESMTP id 1A9B65E80E7
+	for <eressea@pavkovic.de>; Tue, 11 Nov 2003 07:38:33 +0100 (CET)
+Received: from localhost (mailprotect.tng.de [127.0.0.1])
+	by mx-1.tng.de (Postfix) with ESMTP id D853E2F943D
+	for <eressea@pavkovic.de>; Tue, 11 Nov 2003 07:43:31 +0100 (CET)
+Received: from mx-1.tng.de ([127.0.0.1])
+ by localhost (merrill2 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 32736-09 for <eressea@pavkovic.de>; Tue, 11 Nov 2003 07:43:31 +0100 (CET)
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by mx-1.tng.de (Postfix) with SMTP id 41DAB2F9494
+	for <eressea@pavkovic.de>; Tue, 11 Nov 2003 07:43:31 +0100 (CET)
+Received: (qmail 29399 invoked by alias); 11 Nov 2003 06:41:22 -0000
+Delivered-To: GMX delivery to noeskadu@gmx.de
+Received: (qmail 29380 invoked by uid 65534); 11 Nov 2003 06:41:22 -0000
+Received: from smtp05.web.de (EHLO smtp.web.de) (217.72.192.209)
+  by mx0.gmx.net (mx014-rz3) with SMTP; 11 Nov 2003 07:41:22 +0100
+Received: from [217.3.225.135] (helo=217.3.225.135)
+	by smtp.web.de with esmtp (WEB.DE 4.99 #516)
+	id 1AJSDD-0003CE-00
+	for noeskadu@gmx.de; Tue, 11 Nov 2003 07:41:15 +0100
+Date: Tue, 11 Nov 2003 07:41:12 +0100
+From: Andreas Gampe <andgampe@web.de>
+X-Mailer: The Bat! (v1.60q)
+Reply-To: Andreas Gampe <andgampe@web.de>
+X-Priority: 3 (Normal)
+Message-ID: <1352248453.20031111074112@web.de>
+To: noeskadu@gmx.de
+Subject: Re[3]: [Magellan] Neues Ersetzersystem
+In-Reply-To: <Pine.LNX.4.33.0311102329560.6469-100000@dominion.gumblfarz.de>
+References: <Pine.LNX.4.33.0311102329560.6469-100000@dominion.gumblfarz.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Sender: andgampe@web.de
+X-GMX-Antispam: 0 (Mail was not recognized as spam)
+X-Resent-By: Forwarder <forwarder@gmx.de>
+X-Resent-For: noeskadu@gmx.de
+X-Resent-To: eressea@pavkovic.de, supermalloc@web.de
+
+Hi Ilja,
+
+Vom Montag, 10. November 2003, 23:36:14:
+
+> Egal != Erlaubnis. Ein Satz wie "Ist ok" reicht mir auch :-)
+Dann eben "Ist ok".
+
+MfG
+Andreas
+
+
+Permission from Ulrich Küster:
+------------------------------------------------------------------------------
+Return-Path: <Ulrich.Kuester@uni-jena.de>
+X-Original-To: eressea@pavkovic.de
+Delivered-To: malloc@gumblfarz.de
+Received: by dominion.gumblfarz.de (Postfix, from userid 10)
+	id E315A7454; Sun,  9 Nov 2003 13:16:07 +0100 (CET)
+Received: from mx-1.tng.de (mx-1.tng.de [213.178.66.81])
+	by morr.kel.de.core.tng.de (Postfix) with ESMTP id AE0265E8299
+	for <eressea@pavkovic.de>; Sun,  9 Nov 2003 13:14:33 +0100 (CET)
+Received: from localhost (mailprotect.tng.de [127.0.0.1])
+	by mx-1.tng.de (Postfix) with ESMTP id EB7CE2F90CA
+	for <eressea@pavkovic.de>; Sun,  9 Nov 2003 13:18:59 +0100 (CET)
+Received: from mx-1.tng.de ([127.0.0.1])
+ by localhost (merrill2 [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 26575-02 for <eressea@pavkovic.de>; Sun,  9 Nov 2003 13:18:58 +0100 (CET)
+Received: from fsuj20.rz.uni-jena.de (fsuj20.rz.uni-jena.de [141.35.1.18])
+	by mx-1.tng.de (Postfix) with ESMTP id 802D52F90FE
+	for <eressea@pavkovic.de>; Sun,  9 Nov 2003 13:18:58 +0100 (CET)
+Received: from binwachsam.rz.uni-jena.de (binwachsam.rz.uni-jena.de [141.35.1.24])
+	by fsuj20.rz.uni-jena.de (8.12.8/8.12.8) with ESMTP id hA9CGvSs015254
+	for <eressea@pavkovic.de>; Sun, 9 Nov 2003 13:16:57 +0100 (MET)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by binwachsam.rz.uni-jena.de (8.11.6/8.11.6) with ESMTP id hA9CDAR26905
+	for <eressea@pavkovic.de>; Sun, 9 Nov 2003 13:13:10 +0100
+Received: from binwachsam.rz.uni-jena.de ([127.0.0.1])
+ by localhost (binwachsam.rz.uni-jena.de [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 26860-02 for <eressea@pavkovic.de>;
+ Sun,  9 Nov 2003 13:13:10 +0100 (CET)
+Received: from lc08.rz.uni-jena.de (lc08.rz.uni-jena.de [141.35.1.23])
+	by binwachsam.rz.uni-jena.de (8.11.6/8.11.6) with ESMTP id hA9CD9p26876
+	for <eressea@pavkovic.de>; Sun, 9 Nov 2003 13:13:09 +0100
+Received: from 141.35.96.248 (gries8-096248.stw-wh.uni-jena.de [141.35.96.248])
+	(authenticated)
+	by lc08.rz.uni-jena.de (8.11.6/8.11.6) with ESMTP id hA9CA7D25436
+	for <eressea@pavkovic.de>; Sun, 9 Nov 2003 13:10:07 +0100
+Date: Sun, 9 Nov 2003 13:16:47 +0100
+From: =?ISO-8859-1?B?VWxyaWNoIEv8c3Rlcg==?= <Ulrich.Kuester@uni-jena.de>
+X-Mailer: The Bat! (v1.53t) Educational
+Reply-To: =?ISO-8859-1?B?VWxyaWNoIEv8c3Rlcg==?= <Ulrich.Kuester@uni-jena.de>
+Organization: FSU Jena
+X-Priority: 3 (Normal)
+Message-ID: <7152971040.20031109131647@uni-jena.de>
+To: Ilja Pavkovic <eressea@pavkovic.de>
+Subject: =?ISO-8859-1?B?VGFsZW50dmVy5G5kZXJ1bmc=?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: by amavisd-new at uni-jena.de
+
+Hi Ilja,
+
+seit einiger Zeit beobachte ich einen neuen Bug in der
+Talentveränderungsanzeige. Ich poste den natürlich auch gerne in
+Bugzilla, da ich aber meine mich zu erinnern, dass Du da letztens
+dranrumgeschraubt hast, erstmal nur an Dich.
+
+Ich vergesse von Runde x auf x+1 (als Dämon) ein Talent. Ich füge
+meinen Report aus Runde x+1 dem Report aus x hinzu und das Talent wird
+richtig als vergessen markiert und mit (-) dargestellt. Wenn ich nun
+aber die Reporte meiner Verbündeten aus x+1 hinzufüge, wird das Talent
+auf 0 gesetzt (0), als hätte ich es noch auf Stufe 0.
+In der nächsten Woche geht das Spiel dann von vorne los, weil Magellan
+natürlich denkt, ich hätte das Talent in der aktuellen Woche
+vergessen. Die vergessenen Talente fliegen so nie aus meinem Report
+raus :-/.
+
+Kannst Du da was zu sagen?
+
+Grüße,
+
+Uli
+
+PS: Meinetwegen kannst Du Magellan gern unter LGPL stellen. Wäre nett,
+wenn Du mir Laien noch kurz den Unterschied zwischen GPL und LGPL
+erklären könntest. :-)

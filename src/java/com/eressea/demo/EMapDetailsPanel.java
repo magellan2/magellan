@@ -2928,19 +2928,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			public CombatStateContextMenu(Unit u) {
 				this.unit = u;
-				init(data.rules.version >= 57);
+				init();
 			}
 
-			protected void init(boolean version) {
-				if (version) {
-					for(int i=0; i<6; i++) {
-						addItem(i);
-					}
-				} else {
-					addItem(1);
-					addItem(2);
-					addItem(4);
-					addItem(5);
+			protected void init() {
+				for(int i=0; i<6; i++) {
+					addItem(i);
 				}
 			}
 

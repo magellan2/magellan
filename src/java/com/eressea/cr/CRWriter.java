@@ -31,6 +31,7 @@ import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
 import com.eressea.HotSpot;
+import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Island;
 import com.eressea.Item;
@@ -247,7 +248,7 @@ public class CRWriter extends BufferedWriter {
 					write(value + ";" + key);
 					newLine();
 				} catch (NumberFormatException e) {
-					Coordinate c = Coordinate.parse((String)value, " "	);
+					ID c = Coordinate.parse((String)value, " "	);
 					if (c != null) {
 						write(value + ";" + key);
 						newLine();
@@ -645,9 +646,9 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if (!battle.isBattleSpec()) {
-			write("BATTLE " + battle.getID().toString());
+			write("BATTLE " + battle.getID().toString(" "));
 		} else {
-			write("BATTLESPEC " + battle.getID().toString());
+			write("BATTLESPEC " + battle.getID().toString(" "));
 		}
 		newLine();
 		writeMessages(battle.messages());
@@ -1345,7 +1346,7 @@ public class CRWriter extends BufferedWriter {
 	 * object to the underlying stream.
 	 */
 	public void writeRegion(Region region) throws IOException {
-		write("REGION " + region.getID());
+		write("REGION " + region.getID().toString(" "));
 		newLine();
 		UnitContainerType type = region.getType();
 		if (region.getName() != null && !region.getName().equals("")) {
@@ -1542,7 +1543,7 @@ public class CRWriter extends BufferedWriter {
 	 * underlying stream.
 	 */
 	public void writeScheme(Scheme scheme) throws IOException {
-		write("SCHEMEN " + scheme.getID().toString());
+		write("SCHEMEN " + scheme.getID().toString(" "));
 		newLine();
 		if (scheme.getName() != null) {
 			writeQuotedTag(scheme.getName(), "Name");
@@ -1946,7 +1947,7 @@ public class CRWriter extends BufferedWriter {
 			return;
 		}
 
-		write("HOTSPOT " + h.getID());
+		write("HOTSPOT " + h.getID().toString(" "));
 		newLine();
 		writeQuotedTag(h.getName(), "name");
 		writeQuotedTag(h.getCenter().toString(" "), "coord");

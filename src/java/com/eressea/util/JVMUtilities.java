@@ -18,6 +18,7 @@ import com.eressea.util.logging.Logger;
 /**
  * This class provides static functions for jvm specific bullshit (e.g. changed focus system 
  * from jvm 1.3.x to 1.4.x
+ * It also checks for necessary systems, e.g. XML
  */
 public class JVMUtilities {
 	private final static Logger log = Logger.getInstance(JVMUtilities.class);
@@ -149,4 +150,13 @@ public class JVMUtilities {
 		}
 	}
 
+	/** !null iff the current system has a functional xml parser */
+	public final static String XML_PARSER_FOUND = checkForXML_Parser();
+	
+	/** 
+	 * Returns the String of a found (and tested) xml parser
+	 */
+	private static String checkForXML_Parser() {
+		return null;
+	}
 }

@@ -22,7 +22,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -551,19 +550,6 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 			JOptionPane.showMessageDialog(this, getString("msg.exporterror.text") + exc.toString(), getString("msg.exporterror.title"), JOptionPane.WARNING_MESSAGE);
 		}
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	}
-	
-	public static void main(String args[]) {
-		if (args.length > 0) {
-			try {
-				File crFile = new File(args[0]);
-				GameData data = (new com.eressea.cr.CRParser()).read(new FileReader(crFile), new com.eressea.CompleteData(new com.eressea.rules.Eressea()));
-				CRWriterDialog d = new CRWriterDialog(data);
-				d.setVisible(true);
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
 	}
 	
 }
