@@ -313,7 +313,8 @@ public class RoutingDialog extends InternationalizedDialog {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public RetValue showRoutingDialog() {
-		final RetValue retVal = new RetValue(null, false, false, false, false);
+		final RetValue retVal		  = new RetValue(null, false, false, false,
+													 false);
 		ActionListener okButtonAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int x = 0;

@@ -45,6 +45,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import java.util.zip.ZipEntry;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -1205,10 +1207,8 @@ public class Client extends JFrame implements ShortcutListener,
 		GameData d = null;
 
 		try {
-			//d = new Loader().loadCR(fileName);
-			// TODO: implement FileTypeFactory.FileChooser to provide a gui way to choose a subfile
 			d = new GameDataReader().readGameData(FileTypeFactory.singleton()
-																 .createFileType(fileName));
+																 .createFileType(fileName, new ClientFileTypeChooser(this)));
 			everLoadedReport = true;
 		} catch(MissingInputException e) {
 			JOptionPane.showMessageDialog(this,
@@ -1230,6 +1230,42 @@ public class Client extends JFrame implements ShortcutListener,
 
 		return d;
 	}
+
+	/** 
+	 * Callbacks of FileTypeFactory are handled by this object. Right now it returns the 
+	 * first ZipEntry to mimic old cr loading behaviour for zip files.
+	 */
+	private static class ClientFileTypeChooser extends FileTypeFactory.FileTypeChooser {
+		Client client;
+
+		public ClientFileTypeChooser(Client client) {
+			this.client = client;
+		}
+
+		// open selection window to choose a zipentry
+		public ZipEntry chooseZipEntry(ZipEntry entries[]) {
+			String[] stringEntries = new String[entries.length];
+			for(int i = 0; i<entries.length; i++) {
+				stringEntries[i] = entries[i].toString();
+			}
+			Object selected = JOptionPane.showInputDialog(client.getRootPane(), 
+														  client.getString("msg.loadcr.multiplezipentries.text"),
+														  client.getString("msg.loadcr.multiplezipentries.title"),
+														  JOptionPane.QUESTION_MESSAGE, 
+														  null,
+														  stringEntries, stringEntries[0]);
+			if(selected == null) {
+				return null;
+			}
+			for(int i = 0; i<entries.length; i++) {
+				if(selected.equals(entries[i].toString())) {
+					return entries[i];
+				}
+			}
+			return null;
+		}
+	}
+
 
 	/**
 	 * Do some additional checks after loading a report.
@@ -1725,6 +1761,12 @@ public class Client extends JFrame implements ShortcutListener,
 			defaultTranslations.put("menu.map.mnemonic", "m");
 			defaultTranslations.put("menu.extras.caption", "Extras");
 			defaultTranslations.put("menu.extras.mnemonic", "x");
+			defaultTranslations.put("msg.loadcr.multiplezipentries.text",
+									"Multiple computer reports have been\n"+
+									"found in the comppressed file.\n"+
+									"Please choose one.");
+			defaultTranslations.put("msg.loadcr.multiplezipentries.title",
+									"Choose one");
 			defaultTranslations.put("msg.loadcr.missingcr.text.1",
 									"No Computer Report was found in the compressed file \"");
 			defaultTranslations.put("msg.loadcr.missingcr.text.2", "\".");

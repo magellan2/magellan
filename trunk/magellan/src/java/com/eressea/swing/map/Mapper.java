@@ -868,8 +868,8 @@ public class Mapper extends InternationalizedDataPanel
 		List regList = regionList;
 
 		//super.paint(g);
-		Point offset = new Point(mapToScreenBounds.x + clipBounds.x,
-								 mapToScreenBounds.y + clipBounds.y);
+		Point	   offset = new Point(mapToScreenBounds.x + clipBounds.x,
+									  mapToScreenBounds.y + clipBounds.y);
 		Coordinate upperLeftCorner = cellGeometry.getCoordinate(offset.x,
 																offset.y,
 																showLevel);

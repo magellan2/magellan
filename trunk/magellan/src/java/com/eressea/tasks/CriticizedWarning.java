@@ -24,8 +24,8 @@ import com.eressea.HasRegion;
  */
 public class CriticizedWarning extends AbstractProblem implements Problem {
 	/**
-			 *
-			 */
+				 *
+				 */
 	public CriticizedWarning(Object s, HasRegion o, Inspector i, String m) {
 		super(s, o, i, m);
 	}

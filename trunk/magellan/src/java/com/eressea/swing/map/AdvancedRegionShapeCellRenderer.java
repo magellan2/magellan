@@ -877,18 +877,20 @@ public class AdvancedRegionShapeCellRenderer
 				return (Color) m2.get(fl);
 			}
 
-			Float left		 = (Float) m1.lastKey();
-			Float right		 = (Float) m2.firstKey();
-			Color leftColor  = (Color) m1.get(left);
-			Color rightColor = (Color) m2.get(right);
-			float percent    = (f - left.floatValue()) / (right.floatValue() -
-							   left.floatValue());
-			int   red = (int) ((((float) leftColor.getRed()) * (1 - percent)) +
-						(((float) rightColor.getRed()) * (percent)));
-			int green = (int) ((((float) leftColor.getGreen()) * (1 - percent)) +
-						(((float) rightColor.getGreen()) * (percent)));
-			int blue = (int) ((((float) leftColor.getBlue()) * (1 - percent)) +
-					   (((float) rightColor.getBlue()) * (percent)));
+			Float   left	   = (Float) m1.lastKey();
+			Float   right	   = (Float) m2.firstKey();
+			Color   leftColor  = (Color) m1.get(left);
+			Color   rightColor = (Color) m2.get(right);
+			float   percent    = (f - left.floatValue()) / (right.floatValue() -
+								 left.floatValue());
+			int     red = (int) ((((float) leftColor.getRed()) * (1 - percent)) +
+						  (((float) rightColor.getRed()) * (percent)));
+			int     green = (int) ((((float) leftColor.getGreen()) * (1 -
+							percent)) +
+							(((float) rightColor.getGreen()) * (percent)));
+			int     blue = (int) ((((float) leftColor.getBlue()) * (1 -
+						   percent)) +
+						   (((float) rightColor.getBlue()) * (percent)));
 			Integer integer = new Integer(((red & 255) << 16) |
 										  ((green & 255) << 8) | (blue & 255));
 

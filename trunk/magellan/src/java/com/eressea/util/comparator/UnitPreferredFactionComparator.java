@@ -79,8 +79,8 @@ public class UnitPreferredFactionComparator implements Comparator {
 	 *
 	 * @return -1 if o1 belongs to the preferred faction and o2 does not, 1 if
 	 * 		   o2 belongs to the preferred faction and o1 does not. The return
-	 * 		   value in the other cases (both or neither of them belong to
-	 * 		   the     preferred faction) depends on the sub-comparators.
+	 * 		   value in the other cases (both or neither of them belong to the
+	 * 		   preferred faction) depends on the sub-comparators.
 	 */
 	public int compare(Object o1, Object o2) {
 		int retVal = 0;

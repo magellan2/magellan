@@ -51,9 +51,9 @@ public class FileType {
 	protected boolean writeFile;
 
 	FileType(String aFile) throws IOException {
-		this(aFile,false);
+		this(aFile, false);
 	}
-	
+
 	FileType(String aFile, boolean writeFile) throws IOException {
 		if(aFile == null) {
 			throw new IOException();
@@ -74,7 +74,7 @@ public class FileType {
 	public FileType checkConnection() throws IOException {
 		try {
 			createInputStream().close();
-		} catch (FileNotFoundException e) {
+		} catch(FileNotFoundException e) {
 			// it may be ok, if file does not exist 
 		}
 

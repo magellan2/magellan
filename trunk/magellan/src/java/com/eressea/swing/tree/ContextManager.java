@@ -295,7 +295,8 @@ public class ContextManager extends MouseAdapter {
 	 * @param y TODO: DOCUMENT ME!
 	 */
 	private void showMenu(JPopupMenu menu, Component c, int x, int y) {
-		Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension screen	  = java.awt.Toolkit.getDefaultToolkit()
+												.getScreenSize();
 		Point     showAtPoint = new Point(x, y);
 		javax.swing.SwingUtilities.convertPointToScreen(showAtPoint, c);
 

@@ -36,27 +36,36 @@ import com.eressea.util.logging.Logger;
 public class VersionInfo {
 	private static final Logger log = Logger.getInstance(VersionInfo.class);
 
-
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public static String getVersion() {
 		URL url = ResourcePathClassLoader.getResourceStatically("res/VERSION");
+
 		if(url != null) {
 			try {
 				ResourceBundle bundle = new PropertyResourceBundle(url.openStream());
+
 				if(bundle != null) {
 					return bundle.getString("VERSION");
 				}
-			} catch (IOException e) {
-			} catch (MissingResourceException e) {
+			} catch(IOException e) {
+			} catch(MissingResourceException e) {
 			}
 		}
+
 		return null;
 	}
 
 	/**
 	 * Returns the build date of the currently executing instance of Magellan.
 	 * If this information cannot be determined, null is returned.
-	 * @deprecated
+	 *
 	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @deprecated
 	 */
 	public static Date getBuildDate() {
 		return readDate(ResourcePathClassLoader.getResourceStatically("build.txt"));
@@ -66,9 +75,10 @@ public class VersionInfo {
 	 * Returns the build date of the latest version of Magellan that is
 	 * available on the server. If this information cannot be determined, null
 	 * is returned.
-	 * @deprecated
 	 *
 	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @deprecated
 	 */
 	public static Date getServerBuildDate() {
 		try {
@@ -77,16 +87,19 @@ public class VersionInfo {
 			return null;
 		}
 	}
-	
+
 	private static Date readDate(URL url) {
 		if(url == null) {
 			return null;
 		}
 
-		BufferedReader r=null;
+		BufferedReader r = null;
+
 		try {
 			r = new BufferedReader(new InputStreamReader(url.openStream()));
+
 			long msecs = Long.parseLong(r.readLine()) * 1000;
+
 			return new Date(msecs);
 		} catch(Exception e) {
 			log.info("VersionInfo.readDate(): unable to read from URL: " +
@@ -98,8 +111,8 @@ public class VersionInfo {
 				} catch(IOException e) {
 				}
 			}
-
 		}
+
 		return null;
 	}
 }

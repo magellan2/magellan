@@ -19,8 +19,10 @@ package com.eressea;
  */
 public interface ID extends Comparable, Cloneable {
 	/**
+	 * DOCUMENT ME!
+	 *
 	 * @return a String representation of the ID formatted in a  user friendly
-	 * manner.
+	 * 		   manner.
 	 */
 	public String toString();
 
@@ -30,7 +32,7 @@ public interface ID extends Comparable, Cloneable {
 	 * implement this, all others should invoke toString()!
 	 *
 	 * @return a String representation of the ID formatted in a  user friendly
-	 * manner.
+	 * 		   manner.
 	 */
 	public String toString(String delim);
 
@@ -39,16 +41,17 @@ public interface ID extends Comparable, Cloneable {
 	 * only if the argument is not null and is an object of the same class
 	 * implementing this interface and contains the same unique value.
 	 *
-     * @param   obj   the reference object with which to compare.
-     * @return  <code>true</code> if this object is the same as the obj
-     *          argument; <code>false</code> otherwise.
+	 * @param obj the reference object with which to compare.
+	 *
+	 * @return <code>true</code> if this object is the same as the obj
+	 * 		   argument; <code>false</code> otherwise.
 	 */
 	public boolean equals(Object o);
 
 	/**
 	 * Returns a hashcode for this ID.
 	 *
-     * @return  a hash code value for this object.
+	 * @return a hash code value for this object.
 	 */
 	public int hashCode();
 

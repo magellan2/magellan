@@ -17,7 +17,7 @@ package com.eressea;
 import com.eressea.rules.BuildingType;
 
 /**
- * TODO: DOCUMENT ME!
+ * A <code>Building</code> found in Atlantis reports.
  *
  * @author $author$
  * @version $Revision$
@@ -101,9 +101,9 @@ public class Building extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the <code>BuildingType</code> of this building.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the <code>BuildingType</code> of this building
 	 */
 	public BuildingType getBuildingType() {
 		return (BuildingType) getType();

@@ -23,11 +23,14 @@ import java.util.Map;
  * @version
  */
 public class Umlaut {
-	private static final char UMLAUTS[] = { 'Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß' };
-	private static final String EXPANSIONS[] = {
-												   "Ae", "Oe", "Ue", "ae", "oe",
-												   "ue", "ss"
-											   };
+	private static final char     UMLAUTS[]    = {
+													 'Ä', 'Ö', 'Ü', 'ä', 'ö',
+													 'ü', 'ß'
+												 };
+	private static final String   EXPANSIONS[] = {
+													 "Ae", "Oe", "Ue", "ae",
+													 "oe", "ue", "ss"
+												 };
 	private static final Map recodedStrings = CollectionFactory.createHashtable();
 
 	/**
