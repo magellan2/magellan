@@ -1475,14 +1475,12 @@ public class CRParser {
 				faction.allies = parseAlliance(faction.allies); // newer syntax
 			} else if (sc.isBlock && sc.argv[0].equals("ADRESSEN")) {
 				parseAdressen();
-				/*
 			} else if (sc.isBlock && sc.argv[0].equals("OPTIONEN")) {
 				// ignore this block, if there are options, they are
 				// encoded as a bit field whereas these string
 				// representation is not fixed and eventually leads
 				// to trouble
 				parseOptions(null);
-				*/
 			} else if (sc.isBlock && sc.argv[0].startsWith("GRUPPE ")) {
 				faction.groups = parseGroup(faction.groups, faction, groupSortIndex++);
 			} else if (sc.argc == 1 && sc.argv[0].equals("COMMENTS")) {
@@ -1508,16 +1506,15 @@ public class CRParser {
 		return faction;
 	}
 
-	/*
 	private Options parseOptions(Options options) throws IOException {
 		sc.getNextToken();	  // skip OPTIONEN
-		if (options == null) {
-			options = new Options();
-		}
+		//if (options == null) {
+		//	options = new Options();
+		//}
 
 		while (!sc.eof && !sc.isBlock) {
 			if (sc.argc == 2) {
-				options.setActive(StringID.create(sc.argv[1]), java.lang.Integer.parseInt(sc.argv[0]) != 0);
+				//options.setActive(StringID.create(sc.argv[1]), java.lang.Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
 			} else {
 				unknown("OPTIONEN", true);
@@ -1526,7 +1523,6 @@ public class CRParser {
 
 		return options;
 	}
-	*/
 
 	private Map parseGroup(Map groups, Faction faction, int sortIndex) throws IOException {
 		ID id = IntegerID.create(sc.argv[0].substring(7));

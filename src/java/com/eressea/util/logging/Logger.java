@@ -10,13 +10,13 @@ package com.eressea.util.logging;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+//import org.apache.log4j.*;
 
 /* 
  * @author Ilja Pavkovic
  */
 public class Logger {
-	private static PrintStream out = System.out;
-	private static PrintStream err = System.err;
+	//	private Category ivTraceLog;
 
 	/** This log level entirely stops all logging */
 	public final static int OFF   = 0;
@@ -66,8 +66,6 @@ public class Logger {
 	
 	public static void setLevel(String aLevel) {
 		String level = aLevel.toUpperCase();
-		// setLevel forces writing to errors.txt (aka System.err!)
-		out = err;
 		if(level.startsWith("O")) { setLevel(OFF);   } 
 		if(level.startsWith("F")) { setLevel(FATAL); }
 		if(level.startsWith("E")) { setLevel(ERROR); }
@@ -113,7 +111,7 @@ public class Logger {
 		fatal(aObj,null);
 	}
 	public void fatal(Object aObj, Throwable aThrowable) {
-		log(out, FATAL, aObj, aThrowable);
+		log(System.out, FATAL, aObj, aThrowable);
 	}
 	public boolean isFatalEnabled() {
 		return verboseLevel >= FATAL;
@@ -123,7 +121,7 @@ public class Logger {
 		error(aObj,null);
 	}
 	public void error(Object aObj, Throwable aThrowable) {
-		log(err, ERROR, aObj, aThrowable);
+		log(System.err, ERROR, aObj, aThrowable);
 	}
 	public boolean isErrorEnabled() {
 		return verboseLevel >= ERROR;
@@ -133,7 +131,7 @@ public class Logger {
 		warn(aObj,null);
 	}
 	public void warn(Object aObj, Throwable aThrowable) {
-		log(out, WARN, aObj, aThrowable);
+		log(System.out, WARN, aObj, aThrowable);
 	}
 	public boolean isWarnEnabled() {
 		return verboseLevel >= WARN;
@@ -143,7 +141,7 @@ public class Logger {
 		info(aObj,null);
 	}
 	public void info(Object aObj, Throwable aThrowable) {
-		log(out, INFO, aObj, aThrowable);
+		log(System.out, INFO, aObj, aThrowable);
 	}
 	public boolean isInfoEnabled() {
 		return verboseLevel >= INFO;
@@ -153,7 +151,7 @@ public class Logger {
 		debug(aObj,null);
 	}
 	public void debug(Object aObj, Throwable aThrowable) {
-		log(err, DEBUG, aObj, aThrowable);
+		log(System.err, DEBUG, aObj, aThrowable);
 	}
 	public boolean isDebugEnabled() {
 		return verboseLevel >= DEBUG;
@@ -163,7 +161,7 @@ public class Logger {
 		awt(aObj,null);
 	}
 	public void awt(Object aObj, Throwable aThrowable) {
-		log(err, AWT, aObj, aThrowable);
+		log(System.err, AWT, aObj, aThrowable);
 		if(isAwtEnabled()) {
 			if(searchAwtLogger) {
 				searchAwtLogger = false;

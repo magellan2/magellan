@@ -48,8 +48,8 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.UnitID;
 import com.eressea.rules.EresseaDate;
-import com.eressea.rules.EresseaOption;
 import com.eressea.rules.MessageType;
+import com.eressea.rules.OptionCategory;
 import com.eressea.rules.Options;
 import com.eressea.rules.Race;
 import com.eressea.rules.UnitContainerType;
@@ -536,7 +536,7 @@ public class CRWriter extends BufferedWriter {
 		write("OPTIONEN");
 		newLine();
 		for (Iterator iter = options.options().iterator(); iter.hasNext(); ) {
-			EresseaOption o = (EresseaOption)iter.next();
+			OptionCategory o = (OptionCategory)iter.next();
 			write((o.isActive() ? "1" : "0") + ";" + o.getID().toString());
 			newLine();
 		}

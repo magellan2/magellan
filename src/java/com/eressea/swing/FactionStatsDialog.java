@@ -68,7 +68,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 	private JList lstFaction = null;
 	private JSplitPane splFaction = null;
 	private JTabbedPane tabPane = null;
-	private EresseaOptionPanel optionPanel = null;
+	//private EresseaOptionPanel optionPanel = null;
 	private Faction lastSelectedFaction = null;
 
 	private static FactionTrustComparator factionTrustComparator = FactionTrustComparator.DEFAULT_COMPARATOR;
@@ -118,7 +118,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 		JPanel mainPanel = new JPanel(new BorderLayout(0, 5));
 		mainPanel.setBorder(new EmptyBorder(4, 4, 4, 4));
 
-		optionPanel = new EresseaOptionPanel();
+		//optionPanel = new EresseaOptionPanel();
 
 		tabPane = new JTabbedPane();
 		tabPane.addTab(getString("tab.stats.caption"), null, pnlStats, null);
@@ -128,7 +128,8 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 			tabPane.addTab(getString("tab.skillchart.caption"), skillChartPanel);
 		}
 
-		tabPane.addTab(getString("tab.options.caption"), null, optionPanel, null);
+		// pavkovic 2003.11.19: deactivated, because EresseaOptionPanel is currently broken
+		// tabPane.addTab(getString("tab.options.caption"), null, optionPanel, null);
 
 		splFaction = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, getFactionPanel(), tabPane);
 		mainPanel.add(splFaction, BorderLayout.CENTER);
@@ -500,9 +501,9 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 		lstFaction.repaint();
 	}
 
-	public void showEresseaOptions() {
-		tabPane.setSelectedComponent(optionPanel);
-	}
+	//public void showEresseaOptions() {
+	//	tabPane.setSelectedComponent(optionPanel);
+	//}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,

@@ -64,7 +64,7 @@ import com.eressea.demo.actions.ArmyStatsAction;
 import com.eressea.demo.actions.ChangeFactionConfirmationAction;
 import com.eressea.demo.actions.ConfirmAction;
 import com.eressea.demo.actions.ECheckAction;
-import com.eressea.demo.actions.EresseaOptionsAction;
+//import com.eressea.demo.actions.EresseaOptionsAction;
 import com.eressea.demo.actions.ExportCRAction;
 import com.eressea.demo.actions.ExternalModuleAction;
 import com.eressea.demo.actions.FactionStatsAction;
