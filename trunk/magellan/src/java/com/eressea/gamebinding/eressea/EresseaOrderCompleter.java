@@ -200,7 +200,7 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_NAME),
 									   " "));
 
-		if((unit.items != null) && (unit.items.size() > 0)) {
+		if(unit.getItems().size() > 0) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_USE),
 										   Translations.getOrderTranslation(EresseaConstants.O_USE),
 										   " "));
@@ -1734,17 +1734,15 @@ public class EresseaOrderCompleter implements Completer {
 	}
 
 	private void addUnitItems(String postfix) {
-		if((unit != null) && (unit.items != null)) {
-			for(Iterator items = unit.getItems().iterator(); items.hasNext();) {
-				Item i = (Item) items.next();
-				String name = i.getName();
-
-				if(name != null) {
-					if(name.indexOf(" ") > -1) {
-						completions.add(new Completion(name, "\"" + name + "\"", postfix));
-					} else {
-						completions.add(new Completion(name, postfix));
-					}
+		for(Iterator items = unit.getItems().iterator(); items.hasNext();) {
+			Item i = (Item) items.next();
+			String name = i.getName();
+			
+			if(name != null) {
+				if(name.indexOf(" ") > -1) {
+					completions.add(new Completion(name, "\"" + name + "\"", postfix));
+				} else {
+					completions.add(new Completion(name, postfix));
 				}
 			}
 		}
@@ -1752,12 +1750,10 @@ public class EresseaOrderCompleter implements Completer {
 
 	private void addFactions(String postfix) {
 		if(data != null) {
-			Iterator factions = data.factions().values().iterator();
-
-			while(factions.hasNext() == true) {
-				Faction f = (Faction) factions.next();
+			for(Iterator iter = data.factions().values().iterator(); iter.hasNext(); ) {
+				Faction f = (Faction) iter.next();
 				String id = f.getID().toString();
-
+				
 				if(f.getName() != null) {
 					completions.add(new Completion(f.getName() + " (" + id + ")", id, postfix, 8));
 					completions.add(new Completion(id + " (" + f.getName() + ")", id, postfix, 9));
@@ -1852,12 +1848,12 @@ public class EresseaOrderCompleter implements Completer {
 			cat = data.rules.getItemCategory(EresseaConstants.C_LUXURIES);
 		}
 
-		if((cat != null) && (unit != null) && (unit.items != null)) {
+		if((cat != null) && (unit != null)) {
 			for(Iterator items = unit.getModifiedItems().iterator(); items.hasNext();) {
 				Item i = (Item) items.next();
-
+				
 				if((i.getItemType().getCategory() != null) &&
-					   i.getItemType().getCategory().equals(cat)) {
+				   i.getItemType().getCategory().equals(cat)) {
 					completions.add(new Completion(i.getName(), postfix));
 				}
 			}
