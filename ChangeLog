@@ -1,4 +1,10 @@
+2003-12-15  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/io/cr/CRParser.java: removed class Herb.
+
 2003-12-12  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* build.xml: renamed tagVersion to tagdistribution.
 
 	* src/java/com/eressea/rules/GenericRules.java: added some more
 	restrictive type checks (parsing of "MACHEN Karavelle" was broken).

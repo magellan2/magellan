@@ -391,9 +391,13 @@
 -->
   </target>
 
-  <target name="tagVersion" depends="distribution">
+  <target name="tagdistribution" depends="distribution">
     <cvs command='tag -R "v${VERSION}"'/>
-    <cvs command='tag -R "v${VERSION} ${SRC.HELP}"'/>
+    <path id="HELP">
+      <pathelement location="${SRC.HELP}"/>
+    </path>
+    <property name="HELP" refid="HELP"/>
+    <cvs command='tag -R "v${VERSION} ${HELP}"'/>
   </target>
 
   <target name="update" depends="init, format">
