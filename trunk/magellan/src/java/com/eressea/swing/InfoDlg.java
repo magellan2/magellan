@@ -36,14 +36,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.eressea.resource.ResourcePathClassLoader;
-
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.VersionInfo;
 
 /**
  *
  */
-public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
+public class InfoDlg extends InternationalizedDialog {
 	private JPanel jPanel1;
 	private JButton btn_OK;
 	private JButton btn_Version;
@@ -83,8 +82,9 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 		btn_OK = new JButton();
 		btn_Version = new JButton();
 		magallanImage = new JLabel();
-		jScrollPane1 = new JScrollPane();
 		jTextArea1 = new JTextArea();
+		jScrollPane1 = new JScrollPane(jTextArea1);
+
 		getContentPane().setLayout(new GridBagLayout());
 
 		GridBagConstraints gridBagConstraints1;
@@ -153,13 +153,13 @@ public class InfoDlg extends com.eressea.swing.InternationalizedDialog {
 		}
 
 		jTextArea1.setWrapStyleWord(true);
-		jTextArea1.setPreferredSize(new java.awt.Dimension(160, 250));
+		//jTextArea1.setPreferredSize(new java.awt.Dimension(160, 250));
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setEditable(false);
 		jTextArea1.setText(text);
 		jTextArea1.setBackground(new Color(213, 169, 131));
-		jTextArea1.setMinimumSize(new java.awt.Dimension(400, 200));
-		jScrollPane1.setViewportView(jTextArea1);
+		//jTextArea1.setMinimumSize(new java.awt.Dimension(400, 200));
+		//jScrollPane1.setViewportView(jTextArea1);
 
 		gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 0;
