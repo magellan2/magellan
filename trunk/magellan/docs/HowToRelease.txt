@@ -44,4 +44,4 @@ To create a new release do the following steps:
    tag "v<MAJOR>_<MINOR>_<SUB>".
    (TODO: Right now tagging of repository magellan-help is broken)
 4. If everything was fine proceed with the next step otherwise abort.
-5. Distribute the files created in build/distributed.
+5. Distribute the files created in build/release.
