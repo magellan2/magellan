@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * TODO: DOCUMENT ME!
@@ -142,6 +143,16 @@ public class CollectionFactory {
 	 */
 	public static Map createHashMap() {
 		return new HashMap();
+	}
+
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static Collection createTreeSet() {
+		return new TreeSet();
 	}
 
 	/**

@@ -45,6 +45,7 @@ import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.demo.desktop.Initializable;
 import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
@@ -223,18 +224,18 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 									selectedRegions.remove(c);
 								}
 
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
-																					 selectedRegions.values(),
-																					 null,
-																					 SelectionEvent.ST_REGIONS));
+								dispatcher.fire(new SelectionEvent(mapper,
+																   selectedRegions.values(),
+																   null,
+																   SelectionEvent.ST_REGIONS));
 								repaint();
 								prevDragRegion = r;
 							} else {
 								activeRegion = r;
 								activeObject = r;
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper, null,
-																					 activeRegion,
-																					 SelectionEvent.ST_DEFAULT));
+								dispatcher.fire(new SelectionEvent(mapper, null,
+																   activeRegion,
+																   SelectionEvent.ST_DEFAULT));
 								repaint();
 							}
 						} else if((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
@@ -289,10 +290,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 							}
 
 							if(doFire) {
-								dispatcher.fire(new com.eressea.event.SelectionEvent(mapper,
-																					 selectedRegions.values(),
-																					 null,
-																					 SelectionEvent.ST_REGIONS));
+								dispatcher.fire(new SelectionEvent(mapper,
+																   selectedRegions.values(),
+																   null,
+																   SelectionEvent.ST_REGIONS));
 							}
 
 							repaint();
@@ -539,7 +540,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void gameDataChanged(com.eressea.event.GameDataEvent e) {
+	public void gameDataChanged(GameDataEvent e) {
 		data = e.getGameData();
 
 		conMenu.setGameData(data);
@@ -553,7 +554,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		setPreferredSize(getSize());
 		activeRegion = null;
 		selectedRegions.clear();
-		;
+
 		pathRegions.clear();
 
 		reprocessTooltipDefinition();
@@ -564,7 +565,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @param se TODO: DOCUMENT ME!
 	 */
-	public void selectionChanged(com.eressea.event.SelectionEvent se) {
+	public void selectionChanged(SelectionEvent se) {
 		if(se.getSource() == this) {
 			return;
 		}

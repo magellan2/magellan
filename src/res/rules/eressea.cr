@@ -64,33 +64,39 @@ OPTIONCATEGORY "PUNKTE"
 "false";order
 11;bitmask
 
+ALLIANCECATEGORY "ALLES"
+"ALL";name
+123;bitmask
+
 ALLIANCECATEGORY "SILBER"
 "SILVER";name
+"ALLES";parent
 1;bitmask
 
 ALLIANCECATEGORY "KÄMPFE"
 "COMBAT";name
+"ALLES";parent
 2;bitmask
 
 ALLIANCECATEGORY "GIB"
 "GIVE";name
+"ALLES";parent
 8;bitmask
 
 ALLIANCECATEGORY "BEWACHEN"
 "GUARD";name
+"ALLES";parent
 16;bitmask
 
 ALLIANCECATEGORY "PARTEITARNUNG"
 "FACTIONSTEALTH";name
+"ALLES";parent
 32;bitmask
 
 ALLIANCECATEGORY "WHATEVER"
 "WHATEVER";name
+"ALLES";parent
 64;bitmask
-
-ALLIANCECATEGORY "ALLES"
-"ALL";name
-123;bitmask
 
 ITEMCATEGORY "weapons"
 "Waffen";name

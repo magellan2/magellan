@@ -66,10 +66,16 @@ public abstract class Category extends ObjectType {
 	 * @param p TODO: DOCUMENT ME!
 	 */
 	public void setParent(Category p) {
-		parent = p;
-
-		if(p != null) {
-			parent.addChild(this);
+		if(parent != p) {
+			if (parent != null) {
+				parent.removeChild(this);
+			}
+			
+			parent = p;
+			
+			if(p != null) {
+				parent.addChild(this);
+			}
 		}
 	}
 

@@ -285,6 +285,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	public Unit follows = null; // folgt-Tag
 
 	/** TODO: DOCUMENT ME! */
+	public boolean isHero = false; // hero-tag
+
+	/** TODO: DOCUMENT ME! */
 	public String health = null;
 
 	/** TODO: DOCUMENT ME! */
@@ -1191,6 +1194,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				clone.realRace = u.realRace;
 				clone.region = u.region;
 				clone.isStarving = u.isStarving;
+				clone.isHero = u.isHero;
 
 				for(Iterator skillIter = u.getSkills().iterator(); skillIter.hasNext();) {
 					Skill s = (Skill) skillIter.next();
@@ -2407,6 +2411,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		newUnit.hideFaction |= curUnit.hideFaction;
 		newUnit.isStarving |= curUnit.isStarving;
+		newUnit.isHero  |= curUnit.isHero;
 
 		// do not overwrite the items in one special case:
 		// if both source units are from the same turn, the first one

@@ -278,6 +278,9 @@ public class EresseaConstants {
 	public static final String O_PRIVATE = "PRIVATE";
 
 	/** TODO: DOCUMENT ME! */
+	public static final String O_PROMOTION = "PROMOTION";
+
+	/** TODO: DOCUMENT ME! */
 	public static final String O_QUIT = "QUIT";
 
 	/** TODO: DOCUMENT ME! */

@@ -1617,6 +1617,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			u.getRegion().refreshUnitRelations();
 		}
 
+		// Heldenanzeige
+		if(u.isHero) {
+			parent.add(createSimpleNode(getString("node.hero"), "hero"));
+		}
+
 		// Personenanzeige
 		appendUnitPersonInfo(u, parent, expandableNodes);
 
@@ -1672,7 +1677,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		parent.add(new DefaultMutableTreeNode(cWrapper));
-
+		
 		// starvation
 		if(u.isStarving) {
 			parent.add(createSimpleNode(getString("node.starved"), "hunger"));
@@ -4161,6 +4166,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("node.of", "of ");
 			defaultTranslations.put("node.skills", "Skills");
 			defaultTranslations.put("node.group", "Group");
+			defaultTranslations.put("node.Hero", "Hero");
 			defaultTranslations.put("node.starved", "Unit is starving");
 			defaultTranslations.put("node.guards", "Guards");
 			defaultTranslations.put("node.stealth", "Stealth");

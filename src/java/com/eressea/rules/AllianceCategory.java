@@ -13,6 +13,11 @@
 
 package com.eressea.rules;
 
+
+import java.util.Collection;
+import java.util.Map;
+import com.eressea.util.CollectionFactory;
+
 import com.eressea.ID;
 
 /**
@@ -23,6 +28,50 @@ import com.eressea.ID;
  */
 public class AllianceCategory extends ObjectType {
 	private int bitMask = -1;
+
+	// TODO: This *may* be a normal Category. Emulate the basic features
+	private AllianceCategory parent = null;
+	private Collection children = null;
+	
+	public AllianceCategory getParent() {
+		return parent;
+	}
+
+	public void setParent(AllianceCategory p) {
+		if(parent != p) {
+			if (parent != null) {
+				parent.removeChild(this);
+			}
+			
+			parent = p;
+			
+			if(p != null) {
+				parent.addChild(this);
+			}
+		}
+	}
+	public boolean hasChildren() {
+		return (children != null) && (children.size() > 0);
+	}
+
+	public Collection getChildren() {
+		if(children == null) {
+			children = CollectionFactory.createHashSet();
+		}
+
+		return children;
+	}
+
+	public void addChild(AllianceCategory ic) {
+		getChildren().add(ic);
+	}
+
+	protected void removeChild(AllianceCategory ic) {
+		if(hasChildren()) {
+			getChildren().remove(ic);
+		}
+	}
+
 
 	/**
 	 * Creates a new AllianceCategory object.
