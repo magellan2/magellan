@@ -101,6 +101,7 @@ import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
+import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
@@ -255,7 +256,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		nodeWrapperFactory.createItemNodeWrapper(new Item(new ItemType(StringID.create("Test")), 0));
 		nodeWrapperFactory.createSimpleNodeWrapper(null, null);
 
-		//?final EMapDetailsPanel emdp = this;
 		weightNumberFormat.setMaximumFractionDigits(2);
 		weightNumberFormat.setMinimumFractionDigits(0);
 		unitsTools = (data != null) ? new Units(data.rules) : new Units(null);
@@ -1778,19 +1778,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(createSimpleNode(getString("node.spy"), "spion"));
 		}
 
-		// Gebaeudeanzeige
-		if(u.getBuilding() != null) {
-			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getBuilding())));
+		// Gebaeude-/Schiffsanzeige
+		if(u.getUnitContainer() != null) {
+			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getUnitContainer())));
 		}
-
-		// Schiffsanzeige
-		if(u.getShip() != null) {
-			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getShip())));
-		}
-
-		// wenn Schiff gewechselt: neues Schiff anzeigen!
-		if((u.getModifiedShip() != null) && !(u.getModifiedShip().equals(u.getShip()))) {
-			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getModifiedShip())));
+		if(u.getModifiedUnitContainer() != null) {
+			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getModifiedUnitContainer())));
 		}
 
 		// magic aura
@@ -1911,6 +1904,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(itemsNode);
 			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.UnitItemsExpanded"));
 
+			// FIXME: use this way to build itemsnode ? unitsTools.addUnitItems(Collections.singleton(u), itemsNode, null, null, false, nodeWrapperFactory);				
+
 			for(Iterator items = u.getModifiedItems().iterator(); items.hasNext();) {
 				Item modItem = (Item) items.next();
 				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(nodeWrapperFactory.createItemNodeWrapper(u,
@@ -1947,6 +1942,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 				// end pavkovic 2002.05.21
 			}
+
 		}
 
 		// skills
@@ -2762,7 +2758,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 *
 	 * @param b TODO: DOCUMENT ME!
 	 */
-	private void showBorder(com.eressea.Border b) {
+	private void showBorder(Border b) {
 		setNameAndDescription("", "", false);
 
 		appendBorderInfo(b, rootNode, myExpandableNodes);
@@ -2962,7 +2958,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 *
 	 * @param se TODO: DOCUMENT ME!
 	 */
-	public void selectionChanged(com.eressea.event.SelectionEvent se) {
+	public void selectionChanged(SelectionEvent se) {
 		addTag.setEnabled(false);
 		removeTag.setEnabled(false);
 
@@ -3091,8 +3087,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				showShip((Ship) displayedObject);
 				lastRegion = ((Ship) displayedObject).getRegion();
 				contextManager.setFailFallback(displayedObject, commentContext);
-			} else if(displayedObject instanceof com.eressea.Border) {
-				showBorder((com.eressea.Border) displayedObject);
+			} else if(displayedObject instanceof Border) {
+				showBorder((Border) displayedObject);
 			} else if(displayedObject instanceof Spell) {
 				showSpell((Spell) displayedObject, oldDisplayedObject);
 			} else if(displayedObject instanceof Potion) {
@@ -3211,7 +3207,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		if(fireObj != null) {
-			dispatcher.fire(new com.eressea.event.SelectionEvent(this, null, fireObj));
+			dispatcher.fire(new SelectionEvent(this, null, fireObj));
 		}
 	}
 
@@ -3762,7 +3758,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 * @param e TODO: DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
-			dispatcher.fire(new com.eressea.event.SelectionEvent(EMapDetailsPanel.this, null, target));
+			dispatcher.fire(new SelectionEvent(EMapDetailsPanel.this, null, target));
 		}
 	}
 
@@ -3804,7 +3800,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
+		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
 														Collection selectedObjects,
 														javax.swing.tree.DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
@@ -3988,7 +3984,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(com.eressea.GameData data, Object argument,
+		public javax.swing.JPopupMenu createContextMenu(GameData data, Object argument,
 														Collection selectedObjects,
 														DefaultMutableTreeNode node) {
 			if(argument instanceof UnitContainer) {
