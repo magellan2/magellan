@@ -1,5 +1,9 @@
 2004-07-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/io/cr/Scanner.java: changed parsing of
+	"bla";string entries: use last index '"' to find end of a string,
+	silently ignoring unescaped ". 
+
 	* src/java/com/eressea/swing/tree/UnitContainerNodeWrapper.java:
 	print free space of ships after ship name.
 
