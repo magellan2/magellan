@@ -107,7 +107,14 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 			UnitContainerType type = r.getType();
 
 			if(type != null) {
-				drawImage(r, getImage(type.getID().toString()), rect);
+				Image img = getImage(type.getID().toString());
+				if (img != null) {
+					drawImage(r, getImage(type.getID().toString()), rect);
+				} else {
+					log.warn("RegionImageCellRenderer.render(): image is null (" + type.getID() + ")");
+				}
+			} else {
+				log.warn("RegionImageCellRenderer.render(): Couldn't determine region type for region: " + r.toString());
 			}
 		}
 	}

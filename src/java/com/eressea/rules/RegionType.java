@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.eressea.ID;
+import com.eressea.StringID;
 
 import com.eressea.util.CollectionFactory;
 
@@ -28,6 +29,12 @@ import com.eressea.util.CollectionFactory;
  * @version $Revision$
  */
 public class RegionType extends UnitContainerType {
+
+	/**
+	 * A static instance of the unknown region type
+	 */
+	public static RegionType unknown = new RegionType(StringID.create("unbekannt"));
+
 	private int inhabitants = -1;
 
 	/**
