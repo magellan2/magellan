@@ -980,35 +980,6 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Indicates whether this Region object is equal to another object. Returns true only if o is
-	 * not null and an instance of class Region and o's id is equal to the id of this Region
-	 * object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) || this.getID().equals(((Region) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Region objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Region) o).getID());
-	}
-
-	/**
 	 * Returns a String representation of this Region object. If region has no name the string
 	 * representation of the  region type is used.
 	 *

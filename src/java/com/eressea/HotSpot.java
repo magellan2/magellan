@@ -57,35 +57,6 @@ public class HotSpot extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this HotSpot object is equal to another object. Returns true only if o is
-	 * not null and an instance of class HotSpot and o's id is equal to the id of this  HotSpot
-	 * object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this.getID().equals(((HotSpot) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on HotSpot objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((HotSpot) o).getID());
-	}
-
-	/**
 	 * Merges two HotSpot objects.
 	 *
 	 * @param curGD TODO: DOCUMENT ME!

@@ -37,35 +37,6 @@ public class Scheme extends NamedObject {
 	}
 
 	/**
-	 * Indicates whether this Scheme object is equal to another object. Returns true only if o is
-	 * not null and an instance of class Scheem and o's ID is equal to the ID of this  Scheme
-	 * object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this == o || this.getID().equals(((Scheme) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Scheme objects equivalent to the natural ordering of their
-	 * IDs.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Scheme) o).getID());
-	}
-
-	/**
 	 * Merges two Scheme objects.
 	 *
 	 * @param curGD TODO: DOCUMENT ME!

@@ -85,11 +85,8 @@ public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
 				color = getSingleColor(r);
 			}
 
-			try {
-				g.setColor(color);
-				g.fillPolygon(p);
-			} catch(Exception exc) {
-			}
+			g.setColor(color);
+			g.fillPolygon(p);
 		} else {
 			Rectangle bounds = p.getBounds();
 			int i;

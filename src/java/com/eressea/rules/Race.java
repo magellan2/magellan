@@ -182,31 +182,4 @@ public class Race extends UnitContainerType {
 
 		m.put(skillType.getID(), new Integer(bonus));
 	}
-
-	/**
-	 * Indicates whether this Race object is equal to another object. Returns true only if o is not
-	 * null and an instance of class Race and o's id is equal to the id of this  Race object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) || this.getID().equals(((Race) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Race objects equivalent to the natural ordering of their ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Race) o).getID());
-	}
 }

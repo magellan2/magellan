@@ -38,6 +38,7 @@ public class CompleteData extends GameData {
 	protected Map hotSpots = CollectionFactory.createOrderedHashtable();
 	protected Map translations = CollectionFactory.createOrderedHashtable();
 	protected Locale locale = null;
+	protected Map selectedRegions = CollectionFactory.createTreeMap();
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -128,6 +129,28 @@ public class CompleteData extends GameData {
 	public Map potions() {
 		return potions;
 	}
+
+
+	/**
+	 * Returns a collection of the coordinates of selected regions.
+	 *
+	 */
+	public Map getSelectedRegionCoordinates() {
+		return selectedRegions;
+	}
+
+	/**
+	 * set a collection of selected regions.
+	 *
+	 * @param regions the map of coordinates of selected regions
+	 */
+	public void setSelectedRegionCoordinates(Map regions) {
+		selectedRegions = CollectionFactory.createTreeMap();
+		if(regions != null) {
+			selectedRegions.putAll(regions);
+		}
+	}
+
 
 	/**
 	 * TODO: DOCUMENT ME!

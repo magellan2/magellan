@@ -31,18 +31,4 @@ public abstract class ObjectType extends NamedObject {
 	public ObjectType(ID id) {
 		super(id);
 	}
-
-	/**
-	 * Indicates whether this ObjectType object is equal to another object type object.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract boolean equals(Object o);
-
-	/**
-	 * Imposes a natural ordering on ObjectType objects.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public abstract int compareTo(Object o);
 }

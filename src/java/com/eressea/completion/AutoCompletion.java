@@ -150,7 +150,7 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 			autoCmp = settings.getProperty("OrderEditingPanel.useOrderCompletion");
 
 			if(autoCmp != null) {
-				enableAutoCompletion = new Boolean(autoCmp).booleanValue();
+				enableAutoCompletion = Boolean.valueOf(autoCmp).booleanValue();
 				settings.remove("OrderEditingPanel.useOrderCompletion");
 				settings.setProperty("AutoCompletion.Enabled",
 									 enableAutoCompletion ? "true" : "false");

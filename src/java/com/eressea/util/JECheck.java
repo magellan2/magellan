@@ -82,6 +82,10 @@ public class JECheck extends Reader {
 
 		commandLine.add("-P" + eCheckExe.getParentFile().getAbsolutePath());
 
+		// TODO: make optionizable
+		commandLine.add("-nolost");
+		commandLine.add("-noroute");
+
 		StringTokenizer optiontokens = new StringTokenizer(options);
 
 		while(optiontokens.hasMoreTokens()) {

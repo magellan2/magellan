@@ -57,7 +57,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	//	private Client client;
 	private GameData data;
 	private Properties settings;
-	private List selectedRegions = CollectionFactory.createLinkedList();
+	private Map selectedRegions = CollectionFactory.createHashtable();
 	private Collection armystatsSel = CollectionFactory.createHashSet();
 	private static final String RKEY = "MAGELLAN.RENDERER";
 	private static final String TKEY = "MAGELLAN.TOOLTIP";
@@ -162,7 +162,10 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	 */
 	public void init(Region r, Collection selectedRegions) {
 		this.selectedRegions.clear();
-		this.selectedRegions.addAll(selectedRegions);
+		for(Iterator iter = selectedRegions.iterator(); iter.hasNext(); ) {
+			Region reg = (Region) iter.next();
+			this.selectedRegions.put(reg.getID(), reg);
+		}
 		armystatsSel.clear();
 		armystatsSel.addAll(selectedRegions);
 		armystatsSel.add(r);
@@ -308,13 +311,14 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	 * Changes the selection state of the region
 	 */
 	private void changeSelectionState() {
-		if(selectedRegions.contains(region)) {
-			selectedRegions.remove(region);
+		if(selectedRegions.containsValue(region)) {
+			selectedRegions.remove(region.getID());
 		} else {
-			selectedRegions.add(region);
+			selectedRegions.put(region.getID(), region);
 		}
 
-		dispatcher.fire(new SelectionEvent(this, selectedRegions, null, SelectionEvent.ST_REGIONS));
+		data.setSelectedRegionCoordinates(selectedRegions);
+		dispatcher.fire(new SelectionEvent(this, selectedRegions.values(), null, SelectionEvent.ST_REGIONS));
 	}
 
 	/**

@@ -66,6 +66,7 @@ import com.eressea.GameData;
 import com.eressea.Group;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
+import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FixedWidthWriter;
@@ -312,19 +313,19 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		pnlFixedWidth.add(lblFixedWidth2);
 
 		chkECheckComments = new JCheckBox(getString("chk.addecheckcomments.caption"),
-										  (new Boolean(settings.getProperty("OrderWriter.addECheckComments",
+										  (Boolean.valueOf(settings.getProperty("OrderWriter.addECheckComments",
 																			"true"))).booleanValue());
 		chkRemoveSCComments = new JCheckBox(getString("chk.removesemicoloncomments.caption"),
-											(new Boolean(settings.getProperty("OrderWriter.removeSCComments",
+											(Boolean.valueOf(settings.getProperty("OrderWriter.removeSCComments",
 																			  "false"))).booleanValue());
 		chkRemoveSSComments = new JCheckBox(getString("chk.removedoubleslashcomments.caption"),
-											(new Boolean(settings.getProperty("OrderWriter.removeSSComments",
+											(Boolean.valueOf(settings.getProperty("OrderWriter.removeSSComments",
 																			  "false"))).booleanValue());
 		chkConfirmedOnly = new JCheckBox(getString("chk.skipunconfirmedorders.caption"),
-										 (new Boolean(settings.getProperty("OrderWriter.confirmedOnly",
+										 (Boolean.valueOf(settings.getProperty("OrderWriter.confirmedOnly",
 																		   "false"))).booleanValue());
 		chkSelRegionsOnly = new JCheckBox(getString("chk.selectedregions.caption"),
-										  (new Boolean(settings.getProperty("OrderWriter.includeSelRegionsOnly",
+										  (Boolean.valueOf(settings.getProperty("OrderWriter.includeSelRegionsOnly",
 																			"false"))).booleanValue());
 		chkSelRegionsOnly.setEnabled((regions != null) && (regions.size() > 0));
 
@@ -495,7 +496,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 										   getString("border.mailoptions")));
 
 		chkUseSettingsFromCR = new JCheckBox(getString("chk.usesettingsfromcr.caption"),
-											 (new Boolean(settings.getProperty("OrderWriter.useSettingsFromCr",
+											 (Boolean.valueOf(settings.getProperty("OrderWriter.useSettingsFromCr",
 																			   "true"))).booleanValue());
 		chkUseSettingsFromCR.setEnabled((data != null) && (data.mailTo != null) &&
 										(data.mailSubject != null));
@@ -513,7 +514,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 								  !chkUseSettingsFromCR.isSelected());
 
 		chkCCToSender = new JCheckBox(getString("chk.cctosender.caption"),
-									  (new Boolean(settings.getProperty("OrderWriter.CCToSender",
+									  (Boolean.valueOf(settings.getProperty("OrderWriter.CCToSender",
 																		"true"))).booleanValue());
 
 		c.anchor = GridBagConstraints.WEST;
@@ -622,25 +623,25 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		}
 
 		settings.setProperty("OrderWriter.addECheckComments",
-							 (new Boolean(chkECheckComments.isSelected())).toString());
+							 String.valueOf(chkECheckComments.isSelected()));
 		settings.setProperty("OrderWriter.removeSCComments",
-							 (new Boolean(chkRemoveSCComments.isSelected())).toString());
+							 String.valueOf(chkRemoveSCComments.isSelected()));
 		settings.setProperty("OrderWriter.removeSSComments",
-							 (new Boolean(chkRemoveSSComments.isSelected())).toString());
+							 String.valueOf(chkRemoveSSComments.isSelected()));
 		settings.setProperty("OrderWriter.confirmedOnly",
-							 (new Boolean(chkConfirmedOnly.isSelected())).toString());
+							 String.valueOf(chkConfirmedOnly.isSelected()));
 
 		if(chkUseSettingsFromCR.isEnabled()) {
 			settings.setProperty("OrderWriter.useSettingsFromCr",
-								 new Boolean(chkUseSettingsFromCR.isSelected()).toString());
+								 String.valueOf(chkUseSettingsFromCR.isSelected()));
 		}
 
 		settings.setProperty("OrderWriter.CCToSender",
-							 new Boolean(chkCCToSender.isSelected()).toString());
+							 String.valueOf(chkCCToSender.isSelected()));
 
 		if(chkSelRegionsOnly.isEnabled()) {
 			settings.setProperty("OrderWriter.includeSelRegionsOnly",
-								 (new Boolean(chkSelRegionsOnly.isSelected())).toString());
+								 String.valueOf(chkSelRegionsOnly.isSelected()));
 		}
 
 		settings.setProperty("OrderWriter.faction",
@@ -958,6 +959,16 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		File outputFile = new File((String) cmbOutputFile.getSelectedItem());
 
+		if(outputFile.exists()) {
+			// create backup file
+			try {
+				File backup = FileBackup.create(outputFile);
+				log.info("Created backupfile " + backup);
+			} catch(IOException ie) {
+				log.warn("Could not create backupfile for file " + outputFile);
+			}
+		} 
+		
 		try {
 			if(write(new FileWriter(outputFile), false)) {
 				quit(true);

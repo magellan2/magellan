@@ -404,11 +404,9 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		 * @return TODO: DOCUMENT ME!
 		 */
 		public boolean equals(Object o) {
-			if(o instanceof LocaleWrapper) {
+			try {
 				return this.locale.equals(((LocaleWrapper) o).getLocale());
-			} else if(o instanceof Locale) {
-				return this.locale.equals(o);
-			} else {
+			} catch(ClassCastException e) {
 				return false;
 			}
 		}

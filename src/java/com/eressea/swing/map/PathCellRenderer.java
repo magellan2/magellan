@@ -75,9 +75,9 @@ public class PathCellRenderer extends ImageCellRenderer {
 	 */
 	public PathCellRenderer(CellGeometry geo, Properties settings) {
 		super(geo, settings);
-		drawPassivePath = (new Boolean(settings.getProperty("PathCellRenderer.drawPassivePath",
+		drawPassivePath = (Boolean.valueOf(settings.getProperty("PathCellRenderer.drawPassivePath",
 															"true"))).booleanValue();
-		drawPastPath = (new Boolean(settings.getProperty("PathCellRenderer.drawPastPath", "true"))).booleanValue();
+		drawPastPath = (Boolean.valueOf(settings.getProperty("PathCellRenderer.drawPastPath", "true"))).booleanValue();
 
 		passiveFilter = new GrayFilter(true, 50);
 		activePastFilter = new AlphaFilter(ALPHALEVEL);
@@ -189,7 +189,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 		}
 
 		if(u.cache.movementPathIsPassive == null) {
-			u.cache.movementPathIsPassive = new Boolean(evaluatePastMovementPassive(u));
+			u.cache.movementPathIsPassive = evaluatePastMovementPassive(u) ? Boolean.TRUE : Boolean.FALSE;
 		}
 
 		return u.cache.movementPathIsPassive.booleanValue();
@@ -510,7 +510,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 
 	private void setDrawPassivePath(boolean bool) {
 		drawPassivePath = bool;
-		settings.setProperty("PathCellRenderer.drawPassivePath", (new Boolean(bool)).toString());
+		settings.setProperty("PathCellRenderer.drawPassivePath", String.valueOf(bool));
 	}
 
 	private boolean getDrawPastPath() {
@@ -519,7 +519,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 
 	private void setDrawPastPath(boolean bool) {
 		drawPastPath = bool;
-		settings.setProperty("PathCellRenderer.drawPastPath", (new Boolean(bool)).toString());
+		settings.setProperty("PathCellRenderer.drawPastPath", String.valueOf(bool));
 	}
 
 	/**

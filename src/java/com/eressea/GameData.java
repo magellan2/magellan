@@ -449,6 +449,19 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
+	 * Returns a map selected regions.
+	 *
+	 */
+	public abstract Map getSelectedRegionCoordinates();
+
+	/**
+	 * set a collection of selected regions.
+	 *
+	 * @param region the Map of coordinates of selected regions
+	 */
+	public abstract void setSelectedRegionCoordinates(Map regions);
+
+	/**
 	 * Add or set a hot spot to the specified game data. If hotSpots() is <tt>null</tt>, this
 	 * method has no effect.
 	 *
@@ -1435,9 +1448,9 @@ public abstract class GameData implements Cloneable {
 		for(Iterator iter = messages.iterator(); iter.hasNext();) {
 			Message msg = (Message) iter.next();
 
-			if(ht.put(msg, msg) != null) {
-				// log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
-			}
+			//if(ht.put(msg, msg) != null) {
+			// log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
+			//}
 		}
 
 		messages.clear();

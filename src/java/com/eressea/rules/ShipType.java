@@ -145,33 +145,4 @@ public class ShipType extends UnitContainerType {
 	public int getSailorSkillLevel() {
 		return sailorLevel;
 	}
-
-	/**
-	 * Indicates whether this ShipType object is equal to another object. Returns true only if o is
-	 * not null and an instance of class ShipType and o's id is equal to the id of this  ShipType
-	 * object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return (this == o) || (this.getID().equals(((ShipType) o).getID()));
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on ShipType objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((ShipType) o).getID());
-	}
 }

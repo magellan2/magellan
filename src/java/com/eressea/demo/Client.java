@@ -904,7 +904,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 					String level = null;
 
 					if(args[i].toLowerCase().startsWith("-log=") && (args[i].length() > 5)) {
-						level = new String(args[i].charAt(5) + "");
+						level = args[i].charAt(5) + "";
 					} else if(args[i].equals("-log") && (args.length > (i + 1))) {
 						i++;
 						level = args[i];
@@ -1416,7 +1416,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
 
 			try {
-				data.setCurTempID((s == "") ? 0 : Integer.parseInt(s, data.base));
+				data.setCurTempID("".equals(s) ? 0 : Integer.parseInt(s, data.base));
 			} catch(java.lang.NumberFormatException nfe) {
 			}
 		}
@@ -1426,6 +1426,12 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		// this is not true at all but true enough for our needs.
 		// dispatcher.fire(new GameDataEvent(this, data));
 		dispatcher.fire(new GameDataEvent(this, data, true));
+		// also inform system about the new selection found in the GameData object
+		dispatcher.fire(new SelectionEvent(this, 
+										   data.getSelectedRegionCoordinates().values(), 
+										   null, 
+										   SelectionEvent.ST_REGIONS));
+
 	}
 
 	//////////////

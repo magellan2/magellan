@@ -64,11 +64,11 @@ public class XMLIO {
 			//URL dtd = ResourcePathClassLoader.getResourceStatically("rules/rules.dtd");
 			URL dtd = null;
 
-			if(dtd == null) {
+			//if(dtd == null) {
 				//log.warn("Could not find a dtd.");
-			} else {
-				is.setSystemId(dtd.toString());
-			}
+			//} else {
+			is.setSystemId(dtd.toString());
+			//}
 
 			return db.parse(is);
 		} catch(FactoryConfigurationError fce) {

@@ -273,7 +273,7 @@ public class Message extends Identifiable {
 	 */
 	public int hashCode() {
 		// identify Message by message text
-		return (text == null) ? super.hashCode() : text.hashCode();
+		return (text == null) ? superHashCode() : text.hashCode();
 	}
 
 	/**
@@ -337,18 +337,6 @@ public class Message extends Identifiable {
 
 	private static final boolean equalObjects(Object a, Object b) {
 		return (a == null) ? (b == null) : a.equals(b);
-	}
-
-	/**
-	 * Imposes a natural ordering on Message objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Message) o).getID());
 	}
 
 	/**

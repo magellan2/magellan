@@ -268,7 +268,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			}
 
 			// 2002.04.24 pavkovic: remove duplicate entries
-			Message msg = new Message(new String(sc.argv[0]));
+			Message msg = new Message(sc.argv[0]);
 
 			if(msgs.contains(msg)) {
 				// log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
@@ -304,7 +304,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				strings = CollectionFactory.createLinkedList();
 			}
 
-			strings.add(new String(sc.argv[0]));
+			strings.add(sc.argv[0]);
 			sc.getNextToken();
 		}
 
@@ -2310,6 +2310,9 @@ public class CRParser implements RulesIO, GameDataIO {
 				region.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Strasse")) {
+				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("ejcIsSelected")) {
+				world.getSelectedRegionCoordinates().put(c,region);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Insel")) {
 				try {

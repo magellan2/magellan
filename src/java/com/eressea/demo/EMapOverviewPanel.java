@@ -414,9 +414,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		//}
 		//}
 		// initialize variables used in while loop
-		boolean createIslandNodes = ((new Boolean(settings.getProperty("EMapOverviewPanel.displayIslands",
+		boolean createIslandNodes = ((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.displayIslands",
 																	   "true"))).booleanValue() == true) &&
-									((new Boolean(settings.getProperty("EMapOverviewPanel.sortRegions",
+									((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions",
 																	   "true"))).booleanValue() == true) &&
 									(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
 														  "coordinates").equalsIgnoreCase("islands") == true);
@@ -831,13 +831,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		if(node.getChildCount() > 0) {
 			TreePath path = new TreePath(((DefaultMutableTreeNode) node.getLastChild()).getPath());
 
-			if(path != null) {
-				Rectangle newRect = tree.getPathBounds(path);
-
-				if(newRect != null) {
-					rec.add(newRect);
-				}
-			}
+			rec.add(tree.getPathBounds(path));
 		}
 
 		SwingUtilities.invokeLater(new ScrollerRunnable(rec));
@@ -1511,7 +1505,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Collection sortRegions(Collection regions) {
-		if((new Boolean(settings.getProperty("EMapOverviewPanel.sortRegions", "true"))).booleanValue() == true) {
+		if((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions", "true"))).booleanValue() == true) {
 			if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates").equals("coordinates")) {
 				List sortedRegions = CollectionFactory.createLinkedList(regions);
 				Collections.sort(sortedRegions, new IDComparator());
@@ -2234,7 +2228,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		 */
 		public EMapOverviewPreferences(Properties settings) {
 			chkSortRegions = new JCheckBox(getString("prefs.sortregions"),
-										   (new Boolean(settings.getProperty("EMapOverviewPanel.sortRegions",
+										   (Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions",
 																			 "true"))).booleanValue());
 
 			rdbSortRegionsCoordinates = new JRadioButton(getString("prefs.sortbycoordinates"),
@@ -2257,7 +2251,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			pnlRegionSortButtons.add(rdbSortRegionsIslands);
 
 			chkDisplayIslands = new JCheckBox(getString("prefs.showislands"),
-											  (new Boolean(settings.getProperty("EMapOverviewPanel.displayIslands",
+											  (Boolean.valueOf(settings.getProperty("EMapOverviewPanel.displayIslands",
 																				"true"))).booleanValue());
 
 			JPanel pnlTreeStructure = new JPanel();
@@ -2542,7 +2536,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		 */
 		public void applyPreferences() {
 			settings.setProperty("EMapOverviewPanel.sortRegions",
-								 (new Boolean(chkSortRegions.isSelected())).toString());
+								 String.valueOf(chkSortRegions.isSelected()));
 
 			if(rdbSortRegionsCoordinates.isSelected() == true) {
 				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates");
@@ -2551,7 +2545,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			}
 
 			settings.setProperty("EMapOverviewPanel.displayIslands",
-								 (new Boolean(chkDisplayIslands.isSelected())).toString());
+								 String.valueOf(chkDisplayIslands.isSelected()));
 
 			if(rdbSortUnitsUnsorted.isSelected() == true) {
 				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "unsorted");

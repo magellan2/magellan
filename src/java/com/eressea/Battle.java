@@ -78,32 +78,4 @@ public class Battle extends Identifiable {
 	public boolean isBattleSpec() {
 		return this.isBattleSpec;
 	}
-
-	/**
-	 * Indicates whether this Battle object is equal to another object.
-	 *
-	 * @param o the Battle object to compare with.
-	 *
-	 * @return true only if o is not null and an instance of class Battle and o's id is equal to
-	 * 		   the id of this  Battle object.
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this.getID().equals(((Battle) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Battle objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o the Battle object to compare with.
-	 *
-	 * @return zero if equal.
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Battle) o).getID());
-	}
 }

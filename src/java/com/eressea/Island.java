@@ -42,35 +42,6 @@ public class Island extends DescribedObject {
 	}
 
 	/**
-	 * Indicates whether this Island object is equal to another object. Returns true only if o is
-	 * not null and an instance of class Island and o's id is equal to the id of this  Island
-	 * object.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this==o || (o != null && this.getID().equals(((Island) o).getID()));
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Island objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Island) o).getID());
-	}
-
-	/**
 	 * Returns a String representation of this Island object.
 	 *
 	 * @return TODO: DOCUMENT ME!

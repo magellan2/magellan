@@ -98,6 +98,7 @@ public class InvertSelectionAction extends MenuAction implements GameDataListene
 		}
 
 		selectedRegions = newSelectedRegions;
+		client.getData().setSelectedRegionCoordinates(selectedRegions);
 		client.getDispatcher().fire(new SelectionEvent(this, selectedRegions.values(), null,
 													   SelectionEvent.ST_REGIONS));
 	}

@@ -406,10 +406,8 @@ public class MapSaverUI extends InternationalizedDialog {
 				g2 = null;
 			}
 
-			if(bimg != null) {
-				bimg.flush();
-				bimg = null;
-			}
+			bimg.flush();
+			bimg = null;
 
 			throw e;
 		}

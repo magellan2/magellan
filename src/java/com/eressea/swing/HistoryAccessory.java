@@ -67,7 +67,7 @@ public class HistoryAccessory extends JPanel {
 		// intercept file chooser selection approvals
 		chooser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(e.getActionCommand() == JFileChooser.APPROVE_SELECTION) {
+					if(e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
 						approveSelection();
 					}
 				}
@@ -154,13 +154,12 @@ class DirWrapper {
 	 */
 	public String toString() {
 		String dirName = dir.getAbsolutePath();
-		String str = new String(dirName);
 
 		if(dirName.length() > 30) {
-			str = dirName.substring(0, 10) + "..." + dirName.substring(dirName.length() - 18);
+			dirName = dirName.substring(0, 10) + "..." + dirName.substring(dirName.length() - 18);
 		}
 
-		return str;
+		return dirName;
 	}
 
 	// Bucket needs this

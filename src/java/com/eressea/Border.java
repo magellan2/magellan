@@ -77,32 +77,4 @@ public class Border extends Identifiable {
 			return type + ": " + Direction.toString(direction) + " (" + buildRatio + "%)";
 		}
 	}
-
-	/**
-	 * Indicates whether this Border object is equal to another object.
-	 *
-	 * @param o the Border object to compare with.
-	 *
-	 * @return true only if o is not null and an instance of class Battle and o's id is equal to
-	 * 		   the id of this  Border object.
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this.getID().equals(((Border) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Border objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o the Border object to compare with.
-	 *
-	 * @return zero if equal.
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Border) o).getID());
-	}
 }

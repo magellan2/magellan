@@ -289,41 +289,41 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 	private Container getOptionPanel() {
 		chkServerConformance = new JCheckBox(getString("chk.servercompatibility.caption"),
-											 (new Boolean(settings.getProperty("CRWriterDialog.serverConformance",
+											 (Boolean.valueOf(settings.getProperty("CRWriterDialog.serverConformance",
 																			   "true"))).booleanValue());
 		chkIslands = new JCheckBox(getString("chk.islands.caption"),
-								   (new Boolean(settings.getProperty("CRWriterDialog.includeIslands",
+								   (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeIslands",
 																	 "true"))).booleanValue());
 		chkRegions = new JCheckBox(getString("chk.regions.caption"),
-								   (new Boolean(settings.getProperty("CRWriterDialog.includeRegions",
+								   (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeRegions",
 																	 "true"))).booleanValue());
 		chkRegionDetails = new JCheckBox(getString("chk.regiondetails.caption"),
-										 (new Boolean(settings.getProperty("CRWriterDialog.includeRegionDetails",
+										 (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeRegionDetails",
 																		   "true"))).booleanValue());
 		chkBuildings = new JCheckBox(getString("chk.buildings.caption"),
-									 (new Boolean(settings.getProperty("CRWriterDialog.includeBuildings",
+									 (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeBuildings",
 																	   "true"))).booleanValue());
 		chkShips = new JCheckBox(getString("chk.ships.caption"),
-								 (new Boolean(settings.getProperty("CRWriterDialog.includeShips",
+								 (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeShips",
 																   "true"))).booleanValue());
 		chkUnits = new JCheckBox(getString("chk.units.caption"),
-								 (new Boolean(settings.getProperty("CRWriterDialog.includeUnits",
+								 (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeUnits",
 																   "true"))).booleanValue());
 		chkMessages = new JCheckBox(getString("chk.messages.caption"),
-									(new Boolean(settings.getProperty("CRWriterDialog.includeMessages",
+									(Boolean.valueOf(settings.getProperty("CRWriterDialog.includeMessages",
 																	  "true"))).booleanValue());
 		chkSpellsAndPotions = new JCheckBox(getString("chk.spellsandpotions.caption"),
-											(new Boolean(settings.getProperty("CRWriterDialog.includeSpellsAndPotions",
+											(Boolean.valueOf(settings.getProperty("CRWriterDialog.includeSpellsAndPotions",
 																			  "true"))).booleanValue());
 		chkSelRegionsOnly = new JCheckBox(getString("chk.selectedregions.caption"),
-										  (new Boolean(settings.getProperty("CRWriterDialog.includeSelRegionsOnly",
+										  (Boolean.valueOf(settings.getProperty("CRWriterDialog.includeSelRegionsOnly",
 																			"false"))).booleanValue());
 		chkSelRegionsOnly.setEnabled((regions != null) && (regions.size() > 0));
 		chkDelStats = new JCheckBox(getString("chk.delstats.caption"),
-									(new Boolean(settings.getProperty("CRWriterDialog.delStats",
+									(Boolean.valueOf(settings.getProperty("CRWriterDialog.delStats",
 																	  "false"))).booleanValue());
 		chkDelTrans = new JCheckBox(getString("chk.deltrans.caption"),
-									(new Boolean(settings.getProperty("CRWriterDialog.delTrans",
+									(Boolean.valueOf(settings.getProperty("CRWriterDialog.delTrans",
 																	  "false"))).booleanValue());
 
 		JPanel pnlOptions = new JPanel(new GridLayout(6, 2));
@@ -352,31 +352,31 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		PropertiesHelper.setList(settings, "CRWriterDialog.outputFile",
 								 getNewOutputFiles(comboOutputFile));
 		settings.setProperty("CRWriterDialog.serverConformance",
-							 (new Boolean(chkServerConformance.isSelected())).toString());
+							 String.valueOf(chkServerConformance.isSelected()));
 		settings.setProperty("CRWriterDialog.includeIslands",
-							 (new Boolean(chkIslands.isSelected())).toString());
+							 String.valueOf(chkIslands.isSelected()));
 		settings.setProperty("CRWriterDialog.includeRegions",
-							 (new Boolean(chkRegions.isSelected())).toString());
+							 String.valueOf(chkRegions.isSelected()));
 		settings.setProperty("CRWriterDialog.includeRegionDetails",
-							 (new Boolean(chkRegionDetails.isSelected())).toString());
+							 String.valueOf(chkRegionDetails.isSelected()));
 		settings.setProperty("CRWriterDialog.includeBuildings",
-							 (new Boolean(chkBuildings.isSelected())).toString());
+							 String.valueOf(chkBuildings.isSelected()));
 		settings.setProperty("CRWriterDialog.includeShips",
-							 (new Boolean(chkShips.isSelected())).toString());
+							 String.valueOf(chkShips.isSelected()));
 		settings.setProperty("CRWriterDialog.includeUnits",
-							 (new Boolean(chkUnits.isSelected())).toString());
+							 String.valueOf(chkUnits.isSelected()));
 		settings.setProperty("CRWriterDialog.includeMessages",
-							 (new Boolean(chkMessages.isSelected())).toString());
+							 String.valueOf(chkMessages.isSelected()));
 		settings.setProperty("CRWriterDialog.includeSpellsAndPotions",
-							 (new Boolean(chkSpellsAndPotions.isSelected())).toString());
+							 String.valueOf(chkSpellsAndPotions.isSelected()));
 		settings.setProperty("CRWriterDialog.delStats",
-							 (new Boolean(chkDelStats.isSelected())).toString());
+							 String.valueOf(chkDelStats.isSelected()));
 		settings.setProperty("CRWriterDialog.delTrans",
-							 (new Boolean(chkDelStats.isSelected())).toString());
+							 String.valueOf(chkDelStats.isSelected()));
 
 		if(chkSelRegionsOnly.isEnabled()) {
 			settings.setProperty("CRWriterDialog.includeSelRegionsOnly",
-								 (new Boolean(chkSelRegionsOnly.isSelected())).toString());
+								 String.valueOf(chkSelRegionsOnly.isSelected()));
 		}
 
 		if(standAlone == true) {

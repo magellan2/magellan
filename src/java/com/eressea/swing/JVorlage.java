@@ -435,7 +435,7 @@ public class JVorlage extends InternationalizedDialog {
 
 	private Container getOptionPanel() {
 		chkOptionCR = new JCheckBox(getString("chk.outputcr.caption"),
-									(new Boolean(settings.getProperty("JVorlage.optionCR", "false"))).booleanValue());
+									(Boolean.valueOf(settings.getProperty("JVorlage.optionCR", "false"))).booleanValue());
 		chkOptionCR.setToolTipText(getString("chk.outputcr.tooltip"));
 
 		txtOptions = new JTextField(settings.getProperty("JVorlage.options", ""));
@@ -553,7 +553,7 @@ public class JVorlage extends InternationalizedDialog {
 		settings.setProperty("JVorlage.scriptFile", getString(comboScriptFile));
 		settings.setProperty("JVorlage.vorlageFile", txtVorlageFile.getText());
 
-		settings.setProperty("JVorlage.optionCR", (new Boolean(chkOptionCR.isSelected())).toString());
+		settings.setProperty("JVorlage.optionCR", String.valueOf(chkOptionCR.isSelected()));
 		settings.setProperty("JVorlage.options", txtOptions.getText());
 
 		if(standAlone == true) {
@@ -667,16 +667,15 @@ public class JVorlage extends InternationalizedDialog {
 				String line = null;
 				LineNumberReader lnr = new LineNumberReader(reader);
 
-				line = lnr.readLine();
-
-				while(line != null) {
+				while((line = lnr.readLine()) != null) {
 					sb.append(line).append("\n");
-					line = lnr.readLine();
 				}
+
+				lnr.close();
 			} catch(IOException e) {
 				log.error("JVorlage.execVorlage(): unable to read the temporary output file: ", e);
 				sb = null;
-			}
+			} 
 
 			try {
 				reader.close();
@@ -696,9 +695,9 @@ public class JVorlage extends InternationalizedDialog {
 	 * executes Vorlage, writing its output to the output text area.
 	 */
 	private void execUsersVorlage() {
-		String commandLine = new String();
+		String commandLine = "";
 
-		if(txtOptions.getText() != "") {
+		if(!"".equals(txtOptions.getText())) {
 			commandLine += (" " + txtOptions.getText());
 		}
 

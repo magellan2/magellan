@@ -100,30 +100,4 @@ public class OptionCategory extends ObjectType {
 	public boolean isOrder() {
 		return this.isOrder;
 	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		try {
-			return ((OptionCategory) o).getID().equals(this.getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((OptionCategory) o).getID());
-	}
 }

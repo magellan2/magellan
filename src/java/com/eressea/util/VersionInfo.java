@@ -44,9 +44,7 @@ public class VersionInfo {
 			try {
 				ResourceBundle bundle = new PropertyResourceBundle(url.openStream());
 
-				if(bundle != null) {
-					return bundle.getString("VERSION");
-				}
+				return bundle.getString("VERSION");
 			} catch(IOException e) {
 			} catch(MissingResourceException e) {
 			}

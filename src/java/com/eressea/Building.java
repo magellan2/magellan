@@ -115,34 +115,6 @@ public class Building extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Indicates whether this Building object is equal to another object.
-	 *
-	 * @param o the Building object to compare with.
-	 *
-	 * @return true only if o is not null and an instance of class Building and o's id is equal to
-	 * 		   the id of this  Building object.
-	 */
-	public boolean equals(Object o) {
-		try {
-			return this.getID().equals(((Building) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Imposes a natural ordering on Building objects equivalent to the natural ordering of their
-	 * ids.
-	 *
-	 * @param o the Building object to compare with.
-	 *
-	 * @return zero if equal.
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((Building) o).getID());
-	}
-
-	/**
 	 * Merges buildings. The new one get the name, comments etc. from the current one, effects etc.
 	 * are added, not written over.
 	 *

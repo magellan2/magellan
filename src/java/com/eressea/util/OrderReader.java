@@ -141,7 +141,6 @@ public class OrderReader {
 		}
 
 		String line = null; // the line read from the file
-		Region currentRegion = null; // keeps track of the region we are in
 		Unit currentUnit = null; // keeps track of the unit which is currently processed
 		Locale currentLocale = Locales.getOrderLocale(); // start out with the currently set default order locale
 
@@ -244,10 +243,6 @@ public class OrderReader {
 					if(currentUnit == null) {
 						currentUnit = new Unit(unitID);
 						currentUnit.setFaction(faction);
-
-						if(currentRegion != null) {
-							currentUnit.setRegion(currentRegion);
-						}
 
 						data.addUnit(currentUnit);
 					} else {

@@ -98,35 +98,6 @@ public class CombatSpell extends Identifiable {
 	}
 
 	/**
-	 * Indicates whether this CombatSpell object is equal to another object.
-	 *
-	 * @param o the CombatSpell object to compare with.
-	 *
-	 * @return true only if o is not null and an instance of class CombatSpell and o's id is equal
-	 * 		   to the id of this  CombatSpell object.
-	 */
-	public boolean equals(Object o) {
-		try {
-		return (this == o) || this.getID().equals(((CombatSpell) o).getID());
-		} catch(ClassCastException e) {
-			return false;
-		}
-
-	}
-
-	/**
-	 * Imposes a natural ordering on CombatSpell objects equivalent to the natural ordering of
-	 * their ids.
-	 *
-	 * @param o the CombatSpell object to compare with.
-	 *
-	 * @return zero if equal.
-	 */
-	public int compareTo(Object o) {
-		return this.getID().compareTo(((CombatSpell) o).getID());
-	}
-
-	/**
 	 * Merges two combat spells.
 	 *
 	 * @param curGD the current GameData.

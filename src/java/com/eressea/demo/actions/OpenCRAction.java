@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import com.eressea.GameData;
 import com.eressea.demo.Client;
 import com.eressea.swing.EresseaFileFilter;
+import com.eressea.swing.HistoryAccessory;
 import com.eressea.util.CollectionFactory;
 
 /**
@@ -74,7 +75,7 @@ public class OpenCRAction extends MenuAction {
 		}
 
 		fc.setSelectedFile(file);
-		fc.setAccessory(new com.eressea.swing.HistoryAccessory(settings, fc));
+		fc.setAccessory(new HistoryAccessory(settings, fc));
 		fc.setDialogTitle(getString("title"));
 
 		if(fc.showOpenDialog(client) == JFileChooser.APPROVE_OPTION) {

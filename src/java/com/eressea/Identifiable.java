@@ -23,9 +23,9 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	/**
 	 * Creates a new identifiable object with the specified id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param id ID of the Identifiable
 	 *
-	 * @throws NullPointerException if ID is <code>null</code>
+	 * @throws NullPointerException if <tt>ID</tt> is <code>null</code>
 	 */
 	public Identifiable(ID id) {
 		if(id == null) {
@@ -41,7 +41,7 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public ID getID() {
-		return this.id;
+		return id;
 	}
 
 	/**
@@ -63,7 +63,30 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public abstract boolean equals(Object o);
+	public boolean equals(Object o) {
+		try {
+			return this == o || 
+				(o != null && 
+				 getID().equals(((Identifiable) o).getID()) && 
+				 getClass().isInstance(o));
+		} catch(ClassCastException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * As we want to use the hashCode/equals contract we need to force the implementation of 
+	 * hashCode.
+	 *
+	 * @return the hashCode of the current object
+	 */
+	public int hashCode() {
+		return getID() == null ? super.hashCode() : getID().hashCode();
+	}
+
+	public int superHashCode() {
+		return super.hashCode();
+	}
 
 	/**
 	 * Imposes a natural ordering on Identifiable objects. Especially with implementing sub classes
@@ -71,5 +94,7 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public abstract int compareTo(Object o);
+	public int compareTo(Object o) {
+		return getID().compareTo(((Identifiable) o).getID());
+	}
 }

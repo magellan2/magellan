@@ -95,17 +95,15 @@ public class FileSaveAsAction extends MenuAction {
 		fc.setSelectedFile(selectedFile);
 
 		// select an active file filter
-		if(selectedFile != null) {
-			if(crFilter.accept(selectedFile)) {
-				fc.setFileFilter(crFilter);
-			} else if(gzFilter.accept(selectedFile)) {
-				fc.setFileFilter(gzFilter);
-			} else if(bz2Filter.accept(selectedFile)) {
-				fc.setFileFilter(bz2Filter);
-
-				// 			} else if(zipFilter.accept(selectedFile)) {
-				// 				fc.setFileFilter(zipFilter);
-			}
+		if(crFilter.accept(selectedFile)) {
+			fc.setFileFilter(crFilter);
+		} else if(gzFilter.accept(selectedFile)) {
+			fc.setFileFilter(gzFilter);
+		} else if(bz2Filter.accept(selectedFile)) {
+			fc.setFileFilter(bz2Filter);
+			
+			// 			} else if(zipFilter.accept(selectedFile)) {
+			// 				fc.setFileFilter(zipFilter);
 		}
 
 		fc.setAccessory(new com.eressea.swing.HistoryAccessory(settings, fc));
@@ -123,17 +121,17 @@ public class FileSaveAsAction extends MenuAction {
 			EresseaFileFilter actFilter = (EresseaFileFilter) fc.getFileFilter();
 			dataFile = actFilter.addExtension(dataFile);
 
-			if(dataFile.exists()) {
+			//if(dataFile.exists()) {
 				// FIXME(pavkovic) ask, if file should be overwritten
 				// stop execution of saveaction if necessary
-				try {
-					File backup = FileBackup.create(dataFile);
-					log.info("Created backupfile " + backup);
-				} catch(IOException ie) {
-					log.warn("Could not create backupfile for file " + dataFile);
-				}
-			}
-
+			// 				try {
+			// 					File backup = FileBackup.create(dataFile);
+			// 					log.info("Created backupfile " + backup);
+			// 				} catch(IOException ie) {
+			// 					log.warn("Could not create backupfile for file " + dataFile);
+			// 				}
+			//			}
+			
 			doSaveAction(dataFile);
 		}
 	}
@@ -152,16 +150,23 @@ public class FileSaveAsAction extends MenuAction {
 
 	protected void doSaveAction(FileType filetype) {
 		try {
-			// create backup file
-			File backup = FileBackup.create(filetype.getFile());
-			log.info("Created backupfile " + backup);
+			if(filetype.getFile().exists()) {
+				// create backup file
+				try {
+					File backup = FileBackup.create(filetype.getFile());
+					log.info("Created backupfile " + backup);
+				} catch(IOException ie) {
+					log.warn("Could not create backupfile for file " + filetype.getFile());
+ 				}
+			} 
 
+			//
 			// write cr to file
 			CRWriter crw = new CRWriter(filetype);
 			crw.write(client.getData());
 			crw.close();
 
-			// everything worked fine, so reset reportchanged state and also store new FileType setting
+			// everything worked fine, so reset reportchanged state and also store new FileType settings
 			client.setReportChanged(false);
 			client.getData().filetype = filetype;
 			client.getData().resetToUnchanged();
