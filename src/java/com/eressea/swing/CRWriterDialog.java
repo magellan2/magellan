@@ -52,8 +52,9 @@ import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.cr.CRWriter;
-import com.eressea.util.file.FileType;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
+import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -211,7 +212,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 	
 	private Container getFilePanel() {
 		
-		comboOutputFile = new JComboBox(getVector(settings.getProperty("CRWriterDialog.outputFile", "")));
+		comboOutputFile = new JComboBox(PropertiesHelper.getList(settings,"CRWriterDialog.outputFile").toArray());
 		comboOutputFile.setEditable(true);
 		
 		JLabel lblOutputFile = new JLabel(getString("lbl.targetfile"));
@@ -304,7 +305,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		settings.setProperty("CRWriterDialog.x", getX() + "");
 		settings.setProperty("CRWriterDialog.y", getY() + "");
 		
-		settings.setProperty("CRWriterDialog.outputFile", getString(comboOutputFile));
+		PropertiesHelper.setList(settings, "CRWriterDialog.outputFile", getNewOutputFiles(comboOutputFile));
 		settings.setProperty("CRWriterDialog.serverConformance", (new Boolean(chkServerConformance.isSelected())).toString());
 		settings.setProperty("CRWriterDialog.includeIslands", (new Boolean(chkIslands.isSelected())).toString());
 		settings.setProperty("CRWriterDialog.includeRegions", (new Boolean(chkRegions.isSelected())).toString());
@@ -329,27 +330,15 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		}
 	}
 	
-	private String getString(JComboBox combo) {
-		StringBuffer sb = new StringBuffer();
+	private List getNewOutputFiles(JComboBox combo) {
+		List ret = CollectionFactory.createArrayList(combo.getItemCount()+1);
 		if (combo.getSelectedIndex() == -1) {
-			sb.append((String)combo.getEditor().getItem()).append("|");
+			ret.add(combo.getEditor().getItem());
 		}
 		for (int i = 0; i < Math.min(combo.getItemCount(), 6); i++) {
-			if (i > 0) {
-				sb.append("|");
-			}
-			sb.append((String)combo.getItemAt(i));
+			ret.add(combo.getItemAt(i));
 		}
-		return sb.toString();
-	}
-	
-	private Vector getVector(String str) {
-		Vector retVal = new Vector();
-		StringTokenizer t = new StringTokenizer(str, "|");
-		while (t.hasMoreElements() == true) {
-			retVal.add(t.nextElement());
-		}
-		return retVal;
+		return ret;
 	}
 	
 	protected void quit() {

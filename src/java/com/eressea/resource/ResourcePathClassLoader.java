@@ -22,6 +22,7 @@ import java.util.Properties;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IteratorEnumeration;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.ROCollection;
 import com.eressea.util.logging.Logger;
 
@@ -424,20 +425,17 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 * Loads the resource paths from the specified settings.
 	 */
 	private static Collection loadResourcePaths(Properties settings) {
-		Collection resourcePaths = CollectionFactory.createLinkedList();
-		int maxResourcePaths = Integer.valueOf(settings.getProperty("Resources.preferredPathList.count", "0" )).intValue();
-		
-		for (int i = 0; i < maxResourcePaths; i++) {
-			String location = settings.getProperty("Resources.preferredPathList." + i);
-			if (location != null) {
-				try {
-					resourcePaths.add(new URL(location));
-				} catch(MalformedURLException e) {
-					log.error(e);
-				}
+		Collection properties = PropertiesHelper.getList(settings, "Resources.preferredPathList");
+
+		Collection resourcePaths = CollectionFactory.createArrayList(properties.size());
+		for(Iterator iter = properties.iterator(); iter.hasNext(); ) {
+			String location = (String) iter.next();
+			try {
+				resourcePaths.add(new URL(location));
+			} catch(MalformedURLException e) {
+				log.error(e);
 			}
 		}
-		
 		return resourcePaths;
 	}
 	
@@ -448,13 +446,6 @@ public class ResourcePathClassLoader extends ClassLoader {
 		if (resourcePaths == null) {
 			resourcePaths = CollectionFactory.createLinkedList();
 		}
-		
-		settings.setProperty("Resources.preferredPathList.count", Integer.toString(resourcePaths.size()));
-		
-		int i = 0;
-		for (Iterator iter = resourcePaths.iterator(); iter.hasNext(); i++) {
-			URL location = (URL)iter.next();
-			settings.setProperty("Resources.preferredPathList." + i, location.toString());
-		}
+		PropertiesHelper.setList(settings, "Resources.preferredPathList", resourcePaths);
 	}
 }

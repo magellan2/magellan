@@ -849,13 +849,20 @@ public class Region extends UnitContainer {
 
 	/**
 	 * Returns a String representation of this Region object.
+	 * If region has no name the string representation of the 
+	 * region type is used.
 	 */
 	public String toString() {
-		String retVal = new String();
-		if (getName() != null) {
-			retVal += getName();
+		StringBuffer sb = new StringBuffer();
+		if (getName() == null) {
+			if(getType()!=null) {
+				sb.append(getType().toString());
+			}
+		} else {
+			sb.append(getName());
 		}
-		return retVal + " (" + ((Coordinate)this.getID()).toString(", ") + ")";
+		sb.append(" (").append(((Coordinate)this.getID()).toString(", ")).append(")");
+		return sb.toString();
 	}
 
 	/**

@@ -102,7 +102,7 @@ public class MagellanLookAndFeel {
 	/** a static variable to initialize look and feels only once */
 	private static Map lafCache;
 
-	/** this function delivers a Map (String, MagLookAndFeelWrapper) of useable look and feel implementations */
+	/** this function delivers a Map (String, MagLookAndFeelWrapper) of possibly useable look and feel implementations */
 	public static Map getLookAndFeels() {
 		if(lafCache == null) {
 			Map lookAndFeels = CollectionFactory.createOrderedHashtable();
@@ -257,12 +257,7 @@ public class MagellanLookAndFeel {
 		List s = CollectionFactory.createArrayList();
 		s.addAll(getLookAndFeels().keySet());
 		Collections.sort(s);
-		//Collections.reverse(s);
-		// s.add("System");
-		//Collections.reverse(s);
-
 		return s;
-
 	}
 
 	/**

@@ -7,7 +7,9 @@
 package com.eressea.util;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -15,6 +17,9 @@ import javax.swing.JMenu;
 
 import com.eressea.demo.Client;
 import com.eressea.demo.actions.FileHistoryAction;
+import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
+
 /**
  * A kind of wrapper for the file history (menu) functionality.
  *
@@ -56,18 +61,15 @@ public class FileHistory {
 	 * settings.
 	 */
 	public void storeFileHistory() {
+		List files = CollectionFactory.createArrayList(history == null ? 0 : history.size());
 		if (history != null) {
-			StringBuffer sb = new StringBuffer();
 			for (Iterator iter = history.iterator(); iter.hasNext(); ) {
-				sb.insert(0, ((FileHistoryAction)iter.next()).getFile().getAbsolutePath());
-				if (iter.hasNext()) {
-					sb.insert(0, '|');
-				} else {
-					break;
-				}
+				files.add(((FileHistoryAction)iter.next()).getFile().getAbsolutePath());
 			}
-			settings.setProperty("Client.fileHistory", sb.toString());
+		    Collections.reverse(files);
 		}
+		PropertiesHelper.setList(settings, "Client.fileHistory", files);
+
 	}
 
 	/**
@@ -78,11 +80,9 @@ public class FileHistory {
 		if (history == null) {
 			history = new Bucket(getMaxFileHistorySize());
 		}
-		// load fileHistory fifo buffer
-		String hist = settings.getProperty("Client.fileHistory", "");
-		StringTokenizer st = new StringTokenizer(hist, "|");
-		while (st.hasMoreTokens()) {
-			File f = new File(st.nextToken());
+		for(Iterator iter = PropertiesHelper.getList(settings, "Client.fileHistory").iterator(); iter.hasNext(); ) {
+			String file = (String) iter.next();
+			File f = new File(file);
 			if (f.exists()) {
 				history.add(new FileHistoryAction(this, f));
 			}

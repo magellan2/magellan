@@ -9,6 +9,7 @@
 package com.eressea.demo.actions;
 
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -35,7 +36,7 @@ public class TaskTableAction extends MenuAction{
 		client=parent;
 	}
 	
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		TaskTableDialog d = new TaskTableDialog(client, false, client.getDispatcher(), client.getData(), client.getSettings());
 		d.setVisible(true);
 	}
@@ -51,7 +52,7 @@ public class TaskTableAction extends MenuAction{
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("name"       , "Review...");
 			defaultTranslations.put("mnemonic"   , "r");
-			defaultTranslations.put("accelerator", "ctrl shift C");
+			defaultTranslations.put("accelerator", "ctrl shift R");
 			defaultTranslations.put("tooltip"    , "tooltip for TaskTable");
 		}
 		return defaultTranslations;
