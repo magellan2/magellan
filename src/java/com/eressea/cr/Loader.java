@@ -27,8 +27,7 @@ import com.eressea.io.file.FileTypeFactory;
 import com.eressea.util.logging.Logger;
 
 /**
- * This used to be the Loader class. Now it only supports cloning via  cr
- * writing/reading
+ * This used to be the Loader class. Now it only supports cloning via  cr writing/reading
  *
  * @author $author$
  * @version $Revision$
@@ -45,15 +44,12 @@ public class Loader {
 	 *
 	 * @throws CloneNotSupportedException if cloning failed
 	 */
-	public GameData cloneGameData(GameData data)
-						   throws CloneNotSupportedException
-	{
+	public GameData cloneGameData(GameData data) throws CloneNotSupportedException {
 		try {
 			File tempFile = CopyFile.createCrTempFile();
 			tempFile.deleteOnExit();
 
-			FileType filetype = FileTypeFactory.singleton().createFileType(tempFile,
-																		   false);
+			FileType filetype = FileTypeFactory.singleton().createFileType(tempFile, false);
 
 			// write cr to file
 			CRWriter crw = new CRWriter(filetype);

@@ -29,16 +29,10 @@ public class Logger {
 	/** This log level entirely stops all logging */
 	public static final int OFF = 0;
 
-	/**
-	 * Fatal messages are messages which are printed before a fatal program
-	 * exit
-	 */
+	/** Fatal messages are messages which are printed before a fatal program exit */
 	public static final int FATAL = 1;
 
-	/**
-	 * Error messages are printed if an error occurs but the application can
-	 * continue
-	 */
+	/** Error messages are printed if an error occurs but the application can continue */
 	public static final int ERROR = 2;
 
 	/** Warning messages are info messages with warning character */
@@ -51,10 +45,10 @@ public class Logger {
 	public static final int DEBUG = 5;
 
 	/** AWT messages are printed for debugging awt purposes */
-	public static final int AWT			    = 6;
-	private static int	    verboseLevel    = INFO;
-	private static Object   awtLogger	    = null;
-	private static boolean  searchAwtLogger = true;
+	public static final int AWT = 6;
+	private static int verboseLevel = INFO;
+	private static Object awtLogger = null;
+	private static boolean searchAwtLogger = true;
 
 	private Logger(String aBase) {
 		// be fail-fast
@@ -173,8 +167,7 @@ public class Logger {
 		}
 	}
 
-	private void log(PrintStream aOut, int aLevel, Object aObj,
-					 Throwable aThrowable) {
+	private void log(PrintStream aOut, int aLevel, Object aObj, Throwable aThrowable) {
 		if(verboseLevel >= aLevel) {
 			if(aObj != null) {
 				if(aObj instanceof Throwable) {
@@ -358,8 +351,7 @@ public class Logger {
 				searchAwtLogger = false;
 
 				try {
-					awtLogger = Class.forName("com.eressea.util.logging.AWTLogger")
-									 .newInstance();
+					awtLogger = Class.forName("com.eressea.util.logging.AWTLogger").newInstance();
 				} catch(ClassNotFoundException e) {
 					debug("AWTLogger not found", e);
 				} catch(InstantiationException e) {
@@ -372,12 +364,9 @@ public class Logger {
 
 		if(awtLogger != null) {
 			try {
-				Class parameterTypes[] = new Class[] {
-											 Object.class, Throwable.class
-										 };
+				Class parameterTypes[] = new Class[] { Object.class, Throwable.class };
 				Object arguments[] = new Object[] { aObj, aThrowable };
-				Method method     = awtLogger.getClass().getMethod("log",
-																   parameterTypes);
+				Method method = awtLogger.getClass().getMethod("log", parameterTypes);
 				method.invoke(awtLogger, arguments);
 			} catch(NoSuchMethodException e) {
 				debug(e);

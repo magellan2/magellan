@@ -97,14 +97,12 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 		}
 
 		if(s.modifiedUnits().isEmpty()) {
-			return Collections.singletonList(new CriticizedError(s.getRegion(),
-																 s, this,
+			return Collections.singletonList(new CriticizedError(s.getRegion(), s, this,
 																 "Ship has no crew!"));
 		}
 
 		if(s.getModifiedLoad() > (s.getMaxCapacity() * 100)) {
-			return Collections.singletonList(new CriticizedError(s.getRegion(),
-																 s, this,
+			return Collections.singletonList(new CriticizedError(s.getRegion(), s, this,
 																 "Ship is overloaded!"));
 		}
 
@@ -125,13 +123,11 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 		}
 
 		Coordinate nextRegionCoord = (Coordinate) modifiedMovement.get(1);
-		Region     nextRegion = s.getRegion().getData().getRegion(nextRegionCoord);
+		Region nextRegion = s.getRegion().getData().getRegion(nextRegionCoord);
 
 		if(nextRegion != null) {
-			if(nextRegion.getData().rules.getRegionType(StringID.create("Ozean"))
-											 .equals(nextRegion.getRegionType()) == false) {
-				return Collections.singletonList(new CriticizedError(s.getRegion(),
-																	 s, this,
+			if(nextRegion.getData().rules.getRegionType(StringID.create("Ozean")).equals(nextRegion.getRegionType()) == false) {
+				return Collections.singletonList(new CriticizedError(s.getRegion(), s, this,
 																	 "Ship cannot move to this direction."));
 			}
 		}
@@ -144,8 +140,7 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 				//if(log.isDebugEnabled()) {
 				//log.debug("ShipInspector.reviewShip("+s+"):"+s.shoreId+" to "+d.getDir()+" ("+((6+s.shoreId-d.getDir()) % 6)+")");
 				//}
-				return Collections.singletonList(new CriticizedError(s.getRegion(),
-																	 s, this,
+				return Collections.singletonList(new CriticizedError(s.getRegion(), s, this,
 																	 "Ship cannot move to this direction!"));
 			}
 		}

@@ -23,7 +23,7 @@ import com.eressea.Unit;
  * @version
  */
 public class UnitFactionFilter extends UnitFilter {
-	protected String  factionS;
+	protected String factionS;
 	protected Faction faction;
 
 	/**
@@ -56,8 +56,7 @@ public class UnitFactionFilter extends UnitFilter {
 
 		return (f != null) &&
 			   (((factionS != null) &&
-			   (factionS.equals(f.getName()) ||
-			   factionS.equals(f.getID().toString()))) ||
+			   (factionS.equals(f.getName()) || factionS.equals(f.getID().toString()))) ||
 			   ((faction != null) && (faction.equals(f))));
 	}
 
