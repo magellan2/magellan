@@ -45,3 +45,16 @@ To create a new release do the following steps:
    (TODO: Right now tagging of repository magellan-help is broken)
 4. If everything was fine proceed with the next step otherwise abort.
 5. Distribute the files created in build/distribute.
+
+
+-----------------------------------------------------------------------
+To distribute files at sourceforge net
+-----------------------------------------------------------------------
+a) Load files via ftp to upload.sourceforge.net into directory incoming
+(binary) using "anonymous" as login and your email address as password.
+
+b) Go to https://sourceforge.net/project/admin/editpackages.php?group_id=91825
+
+c) "Add release" at package Magellan
+d) "Create new release" with proper release number (like 1.1.6)
+e) follow the instructions on screen
