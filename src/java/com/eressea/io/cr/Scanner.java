@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 import com.eressea.util.StringFactory;
+import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -129,34 +130,41 @@ public class Scanner {
 			}
 
 			if(buf[i] == '"') {
-				char outbuf[] = new char[len];
-				int outPtr = 0;
 				i++; // skip start "
-				start = i; // marker for begin of string
-
-				while(i < len) {
-					if(buf[i] == '"') {
-						if(buf[i - 1] == '\\') { // escaped quotation mark
-							outbuf[outPtr - 1] = '"';
-							i++;
-						} else { // unescaped quotation mark, stop reading
-
-							break;
+				if(line.lastIndexOf('"')!= -1) {
+					int lastQuote = line.lastIndexOf('"');
+					String str = Umlaut.replace(line.substring(i,lastQuote+1-i),"\\\"","\"");
+					argv[argc] = StringFactory.getFactory().intern(str);
+					i = lastQuote;
+				} else {
+					// old code: May be better but we wont use it
+					char outbuf[] = new char[len];
+					int outPtr = 0;
+					start = i; // marker for begin of string
+					
+					while(i < len) {
+						if(buf[i] == '"') {
+							if(buf[i - 1] == '\\') { // escaped quotation mark
+								outbuf[outPtr - 1] = '"';
+								i++;
+							} else { // unescaped quotation mark, stop reading
+								
+								break;
+							}
+						} else if((buf[i] != '\r') && (buf[i] != '\n')) {
+							outbuf[outPtr++] = buf[i++];
 						}
-					} else if((buf[i] != '\r') && (buf[i] != '\n')) {
-						outbuf[outPtr++] = buf[i++];
 					}
+					
+					if(i == len) {
+						log.warn("Missing \" in line " + lnr);
+					}
+					
+					// pavkovic 2003.07.02: use String.intern() method to reduce memory consumption
+					argv[argc] = StringFactory.getFactory().intern(new String(outbuf, 0, outPtr));
 				}
-
-				if(i == len) {
-					log.warn("Missing \" in line " + lnr);
-				}
-
-				// pavkovic 2003.07.02: use String.intern() method to reduce memory consumption
-				argv[argc] = StringFactory.getFactory().intern(new String(outbuf, 0, outPtr));
 				isString[argc] = true;
 				argc++;
-
 				i++; // skip "
 			} else {
 				start = i;
