@@ -1119,16 +1119,6 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
-		if(gd2.factions() != null) {
-			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
-				Faction curFaction = (Faction) iter.next();
-				Faction newFaction = newGD.getFaction(curFaction.getID());
-
-				// second pass
-				Faction.merge(gd2, curFaction, newGD, newFaction);
-			}
-		}
-
 		// MERGE REGIONS
 		if(gd1.regions() != null) {
 			for(Iterator iter = gd1.regions().values().iterator(); iter.hasNext();) {
@@ -1137,16 +1127,6 @@ public abstract class GameData implements Cloneable {
 
 				// first pass
 				Region.merge(gd1, curRegion, newGD, newRegion, sameRound);
-			}
-		}
-
-		if(gd2.regions() != null) {
-			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
-				Region curRegion = (Region) iter.next();
-				Region newRegion = newGD.getRegion(curRegion.getID());
-
-				// second pass
-				Region.merge(gd2, curRegion, newGD, newRegion, true);
 			}
 		}
 
@@ -1161,30 +1141,13 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
-		if(gd2.islands() != null) {
-			for(Iterator iter = gd2.islands().values().iterator(); iter.hasNext();) {
-				Island curIsland = (Island) iter.next();
-				Island newIsland = newGD.getIsland(curIsland.getID());
-
-				// second pass
-				Island.merge(gd2, curIsland, newGD, newIsland);
-			}
-		}
-
 		// MERGE HOTSPOTS
 		if(gd1.hotSpots() != null) {
 			for(Iterator iter = gd1.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot curHotSpot = (HotSpot) iter.next();
 				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
+				// first pass
 				HotSpot.merge(gd1, curHotSpot, newGD, newHotSpot);
-			}
-		}
-
-		if(gd2.hotSpots() != null) {
-			for(Iterator iter = gd2.hotSpots().values().iterator(); iter.hasNext();) {
-				HotSpot curHotSpot = (HotSpot) iter.next();
-				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
-				HotSpot.merge(gd2, curHotSpot, newGD, newHotSpot);
 			}
 		}
 
@@ -1195,18 +1158,8 @@ public abstract class GameData implements Cloneable {
 				Building newBuilding = newGD.getBuilding(curBuilding.getID());
 
 				if(newBuilding != null) {
+					// first pass
 					Building.merge(gd1, curBuilding, newGD, newBuilding);
-				}
-			}
-		}
-
-		if(gd2.buildings() != null) {
-			for(Iterator iter = gd2.buildings().values().iterator(); iter.hasNext();) {
-				Building curBuilding = (Building) iter.next();
-				Building newBuilding = newGD.getBuilding(curBuilding.getID());
-
-				if(newBuilding != null) {
-					Building.merge(gd2, curBuilding, newGD, newBuilding);
 				}
 			}
 		}
@@ -1223,25 +1176,13 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
-		if(gd2.ships() != null) {
-			for(Iterator iter = gd2.ships().values().iterator(); iter.hasNext();) {
-				Ship curShip = (Ship) iter.next();
-				Ship newShip = newGD.getShip(curShip.getID());
-
-				// second pass
-				Ship.merge(gd2, curShip, newGD, newShip);
-			}
-		}
-
 		// MERGE UNITS
 
 		/* Note: To gather level change informations all units are used.
 		 *       If the dates are equal, a fully merge is done, if not, only the
 		 *       skills are retrieved.
 		 */
-		Iterator it = newGD.units().values().iterator();
-
-		while(it.hasNext()) {
+		for(Iterator it = newGD.units().values().iterator(); it.hasNext(); ) {
 			Unit newUnit = (Unit) it.next();
 
 			// find the second first since we may need the temp id
@@ -1281,6 +1222,73 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
+		// MERGE FACTIONS, SECOND PASS
+		if(gd2.factions() != null) {
+			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
+				Faction curFaction = (Faction) iter.next();
+				Faction newFaction = newGD.getFaction(curFaction.getID());
+				
+				// second pass
+				Faction.merge(gd2, curFaction, newGD, newFaction);
+			}
+		}
+		
+		// MERGE REGIONS, SECOND PASS
+		if(gd2.regions() != null) {
+			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
+				Region curRegion = (Region) iter.next();
+				Region newRegion = newGD.getRegion(curRegion.getID());
+				
+				// second pass
+				Region.merge(gd2, curRegion, newGD, newRegion, true);
+			}
+		}
+
+		// MERGE ISLANDS, SECOND PASS
+		if(gd2.islands() != null) {
+			for(Iterator iter = gd2.islands().values().iterator(); iter.hasNext();) {
+				Island curIsland = (Island) iter.next();
+				Island newIsland = newGD.getIsland(curIsland.getID());
+
+				// second pass
+				Island.merge(gd2, curIsland, newGD, newIsland);
+			}
+		}
+
+		// MERGE HOTSPOTS, SECOND PASS
+		if(gd2.hotSpots() != null) {
+			for(Iterator iter = gd2.hotSpots().values().iterator(); iter.hasNext();) {
+				HotSpot curHotSpot = (HotSpot) iter.next();
+				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
+				// second pass
+				HotSpot.merge(gd2, curHotSpot, newGD, newHotSpot);
+			}
+		}
+
+		// MERGE BUILDINGS, SECOND PASS
+		if(gd2.buildings() != null) {
+			for(Iterator iter = gd2.buildings().values().iterator(); iter.hasNext();) {
+				Building curBuilding = (Building) iter.next();
+				Building newBuilding = newGD.getBuilding(curBuilding.getID());
+
+				if(newBuilding != null) {
+					// second pass
+					Building.merge(gd2, curBuilding, newGD, newBuilding);
+				}
+			}
+		}
+
+		// MERGE SHIPS, SECOND PASS
+		if(gd2.ships() != null) {
+			for(Iterator iter = gd2.ships().values().iterator(); iter.hasNext();) {
+				Ship curShip = (Ship) iter.next();
+				Ship newShip = newGD.getShip(curShip.getID());
+
+				// second pass
+				Ship.merge(gd2, curShip, newGD, newShip);
+			}
+		}
+		
 		newGD.postProcess();
 		newGD.resetToUnchanged();
 

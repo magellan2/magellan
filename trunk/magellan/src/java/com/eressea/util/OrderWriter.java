@@ -178,8 +178,8 @@ public class OrderWriter {
 			writeln(stream, "; ECHECK " + echeckOptions);
 		}
 
-		if(VersionInfo.getBuildDate() != null) {
-			writeln(stream, "; VERSION " + VersionInfo.getBuildDate());
+		if(VersionInfo.getVersion() != null) {
+			writeln(stream, "; VERSION Magellan " + VersionInfo.getVersion());
 		}
 
 		// pavkovic 2003.09.11: use system locale and NOT faction locale!
@@ -294,7 +294,7 @@ public class OrderWriter {
 		if(writeUnitTagsAsVorlageComment && unit.hasTags()) {
 			for(Iterator iter = unit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
 				String tag = (String) iter.next();
-				writeln(stream, "// #after 1 { #tag Einheit "+tag+" "+unit.getTag(tag)+" }");
+				writeln(stream, "// #after 1 { #tag Einheit "+tag.replace(' ','~')+" "+unit.getTag(tag).replace(' ','~')+" }");
 			}
 		}
 		
