@@ -1,3 +1,8 @@
+2004-09-08  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/io/cr/CRParser.java: prevent
+	parseItemCategory glitch that breaks grouping of items.
+
 2004-09-06  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/util/OrderWriter.java: for tag writing: use

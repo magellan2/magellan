@@ -1229,23 +1229,25 @@ public class CRParser implements RulesIO, GameDataIO {
 
 		sc.getNextToken(); // skip ITEMCATEGORY xx
 
-		while(!sc.eof) {
+		while(!sc.eof && !sc.isBlock) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("name")) {
 				cat.setName(sc.argv[0]);
+				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("naturalorder")) {
 				cat.setSortIndex(Integer.parseInt(sc.argv[0]));
+				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("parent")) {
 				ItemCategory parent = rules.getItemCategory(StringID.create(sc.argv[0]), false);
 				cat.setParent(parent);
+				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("iconname")) {
 				cat.setIconName(sc.argv[0]);
+				sc.getNextToken();
 			} else if(sc.argc == 2) {
 				unknown("ITEMCATEGORY", false);
 			} else {
 				break;
 			}
-
-			sc.getNextToken();
 		}
 	}
 
@@ -1395,13 +1397,11 @@ public class CRParser implements RulesIO, GameDataIO {
 		while(!sc.eof) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("name")) {
 				cat.setName(sc.argv[0]);
-				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("parent")) {
 				AllianceCategory parent = rules.getAllianceCategory(StringID.create(sc.argv[0]), false);
 				cat.setParent(parent);
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("bitmask")) {
 				cat.setBitMask(Integer.parseInt(sc.argv[0]));
-				sc.getNextToken();
 			} else if(sc.argc == 2) {
 				unknown("ALLIANCECATEGORY", true);
 			} else {
