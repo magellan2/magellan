@@ -415,7 +415,12 @@ public abstract class UnitContainer extends DescribedObject implements com.eress
 			if(curUC instanceof Building) {
 				newUC.setType(newGD.rules.getBuildingType(curUC.getType().getID(), true));
 			} else if(curUC instanceof Region) {
-				if (newUC.getType() == null || newUC.getType().equals(RegionType.unknown)) {
+				// pavkovic 2004.01.03: (bugzilla bug 801): overwrite with curUC.getType if
+				// known or newUC.getType is same as "unknown" (this is a miracle to me but
+				// Ulrich has more experiences with "Astralraum" :-)
+				// if (newUC.getType() == null || newUC.getType().equals(RegionType.unknown)) {
+				if (curUC.getType() != null || 
+					(newUC.getType () != null && newUC.getType().equals(RegionType.unknown))) {
 					newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(), true));
 				}
 			} else if(curUC instanceof Ship) {
