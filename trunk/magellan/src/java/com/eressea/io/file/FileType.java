@@ -49,6 +49,8 @@ public class FileType {
 	/** true iff file is readonly. */
 	protected boolean readonly = false;
 
+	protected boolean createBackup = true;
+
 	FileType(String aFile, boolean readonly) throws IOException {
 		if(aFile == null) {
 			throw new IOException();
@@ -68,6 +70,9 @@ public class FileType {
 		this.readonly = readonly;
 	}
 
+	public void setCreateBackup(boolean aCreateBackup) {
+		createBackup = aCreateBackup;
+	}
 	/**
 	 * Tests if an InputStream can be opened for this FileType.
 	 *
@@ -155,8 +160,10 @@ public class FileType {
 		if(readonly) {
 			throw new ReadOnlyException();
 		}
-
-		FileBackup.create(new File(filename));
+		
+		if(createBackup) {
+			FileBackup.create(new File(filename));
+		}
 
 		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream()));
 	}

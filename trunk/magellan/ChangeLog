@@ -1,29 +1,40 @@
+2004-01-27  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/io/file/FileType.java: added boolean to 
+	turn backup creation on/off.
+
+	* src/java/com/eressea/Item.java: added method getRealSkillLevel
+	for writing the real non-maximized value of the skill level.
+
 2004-01-26  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/GameData.java (mergeIt) : added checks
 	for empty GameData collections
 
-2004-01-26    <Ulrich.Kuester@uni-jena.de>
+2004-01-26  Ulrich Kuester  <Ulrich.Kuester@uni-jena.de>
 
-	* ChangeLog: New Renderer SchemeCellRenderer. When activating an
-	astral space region and then changing back to level 0 (normal
-	world), all regions that are schemes of the activated astral
-	space region are marked as long as no new region is activated
-	* Added picture for region type  "Dichter Nebel" (dense nebula)
+	* src/java/com/eressea/swing/map/SchemeCellRenderer: When 
+	activating an astral space region and then changing back to 
+	level 0 (normal world), all regions that are schemes of the 
+	activated astral space region are marked as long as no new 
+	region is activated.
+	
+	* src/res/images: Added picture for region type  
+	"Dichter Nebel" (dense nebula).
 
-2004-01-23    <Ulrich.Kuester@uni-jena.de>
+2004-01-23  Ulrich Kuester  <Ulrich.Kuester@uni-jena.de>
 
-	* Moved skillchart code to com.eressea.skillchart
-	Skillchart code is now part of the regular Magellan
-	code base.
-	* New Feature: GiveOrderDialog (accessible via the context
-	menu of units) now supports an option to keep all comments
-	while replacing all other orders of a set of marked units.
+	* src/java/com/eressea/skillchart: Skillchart code is now 
+	part of the regular Magellan code base.
+	* src/java/com/eressea/swing/GiveOrderDialog: New feature
+	(accessible via the context menu of units) now supports an 
+	option to keep all comments while replacing all other orders 
+	of a set of marked units.
 
 2004-01-15  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
-	* src/java/com/eressea/util/SelfCleaningProperties.java: remove 
-	AgingProperties.
+	* src/java/com/eressea/util/SelfCleaningProperties.java: removed 
+	AgingProperties and its properties.
 
 	* src/java/com/eressea/swing/completion/TempUnitDialog.java: set
 	name from parent unit an mark it (bug 765).

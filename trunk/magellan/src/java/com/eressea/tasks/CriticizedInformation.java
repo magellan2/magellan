@@ -22,9 +22,7 @@ import com.eressea.HasRegion;
  * @version $Revision$
  */
 public class CriticizedInformation extends AbstractProblem implements Problem {
-	/**
-									 *
-									 */
+
 	public CriticizedInformation(Object s, HasRegion o, Inspector i, String m) {
 		super(s, o, i, m);
 	}

@@ -964,8 +964,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 * 
 	 * <p>
 	 * |---1/3---|----1/3---|-1/3------   | 1/3     |          |Name&    1/3 | Overview  | Map
-	 * |Descript.    |         |----------|          |----------| 1/3 History   |
-	 * |Details  1/3 |---------|----------|----------| 1/3 Minimap   | Messages |Commands 1/3
+	 * |Descript.    |         |----------|          |----------| 1/3 History   | |Details  1/3
+	 * |---------|----------|----------| 1/3 Minimap   | Messages |Commands 1/3
 	 * |---------|----------|----------|
 	 * </p>
 	 *

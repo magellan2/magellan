@@ -301,6 +301,10 @@ public class Skill {
 		return Math.max(0, level);
 	}
 
+	public int getRealLevel() {
+		return level;
+	}
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
