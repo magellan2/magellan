@@ -92,6 +92,10 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	// pavkovic 2003.10.01: prevent multiple Lists to be generated for nearly static code
 	private static Map iconNamesLists = CollectionFactory.createHashtable();
 
+	public Item getItem() {
+		return modItem;
+	}
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

@@ -127,6 +127,7 @@ import com.eressea.swing.tree.CellObject;
 import com.eressea.swing.tree.ContextManager;
 import com.eressea.swing.tree.CopyTree;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
+import com.eressea.swing.tree.ItemNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperDrawPolicy;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.PotionNodeWrapper;
@@ -1762,7 +1763,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if(u.getUnitContainer() != null) {
 			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getUnitContainer())));
 		}
-		if(u.getModifiedUnitContainer() != null) {
+		if(u.getModifiedUnitContainer() != null && !u.getModifiedUnitContainer().equals(u.getUnitContainer())) {
 			parent.add(new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getModifiedUnitContainer())));
 		}
 
@@ -1884,47 +1885,32 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(itemsNode);
 			expandableNodes.add(new NodeWrapper(itemsNode, "EMapDetailsPanel.UnitItemsExpanded"));
 
-			// FIXME: use this way to build itemsnode ? 
-			// unitsTools.addCategorizedUnitItems(Collections.singleton(u), itemsNode, null, null, false, nodeWrapperFactory);	
-			for(Iterator items = u.getModifiedItems().iterator(); items.hasNext();) {
-				Item modItem = (Item) items.next();
-				DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(nodeWrapperFactory.createItemNodeWrapper(u,
-																													  modItem));
-
-				// pavkovic 2002.05.21: a try to handle this node as node with children
-				itemsNode.add(itemNode);
-				expandableNodes.add(new NodeWrapper(itemNode,
-													"EMapDetailsPanel.UnitItemsRelationsExpanded"));
-
-				for(Iterator iter = u.getItemTransferRelations(modItem).iterator(); iter.hasNext();) {
-					ItemTransferRelation itr = (ItemTransferRelation) iter.next();
-					String prefix = String.valueOf(itr.amount) + " ";
-					String addIcon = null;
-					Unit u2 = null;
-
-					if(itr.source == u) {
-						addIcon = "get";
-						u2 = itr.target;
-					} else if(itr.target == u) {
-						addIcon = "give";
-						u2 = itr.source;
+			Collection catNodes = unitsTools.addCategorizedUnitItems(Collections.singleton(u), itemsNode, null, null, false, nodeWrapperFactory);	
+			if(catNodes != null) {
+				for(Iterator catIter = catNodes.iterator(); catIter.hasNext();) {
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) catIter.next();
+					Object o = node.getUserObject();
+					ID id = null;
+					if(o instanceof ItemCategoryNodeWrapper) {
+						id = (((ItemCategoryNodeWrapper) o).getItemCategory()).getID();
+					} else {
+						if(o instanceof ItemCategory) {
+							id = ((ItemCategory) o).getID();
+						} else {
+							if(o instanceof ItemNodeWrapper) {
+								id = ((ItemNodeWrapper) o).getItem().getItemType().getID();
+							}
+						}
 					}
-
-					UnitNodeWrapper unw = nodeWrapperFactory.createUnitNodeWrapper(u2, prefix,
-																				   u2.getPersons(),
-																				   u2.getModifiedPersons());
-					unw.setAdditionalIcon(addIcon);
-					unw.setReverseOrder(true);
-
-					//DefaultMutableTreeNode o = new DefaultMutableTreeNode(nodeWrapperFactory.createItemRelationNodeWrapper(u,itr.source,itr.target,itr.amount,getString("node.weightunits")));
-					itemNode.add(new DefaultMutableTreeNode(unw));
+					
+					if(id != null) {
+						expandableNodes.add(new NodeWrapper(node,
+															"EMapDetailsPanel.UnitItems"+id+"Expanded"));
+					}
 				}
-
-				// end pavkovic 2002.05.21
 			}
-
 		}
-
+		
 		// skills
 		boolean isTrader = false;
 		SkillCategory tradeCat = data.rules.getSkillCategory(StringID.create("trade"));
@@ -2219,7 +2205,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																		   u2.getModifiedPersons());
 			unw.setAdditionalIcon(addIcon);
 			unw.setReverseOrder(true);
-			parent.add(new DefaultMutableTreeNode(unw));
+			personNode.add(new DefaultMutableTreeNode(unw));
 		}
 	}
 

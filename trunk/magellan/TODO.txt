@@ -18,13 +18,6 @@ berücksichtigt werden, sollen ja nicht verhungern, wenn die ablegen.
 Logisch, dass ich die Flotte auch mit einem einzigen Befehl ablegen lassen
 will - nicht, dass man nachher noch im ROUTE einen Fehler einbaut.
 
-Danach können wir wegen Handel telefonieren :)
-
-Grüße,
-Helge
-
-
-
 -------------------------------------------------------------------------------
 Track all calls to Eventdispatcher and ensure that the given objects are still
 referenced by the caller to make WeakReference logic work
