@@ -1,5 +1,9 @@
 2004-02-10  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/io/cr/CRParser.java: Automagically add
+	missing faction for "anderepartei" if not in found in the cr
+	(bugzilla bug 794).
+
 	* src/java/com/eressea/swing/context/UnitContextMenu.java: added
 	ShipRoutePlanner to shipowner context menu (bugzilla bug 793).
 
