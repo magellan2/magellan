@@ -1,0 +1,31 @@
+/*
+ * ExtendedPreferencesDialog.java
+ *
+ * Created on 23. April 2002, 16:54
+ */
+
+package com.eressea.swing.preferences;
+
+import java.util.List;
+
+/**
+ * A class that has sub preference dialogs.
+ * 
+ * This is for layout purposes in the preferences dialog. It marks a pref
+ * adapter that has several sub dialogs that should be displayed as sub elements
+ * in the options tree.
+ *
+ * All big preference adapters should use this interface.
+ *
+ * @author  Andreas
+ * @version 
+ */
+public interface ExtendedPreferencesAdapter extends PreferencesAdapter {
+
+	/**
+	 * Returns a list of preferences adapters that should be displayed in the
+	 * given order.
+	 */
+	public List getChildren();
+}
+

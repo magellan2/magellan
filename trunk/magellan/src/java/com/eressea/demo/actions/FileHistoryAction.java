@@ -1,0 +1,57 @@
+// ===
+// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
+// ---
+// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
+// ---
+// $Id$
+// ===
+
+package com.eressea.demo.actions;
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import com.eressea.util.FileHistory;
+
+/**
+ *
+ * @author  Andreas
+ * @version 
+ */
+public class FileHistoryAction extends AbstractAction {
+
+	private File file;
+	private FileHistory history;
+	
+	public FileHistoryAction(FileHistory history,File cr) {
+		file=cr;
+		this.history=history;
+		
+		// format the text
+		StringBuffer path = new StringBuffer();
+		path.append("...").append(File.separatorChar).append(cr.getName());
+		cr = cr.getParentFile();
+		while (cr != null && path.length() + cr.getName().length() < 30) {
+			path.insert(4, File.separatorChar).insert(4, cr.getName());
+			cr = cr.getParentFile();
+		}
+		putValue(Action.NAME ,path.toString());
+	}
+			
+	public void actionPerformed(ActionEvent e) {
+		history.loadFile(file);
+	}
+	
+	public File getFile() {
+		return file;
+	}
+	
+	public boolean equals(Object o) {
+		if (o!=null && o instanceof FileHistoryAction)
+			return file.equals(((FileHistoryAction)o).getFile());
+		return false;
+	}
+}
