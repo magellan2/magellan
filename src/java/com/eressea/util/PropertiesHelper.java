@@ -14,7 +14,7 @@ public class PropertiesHelper {
 	
 	/** 
 	 * Extracts properties by given prefix. If there exists a key called
-	 * <prefix>.count this is used as order
+	 * prefix.count this is used as order
 	 */
 	public static List getList(Properties p, String prefix) {
 		List ret = CollectionFactory.createLinkedList();

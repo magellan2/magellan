@@ -30,6 +30,11 @@ public class Spell extends DescribedObject {
 	public Spell(ID id) {
 		super(id);
 	}
+	
+	// TODO: this is bad, but right now i dont have a better idea
+	public ID getID() {
+		return StringID.create(getName());
+	}
 
 	/**
 	 * Returns the integer serving as the block id in the cr.

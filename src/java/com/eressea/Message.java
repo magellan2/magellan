@@ -120,7 +120,7 @@ public class Message extends Identifiable {
 		if ( id.equalsIgnoreCase("unit") || id.equalsIgnoreCase("target") ) {
 			Unit unit = null;
 			if (attribute != null) {
-				unit = data.getUnit(new UnitID(attribute, 10));
+				unit = data.getUnit(UnitID.createUnitID(attribute, 10));
 			}
 			return unit == null ? null : unit.toString();
 		}

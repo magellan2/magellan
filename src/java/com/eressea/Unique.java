@@ -14,6 +14,5 @@ package com.eressea;
  * different object.
  */
 public interface Unique {
-	public void setID(ID id);
 	public ID getID();
 }

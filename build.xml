@@ -409,6 +409,7 @@
 			destdir="${BUILD}\jalopy">
       <fileset dir="${SRC.MAGELLAN}">
         <include name="**/*.java" />
+        <exclude name="**/apache/**"/>
       </fileset>
     </jalopy>
 	<antcall target="compile.magellan"/>

@@ -60,9 +60,22 @@ public class Loader {
 	 * attaches a ruleset based on the game type in the CR.
 	 * @param fileName The file name to be loaded.
 	 * @return a new <tt>GameData</tt> object filled with the data from the CR.
+	 * @deprecated use new Loader().doLoadCR(fileName) instead
 	 */
 	public static GameData loadCR(String fileName) throws MissingCRException, IOException {
-
+		return new Loader().doLoadCR(fileName);
+	}
+	
+	
+	/** @author Rainer Klaffehn
+	 *  @author Ilja Pavkovic
+	 *  Moved method from com.eressea.demo.Client (including submethods)
+	 * Rewrite of the original method. This version is cleaned up a bit, and
+	 * attaches a ruleset based on the game type in the CR.
+	 * @param fileName The file name to be loaded.
+	 * @return a new <tt>GameData</tt> object filled with the data from the CR.
+	 */
+	public GameData doLoadCR(String fileName) throws MissingCRException, IOException {
 		FileType fileType = FileType.createFileType(fileName);
 		if(log.isDebugEnabled()) {
 			fileType.createReader().close();
@@ -81,14 +94,14 @@ public class Loader {
 		(new CRParser()).read(file, newData);
 		file.close();
 		/* the gamedata is read. now we do the necessary post processing. */
-		Loader.postProcess(newData);
+		postProcess(newData);
 		return newData;
 	}
 
 	/**
 	 * Returns the game's name of the specified computer report.
 	 */
-	private static String getGameName(Reader report) {
+	private String getGameName(Reader report) {
 		Map headerMap = CollectionFactory.createHashMap();
 		try {
 			headerMap = (new CRParser()).readHeader(report);
@@ -107,7 +120,8 @@ public class Loader {
 	 * Loads the Eressea rules from the file rules.cr and adds it
 	 * to the current game data.
 	 */
-	private static void loadRules(GameData _data) {
+/*
+	private void loadRules(GameData _data) {
 		URL url = ResourcePathClassLoader.getResourceStatically("rules/rules.cr");
 		if (url != null) {
 			try {
@@ -122,6 +136,7 @@ public class Loader {
 		}
 	}
 
+*/
 	/** @author Rainer Klaffehn
 	 * Read a rule file given by the specific name. This allows us to have
 	 * separate rule files for different games. If a specific rule file
@@ -129,7 +144,7 @@ public class Loader {
 	 * @param name The name of the game, for which we want a rule file.
 	 * @return the ruleset object.
 	 */
-	private static Rules loadRules(String name) {
+	private Rules loadRules(String name) {
 		log.debug("loading rules for \""+name+"\"");
 		URL url = ResourcePathClassLoader.getResourceStatically("rules/" + name.toLowerCase() + ".cr");
 		if (url != null) {
@@ -177,7 +192,7 @@ public class Loader {
 	 *
 	 * @param data the GameData object to process.
 	 */
-	private static void postProcess(GameData data) {
+	private void postProcess(GameData data) {
 		/* scan the messages for additional information */
 		if (data != null && data.factions() != null) {
 			for (Iterator factions = data.factions().values().iterator(); factions.hasNext(); ) {
@@ -359,9 +374,9 @@ public class Loader {
 	}
 
 	/** 
-	 * this method creates a clone of the gamedata using CRWriter/CRParser 
+	 * Creates a clone of the GameData using CRWriter/CRParser 
 	 */
-	public static GameData cloneGameData(GameData data) throws CloneNotSupportedException {
+	public GameData doCloneGameData(GameData data) throws CloneNotSupportedException {
 		try {
 			File tempFile = CopyFile.createCrTempFile();
 			tempFile.deleteOnExit();
@@ -380,5 +395,13 @@ public class Loader {
 			log.error("Loader.cloneGameData failed!",ioe);
 			throw new CloneNotSupportedException();
 		}
+	}
+		
+	/** 
+	 * Creates a clone of the GameData using CRWriter/CRParser 
+	 * @deprecated use new Loader().doCloneGameData(data) instead
+	 */
+	public static GameData cloneGameData(GameData data) throws CloneNotSupportedException {
+		return new Loader().doCloneGameData(data);
 	}
 }

@@ -16,7 +16,6 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 
 public class EresseaOrderChanger implements OrderChanger {
-	//private final static Logger log = Logger.getInstance(EresseaOrderChanger.class);
 
 	private EresseaOrderChanger() {
 	}
@@ -25,8 +24,6 @@ public class EresseaOrderChanger implements OrderChanger {
 	public static EresseaOrderChanger getSingleton() {
 		return singleton;
 	}
-
-
 
 	public void addNamingOrder(Unit unit, String name) {
 		String order = createNamingOrder(name);
@@ -186,5 +183,5 @@ public class EresseaOrderChanger implements OrderChanger {
 			}
 		}
 		unit.addOrders(orders);
-}
+	}
 }

@@ -39,9 +39,9 @@ abstract public class GameData implements Cloneable {
 	private final static Logger log = Logger.getInstance(GameData.class);
 
 	/** Game specific and usually fixed data (like races etc.). */
-	final public Rules rules;
+	public final Rules rules;
 	/** The name of the game. */
-	final public String name;
+	public final String name;
 	/**
 	 * The current TempUnit-ID. This means, if a new TempUnit is
 	 * created, it's suggested ID is usually curTempID and if this
@@ -266,7 +266,7 @@ abstract public class GameData implements Cloneable {
 	public Spell getSpell(ID id) {
 		return spells() == null ? null : (Spell) spells().get(id);
 	}
-	
+
 	/**
 	 * Retrieve a potion from potions() by id.
 	 *
@@ -577,11 +577,10 @@ abstract public class GameData implements Cloneable {
 					Battle b = (Battle)battles.next();
 					// currently the coordinate can overwritten, it
 					// does not serve as key in any map
-					Coordinate org = (Coordinate)b.getID();
-					Coordinate newCoord = new Coordinate(org);
+					Coordinate newCoord = (Coordinate)b.getID();
+					// we dont need to copy the coordinate as they are mutable
 					newCoord.x -= origin.x;
 					newCoord.y -= origin.y;
-					b.setID(newCoord);
 				}
 			}
 		}
