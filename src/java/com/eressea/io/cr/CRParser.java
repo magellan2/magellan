@@ -1597,6 +1597,9 @@ public class CRParser implements RulesIO, GameDataIO {
 				faction.allies = parseAlliance(faction.allies); // newer syntax
 			} else if(sc.isBlock && sc.argv[0].equals("ADRESSEN")) {
 				parseAdressen();
+			} else if(sc.isBlock && sc.argv[0].equals("GEGENSTAENDE")) {
+				// FIXME: This only prevents the bug but the faction item pool will be lost!
+				parseItems(null);
 			} else if(sc.isBlock && sc.argv[0].equals("OPTIONEN")) {
 				// ignore this block, if there are options, they are
 				// encoded as a bit field whereas these string
@@ -1759,18 +1762,20 @@ public class CRParser implements RulesIO, GameDataIO {
 	 * Does not delete existing items.
 	 */
 	private void parseItems(Unit unit) throws IOException {
+		/*
 		if(unit == null) {
 			invalidParam("parseItems", "unit is null");
 
 			return;
-		}
+			}
+		*/
 
 		sc.getNextToken(); // skip GEGENSTAENDE
 
 		while(!sc.eof && (sc.argc == 2)) {
 			Item item = new Item(world.rules.getItemType(StringID.create(sc.argv[1]), true),
 								 Integer.parseInt(sc.argv[0]));
-			unit.addItem(item);
+			if(unit != null) { unit.addItem(item); }
 			sc.getNextToken();
 		}
 	}

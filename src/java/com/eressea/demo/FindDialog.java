@@ -703,19 +703,17 @@ public class FindDialog extends InternationalizedDataDialog
 		if(item instanceof Unit) {
 			Unit u = (Unit) item;
 
-			if(u.items != null) {
-				for(Iterator iterator = u.items.values().iterator(); iterator.hasNext();) {
-					String name = getName(((Item) iterator.next()).getItemType());
-
-					if(name != null) {
-						name = name.toLowerCase();
-
-						for(Iterator iter = patterns.iterator(); iter.hasNext();) {
-							if(name.indexOf((String) iter.next()) > -1) {
-								retVal = true;
-
-								break;
-							}
+			for(Iterator iterator = u.getItems().iterator(); iterator.hasNext();) {
+				String name = getName(((Item) iterator.next()).getItemType());
+				
+				if(name != null) {
+					name = name.toLowerCase();
+					
+					for(Iterator iter = patterns.iterator(); iter.hasNext();) {
+						if(name.indexOf((String) iter.next()) > -1) {
+							retVal = true;
+							
+							break;
 						}
 					}
 				}
