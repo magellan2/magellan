@@ -1,0 +1,96 @@
+/*
+ * DefaultReplacerFactory.java
+ *
+ * Created on 20. Mai 2002, 15:49
+ */
+
+package com.eressea.util.replacers;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *
+ * @author  Andreas
+ * @version
+ */
+public class DefaultReplacerFactory implements ReplacerFactory {
+	
+	protected Map replacers;
+	
+	/** Creates new DefaultReplacerFactory */
+	public DefaultReplacerFactory() {
+		replacers = new HashMap();
+	}
+	
+	public void putReplacer(String name, Class repClass, Object args[]) {
+		putReplacer(name, repClass);
+		if (args != null) {
+			setArguments(name, args);
+		}
+	}
+	
+	public void putReplacer(String name, Class repClass, Object arg) {
+		putReplacer(name, repClass);
+		if (arg != null) {
+			setArguments(name, arg);
+		}
+	}
+	
+	public void putReplacer(String name, Class repClass) {
+		replacers.put(name, new ReplacerInfo(repClass));
+	}
+	
+	public void setArguments(String name, Object arg) {
+		Object args[] = new Object[1];
+		args[0] = arg;
+		setArguments(name, args);
+	}
+	
+	public void setArguments(String name, Object args[]) {
+		Object argCopy[] = new Object[args.length];
+		System.arraycopy(args, 0, argCopy, 0, argCopy.length);
+		((ReplacerInfo)replacers.get(name)).setArgs(argCopy);
+	}
+	
+	public Replacer createReplacer(String name) {
+		ReplacerInfo repInfo = (ReplacerInfo)replacers.get(name);
+		try{
+			if (repInfo.args == null) {
+				return (Replacer)repInfo.replacerClass.newInstance();
+			}
+			return (Replacer)repInfo.replacerClass.getConstructor(repInfo.argClasses).newInstance(repInfo.args);
+		}catch(Exception exc) {}
+		return null;
+	}
+	
+	public boolean isReplacer(String name) {
+		return replacers.containsKey(name);
+	}
+	
+	public java.util.Set getReplacers() {
+		return replacers.keySet();
+	}
+	
+	protected class ReplacerInfo {
+		Class replacerClass;
+		Object args[] = null;
+		Class argClasses[] = null;
+		public ReplacerInfo(Class repClass) {
+			replacerClass = repClass;
+		}
+		public void setArgs(Object arg[]) {
+			args = arg;
+			argClasses = new Class[args.length];
+			for(int i = 0; i<argClasses.length; i++) {
+				if (args[i] instanceof Integer) {
+					argClasses[i] = int.class;
+				} else if (args[i] instanceof Boolean) {
+					argClasses[i] = boolean.class;
+				} else {
+					argClasses[i] = args[i].getClass();
+				}
+			}
+		}
+	}
+}

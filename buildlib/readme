@@ -1,0 +1,15 @@
+This directory contains all libraries or class files necessary 
+for compiling Magellan. 
+
+ant.jar           Ant is the scripting tool which is used to build Fop or to run 
+                  the test scripts. see build.xml in root for more information
+                  Also has the XSLT liaison classes
+                  org.apache.tools.ant.taskdefs.optional.*Liaison
+                  added which are needed for the style task.
+
+xalan-*.jar       XSLT processor from xml.apache.org
+version 2.4.1
+
+xercesImpl-*.jar  XML parser from xml.apache.org
+version 2.2.1
+
