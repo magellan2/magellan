@@ -245,7 +245,9 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 	}
 
 	public void setCurrentGUI(CompletionGUI cGUI) {
-		log.debug("AutoCompletion.setCurrentGUI called with"+cGUI);
+		if(log.isDebugEnabled()) {
+			log.debug("AutoCompletion.setCurrentGUI called with "+cGUI);
+		}
 		if (!completionGUIs.contains(cGUI))
 			addCompletionGUI(cGUI);
 		if (currentGUI!=null)

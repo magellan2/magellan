@@ -68,8 +68,9 @@ import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FixedWidthWriter;
-import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.OrderWriter;
+import com.eressea.util.PropertiesHelper;
+import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
@@ -381,7 +382,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	}
 
 	private Container getFilePanel() {
-		cmbOutputFile = new JComboBox(getList(settings.getProperty("OrderWriter.outputFile", "")).toArray());
+		cmbOutputFile = new JComboBox(PropertiesHelper.getList(settings,"OrderWriter.outputFile").toArray());
 		cmbOutputFile.setEditable(true);
 		JButton btnOutputFile = new JButton("...");
 		btnOutputFile.addActionListener(new ActionListener() {
@@ -535,7 +536,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	private void storeSettings() {
 		settings.setProperty("OrderWriterDialog.x", getX() + "");
 		settings.setProperty("OrderWriterDialog.y", getY() + "");
-		settings.setProperty("OrderWriter.outputFile", getString(cmbOutputFile));
+		PropertiesHelper.setList(settings, "OrderWriter.outputFile", getNewOutputFiles(cmbOutputFile));
 		if (chkFixedWidth.isSelected() == true) {
 			try {
 				settings.setProperty("OrderWriter.fixedWidth", Integer.parseInt(txtFixedWidth.getText()) + "");
@@ -576,27 +577,15 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		}
 	}
 
-	private String getString(JComboBox combo) {
-		StringBuffer sb = new StringBuffer();
+	private List getNewOutputFiles(JComboBox combo) {
+		List ret = CollectionFactory.createArrayList(combo.getItemCount()+1);
 		if (combo.getSelectedIndex() == -1) {
-			sb.append((String)combo.getEditor().getItem()).append("|");
+			ret.add(combo.getEditor().getItem());
 		}
 		for (int i = 0; i < Math.min(combo.getItemCount(), 6); i++) {
-			if (i > 0) {
-				sb.append("|");
-			}
-			sb.append((String)combo.getItemAt(i));
+			ret.add(combo.getItemAt(i));
 		}
-		return sb.toString();
-	}
-
-	private List getList(String str) {
-		List retVal = CollectionFactory.createLinkedList();
-		StringTokenizer t = new StringTokenizer(str, "|");
-		while (t.hasMoreElements() == true) {
-			retVal.add(t.nextElement());
-		}
-		return retVal;
+		return ret;
 	}
 
 	private void quit( boolean bStoreSettings ) {

@@ -9,7 +9,9 @@
 package com.eressea.swing.completion;
 
 
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 import javax.swing.Action;
 import javax.swing.text.BadLocationException;
@@ -26,8 +28,12 @@ import javax.swing.text.Utilities;
  */
 
 public class OrderEditorKit extends StyledEditorKit {
+	
+	public final static String copyLineActionKeyStroke = "ctrl shift C";
+	public final static String copyLineAction = "copy-line-to-clipboard";
 
 	private static final Action[] defaultActions = {
+		new CopyLineAction(), 
 		new PreviousWordAction(previousWordAction, false),         // CTRL-Left
 		new NextWordAction(nextWordAction, false),                 // CTRL-Right
 		new PreviousWordAction(selectionPreviousWordAction, true), // CTRL-Left selected
@@ -50,6 +56,30 @@ public class OrderEditorKit extends StyledEditorKit {
 		return TextAction.augmentList(super.getActions(), OrderEditorKit.defaultActions);
 	}
 
+	public static class CopyLineAction extends TextAction {
+		public CopyLineAction() {
+			super(copyLineAction);
+		}
+		
+		/** The operation to perform when this action is triggered. */
+		public void actionPerformed(ActionEvent e) {
+			JTextComponent target = getTextComponent(e);
+			int caret = target.getCaretPosition();
+			String text = target.getText();
+			
+			int from = text.substring(0, caret).lastIndexOf("\n")+1;
+			
+			int to = text.indexOf("\n", caret);
+			if (to == -1) {
+				to = text.length();
+			}
+			
+			String toCopy = text.substring(from, to);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
+		}
+
+	}
+	
 	public static class NextWordAction extends TextAction {
 		private boolean select;
 

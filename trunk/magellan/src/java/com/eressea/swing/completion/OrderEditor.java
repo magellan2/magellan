@@ -9,8 +9,8 @@ package com.eressea.swing.completion;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -35,7 +35,12 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+import javax.swing.undo.UndoManager;
+
+import javax.swing.KeyStroke;
 import javax.swing.JTextPane;
+import javax.swing.Timer;
+import javax.swing.SwingUtilities;
 
 import com.eressea.GameData;
 import com.eressea.Unit;
@@ -76,12 +81,12 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 	private boolean ignoreModifications = false;
 	private EventDispatcher dispatcher = null;
 	private GameData data = null;
-	private javax.swing.undo.UndoManager undoMgr = null;
+	private UndoManager undoMgr = null;
 	private DocumentUpdateRunnable docUpdateThread = new DocumentUpdateRunnable(null); // keep this udpate runnable instead of re-creating it over and over again
 
 	private OrderEditorCaret myCaret = null;
 
-	public OrderEditor(GameData data, Properties settings, javax.swing.undo.UndoManager _undoMgr, EventDispatcher d) {
+	public OrderEditor(GameData data, Properties settings, UndoManager _undoMgr, EventDispatcher d) {
 		super();
 		// pavkovic 2002.11.11: use own caret for more logical refreshing
 		myCaret = new OrderEditorCaret();
@@ -91,21 +96,25 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 		// for new DefaultEditorKit
 		setEditorKit(new OrderEditorKit());
 		this.settings = settings;
-		if (data != null) {
-			this.parser = new OrderParser((Eressea)data.rules);
-		} else {
-			this.parser = new OrderParser(null);
-		}
-		undoMgr = _undoMgr;
+
+		this.parser = new OrderParser(data != null ? (Eressea)data.rules : null);
+		
+		this.undoMgr = _undoMgr;
+		
 		this.dispatcher = d;
 		this.dispatcher.addGameDataListener(this);
+
 		highlightSyntax = (new Boolean(settings.getProperty("OrderEditor.highlightSyntax", "true")).booleanValue());
+
 		getDocument().addDocumentListener(this);
+
 		SignificantUndos sigUndos = new SignificantUndos();
 		getDocument().addUndoableEditListener( sigUndos );
 		getDocument().addDocumentListener( sigUndos );
+
 		addKeyListener(this);
 		addFocusListener(this);
+
 		dispatcher.addUnitOrdersListener(new UnitOrdersListener() {
 				public void unitOrdersChanged(UnitOrdersEvent e) {
 					// refresh local copy of orders in editor
@@ -115,27 +124,25 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 				}
 			});
 		initStyles();
-	}
 
-	/**
-	 * This is just to be able to access data out of anonymous classes
-	 * without declaring it as final.
-	 */
-	private GameData getData() {
-		return data;
+		//bind ctrl-shift C to OrderEditor
+		super.getInputMap().put(KeyStroke.getKeyStroke(OrderEditorKit.copyLineActionKeyStroke),
+								OrderEditorKit.copyLineAction);
+		//if(log.isDebugEnabled()) {
+		//	if(!swingInspected) {
+		//		swingInspected = true;
+		//		log.debug("KEYBINDING FOR OrderEditor:\n"+
+		//				  com.eressea.util.logging.SwingInspector.printKeybindings(this));
+		//	}
+		//}
 	}
+	//private boolean swingInspected;
 
 	public void changedUpdate(DocumentEvent e) {
 	}
 
 	public void insertUpdate(DocumentEvent e) {
-		if (ignoreModifications) {
-			return;
-		}
-		setModified(true);
-		dispatcher.fire(new UnitOrdersEvent(this, unit));
-		docUpdateThread.setEvent(e);
-		javax.swing.SwingUtilities.invokeLater(docUpdateThread);
+		removeUpdate(e);
 	}
 
 	public void removeUpdate(DocumentEvent e) {
@@ -143,9 +150,28 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 			return;
 		}
 		setModified(true);
-		dispatcher.fire(new UnitOrdersEvent(this, unit));
+		fireDelayedOrdersEvent();
 		docUpdateThread.setEvent(e);
-		javax.swing.SwingUtilities.invokeLater(docUpdateThread);
+		SwingUtilities.invokeLater(docUpdateThread);
+	}
+
+	Timer timer =null;
+	/*
+	 * Timer support routine for informing other objects about
+	 * changed orders.
+	 */
+	private void fireDelayedOrdersEvent() {
+		if(timer == null) {
+			timer = new Timer(700,new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setOrdersAndFireEvent();
+						//dispatcher.fire(new UnitOrdersEvent(OrderEditor.this,unit));
+					}
+				});
+			timer.setRepeats(false);
+		}
+		// always restart to prevent refreshing while moving around
+		timer.restart();
 	}
 
 	/**
@@ -173,26 +199,11 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 
 	public void keyPressed(KeyEvent e) {
 		if (unit != null && (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE)) {
-			// TODO: refreshRelations hier noch notwendig?
-			OrderEditor.this.unit.refreshRelations();
+			setOrdersAndFireEvent();
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			int mask = KeyEvent.SHIFT_MASK | KeyEvent.CTRL_MASK;
 			if (e.getModifiers() == mask) {
-				String toCopy = null;
-				int caret = this.getCaretPosition();
-				String text = this.getText().substring(0, caret);
-				int pos1 = text.lastIndexOf("\n");
-				if (pos1 == -1) {
-					pos1 = 0;
-				} else if (pos1 > 0) {
-					pos1++; // to avoid copying the "\n"
-				}
-				int pos2 = this.getText().indexOf("\n", caret);
-				if (pos2 == -1) {
-					pos2 = this.getText().length();
-				}
-				toCopy = this.getText().substring(pos1, pos2);
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
+				// moved to ordereditorkit!
 			}
 		}
 	}
@@ -209,7 +220,7 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 	public void focusLost(FocusEvent e) {
 		setOrdersAndFireEvent();
 	}
-
+	
 	private void setOrdersAndFireEvent() {
 		if (isModified() && unit != null) {
 			// this is done on purpose: in init of UnitOrdersEvent the list of related units is built
@@ -218,7 +229,6 @@ public class OrderEditor extends JTextPane implements DocumentListener, KeyListe
 			unit.setOrders(getOrders());
 			dispatcher.fire(e);
 		}
-
 	}
 	
 	/**

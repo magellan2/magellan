@@ -14,7 +14,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -24,6 +26,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.eressea.util.Bucket;
+import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
 
 public class HistoryAccessory extends JPanel {
 	protected Properties settings = null;
@@ -35,10 +39,9 @@ public class HistoryAccessory extends JPanel {
 		this.chooser = fileChooser;
 		
 		// load history fifo buffer
-		String hist = settings.getProperty("DirectoryHistory", "");
-		StringTokenizer st = new StringTokenizer(hist, "|");
-		while (st.hasMoreTokens()) {
-			File dir = new File(st.nextToken());
+		for(Iterator iter = PropertiesHelper.getList(settings,"HistoryAccessory.directoryHistory").iterator(); iter.hasNext(); ) {
+			String dirName = (String) iter.next();
+			File dir = new File(dirName);
 			if (dir.exists() && dir.isDirectory()) {
 				history.add(new DirWrapper(dir));
 			}
@@ -92,11 +95,12 @@ public class HistoryAccessory extends JPanel {
 	protected void approveSelection() {
 		history.add(new DirWrapper(chooser.getSelectedFile().getParentFile()));
 		
-		StringBuffer sb = new StringBuffer();
+		List dirs = CollectionFactory.createArrayList(7);
 		for (Iterator iter = history.iterator(); iter.hasNext();) {
-			sb.insert(0, '|').insert(0, ((DirWrapper)iter.next()).getDirectory().getAbsolutePath());
+			dirs.add(((DirWrapper)iter.next()).getDirectory().getAbsolutePath());
 		}
-		settings.setProperty("DirectoryHistory", sb.toString());
+		Collections.reverse(dirs);
+		PropertiesHelper.setList(settings,"HistoryAccessory.directoryHistory", dirs);
 	}
 }
 

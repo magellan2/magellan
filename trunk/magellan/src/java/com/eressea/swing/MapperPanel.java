@@ -663,10 +663,8 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 						timer = new Timer(200,MapperPanel.this);
 						timer.setRepeats(false);
 					}
-					timer.setDelay(200);
-					if(timer.isRunning() == false) {
-						timer.start();
-					}
+					// always restart to prevent refreshing while moving around
+					timer.restart();
 				}
 			});
 		
