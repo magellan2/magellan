@@ -866,15 +866,16 @@ public class GenericRules implements Rules {
 			return ot;
 		}
 
-		ot = changeName(id, name, mapAllianceCategory, mapAllianceCategoryNames);
-		if(ot != null) {
-			return ot;
-		}
+// pavkovic 2004.03.17: Don't change the name of alliance and option category
+// 		ot = changeName(id, name, mapAllianceCategory, mapAllianceCategoryNames);
+// 		if(ot != null) {
+// 			return ot;
+// 		}
 		
-		ot = changeName(id, name, mapOptionCategory, mapOptionCategoryNames);
-		if(ot != null) {
-			return ot;
-		}
+// 		ot = changeName(id, name, mapOptionCategory, mapOptionCategoryNames);
+// 		if(ot != null) {
+// 			return ot;
+// 		}
 		
 		ot = changeName(id, name, mapItemCategory, mapItemCategoryNames);
 		if(ot != null) {

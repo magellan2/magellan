@@ -36,8 +36,7 @@ import com.eressea.util.logging.Logger;
  * @version $Revision$
  */
 public class XMLRulesIO implements RulesIO {
-	/** TODO: DOCUMENT ME! */
-	public static final Logger log = Logger.getInstance(XMLRulesIO.class);
+	private static final Logger log = Logger.getInstance(XMLRulesIO.class);
 
 	/**
 	 * TODO: DOCUMENT ME!

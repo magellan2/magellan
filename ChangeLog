@@ -1,3 +1,8 @@
+2004-03-18  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/rules/GenericRules.java: Make alliance
+	and option categories not translateable for now.
+
 2004-03-16  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/gamebinding/eressea/EresseaMovementEvaluator.java: 
