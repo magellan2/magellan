@@ -2598,6 +2598,13 @@ public class CRParser implements RulesIO, GameDataIO {
 				break;
 			}
 		}
+		// add scheme region as a normal region with unknown region type
+		if (world.getRegion(c) == null) {
+			Region newRegion = new Region(c, world);
+			newRegion.setType(RegionType.unknown);
+			newRegion.setName(scheme.getName());
+			world.addRegion(newRegion);
+		}
 	}
 
 	/**

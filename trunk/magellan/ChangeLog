@@ -1,5 +1,11 @@
 2004-01-29    <Ulrich.Kuester@uni-jena.de>
 
+	*  Schemes are no fully interpreted. Scheme regions are added
+	to the game data as regions with unknown (unbekannt) region 
+	type.
+
+2004-01-29    <Ulrich.Kuester@uni-jena.de>
+
 	* FactionStatsDialog doesn't crash any longer when 
 	jfreechart.jar is not in classpath
 
