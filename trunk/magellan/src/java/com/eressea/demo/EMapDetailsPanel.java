@@ -545,16 +545,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	/**
 	 * shows a tree:
-	 * Terrain  : <region.type>
-	 * Coordinates  : <region.coordinates>
-	 * <guarding units>
+	 * Terrain  : region.type
+	 * Coordinates  : region.coordinates
+	 * guarding units
 	 * (Orc Infestination)
-	 * (<resources>)
-	 * (<peasants>)
-	 * (<luxuries>)
-	 * (<schemes>)
-	 * (<comments>)
-	 * (<tags>)
+	 * (resources)
+	 * (peasants)
+	 * (luxuries)
+	 * (schemes)
+	 * (comments)
+	 * (tags)
 	 *
 	 */
 	private void appendRegionInfo(Region r, DefaultMutableTreeNode parent, Collection expandableNodes) {
@@ -612,10 +612,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	/**
 	 * this function adds a node with subnodes to given parent
-	 * - Peasants: <amount> / <max amount>
-	 *   recruit: <recruit amount> of <recruit amount>
-	 *   silver: <silver>
-	 *   surplus: <surplus>
+	 * - Peasants: amount / max amount
+	 *   recruit: recruit amount of recruit amount
+	 *   silver: silver
+	 *   surplus: surplus
 	 *   wage:
 	 *   entertain:
 	 */
@@ -1897,17 +1897,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * sets the ship name        editable
 	 * sets the ship description editable
 	 * shows a tree:
-	 * (Type  : <ship.type>)
-	 * (Completion : x % (<y>/<z>))
-	 * (Coast : <ship.direction>)  (if completed)
+	 * (Type  : ship.type)
+	 * (Completion : x % (y/z))
+	 * (Coast : ship.direction)  (if completed)
 	 * (Range : node.range	 *
 	 * (- components)
 	 * Back
 	 *
 	 * - ingredients:
-	 *   1.<name>
+	 *   1.name
 	 *   ...
-	 *   n.<name>
+	 *   n.name
 	 *
 	 */
 	private void showShip(Ship s) {
@@ -2088,9 +2088,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * sets the border name        not editable
 	 * sets the border description not editable
 	 * shows a tree:
-	 * Type  : <border.type>
-	 * Direction : <border.direction>
-	 * (Completion: <border.buildration> % (<needed stones> of <all stones>)
+	 * Type  : border.type
+	 * Direction : border.direction
+	 * (Completion: border.buildration % (needed stones of all stones)
 	 */
 	private void showBorder(com.eressea.Border b) {
 		setNameAndDescription("", "", false);
@@ -2115,9 +2115,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * sets the spells name        not editable
 	 * sets the spells description not editable
 	 * shows a tree:
-	 * Type  : <spell.type>
-	 * Level : <spell.level>
-	 * Rank  : <spell.rank>
+	 * Type  : spell.type
+	 * Level : spell.level
+	 * Rank  : spell.rank
 	 * (Ship spells)
 	 * (Distance spells)
 	 * (Distance spells)
@@ -2125,9 +2125,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * Back
 	 *
 	 * - ingredients:
-	 *   1.<name>
+	 *   1.name
 	 *   ...
-	 *   n.<name>
+	 *   n.name
 	 *
 	 */
 	private void showSpell(Spell s, Object backTarget) {
@@ -2184,14 +2184,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * sets the potions name        not editable
 	 * sets the potions description not editable
 	 * shows a tree:
-	 * Level : <potion.level>
-	 * + ingredients (only if |potion.ingredients| > 0)
+	 * Level : potion.level
+	 * + ingredients (only if |potion.ingredients| &gt; 0)
 	 * Back
 	 *
 	 * - ingredients:
-	 *   1.<name>
+	 *   1.name
 	 *   ...
-	 *   n.<name>
+	 *   n.name
 	 *
 	 */
 	private void showPotion(Potion p, Object backTarget) {

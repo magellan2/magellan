@@ -460,7 +460,7 @@ public class CRParser {
 		while (!sc.eof && sc.isBlock && sc.argv[0].startsWith("ZAUBER ")) {
 			ID id = IntegerID.create(sc.argv[0].substring(7).trim());
 			// not adding spell immediately is required here, please do not change this, unless you really know, what you're doing!
-			Spell spell = new Spell(null);
+			Spell spell = new Spell(id);
 			spell.setBlockID(((IntegerID)id).intValue());
 			sc.getNextToken();  // skip ZAUBER nr
 			while (!sc.eof) {
@@ -516,7 +516,7 @@ public class CRParser {
 			}
 
 			if (spell.getName() != null) {
-				spell.setID(StringID.create(spell.getName()));
+				// spell.setID(StringID.create(spell.getName()));
 				world.addSpell(spell);
 			}
 		}

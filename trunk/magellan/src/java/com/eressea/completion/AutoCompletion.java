@@ -701,7 +701,7 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 			 * AutoCompletion.SelfDefinedCompletion.count=<tt>number of self defined completions</tt>
 			 * AutoCompletion.SelfDefinedCompletion.name<tt>number</tt>=<tt>name of this completion</tt>
 			 * AutoCompletion.SelfDefinedCompletion.value<tt>number</tt>=<tt>value of this completion</tt>
-			 * where 0 <= <tt>number</tt> < AutoCompletion.SelfDefinedCompletion.count
+			 * where 0 &lt;= <tt>number</tt> &lt; AutoCompletion.SelfDefinedCompletion.count
 			 */
 
 			// make a copy of the self defined completions that will be

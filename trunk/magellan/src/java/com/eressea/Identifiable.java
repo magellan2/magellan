@@ -15,27 +15,19 @@ package com.eressea;
  */
 public abstract class Identifiable extends Object implements Unique, Comparable, Cloneable {
 	/**
-	 * The object imposing the unique identifiability.
+	 * The object imposing the unique identifiability. 
+	 * This is immutable.
 	 */
-	protected ID id = null;
+	protected final ID id;
 	
 	/**
 	 * Creates a new identifiable object with the specified id.
 	 */
 	public Identifiable(ID id) {
-		setID(id);
-	}
-	
-	/**
-	 * This method allows to set the id of an uniquely identifiable
-	 * object even after object creation. It should be use with care
-	 * as ids are often used as map keys or similar objects and
-	 * changing them will have non-obvious side effects.
-	 */
-	public void setID(ID id) {
+		if(id == null) throw new NullPointerException();
 		this.id = id;
 	}
-	
+		
 	/**
 	 * Returns the id uniquely identifying this object.
 	 */
@@ -49,9 +41,7 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 	 * this.getID() != this.clone().getID()
 	 */
 	public Object clone() throws CloneNotSupportedException {
-		Identifiable i = (Identifiable)super.clone();
-		i.setID((ID)this.getID().clone());
-		return i;
+		return super.clone();
 	}
 	
 	/**

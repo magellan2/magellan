@@ -9,17 +9,30 @@ import com.eressea.completion.CompleterSettingsProvider;
 public interface GameSpecificStuff {
 
 	// for Unit
+	/** 
+	 * Delivers a game specific RelationFactory
+	 */
 	public RelationFactory getRelationFactory();
+
+	/** 
+	 * Delivers a game specific MovementEvaluator
+	 */
 	public MovementEvaluator getMovementEvaluator();
 
-	// for EMapDetailsPanel
+	/** 
+	 * Delivers a game specific OrderChanger
+	 */
 	public OrderChanger    getOrderChanger();
 
-	// public 
+
+	/** 
+	 * Delivers a game specific OrderParser
+	 */
 	public OrderParser getOrderParser(Rules rules);
-	// public OrderWriter getOrderReader();
-	// public OrderWriter getOrderWriter();
-	
+
+	/** 
+	 * Delivers a game specific Completer
+	 */
 	public Completer getCompleter(GameData data, CompleterSettingsProvider csp);
 
 }

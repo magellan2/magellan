@@ -344,7 +344,9 @@ public class TradeOrganizer extends InternationalizedDataDialog implements Selec
 		sell.sort();
 	}
 
-	/** functions returns false if price < 0 or price/itemtype.getResources("Silber") < minSellMultiplier */ 
+	/** 
+	 * Returns false iff price &lt; 0 or price/itemtype.getResources("Silber") &lt; minSellMultiplier 
+	 */ 
 	private boolean checkPrice(LuxuryPrice price) {
 		if(price.getPrice() > 0) {
 			Item luxuryPrice = price.getItemType().getResource(StringID.create("Silber"));

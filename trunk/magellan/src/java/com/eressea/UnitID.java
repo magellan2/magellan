@@ -36,15 +36,6 @@ public class UnitID extends EntityID {
 		super(i);
 	}
 
-	/**
-	 * Constructs a new IntegerID object by parsing the specified
-	 * string for an integer with a representation in the specified
-	 * radix.
-	 */
-	protected UnitID(String s, int radix) {
-		super(valueOf(s, radix));
-	}
-
 	/** a static cache to use this class as flyweight factory */
 	private static Map idMap = CollectionFactory.createHashMap();
 	
