@@ -3,7 +3,7 @@ package com.eressea.gamebinding.eressea;
 import com.eressea.ID;
 import com.eressea.StringID;
 
-public final class EresseaConstants {
+public class EresseaConstants {
 	public static final ID OPT_AUSWERTUNG   = StringID.create("AUSWERTUNG");
 	public static final ID OPT_COMPUTER     = StringID.create("COMPUTER");
 	public static final ID OPT_ZUGVORLAGE   = StringID.create("ZUGVORLAGE");
@@ -210,4 +210,6 @@ public final class EresseaConstants {
 	public static final ID I_HORSE                = StringID.create("Pferd");
 	public static final ID I_CART                 = StringID.create("Wagen");
 
+	public static final ID RT_OCEAN               = StringID.create("Ozean");
+	public static final ID B_LIGHTTOWER           = StringID.create("Leuchtturm");
 }

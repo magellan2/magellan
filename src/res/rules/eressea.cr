@@ -1632,9 +1632,10 @@ REGIONTYPE "Wald"
 10000;maxworkers
 50;roadstones
 
-REGIONTYPE "Ozean"
+REGIONTYPE "Ozean"	
 "Ozean";name
 0;maxworkers
+"true";isOcean
 
 REGIONTYPE "Feuerwand"
 "Feuerwand";name

@@ -14,14 +14,14 @@ import java.util.Map;
 
 import com.eressea.cr.Loader;
 import com.eressea.gamebinding.GameSpecificStuff;
-import com.eressea.gamebinding.eressea.EresseaSpecificStuff;
+import com.eressea.gamebinding.GameSpecificStuffProvider;
+import com.eressea.io.file.FileType;
 import com.eressea.rules.Date;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.MessageType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Regions;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -174,14 +174,18 @@ abstract public class GameData implements Cloneable {
 	 */
 	abstract public Map translations();
 
-	public GameData(Rules r) {
-		this(r,"default");
+	public GameData(Rules _rules) {
+		this(_rules,"default");
 	}
 
 	public GameData(Rules _rules, String _name) {
+		this(_rules,_name, new GameSpecificStuffProvider().getGameSpecificStuff(_name));
+	}
+
+	public GameData(Rules _rules, String _name, GameSpecificStuff _gameSpecificStuff) {
 		rules = _rules;
 		name = _name;
-		initGameSpecificStuff(_name);
+		gameSpecificStuff=_gameSpecificStuff;
 	}
 
 	/**
@@ -1230,11 +1234,11 @@ abstract public class GameData implements Cloneable {
 	 * trick encapsulated in Loader)
 	 */
 	public Object clone() throws CloneNotSupportedException {
-		return new Loader().doCloneGameData(this);
+		return new Loader().cloneGameData(this);
 	}
 
 
-	private GameSpecificStuff gameSpecificStuff;
+	private final GameSpecificStuff gameSpecificStuff;
 	/** 
 	 * Provides the encapsulating of game specific stuff
 	 */
@@ -1242,10 +1246,6 @@ abstract public class GameData implements Cloneable {
 		return gameSpecificStuff;
 	}
 	
-	private void initGameSpecificStuff(String name) {
-		gameSpecificStuff = new EresseaSpecificStuff();
-	}
-
 
 	/** Post processes the game data (if necessary)  once */
 	private boolean postProcessed = false;

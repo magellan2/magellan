@@ -48,7 +48,7 @@ public class ShipRoutePlanner {
 
 	public static Unit planShipRoute(Ship ship, GameData data, Component ui) {
 		// fetch all coast regions
-		RegionType ocean = data.rules.getRegionType(StringID.create("Ozean"));
+		Map oceans = Regions.getOceanRegionTypes(data.rules);
 		Collection coast = CollectionFactory.createLinkedList();
 		try{
 			Map regionMap = data.regions();
@@ -58,7 +58,8 @@ public class ShipRoutePlanner {
 				Map m = Regions.getAllNeighbours(regionMap, region.getCoordinate(), 1, null);
 				Iterator cIt2 = m.values().iterator();
 				while(cIt2.hasNext()) {
-					if (ocean.equals(((Region)cIt2.next()).getType())) {
+					Region r2 = (Region) cIt2.next();
+					if(oceans.values().contains(r2.getRegionType())) {
 						coast.add(region);
 						break;
 					}
@@ -83,7 +84,8 @@ public class ShipRoutePlanner {
 
 					BuildingType harbour = data.rules.getBuildingType(StringID.create("Hafen"));
 
-					List path = Regions.planShipRoute(ship, v.dest, data.regions(), ocean, harbour, meerManBonus);
+					//List path = Regions.planShipRoute(ship, v.dest, data.regions(), ocean, harbour, meerManBonus);
+					List path = Regions.planShipRoute(ship, v.dest, data.regions(), null, harbour, meerManBonus);
 					if (path != null) {
 						// Now try to calculate the orders:
 						int shipRange = 0;

@@ -12,5 +12,5 @@ package com.eressea.util;
  * Contains the IDs of all Eressea races.
  * @deprecated dont use
  */
-public final class EresseaRaceConstants extends com.eressea.gamebinding.eressea.EresseaRaceConstants {
+public final class EresseaRaceConstants extends com.eressea.gamebinding.eressea.EresseaConstants {
 }

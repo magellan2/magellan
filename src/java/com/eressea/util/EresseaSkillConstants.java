@@ -12,5 +12,5 @@ package com.eressea.util;
  * Contains the IDs of all Eressea skill types.
  * @deprecated dont use
  */
-public final class EresseaSkillConstants extends com.eressea.gamebinding.eressea.EresseaSkillConstants {
+public final class EresseaSkillConstants extends com.eressea.gamebinding.eressea.EresseaConstants {
 }

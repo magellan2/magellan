@@ -1,67 +1,32 @@
 package com.eressea.io.xml;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.eressea.Rules;
 import com.eressea.io.RulesIO;
+import com.eressea.io.file.FileType;
 import com.eressea.rules.GenericRules;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 
 public class XMLRulesIO implements RulesIO {
 	public final static Logger log = Logger.getInstance(XMLRulesIO.class);
 	
-	public Rules readRules(InputStream is) throws IOException {
-		return readRules(FileType.createEncodingReader(is));
-	} 
-
-	private Rules readRules(Reader reader) throws IOException {
+	public Rules readRules(FileType filetype) throws IOException {
 		try {
-			DocumentBuilderFactory dbf = null;
-			dbf = DocumentBuilderFactory.newInstance();
-			
-			// This makes ID/IDREF attributes to have a meaning.
-			//dbf.setValidating(true);
-			
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			
-			InputSource is = new InputSource(reader);
-			
-			// FIXME: take care of errors via org.xml.sax.ErrorHandler !!!
-			//URL dtd = ResourcePathClassLoader.getResourceStatically("rules/rules.dtd");
-			URL dtd = null;
-			if(dtd == null) {
-				log.warn("Could not find rules/rules.dtd.");
-			} else {
-				is.setSystemId(dtd.toString());
-			}
-			return readRules(db.parse(is));
-		} catch(FactoryConfigurationError fce) {
-			throw new XMLIOException(fce.getException());
-		} catch(ParserConfigurationException e) {
-			throw new XMLIOException(e);
-		} catch (SAXException e) {
+			return readRules(new XMLIO().getDocument(filetype.createReader()));
+		} catch(SAXException e) {
 			throw new XMLIOException(e);
 		}
-	}
+	} 
 
 	private final static String T_RULES = "Rules";
 	private final static String A_ID    = "id";
@@ -127,6 +92,5 @@ public class XMLRulesIO implements RulesIO {
 		} catch(InvocationTargetException e) {
 			throw new XMLIOException(e);
 		}
-
 	}
 }

@@ -81,9 +81,7 @@ public class UnitRoutePlanner {
 		RoutingDialog.RetValue v = (new RoutingDialog(JOptionPane.getFrameForComponent(ui), data, island)).showRoutingDialog();
 		if (v != null) {
 			
-			Map excludeMap = CollectionFactory.createHashMap();
-			StringID id = StringID.create("Ozean");
-			excludeMap.put(id, data.rules.getRegionType(id));
+			Map excludeMap = Regions.getOceanRegionTypes(data.rules);
 			
 			List path = Regions.getPath(data.regions(), start.getCoordinate(), v.dest, excludeMap);
 			

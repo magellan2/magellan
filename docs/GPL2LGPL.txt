@@ -1,9 +1,9 @@
 We try to move from GPL to LGPL:
 
 Right now we have permissions from
-Andreas Gampe
-Ilja Pavkovic
-Ulrich Küster
+Andreas Gampe andgampe@web.de
+Ilja Pavkovic noeskadu@gmx.de
+Ulrich Küster 
 
 
 We need to write to the following persons:

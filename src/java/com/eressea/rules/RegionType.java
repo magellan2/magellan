@@ -72,6 +72,16 @@ public class RegionType extends UnitContainerType {
 		return Collections.unmodifiableList(resources);
 	}
 	
+	
+	private boolean isOcean = false;
+	public boolean isOcean() {
+		return isOcean;
+	}
+	
+	public void setIsOcean(boolean isOcean) {
+		this.isOcean = isOcean;
+	}
+
 	/**
 	 * Indicates whether this RegionType object is equal to another
 	 * object. Returns true only if o is not null and an instance of

@@ -15,5 +15,5 @@ package com.eressea.util;
  * @deprecated dont use
  */
 public final class EresseaItemCategoryConstants 
-	extends com.eressea.gamebinding.eressea.EresseaItemCategoryConstants {
+	extends com.eressea.gamebinding.eressea.EresseaConstants {
 }

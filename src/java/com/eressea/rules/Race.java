@@ -17,9 +17,6 @@ public class Race extends UnitContainerType {
 	private int recruit = 0;
 	private float weight = 0;
 	private float capacity = 0;
-	private int hitPoints = 0;
-	private int naturalArmour = 0;
-	private int magicResistance = 0;
 	private Map skillBonuses = null;
 
 	public Race(ID id) {

@@ -1,5 +1,6 @@
 package com.eressea.gamebinding.eressea;
 
+import com.eressea.CompleteData;
 import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.completion.Completer;
@@ -9,9 +10,22 @@ import com.eressea.gamebinding.GameSpecificStuff;
 import com.eressea.gamebinding.MovementEvaluator;
 import com.eressea.gamebinding.OrderChanger;
 import com.eressea.gamebinding.RelationFactory;
+import com.eressea.io.GameDataIO;
 
 public class EresseaSpecificStuff implements GameSpecificStuff {
 
+	/**
+	 * This is a callback interface to let the 
+	 * GameSpecificStuff create the GameData object.
+	 */
+	public GameData createGameData(Rules rules, String name) {
+		return new CompleteData(rules, name, this);
+	}
+
+	public GameDataIO getGameDataIO() {
+		return null;
+	}
+	
 	public void postProcess(GameData data) {
 		EresseaPostProcessor.getSingleton().postProcess(data);
 	}

@@ -6,11 +6,10 @@
 // $Id$
 // ===
 
-package com.eressea.cr;
+package com.eressea.io.cr;
 
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 import java.util.Locale;
@@ -45,10 +44,13 @@ import com.eressea.Spell;
 import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.UnitID;
+import com.eressea.io.GameDataIO;
 import com.eressea.io.RulesIO;
+import com.eressea.io.file.FileType;
 import com.eressea.rules.AllianceCategory;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
+import com.eressea.rules.Date;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.GenericRules;
 import com.eressea.rules.Herb;
@@ -64,13 +66,12 @@ import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
  * Parser for cr-files.
  **/
-public class CRParser implements RulesIO {
+public class CRParser implements RulesIO, GameDataIO {
 	private final static Logger log = Logger.getInstance(CRParser.class);
 
 	Scanner  sc;
@@ -604,9 +605,9 @@ public class CRParser implements RulesIO {
 	 * @param in The reader, that will read the file for us.
 	 * @return a map, that maps all found header tags to their values.
 	 */
-	public synchronized Map readHeader(java.io.Reader in) throws java.io.IOException {
+	public synchronized Map readHeader(Reader in) throws java.io.IOException {
 		Map map = CollectionFactory.createHashMap();
-		sc = new com.eressea.cr.Scanner(in);
+		sc = new Scanner(in);
 		sc.getNextToken();
 		if (!sc.argv[0].startsWith("VERSION ")) {
 			log.warn("CRParser.readHeader(): CR doesn't start with VERSION block.");
@@ -615,7 +616,7 @@ public class CRParser implements RulesIO {
 			try {
 				map.put("_version_", new Integer(sc.argv[0].substring(sc.argv[0].indexOf(' ')).trim()));
 			}
-			catch (java.lang.Exception exc) {
+			catch (Exception exc) {
 				log.warn("CRParser.readHeader(): Failed to parse  VERSION number. (setting 0)");
 				log.warn(exc.toString());
 				map.put("_version_", new Integer(0));
@@ -672,7 +673,7 @@ public class CRParser implements RulesIO {
 			} else if (sc.argc == 2 &&
 				sc.argv[1].equalsIgnoreCase("Basis")) {
 				try {
-					world.base = java.lang.Integer.parseInt(sc.argv[0]);
+					world.base = Integer.parseInt(sc.argv[0]);
 				}
 				catch (NumberFormatException e) {
 					world.base = 0;
@@ -689,38 +690,38 @@ public class CRParser implements RulesIO {
 			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("curTempID")) {
 				try {
 					world.setCurTempID(Integer.parseInt(sc.argv[0]));
-				} catch (java.lang.NumberFormatException nfe) {
+				} catch (NumberFormatException nfe) {
 					log.warn("Error: Illegal Number format in line " + sc.lnr + ": " + sc.argv[0]);
 					log.warn("Setting the corresponding value GameData.curTempID to default value!");
 					world.setCurTempID(-1);
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Runde") == true) {
-				com.eressea.rules.Date d = world.getDate();
+				sc.argv[1].equalsIgnoreCase("Runde")) {
+				Date d = world.getDate();
 				if (d == null) {
-					world.setDate(new EresseaDate(java.lang.Integer.parseInt(sc.argv[0])));
+					world.setDate(new EresseaDate(Integer.parseInt(sc.argv[0])));
 				} else {
-					d.setDate(java.lang.Integer.parseInt(sc.argv[0]));
+					d.setDate(Integer.parseInt(sc.argv[0]));
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Zeitalter") == true) {
+				sc.argv[1].equalsIgnoreCase("Zeitalter")) {
 				EresseaDate d = (EresseaDate)world.getDate();
 				if (d == null) {
 					d = new EresseaDate(0);
-					d.setEpoch(java.lang.Integer.parseInt(sc.argv[0]));
+					d.setEpoch(Integer.parseInt(sc.argv[0]));
 					world.setDate(d);
 				} else {
-					d.setEpoch(java.lang.Integer.parseInt(sc.argv[0]));
+					d.setEpoch(Integer.parseInt(sc.argv[0]));
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("locale") == true) {
+				sc.argv[1].equalsIgnoreCase("locale")) {
 				world.setLocale(new Locale(sc.argv[0], ""));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("date") == true) {
+				sc.argv[1].equalsIgnoreCase("date")) {
 				// ignore date tag
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
@@ -772,20 +773,20 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip RACE xx
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("recruitmentcosts") == true) {
-				race.setRecruitmentCosts(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("recruitmentcosts")) {
+				race.setRecruitmentCosts(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("name") == true) {
+				sc.argv[1].equalsIgnoreCase("name")) {
 				race.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("weight") == true) {
-				race.setWeight(java.lang.Float.parseFloat(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("weight")) {
+				race.setWeight(Float.parseFloat(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("capacity") == true) {
-				race.setCapacity(java.lang.Float.parseFloat(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("capacity")) {
+				race.setCapacity(Float.parseFloat(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.isBlock &&
 				sc.argv[0].equals("TALENTBONI")) {
@@ -846,30 +847,30 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip ITEM xx
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("weight") == true) {
-				itemType.setWeight(java.lang.Float.parseFloat(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("weight")) {
+				itemType.setWeight(Float.parseFloat(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("makeskill") == true) {
+				sc.argv[1].equalsIgnoreCase("makeskill")) {
 				makeSkill = new Skill(rules.getSkillType(StringID.create(sc.argv[0]), true), 0, 0, 0, false);
 				itemType.setMakeSkill(makeSkill);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("makeskilllevel") == true) {
-				makeSkill.setLevel(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("makeskilllevel")) {
+				makeSkill.setLevel(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("name") == true) {
+				sc.argv[1].equalsIgnoreCase("name")) {
 				itemType.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("category") == true) {
+				sc.argv[1].equalsIgnoreCase("category")) {
 				ID catID = StringID.create(sc.argv[0]);
 				ItemCategory cat = rules.getItemCategory(catID, true);
 				itemType.setCategory(cat);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("region") == true) {
+				sc.argv[1].equalsIgnoreCase("region")) {
 				ID regionID = StringID.create(sc.argv[0]);
 				RegionType rType = rules.getRegionType(regionID, true);
 				((Herb)itemType).setRegionType(rType);
@@ -915,11 +916,11 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip SKILL xx
 		while (!sc.eof && !sc.isBlock) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Name") == true) {
+				sc.argv[1].equalsIgnoreCase("Name")) {
 				skillType.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("category") == true) {
+				sc.argv[1].equalsIgnoreCase("category")) {
 				ID catID = StringID.create(sc.argv[0]);
 				SkillCategory cat = rules.getSkillCategory(catID, true);
 				skillType.setCategory(cat);
@@ -942,32 +943,32 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip SHIPTYPE xx
 		while (!sc.eof && !sc.isBlock) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("size") == true) {
-				shipType.setMaxSize(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("size")) {
+				shipType.setMaxSize(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("name") == true) {
+				sc.argv[1].equalsIgnoreCase("name")) {
 				shipType.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("level") == true) {
-				shipType.setBuildLevel(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("level")) {
+				shipType.setBuildLevel(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("range") == true) {
-				shipType.setRange(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("range")) {
+				shipType.setRange(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("capacity") == true) {
-				shipType.setCapacity(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("capacity")) {
+				shipType.setCapacity(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("captainlevel") == true) {
-				shipType.setCaptainSkillLevel(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("captainlevel")) {
+				shipType.setCaptainSkillLevel(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("sailorlevel") == true) {
-				shipType.setSailorSkillLevel(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("sailorlevel")) {
+				shipType.setSailorSkillLevel(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else {
 				unknown("SHIPTYPE", true);
@@ -989,33 +990,33 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip GEBÄUDETYP xx
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("name") == true) {
+				sc.argv[1].equalsIgnoreCase("name")) {
 				bType.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("level") == true) {
-				bType.setMinSkillLevel(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("level")) {
+				bType.setMinSkillLevel(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("maxsize") == true) {
-				bType.setMaxSize(java.lang.Integer.parseInt(sc.argv[0]));
+				sc.argv[1].equalsIgnoreCase("maxsize")) {
+				bType.setMaxSize(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("minsize") == true) {
+				sc.argv[1].equalsIgnoreCase("minsize")) {
 				if (bType instanceof CastleType) {
-					((CastleType)bType).setMinSize(java.lang.Integer.parseInt(sc.argv[0]));
+					((CastleType)bType).setMinSize(Integer.parseInt(sc.argv[0]));
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("wage") == true) {
+				sc.argv[1].equalsIgnoreCase("wage")) {
 				if (bType instanceof CastleType) {
-					((CastleType)bType).setPeasantWage(java.lang.Integer.parseInt(sc.argv[0]));
+					((CastleType)bType).setPeasantWage(Integer.parseInt(sc.argv[0]));
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("tradetax") == true) {
+				sc.argv[1].equalsIgnoreCase("tradetax")) {
 				if (bType instanceof CastleType) {
-					((CastleType)bType).setTradeTax(java.lang.Integer.parseInt(sc.argv[0]));
+					((CastleType)bType).setTradeTax(Integer.parseInt(sc.argv[0]));
 				}
 				sc.getNextToken();
 			} else if (sc.isBlock &&
@@ -1115,6 +1116,10 @@ public class CRParser implements RulesIO {
 				resource.setObjectType(rules.getBuildingType(StringID.create(sc.argv[0]), true));
 				regionType.addRoadResource(resource);
 				sc.getNextToken();
+			} else if (sc.argc == 2 &&
+				sc.argv[1].equalsIgnoreCase("isOcean")) {
+				regionType.setIsOcean(sc.argv[0].equals("true"));
+				sc.getNextToken();
 			} else if (sc.argc == 2) {
 				unknown("REGIONTYPE", true);
 			} else {
@@ -1131,11 +1136,11 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip ITEMCATEGORY xx
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("name") == true) {
+				sc.argv[1].equalsIgnoreCase("name")) {
 				cat.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("naturalorder") == true) {
+				sc.argv[1].equalsIgnoreCase("naturalorder")) {
 				cat.setSortIndex(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("parent")) {
@@ -1158,11 +1163,11 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip SKILLCATEGORY xx
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("name") == true) {
+				sc.argv[1].equalsIgnoreCase("name")) {
 				cat.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("naturalorder") == true) {
+				sc.argv[1].equalsIgnoreCase("naturalorder")) {
 				cat.setSortIndex(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("parent")) {
@@ -1177,9 +1182,10 @@ public class CRParser implements RulesIO {
 		}
 	}
 
-	public Rules readRules(InputStream is) throws IOException {
-		return readRules(FileType.createEncodingReader(is));
+	public Rules readRules(FileType filetype) throws IOException {
+		return readRules(filetype.createReader());
 	}
+
 	/** @author Rainer Klaffehn
 	 * Read a rule file, which consists of a header and a RULES block. This
 	 * method will fail, if it is no rule file.
@@ -1192,7 +1198,7 @@ public class CRParser implements RulesIO {
 	 * @param in The reader that will read the file for us.
 	 * @return a ruleset object, or null, if the file hasn't been a ruleset.
 	 */
-	private synchronized Rules readRules(Reader in) throws java.io.IOException {
+	private synchronized Rules readRules(Reader in) throws IOException {
 		Rules rules = new GenericRules();
 		sc = new Scanner(in);
 		sc.getNextToken();
@@ -1310,11 +1316,11 @@ public class CRParser implements RulesIO {
 		int state = -1;
 		while (!sc.eof && !sc.isBlock) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Parteiname") == true) {
+				sc.argv[1].equalsIgnoreCase("Parteiname")) {
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Status") == true) {
-				state = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Status")) {
+				state = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else {
 				unknown("ALLIANZ", true); // loop within one ALLIANZ
@@ -1378,7 +1384,7 @@ public class CRParser implements RulesIO {
 		faction.setSortIndex(sortIndex);
 		while (!sc.eof && !sc.argv[0].startsWith("PARTEI ")) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Runde") == true) {
+				sc.argv[1].equalsIgnoreCase("Runde")) {
 				com.eressea.rules.Date d = world.getDate();
 				if (d == null) {
 					world.setDate(new EresseaDate(Integer.parseInt(sc.argv[0])));
@@ -1387,76 +1393,76 @@ public class CRParser implements RulesIO {
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Passwort") == true) {
+				sc.argv[1].equalsIgnoreCase("Passwort")) {
 				//faction.password = sc.argv[0];
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Optionen") == true) {
+				sc.argv[1].equalsIgnoreCase("Optionen")) {
 				if (faction.options == null) {
 					faction.options = new Options(world.rules);
 				}
-				faction.options.setValues(java.lang.Integer.parseInt(sc.argv[0]));
+				faction.options.setValues(Integer.parseInt(sc.argv[0]));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Punkte") == true) {
-				faction.score = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Punkte")) {
+				faction.score = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Punktedurchschnitt") == true) {
-				faction.averageScore = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Punktedurchschnitt")) {
+				faction.averageScore = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("email") == true) {
+				sc.argv[1].equalsIgnoreCase("email")) {
 				faction.email = sc.argv[0];
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("banner") == true) {
+				sc.argv[1].equalsIgnoreCase("banner")) {
 				faction.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				(sc.argv[1].equalsIgnoreCase("Typ") == true ||
-					sc.argv[1].equalsIgnoreCase("Typus") == true ||
-					sc.argv[1].equalsIgnoreCase("race") == true)) {
+				(sc.argv[1].equalsIgnoreCase("Typ") ||
+					sc.argv[1].equalsIgnoreCase("Typus") ||
+					sc.argv[1].equalsIgnoreCase("race"))) {
 				type = world.rules.getRace(StringID.create(sc.argv[0]), true);
 				faction.setType(type);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Rekrutierungskosten") == true) {
-				raceRecruit = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Rekrutierungskosten")) {
+				raceRecruit = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Anzahl Personen") == true) {
-				faction.persons = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Anzahl Personen")) {
+				faction.persons = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Anzahl Immigranten") == true) {
-				faction.migrants = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Anzahl Immigranten")) {
+				faction.migrants = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Max. Immigranten") == true) {
-				faction.maxMigrants = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Max. Immigranten")) {
+				faction.maxMigrants = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Parteiname") == true) {
+				sc.argv[1].equalsIgnoreCase("Parteiname")) {
 				faction.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Magiegebiet") == true) {
+				sc.argv[1].equalsIgnoreCase("Magiegebiet")) {
 				faction.spellSchool = sc.argv[0];
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("trustlevel") == true) {
+				sc.argv[1].equalsIgnoreCase("trustlevel")) {
 				faction.trustLevel = Integer.parseInt(sc.argv[0]);
 				faction.trustLevelSetByUser = true;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("locale") == true) {
+				sc.argv[1].equalsIgnoreCase("locale")) {
 				faction.setLocale(new Locale(sc.argv[0], ""));
 				sc.getNextToken();
-			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("typprefix") == true) {
+			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("typprefix")) {
 				faction.setRaceNamePrefix(sc.argv[0]);
 				sc.getNextToken();
-			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("ZAT") == true) {
+			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("ZAT")) {
 				/* Verdanon tag */
 				sc.getNextToken();
 			} else if (sc.argc == 1 &&
@@ -1535,7 +1541,7 @@ public class CRParser implements RulesIO {
 
 		while (!sc.eof && !sc.isBlock) {
 			if (sc.argc == 2) {
-				//options.setActive(StringID.create(sc.argv[1]), java.lang.Integer.parseInt(sc.argv[0]) != 0);
+				//options.setActive(StringID.create(sc.argv[1]), Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
 			} else {
 				unknown("OPTIONEN", true);
@@ -1613,16 +1619,16 @@ public class CRParser implements RulesIO {
 			int s2 = sc.argv[0].indexOf(' ',s+1);
 
 			if (s > -1) {
-				points = java.lang.Integer.parseInt(sc.argv[0].substring(0, s));
+				points = Integer.parseInt(sc.argv[0].substring(0, s));
 				if (s2 > -1) {
-					level = java.lang.Integer.parseInt(sc.argv[0].substring(s + 1,s2));
-					change = java.lang.Integer.parseInt(sc.argv[0].substring(s2+1));
+					level = Integer.parseInt(sc.argv[0].substring(s + 1,s2));
+					change = Integer.parseInt(sc.argv[0].substring(s2+1));
 					changed = true;
 				} else {
-					level = java.lang.Integer.parseInt(sc.argv[0].substring(s + 1));
+					level = Integer.parseInt(sc.argv[0].substring(s + 1));
 				}
 			} else {
-				level = java.lang.Integer.parseInt(sc.argv[0]);
+				level = Integer.parseInt(sc.argv[0]);
 			}
 
 			Skill skill = new Skill(world.rules.getSkillType(StringID.create(sc.argv[1]), true), points, level, unit.persons, world.noSkillPoints);
@@ -1645,7 +1651,7 @@ public class CRParser implements RulesIO {
 		}
 		sc.getNextToken();	  // skip GEGENSTAENDE
 		while (!sc.eof && sc.argc == 2) {
-			Item item = new Item(world.rules.getItemType(StringID.create(sc.argv[1]), true), java.lang.Integer.parseInt(sc.argv[0]));
+			Item item = new Item(world.rules.getItemType(StringID.create(sc.argv[1]), true), Integer.parseInt(sc.argv[0]));
 			unit.addItem(item);
 			sc.getNextToken();
 		}
@@ -1672,77 +1678,77 @@ public class CRParser implements RulesIO {
 		sc.getNextToken();	  // skip "EINHEIT nr"
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Name") == true) {
+				sc.argv[1].equalsIgnoreCase("Name")) {
 				unit.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Beschr") == true) {
+				sc.argv[1].equalsIgnoreCase("Beschr")) {
 				unit.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Typ") == true) {
+				sc.argv[1].equalsIgnoreCase("Typ")) {
 				unit.race = world.rules.getRace(StringID.create(sc.argv[0]), true);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("wahrerTyp") == true) {
+				sc.argv[1].equalsIgnoreCase("wahrerTyp")) {
 				unit.realRace = world.rules.getRace(StringID.create(sc.argv[0]), true);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("temp") == true) {
+				sc.argv[1].equalsIgnoreCase("temp")) {
 				unit.setTempID(UnitID.createUnitID(sc.argv[0], 10));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("alias") == true) {
+				sc.argv[1].equalsIgnoreCase("alias")) {
 				unit.setAlias(UnitID.createUnitID(sc.argv[0], 10));
 				sc.getNextToken();
 			}else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("privat") == true) {
+				sc.argv[1].equalsIgnoreCase("privat")) {
 				unit.privDesc = sc.argv[0];
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Anzahl") == true) {
-				unit.persons = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Anzahl")) {
+				unit.persons = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Partei") == true) {
+				sc.argv[1].equalsIgnoreCase("Partei")) {
 				factionID = EntityID.createEntityID(sc.argv[0], 10);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Parteiname") == true) {
+				sc.argv[1].equalsIgnoreCase("Parteiname")) {
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Parteitarnung") == true) {
-				if (java.lang.Integer.parseInt(sc.argv[0]) != 0)
+				sc.argv[1].equalsIgnoreCase("Parteitarnung")) {
+				if (Integer.parseInt(sc.argv[0]) != 0)
 					unit.hideFaction = true;
 				else
 					unit.hideFaction = false;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("bewacht") == true) {
-				unit.guard = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("bewacht")) {
+				unit.guard = Integer.parseInt(sc.argv[0]);
 				Region r = unit.getRegion();
 				if (r != null)
 					r.addGuard(unit);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("belagert") == true) {
+				sc.argv[1].equalsIgnoreCase("belagert")) {
 				unit.siege =
 						getAddBuilding(world,
 							EntityID.createEntityID(sc.argv[0], 10));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("folgt") == true) {
+				sc.argv[1].equalsIgnoreCase("folgt")) {
 				unit.follows =
 						getAddUnit(world, UnitID.createUnitID(sc.argv[0], 10));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Silber") == true) {
-				int money = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Silber")) {
+				int money = Integer.parseInt(sc.argv[0]);
 				Item item = new Item(world.rules.getItemType(StringID.create("Silber"), true), money);
 				unit.addItem(item);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Burg") == true) {
+				sc.argv[1].equalsIgnoreCase("Burg")) {
 				Integer.parseInt(sc.argv[0]);
 				Building b =
 					getAddBuilding(world,
@@ -1752,7 +1758,7 @@ public class CRParser implements RulesIO {
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Schiff") == true) {
+				sc.argv[1].equalsIgnoreCase("Schiff")) {
 				Ship s = getAddShip(world,
 						EntityID.createEntityID(sc.argv[0], 10));
 				if (unit.getShip() != s) {
@@ -1760,7 +1766,7 @@ public class CRParser implements RulesIO {
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Kampfstatus") == true) {
+				sc.argv[1].equalsIgnoreCase("Kampfstatus")) {
 				// pre 57:
 				// 0: VORNE
 				// 1: HINTEN
@@ -1774,7 +1780,7 @@ public class CRParser implements RulesIO {
 				// 3 DEFENSIV: 2. Reihe, kämpfen bis 90% HP
 				// 4 NICHT: 3. Reihe, kämpfen bis 90% HP
 				// 5 FLIEHE: 4. Reihe, flieht immer.
-				unit.combatStatus = java.lang.Integer.parseInt(sc.argv[0]);
+				unit.combatStatus = Integer.parseInt(sc.argv[0]);
 				// convert status from old to new
 				if (version < 57) {
 					unit.combatStatus++;
@@ -1785,78 +1791,78 @@ public class CRParser implements RulesIO {
 
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("unaided") == true) {
-				unit.unaided = (java.lang.Integer.parseInt(sc.argv[0]) != 0);
+				sc.argv[1].equalsIgnoreCase("unaided")) {
+				unit.unaided = (Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Tarnung") == true) {
-				unit.stealth = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Tarnung")) {
+				unit.stealth = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Aura") == true) {
-				unit.aura = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Aura")) {
+				unit.aura = Integer.parseInt(sc.argv[0]);
 				;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Auramax") == true) {
-				unit.auraMax = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Auramax")) {
+				unit.auraMax = Integer.parseInt(sc.argv[0]);
 				;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("hp") == true) {
+				sc.argv[1].equalsIgnoreCase("hp")) {
 				unit.health = sc.argv[0];
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("hunger") == true) {
+				sc.argv[1].equalsIgnoreCase("hunger")) {
 				unit.isStarving = (Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("ejcOrdersConfirmed") == true) {
+				sc.argv[1].equalsIgnoreCase("ejcOrdersConfirmed")) {
 				unit.ordersConfirmed = (Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("gruppe") == true) {
+				sc.argv[1].equalsIgnoreCase("gruppe")) {
 				groupID = IntegerID.create(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("verraeter") == true) {
+				sc.argv[1].equalsIgnoreCase("verraeter")) {
 				unit.setSpy(true);
 				sc.getNextToken();
 				/* currently, verkleidung was announced but it seems that
 				 anderepartei is used. Please remove one as soon as it
 				 is clear which one can be discarded */
 			} else if (sc.argc == 2 &&
-				(sc.argv[1].equalsIgnoreCase("verkleidung") == true || sc.argv[1].equalsIgnoreCase("anderepartei") == true)) {
+				(sc.argv[1].equalsIgnoreCase("verkleidung") || sc.argv[1].equalsIgnoreCase("anderepartei"))) {
 				ID fid = EntityID.createEntityID(sc.argv[0], 10);
 				unit.setGuiseFaction(world.getFaction(fid));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("typprefix") == true) {
+				sc.argv[1].equalsIgnoreCase("typprefix")) {
 				unit.setRaceNamePrefix(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("ladung") == true) {
+				sc.argv[1].equalsIgnoreCase("ladung")) {
 				// Verdanon tag
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("kapazitaet") == true) {
+				sc.argv[1].equalsIgnoreCase("kapazitaet")) {
 				// Verdanon tag
 				sc.getNextToken();
 			} else if (sc.argc == 1 &&
-				sc.argv[0].equals("COMMANDS") == true) {
+				sc.argv[0].equals("COMMANDS")) {
 				// there can be only one order block for a unit, replace existing ones
 				unit.setOrders(parseStringSequence(null),false);
 			} else if (sc.argc == 1 &&
-				sc.argv[0].equals("TALENTE") == true) {
+				sc.argv[0].equals("TALENTE")) {
 				// there can be only one skills block for a unit, replace existing ones
 				unit.clearSkills();
 				parseSkills(unit, world);
 			} else if (sc.argc == 1 &&
-				sc.argv[0].equals("SPRUECHE") == true) {
+				sc.argv[0].equals("SPRUECHE")) {
 				// there can be only one spells block for a unit, replace existing ones
 				unit.spells = parseUnitSpells(world, null);
 			} else if (sc.argc == 1 &&
-				sc.argv[0].equals("GEGENSTAENDE") == true) {
+				sc.argv[0].equals("GEGENSTAENDE")) {
 				/* in verdanon reports the silver can already be
 				 included in the items */
 				parseItems(unit);
@@ -1945,55 +1951,55 @@ public class CRParser implements RulesIO {
 		ship.setSortIndex(sortIndex);
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Name") == true) {
+				sc.argv[1].equalsIgnoreCase("Name")) {
 				ship.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Typ") == true) {
+				sc.argv[1].equalsIgnoreCase("Typ")) {
 				ShipType type = world.rules.getShipType(StringID.create(sc.argv[0]), true);
 				ship.setType(type);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Beschr") == true) {
+				sc.argv[1].equalsIgnoreCase("Beschr")) {
 				ship.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Partei") == true) {
+				sc.argv[1].equalsIgnoreCase("Partei")) {
 				if (ship.getOwnerUnit() != null && ship.getOwnerUnit().getFaction() == null) {
 					Faction f = world.getFaction(EntityID.createEntityID(sc.argv[0], 10));
 					ship.getOwnerUnit().setFaction(f);
 				}
 				sc.getNextToken();
 			}else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Kapitaen") == true) {
+				sc.argv[1].equalsIgnoreCase("Kapitaen")) {
 				ship.setOwnerUnit(
 					getAddUnit(world,
 						UnitID.createUnitID(sc.argv[0], 10)));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Kueste") == true) {
-				ship.shoreId = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Kueste")) {
+				ship.shoreId = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Groesse") == true) {
-				ship.size = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Groesse")) {
+				ship.size = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Prozent") == true &&
+				sc.argv[1].equalsIgnoreCase("Prozent") &&
 				ship.getType() != null) {
-				ship.size = (ship.getShipType().getMaxSize() * java.lang.Integer.parseInt(sc.argv[0])) / 100;
+				ship.size = (ship.getShipType().getMaxSize() * Integer.parseInt(sc.argv[0])) / 100;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Schaden") == true) {
-				ship.damageRatio = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Schaden")) {
+				ship.damageRatio = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Ladung") == true) {
-				ship.load = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Ladung")) {
+				ship.load = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("MaxLadung") == true) {
-				ship.capacity = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("MaxLadung")) {
+				ship.capacity = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 1 && sc.argv[0].equals("EFFECTS")) {
 				ship.effects = parseStringSequence(ship.effects);
@@ -2020,38 +2026,38 @@ public class CRParser implements RulesIO {
 		bld.setSortIndex(sortIndex);
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Name") == true) {
+				sc.argv[1].equalsIgnoreCase("Name")) {
 				bld.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Typ") == true) {
+				sc.argv[1].equalsIgnoreCase("Typ")) {
 				BuildingType type = world.rules.getBuildingType(StringID.create(sc.argv[0]), true);
 				bld.setType(type);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Beschr") == true) {
+				sc.argv[1].equalsIgnoreCase("Beschr")) {
 				bld.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Besitzer") == true) {
+				sc.argv[1].equalsIgnoreCase("Besitzer")) {
 				UnitID unitID = UnitID.createUnitID(sc.argv[0], 10);
 				bld.setOwnerUnit(
 					getAddUnit(world, unitID));
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Partei") == true) {
+				sc.argv[1].equalsIgnoreCase("Partei")) {
 				if (bld.getOwnerUnit() != null && bld.getOwnerUnit().getFaction() == null) {
 					Faction f = world.getFaction(EntityID.createEntityID(sc.argv[0], 10));
 					bld.getOwnerUnit().setFaction(f);
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Groesse") == true) {
-				bld.setSize( java.lang.Integer.parseInt(sc.argv[0]) );
+				sc.argv[1].equalsIgnoreCase("Groesse")) {
+				bld.setSize( Integer.parseInt(sc.argv[0]) );
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Unterhalt") == true) {
-				bld.setCost( java.lang.Integer.parseInt(sc.argv[0]) );
+				sc.argv[1].equalsIgnoreCase("Unterhalt")) {
+				bld.setCost( Integer.parseInt(sc.argv[0]) );
 				sc.getNextToken();
 			} else if (sc.argc == 1 && sc.argv[0].equals("EFFECTS")) {
 				bld.effects = parseStringSequence(bld.effects);
@@ -2093,7 +2099,7 @@ public class CRParser implements RulesIO {
 				} catch (NumberFormatException e) {
 					final String dirNames[] = {"Nordwesten", "Nordosten", "Osten", "Südosten", "Südwesten", "Westen"};
 					for (int i = 0; i < dirNames.length; i++) {
-						if (sc.argv[0].equalsIgnoreCase(dirNames[i]) == true) {
+						if (sc.argv[0].equalsIgnoreCase(dirNames[i])) {
 							b.direction = i;
 							break;
 						}
@@ -2109,7 +2115,7 @@ public class CRParser implements RulesIO {
 				b.buildRatio = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else
-			if (sc.isBlock == true) {
+			if (sc.isBlock) {
 				break;
 			} else {
 				unknown("GRENZE", false);
@@ -2124,10 +2130,10 @@ public class CRParser implements RulesIO {
 		HotSpot h = new HotSpot(id);
 		sc.getNextToken();	  // skip the block
 		while (!sc.eof && !sc.isBlock) {
-			if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("coord") == true) {
+			if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("coord")) {
 				h.setCenter(Coordinate.parse(sc.argv[0], " "));
 				sc.getNextToken();
-			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("name") == true) {
+			} else if (sc.argc == 2 && sc.argv[1].equalsIgnoreCase("name")) {
 				h.setName(sc.argv[0]);
 				sc.getNextToken();
 			} else {
@@ -2162,7 +2168,7 @@ public class CRParser implements RulesIO {
 		region.setSortIndex(sortIndex);
 		while (!sc.eof) {
 			if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Name") == true) {
+				sc.argv[1].equalsIgnoreCase("Name")) {
 				// regions doesn't have name if name == type; e.g. "Ozean"=="Ozean"
 				if (region.getType() == null) {
 					region.setName(sc.argv[0]);
@@ -2175,14 +2181,14 @@ public class CRParser implements RulesIO {
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Beschr") == true) {
+				sc.argv[1].equalsIgnoreCase("Beschr")) {
 				region.setDescription(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Strasse") == true) {
+				sc.argv[1].equalsIgnoreCase("Strasse")) {
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Insel") == true) {
+				sc.argv[1].equalsIgnoreCase("Insel")) {
 				try {
 					ID islandID = IntegerID.create(sc.argv[0]);
 					Island i = world.getIsland(islandID);
@@ -2195,15 +2201,15 @@ public class CRParser implements RulesIO {
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Lohn") == true) {
-				region.wage = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Lohn")) {
+				region.wage = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letzterlohn") == true) {
-				region.oldWage = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letzterlohn")) {
+				region.oldWage = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Terrain") == true) {
+				sc.argv[1].equalsIgnoreCase("Terrain")) {
 				try {
 					RegionType type = world.rules.getRegionType(StringID.create(sc.argv[0]), true);
 					region.setType(type);
@@ -2227,77 +2233,77 @@ public class CRParser implements RulesIO {
 				iValidateFlags |= 1;
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Baeume") == true) {
-				region.trees = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Baeume")) {
+				region.trees = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letztebaeume") == true) {
-				region.oldTrees = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letztebaeume")) {
+				region.oldTrees = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Bauern") == true) {
-				region.peasants = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Bauern")) {
+				region.peasants = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letztebauern") == true) {
-				region.oldPeasants = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letztebauern")) {
+				region.oldPeasants = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Silber") == true) {
-				region.silver = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Silber")) {
+				region.silver = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letztessilber") == true) {
-				region.oldSilver = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letztessilber")) {
+				region.oldSilver = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Eisen") == true) {
-				region.iron = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Eisen")) {
+				region.iron = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letzteseisen") == true) {
-				region.oldIron = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letzteseisen")) {
+				region.oldIron = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Laen") == true) {
-				region.laen = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Laen")) {
+				region.laen = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letzteslaen") == true) {
-				region.oldLaen = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letzteslaen")) {
+				region.oldLaen = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Pferde") == true) {
-				region.horses = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("Pferde")) {
+				region.horses = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letztepferde") == true) {
-				region.oldHorses = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letztepferde")) {
+				region.oldHorses = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Unterh") == true) {
+				sc.argv[1].equalsIgnoreCase("Unterh")) {
 				// Has not to be stored.
 				sc.getNextToken();
 				// pavkovic 2002.05.10: recruits (and old recruits are used from cr)
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Rekruten") == true) {
+				sc.argv[1].equalsIgnoreCase("Rekruten")) {
 				if(version >= 64) {
-					region.recruits = java.lang.Integer.parseInt(sc.argv[0]);
+					region.recruits = Integer.parseInt(sc.argv[0]);
 				} else {
 					// Has not to be stored.
 				}
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letzterekruten") == true) {
-				region.oldRecruits = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letzterekruten")) {
+				region.oldRecruits = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("maxLuxus") == true) {
+				sc.argv[1].equalsIgnoreCase("maxLuxus")) {
 				// Has not to be stored.
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("Mallorn") == true) {
-				if (java.lang.Integer.parseInt(sc.argv[0]) > 0)
+				sc.argv[1].equalsIgnoreCase("Mallorn")) {
+				if (Integer.parseInt(sc.argv[0]) > 0)
 					region.mallorn = true;
 				else
 					region.mallorn = false;
@@ -2330,11 +2336,11 @@ public class CRParser implements RulesIO {
 				region.stones = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("letztesteine") == true) {
-				region.oldStones = java.lang.Integer.parseInt(sc.argv[0]);
+				sc.argv[1].equalsIgnoreCase("letztesteine")) {
+				region.oldStones = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.argc == 2 &&
-				sc.argv[1].equalsIgnoreCase("visibility") == true) {
+				sc.argv[1].equalsIgnoreCase("visibility")) {
 				region.setVisibility(sc.argv[0]);
 				sc.getNextToken();
 			} else if (sc.isBlock &&

@@ -2,7 +2,9 @@ Manifest-Version: 1.0
 Main-Class: com.eressea.demo.Client
 Class-Path: chart.jar jh.jar magellan-help.jar
   skins/looks-all.jar
-  skins/kunststoff.jar skins/xplookandfeel.jar
+  skins/kunststoff.jar 
   skins/metouia.jar
-Patch-Source: http://eressea.upb.de/magellan/downloads/pkg/
-Package-Source: http://eressea.upb.de/magellan/downloads/magellan.jar
+
+Name: Magellan
+Implementation-Title: Magellan
+Implementation-Version: @VERSION@

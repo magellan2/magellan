@@ -73,6 +73,7 @@ import com.eressea.swing.context.ContextObserver;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Colors;
+import com.eressea.util.Locales;
 import com.eressea.util.replacers.ReplacerHelp;
 import com.eressea.util.replacers.ReplacerSystem;
 
@@ -294,7 +295,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 		}
 		
 		if (nonFound) {
-			if (r.getType().getID().toString().equals("Ozean")) {
+			if (r.getRegionType().isOcean()) {
 				return oceanColor;
 			}
 			return unknownColor;
@@ -1251,7 +1252,7 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 			
 			public ColorPanel() {
 				try{
-					number = java.text.NumberFormat.getInstance(com.eressea.util.Locales.getGUILocale());
+					number = java.text.NumberFormat.getInstance(Locales.getGUILocale());
 				}catch(IllegalStateException ise) {
 					number = java.text.NumberFormat.getInstance();
 				}
