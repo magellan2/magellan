@@ -812,7 +812,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 * Should return all short cuts this class want to be informed.
 	 * The elements should be of type javax.swing.KeyStroke
 	 */
-	public java.util.Iterator getShortCuts() {
+	public Iterator getShortCuts() {
 		return shortcuts.iterator();
 	}
 	
@@ -1152,7 +1152,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		 * Should return all short cuts this class want to be informed.
 		 * The elements should be of type javax.swing.KeyStroke
 		 */
-		public java.util.Iterator getShortCuts() {
+		public Iterator getShortCuts() {
 			return shortcuts.iterator();
 		}
 		

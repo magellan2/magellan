@@ -655,7 +655,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * Returns the orders necessary to issue the creation of all the
 	 * child temp units of this unit.
 	 */
-	public List getTempOrders() {
+	protected List getTempOrders() {
 		List cmds = CollectionFactory.createLinkedList();
 		for (Iterator iter = tempUnits().iterator(); iter.hasNext(); ) {
 			TempUnit u = (TempUnit)iter.next();
@@ -1476,7 +1476,6 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		Map passengers = getPassengers();
 		for (Iterator iter = passengers.values().iterator(); iter.hasNext(); ) {
 			Unit passenger = (Unit)iter.next();
-			//load += passenger.getWeight();
 			load += passenger.getModifiedWeight();
 		}
 		return load;

@@ -206,6 +206,14 @@
 
   <target name="jar.magellan" depends="compile.magellan">
     <delete file="${BUILD}/build/magellan.jar" quiet="false"/>
+<!--
+  <target name="prejar" depends="build">
+    <mkdir dir="${jar.dest}"/>    
+    <filter token="version" value="${version}" />
+    <copy file="${manifest.src}" tofile="${jar.dest}/manifest.mf" 
+          filtering="true"/>
+  </target>
+-->
     <jar jarfile="${BUILD}/build/magellan.jar"
 		 manifest="${SRC.MAGELLAN}/manifest.mf">
 		 <fileset dir="${CLASSES.MAGELLAN}">

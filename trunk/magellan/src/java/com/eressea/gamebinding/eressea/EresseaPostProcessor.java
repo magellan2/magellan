@@ -223,6 +223,14 @@ public class EresseaPostProcessor {
 
 	public void postProcessAfterTrustlevelChange(GameData data) {
 		// initialize fog-of-war cache (FIXME(pavkovic): Do it always?)
+
+		// clear all fog-of-war caches
+		if (data.regions() != null) {
+			for (Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
+				Region r = (Region)iter.next();
+				r.setFogOfWar(-1);
+			}
+		}
 		
 		// intialize the fog-of-war cache for all regions that are covered by lighthouses
 		if (data.buildings() != null) {

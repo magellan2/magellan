@@ -424,15 +424,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		data = e.getGameData();
 		
 		conMenu.setGameData(data);
-		
-		// clear all caches - just the new game data is the old one
-		if (data.regions() != null) {
-			for (Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
-				Region r = (Region)iter.next();
-				r.setFogOfWar(-1);
-			}
-		}
-		
+				
 		mapToScreenBounds = getMapToScreenBounds();
 		if (mapToScreenBounds != null) {
 			setSize(mapToScreenBounds.getSize());
