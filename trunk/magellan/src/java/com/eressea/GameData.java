@@ -1323,7 +1323,7 @@ public abstract class GameData implements Cloneable {
 				} else { // only copy the skills to get change-level base
 
 					if((curUnit2.skills != null) ||
-						   (curUnit1.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+						   (curUnit1.getFaction().isPrivileged())) {
 						Unit.copySkills(curUnit1, newUnit);
 					}
 				}

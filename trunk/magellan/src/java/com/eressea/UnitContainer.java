@@ -28,7 +28,6 @@ import com.eressea.rules.UnitContainerType;
 
 import com.eressea.util.Cache;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROCollection;
 import com.eressea.util.TagMap;
 import com.eressea.util.Taggable;
 import com.eressea.util.logging.Logger;
@@ -161,11 +160,11 @@ public abstract class UnitContainer extends DescribedObject
 		// added later we have to create a new collection object
 		// see addUnit()
 		if(units == null) {
-			return ROCollection.EMPTY_COLLECTION;
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
 
 		if(unitCollection == null) {
-			unitCollection = new ROCollection(units);
+			unitCollection = CollectionFactory.unmodifiableCollection(units);
 		}
 
 		return unitCollection;
@@ -236,9 +235,9 @@ public abstract class UnitContainer extends DescribedObject
 		}
 
 		if((cache != null) && (cache.modifiedContainerUnits != null)) {
-			return new ROCollection(cache.modifiedContainerUnits.values());
+			return CollectionFactory.unmodifiableCollection(cache.modifiedContainerUnits.values());
 		} else {
-			return new ROCollection();
+			return CollectionFactory.EMPTY_COLLECTION;
 		}
 	}
 

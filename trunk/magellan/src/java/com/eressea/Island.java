@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROCollection;
 
 /**
  * TODO: DOCUMENT ME!
@@ -117,11 +116,7 @@ public class Island extends DescribedObject {
 			refreshRegions();
 		}
 
-		if(regions != null) {
-			return new ROCollection(regions.values());
-		} else {
-			return ROCollection.EMPTY_COLLECTION;
-		}
+		return CollectionFactory.unmodifiableCollection(regions);
 	}
 
 	/**

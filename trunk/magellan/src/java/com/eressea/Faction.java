@@ -60,7 +60,7 @@ public class Faction extends UnitContainer {
 	 */
 	public String password = null;
 
-	/** TODO: DOCUMENT ME! */
+	/** The email address of the Faction */
 	public String email = null;
 
 	/** TODO: DOCUMENT ME! */
@@ -90,6 +90,11 @@ public class Faction extends UnitContainer {
 	 * orders).
 	 */
 	public int trustLevel = TL_DEFAULT;
+	
+	public boolean isPrivileged() {
+		return trustLevel >= TL_PRIVILEGED;
+	}
+	
 
 	/**
 	 * true: indicates that this trustlevel was explicitly set by the user or
@@ -99,14 +104,14 @@ public class Faction extends UnitContainer {
 	 */
 	public boolean trustLevelSetByUser = false;
 
-	/** TODO: DOCUMENT ME! */
-	public List messages = null; // contains all messages for this faction as <tt>Message</tt> objects
+	/** contains all messages for this faction as <tt>Message</tt> objects */
+	public List messages = null;
 
-	/** TODO: DOCUMENT ME! */
-	public List errors = null; // contains error messages for this faction as <tt>String</tt> objects
+	/** contains error messages for this faction as <tt>String</tt> objects */
+	public List errors = null;
 
-	/** TODO: DOCUMENT ME! */
-	public List battles = null; // contains the battles, this faction had in the current round, as <tt>Battle</tt> objects
+	/** contains the battles, this faction had in the current round, as <tt>Battle</tt> objects */
+	public List battles = null; 
 
 	/**
 	 * The allies of this faction are stored in this map with the faction ID of

@@ -777,23 +777,23 @@ public class Regions {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns a map of all RegionTypes that are flagged as <tt>ocean</tt>.
 	 *
-	 * @param rules TODO: DOCUMENT ME!
+	 * @param rules Rules of the game
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return map of all ocean RegionTypes
 	 */
 	public static Map getOceanRegionTypes(Rules rules) {
 		Map ret = CollectionFactory.createHashtable();
-
+		
 		for(Iterator iter = rules.getRegionTypeIterator(); iter.hasNext();) {
 			RegionType rt = (RegionType) iter.next();
-
+			
 			if(rt.isOcean()) {
 				ret.put(rt.getID(), rt);
 			}
 		}
-
+		
 		return ret;
 	}
 }

@@ -342,16 +342,15 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 	protected String getArmyIcon(Faction fac) {
 		String icon = "kampfstatus";
 
-		if(fac.trustLevel >= Faction.TL_PRIVILEGED) {
+		if(fac.isPrivileged()) {
 			icon = "alliancestate_basisfaction";
 		} else if(data != null) {
 			int		 minTrust = 255;
-			Iterator it = data.factions().values().iterator();
 
-			while(it.hasNext()) {
-				Faction f = (Faction) it.next();
+			for(Iterator iter = data.factions().values().iterator(); iter.hasNext(); ) {
+				Faction f = (Faction) iter.next();
 
-				if(f.trustLevel >= Faction.TL_PRIVILEGED) {
+				if(f.isPrivileged()) {
 					if((f.allies != null) && f.allies.containsKey(fac.getID())) {
 						Alliance a = (Alliance) f.allies.get(fac.getID());
 						minTrust &= a.getState();
@@ -810,8 +809,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel
 				}
 			}
 
-			if((unit.getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-				   (excludeCombatStates != null)) {
+			if(unit.getFaction().isPrivileged() && excludeCombatStates != null) {
 				boolean  doContinue = true;
 				Iterator it = excludeCombatStates.iterator();
 

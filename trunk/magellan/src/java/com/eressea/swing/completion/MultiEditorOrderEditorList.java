@@ -84,6 +84,7 @@ import com.eressea.Unit;
 import com.eressea.UnitID;
 
 import com.eressea.demo.EMapOverviewPanel;
+import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.demo.desktop.DesktopEnvironment;
 
 import com.eressea.event.EventDispatcher;
@@ -332,17 +333,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 			if(se.getActiveObject() != null) {
 				if(se.getActiveObject() instanceof Unit &&
-					   (((Unit) se.getActiveObject()).getFaction() != null) && // TempUnits can have null values while destroying
-					   (((Unit) se.getActiveObject()).getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-					   (((Unit) se.getActiveObject()).isSpy() == false)) {
+				   EMapDetailsPanel.isPrivilegedAndNoSpy((Unit) se.getActiveObject())) {
 					Unit u = (Unit) se.getActiveObject();
 
-					//currentUnit = u;
-					//if (currentRegion == null || !u.getRegion().equals(currentRegion) || units.size() == 0) {
-					// if previously no unit or a different region was
-					// selected, reload the editors
-					//loadEditors(currentUnit.getRegion());
-					//}
 					loadEditors(u);
 
 					// only jump to a different unit
@@ -368,13 +361,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 						// activate visibility call
 						currentUnit.cache.orderEditor.setKeepVisible(true);
 
-						// the following statement is a workaround for swing glitches
-						// it prevents that the editor scrolls out of view
-						//swingGlitch = true;
 						// we use a call to repaint to force the execution of paint()
 						// so we call SwingGlitchThread.run() indirectly AFTER painting
 						// tricky and dirty, but it works...
-						//repaint();
 						SwingUtilities.invokeLater(swingGlitchThread);
 					}
 				} else if(se.getActiveObject() instanceof Region) {
@@ -386,10 +375,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					currentUnit		 = null;
 					currentUnitIndex = -1;
 
-					if((((Faction) se.getActiveObject()).trustLevel >= Faction.TL_PRIVILEGED) &&
-						   (currentRegion != null)) {
-						loadEditors((Faction) se.getActiveObject(),
-									currentRegion);
+					if(((Faction) se.getActiveObject()).isPrivileged() && currentRegion != null) {
+						loadEditors((Faction) se.getActiveObject(), currentRegion);
 					} else {
 						units.clear();
 						removeListenersFromAll();
@@ -424,9 +411,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		} else {
 			Object activeObject = se.getActiveObject();
 
-			if(activeObject instanceof Unit &&
-				   (((Unit) se.getActiveObject()).getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-				   (((Unit) activeObject).isSpy() == false)) {
+			if(activeObject instanceof Unit && EMapDetailsPanel.isPrivilegedAndNoSpy((Unit) activeObject)) {
 				currentUnit = (Unit) activeObject;
 				editor.setUnit(currentUnit);
 
@@ -1064,8 +1049,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		for(Iterator unitIter = allUnits.listIterator(); unitIter.hasNext();) {
 			Unit regionUnit = (Unit) unitIter.next();
 
-			if((regionUnit.getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-				   (regionUnit.isSpy() == false)) {
+			if(EMapDetailsPanel.isPrivilegedAndNoSpy(regionUnit)) {
 				addUnit(regionUnit);
 
 				// this is done in order to find out the index of the
@@ -2120,8 +2104,8 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		}
 
 		protected void createTempUnit() {
-			if((currentUnit != null) &&
-				   (currentUnit.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+			if(currentUnit != null &&
+			   currentUnit.getFaction().isPrivileged()) {
 				// Use the current unit as the parent or its parent if it
 				// is itself a temp unit
 				Unit parentUnit = currentUnit;
@@ -2459,12 +2443,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 		 * TODO: DOCUMENT ME!
 		 */
 		public void currentUnitChanged() {
-			boolean enable = ((currentUnit != null) &&
-							 (currentUnit.getFaction().trustLevel >= Faction.TL_PRIVILEGED));
+			boolean enabled = currentUnit != null &&
+				currentUnit.getFaction().isPrivileged();
 
-			setConfirmEnabled(enable);
-			setCreationEnabled(enable);
-			setDeletionEnabled(enable && (currentUnit instanceof TempUnit));
+			setConfirmEnabled(enabled);
+			setCreationEnabled(enabled);
+			setDeletionEnabled(enabled && (currentUnit instanceof TempUnit));
 		}
 	}
 

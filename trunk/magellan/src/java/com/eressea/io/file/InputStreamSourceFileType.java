@@ -35,7 +35,7 @@ public class InputStreamSourceFileType extends FileType {
 		URL url = ResourcePathClassLoader.getResourceStatically(filename.toLowerCase());
 
 		if(url == null) {
-			throw new IOException("Resource '" + filename + "' not readable.");
+			throw new IOException("URL '" + filename + "' not readable.");
 		}
 
 		return url.openStream();
@@ -54,7 +54,7 @@ public class InputStreamSourceFileType extends FileType {
 	 * an url pointing to an InputStream.
 	 */
 	public File getFile() throws IOException {
-		throw new IOException("Unable to determine File for InputStream resource '" +
+		throw new IOException("Unable to determine File for InputStream URL '" +
 							  toString() + "'.");
 	}
 }

@@ -498,7 +498,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 							}
 						}
 
-						if(found && (f.trustLevel >= Faction.TL_PRIVILEGED)) {
+						if(found && f.isPrivileged()) {
 							f.averageScore = -1;
 							f.score		   = -1;
 							f.persons	   = -1;

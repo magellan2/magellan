@@ -22,7 +22,6 @@ import com.eressea.Rules;
 import com.eressea.StringID;
 
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROIterator;
 import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
@@ -874,7 +873,7 @@ public class GenericRules implements Rules {
 	}
 
 	private Iterator getIterator(Class c, Map m) {
-		return new ROIterator(new ClassIterator(c, m.values().iterator()));
+		return new ClassIterator(c, CollectionFactory.unmodifiableIterator(m));
 	}
 
 	/**

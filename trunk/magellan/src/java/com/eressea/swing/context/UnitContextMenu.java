@@ -33,6 +33,8 @@ import com.eressea.Region;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 
+import com.eressea.demo.EMapDetailsPanel;
+
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.UnitOrdersEvent;
 
@@ -109,9 +111,7 @@ public class UnitContextMenu extends JPopupMenu {
 				});
 			add(copyUnitNameID);
 
-			if((unit.getFaction() != null) &&
-				   (unit.getFaction().trustLevel >= Faction.TL_PRIVILEGED) &&
-				   (unit.isSpy() == false)) {
+			if(EMapDetailsPanel.isPrivilegedAndNoSpy(unit)) {
 				JMenuItem hideID = new JMenuItem(getString("menu.disguise.caption"));
 
 				hideID.addActionListener(new ActionListener() {
@@ -229,14 +229,13 @@ public class UnitContextMenu extends JPopupMenu {
 			for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
-				if(!u.isSpy() && (u.getFaction() != null) &&
-					   (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+				if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 					if(replace) {
 						u.setOrders(Collections.singleton(s[0]));
 					} else {
 						u.addOrder(s[0], false, 0);
 					}
-
+					
 					dispatcher.fire(new UnitOrdersEvent(this, u));
 				}
 			}
@@ -371,8 +370,7 @@ public class UnitContextMenu extends JPopupMenu {
 		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 
-			if(!u.isSpy() && (u.getFaction() != null) &&
-				   (u.getFaction().trustLevel >= Faction.TL_PRIVILEGED)) {
+			if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 				return true;
 			}
 		}

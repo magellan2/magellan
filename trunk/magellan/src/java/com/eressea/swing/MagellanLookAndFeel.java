@@ -92,11 +92,6 @@ public class MagellanLookAndFeel {
 		MetalTheme mt = new MagMetalTheme(col);
 		MetalLookAndFeel.setCurrentTheme(mt);
 
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-		} catch(Exception exc) {
-		}
-
 		DesktopEnvironment.updateLaF();
 		DesktopEnvironment.repaintAll();
 
@@ -148,7 +143,7 @@ public class MagellanLookAndFeel {
 	private static Map lafCache;
 
 	/**
-	 * this function delivers a Map (String, MagLookAndFeelWrapper) of possibly
+	 * Delivers a Map (String, MagLookAndFeelWrapper) of possibly
 	 * useable look and feel implementations
 	 *
 	 * @return TODO: DOCUMENT ME!
@@ -181,7 +176,6 @@ public class MagellanLookAndFeel {
 															i);
 						String jre = plaf_ini.getProperty("plaf.jre." + i, "1.3");
 
-						//Integer prio = new Integer(plaf_ini.getProperty("plaf.priority." + i,String.valueOf(Integer.MIN_VALUE+plafCount-i)));
 						if((name != null) && (clazz != null)) {
 							try {
 								Class	    c   = Class.forName(clazz);
@@ -419,7 +413,6 @@ public class MagellanLookAndFeel {
 		}
 
 		//delegation of all methods
-
 		/*
 		// @since 1.4
 		public void provideErrorFeedback(Component component) {

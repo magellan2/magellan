@@ -49,7 +49,6 @@ import com.eressea.util.Locales;
 import com.eressea.util.OrderToken;
 import com.eressea.util.OrderTokenizer;
 import com.eressea.util.OrderWriter;
-import com.eressea.util.ROCollection;
 import com.eressea.util.Sorted;
 import com.eressea.util.TagMap;
 import com.eressea.util.Taggable;
@@ -260,7 +259,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection getOrders() {
-		return new ROCollection(ordersObject.getOrders());
+		return CollectionFactory.unmodifiableCollection(ordersObject.getOrders());
 	}
 
 	/** TODO: DOCUMENT ME! */
@@ -738,7 +737,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 */
 	public Collection tempUnits() {
 		if(tempUnitCollection == null) {
-			tempUnitCollection = new ROCollection(tempUnits);
+			tempUnitCollection = CollectionFactory.unmodifiableCollection(tempUnits);
 		}
 
 		return tempUnitCollection;
@@ -960,10 +959,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 */
 	public Collection getRelations() {
 		if((cache != null) && (cache.relations != null)) {
-			return new ROCollection(cache.relations);
+			return CollectionFactory.unmodifiableCollection(cache.relations);
 		}
 
-		return new ROCollection();
+		return CollectionFactory.EMPTY_COLLECTION;
 	}
 
 	/**
@@ -1161,15 +1160,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 			refreshModifiedSkills();
 		}
 
-		if(cache != null) {
-			if(cache.modifiedSkills != null) {
-				return new ROCollection(cache.modifiedSkills);
-			} else {
-				return null;
-			}
-		} else {
-			return null;
+		if(cache != null && cache.modifiedSkills != null) {
+			return CollectionFactory.unmodifiableCollection(cache.modifiedSkills);
 		}
+		return CollectionFactory.EMPTY_COLLECTION;
 	}
 
 	/**
@@ -1487,7 +1481,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 * @return a collection of Skill objects.
 	 */
 	public Collection getSkills() {
-		return new ROCollection(this.skills);
+		return CollectionFactory.unmodifiableCollection(this.skills);
 	}
 
 	/**
@@ -1550,7 +1544,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 	 * @return a collection of Item objects.
 	 */
 	public Collection getItems() {
-		return new ROCollection(this.items);
+		return CollectionFactory.unmodifiableCollection(this.items);
 	}
 
 	/**
@@ -1649,7 +1643,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted,
 			refreshModifiedItems();
 		}
 
-		return new ROCollection(cache.modifiedItems);
+		return CollectionFactory.unmodifiableCollection(cache.modifiedItems);
 	}
 
 	/**

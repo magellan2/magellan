@@ -27,7 +27,8 @@ import com.eressea.io.file.FileTypeFactory;
 import com.eressea.util.logging.Logger;
 
 /**
- * TODO: DOCUMENT ME!
+ * This used to be the Loader class. Now it only supports cloning via 
+ * cr writing/reading
  *
  * @author $author$
  * @version $Revision$
@@ -38,11 +39,11 @@ public class Loader {
 	/**
 	 * Creates a clone of the GameData using CRWriter/CRParser
 	 *
-	 * @param data TODO: DOCUMENT ME!
+	 * @param data the given GameData
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a clone of the given GameData
 	 *
-	 * @throws CloneNotSupportedException TODO: DOCUMENT ME!
+	 * @throws CloneNotSupportedException if cloning failed
 	 */
 	public GameData cloneGameData(GameData data)
 						   throws CloneNotSupportedException

@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.util.ROCollection;
+import com.eressea.util.CollectionFactory;
 
 /**
  * Container class for a potion based on its representation in a cr version >=
@@ -66,7 +66,7 @@ public class Potion extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection ingredients() {
-		return new ROCollection(this.ingredients);
+		return CollectionFactory.unmodifiableCollection(ingredients);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class Potion extends DescribedObject {
 	 */
 	public Item addIngredient(Item i) {
 		if(this.ingredients == null) {
-			this.ingredients = new com.eressea.util.OrderedHashtable();
+			this.ingredients = CollectionFactory.createOrderedHashtable();
 		}
 
 		this.ingredients.put(i.getItemType().getID(), i);

@@ -21,7 +21,6 @@ import com.eressea.ID;
 import com.eressea.Rules;
 
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROCollection;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -100,7 +99,7 @@ public class Options {
 			initOptions(rules);
 		}
 
-		return new ROCollection(options);
+		return CollectionFactory.unmodifiableCollection(options);
 	}
 
 	private void initOptions(Rules rules) {

@@ -403,7 +403,7 @@ public class ECheckPanel extends InternationalizedDataPanel
 				iter.hasNext();) {
 			Faction f = (Faction) iter.next();
 
-			if(f.trustLevel >= Faction.TL_PRIVILEGED) {
+			if(f.isPrivileged()) {
 				cmbFactions.addItem(f);
 			}
 		}

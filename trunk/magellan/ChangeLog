@@ -1,3 +1,19 @@
+2003-12-06  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea: Removed deprecated ROCollection and
+	ROIterator.
+
+2003-12-05  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/Faction.java: added helper function
+	isPrivileged to get rid of .trustlevel >= Faction.TL_PRIVILEGED
+
+	* src/java/com/eressea/swing/map/ImageCellRenderer.java: moved
+	image loading code to com.eressea.util.ImageFactory.
+
+	* src/java/com/eressea/demo/EMapOverviewPanel.java: prevent NPE if 
+	GameData is null and options are changed.
+
 2003-12-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/TempUnit.java: fixed bug #771.

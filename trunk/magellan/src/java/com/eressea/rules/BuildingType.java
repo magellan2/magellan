@@ -21,8 +21,6 @@ import com.eressea.ID;
 import com.eressea.Item;
 
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ROCollection;
-import com.eressea.util.ROIterator;
 
 /**
  * TODO: DOCUMENT ME!
@@ -65,12 +63,8 @@ public class BuildingType extends UnitContainerType {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public ROIterator getRawMaterials() {
-		if(rawMaterials != null) {
-			return new ROIterator(rawMaterials.values().iterator());
-		} else {
-			return new ROIterator();
-		}
+	public Iterator getRawMaterials() {
+		return CollectionFactory.unmodifiableIterator(rawMaterials);
 	}
 
 	/**
@@ -107,11 +101,7 @@ public class BuildingType extends UnitContainerType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Iterator getMaintenanceItems() {
-		if(maintenance != null) {
-			return new ROIterator(maintenance.values().iterator());
-		} else {
-			return (CollectionFactory.createLinkedList()).iterator();
-		}
+		return CollectionFactory.unmodifiableIterator(maintenance);
 	}
 
 	/**
@@ -230,7 +220,7 @@ public class BuildingType extends UnitContainerType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Collection regionTypes() {
-		return new ROCollection(regionTypes);
+		return CollectionFactory.unmodifiableCollection(regionTypes);
 	}
 
 	/**
