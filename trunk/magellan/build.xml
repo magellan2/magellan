@@ -331,7 +331,7 @@
   </target>
 
   <target name="toLocal" depends="init">
-    <replace dir="${basedir}" defaultexcludes="no">
+    <replace dir="${basedir}/../" defaultexcludes="no">
 	  <include name="**/CVS/Root"/>
 	  <replacefilter  token="@cvs.sourceforge.net" value="@localhost"/>
 	  <replacefilter  token="@eressea.upb.de"      value="@localhost"/>

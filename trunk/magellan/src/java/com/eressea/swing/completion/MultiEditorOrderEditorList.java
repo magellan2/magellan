@@ -952,7 +952,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 			defaultTranslations.put("prefs.listMode" , "Editor Listing");
 			defaultTranslations.put("shortcuts.description.1" , "Delete temp unit");
 			defaultTranslations.put("msg.invalidtempid.title" , "Invalid temp id");
-			
+
 			defaultTranslations.put("prefs.multieditorlayout" , "Multi-editor layout");
 			defaultTranslations.put("prefs.hidebuttons" , "Hide buttons");
 			defaultTranslations.put("prefs.syntaxhighlighting" , "Syntax highlighting");
@@ -980,7 +980,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 			defaultTranslations.put("prefs.backgroundcolor" , "Background color");
 			defaultTranslations.put("prefs.activebackground" , "Color of active editor");
 			defaultTranslations.put("prefs.activebackground.confirmed" , "Color of active and confirmed editor");
-			
+
 			defaultTranslations.put("tempunit.recruitCost", "recruitment costs");
 			defaultTranslations.put("tempunit.maintainCost", "maintainance costs");
 		}
@@ -1755,9 +1755,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 
 										if (i > 0) {
 											tempUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_RECRUIT) + " " + String.valueOf(i));
-																																	
+
 											if (dialog.isGiveMaintainCost() || dialog.isGiveRecruitCost()) {
-												
+
 												ItemType silverType = data.rules.getItemType(StringID.create("Silber"), false);
 												String silver = null;
 												if (silverType != null) {
@@ -1765,17 +1765,28 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel imple
 												} else {
 													silver = "Silver";
 												}
-												
+
 												if (dialog.isGiveRecruitCost()) {
-													parentUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) + " TEMP "+tempUnit.getID().toString()+" "+String.valueOf(i*parentUnit.race.getRecruitmentCosts())+" "+silver+"; "+getString("tempunit.recruitCost"));
+                                                    int recCost = 0;
+                                                    if (parentUnit.realRace != null) {
+                                                        recCost = parentUnit.realRace.getRecruitmentCosts();
+                                                    } else {
+                                                        recCost = parentUnit.race.getRecruitmentCosts();
+                                                    }
+                                                    recCost = i * recCost;
+													parentUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE)
+                                                        + " TEMP " + tempUnit.getID().toString()
+                                                        + " " + recCost + " " + silver
+                                                        + "; " + getString("tempunit.recruitCost")
+                                                    );
 												}
 												if (dialog.isGiveMaintainCost()) {
 													parentUnit.addOrders(Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) + " TEMP "+tempUnit.getID().toString()+" "+String.valueOf(10*i)+" "+silver+"; "+getString("tempunit.maintainCost"));
 												}
-											
+
 												dispatcher.fire(new com.eressea.event.UnitOrdersEvent(this, parentUnit));
 											}
-											
+
 										}
 									}
 									catch (NumberFormatException nfe) {
