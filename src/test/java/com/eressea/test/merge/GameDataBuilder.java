@@ -10,25 +10,31 @@ import com.eressea.util.*;
 
 public class GameDataBuilder {
 
-	public GameData createSimpleGameData() throws Exception {
-		return createSimpleGameData(350);
+	private final int BASE_ROUND = 360;
+
+	public GameData createSimplestGameData() throws Exception {
+		return createSimplestGameData(BASE_ROUND);
+	}
+	
+	public GameData createSimplestGameData(int round) throws Exception {
+		return createSimplestGameData(round, true);
 	}
 
-	public GameData createSimpleGameData(int round) throws Exception {
+	public GameData createSimplestGameData(int round, boolean postProcess) throws Exception {
 		GameData data = new GameDataReader().createGameData("Eressea");
-
+		
 		data.base=36;
 		// this is sadly needed
 		IDBaseConverter.setBase(data.base);
-
+		
 		data.noSkillPoints=true;
-
+		
 		data.setLocale(Locale.GERMAN);
-
+		
 		EresseaDate ed = new EresseaDate(round);
 		ed.setEpoch(2);
 		data.setDate(ed);
-
+		
 		//data.setCurTempID
 		//data.mailTo
 		//data.mailSubject
@@ -44,11 +50,25 @@ public class GameDataBuilder {
 
 		Unit unit = addUnit(data, "1", "Unit_1", faction, region);
 
-		Skill skill1 = addSkill(data, unit, "Hiebwaffen", 4, 3, true); // Hiebwaffen 4 (+3)
-		Skill skill2 = addSkill(data, unit, "Segeln", 4, 3,false); // Segeln 4
-		Skill skill3 = addSkill(data, unit, "Magie", -1, -3,true); // Magie - (-3)
-		Skill skill4 = addSkill(data, unit, "Steinbau", -1, -3,false); // Steinbau - 
+		if(postProcess) {
+			data.postProcess();
+		}
+		return data;
+	}
 
+	public GameData createSimpleGameData() throws Exception {
+		return createSimpleGameData(BASE_ROUND);
+	}
+	
+	public GameData createSimpleGameData(int round) throws Exception {
+		GameData data = createSimplestGameData(round, false);
+
+		Unit unit = (Unit) data.units().values().iterator().next();
+
+		Skill skill1 = addSkill(unit, "Hiebwaffen", 4, 3, true); // Hiebwaffen 4 (+3)
+		Skill skill2 = addSkill(unit, "Segeln", 4, 3,false); // Segeln 4
+		Skill skill3 = addSkill(unit, "Magie", -1, -3,true); // Magie - (-3)
+		Skill skill4 = addSkill(unit, "Steinbau", -1, -3,false); // Steinbau - 
 
 		data.postProcess();
 		return data;
@@ -113,14 +133,26 @@ public class GameDataBuilder {
 		
 		return unit;
 	}
+	
+	public Skill addLostSkill(Unit unit, String name, int level) {
+		return addSkill(unit, name, -1, level,true);
+	}
 
-	public Skill addSkill(GameData data, Unit unit, String name, int level, int change, boolean changed) {
+	public Skill addSkill(Unit unit, String name, int level) {
+		return addSkill(unit, name, level, level, false);
+	}
+						 
+	public Skill addChangedSkill(Unit unit, String name, int level, int fromLevel) {
+		return addSkill(unit, name, level, fromLevel, true);
+	}
+
+	protected Skill addSkill(Unit unit, String name, int level, int change, boolean changed) {
 		
-		SkillType skt = data.rules.getSkillType(StringID.create(name), true);
+		SkillType skt = unit.getRegion().getData().rules.getSkillType(StringID.create(name), true);
 		int raceBonus = unit.realRace.getSkillBonus(skt);
 		int points = Skill.getPointsAtLevel(level-raceBonus);
 
-		Skill skill = new Skill(skt, points, level, unit.persons, data.noSkillPoints);
+		Skill skill = new Skill(skt, points, level, unit.persons, unit.getRegion().getData().noSkillPoints);
 
 		skill.setChangeLevel(change);
 
