@@ -23,7 +23,7 @@ public class EresseaOptionsAction extends MenuAction {
 
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		FactionStatsDialog d = new FactionStatsDialog(client, false, client.getDispatcher(), client.getData(), client.getSettings());
-		d.showEresseaOptions();
+		//		d.showEresseaOptions();
 		d.setVisible(true);
 	}
 	
