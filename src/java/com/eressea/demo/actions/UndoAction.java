@@ -1,48 +1,74 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.demo.actions;
 
-
 import java.beans.PropertyChangeListener;
+
 import java.util.Map;
 
 import javax.swing.Action;
 
 import com.eressea.demo.MagellanUndoManager;
+
 import com.eressea.util.CollectionFactory;
+
 /**
+ * DOCUMENT ME!
  *
- * @author  Andreas
+ * @author Andreas
  * @version
  */
-public class UndoAction extends MenuAction implements PropertyChangeListener{
-
+public class UndoAction extends MenuAction implements PropertyChangeListener {
 	private MagellanUndoManager undo;
-	private String name = null;
+	private String			    name = null;
 
+	/**
+	 * Creates a new UndoAction object.
+	 *
+	 * @param m TODO: DOCUMENT ME!
+	 */
 	public UndoAction(MagellanUndoManager m) {
 		this.name = getName();
-		undo=m;
+		undo	  = m;
 		setEnabled(undo.canUndo());
-		if (isEnabled()) {
+
+		if(isEnabled()) {
 			putValue(Action.NAME, name + ": " + undo.getUndoPresentationName());
 		}
-		undo.addPropertyChangeListener(MagellanUndoManager.UNDO,this);
+
+		undo.addPropertyChangeListener(MagellanUndoManager.UNDO, this);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		undo.undo();
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param p1 TODO: DOCUMENT ME!
+	 */
 	public void propertyChange(java.beans.PropertyChangeEvent p1) {
-		boolean b=((Boolean)p1.getNewValue()).booleanValue();
-		if (b) {
+		boolean b = ((Boolean) p1.getNewValue()).booleanValue();
+
+		if(b) {
 			putValue(Action.NAME, name + ": " + undo.getUndoPresentationName());
 			setEnabled(true);
 		} else {
@@ -57,14 +83,21 @@ public class UndoAction extends MenuAction implements PropertyChangeListener{
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name"       , "Undo");
-			defaultTranslations.put("mnemonic"   , "u");
+			defaultTranslations.put("name", "Undo");
+			defaultTranslations.put("mnemonic", "u");
 			defaultTranslations.put("accelerator", "ctrl Z");
-			defaultTranslations.put("tooltip"    , "");
+			defaultTranslations.put("tooltip", "");
 		}
+
 		return defaultTranslations;
 	}
 }

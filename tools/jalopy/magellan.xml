@@ -2,7 +2,7 @@
 <jalopy>
     <general>
         <compliance>
-            <version>14</version>
+            <version>13</version>
         </compliance>
         <style>
             <description>Magellan Coding Convention</description>
@@ -166,16 +166,16 @@
             </format>
             <javadoc>
                 <check>
-                    <innerclass>false</innerclass>
-                    <tags>false</tags>
-                    <throwsTags>false</throwsTags>
+                    <innerclass>true</innerclass>
+                    <tags>true</tags>
+                    <throwsTags>true</throwsTags>
                 </check>
                 <fieldsShort>true</fieldsShort>
                 <generate>
-                    <class>0</class>
-                    <constructor>0</constructor>
-                    <field>0</field>
-                    <method>0</method>
+                    <class>1</class>
+                    <constructor>1</constructor>
+                    <field>1</field>
+                    <method>1</method>
                 </generate>
                 <parseComments>true</parseComments>
                 <tags>
@@ -183,22 +183,22 @@
                     <standard />
                 </tags>
                 <templates>
-                    <class>/**| * DOCUMENT ME!| *| * @author $author$| * @version $Revision$| */</class>
+                    <class>/**| * TODO: DOCUMENT ME!| *| * @author $author$| * @version $Revision$| */</class>
                     <constructor>
                         <bottom> */</bottom>
-                        <exception> * @throws $exceptionType$ DOCUMENT ME!</exception>
-                        <param> * @param $paramType$ DOCUMENT ME!</param>
+                        <exception> * @throws $exceptionType$ TODO: DOCUMENT ME!</exception>
+                        <param> * @param $paramType$ TODO: DOCUMENT ME!</param>
                         <top>/**| * Creates a new $objectType$ object.</top>
                     </constructor>
-                    <interface>/**| * DOCUMENT ME!| *| * @author $author$| * @version $Revision$| */</interface>
+                    <interface>/**| * TODO: DOCUMENT ME!| *| * @author $author$| * @version $Revision$| */</interface>
                     <method>
                         <bottom> */</bottom>
-                        <exception> * @throws $exceptionType$ DOCUMENT ME!</exception>
-                        <param> * @param $paramType$ DOCUMENT ME!</param>
-                        <return> * @return DOCUMENT ME!</return>
-                        <top>/**| * DOCUMENT ME!</top>
+                        <exception> * @throws $exceptionType$ TODO: DOCUMENT ME!</exception>
+                        <param> * @param $paramType$ TODO: DOCUMENT ME!</param>
+                        <return> * @return TODO: DOCUMENT ME!</return>
+                        <top>/**| * TODO: DOCUMENT ME!</top>
                     </method>
-                    <variable>/** DOCUMENT ME! */</variable>
+                    <variable>/** TODO: DOCUMENT ME! */</variable>
                 </templates>
             </javadoc>
             <remove>
@@ -230,7 +230,7 @@
         <header>
             <keys>Eressea Java Code</keys>
             <smartMode>20</smartMode>
-            <text>/*| *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,| *                          Stefan Götz, Sebastian Pappert,| *                          Klaas Prause, Enno Rehling,| *                          Sebastian Tusk, Ulrich Küster,| *                          Ilja Pavkovic| *| * This file is part of the Eressea Java Code Base, see the| * file LICENSING for the licensing information applying to| * this file.| *| * $Id$| */</text>
+            <text>/*| *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,| *                          Stefan Goetz, Sebastian Pappert,| *                          Klaas Prause, Enno Rehling,| *                          Sebastian Tusk, Ulrich Kuester,| *                          Ilja Pavkovic| *| * This file is part of the Eressea Java Code Base, see the| * file LICENSING for the licensing information applying to| * this file.| *| * $Id$| */</text>
             <use>true</use>
         </header>
         <history>
@@ -239,7 +239,7 @@
         <imports>
             <grouping>
                 <defaultDepth>3</defaultDepth>
-                <packages>*:0|gnu:2|java:2|javax:2</packages>
+                <packages>java:2|javax:2|*:0</packages>
             </grouping>
             <policy>disabled</policy>
             <sort>true</sort>

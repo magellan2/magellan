@@ -1,92 +1,122 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.demo.actions;
 
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+
 import java.net.URL;
+
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
+
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
+/**
+ * TODO: DOCUMENT ME!
+ *
+ * @author $author$
+ * @version $Revision$
+ */
 public class HelpAction extends MenuAction {
-	private final static Logger log = Logger.getInstance(HelpAction.class);
+	private static final Logger log		   = Logger.getInstance(HelpAction.class);
+	private Object			    helpBroker = null;
+	private Client			    client;
 
-	private Object helpBroker = null;
-	private Client client;
-
+	/**
+	 * Creates a new HelpAction object.
+	 *
+	 * @param parent TODO: DOCUMENT ME!
+	 */
 	public HelpAction(Client parent) {
-		client=parent;
+		client = parent;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		// SG: had a lot of fun when I implemented this :-)
 		try {
 			ClassLoader loader = new com.eressea.resource.ResourcePathClassLoader(client.getSettings());
-			
-			URL hsURL = loader.getResource("magellan.hs");
-			
-			if (hsURL == null) {
-				JOptionPane.showMessageDialog(client, Translations.getTranslation(this,"msg.helpsetnotfound.text"));
+
+			URL		    hsURL = loader.getResource("magellan.hs");
+
+			if(hsURL == null) {
+				JOptionPane.showMessageDialog(client,
+											  Translations.getTranslation(this,
+																		  "msg.helpsetnotfound.text"));
+
 				return;
 			}
 
-			Class helpSetClass = null;
+			Class helpSetClass    = null;
 			Class helpBrokerClass = null;
-			
-			if (this.helpBroker == null) {
+
+			if(this.helpBroker == null) {
 				try {
 					helpSetClass = loader.loadClass("javax.help.HelpSet");
 					loader.loadClass("javax.help.CSH$DisplayHelpFromSource");
 					helpBrokerClass = loader.loadClass("javax.help.HelpBroker");
-				} catch (ClassNotFoundException ex) {
-					JOptionPane.showMessageDialog(client, Translations.getTranslation(this,"msg.javahelpnotfound.text"));
+				} catch(ClassNotFoundException ex) {
+					JOptionPane.showMessageDialog(client,
+												  Translations.getTranslation(this,
+																			  "msg.javahelpnotfound.text"));
+
 					return;
 				}
-				Class[] helpSetConstructorSignature = {
-					Class.forName("java.lang.ClassLoader"),
-					hsURL.getClass()
-				};
+
+				Class helpSetConstructorSignature[] = {
+														  Class.forName("java.lang.ClassLoader"),
+														  hsURL.getClass()
+													  };
 				Constructor helpSetConstructor = helpSetClass.getConstructor(helpSetConstructorSignature);
-				Object[] helpSetConstructorArgs = {
-					loader,
-					hsURL
-				};
+				Object helpSetConstructorArgs[] = { loader, hsURL };
+
 				// this calls new javax.help.Helpset(ClassLoader, URL)
 				Object helpSet = helpSetConstructor.newInstance(helpSetConstructorArgs);
 
-				Method helpSetCreateHelpBrokerMethod = helpSetClass.getMethod("createHelpBroker", null);
+				Method helpSetCreateHelpBrokerMethod = helpSetClass.getMethod("createHelpBroker",
+																			  null);
+
 				// this calls new javax.help.Helpset.createHelpBroker()
-				this.helpBroker = helpSetCreateHelpBrokerMethod.invoke(helpSet, null);
-				
-				
-				Method initPresentationMethod = helpBrokerClass.getMethod("initPresentation", null);
+				this.helpBroker = helpSetCreateHelpBrokerMethod.invoke(helpSet,
+																	   null);
+
+				Method initPresentationMethod = helpBrokerClass.getMethod("initPresentation",
+																		  null);
+
 				// this calls new javax.help.HelpBroker.initPresentation()
 				initPresentationMethod.invoke(this.helpBroker, null);
 			}
 
-			Class[] setDisplayedMethodSignature = {
-				boolean.class
-			};
-			Method setDisplayedMethod = this.helpBroker.getClass().getMethod("setDisplayed", setDisplayedMethodSignature);
-			Object[] setDisplayedMethodArgs = {
-				new Boolean(true)
-			};
+			Class    setDisplayedMethodSignature[] = { boolean.class };
+			Method   setDisplayedMethod = this.helpBroker.getClass().getMethod("setDisplayed",
+																			   setDisplayedMethodSignature);
+			Object setDisplayedMethodArgs[] = { new Boolean(true) };
+
 			// this calls new javax.help.HelpBroker.setDisplayed(true)
 			setDisplayedMethod.invoke(this.helpBroker, setDisplayedMethodArgs);
-		} catch (Exception ex) {
+		} catch(Exception ex) {
 			log.error(ex);
 		}
 	}
@@ -97,23 +127,29 @@ public class HelpAction extends MenuAction {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name"       , "Help...");
-			defaultTranslations.put("mnemonic"   , "h");
+			defaultTranslations.put("name", "Help...");
+			defaultTranslations.put("mnemonic", "h");
 			defaultTranslations.put("accelerator", "F1");
-			defaultTranslations.put("tooltip"    , "");
+			defaultTranslations.put("tooltip", "");
 			defaultTranslations.put("msg.helpsetnotfound.text",
-									"The Magellan help could not be found. Along with JavaHelp\n"+
-									"it is available at the Magellan homepage and needs to be\n"+
+									"The Magellan help could not be found. Along with JavaHelp\n" +
+									"it is available at the Magellan homepage and needs to be\n" +
 									"included in a resource path via the options dialog.");
 			defaultTranslations.put("msg.javahelpnotfound.text",
-									"JavaHelp could not be found. Along with the Magellan help\n"+
-									"it is available at the Magellan homepage and needs to be\n"+
+									"JavaHelp could not be found. Along with the Magellan help\n" +
+									"it is available at the Magellan homepage and needs to be\n" +
 									"included in a resource path via the options dialog.");
-			
 		}
+
 		return defaultTranslations;
 	}
 }

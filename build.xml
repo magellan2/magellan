@@ -13,6 +13,7 @@
   <property name="VERSION.SUB"           value="3"/>
 
   <property name="VERSION"               value="${VERSION.MAJOR}_${VERSION.MINOR}_${VERSION.SUB}"/>
+  <property name="VERSION.POINTED"       value="${VERSION.MAJOR}.${VERSION.MINOR}.${VERSION.SUB}"/>
 
   <property name="SRC.RELEASE"           value="${basedir}/src/release"/>
   <property name="SRC.MAGELLAN"          value="${basedir}/src/java"/>
@@ -98,12 +99,13 @@
         <pathelement location="${LIB.FORMS}"/>
         <pathelement location="${LIB.JAXP}"/>
       </classpath>
-<!--
-      <fileset>
-        <exclude name="*/ncompletion/*"/>
-      </fileset>
--->
     </javac>
+	<!-- notify VERSION information in an accessable file -->
+    <copy file="${SRC.RES}/VERSION.template" tofile="${SRC.RES}/VERSION" overwrite="yes">
+      <filterset>
+        <filter token="VERSION" value="${VERSION.POINTED}"/>
+      </filterset>
+    </copy>
   </target>
 
   <target name="compile.magellan.jrat" depends="compile.magellan">
@@ -200,6 +202,7 @@
 		 </fileset>
 		 <fileset dir="${SRC.RES}/../">
            <include name="res/**/*"/>
+           <exclude name="res/**/VERSION.template"/>
          </fileset>
 	</jar>
   </target>
@@ -209,7 +212,6 @@
 <!--
   <target name="prejar" depends="build">
     <mkdir dir="${jar.dest}"/>    
-    <filter token="version" value="${version}" />
     <copy file="${manifest.src}" tofile="${jar.dest}/manifest.mf" 
           filtering="true"/>
   </target>
@@ -221,6 +223,7 @@
 		 </fileset>
 		 <fileset dir="${SRC.RES}/../">
            <include name="res/**/*"/>
+           <exclude name="res/**/VERSION.template"/>
          </fileset>
 	</jar>
   </target>
@@ -363,10 +366,8 @@
 	</java>
   </target>
 
-  <target name="update" depends="init">
-    <cvs dest="patcher" command="update -P -d"/>
-    <cvs dest="${SRC.RES}/res" command="update -P -d"/>
-    <cvs dest="${SRC.MAGELLAN}" command="update -P -d"/>
+  <target name="update" depends="init, format">
+    <cvs command="update -P -d" dest="../" />
   </target>
 
   <target name="brt" depends="jar.magellan">
@@ -425,7 +426,7 @@
   <!-- ==================================================================== -->
   <!-- Formats all source files                                             -->
   <!-- ==================================================================== -->
-  <target name="format" depends="compile.magellan">
+  <target name="format" depends="init">
     <echo message="Calling jalopy with classpath=${JALOPY.CLASSPATH}"/>
 	<mkdir dir="${BUILD}/src"/>
 	
@@ -433,7 +434,7 @@
 
       Invokes Jalopy as follows:
 
-      - All formatted files will have unix fileformat (\n)
+      - All formatted files will have dos fileformat (\n)
       - Load your code convention from the given url
       - Override the convention to use the file history feature
       - Override the convention to use alder32 checksums of files for history testing
@@ -446,19 +447,19 @@
         valid Java source files as input!
 
       -->
-    <jalopy fileformat="unix"
+    <jalopy fileformat="dos"
             convention="${JALOPY}/magellan.xml"
             history="file"
             historymethod="adler32"
             loglevel="info"
             threads="1"
-			destdir="${BUILD}/jalopy">
+			destdir="${SRC.MAGELLAN}">
       <fileset dir="${SRC.MAGELLAN}">
         <include name="**/*.java" />
         <exclude name="**/apache/**"/>
       </fileset>
     </jalopy>
-	<antcall target="compile.magellan"/>
+    <!--<fixcrlf srcdir="${SRC.MAGELLAN}" eol="crlf"/>-->
   </target>
 
   <!-- helper target to modify jalopy settings (a very nice tool!!!)-->

@@ -1,18 +1,24 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.event;
 
 import com.eressea.GameData;
 
 /**
- * An event indicating that the previous game data object is no longer
- * valid e.g. after the user loaded a report.
+ * An event indicating that the previous game data object is no longer valid
+ * e.g. after the user loaded a report.
  *
  * @see GameDataListener
  * @see EventDispatcher
@@ -33,6 +39,8 @@ public class GameDataEvent extends TimeStampedEvent {
 
 	/**
 	 * Returns the new valid game data object.
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public GameData getGameData() {
 		return data;

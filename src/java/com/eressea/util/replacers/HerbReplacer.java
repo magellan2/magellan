@@ -1,27 +1,44 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.util.replacers;
-
 
 import java.util.Map;
 
 import com.eressea.Region;
+
 import com.eressea.util.CollectionFactory;
 
 /**
+ * DOCUMENT ME!
  *
- * @author  unknown
- * @version 
+ * @author unknown
+ * @version
  */
 public class HerbReplacer extends AbstractRegionReplacer {
-
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param r TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public Object getRegionReplacement(Region r) {
-		if (r.herb!=null)
+		if(r.herb != null) {
 			return r.herb.getName();
+		}
+
 		return null;
 	}
 
@@ -31,12 +48,19 @@ public class HerbReplacer extends AbstractRegionReplacer {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("description","Returns the herb of the region.");
+			defaultTranslations.put("description",
+									"Returns the herb of the region.");
 		}
+
 		return defaultTranslations;
 	}
-
 }

@@ -1,16 +1,22 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.demo.actions;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,60 +25,114 @@ import javax.swing.KeyStroke;
 import com.eressea.demo.Client;
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
+
 import com.eressea.swing.OrderWriterDialog;
+
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 
 /**
+ * DOCUMENT ME!
  *
- * @author  Andreas
+ * @author Andreas
  * @version
  */
 public class SaveOrdersAction extends MenuAction implements ShortcutListener {
-
 	private Client client;
-	private List shortCuts;
+	private List   shortCuts;
 
-	/** Creates new OpenCRAction */
+	/**
+	 * Creates new OpenCRAction
+	 *
+	 * @param parent TODO: DOCUMENT ME!
+	 */
 	public SaveOrdersAction(Client parent) {
-		client=parent;
-		
+		client = parent;
+
 		shortCuts = CollectionFactory.createArrayList(2);
-		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK));
-		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK));
+		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+											 KeyEvent.CTRL_MASK |
+											 KeyEvent.SHIFT_MASK));
+		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_M,
+											 KeyEvent.CTRL_MASK |
+											 KeyEvent.SHIFT_MASK));
 		DesktopEnvironment.registerShortcutListener(this);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void actionPerformed(ActionEvent e) {
-		OrderWriterDialog d = new OrderWriterDialog(client, true, client.getData(), client.getSettings(), client.getSelectedRegions().values());
+		OrderWriterDialog d = new OrderWriterDialog(client, true,
+													client.getData(),
+													client.getSettings(),
+													client.getSelectedRegions()
+														  .values());
 		d.setVisible(true);
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param shortcut TODO: DOCUMENT ME!
+	 */
 	public void shortCut(javax.swing.KeyStroke shortcut) {
 		int index = shortCuts.indexOf(shortcut);
-		if (index>=0 && index<3) {
+
+		if((index >= 0) && (index < 3)) {
 			switch(index) {
-				case 0: new OrderWriterDialog(client, true, client.getData(), client.getSettings(), client.getSelectedRegions().values()).runClipboard(); break;
-				case 1: new OrderWriterDialog(client, true, client.getData(), client.getSettings(), client.getSelectedRegions().values()).runMail(); break;
+			case 0:
+				new OrderWriterDialog(client, true, client.getData(),
+									  client.getSettings(),
+									  client.getSelectedRegions().values()).runClipboard();
+
+				break;
+
+			case 1:
+				new OrderWriterDialog(client, true, client.getData(),
+									  client.getSettings(),
+									  client.getSelectedRegions().values()).runMail();
+
+				break;
 			}
 		}
 	}
-	
+
 	/**
-	 * Should return all short cuts this class want to be informed.
-	 * The elements should be of type javax.swing.KeyStroke
+	 * Should return all short cuts this class want to be informed. The
+	 * elements should be of type javax.swing.KeyStroke
+	 *
+	 * @return TODO: DOCUMENT ME!
 	 */
 	public java.util.Iterator getShortCuts() {
 		return shortCuts.iterator();
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param obj TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public java.lang.String getShortcutDescription(java.lang.Object obj) {
 		int index = shortCuts.indexOf(obj);
-		return Translations.getTranslation(this,"shortcuts.description."+String.valueOf(index));
+
+		return Translations.getTranslation(this,
+										   "shortcuts.description." +
+										   String.valueOf(index));
 	}
-	
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public java.lang.String getListenerDescription() {
-		return com.eressea.util.Translations.getTranslation(this,"shortcuts.title");
+		return com.eressea.util.Translations.getTranslation(this,
+															"shortcuts.title");
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -81,23 +141,27 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name"       , "Save orders...");
-			defaultTranslations.put("mnemonic"   , "r");
+			defaultTranslations.put("name", "Save orders...");
+			defaultTranslations.put("mnemonic", "r");
 			defaultTranslations.put("accelerator", "");
-			defaultTranslations.put("tooltip"    , "");
-			
-			defaultTranslations.put("shortcuts.title",
-									"Fast save");
-			defaultTranslations.put("shortcuts.description.-1",
-									"Save dialog");
+			defaultTranslations.put("tooltip", "");
+
+			defaultTranslations.put("shortcuts.title", "Fast save");
+			defaultTranslations.put("shortcuts.description.-1", "Save dialog");
 			defaultTranslations.put("shortcuts.description.0",
 									"Save to clipboard");
-			defaultTranslations.put("shortcuts.description.1",
-									"Send e-mail");
+			defaultTranslations.put("shortcuts.description.1", "Send e-mail");
 		}
+
 		return defaultTranslations;
 	}
 }

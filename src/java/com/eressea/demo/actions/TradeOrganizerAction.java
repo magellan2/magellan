@@ -1,33 +1,53 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Ulrich Küster, Sebastian Pappert, Ilja Pavkovic, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ---
-// $Id$
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
 
 package com.eressea.demo.actions;
 
 import java.util.Map;
 
 import com.eressea.demo.Client;
+
 import com.eressea.swing.TradeOrganizer;
+
 import com.eressea.util.CollectionFactory;
 
 /**
  * Just a little class to invoke a trade organizer
+ *
  * @author Ulrich Küster
  */
-public class TradeOrganizerAction extends MenuAction{
-
+public class TradeOrganizerAction extends MenuAction {
 	private Client client;
 
+	/**
+	 * Creates a new TradeOrganizerAction object.
+	 *
+	 * @param parent TODO: DOCUMENT ME!
+	 */
 	public TradeOrganizerAction(Client parent) {
 		client = parent;
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param e TODO: DOCUMENT ME!
+	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
-		new TradeOrganizer(client, client.getDispatcher(), client.getData(), client.getSettings(), client.getSelectedRegions().values());
+		new TradeOrganizer(client, client.getDispatcher(), client.getData(),
+						   client.getSettings(),
+						   client.getSelectedRegions().values());
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -36,14 +56,21 @@ public class TradeOrganizerAction extends MenuAction{
 	// Pls use this mechanism, so the translation files can be created automagically
 	// by inspecting all classes.
 	private static Map defaultTranslations;
-	public synchronized static Map getDefaultTranslations() {
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name"       , "Trade organizer...");
-			defaultTranslations.put("mnemonic"   , "");
+			defaultTranslations.put("name", "Trade organizer...");
+			defaultTranslations.put("mnemonic", "");
 			defaultTranslations.put("accelerator", "");
-			defaultTranslations.put("tooltip"    , "");
+			defaultTranslations.put("tooltip", "");
 		}
+
 		return defaultTranslations;
 	}
 }

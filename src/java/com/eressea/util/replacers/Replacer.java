@@ -1,26 +1,57 @@
-// ===
-// Copyright (C) 2000, 2001 Roger Butenuth, Andreas Gampe, Stefan Götz, Sebastian Pappert, Klaas Prause, Enno Rehling, Sebastian Tusk
-// ---
-// This file is part of the Eressea Java Code Base, see the file LICENSING for the licensing information applying to this file
-// ===
+/*
+ *  Copyright (C) 2000-2003 Roger Butenuth, Andreas Gampe,
+ *                          Stefan Goetz, Sebastian Pappert,
+ *                          Klaas Prause, Enno Rehling,
+ *                          Sebastian Tusk, Ulrich Kuester,
+ *                          Ilja Pavkovic
+ *
+ * This file is part of the Eressea Java Code Base, see the
+ * file LICENSING for the licensing information applying to
+ * this file.
+ *
+ * $Id$
+ */
+
 package com.eressea.util.replacers;
 
 /**
  * Base interface for Replacer architecture.
  *
- * @author  Andreas
- * @version 
+ * @author Andreas
+ * @version
  */
 public interface Replacer {
-	public final static String BLANK       = "";
-	public final static String TRUE        = "true";
-	public final static String FALSE       = "false";
-	public final static String CLEAR       = "clear";
-	public final static String NEXT_BRANCH = "else";
-	public final static String END         = "end";
+	/** TODO: DOCUMENT ME! */
+	public static final String BLANK = "";
 
+	/** TODO: DOCUMENT ME! */
+	public static final String TRUE = "true";
+
+	/** TODO: DOCUMENT ME! */
+	public static final String FALSE = "false";
+
+	/** TODO: DOCUMENT ME! */
+	public static final String CLEAR = "clear";
+
+	/** TODO: DOCUMENT ME! */
+	public static final String NEXT_BRANCH = "else";
+
+	/** TODO: DOCUMENT ME! */
+	public static final String END = "end";
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param o TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public Object getReplacement(Object o);
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getDescription();
 }
-
