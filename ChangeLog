@@ -1,3 +1,16 @@
+2004-06-08  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/gamebinding/eressea/EresseaOrderCompleter.java:
+	autocompletion of ZAUBERE REGION (CAST REGION) creates correct coordinates.
+
+	* src/java/com/eressea/Coordinate.java: new method
+	createDistanceCoordinate(Coordinate to).
+
+2004-06-07  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/swing/MessagePanel.java: change entities
+	with double click.
+
 2004-06-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: Prevent
 	NPE on unconnected frame in FrameRectangle (ensure initFrames(). 

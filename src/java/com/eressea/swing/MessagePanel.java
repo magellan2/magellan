@@ -19,6 +19,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,8 +38,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -79,7 +79,6 @@ import com.eressea.util.comparator.MessageTypeComparator;
  * A class for displaying Eressea messages for regions or factions.
  */
 public class MessagePanel extends InternationalizedDataPanel implements SelectionListener,
-																		TreeSelectionListener,
 																		PreferencesFactory,
 																		MenuProvider
 {
@@ -626,7 +625,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 	 *
 	 * @param e TODO: DOCUMENT ME!
 	 */
-	public void valueChanged(TreeSelectionEvent e) {
+	private void handleValueChange() {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
 		if(node == null) {
@@ -650,9 +649,16 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 		rootNode = new DefaultMutableTreeNode("Rootnode");
 		treeModel = new DefaultTreeModel(rootNode);
 		tree = new CopyTree(treeModel);
+		tree.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount() == 2) {
+						handleValueChange();
+					}
+				}
+			});
+
 		tree.setRootVisible(false);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		tree.addTreeSelectionListener(this);
 
 		JScrollPane treeScrollPane = new JScrollPane(tree);
 

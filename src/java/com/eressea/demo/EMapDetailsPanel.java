@@ -434,7 +434,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				}
 			});
 
+		// FIXME: bugzilla bug #823 ?
+		tree.putClientProperty("JTree.lineStyle", "Angled");
+
 		tree.setRootVisible(false);
+
 		tree.setEditable(true);
 		tree.setCellRenderer(new com.eressea.swing.tree.CellRenderer(settings));
 		tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
