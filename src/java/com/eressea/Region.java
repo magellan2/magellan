@@ -127,7 +127,7 @@ public class Region extends UnitContainer {
 		super(id, data);
 	}
 
-	// pavkovic 2003.09.10: moved from Cache to this object to remove 
+	// pavkovic 2003.09.10: moved from Cache to this object to remove
 	// Cache objects for empty/ocean regions
 	// used in swing.map.RegionImageCellRenderer per region
 	private int fogOfWar = -1;
@@ -1629,8 +1629,8 @@ public class Region extends UnitContainer {
 					if(!newRegion.travelThru.contains(newMsg)) {
 						newRegion.travelThru.add(newMsg);
 					} else {
-						log.warn("Region.merge(): Duplicate message \"" + newMsg.getText() +
-								 "\", removing it.");
+						//log.warn("Region.merge(): Duplicate message \"" + newMsg.getText() +
+						//		 "\", removing it.");
 
 						/*
 						if(log.isDebugEnabled()) {
@@ -1662,8 +1662,8 @@ public class Region extends UnitContainer {
 					if(!newRegion.travelThruShips.contains(newMsg)) {
 						newRegion.travelThruShips.add(newMsg);
 					} else {
-						log.warn("Region.merge(): Duplicate message \"" + newMsg.getText() +
-								 "\", removing it.");
+						//log.warn("Region.merge(): Duplicate message \"" + newMsg.getText() +
+						//		 "\", removing it.");
 
 						/*
 						if(log.isDebugEnabled()) {

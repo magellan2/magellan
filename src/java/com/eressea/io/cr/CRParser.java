@@ -271,7 +271,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			Message msg = new Message(new String(sc.argv[0]));
 
 			if(msgs.contains(msg)) {
-				log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
+				// log.warn("Duplicate message \"" + msg.getText() + "\" found, removing it.");
 
 				if(log.isDebugEnabled()) {
 					log.debug("List: " + msgs);
@@ -839,7 +839,7 @@ public class CRParser implements RulesIO, GameDataIO {
 
 	private void parseMagellan(Rules rules) throws IOException {
 		sc.getNextToken(); // skip MAGELLAN
-		
+
 		while(!sc.eof) {
 			if(sc.argc == 2 && sc.argv[1].equalsIgnoreCase("class")) {
 				rules.setGameSpecificStuffClassName(sc.argv[0]);
@@ -1930,7 +1930,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				ID fid = EntityID.createEntityID(sc.argv[0], 10);
 				/* currently (2004-02) the cr is inconsistent with nr. There may
 				 * be a situation where the corresponding faction of this tag
-				 * does not exist in the game data so add it automagically 
+				 * does not exist in the game data so add it automagically
 				 * (bugzilla bug 794). */
 				Faction faction = world.getFaction(fid);
 				if(faction == null) {
