@@ -1,7 +1,10 @@
 2004-03-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
+	* src/java/com/eressea/swing/InfoDlg.java: Changed
+	ScrollPane/TextArea inclusion (bugzilla bug 799).
+
 	* src/java/com/eressea/rules/GenericRules.java: Added support for
-	translated ObjectTypes
+	translated ObjectTypes.
 
 2004-03-01  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
