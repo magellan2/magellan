@@ -46,7 +46,7 @@ import com.eressea.completion.CompleterSettingsProvider;
 import com.eressea.completion.Completion;
 import com.eressea.cr.CRParser;
 import com.eressea.event.EventDispatcher;
-import com.eressea.gamebinding.OrderParser;
+import com.eressea.completion.OrderParser;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
 import com.eressea.rules.Eressea;
