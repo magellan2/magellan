@@ -1,3 +1,11 @@
+2004-09-06  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/util/OrderWriter.java: for tag writing: use
+	replace(' ','~') for tag value...
+
+	* src/java/com/eressea/GameData.java (merge): moved second pass
+	after all first passes and especially after unit merging.
+
 2004-09-03  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/util/logging/Logger.java: add support for

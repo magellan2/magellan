@@ -3117,7 +3117,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	}
 
 	/** 
-	 * handles a value change annotated by double click (TODO: and return).
+	 * handles a value change annotated by double click.
 	 */
 	private void handleValueChange() {
 		removeTag.setEnabled(false);
