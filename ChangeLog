@@ -1,3 +1,15 @@
+2004-04-07  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/*: changed gui, added quick-change bar for
+	split-sets and layout.
+	
+	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: fixed
+	enabling of correct button in ButtonGroup for split-sets and
+	layout.
+
+	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: reduced
+	flickering while changing desktop mode.
+	
 2004-04-02  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/demo/desktop/MagellanDesktop.java: removed

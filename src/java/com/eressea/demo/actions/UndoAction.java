@@ -72,15 +72,15 @@ public class UndoAction extends MenuAction implements PropertyChangeListener {
 	 * @param p1 TODO: DOCUMENT ME!
 	 */
 	public void propertyChange(java.beans.PropertyChangeEvent p1) {
-		boolean b = ((Boolean) p1.getNewValue()).booleanValue();
+		boolean enabled = ((Boolean) p1.getNewValue()).booleanValue();
 
-		if(b) {
+		if(enabled) {
 			putValue(Action.NAME, name + ": " + undo.getUndoPresentationName());
-			setEnabled(true);
 		} else {
 			putValue(Action.NAME, name);
-			setEnabled(false);
 		}
+		setEnabled(enabled);
+
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

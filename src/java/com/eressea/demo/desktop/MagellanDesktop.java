@@ -32,6 +32,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -56,6 +57,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -303,6 +305,12 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		loadFrameModeSettings();
 	}
 
+	private List actions = CollectionFactory.createArrayList();
+
+	public ButtonGroup getButtonGroup() {
+		return setMenuGroup;
+	}
+
 	/**
 	 * Returns the Magellan Desktop Configuration file. If save is false, the method searches in
 	 * various places for compatibility with older version. The priorities are:
@@ -526,6 +534,28 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		return new FrameRectangle(getString("frame." + translationkey + ".title"), id);
 	}
 
+	private class ActivateSplitSetAction extends AbstractAction {
+		ActivateSplitSetAction(String splitSetName, String text, String tooltip) {
+			super(text);
+			this.putValue(Action.ACTION_COMMAND_KEY, splitSetName);
+			this.putValue(Action.SHORT_DESCRIPTION, tooltip);
+		}
+		public void actionPerformed(ActionEvent e) {
+			setMode(MODE_SPLIT, e.getActionCommand());
+		}
+	}
+	
+	private class ActivateLayoutAction extends AbstractAction {
+		ActivateLayoutAction(String splitSetName, String text, String tooltip) {
+			super(text);
+			this.putValue(Action.ACTION_COMMAND_KEY, splitSetName);
+			this.putValue(Action.SHORT_DESCRIPTION, tooltip);
+		}
+		public void actionPerformed(ActionEvent e) {
+			setMode(MODE_LAYOUT, e.getActionCommand());
+		}
+	}
+	
 	/**
 	 * Creates the menu "Desktop" for Magellan. At first creates a sub-menu with all frames, then a
 	 * sub-menu for all available split sets and at last a sub-menu with all layouts.
@@ -567,26 +597,25 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		int index = 0;
 
 		if((splitSets != null) && (splitSets.size() > 0)) {
-			Iterator it = splitSets.keySet().iterator();
 			index = 1;
+			String prefix = getString("menu.set.caption").substring(0,1).toUpperCase();
+			for (Iterator iter = splitSets.keySet().iterator(); iter.hasNext(); ) {
+				String name = (String) iter.next();
 
-			while(it.hasNext()) {
 				JMenuItem mi = null;
-				String text = (String) it.next();
 
-				if(index < 10) {
-					mi = new JCheckBoxMenuItem(String.valueOf(index) + ": " + text, false);
-					mi.setMnemonic(Character.forDigit(index, 10));
-				} else if(index == 10) {
-					mi = new JCheckBoxMenuItem("0: " + text, false);
-					mi.setMnemonic('0');
-				} else {
-					mi = new JCheckBoxMenuItem(text, false);
+				ActivateSplitSetAction ase = new ActivateSplitSetAction(name, 
+																		prefix+ index + ": " + name, 
+																		getString("menu.set.caption")+ " "+name);
+
+				actions.add(ase);
+				mi = new JCheckBoxMenuItem(ase);
+
+				if(index <= 10) {
+					mi.setMnemonic(Character.forDigit(index%10, 10));
 				}
 
-				mi.setActionCommand(text);
 				setMenu.add(mi);
-				mi.addActionListener(this);
 				setMenuGroup.add(mi);
 				index++;
 			}
@@ -599,27 +628,26 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		layoutMenu.setMnemonic(getString("menu.layout.mnemonic").charAt(0));
 
 		if((layoutComponents != null) && (layoutComponents.size() > 0)) {
-			Iterator it = layoutComponents.keySet().iterator();
 			index = 1;
+			String prefix = getString("menu.layout.caption").substring(0,1).toUpperCase();
+			for(Iterator iter = layoutComponents.keySet().iterator(); iter.hasNext(); ) {
+				String name = (String) iter.next();
 
-			while(it.hasNext()) {
 				JMenuItem mi = null;
-				String text = (String) it.next();
 
-				if(index < 10) {
-					mi = new JCheckBoxMenuItem(String.valueOf(index) + ": " + text, false);
-					mi.setMnemonic(Character.forDigit(index, 10));
-				} else if(index == 10) {
-					mi = new JCheckBoxMenuItem("0: " + text, false);
-					mi.setMnemonic('0');
-				} else {
-					mi = new JCheckBoxMenuItem(text, false);
+				ActivateLayoutAction action = new ActivateLayoutAction(name, 
+																	   prefix+ index + ": " + name, 
+																	   getString("menu.layout.caption")+ " "+name);
+				actions.add(action);
+				mi = new JCheckBoxMenuItem(action);
+
+				if(index <= 10) {
+					mi.setMnemonic(Character.forDigit(index%10, 10));
 				}
 
-				mi.setActionCommand(text);
 				layoutMenu.add(mi);
-				mi.addActionListener(this);
 				setMenuGroup.add(mi);
+			
 				index++;
 			}
 		} else {
@@ -1284,11 +1312,11 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 		// activate the corresponding menu item
 		for(int i = 0; i < setMenu.getItemCount(); i++) {
-			if(setMenu.getItem(i).getText().equals(setName)) {
+			if(setName.equals(setMenu.getItem(i).getAction().getValue(Action.ACTION_COMMAND_KEY))) {
 				((JCheckBoxMenuItem) setMenu.getItem(i)).setSelected(true);
 			}
 		}
-
+		
 		modeInitialized[MODE_SPLIT] = true;
 
 		return true;
@@ -1435,9 +1463,11 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		setClientBounds();
 		layoutName = lName;
 
+
+		// activate the corresponding menu item
 		for(int i = 0; i < layoutMenu.getItemCount(); i++) {
-			if(layoutMenu.getItem(i).getText().equals(lName)) {
-				((JCheckBoxMenuItem) layoutMenu.getItem(i)).setState(true);
+			if(layoutName.equals(layoutMenu.getItem(i).getAction().getValue(Action.ACTION_COMMAND_KEY))) {
+				((JCheckBoxMenuItem) layoutMenu.getItem(i)).setSelected(true);
 			}
 		}
 
@@ -1935,7 +1965,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 *
 	 * @param p1 TODO: DOCUMENT ME!
 	 */
-	public void actionPerformed(java.awt.event.ActionEvent p1) {
+	public void actionPerformed(ActionEvent p1) {
 		if(p1.getSource() == timer) {
 			inFront = false;
 			timer.stop();
@@ -2484,7 +2514,10 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 				break;
 			}
 
-			setAllVisible(false);
+			if(this.mode == MODE_FRAME) {
+				setAllVisible(false);
+			}
+
 			inFront = false;
 			retrieveConfiguration();
 			this.mode = mode;
@@ -4227,9 +4260,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		defaultTranslations.put("prefs.shortcuts.header1", "Shortcuts");
 		defaultTranslations.put("menu.frames.caption", "Frames");
 		defaultTranslations.put("menu.frames.menmonic", "f");
-		defaultTranslations.put("menu.set.caption", "Split sets");
+		defaultTranslations.put("menu.set.caption", "Split-set");
 		defaultTranslations.put("menu.set.mnemonic", "s");
-		defaultTranslations.put("menu.layout.caption", "Layouts");
+		defaultTranslations.put("menu.layout.caption", "Layout");
 		defaultTranslations.put("menu.layout.mnemonic", "l");
 		defaultTranslations.put("frame.overview.title", "Overview");
 		defaultTranslations.put("frame.history.title", "History");

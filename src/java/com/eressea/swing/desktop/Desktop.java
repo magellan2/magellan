@@ -14,11 +14,9 @@
 package com.eressea.swing.desktop;
 
 import java.awt.*;
+import java.util.*;
 
 import javax.swing.*;
-import javax.swing.border.*;
-
-import com.eressea.swing.ui.UIFactory;
 
 /**
  * TODO: DOCUMENT ME!
@@ -29,6 +27,7 @@ import com.eressea.swing.ui.UIFactory;
 public class Desktop extends JPanel {
 	private JPanel contentPanel;
 	private JPanel content;
+	private JToolBar chooserBar;
 
 	// private Perspective[] perspectives;
 
@@ -40,19 +39,28 @@ public class Desktop extends JPanel {
 	 * - status panel
 	 */
 	public Desktop() {
-		initUI();
+		this(null);
 	}
 
-	private void initUI() {
+	public Desktop(ButtonGroup buttonGroup) {
+		initUI(buttonGroup);
+	}
+
+	private void initUI(ButtonGroup buttonGroup) {
 		contentPanel = createContentPanel();
 		content = new EmptyPerspective().build();
 		contentPanel.add(content);
 
 		this.setLayout(new BorderLayout());
-		this.add(contentPanel);
+		this.add(contentPanel,BorderLayout.CENTER);
+
+		JPanel chooser = createChooser(buttonGroup);
+		if(chooser != null) {
+			this.add(chooser,BorderLayout.WEST);
+		}
 
 		// 		JPanel status = createDefaultStatus();
-		// 		JPanel chooser = createChooser();
+
 		//  		JSplitPane perspectiveOverStatus = UIFactory.createBorderlessJSplitPane(JSplitPane.VERTICAL_SPLIT);
 		//  		perspectiveOverStatus.setTopComponent(perspective);
 		//  		perspectiveOverStatus.setBottomComponent(status);
@@ -81,18 +89,50 @@ public class Desktop extends JPanel {
 		return ret;
 	}
 
-	private JPanel createChooser() {
+	private JPanel createChooser(ButtonGroup buttonGroup) {
+		if(buttonGroup ==null) return null;
+
 		JPanel ret = new JPanel(new BorderLayout());
-		ret.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.black));
-		ret.add(new JLabel("Per"), BorderLayout.NORTH);
+		Color sepColor = UIManager.getColor("Separator.foreground");
+		ret.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, sepColor));
+		chooserBar = new JToolBar(SwingConstants.VERTICAL);
+		// may not float into a different position
+		chooserBar.setFloatable(false);
+		ButtonGroup group = new ButtonGroup();
+		Action lastAction = null;
+		Dimension DIM = new Dimension(24,24);
 
-		return ret;
-	}
+ 		for(Enumeration enum = buttonGroup.getElements(); enum.hasMoreElements(); ) {
+			AbstractButton origButton = (AbstractButton) enum.nextElement();
 
-	private JSplitPane createSplitPane(int orientation) {
-		JSplitPane ret = new JSplitPane(orientation);
+ 			Action action = origButton.getAction();
 
-		//ret.setBorder(null);
+			// here we bind a new JButton to a given ButtonModel
+			// to effectively using the underlying MVC-Pattern
+			JToggleButton button = new JToggleButton(action);
+			button.setModel(origButton.getModel());
+
+ 			button.setPreferredSize(DIM);
+ 			button.setSize(DIM);
+ 			button.setMinimumSize(DIM);
+ 			button.setMaximumSize(DIM);
+
+ 			String text = (String) action.getValue(Action.NAME);
+ 			if(text.indexOf(":") !=-1) {
+ 				text = text.substring(0,text.indexOf(":"));
+ 			}
+ 			button.setText(text);
+ 			if(lastAction != null && !action.getClass().isInstance(lastAction)) {
+ 				chooserBar.addSeparator();
+ 			}
+ 			lastAction =action;
+			
+			chooserBar.add(button);
+		}
+
+
+		ret.add(chooserBar, BorderLayout.CENTER);
+
 		return ret;
 	}
 

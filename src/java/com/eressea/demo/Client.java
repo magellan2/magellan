@@ -260,7 +260,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		desktop = new MagellanDesktop(this, settings, components, settingsDirectory);
 		DesktopEnvironment.init(desktop);
 
-		com.eressea.swing.desktop.Desktop d = new com.eressea.swing.desktop.Desktop();
+		com.eressea.swing.desktop.Desktop d = new com.eressea.swing.desktop.Desktop(desktop.getButtonGroup());
 		d.setContent(desktop);
 		setContentPane(d);
 
