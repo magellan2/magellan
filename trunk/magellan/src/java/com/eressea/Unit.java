@@ -169,7 +169,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @param newOrders TODO: DOCUMENT ME!
 	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
-	protected void addOrderAt(int i, String newOrders, boolean refreshRelations) {
+	public void addOrderAt(int i, String newOrders, boolean refreshRelations) {
 		ordersObject.addOrderAt(i, newOrders);
 
 		if(refreshRelations) {
