@@ -1915,7 +1915,15 @@ public class CRParser implements RulesIO, GameDataIO {
 						  (sc.argv[1].equalsIgnoreCase("verkleidung") ||
 						  sc.argv[1].equalsIgnoreCase("anderepartei"))) {
 				ID fid = EntityID.createEntityID(sc.argv[0], 10);
-				unit.setGuiseFaction(world.getFaction(fid));
+				/* currently (2004-02) the cr is inconsistent with nr. There may
+				 * be a situation where the corresponding faction of this tag
+				 * does not exist in the game data so add it automagically 
+				 * (bugzilla bug 794). */
+				Faction faction = world.getFaction(fid);
+				if(faction == null) {
+					faction = new Faction(fid, world);
+				}
+				unit.setGuiseFaction(faction);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("typprefix")) {
 				unit.setRaceNamePrefix(sc.argv[0]);
