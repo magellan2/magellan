@@ -56,6 +56,10 @@ public class FileSaveAsAction extends MenuAction {
 		client = parent;
 	}
 
+	public String getIconName() {
+		return "saveas_edit";
+	}
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

@@ -50,6 +50,10 @@ public class RedoAction extends MenuAction implements PropertyChangeListener {
 		undo.addPropertyChangeListener(MagellanUndoManager.REDO, this);
 	}
 
+	public String getIconName() {
+		return "redo_edit";
+	}
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

@@ -10,7 +10,7 @@
 
   <property name="VERSION.MAJOR"         value="1"/>
   <property name="VERSION.MINOR"         value="1"/>
-  <property name="VERSION.SUB"           value="3"/>
+  <property name="VERSION.SUB"           value="4"/>
 
   <property name="VERSION"               value="${VERSION.MAJOR}_${VERSION.MINOR}_${VERSION.SUB}"/>
   <property name="VERSION.POINTED"       value="${VERSION.MAJOR}.${VERSION.MINOR}.${VERSION.SUB}"/>
@@ -301,6 +301,10 @@
           <!-- pavkovic 2003.11.12: ignore jfreechart for now -->
           <exclude name="**/lib/jfreechart*.*"/>
         </fileset>
+		<fileset dir="${basedir}">
+          <include name="COPYING"/>
+          <include name="LICENSE"/>
+        </fileset>
 	</copy>
 	<copy todir="${BUILD}/release/lib">
 		<fileset dir="${BUILD}/build">
@@ -374,6 +378,7 @@
 	  destfile="${DISTRIBUTION}/magellan_${VERSION}-src.zip" 
 	  basedir="${BUILD}/release.src"/>
 
+<!--
     <tar 
 	  destfile="${DISTRIBUTION}/magellan_${VERSION}.tar.bz2"
       basedir="${BUILD}/release"
@@ -383,6 +388,7 @@
 	  destfile="${DISTRIBUTION}/magellan_${VERSION}-src.tar.bz2"
       basedir="${BUILD}/release.src"
       compression="bzip2"/>
+-->
   </target>
 
   <target name="tagVersion" depends="distribution">
