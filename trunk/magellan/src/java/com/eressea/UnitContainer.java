@@ -24,6 +24,7 @@ import com.eressea.relation.UnitContainerRelation;
 import com.eressea.relation.UnitRelation;
 
 import com.eressea.rules.CastleType;
+import com.eressea.rules.RegionType;
 import com.eressea.rules.UnitContainerType;
 
 import com.eressea.util.Cache;
@@ -414,7 +415,9 @@ public abstract class UnitContainer extends DescribedObject implements com.eress
 			if(curUC instanceof Building) {
 				newUC.setType(newGD.rules.getBuildingType(curUC.getType().getID(), true));
 			} else if(curUC instanceof Region) {
-				newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(), true));
+				if (newUC.getType() == null || newUC.getType().equals(RegionType.unknown)) {
+					newUC.setType(newGD.rules.getRegionType(curUC.getType().getID(), true));
+				}
 			} else if(curUC instanceof Ship) {
 				newUC.setType(newGD.rules.getShipType(curUC.getType().getID(), true));
 			} else if(curUC instanceof Faction) {
