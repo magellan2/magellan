@@ -1,7 +1,10 @@
 -----------------------------------------------------------------------
 Introduction
 -----------------------------------------------------------------------
-This document briefly describes the necessary steps for 
+This document briefly describes the necessary steps for releasing a
+distribution on sourceforge. Note that you should only release on 
+Sunday so everybody is able to send his orders with a full working old
+version.
 
 
 -----------------------------------------------------------------------
