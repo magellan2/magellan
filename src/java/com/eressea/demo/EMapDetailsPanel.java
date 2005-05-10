@@ -4096,10 +4096,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+		public JPopupMenu createContextMenu(EventDispatcher dispatcher, 
                                 GameData data, Object argument,
-														Collection selectedObjects,
-														DefaultMutableTreeNode node) {
+								Collection selectedObjects,
+                                DefaultMutableTreeNode node) {
 			if(argument instanceof Unit) {
 				return new UnitContextMenu((Unit) argument, selectedObjects, dispatcher, data);
 			} else if(argument instanceof UnitNodeWrapper) {

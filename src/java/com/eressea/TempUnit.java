@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.EresseaOrderConstants;
+import com.eressea.util.Translations;
 
 /**
  * TODO: DOCUMENT ME!
@@ -66,11 +68,13 @@ public class TempUnit extends Unit {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public String toString() {
-		if(this.name != null) {
-			return this.name + " (TEMP " + this.id.toString() + ")";
-		} else {
-			return "TEMP " + this.id.toString();
+
+    public String toString(boolean withName) {
+        if(withName) {
+            return super.toString(withName);
+        } else {
+            String temp = Translations.getOrderTranslation(EresseaOrderConstants.O_TEMP);
+			return temp+ " "+id.toString();
 		}
 	}
 

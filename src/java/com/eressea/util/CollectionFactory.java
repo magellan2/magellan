@@ -224,6 +224,8 @@ public class CollectionFactory {
 	/** TODO: DOCUMENT ME! */
 	public static final Collection EMPTY_COLLECTION = Collections.EMPTY_SET;
 
+    public static final List EMPTY_LIST = Collections.EMPTY_LIST;
+    
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

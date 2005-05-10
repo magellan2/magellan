@@ -27,11 +27,15 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
+import com.eressea.util.logging.Logger;
+
 /**
  * A FileType represents a file for reading and writing data Special care will be taken for
  * compressed files in the corresponding child objects.
  */
 public class FileType {
+    private final static Logger log = Logger.getInstance(FileType.class);
+    
 	// basically identified file types
 	static final String CR = ".cr";
 	static final String XML = ".xml";
@@ -167,7 +171,8 @@ public class FileType {
 		}
 
 		if(createBackup) {
-			FileBackup.create(new File(filename));
+            File backup = FileBackup.create(new File(filename));
+            log.info("Created backupfile " + backup +" (FileType.java)");
 		}
 
 		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream()));

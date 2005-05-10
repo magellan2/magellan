@@ -15,6 +15,7 @@ package com.eressea.swing.context;
 
 import java.util.Collection;
 
+import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.eressea.GameData;
@@ -39,7 +40,7 @@ public class UnitContextFactory implements ContextFactory {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher,
+	public JPopupMenu createContextMenu(EventDispatcher dispatcher,
             GameData data, Object argument,
             Collection selectedObjects,
             DefaultMutableTreeNode node) {

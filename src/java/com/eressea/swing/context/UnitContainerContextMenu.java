@@ -128,8 +128,9 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 * Copies name and id to the sytem clipboard.
 	 */
 	private void copyNameID() {
-		StringSelection strSel = new StringSelection(uc.getName() + " (" + uc.getID().toString() +
-													 ")");
+        String idString = uc.toString() + " (" + uc.getID().toString() + ")";
+
+        StringSelection strSel = new StringSelection(idString);
 		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 	}

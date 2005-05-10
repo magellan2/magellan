@@ -90,7 +90,7 @@ public abstract class MenuAction extends AbstractAction {
 	 *
 	 * @param name TODO: DOCUMENT ME!
 	 */
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.putValue(Action.NAME, name);
 	}
 
@@ -99,7 +99,7 @@ public abstract class MenuAction extends AbstractAction {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public String getName() {
+	protected String getName() {
 		return (String) this.getValue(Action.NAME);
 	}
 

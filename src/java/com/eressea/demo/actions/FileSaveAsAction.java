@@ -24,7 +24,6 @@ import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
 import com.eressea.io.cr.CRWriter;
-import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
 import com.eressea.swing.EresseaFileFilter;
@@ -149,15 +148,6 @@ public class FileSaveAsAction extends MenuAction {
 
 	protected void doSaveAction(FileType filetype) {
 		try {
-			if(filetype.getFile().exists()) {
-				// create backup file
-				try {
-					File backup = FileBackup.create(filetype.getFile());
-					log.info("Created backupfile " + backup);
-				} catch(IOException ie) {
-					log.warn("Could not create backupfile for file " + filetype.getFile());
- 				}
-			} 
 
 			//
 			// write cr to file
