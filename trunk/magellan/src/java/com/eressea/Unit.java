@@ -2073,13 +2073,21 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public String toString() {
-		if(name != null) {
-			return name + " (" + this.id.toString() + ")";
-		} else {
-			return getString("unit") + " " + this.id.toString() + " (" + this.id.toString() + ")";
-		}
-	}
+    public String toString() {
+        return toString(true);
+    }
+    
+    public String toString(boolean withName) {
+        if(withName) {
+            String myName = name;
+            if(myName == null) {
+                myName = getString("unit")+ " "+toString(false);
+            }
+            return myName + " ("+toString(false)+")";
+        } else {
+            return id.toString();
+        }
+    }
 
 	/**
 	 * Kinda obvious, right?

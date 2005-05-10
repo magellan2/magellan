@@ -30,11 +30,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -54,6 +59,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.plaf.FontUIResource;
 
 import com.eressea.EntityID;
 import com.eressea.Faction;
@@ -234,7 +240,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		Properties settings = loadSettings(settingsDirectory, "magellan.ini");
 
         // initialize the context, this has to be very early.
-        context = new MagellanContext();
+        context = new MagellanContext(this);
         context.setEventDispatcher(dispatcher);
         context.setProperties(settings);
         context.init();
@@ -256,7 +262,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		panels = CollectionFactory.createLinkedList();
 		nodeWrapperFactories = CollectionFactory.createLinkedList();
 
-		List topLevelComponents = new java.util.LinkedList();
+		List topLevelComponents = new LinkedList();
 		Map components = initComponents(topLevelComponents);
 
 		// init desktop
@@ -376,7 +382,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 			float fScale = PropertiesHelper.getfloat(getProperties(), "Client.FontScale", 1.0f);
 
 			if(fScale != 1.0f) {
-				// TODO(pavkovic): the following code bloates the fonts in an undesired way, perhaps
+				// TODO(pavkovic): the following code bloats the fonts in an undesired way, perhaps
 				// we remove this configuration option?
 				UIDefaults table = UIManager.getDefaults();
 				Enumeration eKeys = table.keys();
@@ -386,7 +392,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 					Font font = UIManager.getFont(obj);
 
 					if(font != null) {
-						font = new javax.swing.plaf.FontUIResource(font.deriveFont(font.getSize2D() * fScale));
+						font = new FontUIResource(font.deriveFont(font.getSize2D() * fScale));
 						UIManager.put(obj, font);
 					}
 				}
@@ -494,8 +500,8 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		menuBar.add(createMapMenu());
 
 		// create dynamix menus
-		Map topLevel = new java.util.HashMap();
-		List direction = new java.util.LinkedList();
+		Map topLevel = new HashMap();
+		List direction = new LinkedList();
 		Iterator it = components.iterator();
 		log.info("Checking for menu-providers...");
 
@@ -751,6 +757,47 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		return extras;
 	}
 
+    private Collection externalModules = null;
+    
+    
+    /** 
+     * delivers all externalModules
+     */
+    public synchronized Collection getExternalModules() {
+        if(externalModules == null) {
+            externalModules = new ArrayList();
+            
+            Collection c = ExternalModuleLoader.getExternalModuleClasses(getProperties());
+            for(Iterator iter = c.iterator(); iter.hasNext();) {
+                Class foundClass = (Class) iter.next();
+                try {
+                    
+                    // get it's constructor
+                    Object externalModule = foundClass.getConstructor(new Class[] {  }).newInstance(new Object[] { });
+
+                    if(externalModule instanceof ExternalModule || externalModule instanceof ExternalModule2 ) {
+                        // register as SelectionListener if applicable
+                        if(externalModule instanceof SelectionListener) {
+                            getDispatcher().addSelectionListener((SelectionListener) externalModule);
+                        }
+                    
+                        externalModules.add(externalModule);
+                    }
+                } catch(IllegalAccessException e) {
+                    log.error(e);                
+                } catch(NoSuchMethodException e) {
+                    log.error(e);
+                } catch(InstantiationException e) {
+                    log.error(e);
+                } catch(InvocationTargetException e) {
+                    log.error(e);
+                }            
+            }
+        }
+        return externalModules;
+        
+    }
+    
 	/**
 	 * Retrieves the menu items for the external modules. See com.eressea.extern.ExternalModule and
 	 * com.eressea.extern.ExternalModuleLoader for documentation.
@@ -758,42 +805,29 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private JMenuItem[] getExternalModuleItems() {
-		Collection c = ExternalModuleLoader.getExternalModuleClasses(getProperties());
 		List menuItems = CollectionFactory.createArrayList();
 
-		for(Iterator iter = c.iterator(); iter.hasNext();) {
-			try {
-				Class foundClass = (Class) iter.next();
+		for(Iterator iter = getExternalModules().iterator(); iter.hasNext();) {
+            Object externalModule = iter.next();
 
-				// get it's constructor
-				Object externalModule = foundClass.getConstructor(new Class[] {  }).newInstance(new Object[] { });
+            // get menuString
+            String menuString = null;
+            
+            if(externalModule instanceof ExternalModule) {
+                ExternalModule module = (ExternalModule) externalModule;
+                menuString = module.getMenuItemName();
+            }
+            
+            if(externalModule instanceof ExternalModule2) {
+                ExternalModule2 module = (ExternalModule2) externalModule;
+                menuString = module.getMenuItemName();
+            }
 
-				// register as SelectionListener if applicable
-				if(externalModule instanceof SelectionListener) {
-					getDispatcher().addSelectionListener((SelectionListener) externalModule);
-				}
-
-				// get menuString
-				String menuString = null;
-
-				if(externalModule instanceof ExternalModule) {
-					ExternalModule module = (ExternalModule) externalModule;
-					menuString = module.getMenuItemName();
-				}
-
-				if(externalModule instanceof ExternalModule2) {
-					ExternalModule2 module = (ExternalModule2) externalModule;
-					menuString = module.getMenuItemName();
-				}
-
-				// create menu item
-				JMenuItem item = new JMenuItem(new ExternalModuleAction(this, menuString,
+            // create menu item
+            JMenuItem item = new JMenuItem(new ExternalModuleAction(this, menuString,
 																		externalModule));
-				menuItems.add(item);
-			} catch(Exception e) {
-				log.error(e);
-			}
-		}
+            menuItems.add(item);
+		} 
 
 		return (JMenuItem[]) menuItems.toArray(new JMenuItem[] {  });
 	}
@@ -1040,7 +1074,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 			if(dataFile != null) {
 				Object msgArgs[] = { dataFile.getAbsolutePath() };
-				msg = (new java.text.MessageFormat(getString("msg.quit.confirmsavefile.text"))).format(msgArgs);
+				msg = (new MessageFormat(getString("msg.quit.confirmsavefile.text"))).format(msgArgs);
 			} else {
 				msg = getString("msg.quit.confirmsavenofile.text");
 			}

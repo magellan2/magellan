@@ -17,6 +17,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -28,13 +29,14 @@ import javax.swing.JPopupMenu;
 
 import com.eressea.GameData;
 import com.eressea.Region;
-import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.demo.EMapDetailsPanel;
+import com.eressea.event.EventDispatcher;
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.relation.TeachRelation;
 import com.eressea.swing.GiveOrderDialog;
+import com.eressea.swing.context.actions.ContextAction;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.UnitRoutePlanner;
@@ -48,13 +50,13 @@ import com.eressea.util.UnitRoutePlanner;
 public class UnitContextMenu extends JPopupMenu {
 	private Unit unit;
 	private GameData data;
-	private com.eressea.event.EventDispatcher dispatcher;
+	private EventDispatcher dispatcher;
 
 	/**
 	 * The selected Units (that are a subset of the selected objects in the overview tree). Notice:
 	 * this.unit does not need to be element of this collection!
 	 */
-	private Collection selectedUnits = CollectionFactory.createLinkedList();
+	private Collection selectedUnits;
 
 	/**
 	 * Creates new UnitContextMenu
@@ -65,189 +67,229 @@ public class UnitContextMenu extends JPopupMenu {
 	 * @param data TODO: DOCUMENT ME!
 	 */
 	public UnitContextMenu(Unit unit, Collection selectedObjects,
-						   com.eressea.event.EventDispatcher dispatcher, GameData data) {
+						   EventDispatcher dispatcher, GameData data) {
 		super(unit.toString());
 		this.unit = unit;
 		this.data = data;
 		this.dispatcher = dispatcher;
 
-		if(selectedObjects != null) {
-			for(Iterator iter = selectedObjects.iterator(); iter.hasNext();) {
-				Object o = iter.next();
-
-				if(o instanceof Unit) {
-					selectedUnits.add(o);
-				}
-			}
-		}
+        init(selectedObjects);
+    }
+    
+    private void init(Collection selectedObjects) {
+        selectedUnits = ContextAction.getSelectedUnits(selectedObjects);
 
 		if(selectedUnits.size() <= 1) {
-			// This part for single-unit-selections
-			JMenuItem unitString = new JMenuItem(unit.toString());
-			unitString.setEnabled(false);
-			add(unitString);
-
-			JMenuItem copyUnitID = new JMenuItem(getString("menu.copyid.caption"));
-			copyUnitID.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						event_copyID(e);
-					}
-				});
-			add(copyUnitID);
-
-			JMenuItem copyUnitNameID = new JMenuItem(getString("menu.copyidandname.caption"));
-			copyUnitNameID.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						event_copyNameID(e);
-					}
-				});
-			add(copyUnitNameID);
-
-			if(EMapDetailsPanel.isPrivilegedAndNoSpy(unit)) {
-				JMenuItem hideID = new JMenuItem(getString("menu.disguise.caption"));
-
-				hideID.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							event_hideID(e);
-						}
-					});
-				add(hideID);
-			}
-
-			// is student of someone?
-			Collection c = unit.getRelations(TeachRelation.class);
-
-			for(Iterator iter = c.iterator(); iter.hasNext();) {
-				TeachRelation tr = (TeachRelation) iter.next();
-
-				if(tr.target == unit) {
-					Unit teacher = tr.source;
-					JMenuItem removeFromTeachersList = new JMenuItem(getString("menu.removeFromTeachersList") +
-																	 ": " + teacher.toString());
-					add(removeFromTeachersList);
-					removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
-																								  teacher));
-				}
-			}
-
-			if((unit.getShip() != null) && unit.equals(unit.getShip().getOwnerUnit())) {
-				JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));
-				planShipRoute.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							planShipRoute();
-						}
-					});
-				planShipRoute.setEnabled(ShipRoutePlanner.canPlan(unit.getShip()));
-				add(planShipRoute);
-			}
+            initSingle();
 		} else {
-			// this part for multiple unit-selections
-			JMenuItem unitString = new JMenuItem(selectedUnits.size() + " " + getString("units"));
-			unitString.setEnabled(false);
-			add(unitString);
-
-			JMenuItem copyMultipleID = new JMenuItem(getString("menu.copyids.caption"));
-			copyMultipleID.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						event_copyMultipleID(e);
-					}
-				});
-			add(copyMultipleID);
-
-			JMenuItem copyMultipleNameID = new JMenuItem(getString("menu.copyidsandnames.caption"));
-			copyMultipleNameID.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						event_copyMultipleNameID(e);
-					}
-				});
-			add(copyMultipleNameID);
+            initMultiple();
 		}
 
-		// this part for both (but only for selectedUnits)
-		if(containsPrivilegedUnit()) {
-			JMenuItem validateOrders = new JMenuItem(getString("menu.confirm.caption"));
-			validateOrders.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						event_confirmOrders();
-					}
-				});
-			add(validateOrders);
-
-			JMenuItem addOrder = new JMenuItem(getString("menu.addorder.caption"));
-			addOrder.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						event_addOrder();
-					}
-				});
-			add(addOrder);
-			
-		}
-
-		// tag stuff
-		if(getComponentCount() > 0) {
-			addSeparator();
-		}
-
-		JMenuItem addTag = new JMenuItem(getString("addtag.caption"));
-		addTag.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				event_addTag();
-				}
-			});
-		add(addTag);
-
-		Collection tags = CollectionFactory.createTreeSet();
-		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
-			Unit u = (Unit) iter.next();
-			tags.addAll(u.getTagMap().keySet());
-		}
-		for(Iterator iter = tags.iterator(); iter.hasNext(); ) {
-			String tag = (String) iter.next();
-
-			JMenuItem removeTag = new JMenuItem(getString("removetag.caption")+": "+tag);
-			removeTag.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					event_removeTag(e);
-					}
-				});
-			add(removeTag);
-		}
-
-		
-		
-		// test route planning capability
-		boolean canPlan = UnitRoutePlanner.canPlan(unit);
-		Region reg = unit.getRegion();
-
-		if(canPlan && (selectedUnits != null)) {
-			Iterator it = selectedUnits.iterator();
-
-			while(canPlan && it.hasNext()) {
-				Unit u = (Unit) it.next();
-				canPlan = UnitRoutePlanner.canPlan(u);
-
-				if((u.getRegion() == null) || !reg.equals(u.getRegion())) {
-					canPlan = false;
-				}
-			}
-		}
-		
-		if(canPlan) {
-			if(getComponentCount() > 0) {
-				addSeparator();
-			}
-
-			JMenuItem planRoute = new JMenuItem(getString("menu.planroute"));
-
-			planRoute.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						planRoute(e);
-					}
-				});
-			add(planRoute);
-		}
+        initBoth(selectedObjects);
 	}
 
+    private void initBoth(Collection selectedObjects) {
+        // this part for both (but only for selectedUnits)
+        if(containsPrivilegedUnit()) {
+            JMenuItem validateOrders = new JMenuItem(getString("menu.confirm.caption"));
+            validateOrders.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        event_confirmOrders();
+                    }
+                });
+            add(validateOrders);
+
+            JMenuItem addOrder = new JMenuItem(getString("menu.addorder.caption"));
+            addOrder.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        event_addOrder();
+                    }
+                });
+            add(addOrder);
+            
+        }
+
+        // tag stuff
+        if(getComponentCount() > 0) {
+            addSeparator();
+        }
+
+        JMenuItem addTag = new JMenuItem(getString("addtag.caption"));
+        addTag.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                event_addTag();
+                }
+            });
+        add(addTag);
+
+        Collection tags = CollectionFactory.createTreeSet();
+        for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+            Unit u = (Unit) iter.next();
+            tags.addAll(u.getTagMap().keySet());
+        }
+        for(Iterator iter = tags.iterator(); iter.hasNext(); ) {
+            String tag = (String) iter.next();
+
+            JMenuItem removeTag = new JMenuItem(getString("removetag.caption")+": "+tag);
+            removeTag.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    event_removeTag(e);
+                    }
+                });
+            add(removeTag);
+        }
+
+        
+        
+        // test route planning capability
+        boolean canPlan = UnitRoutePlanner.canPlan(unit);
+        Region reg = unit.getRegion();
+
+        if(canPlan && (selectedUnits != null)) {
+            Iterator it = selectedUnits.iterator();
+
+            while(canPlan && it.hasNext()) {
+                Unit u = (Unit) it.next();
+                canPlan = UnitRoutePlanner.canPlan(u);
+
+                if((u.getRegion() == null) || !reg.equals(u.getRegion())) {
+                    canPlan = false;
+                }
+            }
+        }
+        
+        if(canPlan) {
+            if(getComponentCount() > 0) {
+                addSeparator();
+            }
+
+            JMenuItem planRoute = new JMenuItem(getString("menu.planroute"));
+
+            planRoute.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        planRoute(e);
+                    }
+                });
+            add(planRoute);
+        }
+        
+        initContextMenuProviders(selectedObjects);
+    }
+
+    private void initContextMenuProviders(Collection selectedObjects) {
+        Collection cmpList = getContextMenuProviders();
+        if(!cmpList.isEmpty()) {
+            addSeparator();
+        }
+        for(Iterator iter = cmpList.iterator(); iter.hasNext(); ) {
+            ContextMenuProvider cmp = (ContextMenuProvider) iter.next();
+            add(cmp.createContextMenu(dispatcher,data, (Object) unit,selectedObjects));
+        }
+       
+    }
+    
+
+    
+    private Collection getExternalModules() {
+        return dispatcher.getMagellanContext().getClient().getExternalModules();
+    }
+    
+    private Collection getContextMenuProviders() {
+        Collection cmpList = new ArrayList();
+        for(Iterator iter = getExternalModules().iterator(); iter.hasNext(); ) {
+            Object obj = iter.next();
+            
+            if(obj instanceof ContextMenuProvider) {
+                cmpList.add(obj);
+            }
+        }
+        return cmpList;
+    }
+
+    private void initMultiple() {
+        // this part for multiple unit-selections
+        JMenuItem unitString = new JMenuItem(selectedUnits.size() + " " + getString("units"));
+        unitString.setEnabled(false);
+        add(unitString);
+
+        JMenuItem copyMultipleID = new JMenuItem(getString("menu.copyids.caption"));
+        copyMultipleID.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    event_copyMultipleID(e);
+                }
+            });
+        add(copyMultipleID);
+
+        JMenuItem copyMultipleNameID = new JMenuItem(getString("menu.copyidsandnames.caption"));
+        copyMultipleNameID.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    event_copyMultipleNameID(e);
+                }
+            });
+        add(copyMultipleNameID);
+
+    }
+    private void initSingle() {
+        // This part for single-unit-selections
+        JMenuItem unitString = new JMenuItem(unit.toString());
+        unitString.setEnabled(false);
+        add(unitString);
+
+        JMenuItem copyUnitID = new JMenuItem(getString("menu.copyid.caption"));
+        copyUnitID.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    event_copyID(e);
+                }
+            });
+        add(copyUnitID);
+
+        JMenuItem copyUnitNameID = new JMenuItem(getString("menu.copyidandname.caption"));
+        copyUnitNameID.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    event_copyNameID(e);
+                }
+            });
+        add(copyUnitNameID);
+
+        if(EMapDetailsPanel.isPrivilegedAndNoSpy(unit)) {
+            JMenuItem hideID = new JMenuItem(getString("menu.disguise.caption"));
+
+            hideID.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        event_hideID(e);
+                    }
+                });
+            add(hideID);
+        }
+
+        // is student of someone?
+        Collection c = unit.getRelations(TeachRelation.class);
+
+        for(Iterator iter = c.iterator(); iter.hasNext();) {
+            TeachRelation tr = (TeachRelation) iter.next();
+
+            if(tr.target == unit) {
+                Unit teacher = tr.source;
+                JMenuItem removeFromTeachersList = new JMenuItem(getString("menu.removeFromTeachersList") +
+                                                                 ": " + teacher.toString());
+                add(removeFromTeachersList);
+                removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
+                                                                                              teacher));
+            }
+        }
+
+        if((unit.getShip() != null) && unit.equals(unit.getShip().getOwnerUnit())) {
+            JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));
+            planShipRoute.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        planShipRoute();
+                    }
+                });
+            planShipRoute.setEnabled(ShipRoutePlanner.canPlan(unit.getShip()));
+            add(planShipRoute);
+        }
+
+    }
 	/**
 	 * Gives an order (optional replacing the existing ones) to the selected units.
 	 */
@@ -352,28 +394,19 @@ public class UnitContextMenu extends JPopupMenu {
 	
 	
 	private void event_copyID(ActionEvent e) {
-		String idString = null;
+        StringSelection strSel = new StringSelection(unit.toString(false));
+        Clipboard cb = getToolkit().getSystemClipboard();
 
-		if(unit instanceof TempUnit) {
-			idString = "TEMP " + unit.getID().toString();
-		} else {
-			idString = unit.getID().toString();
-		}
-
-		java.awt.datatransfer.StringSelection strSel = new java.awt.datatransfer.StringSelection(idString);
-
-		java.awt.datatransfer.Clipboard cb = getToolkit().getSystemClipboard();
-
-		cb.setContents(strSel, null);
+        cb.setContents(strSel, null);
 
 		unit = null;
 		selectedUnits.clear();
 	}
 
 	private void event_copyNameID(ActionEvent e) {
-		java.awt.datatransfer.StringSelection strSel = new java.awt.datatransfer.StringSelection(unit.toString());
-
-		java.awt.datatransfer.Clipboard cb = getToolkit().getSystemClipboard();
+        
+		StringSelection strSel = new StringSelection(unit.toString());
+		Clipboard cb = getToolkit().getSystemClipboard();
 
 		cb.setContents(strSel, null);
 
@@ -390,19 +423,18 @@ public class UnitContextMenu extends JPopupMenu {
 	}
 
 	private void event_copyMultipleID(ActionEvent e) {
-		String idString = "";
+		StringBuffer idString = new StringBuffer("");
 
 		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 
-			if(u instanceof TempUnit) {
-				idString += ("TEMP " + u.getID().toString() + " ");
-			} else {
-				idString += (u.getID().toString() + " ");
-			}
+            idString.append(u.toString(false));
+            if(iter.hasNext()) {
+                idString.append(" ");
+            }
 		}
 
-		StringSelection strSel = new StringSelection(idString);
+		StringSelection strSel = new StringSelection(idString.toString());
 		Clipboard cb = getToolkit().getSystemClipboard();
 		cb.setContents(strSel, null);
 

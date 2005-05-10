@@ -16,6 +16,7 @@ package com.eressea.main;
 import java.util.Properties;
 
 import com.eressea.GameData;
+import com.eressea.demo.Client;
 import com.eressea.event.EventDispatcher;
 import com.eressea.resource.ResourcePathClassLoader;
 import com.eressea.util.IDBaseConverter;
@@ -32,10 +33,16 @@ public class MagellanContext implements MagellanEnvironment {
     private Properties settings;
     private EventDispatcher dispatcher;
     private GameData data;
-
-	public MagellanContext() {
+    private Client client;
+    
+	public MagellanContext(Client client) {
+        this.client = client;
 	}
-
+    
+    public Client getClient() {
+        return client;
+    }
+    
 	/** 
 	 * Returns the properties of Magellan.
 	 */
@@ -105,6 +112,5 @@ public class MagellanContext implements MagellanEnvironment {
         
         // inits ReplacerHelp
         replacerHelp = new ReplacerHelp(getEventDispatcher(),getGameData());
-
-	}
+    }
 }

@@ -1,3 +1,8 @@
+2005-04-27  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\actions\FileSaveAsAction.java: removed 
+	redundant call to Filebackup.create(..).
+
 2005-03-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src\java\com\eressea: major code refactoring. Things may be broken 
