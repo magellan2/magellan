@@ -2,21 +2,17 @@ package com.eressea.swing.context;
 
 import java.util.Collection;
 
-import javax.swing.JMenu;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JMenuItem;
 
 import com.eressea.GameData;
 import com.eressea.event.EventDispatcher;
 
-/**
- * 
- * 
- * @author pavkovic
- * 
- *
- */
 public interface ContextMenuProvider {
-    public JMenu createContextMenu(
+    
+    /*
+     * creates a JMenuItem. Will be called on right-clicking units.
+     */
+    public JMenuItem createContextMenu(
             EventDispatcher dispatcher, 
             GameData data, 
             Object argument,

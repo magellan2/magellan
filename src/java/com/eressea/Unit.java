@@ -893,8 +893,11 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 */
 	public void deleteTemp(ID id, GameData data) {
 		TempUnit t = (TempUnit) this.removeTemp(id);
-
+        
 		if(t != null) {
+            t.clearOrders();
+            t.refreshRelations();
+
 			t.persons = 0;
 			t.race = null;
 			t.realRace = null;
@@ -909,9 +912,16 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 				t.cache = null;
 			}
 
-			t.ordersObject.removeOrders();
-			t.setParent(null);
+
+            t.setParent(null);
 			data.tempUnits().remove(id);
+
+            // enforce refreshing of unit relations in the whole region
+            if(this.getRegion() != null) {
+                this.getRegion().refreshUnitRelations(true);
+            }
+            
+
 		}
 	}
 

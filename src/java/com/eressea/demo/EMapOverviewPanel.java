@@ -1462,6 +1462,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 			int index = Collections.binarySearch(siblings, e.getTempUnit(), idComp);
 
+            // bugfixing if creating more than one temp unit at once:
+            // lower maximum to parentNode.getChildCount()
+            index = Math.min(index,parentNode.getChildCount());
 			if(index >= 0) {
 				insertUnit(parentNode, e.getTempUnit(), index);
 			} else {

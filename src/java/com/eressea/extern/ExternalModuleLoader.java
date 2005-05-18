@@ -114,7 +114,7 @@ public class ExternalModuleLoader {
 
 	private static Collection getClassesFromPath(ResourcePathClassLoader resLoader,
 												 Class externalModuleClass, String path) {
-		return getClassesFromPath(resLoader, externalModuleClass, path, "",
+		return getClassesFromPath(resLoader, externalModuleClass, path, null,
 								  getLastCapitalizedString(externalModuleClass.getName())
 									  .toLowerCase() + ".class");
 	}
@@ -136,8 +136,7 @@ public class ExternalModuleLoader {
 
 					for(int i = 0; i < newPaths.length; i++) {
 						// add in first position
-						String newPrefix = packagePrefix + file.getName() +
-										   (("".equals(packagePrefix)) ? "" : ".");
+						String newPrefix = packagePrefix == null ? "" : packagePrefix+file.getName()+".";
 						classes.addAll(getClassesFromPath(resLoader, externalModuleClass,
 														  newPaths[i].getAbsolutePath(), newPrefix,
 														  postfix));
