@@ -1,3 +1,23 @@
+2005-05-18  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\swing\context\ContextMenuProvider.java (createContextMenu): 
+	changed signature from JMenu to JMenuItem.
+	
+	* src\java\com\eressea\extern\ExternalModuleLoader.java (getClassesFromPath): 
+	changed prefix algorithm in finding classes from path.
+	
+	* src\java\com\eressea\demo\EMapOverviewPanel.java (tempUnitCreated): 
+	if creating more than one temp unit at once: lower maximum to 
+	parentNode.getChildCount().
+	
+	* src\java\com\eressea\UnitID.java (createTempID): force returnment of
+	negative id as Magellan expects this.
+
+2005-05-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\extern\ExternalModuleLoader.java (getClassesFromPath): 
+	correct small problem with recursive path introspection.
+
 2005-04-27  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src\java\com\eressea\demo\actions\FileSaveAsAction.java: removed 

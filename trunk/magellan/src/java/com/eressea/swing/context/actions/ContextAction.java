@@ -39,19 +39,21 @@ public abstract class ContextAction extends AbstractAction {
     }   
 
     /**
-     * @return the selected units from the selected objects.
+     * This method filters
+     * @param selectedObjects collection of selected objects
+     * @param clazz class to filter objects
+     * @return list of filtered objects
      */
-    public static List getSelectedUnits(Collection selectedObjects) {
+    public static List filterObjects(Collection selectedObjects, Class clazz) {
         if(selectedObjects == null) return CollectionFactory.EMPTY_LIST;
-        List selectedUnits = CollectionFactory.createArrayList(selectedObjects.size());
+        List filteredObjects = CollectionFactory.createArrayList(selectedObjects.size());
         for(Iterator iter = selectedObjects.iterator(); iter.hasNext(); ) {
             Object o = iter.next();
-            try{
-                selectedUnits.add((Unit) o);
-            } catch(ClassCastException ignore) {                
+            if(clazz.isInstance(o)) {
+                filteredObjects.add(o);
             }
         }
-        return selectedUnits;
+        return filteredObjects;
     }
 
     public abstract void actionPerformed(java.awt.event.ActionEvent e);

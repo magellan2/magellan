@@ -1025,8 +1025,19 @@ public class Region extends UnitContainer {
 	 * Refreshes all the relations of all units in this region. It is preferrable to call this
 	 * method instead of refreshing the unit relations 'manually'.
 	 */
-	public synchronized void refreshUnitRelations() {
-		if(unitRelationsRefreshed == false) {
+	public void refreshUnitRelations() {
+        refreshUnitRelations(false);
+    }
+    
+    /**
+     * Refreshes all the relations of all units in this region. It is preferrable to call this
+     * method instead of refreshing the unit relations 'manually'.
+     * @param forceRefresh to enforce refreshment, false for one refreshment only
+     */
+
+    public synchronized void refreshUnitRelations(boolean forceRefresh) {
+
+        if(unitRelationsRefreshed == false || forceRefresh) {
 			unitRelationsRefreshed = true;
 
 			for(Iterator iter = this.units().iterator(); iter.hasNext();) {
@@ -1035,6 +1046,7 @@ public class Region extends UnitContainer {
 			}
 
 			getZeroUnit().refreshRelations();
+            
 		}
 	}
 

@@ -77,7 +77,7 @@ public class UnitContextMenu extends JPopupMenu {
     }
     
     private void init(Collection selectedObjects) {
-        selectedUnits = ContextAction.getSelectedUnits(selectedObjects);
+        selectedUnits = ContextAction.filterObjects(selectedObjects,Unit.class);
 
 		if(selectedUnits.size() <= 1) {
             initSingle();

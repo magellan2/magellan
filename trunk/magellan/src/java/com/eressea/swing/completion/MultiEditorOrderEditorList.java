@@ -2103,15 +2103,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 					parentUnit = ((TempUnit) currentUnit).getParent();
 				}
 
-				UnitID id = UnitID.createTempID(data, settings, parentUnit);
-				createTempImpl(parentUnit, id, parentUnit.getRegion());
+				createTempImpl(parentUnit, parentUnit.getRegion());
 			}
 		}
 
-		private void createTempImpl(Unit parentUnit, UnitID id, Region parentRegion) {
-			int unitIntID = id.intValue();
-			int newIDInt = unitIntID;
-			UnitID newID = null;
+		private void createTempImpl(Unit parentUnit, Region parentRegion) {
+            UnitID id = UnitID.createTempID(data, settings, parentUnit);
 
 			//			for(newIDInt = unitIntID; newIDInt != (unitIntID - 1);
 			//					newIDInt = (newIDInt + (1 % IDBaseConverter.getMaxId()))) {
@@ -2122,12 +2119,12 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			if(!settings.getProperty("MultiEditorOrderEditorList.ButtonPanel.ShowTempUnitDialog",
 										 "true").equalsIgnoreCase("true")) {
 				// don't show any dialogs, simply create the tempunit and finish.
-				TempUnit tempUnit = parentUnit.createTemp(UnitID.createUnitID(-newIDInt,data.base));
+				TempUnit tempUnit = parentUnit.createTemp(id);
 				dispatcher.fire(new TempUnitEvent(this, tempUnit, TempUnitEvent.CREATED));
 				//dispatcher.fire(new SelectionEvent(this, null, tempUnit));
 			} else {
 				// do all the tempunit-dialog-stuff
-				newID = UnitID.createUnitID(newIDInt,data.base);
+				UnitID newID = UnitID.createUnitID(-id.intValue(),data.base); // unit id is non-negative on views
 
 				if(dialog == null) {
 					dialog = new TempUnitDialog((Frame) this.getTopLevelAncestor(), this, settings);
@@ -2207,9 +2204,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 														// TODO(pavkovic) extract to EresseaOrderChanger
 														String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) +
-																		   " TEMP " +
-																		   tempUnit.getID()
-																				   .toString() +
+                                                                            tempUnit.toString(false)+
 																		   " " + recCost + " " +
 																		   silver + "; " +
 																		   getString("tempunit.recruitCost");
@@ -2218,9 +2213,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 
 													if(dialog.isGiveMaintainCost()) {
 														String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) +
-																		   " TEMP " +
-																		   tempUnit.getID()
-																				   .toString() +
+														                    tempUnit.toString(false)+
 																		   " " +
 																		   String.valueOf(10 * i) +
 																		   " " + silver + "; " +
@@ -2259,9 +2252,6 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 								// data update
 								dispatcher.fire(new TempUnitEvent(this, tempUnit,
 																  TempUnitEvent.CREATED));
-								//TODO: reallay fire an update here?
-								//dispatcher.fire(new SelectionEvent(this, null, tempUnit));
-
 								return;
 							} else {
 								JOptionPane.showMessageDialog(this,

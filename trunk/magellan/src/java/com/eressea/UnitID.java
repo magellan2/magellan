@@ -99,14 +99,9 @@ public class UnitID extends EntityID {
 	 * @param settings The active settings
 	 * @param parentUnit The parent unit of the temp unit (maybe null)
 	 *
-	 * @return the new temp id. Notize: The id will represent a positive int value, although
-	 * 		   Magellan expects temp ids to be negative. Thus before creating a temp unit with
-	 * 		   this id, the id has to be inverted. Bad thing, kept this way due to consistency
-	 * 		   with old code. Should be corrected someday.
+	 * @return the new temp id. This is always negative as Magellan expects temp unit ids to be negative.
 	 */
 	public static UnitID createTempID(GameData data, Properties settings, Unit parentUnit) {
-		UnitID id = null;
-
 		if(data.getCurTempID() == -1) {
 			// uninitialized
 			String s = settings.getProperty("ClientPreferences.TempIDsInitialValue", "");
@@ -115,16 +110,15 @@ public class UnitID extends EntityID {
 
 		if((data.getCurTempID() == 0) && (parentUnit != null)) {
 			// use old system: same id as parent unit
-			id = (UnitID) parentUnit.getID();
 
-			int i = id.intValue();
+			int i = ((UnitID) parentUnit.getID()).intValue();
 
 			while(data.tempUnits().get(UnitID.createUnitID(-i,data.base)) != null) {
 				i = getNextDecimalID(i, data.base, true);
 			}
 
-			id = UnitID.createUnitID(i,data.base);
-		} else {
+			return UnitID.createUnitID(-i,data.base);
+		} else {            
 			int i = data.getCurTempID();
 			UnitID checkID = UnitID.createUnitID(-i,data.base);
 
@@ -156,10 +150,8 @@ public class UnitID extends EntityID {
 			}
 
 			data.setCurTempID(i);
-			id = UnitID.createUnitID(-checkID.intValue(),data.base);
+            return checkID;
 		}
-
-		return id;
 	}
 
 	/**
