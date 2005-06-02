@@ -83,6 +83,7 @@ import com.eressea.Island;
 import com.eressea.Item;
 import com.eressea.LuxuryPrice;
 import com.eressea.Named;
+import com.eressea.NamedObject;
 import com.eressea.Potion;
 import com.eressea.Region;
 import com.eressea.RegionResource;
@@ -631,7 +632,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			return;
 		}
 
-		setNameAndDescription(d.getName(), d.getDescription(), isEditable);
+		setNameAndDescription(this.data.getTranslation(d), d.getDescription(), isEditable);
 	}
 
 	private void setNameAndDescription(String n, String desc, boolean isEditable) {
@@ -1099,6 +1100,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		return new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj, icons));
 	}
 
+    private DefaultMutableTreeNode createSimpleNode(NamedObject obj, String icons) {
+        return new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj,this.data.getTranslation(obj),(Object) icons));
+    }
 	/**
 	 * Return a string showing the signed difference of the two int values in the form
 	 * "<tt>current</tt> [&lt;sign&gt;&lt;number&gt;]". If the two values are equal or if one of
@@ -2160,6 +2164,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				if((p.getLevel() * 2) <= alchSkill.getLevel()) {
 					int max = getBrewablePotions(data.rules, p, u.getRegion());
 					potionsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createPotionNodeWrapper(p,
+					                                                                data.getTranslation(p),
 																										  ": " +
 																										  max)));
 				}
@@ -3022,7 +3027,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			displayedObject = o;
 
 			if((displayedObject != null) && displayedObject instanceof SimpleNodeWrapper) {
-				displayedObject = ((SimpleNodeWrapper) displayedObject).getText();
+				displayedObject = ((SimpleNodeWrapper) displayedObject).getObject();
 			}
 
 			contextManager.setFailFallback(null, null);
@@ -3138,7 +3143,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		if(o instanceof SimpleNodeWrapper) {
-			o = ((SimpleNodeWrapper) o).getText();
+			o = ((SimpleNodeWrapper) o).getObject();
 		}
 
 		Object fireObj = null;

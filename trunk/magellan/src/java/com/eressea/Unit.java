@@ -681,15 +681,15 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	public String getRaceName(GameData data) {
 		if(this.race != null) {
 			if(this.getRaceNamePrefix() != null) {
-				return data.getTranslationOrKeyIfNull(this.getRaceNamePrefix()) +
+				return data.getTranslation(this.getRaceNamePrefix()) +
 					   this.race.getName().toLowerCase();
 			} else {
 				if((this.group != null) && (this.group.getRaceNamePrefix() != null)) {
-					return data.getTranslationOrKeyIfNull(this.group.getRaceNamePrefix()) +
+					return data.getTranslation(this.group.getRaceNamePrefix()) +
 						   this.race.getName().toLowerCase();
 				} else {
 					if((this.faction != null) && (this.faction.getRaceNamePrefix() != null)) {
-						return data.getTranslationOrKeyIfNull(this.faction.getRaceNamePrefix()) +
+						return data.getTranslation(this.faction.getRaceNamePrefix()) +
 							   this.race.getName().toLowerCase();
 					} else {
 						return this.race.getName();

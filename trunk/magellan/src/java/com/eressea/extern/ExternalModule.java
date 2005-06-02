@@ -28,16 +28,21 @@ import com.eressea.event.EventDispatcher;
  * @author Ulrich Küster
  */
 public interface ExternalModule {
-	/**
-	 * Retrieve the MenuItemName by which the module shall be invoked. It is automatically added to
-	 * the extras menu of Magellan.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public String getMenuItemName();
+    /**
+     * Retrieve the MenuItemName by which the module shall be invoked. It is automatically added to
+     * the extras menu of Magellan. If the value is null there will be no menu item.
+     *
+     * @return the name of the menu 
+     */
+    public String getMenuItemName();
 
-	/**
-	 * This method is called to run the module
-	 */
+    /**
+     * This method is called after pressing the corresponding menu item
+     */
 	public void start(GameData data, EventDispatcher dispatcher, Properties settings);
+    
+    /**
+     * @return the name of the external module
+     */
+    public String getName();
 }

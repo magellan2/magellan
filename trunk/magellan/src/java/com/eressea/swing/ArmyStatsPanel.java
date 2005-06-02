@@ -1260,7 +1260,7 @@ public class ArmyStatsPanel extends InternationalizedDataPanel implements TreeSe
 			if(o2 instanceof UnitNodeWrapper) {
 				dispatcher.fire(new SelectionEvent(this, null, ((UnitNodeWrapper) o2).getUnit()));
 			} else if(o2 instanceof SimpleNodeWrapper) {
-				Object o3 = ((SimpleNodeWrapper) o2).getText();
+				Object o3 = ((SimpleNodeWrapper) o2).getObject();
 
 				if(o3 instanceof PartUnit) {
 					dispatcher.fire(new SelectionEvent(this, null, ((PartUnit) o3).parent));

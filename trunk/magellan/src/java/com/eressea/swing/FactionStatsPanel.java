@@ -387,8 +387,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			}
 
 			if(f.email != null) {
-				n = new DefaultMutableTreeNode(new SimpleNodeWrapper(getString("node.e-mail") +
-																	 f.email, null, f.email));
+				n = new DefaultMutableTreeNode(new SimpleNodeWrapper(getString("node.e-mail") + f.email, f.email));
 				rootNode.add(n);
 			}
 

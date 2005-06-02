@@ -770,7 +770,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			} else if(o instanceof IslandNodeWrapper) {
 				o = ((IslandNodeWrapper) o).getIsland();
 			} else if(o instanceof SimpleNodeWrapper) {
-				o = ((SimpleNodeWrapper) o).getText();
+				o = ((SimpleNodeWrapper) o).getObject();
 			} else {
 				log.warn("EMapOverviewPanel.valueChanged() : Type of the user object of a selected node is unknown. Please report to http://eressea.upb.de/magellan/bugs/ :" +
 						 o.toString());

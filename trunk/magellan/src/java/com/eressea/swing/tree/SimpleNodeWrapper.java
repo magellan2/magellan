@@ -35,7 +35,8 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changea
 	private List subordinatedElements = null;
 	protected List icons;
 	protected List returnIcons;
-	protected Object text;
+	protected String text;
+    protected Object object;
 	protected String clipboardValue = null;
 	protected DetailsNodeWrapperDrawPolicy adapter;
 	protected boolean showIcons = true;
@@ -43,15 +44,49 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changea
 	protected Object contextArgument = null;
 	protected int amount = -1;
 
-	/**
-	 * Creates new SimpleNodeWrapper
-	 *
-	 * @param text TODO: DOCUMENT ME!
-	 * @param icons TODO: DOCUMENT ME!
-	 * @param clipboardValue TODO: DOCUMENT ME!
-	 */
-	public SimpleNodeWrapper(Object text, Object icons, String clipboardValue) {
-		this(text, icons);
+    /**
+     * Creates new SimpleNodeWrapper
+     *
+     * @param obj TODO: DOCUMENT ME!
+     * @param icons TODO: DOCUMENT ME!
+     * @param clipboardValue TODO: DOCUMENT ME!
+     */
+    public SimpleNodeWrapper(Object obj, Object icons, String clipboardValue) {
+        this(obj,obj == null?"":obj.toString(),icons,clipboardValue);
+    }
+
+    public SimpleNodeWrapper(Object obj, String text, Object icons) {   
+        this(obj,text,icons,null);
+    }
+    
+    /**
+     * Creates new SimpleNodeWrapper
+     *
+     * @param text TODO: DOCUMENT ME!
+     * @param icons TODO: DOCUMENT ME!
+     * @param clipboardValue TODO: DOCUMENT ME!
+     */
+    public SimpleNodeWrapper(Object obj, String text, Object icons, String clipboardValue) {
+        this.object = obj;
+        this.text = text;
+        this.icons = null;
+
+        if(icons != null) {
+            if(icons instanceof Collection) {
+                this.icons = CollectionFactory.createArrayList((Collection) icons);
+            } else if(icons instanceof Map) {
+                Map m = (Map) icons;
+
+                this.icons = CollectionFactory.createArrayList(m.size());
+
+                for(Iterator iter = m.values().iterator(); iter.hasNext();) {
+                    this.icons.add(iter.next().toString());
+                }
+            } else {
+                this.icons = CollectionFactory.singletonList(icons.toString());
+            }
+        }
+        
 		this.clipboardValue = clipboardValue;
 	}
 
@@ -61,25 +96,8 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changea
 	 * @param text TODO: DOCUMENT ME!
 	 * @param icons TODO: DOCUMENT ME!
 	 */
-	public SimpleNodeWrapper(Object text, Object icons) {
-		this.text = text;
-		this.icons = null;
-
-		if(icons != null) {
-			if(icons instanceof Collection) {
-				this.icons = CollectionFactory.createArrayList((Collection) icons);
-			} else if(icons instanceof Map) {
-				Map m = (Map) icons;
-
-				this.icons = CollectionFactory.createArrayList(m.size());
-
-				for(Iterator iter = m.values().iterator(); iter.hasNext();) {
-					this.icons.add(iter.next().toString());
-				}
-			} else {
-				this.icons = CollectionFactory.singletonList(icons.toString());
-			}
-		}
+	public SimpleNodeWrapper(Object obj, Object icons) {
+        this(obj,icons,null);
 	}
 
 	/**
@@ -184,11 +202,11 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changea
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public java.lang.String toString() {
+	public String toString() {
 		if(amount == -1) {
-			return text.toString();
+			return text;
 		} else {
-			return text.toString() + ": " + amount;
+			return text + ": " + amount;
 		}
 	}
 
@@ -197,10 +215,14 @@ public class SimpleNodeWrapper implements CellObject, SupportsClipboard, Changea
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Object getText() {
-		return text;
-	}
+//	public Object getText() {
+//		return text;
+//	}
 
+    public Object getObject() {
+        return object;
+    }
+    
 	/**
 	 * TODO: DOCUMENT ME!
 	 *

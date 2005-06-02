@@ -799,8 +799,10 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
     }
     
 	/**
-	 * Retrieves the menu items for the external modules. See com.eressea.extern.ExternalModule and
-	 * com.eressea.extern.ExternalModuleLoader for documentation.
+	 * Retrieves the menu items for the external modules. 
+     * @see com.eressea.extern.ExternalModule2 and
+	 * @see com.eressea.extern.ExternalModuleLoader 
+     * for documentation.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -823,10 +825,12 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
                 menuString = module.getMenuItemName();
             }
 
-            // create menu item
-            JMenuItem item = new JMenuItem(new ExternalModuleAction(this, menuString,
+            if(menuString != null) {
+                // create menu item
+                JMenuItem item = new JMenuItem(new ExternalModuleAction(this, menuString,
 																		externalModule));
-            menuItems.add(item);
+                menuItems.add(item);
+            }
 		} 
 
 		return (JMenuItem[]) menuItems.toArray(new JMenuItem[] {  });
