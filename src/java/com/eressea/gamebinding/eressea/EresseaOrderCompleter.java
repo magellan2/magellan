@@ -817,16 +817,6 @@ public class EresseaOrderCompleter implements Completer {
 
 		//		}
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_HERBS)));
-
-		if((unit.spells != null) && (unit.spells.size() > 0)) {
-			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SPELLBOOK)));
-
-			Iterator i = unit.spells.values().iterator();
-
-			while(i.hasNext()) {
-				completions.add(new Completion(((Spell) i.next()).getName()));
-			}
-		}
 	}
 
 	/**
@@ -1617,7 +1607,7 @@ public class EresseaOrderCompleter implements Completer {
 			if((spell.getDescription() == null) // indicates that no information is available about this spell
 				    ||((spell.getIsFar() || !far) && (spell.getOnOcean() || !ocean) &&
 				   (!combat || (spell.getType().toLowerCase().indexOf("combat") > -1)))) {
-				String spellName = spell.getName();
+				String spellName = this.data.getTranslation(spell);
 				String quotedSpellName = spellName;
 
 				if(spellName.indexOf(" ") > -1) {

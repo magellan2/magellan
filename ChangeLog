@@ -1,3 +1,21 @@
+2005-05-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\GameData.java (getTranslation): add support for translating
+	named objects.
+	* add better support for translated objects (spells, potions).
+
+2005-05-22  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\swing\completion\MultiEditorOrderEditorList.java (createTempImpl): 
+	fixed missing whitespace.
+
+2005-05-19  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\extern\ExternalModule/2.java: added new method getName() for
+	displaying a list of external modules. 
+	* src\java\com\eressea\demo\Client.java (getExternalModuleItems): getMenuItemName() 
+	may be null (no menu item is created).
+
 2005-05-18  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src\java\com\eressea\swing\context\ContextMenuProvider.java (createContextMenu): 

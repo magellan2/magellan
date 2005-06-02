@@ -42,7 +42,7 @@ public class Spell extends DescribedObject {
 
 	// TODO: this is bad, but right now i dont have a better idea
 	public ID getID() {
-		return StringID.create(getName());
+	    return StringID.create(getName());
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class Spell extends DescribedObject {
 		}
 
 		if((curSpell.components != null) && (curSpell.components.size() > 0)) {
-			newSpell.components = CollectionFactory.createHashtable();
+			newSpell.components = CollectionFactory.createOrderedHashtable();
 			newSpell.components.putAll(curSpell.components);
 		}
 	}

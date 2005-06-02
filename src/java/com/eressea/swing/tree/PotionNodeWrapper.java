@@ -26,7 +26,8 @@ import com.eressea.Potion;
  */
 public class PotionNodeWrapper implements CellObject, SupportsClipboard {
 	private Potion potion = null;
-	private String displayedString = null;
+    private String name = null;
+    private String postfix = null;
 
 	/**
 	 * Creates a new PotionNodeWrapper object.
@@ -44,13 +45,12 @@ public class PotionNodeWrapper implements CellObject, SupportsClipboard {
 	 * @param postfix TODO: DOCUMENT ME!
 	 */
 	public PotionNodeWrapper(Potion p, String postfix) {
-		this.potion = p;
-
-		if(postfix != null) {
-			this.displayedString = p.toString() + postfix;
-		} else {
-			this.displayedString = p.toString();
-		}
+        this(p, p.getName(),postfix);
+    }
+    public PotionNodeWrapper(Potion p, String name, String postfix) {
+        this.potion = p;
+        this.name = name;
+        this.postfix = postfix;
 	}
 
 	/**
@@ -68,8 +68,7 @@ public class PotionNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return displayedString;
-	}
+	    return postfix == null ? name : (name+postfix);	}
 
 	/**
 	 * TODO: DOCUMENT ME!

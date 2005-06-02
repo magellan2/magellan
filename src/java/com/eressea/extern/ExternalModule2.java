@@ -27,14 +27,19 @@ import com.eressea.demo.Client;
 public interface ExternalModule2 {
 	/**
 	 * Retrieve the MenuItemName by which the module shall be invoked. It is automatically added to
-	 * the extras menu of Magellan.
+	 * the extras menu of Magellan. If the value is null there will be no menu item.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the name of the menu 
 	 */
 	public String getMenuItemName();
 
 	/**
-	 * This method is called to run the module. Client is sufficient for all interesting instances
+	 * This method is called after pressing the corresponding menu item
 	 */
-	public void start(Client client);
+	public void startMenuItemAction(Client client);
+    
+    /**
+     * @return the name of the external module
+     */
+    public String getName();
 }

@@ -375,8 +375,8 @@ public class NodeWrapperFactory extends JTabbedPane implements PreferencesFactor
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public PotionNodeWrapper createPotionNodeWrapper(Potion potion, String postfix) {
-		PotionNodeWrapper pnw = new PotionNodeWrapper(potion, postfix);
+	public PotionNodeWrapper createPotionNodeWrapper(Potion potion, String name, String postfix) {
+		PotionNodeWrapper pnw = new PotionNodeWrapper(potion, name, postfix);
 		init(pnw, POTION);
 
 		return pnw;
@@ -438,6 +438,15 @@ public class NodeWrapperFactory extends JTabbedPane implements PreferencesFactor
 		return gnw;
 	}
 
+    
+    public SimpleNodeWrapper createSimpleNodeWrapper(Object obj, String text, Object icons) {
+        SimpleNodeWrapper snw = new SimpleNodeWrapper(obj, text, icons);
+        init(snw, SIMPLE);
+
+        return snw;
+        
+    }
+    
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -446,8 +455,8 @@ public class NodeWrapperFactory extends JTabbedPane implements PreferencesFactor
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public SimpleNodeWrapper createSimpleNodeWrapper(Object text, Object icons) {
-		SimpleNodeWrapper snw = new SimpleNodeWrapper(text, icons);
+	public SimpleNodeWrapper createSimpleNodeWrapper(Object obj, Object icons) {
+		SimpleNodeWrapper snw = new SimpleNodeWrapper(obj, icons);
 		init(snw, SIMPLE);
 
 		return snw;

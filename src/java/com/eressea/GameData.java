@@ -513,34 +513,29 @@ public abstract class GameData implements Cloneable {
 		}
 	}
 
+    /**
+     * Retrieve a translation from translations().
+     *
+     * @param key the key of the translation to be retrieved.
+     *
+     * @return an instance of class <tt>String</tt>. If no translation could be found, the name of the object is returned.
+     */    
+    public String getTranslation(NamedObject obj) {
+        return obj != null ? getTranslation(obj.getName()) : null;
+    }
+    
 	/**
 	 * Retrieve a translation from translations().
 	 *
-	 * @param key the key of the translation to be retrieved.
-	 *
-	 * @return an instance of class <tt>String</tt> or <tt>null</tt> if there is no value mapping
-	 * 		   to the specified key of if translations() is <tt>null</tt>.
-	 */
-	public String getTranslation(String key) {
-		return (translations() == null) ? null : (String) translations().get(key);
-	}
-
-	/**
-	 * Retrieve a translation from translations().
-	 *
-	 * @param key TODO: DOCUMENT ME!
+     * @param key the key of the translation to be retrieved.
 	 *
 	 * @return an instance of class <tt>String</tt>. If no translation could be found, the key is
 	 * 		   returned.
 	 */
-	public String getTranslationOrKeyIfNull(String key) {
-		String retVal = getTranslation(key);
+	public String getTranslation(String key) {
+		String retVal = (translations() == null) ? null : (String) translations().get(key);
 
-		if(retVal != null) {
-			return retVal;
-		} else {
-			return key;
-		}
+        return retVal != null ? retVal : key;
 	}
 
 	/**

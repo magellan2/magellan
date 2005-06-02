@@ -2203,7 +2203,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 														recCost = i * recCost;
 
 														// TODO(pavkovic) extract to EresseaOrderChanger
-														String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) +
+														String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE)+ " "+
                                                                             tempUnit.toString(false)+
 																		   " " + recCost + " " +
 																		   silver + "; " +
@@ -2212,7 +2212,7 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 													}
 
 													if(dialog.isGiveMaintainCost()) {
-														String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE) +
+														String tmpOrders = Translations.getOrderTranslation(EresseaOrderConstants.O_GIVE)+ " "+
 														                    tempUnit.toString(false)+
 																		   " " +
 																		   String.valueOf(10 * i) +

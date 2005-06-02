@@ -341,9 +341,6 @@ public class EresseaConstants {
 	public static final String O_SORT = "SORT";
 
 	/** TODO: DOCUMENT ME! */
-	public static final String O_SPELLBOOK = "SPELLBOOK";
-
-	/** TODO: DOCUMENT ME! */
 	public static final String O_SPELLS = "SPELLS";
 
 	/** TODO: DOCUMENT ME! */

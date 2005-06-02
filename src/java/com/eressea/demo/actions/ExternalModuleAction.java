@@ -70,7 +70,7 @@ public class ExternalModuleAction extends AbstractAction {
 
 		if(external instanceof ExternalModule2) {
 			ExternalModule2 extModule = (ExternalModule2) external;
-			extModule.start(client);
+			extModule.startMenuItemAction(client);
 		}
 	}
 }

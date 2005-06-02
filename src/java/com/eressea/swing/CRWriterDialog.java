@@ -51,6 +51,7 @@ import com.eressea.GameData;
 import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
+import com.eressea.Spell;
 import com.eressea.Unit;
 import com.eressea.io.cr.CRWriter;
 import com.eressea.io.file.FileTypeFactory;
@@ -620,8 +621,9 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 					it = data.spells().values().iterator();
 
 					while(it.hasNext()) {
-						com.eressea.Spell sp = (com.eressea.Spell) it.next();
+						Spell sp = (Spell) it.next();
 						trans.remove(sp.getID().toString());
+                        trans.remove(sp.getName());
 						it2 = sp.getComponents().keySet().iterator();
 
 						while(it2.hasNext()) {

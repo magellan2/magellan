@@ -1049,8 +1049,7 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readGibUIDAlles(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_UNIT)) ||
 					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CONTROL)) ||
-					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_HERBS)) ||
-					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_SPELLBOOK))) {
+					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_HERBS))) {
 			retVal = readFinalKeyword(t);
 		} else if(isString(t.getText()) == true) {
 			retVal = readFinalString(t);
