@@ -1,3 +1,24 @@
+2005-06-14  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\desktop\MagellanDesktop.java (saveDesktopFile): 
+	create backup file for magellan_desktop.
+	
+	* src\java\com\eressea\demo\EMapOverviewPanel.java: add support for
+	ejcTaggableComparator[2-5].
+
+2005-06-07  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\res\rules\eressea.cr: add changes from Matthias Mueller.
+
+	* src\java\com\eressea\swing\context\UnitContainerContextMenu.java (copyNameID): 
+	bugzilla #860: duplicate id on "copy name and id".
+
+2005-06-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\gamebinding\eressea\EresseaRelationFactory.java (createRelations): 
+	moved O_ENTER block before O_ENTERTAIN block because enter does not work for english
+	players.
+
 2005-05-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src\java\com\eressea\GameData.java (getTranslation): add support for translating

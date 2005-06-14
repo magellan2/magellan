@@ -26,19 +26,25 @@ import javax.swing.tree.TreeNode;
 import com.eressea.Building;
 import com.eressea.Border;
 import com.eressea.GameData;
-import com.eressea.ID;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.TempUnit;
 import com.eressea.Unit;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.Translations;
 import com.eressea.util.comparator.BuildingTypeComparator;
 import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.comparator.TaggableComparator;
+import com.eressea.util.comparator.UnitCombatStatusComparator;
+import com.eressea.util.comparator.UnitFactionComparator;
+import com.eressea.util.comparator.UnitFactionDisguisedComparator;
+import com.eressea.util.comparator.UnitGroupComparator;
 import com.eressea.util.comparator.UnitHealthComparator;
+import com.eressea.util.comparator.UnitTempUnitComparator;
 import com.eressea.util.comparator.UnitTrustComparator;
+import com.eressea.util.comparator.tree.GroupingComparator;
 
 /**
  * To help constructing the tree structure.
@@ -68,14 +74,40 @@ public class TreeHelper {
 	public static final int TRUSTLEVEL = 5;
 
 	/** TODO: DOCUMENT ME! */
-	public static final int TAGGABLE = 6;
-
+	public static final int TAGGABLE  = 6;
+    public static final int TAGGABLE2 = 7;
+    public static final int TAGGABLE3 = 8;
+    public static final int TAGGABLE4 = 9;
+    public static final int TAGGABLE5 = 10;
+    
+    public static final String TAGGABLE_STRING = "ejcTaggableComparator";
+    public static final String TAGGABLE_STRING2 = "ejcTaggableComparator2";
+    public static final String TAGGABLE_STRING3 = "ejcTaggableComparator3";
+    public static final String TAGGABLE_STRING4 = "ejcTaggableComparator4";
+    public static final String TAGGABLE_STRING5 = "ejcTaggableComparator5";
+    
 	private static final Comparator nameComparator = new NameComparator(IDComparator.DEFAULT);
-	private static final Comparator buildingComparator = new BuildingTypeComparator(nameComparator);
+	private static final Comparator buildingCmp = new BuildingTypeComparator(new NameComparator(IDComparator.DEFAULT));
 	private static final Comparator healthCmp = new UnitHealthComparator(null);
 
+    // pavkovic 2004.01.04: we dont want to sort groups by group id but name;
+    // if they are sorted by id this would make tree hierarchy
+    // (trustlevel, group) somehow uninteresting
+    // Side effect: Groups are sorted by name
+    private static final Comparator groupCmp = new UnitGroupComparator(new NameComparator(null), null, null);
 
-	/**
+    private static final Comparator factionDisguisedCmp = new UnitFactionDisguisedComparator(null);
+    
+    private static final Comparator combatCmp = new UnitCombatStatusComparator(null);
+    private static final Comparator factionCmp = new UnitFactionComparator(new FactionTrustComparator(NameComparator.DEFAULT), null);
+    private static final Comparator trustlevelCmp = UnitTrustComparator.DEFAULT_COMPARATOR;
+    private static final Comparator taggableCmp  = new TaggableComparator(TAGGABLE_STRING,  null);
+    private static final Comparator taggableCmp2 = new TaggableComparator(TAGGABLE_STRING2, null);
+    private static final Comparator taggableCmp3 = new TaggableComparator(TAGGABLE_STRING3, null);
+    private static final Comparator taggableCmp4 = new TaggableComparator(TAGGABLE_STRING4, null);
+    private static final Comparator taggableCmp5 = new TaggableComparator(TAGGABLE_STRING5, null);
+
+    /**
 	 * Creates the subtree for one region with units (sorted by faction or other criteria), ships,
 	 * buildings, borders etc.
 	 *
@@ -91,7 +123,7 @@ public class TreeHelper {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static TreeNode createRegionNode(Region r, NodeWrapperFactory factory,
+	public TreeNode createRegionNode(Region r, NodeWrapperFactory factory,
 											Map activeAlliances, Map unitNodes, Map buildingNodes,
 											Map shipNodes, Comparator unitSorting,
 											int treeStructure[], GameData data) {
@@ -106,7 +138,7 @@ public class TreeHelper {
 				Collections.sort(units, unitSorting);
 			}
 			
-			addSortedUnits(regionNode, treeStructure, 0, units, factory, activeAlliances,
+			addUnits(regionNode, treeStructure, 0, units, factory, activeAlliances,
 						   unitNodes, data);
 		}
 
@@ -125,7 +157,7 @@ public class TreeHelper {
 
 		// add buildings
 		List sortedBuildings = new ArrayList(r.buildings());
-		Collections.sort(sortedBuildings, buildingComparator);
+		Collections.sort(sortedBuildings, buildingCmp);
 
 		for(Iterator iter = sortedBuildings.iterator(); iter.hasNext(); ) {
 			Building b = (Building) iter.next();
@@ -162,9 +194,9 @@ public class TreeHelper {
 	 *
 	 * @return the number of persons (not units) that were added
 	 */
-	private static int addSortedUnits(DefaultMutableTreeNode mother, int treeStructure[],
-									  int sortCriteria, List units, NodeWrapperFactory factory,
-									  Map activeAlliances, Map unitNodes, GameData data) {
+	private int addUnits(DefaultMutableTreeNode mother, int treeStructure[],
+	        int sortCriteria, List units, NodeWrapperFactory factory,
+	        Map activeAlliances, Map unitNodes, GameData data) {
 		SupportsEmphasizing se = null;
 
 		if(mother.getUserObject() instanceof SupportsEmphasizing) {
@@ -219,6 +251,7 @@ public class TreeHelper {
 						unitNodes.put(tempUnit.getID(), tempNode);
 					}
 				}
+                
 			} else {
 				// change in current sortCriteria?
 				switch(treeStructure[sortCriteria]) {
@@ -235,7 +268,7 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(factionNodeWrapper);
 						}
 
-						retVal += addSortedUnits(factionNode, treeStructure, sortCriteria + 1,
+						retVal += addUnits(factionNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
@@ -255,11 +288,11 @@ public class TreeHelper {
 								se.getSubordinatedElements().add(groupNodeWrapper);
 							}
 
-							retVal += addSortedUnits(groupNode, treeStructure, sortCriteria + 1,
+							retVal += addUnits(groupNode, treeStructure, sortCriteria + 1,
 													 helpList, factory, activeAlliances, unitNodes,
 													 data);
 						} else {
-							retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1,
+							retVal += addUnits(mother, treeStructure, sortCriteria + 1,
 													 helpList, factory, activeAlliances, unitNodes,
 													 data);
 						}
@@ -298,7 +331,7 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(simpleNodeWrapper);
 						}
 
-						retVal += addSortedUnits(healthNode, treeStructure, sortCriteria + 1,
+						retVal += addUnits(healthNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
@@ -317,7 +350,7 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(simpleNodeWrapper);
 						}
 
-						retVal += addSortedUnits(combatNode, treeStructure, sortCriteria + 1,
+						retVal += addUnits(combatNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
@@ -337,11 +370,11 @@ public class TreeHelper {
 								se.getSubordinatedElements().add(simpleNodeWrapper);
 							}
 
-							retVal += addSortedUnits(fdsNode, treeStructure, sortCriteria + 1,
+							retVal += addUnits(fdsNode, treeStructure, sortCriteria + 1,
 													 helpList, factory, activeAlliances, unitNodes,
 													 data);
 						} else {
-							retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1,
+							retVal += addUnits(mother, treeStructure, sortCriteria + 1,
 													 helpList, factory, activeAlliances, unitNodes,
 													 data);
 						}
@@ -363,7 +396,7 @@ public class TreeHelper {
 							se.getSubordinatedElements().add(simpleNodeWrapper);
 						}
 
-						retVal += addSortedUnits(trustlevelNode, treeStructure, sortCriteria + 1,
+						retVal += addUnits(trustlevelNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
 					}
@@ -371,8 +404,12 @@ public class TreeHelper {
 					break;
 					
 				case TAGGABLE:
+                case TAGGABLE2:
+                case TAGGABLE3:
+                case TAGGABLE4:
+                case TAGGABLE5:
 
-					if(change(TAGGABLE, curUnit, prevUnit)) {
+					if(change(treeStructure[sortCriteria], curUnit, prevUnit)) {
 						String label = TaggableComparator.getLabel(prevUnit);
 						if(label != null) {
 							SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(label,null);
@@ -383,10 +420,10 @@ public class TreeHelper {
 								se.getSubordinatedElements().add(simpleNodeWrapper);
 							}
 						
-							retVal += addSortedUnits(taggableNode, treeStructure, sortCriteria + 1,
+							retVal += addUnits(taggableNode, treeStructure, sortCriteria + 1,
 													 helpList, factory, activeAlliances, unitNodes, data);
 						} else {
-							retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1,
+							retVal += addUnits(mother, treeStructure, sortCriteria + 1,
 													 helpList, factory, activeAlliances, unitNodes,
 													 data);
 						}
@@ -471,13 +508,30 @@ public class TreeHelper {
 					node = new DefaultMutableTreeNode(o);
 
 					break;
+                    
+                case TAGGABLE:
+                case TAGGABLE2:
+                case TAGGABLE3:
+                case TAGGABLE4:
+                case TAGGABLE5:
+
+                    String label = TaggableComparator.getLabel(curUnit);
+                    if(label != null) {
+                        o = factory.createSimpleNodeWrapper(label,null);
+                        node = new DefaultMutableTreeNode(o);
+                    } else {
+                        node = null;
+                    }
+
+                    break;
+
 				} // end of switch
 			}
 
 			// end of if (sortCriteria <= treeStructure.length)
 			// now add units
 			if(node == null) {
-				retVal += addSortedUnits(mother, treeStructure, sortCriteria + 1, helpList,
+				retVal += addUnits(mother, treeStructure, sortCriteria + 1, helpList,
 										 factory, activeAlliances, unitNodes, data);
 			} else {
 				mother.add(node);
@@ -486,7 +540,7 @@ public class TreeHelper {
 					se.getSubordinatedElements().add(node.getUserObject());
 				}
 
-				retVal += addSortedUnits(node, treeStructure, sortCriteria + 1, helpList, factory,
+				retVal += addUnits(node, treeStructure, sortCriteria + 1, helpList, factory,
 										 activeAlliances, unitNodes, data);
 			}
 		}
@@ -520,78 +574,106 @@ public class TreeHelper {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private static boolean change(int flag, Unit curUnit, Unit prevUnit) {
+	private boolean change(int flag, Unit curUnit, Unit prevUnit) {
 		if((curUnit == null) || (prevUnit == null)) {
 			return false;
 		}
 
 		switch(flag) {
 		case FACTION:
-
-			ID prevUnitFactionID = null;
-
-			if(prevUnit.getFaction() != null) {
-				prevUnitFactionID = prevUnit.getFaction().getID();
-			}
-
-			ID curUnitFactionID = null;
-
-			if(curUnit.getFaction() != null) {
-				curUnitFactionID = curUnit.getFaction().getID();
-			}
-
-			if((curUnitFactionID == null) && (prevUnitFactionID == null)) {
-				return false;
-			} else if((curUnitFactionID == null) || (prevUnitFactionID == null)) {
-				return true;
-			} else {
-				return !curUnitFactionID.equals(prevUnitFactionID);
-			}
+		    return factionCmp.compare(prevUnit, curUnit) != 0;
 
 		case GROUP:
-
-			// pavkovic 2004.01.04: let the name decide to split the groups
-			String prevUnitGroupName = null;
-
-			if(prevUnit.getGroup() != null) {
-				prevUnitGroupName = prevUnit.getGroup().getName();
-			}
-
-			String curUnitGroupName = null;
-
-			if(curUnit.getGroup() != null) {
-				curUnitGroupName = curUnit.getGroup().getName();
-			}
-
-			if((curUnitGroupName == null) && (prevUnitGroupName == null)) {
-				return false;
-			} else if((curUnitGroupName == null) || (prevUnitGroupName == null)) {
-				return true;
-			} else {
-				return !curUnitGroupName.equals(prevUnitGroupName);
-			}
-
+            return groupCmp.compare(prevUnit, curUnit) != 0;
+            
 		case HEALTH:
 			return healthCmp.compare(prevUnit, curUnit) != 0;
 
 		case COMBAT_STATUS:
-			return prevUnit.combatStatus != curUnit.combatStatus;
+			return combatCmp.compare(prevUnit,curUnit) != 0;
 
 		case FACTION_DISGUISE_STATUS:
-			return prevUnit.hideFaction != curUnit.hideFaction;
+			return factionDisguisedCmp.compare(prevUnit,curUnit) != 0;
 
 		case TRUSTLEVEL:
-			return UnitTrustComparator.DEFAULT_COMPARATOR.compare(prevUnit, curUnit) != 0;
+			return trustlevelCmp.compare(prevUnit,curUnit) != 0;
 
 		case TAGGABLE:
-			return TaggableComparator.DEFAULT_COMPARATOR.compare(prevUnit, curUnit) != 0;
+			return taggableCmp.compare(prevUnit, curUnit) != 0;
+        case TAGGABLE2:
+            return taggableCmp2.compare(prevUnit, curUnit) != 0;
+        case TAGGABLE3:
+            return taggableCmp3.compare(prevUnit, curUnit) != 0;
+        case TAGGABLE4:
+            return taggableCmp4.compare(prevUnit, curUnit) != 0;
+        case TAGGABLE5:
+            return taggableCmp5.compare(prevUnit, curUnit) != 0;
 		}
 
 		return false; // default
 	}
+    
+    public static Comparator buildComparator(Comparator cmp, int[] treeStructure) {
+        // now build the Comparator used for unit sorting
+        GroupingComparator comp = new GroupingComparator(cmp,null);
 
-	protected static String getString(String key) {
-		return com.eressea.util.Translations.getTranslation(TreeHelper.class, key);
+        for(int i = treeStructure.length - 1; i >= 0; i--) {
+            switch(treeStructure[i]) {
+            case TreeHelper.FACTION:
+                comp = new GroupingComparator(factionCmp,comp);
+                break;
+
+            case TreeHelper.GROUP:
+
+                // pavkovic 2004.01.04: we dont want to sort groups by group id but name;
+                // if they are sorted by id this would make tree hierarchy
+                // (trustlevel, group) somehow uninteresting
+                // Side effect: Groups are sorted by name
+                comp = new GroupingComparator(groupCmp, comp);
+                break;
+
+            case TreeHelper.COMBAT_STATUS:
+                comp = new GroupingComparator(combatCmp, comp);
+                break;
+
+            case TreeHelper.HEALTH:
+                comp = new GroupingComparator(healthCmp, comp);
+                break;
+
+            case TreeHelper.FACTION_DISGUISE_STATUS:
+                comp = new GroupingComparator(factionDisguisedCmp, comp);
+                break;
+
+            case TreeHelper.TRUSTLEVEL:
+                comp = new GroupingComparator(trustlevelCmp, comp);
+                break;
+
+            case TreeHelper.TAGGABLE:
+                comp = new GroupingComparator(taggableCmp,  comp);
+                break;
+            case TreeHelper.TAGGABLE2:
+                comp = new GroupingComparator(taggableCmp2, comp);
+                break;
+            case TreeHelper.TAGGABLE3:
+                comp = new GroupingComparator(taggableCmp3, comp);
+                break;
+            case TreeHelper.TAGGABLE4:
+                comp = new GroupingComparator(taggableCmp4, comp);
+                break;
+            case TreeHelper.TAGGABLE5:
+                comp = new GroupingComparator(taggableCmp5, comp);
+                break;
+            }
+        }
+
+        // care for temp units
+        return new UnitTempUnitComparator(IDComparator.DEFAULT, comp);
+    }
+    
+    
+
+	protected String getString(String key) {
+		return Translations.getTranslation(this, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

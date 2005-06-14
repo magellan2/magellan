@@ -25,18 +25,7 @@ import com.eressea.io.file.FileType;
  * @version $Revision$
  */
 public class XMLGameNameIO implements GameNameIO {
-	private XMLGameNameIO() {
-	}
-
-	private static XMLGameNameIO singleton = new XMLGameNameIO();
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public static XMLGameNameIO singleton() {
-		return singleton;
+	public XMLGameNameIO() {
 	}
 
 	/**

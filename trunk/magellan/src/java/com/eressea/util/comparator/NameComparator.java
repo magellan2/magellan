@@ -58,35 +58,17 @@ public class NameComparator implements Comparator {
 	 * 		   result of that sub-comparator's comparison is returned.
 	 */
 	public int compare(Object o1, Object o2) {
-		int retVal = 0;
 		String n1 = ((Named) o1).getName();
 		String n2 = ((Named) o2).getName();
 
-		if((n1 == null) && (n2 == null)) {
-			retVal = 0;
-		} else if((n1 != null) && (n2 == null)) {
-			retVal = -1;
-		} else if((n1 == null) && (n2 != null)) {
-			retVal = 1;
-		} else if((n1 != null) && (n1 != null)) {
-			retVal = n1.compareToIgnoreCase(n2);
-		}
+        int retVal = 0;
+        if(n1 != null) {
+            retVal = n1.compareToIgnoreCase(n2);
+        } else {
+            // n1 == null
+            retVal = n2 == null ? 0 : 1;
+        }
 
-		if((retVal == 0) && (sameNameSubCmp != null)) {
-			retVal = sameNameSubCmp.compare(o1, o2);
-		}
-
-		return retVal;
-	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
+        return retVal == 0 && (sameNameSubCmp != null)? sameNameSubCmp.compare(o1, o2) : retVal;
 	}
 }

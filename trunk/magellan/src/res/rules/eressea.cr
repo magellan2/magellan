@@ -143,9 +143,13 @@ ITEMCATEGORY "potions"
 "Tränke";name
 5;naturalorder
 
+ITEMCATEGORY "trophies"
+"Trophäen";name
+6;naturalorder
+
 ITEMCATEGORY "misc"
 "Sonstiges";name
-6;naturalorder
+7;naturalorder
 
 SKILLCATEGORY "war"
 "Kampf";name
@@ -830,6 +834,12 @@ ITEM "Laenschwert"
 RESOURCES
 1;Laen
 
+ITEM "Flammenschwert"
+"Flammenschwert";name
+1;weight
+"Hiebwaffen";useskill
+"weapons";category
+
 ITEM "Bihänder"
 "Bihänder";name
 2;weight
@@ -870,7 +880,7 @@ ITEM "Hellebarde"
 "hellebarde";iconname
 RESOURCES
 1;Eisen
-1;Holz
+2;Holz
 
 ITEM "Kriegsaxt"
 "Kriegsaxt";name
@@ -911,7 +921,7 @@ ITEM "Elfenbogen"
 5;makeskilllevel
 "distance weapons";category
 RESOURCES
-1;Mallorn
+2;Mallorn
 
 ITEM "Mallornbogen"
 "Mallornbogen";name
@@ -1199,9 +1209,58 @@ ITEM "Silberkassette"
 
 ITEM "Trollhorn"
 "Trollhorn";name
-"misc";category
+"trophies";category
 1;weight
 
+ITEM "Zwergenbart"
+"Zwergenbart";name
+"trophies";category
+1;weight
+
+ITEM "Halblingfuß"
+"Halblingfuß";name
+"trophies";category
+1;weight
+
+ITEM "Katzenschwanz"
+"Katzenschwanz";name
+"trophies";category
+1;weight
+
+ITEM "Elfenohr"
+"Elfenohr";name
+"trophies";category
+1;weight
+
+ITEM "Dämonenblut"
+"Dämonenblut";name
+"trophies";category
+1;weight
+
+ITEM "Insektenfühler"
+"Insektenfühler";name
+"trophies";category
+1;weight
+
+ITEM "Meermenschschuppe"
+"Meermenschschuppe";name
+"trophies";category
+1;weight
+
+ITEM "Goblinkopf"
+"Goblinkopf";name
+"trophies";category
+1;weight
+
+ITEM "Menschenskalp"
+"Menschenskalp";name
+"trophies";category
+1;weight
+
+ITEM "Orkhauer"
+"Orkhauer";name
+"trophies";category
+1;weight
 
 SHIPTYPE "Boot"
 "Boot";name

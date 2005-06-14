@@ -32,15 +32,15 @@ import java.util.Comparator;
 public class GroupingComparator implements Comparator {
 
 	protected Comparator main = null;
-	protected Comparator sub = null;
+	protected GroupingComparator sub = null;
 
 	/**
 	 * Creates a new <tt>GroupingComparator</tt> object.
 	 * @param mainComparator the comparator used to compare the given objects
 	 * @param subComparator the comparator used to compare the given objects if mainComparator delivers 0.
 	 */
-	public GroupingComparator(Comparator mainComparator, Comparator subComparator) {
-		if(main == null) throw new NullPointerException();
+	public GroupingComparator(Comparator mainComparator, GroupingComparator subComparator) {
+		if(mainComparator == null) throw new NullPointerException();
 		main = mainComparator;
 		sub  = subComparator;
 	}
@@ -51,19 +51,6 @@ public class GroupingComparator implements Comparator {
 	 */
 	public int compare(Object o1, Object o2) {
 		int ret = main.compare(o1,o2);
-		return 2* (ret != 0 || sub == null ? ret : sub.compare(o1,o2));
+        return ret == 0 && sub != null ? sub.compare(o1,o2) : ret;
 	}
-
-	
-	/** 
-	 * returns the "depth" of a compare result. 
-	 * This is nothing else but the logarithm of compareResult with base 2.
-	 * I remember deeply that logb(x) == ln(x)/ln(b)
-	 */
-	public int depth(int compareResult) {
-		return compareResult == 0
-			? 0 
-			: (int) (Math.log(Math.abs(compareResult))/Math.log(2));
-	}
-
 }

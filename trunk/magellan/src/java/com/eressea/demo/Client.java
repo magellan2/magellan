@@ -472,6 +472,7 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 		panels.add(overviewPanel);
 		components.put("OVERVIEW", overviewPanel.getOverviewComponent());
 		components.put("HISTORY", overviewPanel.getHistoryComponent());
+        components.put("OVERVIEW&HISTORY",overviewPanel);
 		nodeWrapperFactories.add(overviewPanel.getNodeWrapperFactory());
 		topLevel.add(overviewPanel);
 
@@ -1132,11 +1133,11 @@ public class Client extends JFrame implements ShortcutListener, PreferencesFacto
 
 		fileHistory.storeFileHistory();
 
-		// save the desktop
-		desktop.save();
-
 		// store settings to file
 		if(storeSettings) {
+            // save the desktop
+            desktop.save();
+
 			try {
 				// if necessary, use settings file in local directory
 				File settingsFile = new File(settingsDirectory, "magellan.ini");

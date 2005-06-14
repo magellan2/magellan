@@ -183,6 +183,42 @@ public class EresseaRelationFactory implements RelationFactory {
 				continue;
 			}
 
+            // enter relation
+            if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_ENTER))) {
+                OrderToken t = (OrderToken) tokens.get(1);
+                UnitContainer uc = null;
+
+                if(t.equalsToken(getOrder(EresseaConstants.O_CASTLE))) {
+                    t = (OrderToken) tokens.get(2);
+                    uc = u.getRegion().getBuilding(EntityID.createEntityID(t.getText(),data.base));
+                } else if(t.equalsToken(getOrder(EresseaConstants.O_SHIP))) {
+                    t = (OrderToken) tokens.get(2);
+                    uc = u.getRegion().getShip(EntityID.createEntityID(t.getText(),data.base));
+                }
+
+                if(uc != null) {
+                    EnterRelation rel = new EnterRelation(u, uc, line);
+                    rels.add(rel);
+                } else {
+                    log.warn("Unit.refreshRelations(): cannot find target in order " + order);
+                }
+
+                // check whether the unit leaves a container
+                UnitContainer leftUC = u.getBuilding();
+
+                if(leftUC == null) {
+                    leftUC = u.getShip();
+                }
+
+                if(leftUC != null) {
+                    LeaveRelation rel = new LeaveRelation(u, leftUC, line);
+                    rels.add(rel);
+                }
+
+                continue;
+            }
+
+            
 			// income relation WORK
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_WORK))) {
 				// TODO!
@@ -369,41 +405,6 @@ public class EresseaRelationFactory implements RelationFactory {
 					rels.add(rel);
 				} else {
 					log.warn("Unit.updateRelations(): invalid amount in order " + order);
-				}
-
-				continue;
-			}
-
-			// enter relation
-			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_ENTER))) {
-				OrderToken t = (OrderToken) tokens.get(1);
-				UnitContainer uc = null;
-
-				if(t.equalsToken(getOrder(EresseaConstants.O_CASTLE))) {
-					t = (OrderToken) tokens.get(2);
-					uc = u.getRegion().getBuilding(EntityID.createEntityID(t.getText(),data.base));
-				} else if(t.equalsToken(getOrder(EresseaConstants.O_SHIP))) {
-					t = (OrderToken) tokens.get(2);
-					uc = u.getRegion().getShip(EntityID.createEntityID(t.getText(),data.base));
-				}
-
-				if(uc != null) {
-					EnterRelation rel = new EnterRelation(u, uc, line);
-					rels.add(rel);
-				} else {
-					log.warn("Unit.refreshRelations(): cannot find target in order " + order);
-				}
-
-				// check whether the unit leaves a container
-				UnitContainer leftUC = u.getBuilding();
-
-				if(leftUC == null) {
-					leftUC = u.getShip();
-				}
-
-				if(leftUC != null) {
-					LeaveRelation rel = new LeaveRelation(u, leftUC, line);
-					rels.add(rel);
 				}
 
 				continue;

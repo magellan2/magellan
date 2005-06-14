@@ -37,8 +37,8 @@ public class FileType {
     private final static Logger log = Logger.getInstance(FileType.class);
     
 	// basically identified file types
-	static final String CR = ".cr";
-	static final String XML = ".xml";
+	public static final String CR = ".cr";
+	public static final String XML = ".xml";
 
 	// basically identified compression types with single entry
 	static final String GZIP = ".gz";
@@ -121,8 +121,9 @@ public class FileType {
 	 * @return the most inner name of a FileType.
 	 */
 	public String getInnerName() {
-		return null;
+		return getName();
 	}
+
 
 	/**
 	 * Returns the name of the FileType.

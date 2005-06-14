@@ -41,9 +41,9 @@ public class GameNameReader {
 	 */
 	public String getGameName(FileType filetype) {
 		try {
-			String gameName = CRGameNameIO.singleton().getGameName(filetype);
+			String gameName = new CRGameNameIO().getGameName(filetype);
 
-			return (gameName != null) ? gameName : XMLGameNameIO.singleton().getGameName(filetype);
+			return (gameName != null) ? gameName : new XMLGameNameIO().getGameName(filetype);
 		} catch(IOException e) {
 			return null;
 		}

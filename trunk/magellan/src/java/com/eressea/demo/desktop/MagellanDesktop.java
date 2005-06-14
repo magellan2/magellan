@@ -44,6 +44,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.Collator;
 import java.text.MessageFormat;
@@ -88,6 +89,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import com.eressea.event.EventDispatcher;
+import com.eressea.io.file.FileBackup;
 import com.eressea.main.MagellanContext;
 import com.eressea.swing.desktop.WorkSpace;
 
@@ -1384,9 +1386,19 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 			Component c = (Component) components.get(key);
 
-			if((c instanceof Initializable) && (fr.getConfiguration() != null)) {
-				((Initializable) c).initComponent(fr.getConfiguration());
-			}
+            {
+                Object name = key;
+                String configuration = fr.getConfiguration();
+                // special meaning of overview
+                if("OVERVIEW".equals(name))  {
+                    name = "OVERVIEW&HISTORY";
+                } 
+                if(components.get(name) instanceof Initializable && configuration != null) {
+                    ((Initializable) components.get(name)).initComponent(configuration);
+                }
+            }
+
+
 
 			BackgroundPanel bp = new BackgroundPanel();
 			bp.setComponent(c);
@@ -1471,9 +1483,18 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 				panel.add((Component) o, pref);
 				scomps.add(o);
 
-				if((o instanceof Initializable) && (pref.getConfiguration() != null)) {
-					((Initializable) o).initComponent(pref.getConfiguration());
-				}
+                {
+                    Object name = c;
+                    String configuration = pref.getConfiguration();
+                    // special meaning of overview
+                    if("OVERVIEW".equals(name))  {
+                        name = "OVERVIEW&HISTORY";
+                    } 
+                    if(components.get(name) instanceof Initializable && configuration != null) {
+                        ((Initializable) components.get(name)).initComponent(configuration);
+                    }
+                }
+
 			}
 		}
 
@@ -2618,9 +2639,16 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		}
 
 		if(ftr.isLeaf()) {
-			if(components.containsKey(ftr.getName()) &&
-				   (components.get(ftr.getName()) instanceof Initializable)) {
-				ftr.setConfiguration(((Initializable) components.get(ftr.getName())).getComponentConfiguration());
+			if(components.containsKey(ftr.getName())) {
+                String name = ftr.getName();
+                // special meaning of overview
+                if(name.equals("OVERVIEW"))  {
+                    name = "OVERVIEW&HISTORY";
+                }  
+                   
+                if(components.get(name) instanceof Initializable) {
+                    ftr.setConfiguration(((Initializable) components.get(name)).getComponentConfiguration());
+                }
 			}
 		} else {
 			retrieveFromSplitImpl(ftr.getChild(0));
@@ -2758,10 +2786,17 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	protected void saveDesktopFile() throws Exception {
 		File magFile = getDesktopFile(true);
 
-		if(magFile.exists()) {
-			magFile.delete();
-		}
+        if(magFile.exists()) {
+            try {
+                File backup = FileBackup.create(magFile);
+                log.info("Created backupfile " + backup);
+            } catch(IOException ie) {
+                log.warn("Could not create backupfile for file " + magFile);
+            }
+        }
 
+        log.info("Storing Magellan desktop configuration to " + magFile);
+        
 		PrintWriter out = new PrintWriter(new FileWriter(magFile));
 		Iterator it = splitSets.keySet().iterator();
 
