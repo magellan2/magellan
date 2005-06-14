@@ -418,10 +418,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 									(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
 														  "coordinates").equalsIgnoreCase("islands") == true);
 
-		if(treeBuilder == null) {
-			createTreeBuilder();
-		}
 
+        TreeBuilder treeBuilder = getTreeBuilder();
 		treeBuilder.setMode((treeBuilder.getMode() & 16383) |
 							(createIslandNodes ? treeBuilder.CREATE_ISLANDS : 0));
 
@@ -436,6 +434,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
  
 	}
 
+    private TreeBuilder myTreeBuilder;
+    private TreeBuilder getTreeBuilder() {
+        if(myTreeBuilder == null) {
+            myTreeBuilder = createTreeBuilder();
+        }
+        return myTreeBuilder;
+    }
 	/**
 	 * Retrieve a Comparator to sort the units according to the settings.
 	 *
@@ -3026,7 +3031,6 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		}
 	}
 
-	TreeBuilder treeBuilder;
 
 	class TreeBuilder {
 		/** TODO: DOCUMENT ME! */
@@ -3275,11 +3279,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			JMenuItem item = this.add(getString("menu.filter"));
 			item.setEnabled(false);
 
-			if(treeBuilder == null) {
-				treeBuilder = createTreeBuilder();
-			}
-
-			int mode = treeBuilder.getMode();
+			int mode = getTreeBuilder().getMode();
 
 			items = new JCheckBoxMenuItem[4];
 
@@ -3296,15 +3296,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		 *
 		 * @param actionEvent TODO: DOCUMENT ME!
 		 */
-		public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+		public void actionPerformed(ActionEvent actionEvent) {
 			updateState();
 		}
 
 		protected void updateState() {
-			if(treeBuilder == null) {
-				treeBuilder = createTreeBuilder();
-			}
-
+            TreeBuilder treeBuilder = getTreeBuilder();
+            
 			int mode = treeBuilder.getMode() & treeBuilder.CREATE_ISLANDS;
 
 			for(int i = 0; i < items.length; i++) {

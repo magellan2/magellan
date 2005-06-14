@@ -1322,6 +1322,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		try {
 			splitRoot = splitBuilder.buildDesktop((FrameTreeNode) splitSets.get(setName), components);
 		} catch(Exception exc) {
+            log.error(exc);
 			return false;
 		}
 
