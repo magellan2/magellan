@@ -131,9 +131,17 @@ public class SplitBuilder extends Object {
 		if(current.getChild(0).isLeaf()) {
 			JComponent jc = (JComponent) components.get(current.getChild(0).getName());
 
-			if((jc instanceof Initializable) && (current.getChild(0).getConfiguration() != null)) {
-				((Initializable) jc).initComponent(current.getChild(0).getConfiguration());
-			}
+            {
+                Object name = current.getChild(0).getName();
+                String configuration = current.getChild(0).getConfiguration();
+                // special meaning of overview
+                if("OVERVIEW".equals(name))  {
+                    name = "OVERVIEW&HISTORY";
+                } 
+                if(components.get(name) instanceof Initializable && configuration != null) {
+                    ((Initializable) components.get(name)).initComponent(configuration);
+                }
+            }
 
 			jc.setMinimumSize(minSize);
 

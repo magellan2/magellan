@@ -89,6 +89,7 @@ import com.eressea.Unit;
 import com.eressea.UnitID;
 import com.eressea.ZeroUnit;
 import com.eressea.demo.desktop.DesktopEnvironment;
+import com.eressea.demo.desktop.Initializable;
 import com.eressea.demo.desktop.ShortcutListener;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
@@ -126,7 +127,6 @@ import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.SelectionHistory;
 import com.eressea.util.comparator.BestSkillComparator;
-import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.comparator.RegionIslandComparator;
@@ -134,16 +134,8 @@ import com.eressea.util.comparator.SkillComparator;
 import com.eressea.util.comparator.SkillTypeComparator;
 import com.eressea.util.comparator.SkillTypeRankComparator;
 import com.eressea.util.comparator.SortIndexComparator;
-import com.eressea.util.comparator.TaggableComparator;
 import com.eressea.util.comparator.TopmostRankedSkillComparator;
-import com.eressea.util.comparator.UnitCombatStatusComparator;
-import com.eressea.util.comparator.UnitFactionComparator;
-import com.eressea.util.comparator.UnitFactionDisguisedComparator;
-import com.eressea.util.comparator.UnitGroupComparator;
-import com.eressea.util.comparator.UnitHealthComparator;
 import com.eressea.util.comparator.UnitSkillComparator;
-import com.eressea.util.comparator.UnitTempUnitComparator;
-import com.eressea.util.comparator.UnitTrustComparator;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -161,7 +153,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 																			 ShortcutListener,
 																			 ChangeListener,
 																			 TreeUpdate,
-																			 MenuProvider
+																			 MenuProvider,
+                                                                             Initializable
 {
 	private static final Logger log = Logger.getInstance(EMapOverviewPanel.class);
 
@@ -387,6 +380,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 	}
 
 	protected void rebuildTree() {
+        Object oldActiveObject = activeObject;
+        Collection oldSelectedObjects = CollectionFactory.createLinkedList(selectedObjects);
+        
 		// clear the history
 		SelectionHistory.clear();
 		lstHistory.setListData(SelectionHistory.getHistory().toArray());
@@ -436,6 +432,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		treeBuilder.buildTree(rootNode, data);
 
 		treeModel.reload();
+        this.selectionChanged(new SelectionEvent(treeModel,oldSelectedObjects,oldActiveObject));
+ 
 	}
 
 	/**
@@ -471,65 +469,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 		// get an array of ints out of the definition string:
 		int treeStructure[] = getTreeStructure(settings);
-
-		// now build the Comparator used for unit sorting
-		int i = treeStructure.length - 1;
-		Comparator help = null;
-
-		while(i >= 0) {
-			switch(treeStructure[i]) {
-			case TreeHelper.FACTION:
-				help = new UnitFactionComparator(new FactionTrustComparator(nameCmp), cmp);
-
-				break;
-
-			case TreeHelper.GROUP:
-
-				// pavkovic 2004.01.04: we dont want to sort groups by group id but name;
-				// if they are sorted by id this would make tree hierarchy
-				// (trustlevel, group) somehow uninteresting
-				// Side effect: Groups are sorted by name
-				help = new UnitGroupComparator(new NameComparator(null), cmp, cmp);
-
-				break;
-
-			case TreeHelper.COMBAT_STATUS:
-				help = new UnitCombatStatusComparator(cmp);
-
-				break;
-
-			case TreeHelper.HEALTH:
-				help = new UnitHealthComparator(cmp);
-
-				break;
-
-			case TreeHelper.FACTION_DISGUISE_STATUS:
-				help = new UnitFactionDisguisedComparator(cmp);
-
-				break;
-
-			case TreeHelper.TRUSTLEVEL:
-				help = new UnitTrustComparator(cmp);
-
-				break;
-
-			case TreeHelper.TAGGABLE:
-				help = new TaggableComparator(cmp);
-
-				break;
-
-			default:
-				help = cmp;
-			}
-
-			cmp = help;
-			i--;
-		}
-
-		// care for temp units
-		cmp = new UnitTempUnitComparator(idCmp, cmp);
-
-		return cmp;
+        
+        return TreeHelper.buildComparator(cmp,treeStructure);
 	}
 
 	/**
@@ -825,6 +766,67 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		}
 	}
 
+    
+    /**
+     * Initialize interface
+     */
+    public void initComponent(String params) {
+        boolean changed = false;
+        for(StringTokenizer st = new StringTokenizer(params.replace('_',' '),"|"); st.hasMoreTokens(); ) {
+            String curParam = st.nextToken();
+            int pos = curParam.indexOf('=');
+            if(pos > 0) {
+                String key = curParam.substring(0,pos);
+                String value = curParam.substring(pos+1);
+                if("EMapOverviewPanel.treeStructure".equals(key)) {
+                    settings.setProperty(key,value);
+                    changed = true;
+                }
+            }
+        }
+        if(changed) {
+            rebuildTree();
+        }
+        
+    }
+    
+    public String getComponentConfiguration() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("EMapOverviewPanel.treeStructure");
+        sb.append("=");
+        sb.append(settings.getProperty("EMapOverviewPanel.treeStructure",
+                " " + TreeHelper.FACTION + " " + TreeHelper.GROUP));
+        return sb.toString().replace(' ','_');
+        /*
+     sb.append("EMapOverviewPanel.treeHistorySplit");
+     sb.append("=");
+     sb.append(settings.getProperty("EMapOverviewPanel.treeHistorySplit", "100"));
+     sb.append("_");
+     sb.append("EMapOverviewPanel.displayIslands");
+     sb.append("=");
+     sb.append(settings.getProperty("EMapOverviewPanel.displayIslands", "true"));
+     sb.append("_");
+     sb.append("EMapOverviewPanel.sortRegions");
+     sb.append("=");
+     sb.append(settings.getProperty("EMapOverviewPanel.sortRegions", "true"));
+     sb.append("_");
+     sb.append("EMapOverviewPanel.sortRegionsCriteria");
+     sb.append("=");
+     sb.append(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates"));
+     sb.append("_");
+     sb.append("EMapOverviewPanel.sortUnitsCriteria");
+     sb.append("=");
+     sb.append(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills"));
+     sb.append("_");
+     sb.append("EMapOverviewPanel.useBestSkill");
+     sb.append("=");
+     sb.append(settings.getProperty("EMapOverviewPanel.useBestSkill", "true"));
+     sb.append("_");
+     */
+
+    }
+    
+    
 	/**
 	 * Event handler for TreeExpansionEvents (recenters the tree if necessary)
 	 *
@@ -1711,7 +1713,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public PreferencesAdapter createPreferencesAdapter() {
-		return new EMapOverviewPreferences(settings);
+		return new EMapOverviewPreferences(this,settings);
 	}
 
 	/**
@@ -2193,6 +2195,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			}
 		}
 
+        private EMapOverviewPanel overviewPanel = null;
+        
 		/** TODO: DOCUMENT ME! */
 		public JCheckBox chkSortRegions = null;
 
@@ -2235,7 +2239,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		 *
 		 * @param settings TODO: DOCUMENT ME!
 		 */
-		public EMapOverviewPreferences(Properties settings) {
+		public EMapOverviewPreferences(EMapOverviewPanel parent,Properties settings) {
+            overviewPanel = parent;
 			chkSortRegions = new JCheckBox(getString("prefs.sortregions"),
 										   (Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions",
 																			 "true"))).booleanValue());
@@ -2279,13 +2284,18 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 													 getString("prefs.treeStructure.available")));
 
 			DefaultListModel model = new DefaultListModel();
-			model.add(0, getString("prefs.treeStructure.element.faction"));
-			model.add(1, getString("prefs.treeStructure.element.group"));
-			model.add(2, getString("prefs.treeStructure.element.combat"));
-			model.add(3, getString("prefs.treeStructure.element.health"));
-			model.add(4, getString("prefs.treeStructure.element.factiondisguise"));
-			model.add(5, getString("prefs.treeStructure.element.trustlevel"));
-			model.add(6, getString("prefs.treeStructure.element.taggable"));
+			model.add(TreeHelper.FACTION, getString("prefs.treeStructure.element.faction"));
+			model.add(TreeHelper.GROUP, getString("prefs.treeStructure.element.group"));
+			model.add(TreeHelper.COMBAT_STATUS, getString("prefs.treeStructure.element.combat"));
+			model.add(TreeHelper.HEALTH, getString("prefs.treeStructure.element.health"));
+			model.add(TreeHelper.FACTION_DISGUISE_STATUS, getString("prefs.treeStructure.element.factiondisguise"));
+			model.add(TreeHelper.TRUSTLEVEL, getString("prefs.treeStructure.element.trustlevel"));
+            model.add(TreeHelper.TAGGABLE,  getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING }));
+            model.add(TreeHelper.TAGGABLE2, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING2 }));
+            model.add(TreeHelper.TAGGABLE3, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING3 }));
+            model.add(TreeHelper.TAGGABLE4, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING4 }));
+            model.add(TreeHelper.TAGGABLE5, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING5 }));
+
 			elementsList = new JList(model);
 
 			JScrollPane pane = new JScrollPane(elementsList);
@@ -2299,37 +2309,23 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			String criteria = settings.getProperty("EMapOverviewPanel.treeStructure",
 												   " " + TreeHelper.FACTION + " " +
 												   TreeHelper.GROUP);
-			StringTokenizer tokenizer = new StringTokenizer(criteria);
-			model = new DefaultListModel();
+			DefaultListModel model2 = new DefaultListModel();
 
-			while(tokenizer.hasMoreTokens()) {
+			for(StringTokenizer tokenizer = new StringTokenizer(criteria); tokenizer.hasMoreTokens(); ) {
+                String s = tokenizer.nextToken();
 				try {
-					String s = tokenizer.nextToken();
 					int i = Integer.parseInt(s);
-					s = "";
-
-					if(i == TreeHelper.FACTION) {
-						s = getString("prefs.treeStructure.element.faction");
-					} else if(i == TreeHelper.GROUP) {
-						s = getString("prefs.treeStructure.element.group");
-					} else if(i == TreeHelper.COMBAT_STATUS) {
-						s = getString("prefs.treeStructure.element.combat");
-					} else if(i == TreeHelper.HEALTH) {
-						s = getString("prefs.treeStructure.element.health");
-					} else if(i == TreeHelper.FACTION_DISGUISE_STATUS) {
-						s = getString("prefs.treeStructure.element.factiondisguise");
-					} else if(i == TreeHelper.TRUSTLEVEL) {
-						s = getString("prefs.treeStructure.element.trustlevel");
-					} else if(i == TreeHelper.TAGGABLE) {
-						s = getString("prefs.treeStructure.element.taggable");
-					}
-
-					model.add(model.getSize(), s);
+					
+                    try {
+                        model2.add(model2.size(),model.get(i));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        model2.add(model2.size(),"unknown");
+                    }
 				} catch(NumberFormatException e) {
 				}
 			}
 
-			useList = new JList(model);
+			useList = new JList(model2);
 			useList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			pane = new JScrollPane(useList);
 			c.gridheight = 4;
@@ -2570,28 +2566,15 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			settings.setProperty("EMapOverviewPanel.useBestSkill",
 								 String.valueOf(useBestSkill.isSelected()));
 
-			DefaultListModel model = (DefaultListModel) useList.getModel();
+			DefaultListModel useListModel = (DefaultListModel) useList.getModel();
 			StringBuffer definition = new StringBuffer("");
 
-			for(int i = 0; i < model.getSize(); i++) {
-				String s = (String) model.getElementAt(i);
+            DefaultListModel elementsListModel = (DefaultListModel) elementsList.getModel();
+			for(int i = 0; i < useListModel.getSize(); i++) {
+				String s = (String) useListModel.getElementAt(i);
 
-				if(s.equals(getString("prefs.treeStructure.element.faction"))) {
-					definition.append(TreeHelper.FACTION + " ");
-				} else if(s.equals(getString("prefs.treeStructure.element.group"))) {
-					definition.append(TreeHelper.GROUP + " ");
-				} else if(s.equals(getString("prefs.treeStructure.element.combat"))) {
-					definition.append(TreeHelper.COMBAT_STATUS + " ");
-				} else if(s.equals(getString("prefs.treeStructure.element.health"))) {
-					definition.append(TreeHelper.HEALTH + " ");
-				} else if(s.equals(getString("prefs.treeStructure.element.factiondisguise"))) {
-					definition.append(TreeHelper.FACTION_DISGUISE_STATUS + " ");
-				} else if(s.equals(getString("prefs.treeStructure.element.trustlevel"))) {
-					definition.append(TreeHelper.TRUSTLEVEL + " ");
-				} else if(s.equals(getString("prefs.treeStructure.element.taggable"))) {
-					definition.append(TreeHelper.TAGGABLE + " ");
-
-				}
+                int pos = elementsListModel.indexOf(s);
+                definition.append(pos).append(" ");
 			}
 
 			settings.setProperty("EMapOverviewPanel.treeStructure", definition.toString());
@@ -2603,10 +2586,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			// before we rebuild the tree, i.e. before we call gameDataChanged().
 			skillSort.applyPreferences();
 
-			// TODO: wirklich ein GameDatachange?
-			if(data != null) {
-				gameDataChanged(new GameDataEvent(EMapOverviewPanel.this, data));
-			}
+            overviewPanel.rebuildTree();
 		}
 
 		/**
@@ -3188,7 +3168,6 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 							  Collection units, Map regionNodes, Map unitNodes, Map buildingNodes,
 							  Map shipNodes, Comparator unitSorting, Map activeAlliances,
 							  int treeStructure[], GameData data) {
-			Iterator regions = regionCollection.iterator();
 			boolean unitInteresting = (mode & UNITS) != 0;
 			boolean buildingInteresting = (mode & BUILDINGS) != 0;
 			boolean shipInteresting = (mode & SHIPS) != 0;
@@ -3197,11 +3176,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 			DefaultMutableTreeNode islandNode = null;
 			DefaultMutableTreeNode regionNode = null;
-			Region r = null;
 			Island curIsland = null;
 
-			while(regions.hasNext()) {
-				r = (Region) regions.next();
+            TreeHelper treehelper = new TreeHelper();
+            for(Iterator regions = regionCollection.iterator(); regions.hasNext(); ) {
+                Region r = (Region) regions.next();
 
 				if(!((unitInteresting && !r.units().isEmpty()) ||
 					   (buildingInteresting && !r.buildings().isEmpty()) ||
@@ -3211,7 +3190,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 				}
 
 				// add region node to tree an node map
-				regionNode = (DefaultMutableTreeNode) TreeHelper.createRegionNode(r,
+				regionNode = (DefaultMutableTreeNode) treehelper.createRegionNode(r,
 																				  nodeWrapperFactory,
 																				  activeAlliances,
 																				  unitNodes,
@@ -3366,40 +3345,6 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		return getString("menu.supertitle");
 	}
 
-	/*
-	  public String getComponentConfiguration() {
-	 StringBuffer sb = new StringBuffer();
-	 sb.append("EMapOverviewPanel.treeHistorySplit");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.treeHistorySplit", "100"));
-	 sb.append("_");
-	 sb.append("EMapOverviewPanel.displayIslands");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.displayIslands", "true"));
-	 sb.append("_");
-	 sb.append("EMapOverviewPanel.sortRegions");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.sortRegions", "true"));
-	 sb.append("_");
-	 sb.append("EMapOverviewPanel.sortRegionsCriteria");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates"));
-	 sb.append("_");
-	 sb.append("EMapOverviewPanel.sortUnitsCriteria");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills"));
-	 sb.append("_");
-	 sb.append("EMapOverviewPanel.useBestSkill");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.useBestSkill", "true"));
-	 sb.append("_");
-	 sb.append("EMapOverviewPanel.treeStructure");
-	 sb.append("=");
-	 sb.append(settings.getProperty("EMapOverviewPanel.treeStructure",
-	           " " + TreeHelper.FACTION + " " + TreeHelper.GROUP));
-	 return sb.toString();
-	  }
-	 */
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
@@ -3433,7 +3378,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			defaultTranslations.put("prefs.treeStructure.element.group", "Group");
 			defaultTranslations.put("prefs.treeStructure.element.combat", "Combat status");
 			defaultTranslations.put("prefs.treeStructure.element.health", "Health status");
-			defaultTranslations.put("prefs.treeStructure.element.taggable", "Tag 'ejcTaggableComparator'");
+			defaultTranslations.put("prefs.treeStructure.element.taggable", "Tag \"{0}\"");
 			defaultTranslations.put("prefs.treeStructure.element.factiondisguise",
 									"Faction disguised");
 			defaultTranslations.put("prefs.treeStructure.element.trustlevel", "Trustlevel");

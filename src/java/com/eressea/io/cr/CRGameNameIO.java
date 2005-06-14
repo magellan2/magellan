@@ -30,19 +30,9 @@ import com.eressea.util.logging.Logger;
 public class CRGameNameIO implements GameNameIO {
 	private static final Logger log = Logger.getInstance(CRGameNameIO.class);
 
-	private CRGameNameIO() {
+	public CRGameNameIO() {
 	}
 
-	private static CRGameNameIO singleton = new CRGameNameIO();
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public static CRGameNameIO singleton() {
-		return singleton;
-	}
 
 	/**
 	 * TODO: DOCUMENT ME!

@@ -3928,10 +3928,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
-		public javax.swing.JPopupMenu createContextMenu(EventDispatcher dispatcher, 
-                                                        GameData data, Object argument,
-														Collection selectedObjects,
-														DefaultMutableTreeNode node) {
+		public JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+		        GameData data, Object argument,
+		        Collection selectedObjects,
+		        DefaultMutableTreeNode node) {
 			if(argument instanceof UnitContainer) {
 				return new CommentContextMenu((UnitContainer) argument, node, false);
 			} else if(argument instanceof CommentListNode) {
@@ -3994,8 +3994,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			private void addComment() {
 				DefaultMutableTreeNode parent = null;
 
-				for(Enumeration enum = rootNode.children(); enum.hasMoreElements();) {
-					DefaultMutableTreeNode n = (DefaultMutableTreeNode) enum.nextElement();
+				for(Enumeration en = rootNode.children(); en.hasMoreElements();) {
+					DefaultMutableTreeNode n = (DefaultMutableTreeNode) en.nextElement();
 					Object obj = n.getUserObject();
 
 					if((obj != null) && obj instanceof String &&

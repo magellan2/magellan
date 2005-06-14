@@ -13,6 +13,8 @@
 
 package com.eressea.swing;
 
+import java.text.MessageFormat;
+
 import javax.swing.JPanel;
 
 import com.eressea.util.Translations;
@@ -41,4 +43,8 @@ public abstract class InternationalizedPanel extends JPanel {
 	protected String getString(String key) {
 		return Translations.getTranslation(this, key);
 	}
+    
+    protected String getString(String key, Object[] args) {
+        return new MessageFormat(getString(key)).format(args);
+    }
 }

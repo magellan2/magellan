@@ -20,6 +20,7 @@ import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
+import com.eressea.io.file.UnknownFileType;
 
 /**
  * The <code>GameDataReader</code> reads a <code>GameData</code> from a given <code>FileType</code>
@@ -135,10 +136,10 @@ public class GameDataReader {
 	}
 
 	private boolean isXMLFile(FileType aFileType) throws IOException {
-		return false;
+        return aFileType.getInnerName().endsWith(FileType.XML);
 	}
 
 	private boolean isCRFile(FileType aFileType) throws IOException {
-		return true;
+        return aFileType.getInnerName().endsWith(FileType.CR) || aFileType instanceof UnknownFileType;
 	}
 }

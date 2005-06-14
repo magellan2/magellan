@@ -116,8 +116,8 @@ public class FileTypeFactory {
 		}
 
 		if(fileNameLC.endsWith(FileType.CR) || fileNameLC.endsWith(FileType.XML)) {
-			return new FileType(fileName, readonly);
-		}
+            return new FileType(fileName, readonly);
+        }
 
 		return new UnknownFileType(fileName, readonly);
 	}

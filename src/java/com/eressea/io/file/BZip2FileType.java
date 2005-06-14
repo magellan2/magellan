@@ -72,4 +72,12 @@ public class BZip2FileType extends FileType {
 
 		return new CBZip2OutputStream(bos);
 	}
+    
+    /**
+     * @see FileType#getInnerName()
+     */
+    public String getInnerName() {
+        return getName().substring(0,getName().lastIndexOf(FileType.BZIP2));
+    }
+
 }

@@ -40,4 +40,11 @@ public class GZipFileType extends FileType {
 	protected OutputStream createOutputStream() throws IOException {
 		return new GZIPOutputStream(new FileOutputStream(new File(filename)));
 	}
+    
+    /**
+     * @see FileType#getInnerName()
+     */
+    public String getInnerName() {
+        return getName().substring(0,getName().indexOf(FileType.GZIP));
+    }
 }
