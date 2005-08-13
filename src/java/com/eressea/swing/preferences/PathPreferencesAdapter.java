@@ -123,6 +123,10 @@ public class PathPreferencesAdapter extends JPanel implements PreferencesAdapter
 		super.setVisible(b);
 	}
 
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 */

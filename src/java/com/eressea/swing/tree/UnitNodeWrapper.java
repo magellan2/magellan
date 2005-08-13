@@ -351,7 +351,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		}
 
 		if(isShowingContainerIcons()) {
-			if(unit.getBuilding() != null) {
+			if(unit.getBuilding() != null && unit.getBuilding().getType() != null) {
 				ge = new GraphicsElement(null, null, unit.getBuilding().getType().getID().toString());
 				ge.setTooltip(unit.getBuilding().getName());
 				ge.setType(GraphicsElement.ADDITIONAL);

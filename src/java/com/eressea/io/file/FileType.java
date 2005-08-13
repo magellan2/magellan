@@ -91,7 +91,11 @@ public class FileType {
 	 */
 	public FileType checkConnection() throws IOException {
 		try {
-			createInputStream().close();
+//            if(readonly) {
+                createInputStream().close();
+//            } else {
+//                createOutputStream().close();
+//            }
 		} catch(FileNotFoundException e) {
 			// if file is readonly, this will be a problem
 			// if not, it may be ok that the file does not exist 

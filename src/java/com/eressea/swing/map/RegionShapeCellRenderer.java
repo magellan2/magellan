@@ -1796,6 +1796,10 @@ public class RegionShapeCellRenderer extends AbstractRegionShapeCellRenderer
 			content[index].addColor(name, c);
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * An empty implementation of the PreferencesAdapter interface. Changes are applied
 		 * directly.

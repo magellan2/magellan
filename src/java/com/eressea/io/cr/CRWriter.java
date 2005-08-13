@@ -2001,8 +2001,8 @@ public class CRWriter extends BufferedWriter {
 	}
 
 	/**
-	 * Change the quote escape behaviour of this CRWriter. Tilde escapes look like: 'a "b c"' -> 'a
-	 * b~c', whereas a backslash escape works like this: 'a "b c"' -> 'a \"b c\"'
+	 * Change the quote escape behaviour of this CRWriter. Tilde escapes look like: 'a "b c"' -> 
+     * 'a b~c', whereas a backslash escape works like this: 'a "b c"' -> 'a \"b c\"'
 	 *
 	 * @param bool if <tt>true</tt>, escape quoted parts of any string written to the underlying
 	 * 		  stream with tildes. If <tt>false</tt>, use backslash character to escape the

@@ -162,6 +162,7 @@ public class PreferencesDialog extends InternationalizedDialog {
 	 * TODO: DOCUMENT ME!
 	 */
 	public void show() {
+        initPreferences();
 		dialogtree.showFirst();
 		super.show();
 	}
@@ -183,12 +184,10 @@ public class PreferencesDialog extends InternationalizedDialog {
 		}
 	}
 
-	private void reloadPreferences() {
-		/*
+	private void initPreferences() {
 		for(Iterator iter = adapters.iterator(); iter.hasNext(); ) {
-		    ((PreferencesAdapter)iter.next()).reloadPreferences();
+		    ((PreferencesAdapter)iter.next()).initPreferences();
 		}
-		*/
 	}
 
 	private Container getMainPane() {
@@ -203,7 +202,7 @@ public class PreferencesDialog extends InternationalizedDialog {
 		JButton cancelButton = new JButton(getString("btn.cancel.caption"));
 		cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					reloadPreferences();
+					//reloadPreferences();
 					quit();
 				}
 			});

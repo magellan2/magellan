@@ -13,19 +13,32 @@
 
 package com.eressea.swing.context;
 
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.LayoutManager2;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.plaf.basic.DefaultMenuLayout;
 
 import com.eressea.GameData;
 import com.eressea.Region;
@@ -39,6 +52,7 @@ import com.eressea.swing.GiveOrderDialog;
 import com.eressea.swing.context.actions.ContextAction;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ShipRoutePlanner;
+import com.eressea.util.Translations;
 import com.eressea.util.UnitRoutePlanner;
 
 /**
@@ -356,23 +370,143 @@ public class UnitContextMenu extends JPopupMenu {
 	}
 
 	private void event_addTag() {
-		String key = JOptionPane.showInputDialog(getString("addtag.tagname.message"));
+		String key = null;
+        Collection keys = CollectionFactory.createHashSet();
+        Collection values = CollectionFactory.createHashSet();
+        
+        {
+            Collection regions = CollectionFactory.createHashSet();
+            for(Iterator iter = selectedUnits.iterator(); iter.hasNext(); ) {
+                Unit unit = (Unit) iter.next();
+                regions.add(unit.getRegion());
+            }
+            for(Iterator iter = regions.iterator(); iter.hasNext(); ) {
+                Region r = (Region) iter.next();
+                for(Iterator iter2 = r.units().iterator(); iter2.hasNext(); ) {
+                    Unit u = (Unit) iter2.next();
+                    keys.addAll(u.getTagMap().keySet());
+                    values.addAll(u.getTagMap().values());
+                }
+            }
+        }
+        
+        List sortedKeys = CollectionFactory.createArrayList(keys);
+        Collections.sort(sortedKeys);
+        key = showInputDialog(getString("addtag.tagname.message"),sortedKeys);
 
 		if((key != null) && (key.length() > 0)) {
-			String value = JOptionPane.showInputDialog(getString("addtag.tagvalue.message"));	
-			for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
-				Unit u = (Unit) iter.next();
-			    u.putTag(key,value);
-			    // TODO: Coalesce unitordersevent
-				dispatcher.fire(new UnitOrdersEvent(this,u));
-			}
+            String value = null;
+            List sortedValues = CollectionFactory.createArrayList(values);
+            Collections.sort(sortedValues);
+
+            value = showInputDialog(getString("addtag.tagvalue.message"),sortedValues);
+            
+            if(value != null) {
+                for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+                    Unit u = (Unit) iter.next();
+                    u.putTag(key,value);
+                    // TODO: Coalesce unitordersevent
+                    dispatcher.fire(new UnitOrdersEvent(this,u));
+                }
+            }                
 		}
 		
 		unit = null;
 		selectedUnits.clear();
 	}
 
-	private void event_removeTag(ActionEvent e) {
+    private String showInputDialog(String message, List values) {
+        if(1==2) {
+            return JOptionPane.showInputDialog(message);
+        } else {
+            
+            // the combo box (add/modify items if you like to)
+            JComboBox comboBox = new JComboBox(values.toArray());
+            // has to be editable
+            comboBox.setEditable(true);
+            comboBox.getEditor().selectAll();
+            // change the editor's document
+            // new JComboBoxCompletion(comboBox,true);
+
+            // create and show a window containing the combo box
+            Frame parent = dispatcher.getMagellanContext().getClient();
+            JDialog frame = new JDialog(parent, message, true);
+            frame.setLocationRelativeTo(parent);
+            frame.getContentPane().setLayout(new BorderLayout());
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+            JPanel pane = new JPanel(new BorderLayout());
+            pane.add(new JLabel(message),BorderLayout.NORTH);
+            pane.add(comboBox, BorderLayout.CENTER);
+            
+            frame.getContentPane().add(new JLabel("  "), BorderLayout.NORTH);
+            frame.getContentPane().add(new JLabel("  "), BorderLayout.SOUTH);
+            frame.getContentPane().add(pane, BorderLayout.CENTER);
+            frame.getContentPane().add(new JLabel("  "), BorderLayout.WEST);
+            frame.getContentPane().add(new JLabel("  "), BorderLayout.EAST);
+            frame.pack(); 
+            
+            comboBox.getEditor().getEditorComponent().addKeyListener(new MyKeyAdapter(frame,comboBox));
+                        
+            frame.setVisible(true);
+            frame.dispose();
+            
+            return (String) comboBox.getSelectedItem();            
+        }
+    }
+    
+    private static class MyOkAction extends AbstractAction {
+        private JDialog frame;
+        private JComboBox comboBox;
+        
+        private MyOkAction(JDialog frame, JComboBox comboBox) {
+            this.frame = frame;
+            this.comboBox = comboBox;
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            frame.setVisible(false); 
+        }
+    }
+
+    private static class MyCancelAction extends AbstractAction {
+        private JDialog frame;
+        private JComboBox comboBox;
+        
+        private MyCancelAction(JDialog frame, JComboBox comboBox) {
+            this.frame = frame;
+            this.comboBox = comboBox;
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            frame.setVisible(false); 
+            comboBox.setSelectedItem(null);             
+        }
+    }
+    
+    private static class MyKeyAdapter extends KeyAdapter {
+        private JDialog frame;
+        private JComboBox comboBox;
+            
+        public MyKeyAdapter(JDialog frame, JComboBox comboBox) {
+            this.frame = frame;
+            this.comboBox = comboBox;
+        }
+        
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+            case KeyEvent.VK_ESCAPE: 
+                new MyCancelAction(frame,comboBox).actionPerformed(null);
+                break;
+            case KeyEvent.VK_ENTER: 
+                new MyOkAction(frame,comboBox).actionPerformed(null);
+                break;
+            }
+        }
+    }
+
+    private void event_removeTag(ActionEvent e) {
 		String command = e.getActionCommand();
 		int index = command.indexOf(": ");
 		if(index > 0) {
@@ -425,7 +559,7 @@ public class UnitContextMenu extends JPopupMenu {
 	private void event_copyMultipleID(ActionEvent e) {
 		StringBuffer idString = new StringBuffer("");
 
-		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+		for(Iterator iter = selectedUnits.iterator(); iter.hasNext(); ) {
 			Unit u = (Unit) iter.next();
 
             idString.append(u.toString(false));
@@ -461,10 +595,8 @@ public class UnitContextMenu extends JPopupMenu {
 	private void planRoute(ActionEvent e) {
 		if(UnitRoutePlanner.planUnitRoute(unit, data, this, selectedUnits)) {
 			if(selectedUnits != null) {
-				Iterator it = selectedUnits.iterator();
-
-				while(it.hasNext()) {
-					Unit u = (Unit) it.next();
+                for(Iterator iter = selectedUnits.iterator(); iter.hasNext(); ) {
+					Unit u = (Unit) iter.next();
 
 					if(!u.equals(unit)) {
 						dispatcher.fire(new UnitOrdersEvent(this, u));
@@ -506,7 +638,7 @@ public class UnitContextMenu extends JPopupMenu {
 	}
 
 	private String getString(String key) {
-		return com.eressea.util.Translations.getTranslation(this, key);
+		return Translations.getTranslation(this, key);
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

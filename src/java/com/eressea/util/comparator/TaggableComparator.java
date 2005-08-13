@@ -39,12 +39,6 @@ public class TaggableComparator implements Comparator {
 	protected Comparator subCmp = null;
 	protected String tagToCompare = null;
 
-
-	public static String getLabel(Taggable o1) {
-		return o1.getTag(DEFAULT_COMPARATOR.tagToCompare);
-	}
-
-
 	/**
 	 * Creates a new TagBasedComparatorComparator object with the default tag "ejcTagBasedComparatorTag"
 	 *

@@ -320,6 +320,10 @@ public class BasicRegionPanel extends InternationalizedDataPanel implements Sele
 			this.add(new JScrollPane(defText), BorderLayout.CENTER);
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

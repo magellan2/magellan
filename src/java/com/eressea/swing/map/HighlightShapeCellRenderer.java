@@ -303,6 +303,10 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 			this.add(chkDrawFilled, c);
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

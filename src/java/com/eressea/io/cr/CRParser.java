@@ -15,6 +15,7 @@ package com.eressea.io.cr;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -85,6 +86,8 @@ public class CRParser implements RulesIO, GameDataIO {
 	boolean umlauts;
 	int version = 0; // the version of the report
 
+    
+    private Collection warnedLines = CollectionFactory.createHashSet();
 	/**
 	 * Print an error message on the standard output channel.
 	 *
@@ -96,7 +99,6 @@ public class CRParser implements RulesIO, GameDataIO {
 	 */
 	private void unknown(String context, boolean fetch) throws IOException {
 		int i;
-		log.warn("unknown in line " + sc.lnr + ": (" + context + ")");
 
 		StringBuffer msg = new StringBuffer();
 
@@ -116,8 +118,13 @@ public class CRParser implements RulesIO, GameDataIO {
 			}
 		}
 
-		log.warn(msg);
-
+        if(!warnedLines.contains(context+"_"+msg)) {
+            // only warn once for context and message combination
+            log.warn("unknown in line " + sc.lnr + ": (" + context + ")");
+            log.warn(msg);
+            warnedLines.add(context+"_"+msg);
+        }
+            
 		if(fetch) {
 			sc.getNextToken();
 		}

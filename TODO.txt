@@ -1,4 +1,22 @@
 -------------------------------------------------------------------------------
+wir werden in zukunft wohl intensiv tags nutzen... ist es möglich dass das
+popup für das tag-setzen vorschläge macht? also eject1-5 zum auswählen
+anbietet? ein traum wäre es wenn es dann je nach auswahl die bereits im
+report enthaltenen tags anbietet...
+vorlage enpfinde ich mit seinem #after eher als hilfskrücke, zumal man damit
+sehr leicht tags doppelt setzt.
+
+ein weitere punkt wäre die anzeige... ändert man einen tag springt der fokus
+im baum immer ganz nach oben in der region, das stört sehr wenn man komplexe
+dinge ändert.
+
+purer luxus und sicher nicht das vordringlichste... aber mir wichtiger als ein
+taschenrechner, den viele ersehnen.
+
+
+-------------------------------------------------------------------------------
+Sortierung nach Tagwechsel korrigieren!
+
 Hier mal ein paar Anregungen für Ilja:
 1. Tags sollten viel stärker benutzt werden. Z.B. alle Einheiten mit einem
 auszuwählenden Tag be-/entstätigen.
@@ -17,6 +35,11 @@ auswählen. Dann rechtsklicke ich auf eine Einheit der Region und wähle
 berücksichtigt werden, sollen ja nicht verhungern, wenn die ablegen.
 Logisch, dass ich die Flotte auch mit einem einzigen Befehl ablegen lassen
 will - nicht, dass man nachher noch im ROUTE einen Fehler einbaut.
+
+
+Du kannst jetzt erstmal soviele Tags einsetzen oder löschen wie du willst, die
+Änderungen werden allerdings erst angezeigt, wenn du den Report neulädst
+bzw. Optionen öffnest und wieder schließt.
 
 -------------------------------------------------------------------------------
 Track all calls to Eventdispatcher and ensure that the given objects are still

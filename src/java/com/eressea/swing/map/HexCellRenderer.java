@@ -171,6 +171,10 @@ public abstract class HexCellRenderer implements MapCellRenderer {
 			this.source = source;
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

@@ -125,6 +125,7 @@ import com.eressea.swing.tree.TreeUpdate;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.SelectionHistory;
 import com.eressea.util.comparator.BestSkillComparator;
 import com.eressea.util.comparator.IDComparator;
@@ -412,11 +413,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		//}
 		// initialize variables used in while loop
 		boolean createIslandNodes = ((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.displayIslands",
-																	   "true"))).booleanValue() == true) &&
+																	   "true"))).booleanValue()) &&
 									((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions",
-																	   "true"))).booleanValue() == true) &&
+																	   "true"))).booleanValue()) &&
 									(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-														  "coordinates").equalsIgnoreCase("islands") == true);
+														  "coordinates").equalsIgnoreCase("islands"));
 
 
         TreeBuilder treeBuilder = getTreeBuilder();
@@ -1521,7 +1522,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private Collection sortRegions(Collection regions) {
-		if((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions", "true"))).booleanValue() == true) {
+		if((Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions", "true"))).booleanValue()) {
 			if(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates").equals("coordinates")) {
 				List sortedRegions = CollectionFactory.createLinkedList(regions);
 				Collections.sort(sortedRegions, IDComparator.DEFAULT);
@@ -2158,13 +2159,22 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			 *
 			 * @param b TODO: DOCUMENT ME!
 			 */
-			public void setEnabled(boolean b) {
-				super.setEnabled(b);
-				skillList.setEnabled(b);
-				upButton.setEnabled(b);
-				downButton.setEnabled(b);
-				refreshListButton.setEnabled(b);
+			public void setEnabled(boolean enable) {
+                super.setEnabled(enable);
+				skillList.setEnabled(enable);
+				upButton.setEnabled(enable);
+				downButton.setEnabled(enable);
+				refreshListButton.setEnabled(enable);
 			}
+
+            /**
+             * fills the values
+             *
+             */
+
+            public void initPreferences() {
+                // TODO: Implement it
+            }
 
 			/**
 			 * TODO: DOCUMENT ME!
@@ -2195,7 +2205,6 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					settings.setProperty("ClientPreferences.compareValue." + s.getID(),
 										 String.valueOf(index));
 
-					//pavkovic 2003.06.19: this is historical!settings.setProperty(type.getID() + ".compareValue", String.valueOf(index));
 				}
 			}
 		}
@@ -2246,16 +2255,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		 */
 		public EMapOverviewPreferences(EMapOverviewPanel parent,Properties settings) {
             overviewPanel = parent;
-			chkSortRegions = new JCheckBox(getString("prefs.sortregions"),
-										   (Boolean.valueOf(settings.getProperty("EMapOverviewPanel.sortRegions",
-																			 "true"))).booleanValue());
+			chkSortRegions = new JCheckBox(getString("prefs.sortregions"));
 
-			rdbSortRegionsCoordinates = new JRadioButton(getString("prefs.sortbycoordinates"),
-														 settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-																			  "coordinates").equals("coordinates"));
-			rdbSortRegionsIslands = new JRadioButton(getString("prefs.sortbyislands"),
-													 settings.getProperty("EMapOverviewPanel.sortRegionsCriteria",
-																		  "coordinates").equals("islands"));
+			rdbSortRegionsCoordinates = new JRadioButton(getString("prefs.sortbycoordinates"));
+
+            rdbSortRegionsIslands = new JRadioButton(getString("prefs.sortbyislands"));
 
 			ButtonGroup regionSortButtons = new ButtonGroup();
 			regionSortButtons.add(rdbSortRegionsCoordinates);
@@ -2269,9 +2273,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			pnlRegionSortButtons.add(rdbSortRegionsCoordinates);
 			pnlRegionSortButtons.add(rdbSortRegionsIslands);
 
-			chkDisplayIslands = new JCheckBox(getString("prefs.showislands"),
-											  (Boolean.valueOf(settings.getProperty("EMapOverviewPanel.displayIslands",
-																				"true"))).booleanValue());
+			chkDisplayIslands = new JCheckBox(getString("prefs.showislands"));
 
 			JPanel pnlTreeStructure = new JPanel();
 			pnlTreeStructure.setLayout(new GridBagLayout());
@@ -2311,26 +2313,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			usePanel.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 												getString("prefs.treeStructure.use")));
 
-			String criteria = settings.getProperty("EMapOverviewPanel.treeStructure",
-												   " " + TreeHelper.FACTION + " " +
-												   TreeHelper.GROUP);
-			DefaultListModel model2 = new DefaultListModel();
 
-			for(StringTokenizer tokenizer = new StringTokenizer(criteria); tokenizer.hasMoreTokens(); ) {
-                String s = tokenizer.nextToken();
-				try {
-					int i = Integer.parseInt(s);
-					
-                    try {
-                        model2.add(model2.size(),model.get(i));
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        model2.add(model2.size(),"unknown");
-                    }
-				} catch(NumberFormatException e) {
-				}
-			}
 
-			useList = new JList(model2);
+			useList = new JList();
 			useList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			pane = new JScrollPane(useList);
 			c.gridheight = 4;
@@ -2440,9 +2425,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			pnlTreeStructure.add(new JPanel(), c);
 
 			// Unit sorting
-			rdbSortUnitsUnsorted = new JRadioButton(getString("prefs.reportorder"),
-													settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-																		 "skills").equals("unsorted"));
+			rdbSortUnitsUnsorted = new JRadioButton(getString("prefs.reportorder"));
 			rdbSortUnitsUnsorted.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						skillSort.setEnabled(false);
@@ -2450,9 +2433,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 						useTopmostSkill.setEnabled(false);
 					}
 				});
-			rdbSortUnitsSkills = new JRadioButton(getString("prefs.sortbyskills"),
-												  settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-																	   "skills").equals("skills"));
+
+			rdbSortUnitsSkills = new JRadioButton(getString("prefs.sortbyskills"));
 			rdbSortUnitsSkills.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						skillSort.setEnabled(true);
@@ -2461,17 +2443,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 					}
 				});
 
-			boolean temp = settings.getProperty("EMapOverviewPanel.useBestSkill", "true")
-								   .equalsIgnoreCase("true");
-			useBestSkill = new JRadioButton(getString("prefs.usebestskill"), temp);
-			useTopmostSkill = new JRadioButton(getString("prefs.usetopmostskill"), !temp);
+			useBestSkill = new JRadioButton(getString("prefs.usebestskill"));
+			useTopmostSkill = new JRadioButton(getString("prefs.usetopmostskill"));
 
 			ButtonGroup whichSkillToUse = new ButtonGroup();
 			whichSkillToUse.add(useBestSkill);
 			whichSkillToUse.add(useTopmostSkill);
-			rdbSortUnitsNames = new JRadioButton(getString("prefs.sortbynames"),
-												 settings.getProperty("EMapOverviewPanel.sortUnitsCriteria",
-																	  "skills").equals("names"));
+			rdbSortUnitsNames = new JRadioButton(getString("prefs.sortbynames"));
 			rdbSortUnitsNames.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						skillSort.setEnabled(false);
@@ -2544,6 +2522,44 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			subAdapter.add(skillSort = new SkillPreferences());
 		}
 
+        public void initPreferences() {
+            chkSortRegions.setSelected(PropertiesHelper.getboolean(settings,"EMapOverviewPanel.sortRegions",true));
+            rdbSortRegionsCoordinates.setSelected(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria","coordinates").equals("coordinates"));
+            rdbSortRegionsIslands.setSelected(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria","coordinates").equals("islands"));
+            chkDisplayIslands.setSelected(PropertiesHelper.getboolean(settings,"EMapOverviewPanel.displayIslands",true));
+
+            String criteria = settings.getProperty("EMapOverviewPanel.treeStructure",
+                                                   " " + TreeHelper.FACTION + " " +
+                                                   TreeHelper.GROUP);
+
+            DefaultListModel model2 = new DefaultListModel();
+            
+            for(StringTokenizer tokenizer = new StringTokenizer(criteria); tokenizer.hasMoreTokens(); ) {
+                String s = tokenizer.nextToken();
+                try {
+                    int i = Integer.parseInt(s);
+                    
+                    try {
+                        model2.add(model2.size(),elementsList.getModel().getElementAt(i));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        model2.add(model2.size(),"unknown");
+                    }
+                } catch(NumberFormatException e) {
+                }
+            }
+            useList.setModel(model2);
+
+            rdbSortUnitsUnsorted.setSelected(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills").equals("unsorted"));
+            rdbSortUnitsSkills.setSelected(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills").equals("skills"));
+            useBestSkill.setSelected(PropertiesHelper.getboolean(settings,"EMapOverviewPanel.useBestSkill", true));
+            useTopmostSkill.setSelected(!useBestSkill.isSelected());
+            
+            rdbSortUnitsNames.setSelected(settings.getProperty("EMapOverviewPanel.sortUnitsCriteria","skills").equals("names"));
+
+            
+            skillSort.initPreferences();
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */
@@ -2551,20 +2567,20 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			settings.setProperty("EMapOverviewPanel.sortRegions",
 								 String.valueOf(chkSortRegions.isSelected()));
 
-			if(rdbSortRegionsCoordinates.isSelected() == true) {
+			if(rdbSortRegionsCoordinates.isSelected()) {
 				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates");
-			} else if(rdbSortRegionsIslands.isSelected() == true) {
+			} else if(rdbSortRegionsIslands.isSelected()) {
 				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria", "islands");
 			}
 
 			settings.setProperty("EMapOverviewPanel.displayIslands",
 								 String.valueOf(chkDisplayIslands.isSelected()));
 
-			if(rdbSortUnitsUnsorted.isSelected() == true) {
+			if(rdbSortUnitsUnsorted.isSelected()) {
 				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "unsorted");
-			} else if(rdbSortUnitsSkills.isSelected() == true) {
+			} else if(rdbSortUnitsSkills.isSelected()) {
 				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "skills");
-			} else if(rdbSortUnitsNames.isSelected() == true) {
+			} else if(rdbSortUnitsNames.isSelected()) {
 				settings.setProperty("EMapOverviewPanel.sortUnitsCriteria", "names");
 			}
 

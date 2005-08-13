@@ -291,6 +291,10 @@ public class NameGenerator implements PreferencesFactory {
 			return help;
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

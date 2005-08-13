@@ -22,6 +22,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import com.eressea.gamebinding.MovementEvaluator;
 import com.eressea.relation.AttackRelation;
@@ -63,7 +64,8 @@ import com.eressea.util.logging.Logger;
 public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable {
 	private static final Logger log = Logger.getInstance(Unit.class);
 	private static final String CONFIRMEDTEMPCOMMENT = ";" + OrderWriter.CONFIRMEDTEMP;
-
+	private static final String TAG_PREFIX_TEMP=";"+"ejcTagTemp "; // grammar for ejcTag: ";ejcTempTag tag numbervalue|'stringvalue'"
+    
 	/** The unit does not possess horses */
 	public static final int CAP_NO_HORSES = MovementEvaluator.CAP_NO_HORSES;
 
@@ -793,10 +795,23 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public List getCompleteOrders() {
+    public List getCompleteOrders() {
+        return getCompleteOrders(false);
+    }
+        
+    public List getCompleteOrders(boolean writeUnitTagsAsVorlageComment) {
 		List cmds = CollectionFactory.createLinkedList();
 		cmds.addAll(ordersObject.getOrders());
-		cmds.addAll(getTempOrders());
+
+        if(writeUnitTagsAsVorlageComment && this.hasTags()) {
+            for(Iterator tagIter = this.getTagMap().keySet().iterator(); tagIter.hasNext(); ) {
+                String tag = (String) tagIter.next();
+                cmds.add("// #after 1 { #tag EINHEIT "+tag.replace(' ','~')+" '"+this.getTag(tag)+"' }");
+            }
+        }
+
+        
+		cmds.addAll(getTempOrders(writeUnitTagsAsVorlageComment));
 
 		return cmds;
 	}
@@ -806,19 +821,28 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	protected List getTempOrders() {
+	protected List getTempOrders(boolean writeUnitTagsAsVorlageComment) {
 		List cmds = CollectionFactory.createLinkedList();
 
 		for(Iterator iter = tempUnits().iterator(); iter.hasNext();) {
 			TempUnit u = (TempUnit) iter.next();
 			cmds.add(getOrder(EresseaOrderConstants.O_MAKE) + " " +
 					 getOrder(EresseaOrderConstants.O_TEMP) + " " + u.getID().toString());
-			cmds.addAll(u.getOrders());
+			cmds.addAll(u.getCompleteOrders(writeUnitTagsAsVorlageComment));
 
 			if(u.ordersConfirmed) {
 				cmds.add(CONFIRMEDTEMPCOMMENT);
 			}
 
+            if(u.hasTags()) {
+                Map tagMap = u.getTagMap();
+                for(Iterator tagIter=u.getTagMap().keySet().iterator(); tagIter.hasNext(); ) {
+                    String tag = (String) tagIter.next();
+                    String value = (String) tagMap.get(tag);
+                    cmds.add(TAG_PREFIX_TEMP+tag+" "+value.replace(' ','~'));
+                }
+            }
+                        
 			cmds.add(getOrder(EresseaOrderConstants.O_END));
 		}
 
@@ -2693,8 +2717,8 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 			for(Iterator cmdIterator = ordersObject.getOrders().iterator(); cmdIterator.hasNext();) {
 				String line = (String) cmdIterator.next();
-				com.eressea.util.OrderTokenizer ct = new com.eressea.util.OrderTokenizer(new StringReader(line));
-				com.eressea.util.OrderToken token = ct.getNextToken();
+				OrderTokenizer ct = new OrderTokenizer(new StringReader(line));
+				OrderToken token = ct.getNextToken();
 
 				if(tempUnit == null) {
 					if(token.equalsToken(getOrder(EresseaOrderConstants.O_MAKE, locale))) {
@@ -2714,7 +2738,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 									cmdIterator.remove();
 									token = ct.getNextToken();
 
-									if(token.ttype != com.eressea.util.OrderToken.TT_EOC) {
+									if(token.ttype != OrderToken.TT_EOC) {
 										tempUnit.addOrders(getOrder(EresseaOrderConstants.O_NAME,
 																	locale) + " " +
 														   getOrder(EresseaOrderConstants.O_UNIT,
@@ -2737,11 +2761,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 					if(token.equalsToken(getOrder(EresseaOrderConstants.O_END, locale))) {
 						tempUnit = null;
 					} else {
-						if(CONFIRMEDTEMPCOMMENT.equals(line.trim())) {
-							tempUnit.ordersConfirmed = true;
-						} else {
-							tempUnit.addOrders(line, false);
-						}
+						scanTempOrder(tempUnit, line);
 					}
 				}
 			}
@@ -2749,6 +2769,36 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 
 		return sortIndex;
 	}
+
+    private void scanTempOrder(TempUnit tempUnit, String line) {
+        boolean scanned = false;
+        if(CONFIRMEDTEMPCOMMENT.equals(line.trim())) {
+        	tempUnit.ordersConfirmed = true;
+            scanned = true;
+        } 
+        if(!scanned && line.trim().startsWith(TAG_PREFIX_TEMP)) {
+            String tag = null;
+            String value = null;
+            StringTokenizer st = new StringTokenizer(line);
+            if(st.hasMoreTokens()) {
+                // ignore TAG_PREFIX_TEMP
+                st.nextToken();
+            }
+            if(st.hasMoreTokens()) {
+                tag = st.nextToken();
+            }
+            if(st.hasMoreTokens()) {
+                value = st.nextToken().replace('~',' ');
+            }
+            if(tag != null && value != null) {
+                tempUnit.putTag(tag,value);
+                scanned = true;
+            }
+        }
+        if(!scanned) {
+        	tempUnit.addOrders(line, false);
+        }
+    }
 
 	/**
 	 * Returns a translation from the translation table for the specified key.

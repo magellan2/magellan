@@ -62,6 +62,13 @@ public class AddCRAction extends MenuAction {
 
 		int lastFileFilter = Integer.parseInt(settings.getProperty("Client.lastSelectedAddCRFileFilter",
 																   "3"));
+		// bugzilla #861
+        if(lastFileFilter < 0) {
+            lastFileFilter = 0;
+        } else {
+            lastFileFilter = Math.min(lastFileFilter,fc.getChoosableFileFilters().length-1);
+        }
+        
 		fc.setFileFilter(fc.getChoosableFileFilters()[lastFileFilter]);
 
 		File file = new File(settings.getProperty("Client.lastCRAdded", ""));

@@ -235,6 +235,10 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 			this.add(chkFogOfWar);
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

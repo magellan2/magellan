@@ -234,6 +234,10 @@ public class ResourceSettings extends InternationalizedPanel implements Extended
 		((DefaultListModel) this.lstPaths.getModel()).insertElementAt(urlWrapper, 0);
 	}
 
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 */
@@ -249,8 +253,8 @@ public class ResourceSettings extends InternationalizedPanel implements Extended
 			}
 		}
 
-		com.eressea.resource.ResourcePathClassLoader.setStaticPaths(resourcePaths);
-		com.eressea.resource.ResourcePathClassLoader.storePaths(resourcePaths, this.settings);
+		ResourcePathClassLoader.setStaticPaths(resourcePaths);
+		ResourcePathClassLoader.storePaths(resourcePaths, this.settings);
 	}
 
 	/**

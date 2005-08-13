@@ -902,6 +902,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 			c.fill = GridBagConstraints.HORIZONTAL;
 			this.add(help, c);
 		}
+        
+        public void initPreferences() {
+            // TODO: implement it
+        }
 
 		/**
 		 * TODO: DOCUMENT ME!

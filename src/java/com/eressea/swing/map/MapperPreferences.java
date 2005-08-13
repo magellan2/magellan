@@ -215,6 +215,10 @@ public class MapperPreferences extends InternationalizedPanel implements Prefere
 		add(rendererPanel, c);
 	}
 
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 */
