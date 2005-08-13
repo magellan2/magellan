@@ -1,3 +1,30 @@
+2005-08-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\Unit.java: add support for temp unit tags.
+
+2005-07-31  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\io\cr\CRParser.java (unknown): only warn once for context
+	and message combination.
+	
+2005-06-28  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\actions\AddCRAction.java (actionPerformed): correct 
+	bugzilla #861:  java.lang.ArrayIndexOutOfBoundsException: 5 at 
+	com.eressea.demo.actions.AddCRAction.actionPerformed(AddCRAction.java:65)
+	
+	* src\java\com\eressea\util\Locales.java (getGUILocale): correct bugzilla #860:
+	A fatal error occured:java.lang.IllegalStateException:locales is not initialized
+	
+2005-06-22  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\swing\map\MarkingsImageCellRenderer.java (render): only warn
+	once on missing image.
+
+2005-06-19  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src\java\com\eressea\util\comparator\NameComparator.java (compare): prevent NPE.
+
 2005-06-14  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src\java\com\eressea\demo\desktop\MagellanDesktop.java (saveDesktopFile): 

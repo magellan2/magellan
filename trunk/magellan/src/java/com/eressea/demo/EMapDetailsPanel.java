@@ -3577,6 +3577,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			return subAdapters;
 		}
 
+        public void initPreferences() {
+            regionPref.initPreferences();
+            // TODO: implement it
+        }
+
 		// preferences adapter code:
 		public void applyPreferences() {
 			source.setShowTagButtons(chkShowTagButtons.isSelected());

@@ -16,12 +16,16 @@ package com.eressea.util;
 import java.util.Locale;
 import java.util.Properties;
 
+import com.eressea.util.logging.Logger;
+
 /**
  * Helper class for centrally managing different locales. This class provides the locales
  * statically. Optionally, you can specify a Properties object from which this class determines
  * which Locale to use. If the Locales are changed this is also recorded in the Properties object.
  */
 public class Locales {
+    private final static Logger log = Logger.getInstance(Locales.class);
+    
 	private static Properties settings = null;
 	private static Locale guiLocale = null;
 	private static Locale orderLocale = null;
@@ -59,8 +63,6 @@ public class Locales {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
-	 * @throws IllegalStateException when the method is invoked and neither the init() nor the
-	 * 		   setGUILocale() methodes were invoked earlier with valid arguments.
 	 */
 	public static Locale getGUILocale() throws IllegalStateException {
 		if(guiLocale == null) {
@@ -68,7 +70,9 @@ public class Locales {
 				setGUILocale(new Locale(settings.getProperty("locales.gui",
 															 Locale.getDefault().getLanguage()), ""));
 			} else {
-				throw new IllegalStateException("Locales is not initialized");
+                // bugzilla #861
+                log.warn("Locales.getGUILocale: Locales is not initialized, falling back to default locale");
+                return Locale.getDefault();
 			}
 		}
 

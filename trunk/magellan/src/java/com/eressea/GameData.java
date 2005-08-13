@@ -521,7 +521,7 @@ public abstract class GameData implements Cloneable {
      * @return an instance of class <tt>String</tt>. If no translation could be found, the name of the object is returned.
      */    
     public String getTranslation(NamedObject obj) {
-        return obj != null ? getTranslation(obj.getName()) : null;
+        return obj == null ? null : getTranslation(obj.getName());
     }
     
 	/**
@@ -533,7 +533,7 @@ public abstract class GameData implements Cloneable {
 	 * 		   returned.
 	 */
 	public String getTranslation(String key) {
-		String retVal = (translations() == null) ? null : (String) translations().get(key);
+		String retVal = (key == null || translations() == null) ? null : (String) translations().get(key);
 
         return retVal != null ? retVal : key;
 	}

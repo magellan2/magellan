@@ -3497,6 +3497,10 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			return getString("prefs.title");
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+        
 		/**
 		 * TODO: DOCUMENT ME!
 		 */
@@ -3705,6 +3709,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 				}
 			}
 
+            public void initPreferences() {
+                // TODO: implement it
+            }
 			/**
 			 * TODO: DOCUMENT ME!
 			 */

@@ -319,6 +319,10 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 			this.add(chkScaleFont, c);
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

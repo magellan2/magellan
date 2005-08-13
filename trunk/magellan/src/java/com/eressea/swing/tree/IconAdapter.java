@@ -210,7 +210,11 @@ public class IconAdapter extends InternationalizedPanel implements ExtendedPrefe
 		return this;
 	}
 
-	/**
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
+    /**
 	 * TODO: DOCUMENT ME!
 	 */
 	public void applyPreferences() {
@@ -727,6 +731,10 @@ public class IconAdapter extends InternationalizedPanel implements ExtendedPrefe
 				addPair(String.valueOf(i), CellRenderer.getTypeset(3).getForeground());
 			}
 		}
+
+        public void initPreferences() {
+            // TODO: implement it
+        }
 
 		/**
 		 * TODO: DOCUMENT ME!
@@ -1655,6 +1663,10 @@ public class IconAdapter extends InternationalizedPanel implements ExtendedPrefe
 				}
 			}
 		}
+
+        public void initPreferences() {
+            // TODO: implement it
+        }
 
 		/**
 		 * TODO: DOCUMENT ME!

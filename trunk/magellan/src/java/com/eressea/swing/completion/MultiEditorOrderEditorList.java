@@ -1546,6 +1546,9 @@ public class MultiEditorOrderEditorList extends InternationalizedDataPanel
 			return styles;
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

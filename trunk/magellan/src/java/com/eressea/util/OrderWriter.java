@@ -291,15 +291,8 @@ public class OrderWriter {
 			writeln(stream, ";" + CONFIRMED);
 		}
 
-		writeOrders(unit.getCompleteOrders(), stream);
-		
-		if(writeUnitTagsAsVorlageComment && unit.hasTags()) {
-			for(Iterator iter = unit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
-				String tag = (String) iter.next();
-				writeln(stream, "// #after 1 { #tag EINHEIT "+tag.replace(' ','~')+" '"+unit.getTag(tag)+"' }");
-			}
-		}
-		
+		writeOrders(unit.getCompleteOrders(writeUnitTagsAsVorlageComment), stream);
+				
 		return true;
 	}
 

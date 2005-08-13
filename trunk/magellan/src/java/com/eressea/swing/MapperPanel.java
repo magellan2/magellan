@@ -1266,6 +1266,11 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 				return getString("prefs.border.minimap");
 			}
 
+            public void initPreferences() {
+                // TODO: implement it
+            }
+
+
 			/**
 			 * TODO: DOCUMENT ME!
 			 */
@@ -1323,6 +1328,9 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 			return prefMapper.getComponent();
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

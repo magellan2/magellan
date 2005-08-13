@@ -15,8 +15,8 @@ package com.eressea.swing.map;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import com.eressea.Coordinate;
@@ -49,6 +49,8 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 		buf = new StringBuffer();
 	}
 
+    private Collection markingRenderImagesNotFound = CollectionFactory.createHashSet();
+    
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -78,12 +80,16 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 					StringTokenizer st = new StringTokenizer(r.getTag(key), " ");
 
 					while(st.hasMoreTokens()) {
-						Image img = getImage(st.nextToken());
+                        String token = st.nextToken();
+						Image img = getImage(token);
 
 						if(img != null) {
 							graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
 						} else {
-							log.warn("MarkingsImageCellRenderer.render(): marking image is null!");
+                            if(token != null && !markingRenderImagesNotFound.contains(token)) {
+                                log.warn("MarkingsImageCellRenderer.render(): marking image \""+token+"\" not found!");
+                                markingRenderImagesNotFound.add(token);
+                            }
 						}
 					}
 				}

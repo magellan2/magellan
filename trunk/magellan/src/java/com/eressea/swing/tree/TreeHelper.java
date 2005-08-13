@@ -253,12 +253,11 @@ public class TreeHelper {
 				}
                 
 			} else {
-				// change in current sortCriteria?
-				switch(treeStructure[sortCriteria]) {
-				case FACTION:
-
-					if(change(FACTION, curUnit, prevUnit)) {
-						FactionNodeWrapper factionNodeWrapper = factory.createFactionNodeWrapper(prevUnit.getFaction(),
+                if(change(treeStructure[sortCriteria], curUnit, prevUnit)) { 
+                    // change in current sortCriteria?
+                    switch(treeStructure[sortCriteria]) {
+                    case FACTION:
+                        FactionNodeWrapper factionNodeWrapper = factory.createFactionNodeWrapper(prevUnit.getFaction(),
 																								 prevUnit.getRegion(),
 																								 activeAlliances);
 						DefaultMutableTreeNode factionNode = new DefaultMutableTreeNode(factionNodeWrapper);
@@ -271,13 +270,10 @@ public class TreeHelper {
 						retVal += addUnits(factionNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
-					}
 
-					break;
+						break;
 
 				case GROUP:
-
-					if(change(GROUP, curUnit, prevUnit)) {
 						// Do the units belong to a group?
 						if(prevUnit.getGroup() != null) {
 							GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(prevUnit.getGroup());
@@ -298,13 +294,10 @@ public class TreeHelper {
 						}
 
 						helpList.clear();
-					}
 
-					break;
+						break;
 
 				case HEALTH:
-
-					if(change(HEALTH, curUnit, prevUnit)) {
 						String verw = data.getTranslation("verwundet");
 						String sverw = data.getTranslation("schwer verwundet");
 						String ersch = data.getTranslation("erschöpft");
@@ -322,52 +315,46 @@ public class TreeHelper {
 						}
 
 						//parent.add(createSimpleNode(u.health,hicon));
-						SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(text,
+						SimpleNodeWrapper healthNodeWrapper = factory.createSimpleNodeWrapper(text,
 																							  hicon);
-						DefaultMutableTreeNode healthNode = new DefaultMutableTreeNode(simpleNodeWrapper);
+						DefaultMutableTreeNode healthNode = new DefaultMutableTreeNode(healthNodeWrapper);
 						mother.add(healthNode);
 
 						if(se != null) {
-							se.getSubordinatedElements().add(simpleNodeWrapper);
+							se.getSubordinatedElements().add(healthNodeWrapper);
 						}
 
 						retVal += addUnits(healthNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
-					}
 
-					break;
+						break;
 
 				case COMBAT_STATUS:
-
-					if(change(COMBAT_STATUS, curUnit, prevUnit)) {
-						SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(Unit.combatStatusToString(prevUnit),
+						SimpleNodeWrapper combatNodeWrapper = factory.createSimpleNodeWrapper(Unit.combatStatusToString(prevUnit),
 																							  "kampfstatus");
-						DefaultMutableTreeNode combatNode = new DefaultMutableTreeNode(simpleNodeWrapper);
+						DefaultMutableTreeNode combatNode = new DefaultMutableTreeNode(combatNodeWrapper);
 						mother.add(combatNode);
 
 						if(se != null) {
-							se.getSubordinatedElements().add(simpleNodeWrapper);
+							se.getSubordinatedElements().add(combatNodeWrapper);
 						}
 
 						retVal += addUnits(combatNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
-					}
 
-					break;
+                        break;
 
 				case FACTION_DISGUISE_STATUS:
-
-					if(change(FACTION_DISGUISE_STATUS, curUnit, prevUnit)) {
 						if(prevUnit.hideFaction) {
-							SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(getString("factiondisguised"),
+							SimpleNodeWrapper fdsNodeWrapper = factory.createSimpleNodeWrapper(getString("factiondisguised"),
 																								  "tarnung");
-							DefaultMutableTreeNode fdsNode = new DefaultMutableTreeNode(simpleNodeWrapper);
+							DefaultMutableTreeNode fdsNode = new DefaultMutableTreeNode(fdsNodeWrapper);
 							mother.add(fdsNode);
 
 							if(se != null) {
-								se.getSubordinatedElements().add(simpleNodeWrapper);
+								se.getSubordinatedElements().add(fdsNodeWrapper);
 							}
 
 							retVal += addUnits(fdsNode, treeStructure, sortCriteria + 1,
@@ -380,37 +367,31 @@ public class TreeHelper {
 						}
 
 						helpList.clear();
-					}
 
-					break;
+						break;
 
 				case TRUSTLEVEL:
-
-					if(change(TRUSTLEVEL, curUnit, prevUnit)) {
-						SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(FactionTrustComparator.getTrustLevelLabel(prevUnit.getFaction().trustLevel),
+						SimpleNodeWrapper trustlevelNodeWrapper = factory.createSimpleNodeWrapper(FactionTrustComparator.getTrustLevelLabel(prevUnit.getFaction().trustLevel),
 																							  null);
-						DefaultMutableTreeNode trustlevelNode = new DefaultMutableTreeNode(simpleNodeWrapper);
+						DefaultMutableTreeNode trustlevelNode = new DefaultMutableTreeNode(trustlevelNodeWrapper);
 						mother.add(trustlevelNode);
 
 						if(se != null) {
-							se.getSubordinatedElements().add(simpleNodeWrapper);
+							se.getSubordinatedElements().add(trustlevelNodeWrapper);
 						}
 
 						retVal += addUnits(trustlevelNode, treeStructure, sortCriteria + 1,
 												 helpList, factory, activeAlliances, unitNodes, data);
 						helpList.clear();
-					}
-
-					break;
+                        
+						break;
 					
 				case TAGGABLE:
                 case TAGGABLE2:
                 case TAGGABLE3:
                 case TAGGABLE4:
                 case TAGGABLE5:
-
-					if(change(treeStructure[sortCriteria], curUnit, prevUnit)) {
-						String label = TaggableComparator.getLabel(prevUnit);
+						String label = getTaggableLabel(prevUnit,treeStructure[sortCriteria]);
 						if(label != null) {
 							SimpleNodeWrapper simpleNodeWrapper = factory.createSimpleNodeWrapper(label,null);
 							DefaultMutableTreeNode taggableNode = new DefaultMutableTreeNode(simpleNodeWrapper);
@@ -428,11 +409,11 @@ public class TreeHelper {
 													 data);
 						}
 						helpList.clear();
-					}
 
-					break;
-				} // end of switch
-
+						break;
+                    } // end of switch
+                }
+                
 				helpList.add(curUnit);
 			}
 		}
@@ -485,17 +466,14 @@ public class TreeHelper {
 
 				case COMBAT_STATUS:
 
-					Object o = factory.createSimpleNodeWrapper(Unit.combatStatusToString(curUnit),
-															   "kampfstatus");
-					node = new DefaultMutableTreeNode(o);
+					node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(Unit.combatStatusToString(curUnit),"kampfstatus"));
 
 					break;
 
 				case FACTION_DISGUISE_STATUS:
 
 					if(curUnit.hideFaction) {
-						o = factory.createSimpleNodeWrapper(getString("factiondisguised"), "tarnung");
-						node = new DefaultMutableTreeNode(o);
+						node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(getString("factiondisguised"), "tarnung"));
 					} else {
 						node = null;
 					}
@@ -503,9 +481,8 @@ public class TreeHelper {
 					break;
 
 				case TRUSTLEVEL:
-					o = factory.createSimpleNodeWrapper(FactionTrustComparator.getTrustLevelLabel(curUnit.getFaction().trustLevel),
-														null);
-					node = new DefaultMutableTreeNode(o);
+					node = new DefaultMutableTreeNode(
+                            factory.createSimpleNodeWrapper(FactionTrustComparator.getTrustLevelLabel(curUnit.getFaction().trustLevel), null));
 
 					break;
                     
@@ -515,10 +492,9 @@ public class TreeHelper {
                 case TAGGABLE4:
                 case TAGGABLE5:
 
-                    String label = TaggableComparator.getLabel(curUnit);
+                    String label = getTaggableLabel(curUnit, treeStructure[sortCriteria]);
                     if(label != null) {
-                        o = factory.createSimpleNodeWrapper(label,null);
-                        node = new DefaultMutableTreeNode(o);
+                        node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(label,null));
                     } else {
                         node = null;
                     }
@@ -563,6 +539,28 @@ public class TreeHelper {
 		return retVal;
 	}
 
+    private String getTaggableLabel(Unit unit, int taggable) {
+        String tagName = null;
+        switch(taggable) {
+        case TAGGABLE: 
+            tagName = TAGGABLE_STRING;
+            break;
+        case TAGGABLE2: 
+            tagName = TAGGABLE_STRING2;
+            break;
+        case TAGGABLE3: 
+            tagName = TAGGABLE_STRING3;
+            break;
+        case TAGGABLE4: 
+            tagName = TAGGABLE_STRING4;
+            break;
+        case TAGGABLE5: 
+            tagName = TAGGABLE_STRING5;
+            break;
+        }
+        return tagName == null || unit == null? null : unit.getTag(tagName);
+    }
+    
 	/**
 	 * Little helper function that determines, whether the two given units differ in regard to the
 	 * given flag. The flag should be given according to the constants defined in this class

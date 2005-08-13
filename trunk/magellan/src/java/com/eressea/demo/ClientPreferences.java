@@ -295,6 +295,10 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		return pnlLocales;
 	}
 
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 */
@@ -564,6 +568,10 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 			return getString("border.lookandfeel");
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */
@@ -677,6 +685,10 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		public String getTitle() {
 			return getString("border.filehistory");
 		}
+
+        public void initPreferences() {
+            // TODO: implement it
+        }
 
 		/**
 		 * TODO: DOCUMENT ME!

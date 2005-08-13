@@ -83,6 +83,10 @@ public class ExternalModuleSettings extends InternationalizedPanel implements Pr
 		this.add(pnl, c);
 	}
 
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 */

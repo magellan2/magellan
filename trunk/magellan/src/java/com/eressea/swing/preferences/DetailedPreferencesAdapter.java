@@ -236,6 +236,10 @@ public abstract class DetailedPreferencesAdapter extends JPanel implements Prefe
 		return false;
 	}
 
+    public void initPreferences() {
+        // TODO: implement it
+    }
+
 	/**
 	 * TODO: DOCUMENT ME!
 	 */

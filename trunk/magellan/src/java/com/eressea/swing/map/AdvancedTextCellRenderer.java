@@ -1046,6 +1046,10 @@ public class AdvancedTextCellRenderer extends TextCellRenderer implements Extend
 			def.setText(set.getDef());
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

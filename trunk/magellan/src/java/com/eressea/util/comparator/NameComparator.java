@@ -63,7 +63,7 @@ public class NameComparator implements Comparator {
 
         int retVal = 0;
         if(n1 != null) {
-            retVal = n1.compareToIgnoreCase(n2);
+            retVal = n2 == null ? -1 : n1.compareToIgnoreCase(n2);
         } else {
             // n1 == null
             retVal = n2 == null ? 0 : 1;

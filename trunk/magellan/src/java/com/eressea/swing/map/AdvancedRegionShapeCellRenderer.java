@@ -1255,6 +1255,10 @@ public class AdvancedRegionShapeCellRenderer extends AbstractRegionShapeCellRend
 			return panel;
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+        
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

@@ -22,6 +22,12 @@ import java.awt.Component;
  * @version $Revision$
  */
 public interface PreferencesAdapter {
+
+    /**
+     * This function is called for initializing the preferences.
+     */
+    public void initPreferences(); 
+    
 	/**
 	 * This function is called for applying the preferences.
 	 */

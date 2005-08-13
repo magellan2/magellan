@@ -551,6 +551,10 @@ public class NodeWrapperFactory extends JTabbedPane implements PreferencesFactor
 			}
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */

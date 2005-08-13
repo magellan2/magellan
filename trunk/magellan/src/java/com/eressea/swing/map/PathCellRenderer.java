@@ -567,6 +567,10 @@ public class PathCellRenderer extends ImageCellRenderer {
 			this.add(chkDrawPastPath, c);
 		}
 
+        public void initPreferences() {
+            // TODO: implement it
+        }
+
 		/**
 		 * TODO: DOCUMENT ME!
 		 */
