@@ -15,7 +15,6 @@ package com.eressea.swing.context;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import java.awt.LayoutManager2;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -38,7 +36,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.plaf.basic.DefaultMenuLayout;
 
 import com.eressea.GameData;
 import com.eressea.Region;

@@ -17,7 +17,7 @@ package com.eressea;
  * A class representing a uniquely identifiable object with a modifiable name.
  */
 public abstract class NamedObject extends Identifiable implements Named {
-	protected String name = null;
+	private String name = null;
 
 	/**
 	 * Constructs a new named object that is uniquely identifiable by the specified id.
@@ -37,15 +37,9 @@ public abstract class NamedObject extends Identifiable implements Named {
 		this.name = name;
 	}
 
-	/**
-	 * Returns the name of this object.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public String getName() {
-		return this.name;
-	}
-
+    public String getName() {
+        return name;
+    }
 	/**
 	 * Returns the (possibly) modified name of this object.
 	 *
@@ -75,21 +69,4 @@ public abstract class NamedObject extends Identifiable implements Named {
 		return super.clone();
 	}
 
-// 	/**
-// 	 * TODO: DOCUMENT ME!
-// 	 *
-// 	 * @param o TODO: DOCUMENT ME!
-// 	 *
-// 	 * @return TODO: DOCUMENT ME!
-// 	 */
-// 	public abstract boolean equals(Object o);
-
-// 	/**
-// 	 * TODO: DOCUMENT ME!
-// 	 *
-// 	 * @param o TODO: DOCUMENT ME!
-// 	 *
-// 	 * @return TODO: DOCUMENT ME!
-// 	 */
-// 	public abstract int compareTo(Object o);
 }

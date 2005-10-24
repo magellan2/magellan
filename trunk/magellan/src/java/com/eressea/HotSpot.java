@@ -53,7 +53,7 @@ public class HotSpot extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return this.name;
+		return getName();
 	}
 
 	/**

@@ -57,6 +57,8 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 	private static final String SKILL_CHANGE_STYLE_PREFIX = "Talent";
 	private Unit unit = null;
 	private int amount = -1;
+    private int modified = -1;
+    private String prfx = null;
 	private String text = null;
 	private boolean iconNamesCreated = false;
 	private List iconNames = null;
@@ -75,7 +77,9 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 	public UnitNodeWrapper(Unit u, String prfx, int num, int mod) {
 		this.unit = u;
 		this.amount = num;
-		this.text = getText(u, prfx, num, mod);
+        this.modified = mod;
+        this.prfx = prfx;
+		//this.text = getText(u, prfx, num, mod);
 	}
 
 	/**
@@ -103,17 +107,8 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public int getAmount() {
-		return amount;
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
 	public String toString() {
-		return text;
+		return text != null ? text : getText(unit,prfx, amount, modified);
 	}
 
 	/**
@@ -334,7 +329,7 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 		// main
 		Tag2Element.start(u);
 
-		GraphicsElement start = new UnitGraphicsElement(text);
+		GraphicsElement start = new UnitGraphicsElement(toString());
 		start.setType(GraphicsElement.MAIN);
 
 		if(additionalIcon != null) {

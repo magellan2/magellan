@@ -13,11 +13,10 @@
 
 package com.eressea.swing.map;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Properties;
 
-import com.eressea.event.EventDispatcher;
+import javax.swing.ToolTipManager;
+
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 
@@ -41,7 +40,7 @@ public class Minimapper extends Mapper {
 		super(context, null, new CellGeometry("cellgeometry.txt"));
 
 		// if Mapper has registered us, we don't want this
-		javax.swing.ToolTipManager.sharedInstance().unregisterComponent(this);
+		ToolTipManager.sharedInstance().unregisterComponent(this);
 	}
 
 	/**

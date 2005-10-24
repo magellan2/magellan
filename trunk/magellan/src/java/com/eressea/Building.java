@@ -148,6 +148,6 @@ public class Building extends UnitContainer implements HasRegion {
 	 * @return the Building object as string.
 	 */
 	public String toString() {
-		return name + " (" + id + "), " + this.getType() + " (" + this.getSize() + ")";
+		return getName() + " (" + id + "), " + this.getType() + " (" + this.getSize() + ")";
 	}
 }

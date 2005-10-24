@@ -323,7 +323,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 							tree.grabFocus();
 						}
 					} else if(displayedObject instanceof Island) {
-						((Named) displayedObject).setName(name.getText());
+						((Island) displayedObject).setName(name.getText());
 					}
 				}
 			});
@@ -504,7 +504,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		editor = new MultiEditorOrderEditorList(dispatcher, data, settings, _undoMgr);
 
 		// build auto completion structure
-		orders = new AutoCompletion(settings, dispatcher);
+		orders = new AutoCompletion(dispatcher.getMagellanContext());
 		orders.attachEditorManager(editor);
 		shortCuts = CollectionFactory.createArrayList(3);
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.CTRL_MASK));
@@ -1977,19 +1977,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Collection pupils = CollectionFactory.createLinkedList();
 		Collection teachers = CollectionFactory.createLinkedList();
 
-		for(Iterator iter = u.getRelations().iterator(); iter.hasNext();) {
+		for(Iterator iter = u.getRelations(TeachRelation.class).iterator(); iter.hasNext();) {
 			UnitRelation rel = (UnitRelation) iter.next();
 
-			if(rel instanceof TeachRelation) {
-				TeachRelation tr = (TeachRelation) rel;
+			TeachRelation tr = (TeachRelation) rel;
 
-				if(u.equals(tr.source)) {
-					if(tr.target != null) {
-						pupils.add(tr.target);
-					}
-				} else {
-					teachers.add(tr.source);
-				}
+			if(u.equals(tr.source)) {
+			    if(tr.target != null) {
+			        pupils.add(tr.target);
+			    }
+			} else {
+			    teachers.add(tr.source);
 			}
 		}
 

@@ -29,7 +29,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.AbstractListModel;
@@ -55,7 +54,6 @@ import com.eressea.Region;
 import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.demo.desktop.Initializable;
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.main.MagellanContext;

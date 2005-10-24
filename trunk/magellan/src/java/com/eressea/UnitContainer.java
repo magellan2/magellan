@@ -38,7 +38,7 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public abstract class UnitContainer extends DescribedObject implements Sorted,
+public abstract class UnitContainer extends RelatedObject implements Sorted,
 																	   Taggable
 {
 	private static final Logger log = Logger.getInstance(UnitContainer.class);
@@ -268,6 +268,15 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 		}
 	}
 
+    protected Collection getRelations() {
+        if(cache == null) {
+            cache = new Cache();
+        }
+        if(cache.relations == null) {
+            cache.relations = CollectionFactory.createArrayList();
+        }
+        return cache.relations;
+    }
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -353,7 +362,7 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return name + " (" + id + "), " + type;
+		return getName() + " (" + id + "), " + type;
 	}
 
 	/**
@@ -484,29 +493,13 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 	}
 
 	/**
-	 * Returns an Iterator over the relations this container has to units. The iterator returns
-	 * <tt>UnitRelation</tt> objects. An empty iterator is returned if the relations have not been
-	 * set up so far or if there are no relations. To have the relations to all units properly set
-	 * up the refreshRelations() method has to be invoked on these units.
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Iterator getRelations() {
-		if((cache != null) && (cache.relations != null)) {
-			return cache.relations.iterator();
-		}
-
-		return (CollectionFactory.createLinkedList()).iterator();
-	}
-
-	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @param rel TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public UnitRelation addRelation(UnitRelation rel) {
+	public void addRelation(UnitRelation rel) {
 		if(cache == null) {
 			cache = new Cache();
 		}
@@ -517,10 +510,26 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 
 		cache.relations.add(rel);
 
-		cache.modifiedContainerUnits = null;
+        invalidateCache();
 
-		return rel;
 	}
+
+    private void invalidateCache() {
+        if(cache != null) {
+            cache.modifiedName = null;
+            cache.modifiedContainerUnits = null;
+        }
+    }
+    
+    public String getModifiedName() {
+        if(cache == null) {
+            cache = new Cache();
+        } 
+        if(cache.modifiedName == null) {
+            cache.modifiedName = super.getModifiedName();
+        }
+        return cache.modifiedName != null ? cache.modifiedName : getName(); 
+    }
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -535,7 +544,7 @@ public abstract class UnitContainer extends DescribedObject implements Sorted,
 		if((cache != null) && (cache.relations != null)) {
 			if(cache.relations.remove(rel)) {
 				r = rel;
-				cache.modifiedContainerUnits = null;
+                invalidateCache();
 			}
 		}
 

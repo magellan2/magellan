@@ -13,12 +13,14 @@
 
 package com.eressea.swing.desktop;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
-import com.eressea.swing.ui.*;
+import com.eressea.swing.ui.InternalFrame;
 
 /**
  * TODO: DOCUMENT ME!

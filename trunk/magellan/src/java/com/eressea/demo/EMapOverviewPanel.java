@@ -938,10 +938,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 				// search for privileged faction
 				//    note: Node searching is not nice, but the fastest way
 				boolean found = false;
-				Enumeration enum = node.children();
+				Enumeration enumeration = node.children();
 
-				while(!found && enum.hasMoreElements()) {
-					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
+				while(!found && enumeration.hasMoreElements()) {
+					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enumeration.nextElement();
 					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
@@ -965,13 +965,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			if(eDepth > 0) {
 				eDepth--;
 
-				Enumeration enum = node.children();
+				Enumeration enumeration = node.children();
 				boolean open;
 
-				while(enum.hasMoreElements()) {
+				while(enumeration.hasMoreElements()) {
 					open = false;
 
-					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
+					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enumeration.nextElement();
 					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
@@ -1289,10 +1289,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 				// search for privileged faction
 				//    note: Node searching is not nice, but the fastest way
 				boolean found = false;
-				Enumeration enum = node.children();
+				Enumeration enumeration = node.children();
 
-				while(!found && enum.hasMoreElements()) {
-					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
+				while(!found && enumeration.hasMoreElements()) {
+					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enumeration.nextElement();
 					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
@@ -1319,25 +1319,18 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			int eDepth = expandMode >> 2;
 
 			if(eDepth > 0) {
-				Enumeration enum = node.children();
-				boolean open;
+				Enumeration enumeration = node.children();
+				while(enumeration.hasMoreElements()) {
 
-				while(enum.hasMoreElements()) {
-					open = false;
-
-					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enum.nextElement();
+					DefaultMutableTreeNode child = (DefaultMutableTreeNode) enumeration.nextElement();
 					Object obj = child.getUserObject();
 
 					if(obj instanceof FactionNodeWrapper) {
 						Faction fac = ((FactionNodeWrapper) obj).getFaction();
 
 						if(fac.trustLevel >= expandTrustlevel) {
-							open = true;
+                            expandImpl(child, eDepth - 1);
 						}
-					}
-
-					if(open) {
-						expandImpl(child, eDepth - 1);
 					}
 				}
 			}
@@ -2997,7 +2990,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 				unw.clearBuffer();
 				treeModel.nodeChanged(node);
 
-				Collection relations = u.getRelations();
+				Collection relations = u.getRelations(TransferRelation.class);
 
 				if(!unitRelations.containsKey(u.getID())) {
 					if(relations.size() == 0) {
@@ -3024,7 +3017,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 						} else {
 							oldRelations.add(o);
 
-							if(updateRelationPartners && (o instanceof TransferRelation)) {
+							if(updateRelationPartners) {
 								update(((TransferRelation) o).target, false);
 							}
 						}
@@ -3037,7 +3030,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 							Object o = it.next();
 							oldRelations.remove(o);
 
-							if(updateRelationPartners && (o instanceof TransferRelation)) {
+							if(updateRelationPartners) {
 								update(((TransferRelation) o).target, false);
 							}
 						}

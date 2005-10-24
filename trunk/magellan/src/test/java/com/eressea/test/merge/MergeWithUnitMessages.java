@@ -22,11 +22,11 @@ public class MergeWithUnitMessages extends TestCase {
 
 		Unit u1 = (Unit) gd1.units().values().iterator().next();
 		u1.unitMessages = CollectionFactory.createLinkedList();
-		u1.unitMessages.add(builder.createMessage("TEST_m1"));
+		u1.unitMessages.add(GameDataBuilder.createMessage("TEST_m1"));
 
 		Unit u2 = (Unit) gd2.units().values().iterator().next();
 		u2.unitMessages = CollectionFactory.createLinkedList();
-		u2.unitMessages.add(builder.createMessage("TEST_m2"));
+		u2.unitMessages.add(GameDataBuilder.createMessage("TEST_m2"));
 
 		GameData gd4 = GameData.merge(gd1, gd2);
 //		// WriteGameData.writeCR(gdMerged, gdMerged.getDate().getDate()+"_gd.cr");
@@ -46,11 +46,11 @@ public class MergeWithUnitMessages extends TestCase {
 
 		Unit u1 = (Unit) gd1.units().values().iterator().next();
 		u1.unitMessages = CollectionFactory.createLinkedList();
-		u1.unitMessages.add(builder.createMessage("TEST_m1"));
+		u1.unitMessages.add(GameDataBuilder.createMessage("TEST_m1"));
 
 		Unit u2 = (Unit) gd2.units().values().iterator().next();
 		u2.unitMessages = CollectionFactory.createLinkedList();
-		u2.unitMessages.add(builder.createMessage("TEST_m2"));
+		u2.unitMessages.add(GameDataBuilder.createMessage("TEST_m2"));
 
 		GameData gd4 = GameData.merge(gd1, gd2);
 //		// WriteGameData.writeCR(gdMerged, gdMerged.getDate().getDate()+"_gd.cr");

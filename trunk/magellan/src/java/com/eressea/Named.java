@@ -18,14 +18,12 @@ package com.eressea;
  */
 public interface Named {
 	/**
-	 * Sets the name of this object.
-	 */
-	public void setName(String name);
-
-	/**
 	 * Returns the name of this object.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getName();
+
+	public String getModifiedName();
+
 }

@@ -77,7 +77,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 
 import com.eressea.Region;
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.main.MagellanContext;

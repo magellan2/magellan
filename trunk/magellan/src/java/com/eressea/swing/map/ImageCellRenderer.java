@@ -18,11 +18,10 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ImageFactory;
+import com.eressea.util.Umlaut;
 
 /**
  * A template for a renderer that uses images for rendering objects. This class takes care of
@@ -134,7 +133,7 @@ public abstract class ImageCellRenderer extends HexCellRenderer {
 		Image img = null;
 
 		if(name != null) {
-			String normName = com.eressea.util.Umlaut.convertUmlauts(name);
+			String normName = Umlaut.convertUmlauts(name);
 
 			if(images.containsKey(normName)) {
 				ImageContainer c = (ImageContainer) images.get(normName);

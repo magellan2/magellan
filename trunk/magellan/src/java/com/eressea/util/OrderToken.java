@@ -209,7 +209,7 @@ public class OrderToken {
 			break;
 
 		case TT_PERSIST:
-			retVal += "Persitance marker";
+			retVal += "Persistance marker";
 
 			break;
 		}

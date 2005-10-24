@@ -17,7 +17,6 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
-import java.util.Properties;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;

@@ -1,3 +1,10 @@
+2005-10-20  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+	* src\java\com\eressea\completion\AutoCompletion: add support for 
+	magellan_completions.ini.
+
+	* src\java\com\eressea\gamebinding\eressea\EresseaRelationFactory.java:
+	add prelimary support for dynamic object naming. 
+
 2005-08-13  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src\java\com\eressea\Unit.java: add support for temp unit tags.

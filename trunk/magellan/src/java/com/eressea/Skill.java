@@ -135,19 +135,19 @@ public class Skill {
 			int buildingBonus = 0;
 
 			if(unit.realRace != null) {
-				raceBonus = unit.realRace.getSkillBonus(getType());
+				raceBonus = unit.realRace.getSkillBonus(getSkillType());
 			} else {
 				if(unit.race != null) {
-					raceBonus = unit.race.getSkillBonus(getType());
+					raceBonus = unit.race.getSkillBonus(getSkillType());
 				}
 			}
 
 			if(unit.getRegion() != null) {
-				terrainBonus = unit.race.getSkillBonus(getType(), unit.getRegion().getRegionType());
+				terrainBonus = unit.race.getSkillBonus(getSkillType(), unit.getRegion().getRegionType());
 			}
 
 			if(includeBuilding && (unit.getBuilding() != null)) {
-				buildingBonus = (unit.getBuilding().getBuildingType()).getSkillBonus(getType());
+				buildingBonus = (unit.getBuilding().getBuildingType()).getSkillBonus(getSkillType());
 			}
 
 			return getLevel(getPoints() / unit.persons, raceBonus, terrainBonus, buildingBonus,
@@ -173,15 +173,15 @@ public class Skill {
 			int buildingBonus = 0;
 
 			if(unit.race != null) {
-				raceBonus = unit.race.getSkillBonus(getType());
+				raceBonus = unit.race.getSkillBonus(getSkillType());
 			}
 
 			if(unit.getRegion() != null) {
-				terrainBonus = unit.race.getSkillBonus(getType(), unit.getRegion().getRegionType());
+				terrainBonus = unit.race.getSkillBonus(getSkillType(), unit.getRegion().getRegionType());
 			}
 
 			if(includeBuilding && (unit.getBuilding() != null)) {
-				buildingBonus = unit.getBuilding().getBuildingType().getSkillBonus(getType());
+				buildingBonus = unit.getBuilding().getBuildingType().getSkillBonus(getSkillType());
 			}
 
 			return getLevel(getPoints() / unit.getModifiedPersons(), raceBonus, terrainBonus,
@@ -261,17 +261,6 @@ public class Skill {
 	 */
 	public SkillType getSkillType() {
 		return type;
-	}
-
-	/**
-	 * DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 *
-	 * @deprecated
-	 */
-	public SkillType getType() {
-		return getSkillType();
 	}
 
 	/**

@@ -128,6 +128,6 @@ public class AllianceCategory extends ObjectType {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return "AllianceCategory[name=" + name + ", bitMask=" + bitMask + "]";
+		return "AllianceCategory[name=" + getName() + ", bitMask=" + bitMask + "]";
 	}
 }

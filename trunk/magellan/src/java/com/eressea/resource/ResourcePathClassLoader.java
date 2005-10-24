@@ -29,7 +29,6 @@ import java.util.Properties;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IteratorEnumeration;
 import com.eressea.util.PropertiesHelper;
-import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
 /**

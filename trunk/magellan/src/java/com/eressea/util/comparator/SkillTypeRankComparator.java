@@ -79,13 +79,13 @@ public class SkillTypeRankComparator implements Comparator {
 	 */
 	public int compare(Object o1, Object o2) {
 		if(o1 instanceof Skill) {
-			s1 = ((Skill) o1).getType();
+			s1 = ((Skill) o1).getSkillType();
 		} else {
 			s1 = (SkillType) o1;
 		}
 
 		if(o2 instanceof Skill) {
-			s2 = ((Skill) o2).getType();
+			s2 = ((Skill) o2).getSkillType();
 		} else {
 			s2 = (SkillType) o2;
 		}

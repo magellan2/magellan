@@ -13,7 +13,6 @@
 
 package com.eressea.util;
 
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 

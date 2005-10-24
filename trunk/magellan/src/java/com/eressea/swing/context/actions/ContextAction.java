@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import com.eressea.Unit;
 import com.eressea.event.EventDispatcher;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;

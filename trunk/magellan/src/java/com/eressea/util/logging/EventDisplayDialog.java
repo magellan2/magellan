@@ -2,13 +2,10 @@ package com.eressea.util.logging;
 
 import java.awt.Container;
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Toolkit;
 
 import com.eressea.event.EventDispatcher;
 import com.eressea.swing.InternationalizedDialog;
-import com.eressea.tasks.swing.TaskTablePanel;
 
 /**
  * @author pavkovic

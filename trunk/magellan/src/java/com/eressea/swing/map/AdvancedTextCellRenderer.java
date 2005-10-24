@@ -69,7 +69,6 @@ import com.eressea.Region;
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ExtendedShortcutListener;
 import com.eressea.demo.desktop.ShortcutListener;
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.main.MagellanContext;

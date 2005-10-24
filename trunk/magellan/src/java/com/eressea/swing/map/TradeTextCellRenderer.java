@@ -18,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -27,7 +26,6 @@ import com.eressea.ID;
 import com.eressea.LuxuryPrice;
 import com.eressea.Region;
 import com.eressea.StringID;
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.main.MagellanContext;
