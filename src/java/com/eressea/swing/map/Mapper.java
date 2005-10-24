@@ -45,7 +45,6 @@ import com.eressea.Scheme;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.demo.desktop.Initializable;
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
@@ -894,7 +893,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			bg.setColor(getBackground());
 			bg.fillRect(0, 0, clipBounds.width, clipBounds.height);
 
-			for(int planeIndex = 0; (planeIndex < this.PLANE_PATH) && (planeIndex < planes.length);
+			for(int planeIndex = 0; (planeIndex < Mapper.PLANE_PATH) && (planeIndex < planes.length);
 					planeIndex++) {
 				if(planes[planeIndex] == null) {
 					continue;

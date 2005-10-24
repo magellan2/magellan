@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.eressea.swing.completion.OrderEditor;
+
 /**
  * A class for caching data that is time consuming to compute or wasteful to allocate but
  * frequently needed. Objects of this type are available in units and in all UnitContainer
@@ -26,8 +28,11 @@ import java.util.Map;
 public class Cache {
 	private Collection handlers = null;
 
+    /* used in Unit and UnitContainer for modified name */
+    public String modifiedName = null;
+
 	/** used in swing.completion.* classes per unit */
-	public com.eressea.swing.completion.OrderEditor orderEditor = null;
+	public OrderEditor orderEditor = null;
 
 	// used in swing.map.RegionImageCellRenderer per region
 	// public int fogOfWar = -1;

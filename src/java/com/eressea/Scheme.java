@@ -33,7 +33,7 @@ public class Scheme extends NamedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return this.name + " (" + this.id.toString() + ")";
+		return getName() + " (" + this.id.toString() + ")";
 	}
 
 	/**

@@ -221,7 +221,7 @@ public class Group extends NamedObject {
 		// pavkovic 2004.01.04: for a Group id is more a technical connection so we dont
 		// want to see it.
 		//return name + " (" + id + ")";
-		return name;
+		return getName();
 	}
 
 	/**

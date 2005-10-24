@@ -47,7 +47,6 @@ import javax.swing.tree.TreeCellRenderer;
 
 import com.eressea.main.MagellanContext;
 import com.eressea.util.Colors;
-import com.eressea.util.ImageFactory;
 import com.eressea.util.JVMUtilities;
 import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;

@@ -61,7 +61,7 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable {
+public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	private static final Logger log = Logger.getInstance(Unit.class);
 	private static final String CONFIRMEDTEMPCOMMENT = ";" + OrderWriter.CONFIRMEDTEMP;
 	private static final String TAG_PREFIX_TEMP=";"+"ejcTagTemp "; // grammar for ejcTag: ";ejcTempTag tag numbervalue|'stringvalue'"
@@ -954,6 +954,7 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 */
 	private void invalidateCache() {
 		if(cache != null) {
+            cache.modifiedName = null;
 			cache.modifiedSkills = null;
 			cache.modifiedItems = null;
 			cache.unitWeight = -1;
@@ -962,6 +963,16 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 		}
 	}
 
+    public String getModifiedName() {
+        if(cache == null) {
+            cache = new Cache();
+        }
+        if(cache.modifiedName == null) {
+            cache.modifiedName = super.getModifiedName();
+        }
+        return cache.modifiedName != null ? cache.modifiedName : getName();
+    }
+    
 	/**
 	 * Returns a Collection over the relations this unit has to other units. The iterator returns
 	 * <tt>UnitRelation</tt> objects. An empty iterator is returned if the relations have not been
@@ -970,37 +981,16 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Collection getRelations() {
+/*
+    public Collection getRelations() {
 		if((cache != null) && (cache.relations != null)) {
 			return CollectionFactory.unmodifiableCollection(cache.relations);
 		}
 
 		return CollectionFactory.EMPTY_COLLECTION;
 	}
-
-	/**
-	 * Returns a Collection over the relations this unit has to other units. The collection consist
-	 * of  <tt>UnitRelation</tt> objects.  The UnitRelation objects are filtered by the given
-	 * relation class.
-	 *
-	 * @param relationClass TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public Collection getRelations(Class relationClass) {
-		Collection ret = CollectionFactory.createLinkedList();
-
-		for(Iterator iter = getRelations().iterator(); iter.hasNext();) {
-			Object relation = iter.next();
-
-			if(relationClass.isInstance(relation)) {
-				ret.add(relation);
-			}
-		}
-
-		return ret;
-	}
-
+*/
+    
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -1008,19 +998,9 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public UnitRelation addRelation(UnitRelation rel) {
-		if(cache == null) {
-			cache = new Cache();
-		}
-
-		if(cache.relations == null) {
-			cache.relations = CollectionFactory.createLinkedList();
-		}
-
-		cache.relations.add(rel);
+	public void addRelation(UnitRelation rel) {
+        super.addRelation(rel);
 		invalidateCache();
-
-		return rel;
 	}
 
 	/**
@@ -1031,17 +1011,22 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public UnitRelation removeRelation(UnitRelation rel) {
-		UnitRelation r = null;
-
-		if((cache != null) && (cache.relations != null)) {
-			if(cache.relations.remove(rel)) {
-				r = rel;
-				invalidateCache();
-			}
-		}
-
-		return r;
+		UnitRelation ret = super.removeRelation(rel);
+        if(ret != null) {
+            invalidateCache();
+        }
+		return ret;
 	}
+
+    protected Collection getRelations() {
+        if(cache == null) {
+            cache = new Cache();
+        }
+        if(cache.relations == null) {
+            cache.relations = CollectionFactory.createArrayList();
+        }
+        return cache.relations;
+    }
 
 	/**
 	 * deliver all directly related units
@@ -2113,7 +2098,10 @@ public class Unit extends DescribedObject implements HasRegion, Sorted, Taggable
     
     public String toString(boolean withName) {
         if(withName) {
-            String myName = name;
+            String myName = getModifiedName();
+            if(myName == null) {
+                myName = getName();
+            }
             if(myName == null) {
                 myName = getString("unit")+ " "+toString(false);
             }

@@ -107,7 +107,8 @@ public class Locales {
 				orderLocale = new Locale(settings.getProperty("locales.orders",
 															  Locale.getDefault().getLanguage()), "");
 			} else {
-				throw new IllegalStateException("Locales is not initialized");
+                return Locale.GERMAN;
+                // throw new IllegalStateException("Locales is not initialized");
 			}
 		}
 

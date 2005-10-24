@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.eressea.swing.MagellanLookAndFeel;
 
 //import org.apache.log4j.*;
 

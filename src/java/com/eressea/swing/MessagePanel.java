@@ -150,10 +150,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 
 		treeModel.reload();
 
-		Enumeration enum = rootNode.children();
+		Enumeration enumeration = rootNode.children();
 
-		while(enum.hasMoreElements()) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) enum.nextElement();
+		while(enumeration.hasMoreElements()) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
 
 			if(node.getChildCount() > 0) {
 				DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) node.getFirstChild();

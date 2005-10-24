@@ -35,6 +35,7 @@ import com.eressea.relation.LeaveRelation;
 import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
+import com.eressea.relation.RenameNamedRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
@@ -200,7 +201,7 @@ public class EresseaRelationFactory implements RelationFactory {
                     EnterRelation rel = new EnterRelation(u, uc, line);
                     rels.add(rel);
                 } else {
-                    log.warn("Unit.refreshRelations(): cannot find target in order " + order);
+                    log.debug("Unit.refreshRelations(): cannot find target in order " + order);
                 }
 
                 // check whether the unit leaves a container
@@ -456,19 +457,60 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			// attack relation
 			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_ATTACK))) {
-				OrderToken token = (OrderToken) tokens.get(1);
-				Unit enemy = getTargetUnit(token, u.getRegion());
+			    if(tokens.size() > 1) {
+			        OrderToken enemyToken = (OrderToken) tokens.get(1);
+			        Unit enemy = getTargetUnit(enemyToken, u.getRegion());
 
-				if(enemy != null) {
-					AttackRelation rel = new AttackRelation(u, enemy, line);
-					rels.add(rel);
-				}
+			        if(enemy != null) {
+			            AttackRelation rel = new AttackRelation(u, enemy, line);
+			            rels.add(rel);
+			        }
+                }
 			}
+            
+            // name relation
+            // TODO: Do it right
+            if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_NAME))) {
+                if(tokens.size() > 2) {
+                    OrderToken whatToken = (OrderToken) tokens.get(1);
+                    
+                    if(whatToken.equalsToken(getOrder(EresseaConstants.O_UNIT))) {
+                        if(tokens.size() > 3) {
+                            rels.addAll(createRenameUnitRelation(u, (OrderToken) tokens.get(2), line));
+                        }
+                    } else {
+                        if(tokens.size() > 4) {
+                            if(whatToken.equalsToken(getOrder(EresseaConstants.O_CASTLE))) {
+                                rels.addAll(createRenameUnitContainerRelation(u, (OrderToken) tokens.get(2), (OrderToken) tokens.get(3), line));                                
+                            } else if(whatToken.equalsToken(getOrder(EresseaConstants.O_FACTION))) {
+                                rels.addAll(createRenameUnitContainerRelation(u, (OrderToken) tokens.get(2), (OrderToken) tokens.get(3), line));                                
+                            } else if(whatToken.equalsToken(getOrder(EresseaConstants.O_REGION))) {
+                                rels.addAll(createRenameUnitContainerRelation(u, (OrderToken) tokens.get(2), (OrderToken) tokens.get(3), line));                                
+                            } else if(whatToken.equalsToken(getOrder(EresseaConstants.O_SHIP))) {
+                                rels.addAll(createRenameUnitContainerRelation(u, (OrderToken) tokens.get(2), (OrderToken) tokens.get(3), line));                                
+                            }
+                        }
+                    }
+                    if(whatToken.equalsToken(getOrder(EresseaConstants.O_FOREIGN))) {
+                        //rels.addAll(createRenameForeignUnitContainerRelation(u, (OrderToken) tokens.get(2), (OrderToken) tokens.get(3)));
+                            // retVal = readBenenneFremdes(t);
+                    }   
+                }   
+            }
 		}
 
 		return rels;
 	}
 
+    private List createRenameUnitRelation(Unit unit, OrderToken token, int line) {
+        return CollectionFactory.singletonList(new RenameNamedRelation(unit, unit, stripQuotes(token.getText()), line));
+    }
+
+    private List createRenameUnitContainerRelation(Unit unit, OrderToken containerToken, OrderToken name, int line) {
+        
+        return CollectionFactory.EMPTY_LIST;
+    }
+    
 	private Unit getTargetUnit(OrderToken t, Region r) {
 		try {
 			UnitID id = UnitID.createUnitID(t.getText(),r.getData().base);

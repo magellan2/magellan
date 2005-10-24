@@ -19,11 +19,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import com.eressea.Coordinate;
 import com.eressea.EntityID;
-import com.eressea.Faction;
 import com.eressea.ID;
 import com.eressea.Message;
 import com.eressea.Region;
@@ -31,7 +29,6 @@ import com.eressea.Ship;
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.FactionTrustComparator;
-import com.sun.rsasign.s;
 
 /**
  * TODO: DOCUMENT ME!

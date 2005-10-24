@@ -31,6 +31,7 @@ import com.eressea.util.replacers.ReplacerHelp;
  */
 public class MagellanContext implements MagellanEnvironment {
     private Properties settings;
+    private Properties completionSettings;
     private EventDispatcher dispatcher;
     private GameData data;
     private Client client;
@@ -112,5 +113,13 @@ public class MagellanContext implements MagellanEnvironment {
         
         // inits ReplacerHelp
         replacerHelp = new ReplacerHelp(getEventDispatcher(),getGameData());
+    }
+
+    public Properties getCompletionProperties() {
+        return completionSettings;
+    }
+
+    public void setCompletionProperties(Properties completionSettings2) {
+        completionSettings = completionSettings2;
     }
 }

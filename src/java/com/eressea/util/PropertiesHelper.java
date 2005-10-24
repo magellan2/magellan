@@ -14,6 +14,7 @@
 package com.eressea.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -37,13 +38,20 @@ public class PropertiesHelper {
 		String count = p.getProperty(prefix + ".count");
 
 		if(count == null) {
-			for(Enumeration e = p.propertyNames(); e.hasMoreElements();) {
-				String key = (String) e.nextElement();
+            boolean hasMore = true;
+            for(int i=0; hasMore; i++) {
+                String prop = p.getProperty(prefix + "." + i);
 
-				if(key.startsWith(prefix)) {
-					ret.add(p.getProperty(key));
-				}
-			}
+                if(prop == null) {
+                    prop = p.getProperty(prefix + i);
+                }
+                
+                if(prop != null) {
+                    ret.add(prop);
+                } else {
+                    hasMore = false;
+                }
+            }
 		} else {
 			for(int i = 0, max = new Integer(count).intValue(); i < max; i++) {
 				String prop = p.getProperty(prefix + "." + i);

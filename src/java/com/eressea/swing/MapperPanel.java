@@ -39,7 +39,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -71,7 +70,6 @@ import com.eressea.Region;
 import com.eressea.demo.desktop.ExtendedShortcutListener;
 import com.eressea.demo.desktop.Initializable;
 import com.eressea.demo.desktop.ShortcutListener;
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.SelectionEvent;

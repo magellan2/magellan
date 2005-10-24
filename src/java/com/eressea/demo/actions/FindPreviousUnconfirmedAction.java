@@ -13,7 +13,6 @@
 
 package com.eressea.demo.actions;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 

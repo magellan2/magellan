@@ -47,7 +47,7 @@ public class Island extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
-		return name + " (ID: " + id + ")";
+		return getName() + " (ID: " + id + ")";
 	}
 
 	/**

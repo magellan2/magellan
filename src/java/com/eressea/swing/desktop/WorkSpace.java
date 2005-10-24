@@ -116,8 +116,8 @@ public class WorkSpace extends JPanel {
 		Action lastAction = null;
 		Dimension DIM = new Dimension(24,24);
 
- 		for(Enumeration enum = buttonGroup.getElements(); enum.hasMoreElements(); ) {
-			AbstractButton origButton = (AbstractButton) enum.nextElement();
+ 		for(Enumeration enumeration = buttonGroup.getElements(); enumeration.hasMoreElements(); ) {
+			AbstractButton origButton = (AbstractButton) enumeration.nextElement();
 
  			Action action = origButton.getAction();
 

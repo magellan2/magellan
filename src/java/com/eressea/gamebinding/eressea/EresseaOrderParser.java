@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Vector;
 
 import com.eressea.GameData;
-import com.eressea.Rules;
 import com.eressea.UnitID;
 import com.eressea.completion.OrderParser;
 import com.eressea.rules.BuildingType;

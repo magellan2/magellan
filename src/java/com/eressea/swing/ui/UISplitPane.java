@@ -18,7 +18,6 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
-import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 /**

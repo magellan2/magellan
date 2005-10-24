@@ -19,7 +19,6 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import com.eressea.Border;
 import com.eressea.Coordinate;

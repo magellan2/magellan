@@ -264,12 +264,17 @@ public class Client extends JFrame implements ShortcutListener,
 
         startWindow.progress(1, (startBundle != null) ? startBundle
                 .getString("1") : "Loading settings...");
-        Properties settings = loadSettings(settingsDirectory, "magellan.ini");
+        Properties settings = loadSettings(settingsDirectory, "magellan.ini",true);
+
+        showStatus = PropertiesHelper.getboolean(settings,"Client.ShowOrderStatus", false);
+
+        Properties completionSettings = loadSettings(settingsDirectory, "magellan_completions.ini",false);
 
         // initialize the context, this has to be very early.
         context = new MagellanContext(this);
         context.setEventDispatcher(dispatcher);
         context.setProperties(settings);
+        context.setCompletionProperties(completionSettings);
         context.init();
 
         context.setGameData(gd);
@@ -321,7 +326,7 @@ public class Client extends JFrame implements ShortcutListener,
      * @param fileName
      *            TODO: DOCUMENT ME!
      */
-    protected Properties loadSettings(File directory, String fileName) {
+    protected Properties loadSettings(File directory, String fileName, boolean checkForNew) {
         Properties settings = settings = new SelfCleaningProperties();
         // settings = new OrderedOutputProperties();
         // settings = new AgingProperties();
@@ -337,17 +342,17 @@ public class Client extends JFrame implements ShortcutListener,
             try {
                 settings.load(new BufferedInputStream(new FileInputStream(
                         settingsFile)));
+                log.info("Client.loadSettings: successfully loaded "+settingsFile);
             } catch (IOException e) {
-                log.error("Client.Client(GameData gd): Error while loading "
+                log.error("Client.loadSettings: Error while loading "
                         + settingsFile, e);
             }
         } else {
-            log
-                    .info("Client.Client(): settings file does not exist, using default values.");
+            log.info("Client.loadSettings: settings file does not exist, using default values.");
             newFile = true;
         }
 
-        if (newFile) {
+        if (checkForNew && newFile) {
             LanguageDialog ld = new LanguageDialog(settings, filesDirectory);
 
             if (ld.languagesFound()) {
@@ -360,8 +365,6 @@ public class Client extends JFrame implements ShortcutListener,
             }
         }
 
-        showStatus = PropertiesHelper.getboolean(settings,
-                "Client.ShowOrderStatus", false);
         return settings;
     }
 

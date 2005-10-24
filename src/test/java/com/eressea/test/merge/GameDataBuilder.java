@@ -5,7 +5,6 @@ import java.util.*;
 import com.eressea.*;
 import com.eressea.io.*;
 import com.eressea.rules.*;
-import com.eressea.util.*;
 
 
 public class GameDataBuilder {

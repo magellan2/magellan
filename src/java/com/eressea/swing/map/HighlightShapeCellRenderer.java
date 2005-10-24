@@ -24,7 +24,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;

@@ -16,7 +16,6 @@ package com.eressea.swing.map;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Map;
-import java.util.Properties;
 
 import com.eressea.Coordinate;
 import com.eressea.Region;

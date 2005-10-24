@@ -64,6 +64,7 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.main.MagellanContext;
 import com.eressea.swing.InternationalizedDialog;
 import com.eressea.swing.completion.CompletionGUI;
 import com.eressea.swing.completion.ListCompletionGUI;
@@ -72,6 +73,7 @@ import com.eressea.swing.completion.NoneCompletionGUI;
 import com.eressea.swing.completion.OrderEditorList;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
@@ -111,19 +113,23 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 	private int time = 150;
 
 	// self defined completion objects (mapping a name (String) to a value (String))
-	private Hashtable selfDefinedCompletions = new Hashtable();
+	private Map selfDefinedCompletions = new Hashtable();
+    private Map selfDefinedCompletions2 = new Hashtable();
+
 	protected Properties settings;
+    private Properties completionSettings;
 
 	/**
 	 * Creates new AutoCompletion
 	 *
-	 * @param settings TODO: DOCUMENT ME!
-	 * @param d TODO: DOCUMENT ME!
+	 * @param context The magellan context holding Client-Global informations
+	 * @param d EventDispatcher to connect with
 	 */
-	public AutoCompletion(Properties settings, EventDispatcher d) {
-		this.settings = settings;
-		d.addSelectionListener(this);
-		d.addGameDataListener(this);
+	public AutoCompletion(MagellanContext context) {
+		this.settings = context.getProperties();
+		this.completionSettings = context.getCompletionProperties();
+		context.getEventDispatcher().addSelectionListener(this);
+		context.getEventDispatcher().addGameDataListener(this);
 
 		editors = null;
 		completionGUIs = new Vector();
@@ -218,23 +224,33 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 			completerKeys[3][0] = 0;
 			completerKeys[3][1] = KeyEvent.VK_ESCAPE;
 		}
+        
+		selfDefinedCompletions = getSelfDefinedCompletions(settings);
+        selfDefinedCompletions2 = getSelfDefinedCompletions(completionSettings);
 
-		// load selfdefined completions
-		String s = (String) settings.get("AutoCompletion.SelfDefinedCompletions.count");
-		int completionCount = 0;
-
-		if(s != null) {
-			completionCount = Integer.parseInt(s);
-		}
-
-		for(int i = 0; i < completionCount; i++) {
-			String name = (String) settings.get("AutoCompletion.SelfDefinedCompletions.name" + i);
-			String value = (String) settings.get("AutoCompletion.SelfDefinedCompletions.value" + i);
-			selfDefinedCompletions.put(name, value);
-		}
 	}
 
-	// to choose the current GUI
+    /**
+     * read defined completions from given property file
+     * @return Map containing name to      
+     */
+	private Map getSelfDefinedCompletions(Properties aSettings) {
+	    Map result = CollectionFactory.createOrderedHashtable();
+
+        // load selfdefined completions
+        List completionNames = PropertiesHelper.getList(aSettings, "AutoCompletion.SelfDefinedCompletions.name");
+        for(int i = 0, size = completionNames.size(); i < size; i++) {
+            String name  = (String) completionNames.get(i);
+            String value = (String) aSettings.get("AutoCompletion.SelfDefinedCompletions.value" + i);
+            if(name != null && value != null) {
+                result.put(name, value);
+            }
+        }
+
+        return result;
+    }
+
+    // to choose the current GUI
 	public void loadComplete() {
 		if(completionGUIs.size() == 0) {
 			return;
@@ -916,6 +932,13 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 			retVal.add(c);
 		}
 
+        for(Iterator iter = selfDefinedCompletions2.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String value = (String) selfDefinedCompletions2.get(name);
+            Completion c = new Completion(name, value, "", 0);
+            retVal.add(c);
+        }
+
 		return retVal;
 	}
 
@@ -931,7 +954,7 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 		protected KeyTextField keyFields[];
 
 		// a copy of AutoCompletion.selfDefinedCompletions
-		private Hashtable selfDefinedCompletions;
+		private Map selfDefinedCompletions;
 
 		/**
 		 * Creates a new DetailAutoCompletionPreferencesAdapter object.
@@ -1009,7 +1032,7 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 
 			// make a copy of the self defined completions that will be
 			// written back in applyPreferences()
-			this.selfDefinedCompletions = (Hashtable) source.selfDefinedCompletions.clone();
+			this.selfDefinedCompletions = CollectionFactory.createOrderedHashtable(source.selfDefinedCompletions);
 
 			c.gridx = 0;
 			c.gridy = 5;
