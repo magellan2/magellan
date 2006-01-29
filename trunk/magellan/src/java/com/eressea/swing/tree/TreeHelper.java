@@ -38,6 +38,7 @@ import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.comparator.TaggableComparator;
 import com.eressea.util.comparator.UnitCombatStatusComparator;
+import com.eressea.util.comparator.UnitContainerOwnerComparator;
 import com.eressea.util.comparator.UnitFactionComparator;
 import com.eressea.util.comparator.UnitFactionDisguisedComparator;
 import com.eressea.util.comparator.UnitGroupComparator;
@@ -88,7 +89,8 @@ public class TreeHelper {
     
 	private static final Comparator nameComparator = new NameComparator(IDComparator.DEFAULT);
 	private static final Comparator buildingCmp = new BuildingTypeComparator(new NameComparator(IDComparator.DEFAULT));
-	private static final Comparator healthCmp = new UnitHealthComparator(null);
+	private static final Comparator shipComparator = nameComparator;
+    private static final Comparator healthCmp = new UnitHealthComparator(null);
 
     // pavkovic 2004.01.04: we dont want to sort groups by group id but name;
     // if they are sorted by id this would make tree hierarchy
@@ -126,7 +128,8 @@ public class TreeHelper {
 	public TreeNode createRegionNode(Region r, NodeWrapperFactory factory,
 											Map activeAlliances, Map unitNodes, Map buildingNodes,
 											Map shipNodes, Comparator unitSorting,
-											int treeStructure[], GameData data) {
+											int treeStructure[], GameData data, 
+											boolean sortUnderUnitParent) {
 		RegionNodeWrapper regionNodeWrapper = factory.createRegionNodeWrapper(r, 0);
 		DefaultMutableTreeNode regionNode = new DefaultMutableTreeNode(regionNodeWrapper);
 		DefaultMutableTreeNode node = null;
@@ -142,17 +145,26 @@ public class TreeHelper {
 						   unitNodes, data);
 		}
 
+                
 		// add ships
 		List sortedShips = new ArrayList(r.ships());
-		Collections.sort(sortedShips, nameComparator);
+		Collections.sort(sortedShips, shipComparator);
 		for(Iterator iter = sortedShips.iterator(); iter.hasNext(); ) {
 			Ship s = (Ship) iter.next();
-			node = new DefaultMutableTreeNode(factory.createUnitContainerNodeWrapper(s));
-			regionNode.add(node);
+            if(shipNodes == null || !shipNodes.containsKey(s.getID())) {
+                node = new DefaultMutableTreeNode(factory.createUnitContainerNodeWrapper(s));
+                if(sortUnderUnitParent && s.getOwnerUnit() != null) {
+                    DefaultMutableTreeNode unitNode = (DefaultMutableTreeNode) 
+                        unitNodes.get(s.getOwnerUnit().getID());
+                    ((DefaultMutableTreeNode) unitNode.getParent()).add(node);
+                } else {
+                    regionNode.add(node);                    
+                }
 			
-			if(shipNodes != null) {
-				shipNodes.put(s.getID(), node);
-			}
+                if(shipNodes != null) {
+                    shipNodes.put(s.getID(), node);
+                }
+            }
 		}
 
 		// add buildings
@@ -191,7 +203,6 @@ public class TreeHelper {
 	 * @param activeAlliances TODO: DOCUMENT ME!
 	 * @param unitNodes TODO: DOCUMENT ME!
 	 * @param data TODO: DOCUMENT ME!
-	 *
 	 * @return the number of persons (not units) that were added
 	 */
 	private int addUnits(DefaultMutableTreeNode mother, int treeStructure[],
@@ -251,6 +262,20 @@ public class TreeHelper {
 						unitNodes.put(tempUnit.getID(), tempNode);
 					}
 				}
+                
+                /*
+                if(curUnit.getShip() != null){
+                    Ship s = curUnit.getShip();
+                    
+                    // also add ships under parent of the current unit
+                    node = new DefaultMutableTreeNode(factory.createUnitContainerNodeWrapper(s));
+                    mother.add(node);
+            
+                    if(shipNodes != null) {
+                        shipNodes.put(s.getID(), node);
+                    }
+                }
+                */
                 
 			} else {
                 if(change(treeStructure[sortCriteria], curUnit, prevUnit)) { 

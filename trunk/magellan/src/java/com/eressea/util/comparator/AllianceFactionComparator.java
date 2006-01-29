@@ -52,15 +52,4 @@ public class AllianceFactionComparator implements Comparator {
 			return (a2 == null) ? (-1) : factionSubCmp.compare(a1.getFaction(), a2.getFaction());
 		}
 	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
-	}
 }

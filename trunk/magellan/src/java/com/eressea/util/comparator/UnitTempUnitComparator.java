@@ -110,15 +110,4 @@ public class UnitTempUnitComparator implements Comparator {
 
 		return 0;
 	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
-	}
 }

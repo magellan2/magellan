@@ -1993,6 +1993,9 @@ public class CRParser implements RulesIO, GameDataIO {
  				// new promotion level
 				unit.isHero = (Integer.parseInt(sc.argv[0]) != 0);
 				sc.getNextToken();
+ 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("weight")) {
+ 				unit.weight = Integer.parseInt(sc.argv[0]);
+ 				sc.getNextToken();
 			} else if((sc.argc == 1) && sc.argv[0].equals("COMMANDS")) {
 				// there can be only one order block for a unit, replace existing ones
 				unit.setOrders(parseStringSequence(null), false);
@@ -2138,11 +2141,17 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Schaden")) {
 				ship.damageRatio = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("cargo")) {
+				ship.cargo = Integer.parseInt(sc.argv[0]);
+				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("capacity")) {
+				ship.capacity = Integer.parseInt(sc.argv[0]);
+				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Ladung")) {
-				ship.load = Integer.parseInt(sc.argv[0]);
+				ship.deprecatedLoad = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("MaxLadung")) {
-				ship.capacity = Integer.parseInt(sc.argv[0]);
+				ship.deprecatedCapacity = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 1) && sc.argv[0].equals("EFFECTS")) {
 				ship.effects = parseStringSequence(ship.effects);

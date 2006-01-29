@@ -56,6 +56,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -1583,7 +1584,7 @@ public class Client extends JFrame implements ShortcutListener,
     }
 
     /**
-     * Called after GameData changes.
+     * Called after GameData changes. Also called via EventDispatcher thread to ensure graphical changes do occur.
      */
     private void updatedGameData() {
         updateTitleCaption();
@@ -1776,7 +1777,11 @@ public class Client extends JFrame implements ShortcutListener,
     public void setData(GameData data) {
         context.setGameData(data);
         postProcessLoadedCR(data);
-        updatedGameData();
+        
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {        
+                Client.this.updatedGameData();
+            }});
     }
 
     /**

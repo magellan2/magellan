@@ -87,15 +87,4 @@ public class UnitGroupComparator implements Comparator {
 			}
 		}
 	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
-	}
 }

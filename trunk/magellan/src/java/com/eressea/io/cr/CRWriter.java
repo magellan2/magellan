@@ -956,13 +956,23 @@ public class CRWriter extends BufferedWriter {
 			}
 		}
 
-		if(ship.load != -1) {
-			write(ship.load + ";Ladung");
+		if(ship.cargo != -1) {
+			write(ship.cargo + ";cargo");
 			newLine();
 		}
 
 		if(ship.capacity != -1) {
-			write(ship.capacity + ";MaxLadung");
+			write(ship.capacity + ";capacity");
+			newLine();
+		}
+		
+		if(ship.deprecatedLoad != -1) {
+			write(ship.deprecatedLoad + ";Ladung");
+			newLine();
+		}
+
+		if(ship.deprecatedCapacity != -1) {
+			write(ship.deprecatedCapacity + ";MaxLadung");
 			newLine();
 		}
 
@@ -1373,13 +1383,13 @@ public class CRWriter extends BufferedWriter {
 			writeQuotedTag(unit.health, "hp");
 		}
 
-		if(unit.isStarving) {
-			write("1;hunger");
+		if(unit.isHero) {
+			write("1;hero");
 			newLine();
 		}
 
-		if(unit.isHero) {
-			write("1;hero");
+		if(unit.isStarving) {
+			write("1;hunger");
 			newLine();
 		}
 
@@ -1403,6 +1413,11 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
+		if(unit.weight != -1) {
+			write(unit.weight+";weight");
+			newLine();
+		}
+		
 		if(unit.getRaceNamePrefix() != null) {
 			writeQuotedTag(unit.getRaceNamePrefix(), "typprefix");
 		}

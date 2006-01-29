@@ -63,15 +63,4 @@ public class BuildingTypeComparator implements Comparator {
 
 		return ((retVal == 0) && (subCmp != null)) ? subCmp.compare(o1, o2) : retVal;
 	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
-	}
 }

@@ -97,15 +97,27 @@ public class OpenCRAction extends MenuAction {
 				settings.setProperty("Client.lastCRSaved", fc.getSelectedFile().getAbsolutePath());
 			}
 
-			GameData data = client.loadCR(fc.getSelectedFile().getPath());
-
-			if(data != null) {
-				client.setData(data);
-				client.setReportChanged(false);
-			}
+            new Thread(new LoadCR(client,fc.getSelectedFile().getPath())).start();
 		}
 	}
 
+    private static class LoadCR implements Runnable {
+        Client client;
+        String file;
+        public LoadCR(Client client, String file) {
+            this.client = client;
+            this.file = file;
+        }
+
+        public void run() {
+            GameData data = client.loadCR(file);
+            
+            if(data != null) {
+                client.setData(data);
+                client.setReportChanged(false);
+            }
+        }
+    }
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)

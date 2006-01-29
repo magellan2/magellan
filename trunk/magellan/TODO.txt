@@ -1,18 +1,50 @@
+
+
+
 -------------------------------------------------------------------------------
-wir werden in zukunft wohl intensiv tags nutzen... ist es möglich dass das
-popup für das tag-setzen vorschläge macht? also eject1-5 zum auswählen
-anbietet? ein traum wäre es wenn es dann je nach auswahl die bereits im
-report enthaltenen tags anbietet...
-vorlage enpfinde ich mit seinem #after eher als hilfskrücke, zumal man damit
-sehr leicht tags doppelt setzt.
++Insel A
++Insel B
 
-ein weitere punkt wäre die anzeige... ändert man einen tag springt der fokus
-im baum immer ganz nach oben in der region, das stört sehr wenn man komplexe
-dinge ändert.
 
-purer luxus und sicher nicht das vordringlichste... aber mir wichtiger als ein
-taschenrechner, den viele ersehnen.
 
+
+<nodes name="ISLAND">
+  <sortby name="ISLAND/name"/>
+  <nodes name="REGION">
+    <sortby attribute="Name"/>
+    <sortby attribute="ID"/>
+    <nodes name="REGION/EINHEIT"/>
+      <groupby attribute="ejcTaggableComparator">
+        <groupby attribute="Partei/Name"/>
+          <sortby attribute="Name"/>
+          <sortby attribute="ID"/>
+      </groupby>
+    </nodes>
+  </nodes>
+</nodes>
+
+<nodes name="ISLAND">
+  <sortby name="ISLAND/name"/>
+  <nodes name="REGION">
+    <sortby attribute="Name"/>
+    <sortby attribute="ID"/>
+    <nodes name="REGION/EINHEIT"/>
+      <groupby attribute="ejcTaggableComparator">
+        <groupby attribute="Partei/Name"/>
+          <nodes="Schiff"/>
+          <sortby attribute="Name"/>
+          <sortby attribute="ID"/>
+      </groupby>
+    </nodes>
+    <nodes name="REGION/SCHIFF"/>
+    <nodes name="REGION/BURG"/>
+  </nodes>
+</nodes>
+
+public interface GameDataBlock {
+  public GameDataBlock getBlock(String blockname);
+  public String getAttribute(String attrname);
+}
 
 -------------------------------------------------------------------------------
 Sortierung nach Tagwechsel korrigieren!

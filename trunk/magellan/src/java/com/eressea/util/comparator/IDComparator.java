@@ -39,14 +39,4 @@ public class IDComparator implements Comparator {
 		return ((Unique) o1).getID().compareTo(((Unique) o2).getID());
 	}
 
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o) {
-		return false;
-	}
 }

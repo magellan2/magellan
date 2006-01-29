@@ -2698,8 +2698,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// Ladung
 		if(loadNode != null) {
-			String strLoad = (s.load != -1) ? Integer.toString(s.load)
-											: weightNumberFormat.format(new Float(load / 100.0F));
+			int cargo = s.getCargo();
+			if(cargo == -1) {
+				cargo = load;
+			}
+			
+			String strLoad = weightNumberFormat.format(new Float(cargo / 100.0F));
 
 			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
 

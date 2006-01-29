@@ -81,6 +81,9 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/** The real race of the (daemon) unit */
 	public Race realRace = null;
 
+	/** The weight in silver */
+	public int weight = -1;
+	
 	/** an object encapsulation  the orders of this unit as <tt>String</tt> objects */
 	protected Orders ordersObject = new Orders();
 
@@ -1754,7 +1757,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 
 	/**
 	 * Returns the weight of a unit with the specified number of persons, their weight and the
-	 * specified items in GE  100.
+	 * specified items in silver.
 	 *
 	 * @param persons TODO: DOCUMENT ME!
 	 * @param personWeight TODO: DOCUMENT ME!
@@ -1780,11 +1783,22 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
+	 * @return true if weight is well known and NOT evaluated by Magellan
+	 */
+	public boolean isWeightWellKnown() {
+		return weight != -1;
+	}
+	
+	/**
 	 * Returns the overall weight of this unit (persons and items) in GE  100.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getWeight() {
+		if(weight != -1) {
+			return weight;
+		}
+		
 		if(cache == null) {
 			cache = new Cache();
 		}
@@ -2363,7 +2377,11 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		if(curUnit.auraMax != -1) {
 			newUnit.auraMax = curUnit.auraMax;
 		}
-
+		
+		if(curUnit.weight != -1) {
+			newUnit.weight = curUnit.weight;
+		}
+		
 		if(curUnit.getBuilding() != null) {
 			newUnit.setBuilding(newGD.getBuilding(curUnit.getBuilding().getID()));
 		}

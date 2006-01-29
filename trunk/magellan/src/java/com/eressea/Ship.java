@@ -41,11 +41,23 @@ public class Ship extends UnitContainer implements HasRegion {
 	/** The ratio to which degree this ship is damaged. Values range from 0 to 100. */
 	public int damageRatio = 0;
 
-	/** The weight of the units and items on this ship in GE. */
-	public int load = -1;
+	/** The weight of the units and items on this ship in GE. 
+	 * @deprecated
+	 */
+	public int deprecatedLoad = -1;
 
 	/**
 	 * The maximum payload of this ship in GE. 0 &lt;= capacity &lt;= getType().getCapacity() if
+	 * the ship is damaged.
+	 * @deprecated
+	 */
+	public int deprecatedCapacity = -1;
+
+	/** the weight of the units and items on this ship in silver */
+	public int cargo = -1;
+
+	/**
+	 * The maximum payload of this ship in silver. 0 &lt;= capacity &lt;= getType().getCapacity() if
 	 * the ship is damaged.
 	 */
 	public int capacity = -1;
@@ -104,7 +116,10 @@ public class Ship extends UnitContainer implements HasRegion {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getMaxCapacity() {
-		return (capacity != -1) ? capacity : getMaxCapacity(getShipType().getCapacity());
+		if(capacity != -1) {
+			return capacity;
+		}
+		return (deprecatedCapacity != -1) ? deprecatedCapacity : getMaxCapacity(getShipType().getCapacity());
 	}
 
 	/**
@@ -120,6 +135,11 @@ public class Ship extends UnitContainer implements HasRegion {
 										  .intValue();
 	}
 
+	public int getCargo() {
+		if(cargo != -1) return cargo;
+		return deprecatedLoad*100;
+	}
+	
 	/**
 	 * Returns the weight of all units of this ship that are not horses or carts in GE  100 based
 	 * on the modified units.
@@ -140,7 +160,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	// this is a helper function for showing inner object state
 	public String toDebugString() {
 		return "SHIP[" + "shoreId=" + shoreId + "," + "size=" + size + "," + "damageRation=" +
-			   damageRatio + "," + "load=" + load + "," + "capacity=" + capacity + "]";
+			   damageRatio + "," + "deprecatedLoad=" + deprecatedLoad + "," + "deprecatedCapacity=" + deprecatedCapacity + "]";
 	}
 
 	/**
@@ -196,16 +216,24 @@ public class Ship extends UnitContainer implements HasRegion {
 	public static void merge(GameData curGD, Ship curShip, GameData newGD, Ship newShip) {
 		UnitContainer.merge(curGD, curShip, newGD, newShip);
 
+		if(curShip.cargo != -1) {
+			newShip.cargo = curShip.cargo;
+		}
+
 		if(curShip.capacity != -1) {
 			newShip.capacity = curShip.capacity;
+		}
+
+		if(curShip.deprecatedCapacity != -1) {
+			newShip.deprecatedCapacity = curShip.deprecatedCapacity;
 		}
 
 		if(curShip.damageRatio != -1) {
 			newShip.damageRatio = curShip.damageRatio;
 		}
 
-		if(curShip.load != -1) {
-			newShip.load = curShip.load;
+		if(curShip.deprecatedLoad != -1) {
+			newShip.deprecatedLoad = curShip.deprecatedLoad;
 		}
 
 		if(curShip.getRegion() != null) {
