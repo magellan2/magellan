@@ -1007,8 +1007,8 @@ ITEM "Schild"
 RESOURCES
 1;Eisen
 
-ITEM "Rostiges Schild"
-"Rostiges Schild";name
+ITEM "Rostiger Schild"
+"Rostiger Schild";name
 "shield";category
 1;weight
 

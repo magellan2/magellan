@@ -85,15 +85,4 @@ public class SpecifiedSkillTypeSkillComparator implements Comparator {
 
 		return retVal;
 	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
-	}
 }

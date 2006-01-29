@@ -77,14 +77,14 @@ public class ShipCellRenderer extends ImageCellRenderer {
 					Ship s = (Ship) iter.next();
 
 					if(shipInformations[s.shoreId + 1] == null) {
-						shipInformations[s.shoreId + 1] = new ShipInformation(s.capacity,
+						shipInformations[s.shoreId + 1] = new ShipInformation(s.deprecatedCapacity,
 																			  s.getType().getName());
 					}
 
 					ShipInformation actShip = shipInformations[s.shoreId + 1];
 
-					if(actShip.capacity < s.capacity) {
-						actShip.capacity = s.capacity;
+					if(actShip.capacity < s.deprecatedCapacity) {
+						actShip.capacity = s.deprecatedCapacity;
 						actShip.typeName = s.getType().getName();
 					}
 				}

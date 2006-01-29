@@ -370,6 +370,7 @@ public class UnitContextMenu extends JPopupMenu {
 		String key = null;
         Collection keys = CollectionFactory.createHashSet();
         Collection values = CollectionFactory.createHashSet();
+        Collection keyUnits = CollectionFactory.createHashSet();
         
         {
             Collection regions = CollectionFactory.createHashSet();
@@ -381,6 +382,7 @@ public class UnitContextMenu extends JPopupMenu {
                 Region r = (Region) iter.next();
                 for(Iterator iter2 = r.units().iterator(); iter2.hasNext(); ) {
                     Unit u = (Unit) iter2.next();
+                    keyUnits.add(u);
                     keys.addAll(u.getTagMap().keySet());
                     values.addAll(u.getTagMap().values());
                 }
@@ -393,10 +395,25 @@ public class UnitContextMenu extends JPopupMenu {
 
 		if((key != null) && (key.length() > 0)) {
             String value = null;
-            List sortedValues = CollectionFactory.createArrayList(values);
-            Collections.sort(sortedValues);
+            
+            Collection keyValues = CollectionFactory.createHashSet();
+            for(Iterator iter = keyUnits.iterator(); iter.hasNext(); ) {
+            	Unit u = (Unit) iter.next();
+            	Object v = u.getTag(key);
+            	if(v!=null) {
+            		keyValues.add(v);
+            	}
+            }
 
-            value = showInputDialog(getString("addtag.tagvalue.message"),sortedValues);
+            List sortedKeyValues = CollectionFactory.createArrayList(keyValues);
+            Collections.sort(sortedKeyValues);
+                        
+//            values.removeAll(keyValues);
+//            List sortedValues = CollectionFactory.createArrayList(values);
+//            Collections.sort(sortedValues);
+//            sortedKeyValues.addAll(sortedValues);
+            
+            value = showInputDialog(getString("addtag.tagvalue.message"),sortedKeyValues);
             
             if(value != null) {
                 for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {

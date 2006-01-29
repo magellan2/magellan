@@ -101,48 +101,5 @@ public class RegionIslandComparator implements Comparator {
 				return retVal;
 			}
 		}
-
-		/*
-		int retVal = 0;
-
-		if((r1.getIsland() == null) && (r2.getIsland() != null)) {
-		    retVal = Integer.MAX_VALUE;
-		} else if((r1.getIsland() != null) && (r2.getIsland() == null)) {
-		    retVal = Integer.MIN_VALUE;
-		} else if((r1.getIsland() == null) && (r2.getIsland() == null)) {
-		    if(noIslandSubCmp != null) {
-		        retVal = noIslandSubCmp.compare(o1, o2);
-		    } else {
-		        retVal = 0;
-		    }
-		} else {
-		    if(islandCmp != null) {
-		        retVal = islandCmp.compare(r1.getIsland(), r2.getIsland());
-		    } else {
-		        retVal = r1.getIsland().compareTo(r2.getIsland());
-		    }
-
-		    if(retVal == 0) {
-		        if(sameIslandSubCmp != null) {
-		            retVal = sameIslandSubCmp.compare(o1, o2);
-		        } else {
-		            retVal = 0;
-		        }
-		    }
-		}
-
-		return retVal;
-		*/
-	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
 	}
 }

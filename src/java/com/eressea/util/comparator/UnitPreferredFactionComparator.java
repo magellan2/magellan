@@ -103,15 +103,4 @@ public class UnitPreferredFactionComparator implements Comparator {
 
 		return retVal;
 	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param o TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	public boolean equals(Object o) {
-		return false;
-	}
 }

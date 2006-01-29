@@ -1,4 +1,9 @@
+2006-01-26  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+    * add support for new tags cargo, capacity, weight
+    
 2005-10-20  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
 	* src\java\com\eressea\completion\AutoCompletion: add support for 
 	magellan_completions.ini.
 

@@ -55,15 +55,4 @@ public class SkillComparator implements Comparator {
 			return s2.getPointsPerPerson() - s1.getPointsPerPerson();
 		}
 	}
-
-	/**
-	 * Checks the Object <tt>o</tt> for equality.
-	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 *
-	 * @return <tt>false</tt>
-	 */
-	public boolean equals(Object o1) {
-		return false;
-	}
 }

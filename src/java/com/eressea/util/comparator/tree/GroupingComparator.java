@@ -13,14 +13,12 @@
 
 package com.eressea.util.comparator.tree;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * This comparator glues two comparators together. 
- * 
- * <p>
- * Note: this comparator imposes orderings that are inconsistent with equals.
- * </p>
  * 
  * <p>
  * In order to overcome the inconsistency with equals this comparator allows the introduction of a
@@ -45,6 +43,10 @@ public class GroupingComparator implements Comparator {
 		sub  = subComparator;
 	}
 
+    public GroupingComparator(Comparator mainComparator, Comparator subComparator) {
+        this(mainComparator, new GroupingComparator(subComparator, null));
+    }
+    
 	/**
 	 * Compares its two arguments. Also it returns powers of 2 to return the depth of
 	 * the underlying comparators
@@ -52,5 +54,19 @@ public class GroupingComparator implements Comparator {
 	public int compare(Object o1, Object o2) {
 		int ret = main.compare(o1,o2);
         return ret == 0 && sub != null ? sub.compare(o1,o2) : ret;
-	}
+
+    }
+    
+    public static GroupingComparator buildFromList(Comparator[] comparators) {
+        return buildFromList(Arrays.asList(comparators));
+    }
+        
+    private static GroupingComparator buildFromList(List comparators) {
+        if(comparators == null || comparators.isEmpty()) {
+            return null;
+        }
+
+        return new GroupingComparator((Comparator) comparators.remove(0), 
+                buildFromList(comparators));
+    }
 }
