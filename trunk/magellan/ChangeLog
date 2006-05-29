@@ -1,3 +1,8 @@
+2006-02-16  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+	* src/java/com/eressea/Region.java: fixed merging bug, lost 
+	information for resource amount 180, level 20 with level 21 
+	because a Unit with this information did exist.
+
 2006-01-26  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
     * add support for new tags cargo, capacity, weight

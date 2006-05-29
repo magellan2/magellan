@@ -161,10 +161,10 @@ public class EresseaPostProcessor {
 		although we actually know that the resource is available with
 		an amount of 0. Resolve this ambiguity here: */
 		if((data != null) && (data.regions() != null)) {
-			ID sproutResourceID = StringID.create("Schößlinge");
-			ID treeResourceID = StringID.create("Bäume");
-			ID mallornSproutResourceID = StringID.create("Mallornschößlinge");
-			ID mallornTreeResourceID = StringID.create("Mallorn");
+			ItemType sproutResourceID = data.rules.getItemType("Schößlinge",true);
+			ItemType treeResourceID = data.rules.getItemType("Bäume",true);
+			ItemType mallornSproutResourceID = data.rules.getItemType("Mallornschößlinge",true);
+			ItemType mallornTreeResourceID = data.rules.getItemType("Mallorn",true);
 
 			for(Iterator regionIter = data.regions().values().iterator(); regionIter.hasNext();) {
 				Region region = (Region) regionIter.next();
@@ -205,22 +205,17 @@ public class EresseaPostProcessor {
 							for(Iterator riter = region.resources().iterator(); riter.hasNext();) {
 								RegionResource rr = (RegionResource) riter.next();
 
-								if(rr.getID().equals(sproutResourceID) ||
-									   rr.getID().equals(treeResourceID) ||
-									   rr.getID().equals(mallornSproutResourceID) ||
-									   rr.getID().equals(mallornTreeResourceID) ||
-									   rr.getType().getID().equals(sproutResourceID) ||
-									   rr.getType().getID().equals(treeResourceID) ||
-									   rr.getType().getID().equals(mallornSproutResourceID) ||
-									   rr.getType().getID().equals(mallornTreeResourceID)) {
-									cleanupSet.add(rr.getID());
-									cleanupSet.add(rr.getType().getID());
+								if(rr.getType().equals(sproutResourceID) ||
+									   rr.getType().equals(treeResourceID) ||
+									   rr.getType().equals(mallornSproutResourceID) ||
+									   rr.getType().equals(mallornTreeResourceID)) {
+									cleanupSet.add(rr.getType());
 								}
 							}
 
 							for(Iterator riter = cleanupSet.iterator(); riter.hasNext();) {
-								ID id = (ID) riter.next();
-								region.removeResource(id);
+								ItemType type = (ItemType) riter.next();
+								region.removeResource(type);
 							}
 						}
 
@@ -231,8 +226,7 @@ public class EresseaPostProcessor {
 							// add new resource
 							if(region.getResource(mallornSproutResourceID) == null) {
 								RegionResource res = new RegionResource(LongID.create(mallornSproutResourceID.hashCode()),
-																		data.rules.getItemType(mallornSproutResourceID,
-																							   true));
+																		mallornSproutResourceID);
 								res.setAmount(region.sprouts);
 								region.addResource(res);
 							}
@@ -243,8 +237,7 @@ public class EresseaPostProcessor {
 							// add new resource
 							if(region.getResource(sproutResourceID) == null) {
 								RegionResource res = new RegionResource(LongID.create(sproutResourceID.hashCode()),
-																		data.rules.getItemType(sproutResourceID,
-																							   true));
+																		sproutResourceID);
 								res.setAmount(region.sprouts);
 								region.addResource(res);
 							}
@@ -262,8 +255,7 @@ public class EresseaPostProcessor {
 						// add new resource
 						if(region.getResource(mallornTreeResourceID) == null) {
 							RegionResource res = new RegionResource(LongID.create(mallornTreeResourceID.hashCode()),
-																	data.rules.getItemType(mallornTreeResourceID,
-																						   true));
+																	mallornTreeResourceID);
 							res.setAmount(region.trees);
 							region.addResource(res);
 						}
@@ -275,8 +267,7 @@ public class EresseaPostProcessor {
 						if(data.rules != null) {
 							if(region.getResource(treeResourceID) == null) {
 								RegionResource res = new RegionResource(LongID.create(treeResourceID.hashCode()),
-																		data.rules.getItemType(treeResourceID,
-																							   true));
+																		treeResourceID);
 								res.setAmount(region.trees);
 								region.addResource(res);
 							}

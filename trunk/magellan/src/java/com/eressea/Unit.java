@@ -1790,7 +1790,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 	
 	/**
-	 * Returns the overall weight of this unit (persons and items) in GE  100.
+	 * Returns the overall weight of this unit (persons and items) in silver
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1814,12 +1814,12 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * Returns the maximum payload in GE  100 of this unit when it travels by horse. Horses, carts
+	 * Returns the maximum payload in silver of this unit when it travels by horse. Horses, carts
 	 * and persons are taken into account for this calculation. If the unit has a sufficient skill
 	 * in horse riding but there are too many carts for the horses, the weight of the additional
 	 * carts are also already considered.
 	 *
-	 * @return the payload in GE  100, CAP_NO_HORSES if the unit does not possess horses or
+	 * @return the payload in silver, CAP_NO_HORSES if the unit does not possess horses or
 	 * 		   CAP_UNSKILLED if the unit is not sufficiently skilled in horse riding to travel on
 	 * 		   horseback.
 	 */
@@ -1829,13 +1829,13 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * Returns the maximum payload in GE  100 of this unit when it travels on foot. Horses, carts
+	 * Returns the maximum payload in silver of this unit when it travels on foot. Horses, carts
 	 * and persons are taken into account for this calculation. If the unit has a sufficient skill
 	 * in horse riding but there are too many carts for the horses, the weight of the additional
 	 * carts are also already considered. The calculation also takes into account that trolls can
 	 * tow carts.
 	 *
-	 * @return the payload in GE  100, CAP_UNSKILLED if the unit is not sufficiently skilled in
+	 * @return the payload in silver, CAP_UNSKILLED if the unit is not sufficiently skilled in
 	 * 		   horse riding to travel on horseback.
 	 */
 	public int getPayloadOnFoot() {
@@ -1843,7 +1843,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * Returns the weight of all items of this unit that are not horses or carts in GE  100.
+	 * Returns the weight of all items of this unit that are not horses or carts in silver
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -1852,7 +1852,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * Returns the weight of all items of this unit that are not horses or carts in GE  100 based
+	 * Returns the weight of all items of this unit that are not horses or carts in silver based
 	 * on the modified items.
 	 *
 	 * @return TODO: DOCUMENT ME!
@@ -1897,7 +1897,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * Returns the overall weight (persons, items) of this unit in GE  100 based on the modified
+	 * Returns the overall weight (persons, items) of this unit in silver based on the modified
 	 * items and persons.
 	 *
 	 * @return TODO: DOCUMENT ME!

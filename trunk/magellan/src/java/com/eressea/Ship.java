@@ -111,7 +111,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Returns the maximum capacity with respect to  damages of the ship
+	 * Returns the maximum capacity with respect to  damages of the ship in silver
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -119,7 +119,7 @@ public class Ship extends UnitContainer implements HasRegion {
 		if(capacity != -1) {
 			return capacity;
 		}
-		return (deprecatedCapacity != -1) ? deprecatedCapacity : getMaxCapacity(getShipType().getCapacity());
+		return (deprecatedCapacity != -1) ? deprecatedCapacity*100 : getMaxCapacity(getShipType().getCapacity()*100);
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 	
 	/**
-	 * Returns the weight of all units of this ship that are not horses or carts in GE  100 based
+	 * Returns the weight of all units of this ship that are not horses or carts in silver based
 	 * on the modified units.
 	 *
 	 * @return TODO: DOCUMENT ME!

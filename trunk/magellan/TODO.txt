@@ -1,5 +1,17 @@
+EINHEITSBOTSCHAFTEN
 
+Der Block verschwindet. Stattdessen wird die Partei in ihren Botschaften
+einen neuen Messagetyp haben, der Botschaften von Einheiten an Einheiten
+enthält (unitmessage). Der Messagetyp der bisher unitmessage hiess, wird
+in regionmessage umgetauft, weil das schliesslich Botschaften an die
+Region sind.
 
+Grund ist, dass ich den Code etwas vereinfache, ein paar sprintf() calls
+loswerde, und momentan mehr Strings ins Englische übersetze.
+
+Enno.
+-- 
+/dev/wd0: Kein Weltraum links auf dem Gerät.
 
 -------------------------------------------------------------------------------
 +Insel A

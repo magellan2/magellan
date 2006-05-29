@@ -100,7 +100,7 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 																 "Ship has no crew!"));
 		}
 
-		if(s.getModifiedLoad() > (s.getMaxCapacity() * 100)) {
+		if(s.getModifiedLoad() > (s.getMaxCapacity())) {
 			return Collections.singletonList(new CriticizedError(s.getRegion(), s, this,
 																 "Ship is overloaded!"));
 		}

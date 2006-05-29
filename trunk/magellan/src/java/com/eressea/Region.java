@@ -363,8 +363,7 @@ public class Region extends UnitContainer {
 
 		// pavkovic 2002.05.21: If some resources have an amount zero, we ignore it
 		if(resource.getAmount() != 0) {
-			this.resources.put(resource.getID(), resource);
-			this.resources.put(resource.getType().getID(), resource);
+			this.resources.put(resource.getType(), resource);
 		}
 
 		// 		if(log.isDebugEnabled()) {
@@ -385,7 +384,7 @@ public class Region extends UnitContainer {
 	 * 		   region.
 	 */
 	public RegionResource removeResource(RegionResource r) {
-		return this.removeResource(r.getID());
+		return this.removeResource(r.getType());
 	}
 
 	/**
@@ -395,17 +394,12 @@ public class Region extends UnitContainer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public RegionResource removeResource(ID id) {
+	public RegionResource removeResource(ItemType type) {
 		if(this.resources == null) {
 			return null;
 		}
 
-		RegionResource ret = (RegionResource) this.resources.remove(id);
-
-		if(ret != null) {
-			this.resources.remove(ret.getID());
-			this.resources.remove(ret.getType().getID());
-		}
+		RegionResource ret = (RegionResource) this.resources.remove(type);
 
 		if(this.resources.isEmpty()) {
 			this.resources = null;
@@ -436,15 +430,15 @@ public class Region extends UnitContainer {
 	}
 
 	/**
-	 * Returns the resource with the numerical ID or the ID of its item type.
+	 * Returns the resource with the ID of its item type.
 	 *
 	 * @param id TODO: DOCUMENT ME!
 	 *
 	 * @return the resource object or null if no resource with the specified ID exists in this
 	 * 		   region.
 	 */
-	public RegionResource getResource(ID id) {
-		return (this.resources != null) ? (RegionResource) this.resources.get(id) : null;
+	public RegionResource getResource(ItemType type) {
+		return (this.resources != null) ? (RegionResource) this.resources.get(type) : null;
 	}
 
 	/**
@@ -1409,7 +1403,7 @@ public class Region extends UnitContainer {
 		if(!curRegion.resources().isEmpty()) {
 			for(Iterator iter = curRegion.resources().iterator(); iter.hasNext();) {
 				RegionResource curRes = (RegionResource) iter.next();
-				RegionResource newRes = newRegion.getResource(curRes.getID());
+				RegionResource newRes = newRegion.getResource(curRes.getType());
 
 				try {
 					/**
@@ -1441,11 +1435,11 @@ public class Region extends UnitContainer {
 		if((newRegion.resources != null) && !newRegion.resources.isEmpty()) {
 			for(Iterator iter = newRegion.resources.values().iterator(); iter.hasNext();) {
 				RegionResource newRes = (RegionResource) iter.next();
-				RegionResource curRes = curRegion.getResource(newRes.getID());
+				RegionResource curRes = curRegion.getResource(newRes.getType());
 
 				if(curRes == null) {
 					// check wheather talent is good enogh that it should be seen!
-					// Keep in mind, that the units are not jet merged (Use those of curRegion)
+					// Keep in mind, that the units are not yet merged (Use those of curRegion)
 					boolean found = false;
 
 					for(Iterator i = curRegion.units().iterator(); i.hasNext() && !found;) {
@@ -1470,8 +1464,11 @@ public class Region extends UnitContainer {
 
 					if(found) {
 						// enforce this information to be taken!
-						newRes.setSkillLevel(newRes.getSkillLevel() + 1);
-						newRes.setAmount(-1);
+						if(newRes.getSkillLevel() == -1 && newRes.getAmount() == -1) {
+							// but only if we don't have other informations.
+							newRes.setSkillLevel(newRes.getSkillLevel() + 1);
+							newRes.setAmount(-1);
+						}
 					}
 				}
 			}

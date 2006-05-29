@@ -2707,7 +2707,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
 
-			String strCap = Integer.toString(s.getMaxCapacity());
+			String strCap = weightNumberFormat.format(new Float(s.getMaxCapacity() / 100.0F));
 
 			if(log.isDebugEnabled()) {
 				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(strCap " +

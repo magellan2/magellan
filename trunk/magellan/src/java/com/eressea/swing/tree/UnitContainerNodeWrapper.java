@@ -63,7 +63,7 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 */
 	public String toString() {
 		if(showFreeLoad && uc instanceof Ship) {
-			int free = ((Ship) uc).getMaxCapacity()*100 - ((Ship) uc).getModifiedLoad();
+			int free = ((Ship) uc).getMaxCapacity() - ((Ship) uc).getModifiedLoad();
 			String strFree = String.valueOf(free/100F);
 			return uc.toString() + ": "+ strFree;
  		} else {
