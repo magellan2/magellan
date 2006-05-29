@@ -192,17 +192,16 @@ public class RegionResource implements Unique {
 		/* the constructor enforces a valid id and type, so we do not
 		 need to set them here */
 		if(sameTurn) {
-			if(curRes.getSkillLevel() >= newRes.getSkillLevel()) {
+			// only add higher skill level if amount is well known
+			if(curRes.getSkillLevel() >= newRes.getSkillLevel() && curRes.getAmount() != -1) {
 				newRes.setSkillLevel(curRes.getSkillLevel());
 				newRes.setAmount(curRes.getAmount());
 			}
 		} else {
-			if(curRes.getAmount() != -1) {
-				newRes.setAmount(curRes.getAmount());
-			}
-
-			if(curRes.getSkillLevel() != -1) {
+			if(curRes.getAmount() != -1 && newRes.getSkillLevel() == -1) {
+//			if(curRes.getSkillLevel() != -1 && curRes.getAmount() != -1) {
 				newRes.setSkillLevel(curRes.getSkillLevel());
+				newRes.setAmount(curRes.getAmount());
 			}
 		}
 	}

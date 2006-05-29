@@ -2504,7 +2504,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			c.insets.left = 10;
 			c.fill = GridBagConstraints.NONE;
 			c.weightx = 0.0;
-			this.add(chkSortShipUnderUnitParent);
+			this.add(chkSortShipUnderUnitParent, c);
 
 			c.insets.left = 0;
 			c.anchor = GridBagConstraints.CENTER;
