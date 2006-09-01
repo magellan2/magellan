@@ -2709,6 +2709,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 			String strCap = weightNumberFormat.format(new Float(s.getMaxCapacity() / 100.0F));
 
+			// mark overloading with (!!!)
+			String overLoad = "";
+			if (s.getModifiedLoad()>s.getMaxCapacity()){
+				overLoad = " (!!!)";
+			} 
+			
 			if(log.isDebugEnabled()) {
 				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(strCap " +
 						  strCap + ")");
@@ -2722,7 +2728,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																			   : " ") + "/ " +
 																			  strCap + " " +
 																			  getString("node.weightunits"),
-																			  "beladung"));
+																			  "beladung") + overLoad);
 		}
 
 		// Kommentare

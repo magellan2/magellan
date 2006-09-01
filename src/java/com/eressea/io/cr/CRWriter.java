@@ -380,11 +380,14 @@ public class CRWriter extends BufferedWriter {
 	public void writeVersion(GameData world) throws IOException {
 		write("VERSION 64");
 		newLine();
-
-		if(world.getLocale() != null) {
-			writeQuotedTag(world.getLocale().toString(), "locale");
+		
+		// The Echecker of German Atlantis has problems with the locale line
+		// so we check the game name
+		if (!world.name.startsWith("GAV")){
+			if(world.getLocale() != null) {
+				writeQuotedTag(world.getLocale().toString(), "locale");
+			}
 		}
-
 		if(world.noSkillPoints) {
 			write("1;noskillpoints");
 			newLine();

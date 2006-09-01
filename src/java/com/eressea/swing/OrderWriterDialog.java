@@ -902,6 +902,10 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			mailMessage = new MailMessage(mailHost);
 			mailMessage.from(sender);
 			mailMessage.to(recipient);
+			// added by Fiete 2006-08-28
+			// support for header field: date
+			// takes the new date(), formats it and appends the header
+			mailMessage.setDate();
 			mailMessage.setHeader("Content-Type", "text/plain; charset=" +
 								  FileType.DEFAULT_ENCODING);
 

@@ -323,6 +323,19 @@ public class JECheck extends Reader {
 		// <filename>:<faction>:<factionid>
 		// To fake the old behaviour we simulate the "first"-line of echeck <= 4.1.4
 		//
+		
+		// 2006.08.30 fiete: echeck may produce error messages....
+		// we will try to just skip these messages
+		// actuel example with version 4.3.2-3: 
+		// Fehler in Datei meldungen.txt Zeile 13: `BEHIND'
+		// Error in file meldungen.txt line 13: `BEHIND'
+		// yes, both languages
+		
+		while (line.startsWith("Fehler") || line.startsWith("Error")){
+			line = getLine(in);
+		}
+		
+		
 		if(line.indexOf(":faction:") == -1) {
 			line += getLine(in);
 		}
@@ -590,6 +603,12 @@ public class JECheck extends Reader {
 
 			if((verStart > 0) && (verEnd > verStart)) {
 				version = line.substring(verStart, verEnd);
+				// Fiete: problems wirth version 4.3.2-3, build 2-3 cannot convert to int
+				// solution: ignore -3 asuming, only in build number a "-" will occure
+				int verEnd2 = version.indexOf("-");
+				if (verEnd2>1) {
+					version = version.substring(0, verEnd2);
+				}
 				v = new Version(version, ".");
 			}
 		} catch(Exception e) {
