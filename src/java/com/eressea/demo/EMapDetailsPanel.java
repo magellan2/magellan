@@ -1344,19 +1344,40 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								 Collection expandableNodes) {
 		Map skills = CollectionFactory.createHashtable();
 
-		// key: racename (string), Value: Integer-Object containing number of persons of that race
+//		 key: racename (string), Value: Integer-Object containing number of persons of that race
 		Map races = CollectionFactory.createHashtable();
-
+		Map races_modified = CollectionFactory.createHashtable();
+		
+		// Fiete: calculate weight and modified wight within this loop
+		float uWeight = 0;
+		float modUWeight = 0;
+		
+		
+		
 		for(Iterator iter = units.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
+			
+			// weight (Fiete)
+			Float actUWeight = new Float(u.getWeight() / 100.0F);
+			uWeight += actUWeight.floatValue();
+			
+			Float actModUWeight= new Float(u.getModifiedWeight() / 100.0F);
+			modUWeight += actModUWeight.floatValue();
+			
 			Integer number = (Integer) races.get(u.getRaceName(data));
+			Integer number_modified = (Integer) races_modified.get(u.getRaceName(data));
 			int personCount = u.getPersons();
-
+			int personCount_modified = u.getModifiedPersons();
+			
 			if(number != null) {
 				personCount += number.intValue();
 			}
+			if(number_modified != null) {
+				personCount_modified += number_modified.intValue();
+			}
 
 			races.put(u.getRaceName(data), new Integer(personCount));
+			races_modified.put(u.getRaceName(data), new Integer(personCount_modified));
 
 			for(Iterator i = u.getSkills().iterator(); i.hasNext();) {
 				Skill skill = (Skill) i.next();
@@ -1377,9 +1398,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		for(Iterator iter = races.keySet().iterator(); iter.hasNext();) {
 			String race = (String) iter.next();
 			int i = ((Integer) races.get(race)).intValue();
-			parent.add(createSimpleNode(i + " " + race, "person"));
+			int i_modified = ((Integer) races_modified.get(race)).intValue();
+			if (i_modified==i){
+				parent.add(createSimpleNode(i + " " + race, "person"));
+			} else {
+				parent.add(createSimpleNode(i + " (" + i_modified + ") " + race, "person"));
+			}
 		}
 
+		// weight (Fiete)
+		String text = getString("node.totalweight") + ": " + weightNumberFormat.format(uWeight);
+
+		if(uWeight != modUWeight) {
+			text += (" (" + weightNumberFormat.format(modUWeight) + ")");
+		}
+
+		text += (" " + getString("node.weightunits"));
+		parent.add(createSimpleNode(text, "gewicht"));
 		// categorized items
 		Collection catNodes = unitsTools.addCategorizedUnitItems(units, parent, null, null,
 																 true, nodeWrapperFactory);
@@ -2484,7 +2519,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		int load = 0;
 
 		//int modLoad = 0;
-		DefaultMutableTreeNode loadNode = null;
 		DefaultMutableTreeNode n = null;
 		DefaultMutableTreeNode m = null;
 		int sailingSkillAmount = 0;
@@ -2537,11 +2571,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				   s.getOwnerUnit().race.getID().equals(EresseaRaceConstants.R_MEERMENSCHEN)) {
 				rangeString += (" + 1 (" + s.getOwnerUnit().race.getName() + ")");
 			}
-
-			parent.add(createSimpleNode(rangeString, "radius"));
-			loadNode = new DefaultMutableTreeNode();
-			parent.add(loadNode);
-
+			
 			if(s.damageRatio > 0) {
 				int absolute = new BigDecimal(s.damageRatio * s.size).divide(new BigDecimal(100),
 																			 BigDecimal.ROUND_UP)
@@ -2549,8 +2579,55 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				parent.add(createSimpleNode(getString("node.damage") + ": " + s.damageRatio +
 											"% / " + absolute, "damage"));
 			}
+			// Fiete rework: Load and Overload
+			int cargo = s.getCargo();
+			if(cargo == -1) {
+				cargo = load;
+			}
+			
+			String strLoad = weightNumberFormat.format(new Float(cargo / 100.0F));
+
+			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
+
+			String strCap = weightNumberFormat.format(new Float(s.getMaxCapacity() / 100.0F));
+
+			// mark overloading with (!!!) (Fiete)
+			String overLoad = "";
+			if (s.getModifiedLoad()>s.getMaxCapacity()){
+				overLoad = " (!!!)";
+			} 
+			
+			if(log.isDebugEnabled()) {
+				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(strCap " +
+						  strCap + ")");
+			}
+
+			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +
+																			  ": " + strLoad +
+																			  ((!strModLoad.equals(strLoad))
+																			   ? (" (" +
+																			   strModLoad + ") ")
+																			   : " ") + "/ " +
+																			  strCap + " " +
+																			  getString("node.weightunits") + overLoad,
+																			  "beladung"));
+			parent.add(n);
+			// explizit node for overloading a ship
+			if (s.getModifiedLoad()>s.getMaxCapacity()) {
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +
+						 ": " +
+						 getString("node.overloadedby") +
+						 weightNumberFormat.format(new Float((s.getModifiedLoad() - s.getMaxCapacity()) / 100.0F)) +
+						 " " +
+						 getString("node.weightunits"),
+						 "warnung"));
+				parent.add(n);
+			} 
 		}
 
+		
+		
+		
 		// Besitzer
 		SkillType sailingSkillType = data.rules.getSkillType(StringID.create("Segeln"), true);
 
@@ -2695,41 +2772,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				parent.add(new DefaultMutableTreeNode(new ShipRoutingPlanerButton(s)));
 			}
 		}
-
-		// Ladung
-		if(loadNode != null) {
-			int cargo = s.getCargo();
-			if(cargo == -1) {
-				cargo = load;
-			}
-			
-			String strLoad = weightNumberFormat.format(new Float(cargo / 100.0F));
-
-			String strModLoad = weightNumberFormat.format(new Float(s.getModifiedLoad() / 100.0F));
-
-			String strCap = weightNumberFormat.format(new Float(s.getMaxCapacity() / 100.0F));
-
-			// mark overloading with (!!!)
-			String overLoad = "";
-			if (s.getModifiedLoad()>s.getMaxCapacity()){
-				overLoad = " (!!!)";
-			} 
-			
-			if(log.isDebugEnabled()) {
-				log.debug("outer ship state: " + s.getShipType().getCapacity() + "(strCap " +
-						  strCap + ")");
-			}
-
-			loadNode.setUserObject(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.load") +
-																			  ": " + strLoad +
-																			  ((!strModLoad.equals(strLoad))
-																			   ? (" (" +
-																			   strModLoad + ") ")
-																			   : " ") + "/ " +
-																			  strCap + " " +
-																			  getString("node.weightunits"),
-																			  "beladung") + overLoad);
-		}
+		
 
 		// Kommentare
 		appendComments(s, parent, expandableNodes);
