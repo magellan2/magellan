@@ -87,16 +87,19 @@ public class InfoDlg extends InternationalizedDialog {
             icon = new ImageIcon(image);
             magellanImage.setIcon(icon);
         }
-		magellanImage.setPreferredSize(new java.awt.Dimension(400, 200));
-		magellanImage.setMinimumSize(new java.awt.Dimension(400, 200));
+		// magellanImage.setPreferredSize(new java.awt.Dimension(400, 200));
+		// magellanImage.setMinimumSize(new java.awt.Dimension(400, 200));
 		magellanImage.setText("");
 		//magellanImage.setBackground(new Color(213, 169, 131));
-		magellanImage.setMaximumSize(new java.awt.Dimension(400, 200));
+		// magellanImage.setMaximumSize(new java.awt.Dimension(400, 200));
         
-        jPanel.add(jPanelNORTH,BorderLayout.NORTH);
-        jPanelNORTH.add(magellanImage, BorderLayout.WEST);
+        // jPanel.add(jPanelNORTH,BorderLayout.NORTH);
+        // jPanelNORTH.add(magellanImage, BorderLayout.WEST);
+        jPanelNORTH.add(magellanImage, BorderLayout.NORTH);
+        //jPanel.add(jPanelNORTH,BorderLayout.NORTH);
 
-		String text = getString("infotext");
+		// String text = getString("infotext");
+        String text = getString("infotext") + "Magellan " + VersionInfo.getVersion();
 
 
 		jTextArea1.setWrapStyleWord(true);
@@ -106,7 +109,10 @@ public class InfoDlg extends InternationalizedDialog {
 		jTextArea1.setText(text);
 
 		jPanelNORTH.add(new JScrollPane(jTextArea1), BorderLayout.CENTER);
-
+		jPanel.add(jPanelNORTH,BorderLayout.NORTH);
+		
+		jPanel.setPreferredSize(new java.awt.Dimension(400,600));
+		
 		getContentPane().add(jPanel);
         
 
