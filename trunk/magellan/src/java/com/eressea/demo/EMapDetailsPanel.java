@@ -1187,8 +1187,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		if(parties.size() > 0) {
-			DefaultMutableTreeNode guardRoot = new DefaultMutableTreeNode(getString("node.guarded") +
-																		  ": ");
+			// DefaultMutableTreeNode guardRoot = new DefaultMutableTreeNode(getString("node.guarded") + ": ");
+			// Fiete 20060911: added support for "bewacht" - icon
+			DefaultMutableTreeNode guardRoot = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.guarded") +
+					  ": ",
+					  "bewacht"));
+			
 			parent.add(guardRoot);
 			expandableNodes.add(new NodeWrapper(guardRoot, "EMapDetailsPanel.RegionGuardExpanded"));
 
@@ -1724,6 +1728,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		// health state
 		if(u.health != null) {
+			
+			// Fiete 20060910
+			// Error here: the hp-string is not translated in the cr
+			// so u.health = german
+			/**
 			String verw = data.getTranslation("verwundet");
 			String sverw = data.getTranslation("schwer verwundet");
 			String ersch = data.getTranslation("erschöpft");
@@ -1736,8 +1745,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			} else if(u.health.equals(ersch)) {
 				hicon = "erschoepft";
 			}
-
+			
 			parent.add(createSimpleNode(getString("node.health") + ": " + u.health, hicon));
+			*/
+			parent.add(createSimpleNode(getString("node.health") + ": " + data.getTranslation(u.health), u.health));
 		}
 
 		// guard state
@@ -1872,7 +1883,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																									 weightNumberFormat.format(max) +
 																									 " " +
 																									 getString("node.weightunits"),
-																									 "fuss"));
+																									 "ladfuss"));
 				appendUnitCapacityByItems(capacityNode, u, maxOnFoot - modLoad);
 
 				if(capacityNode.getChildCount() > 0) {
@@ -1911,7 +1922,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																									 weightNumberFormat.format(max) +
 																									 " " +
 																									 getString("node.weightunits"),
-																									 "reiten"));
+																									 "ladpferd"));
 				appendUnitCapacityByItems(capacityNode, u, maxOnHorse - modLoad);
 
 				if(capacityNode.getChildCount() > 0) {
@@ -2345,7 +2356,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		DefaultMutableTreeNode n = null;
 		DefaultMutableTreeNode m = null;
-
+		
+		// Fiete 20060910
+		// added support for wahrerTyp
+		if (b.getTrueBuildingType()!=null){
+			n = createSimpleNode(getString(b.getTrueBuildingType()),
+					 "warnung");
+			parent.add(n);
+		}
+		
+		
 		// Typ
 		n = createSimpleNode(getString("node.type") + ": " + b.getType().getName(),
 							 b.getType().getID().toString());

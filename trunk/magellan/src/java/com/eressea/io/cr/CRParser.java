@@ -2186,6 +2186,9 @@ public class CRParser implements RulesIO, GameDataIO {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Name")) {
 				bld.setName(sc.argv[0]);
 				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("wahrerTyp")) {
+				bld.setTrueBuildingType(sc.argv[0]);
+				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Typ")) {
 				BuildingType type = world.rules.getBuildingType(StringID.create(sc.argv[0]), true);
 				bld.setType(type);

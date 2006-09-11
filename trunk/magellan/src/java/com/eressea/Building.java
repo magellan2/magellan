@@ -27,6 +27,8 @@ public class Building extends UnitContainer implements HasRegion {
 
 	/** Costs for the building. Could depend on size, so don't put it into the UnitContType. */
 	private int cost = 0;
+	
+	private String trueBuildingType = null; 
 
 	/**
 	 * Creates the Object for a building.
@@ -113,6 +115,32 @@ public class Building extends UnitContainer implements HasRegion {
 	public Region getRegion() {
 		return region;
 	}
+	
+	/**
+	 * Sets the trueBuildingType which es not realy a type but
+	 * just a String
+	 * only occurance now "Traumschlößchen",wahrerTyp
+	 * Fiete 20060910
+	 * 
+	 * @param trueBuildingType  as string
+	 */
+	
+	public void setTrueBuildingType(String trueBuildingType){
+		this.trueBuildingType = trueBuildingType;
+	}
+	/**
+	 * Gets the trueBuildingType which es not realy a type but
+	 * just a String
+	 * only occurance now "Traumschlößchen",wahrerTyp
+	 * Fiete 20060910
+	 * 
+	 * 
+	 * @return String = trueBuildingType
+	 */
+	public String getTrueBuildingType() {
+		return this.trueBuildingType;
+	}
+	
 
 	/**
 	 * Merges buildings. The new one get the name, comments etc. from the current one, effects etc.
@@ -140,6 +168,13 @@ public class Building extends UnitContainer implements HasRegion {
 		if(curBuilding.getSize() != -1) {
 			newBuilding.setSize(curBuilding.getSize());
 		}
+		
+		// Fiete 20060910
+		// added support for wahrerTyp
+		if (curBuilding.getTrueBuildingType()!=null) {
+			newBuilding.setTrueBuildingType(curBuilding.getTrueBuildingType());
+		}
+		
 	}
 
 	/**
@@ -148,6 +183,12 @@ public class Building extends UnitContainer implements HasRegion {
 	 * @return the Building object as string.
 	 */
 	public String toString() {
-		return getName() + " (" + id + "), " + this.getType() + " (" + this.getSize() + ")";
+		// Fiete 20060910
+		// added support for wahrer Typ
+		if (this.trueBuildingType==null){
+			return getName() + " (" + id + "), " + this.getType() + " (" + this.getSize() + ")";
+		} else {
+			return this.trueBuildingType + ": " + getName() + " (" + id + "), " + this.getType() + " (" + this.getSize() + ")";
+		}
 	}
 }
