@@ -652,8 +652,16 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 		for(Iterator iter = shipsCounter.keySet().iterator(); iter.hasNext();) {
 			UnitContainerType shipType = (UnitContainerType) iter.next();
+			/**
+			 * Fiete 20060911
 			m = new DefaultMutableTreeNode(shipType.getName() + ": " +
 										   ((List) shipsCounter.get(shipType)).size());
+			*/
+			// Fiete 20060911: added support for shiptypeicons
+			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(shipType.getName() + ": " +
+					   ((List) shipsCounter.get(shipType)).size(),
+					   shipType.getName()));
+			
 			n.add(m);
 
 			for(Iterator i = ((List) shipsCounter.get(shipType)).iterator(); i.hasNext();) {

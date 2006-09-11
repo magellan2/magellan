@@ -43,6 +43,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.eressea.demo.Client;
+import com.eressea.util.VersionInfo;
 
 /**
  * DOCUMENT ME!
@@ -57,6 +58,7 @@ public class StartWindow extends JWindow {
 	protected JLabel imageLabel;
 	protected JProgressBar progress;
 	protected JTextPane text;
+	protected JTextPane versionText;
 	protected static final JFrame parent = new JFrame();
 
 	/**
@@ -172,7 +174,35 @@ public class StartWindow extends JWindow {
 		text.setForeground(foreground);
 		text.setBackground(background);
 
-		cont.add(text, BorderLayout.SOUTH);
+		// cont.add(text, BorderLayout.SOUTH);
+		cont.add(text);
+		
+		// Fiete 20060911: trying to add Version info to start screen (bottom)
+		String version = VersionInfo.getVersion();
+		
+		if (version == null) {
+			version = "version not available";
+		}
+		
+		StyledDocument styledVersion = new DefaultStyledDocument();
+
+		MutableAttributeSet setVersion = new SimpleAttributeSet();
+		StyleConstants.setFontSize(setVersion, 12);
+		StyleConstants.setBold(setVersion, true);
+
+		try {
+			styledVersion.insertString(0, version, setVersion);
+		} catch(Exception exc) {
+		}
+		versionText = new JTextPane(styledVersion);
+		
+		versionText.setEditable(false);
+
+		versionText.setForeground(foreground);
+		versionText.setBackground(background);
+
+		
+		cont.add(versionText, BorderLayout.SOUTH);
 
 		// make all same length
 		Dimension prefDim;
@@ -202,6 +232,23 @@ public class StartWindow extends JWindow {
 			}
 		}
 
+		prefDim = versionText.getPreferredSize();
+
+		if(prefDim.width != prefwidth) {
+			prefDim.width = prefwidth;
+			versionText.setPreferredSize(prefDim);
+			versionText.setSize(prefDim);
+
+			// try to change height
+			try {
+				Rectangle rect = versionText.modelToView(styledVersion.getLength());
+				prefDim.height = rect.y + rect.height;
+				versionText.setPreferredSize(prefDim);
+			} catch(Exception exc) {
+			}
+		}
+		
+		
 		pack();
 
 		Toolkit t = getToolkit();
