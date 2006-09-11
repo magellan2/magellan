@@ -345,6 +345,14 @@ public class UnitNodeWrapper implements CellObject2, SupportsClipboard, Supports
 			names.add(new GraphicsElement(null, null, "hero"));
 		}
 
+		// Fiete Test: temps, die gefüllt werden..haben geburtstag
+		// Fiete removed 20060911 (creator wishes to use the icon for the item only
+		/**
+		if (u.getPersons()==0 && u.getModifiedPersons()>0){
+			names.add(new GraphicsElement(null, null, "geburtstag"));
+		}
+		*/
+		
 		if(isShowingContainerIcons()) {
 			if(unit.getBuilding() != null && unit.getBuilding().getType() != null) {
 				ge = new GraphicsElement(null, null, unit.getBuilding().getType().getID().toString());
