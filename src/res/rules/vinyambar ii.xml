@@ -1,0 +1,1348 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--<!DOCTYPE rules SYSTEM "rules.dtd">-->
+
+<Rules game="eressea"
+       version="41"
+       revision="$Id: eressea.xml 82 2004-01-04 12:22:09Z pavkovic $">
+  <OptionCategory
+     id="REPORT"
+     order="true"
+     bitmask="0"/>
+  <OptionCategory
+     id="COMPUTER"
+     order="true"
+     bitmask="1"/>
+  <OptionCategory
+     id="TEMPLATE"
+     order="true"
+     bitmask="2"/>
+  <OptionCategory
+     id="SILVERPOOL"
+     order="true"
+     bitmask="3"/>
+  <OptionCategory
+     id="STATISTICS"
+     order="true"
+     bitmask="4"/>
+  <OptionCategory
+     id="DEBUG"
+     order="false"
+     bitmask="5"/>
+  <OptionCategory
+     id="ZIPPED"
+     order="true"
+     bitmask="6"/>
+  <OptionCategory
+     id="NEWSPAPER"
+     order="false"
+     bitmask="7"/>
+  <OptionCategory
+     id="ITEMPOOL"
+     order="true"
+     bitmask="8"/>
+  <OptionCategory
+     id="ADDRESSES"
+     order="true"
+     bitmask="9"/>
+  <OptionCategory 
+     id="BZIP2" 
+     order="true" 
+     bitmask="10"/>
+  <OptionCategory 
+     id="POINTS" 
+     order="false" 
+     bitmask="11"/>
+
+  <AllianceCategory 
+     id="SILVER" 
+     bitmask="1"/>
+  <AllianceCategory 
+     id="COMBAT" 
+     bitmask="2"/>
+  <AllianceCategory 
+     id="GIVE" 
+     bitmask="8"/>
+  <AllianceCategory 
+     id="GUARD" 
+     bitmask="16"/>
+  <AllianceCategory 
+     id="FACTIONSTEALTH" 
+     bitmask="32"/>
+  <AllianceCategory 
+     id="WHATEVER" 
+     bitmask="64"/>
+  <AllianceCategory 
+     id="ALL" 
+     bitmask="123"/>
+
+  <ItemCategory
+     id="Weapons"
+     naturalorder="0"/>
+  <ItemCategory
+     id="Front"
+     parent="Weapons"
+     naturalorder="0"/>
+  <ItemCategory
+     id="Distance"
+     parent="Weapons"
+     naturalorder="1"/>
+  <ItemCategory
+     id="Ammunition"
+     parent="Weapons"
+     naturalorder="2"/>
+  <ItemCategory
+     id="Armour"
+     naturalorder="1"/>
+  <ItemCategory
+     id="Shield"
+     parent="Armour"
+     naturalorder="0"/>
+  <ItemCategory
+     id="Resources"
+     naturalorder="2"/>
+  <ItemCategory
+     id="Luxuries"
+     naturalorder="3"/>
+  <ItemCategory
+     id="Herbs"
+     naturalorder="4"/>
+  <ItemCategory
+     id="Potions"
+     naturalorder="5"/>
+  <ItemCategory
+     id="Misc"
+     naturalorder="6"/>
+
+  <SkillCategory
+     id="War"
+     naturalorder="0"/>
+  <SkillCategory
+     id="Magic"
+     naturalorder="1"/>
+  <SkillCategory
+     id="resource"
+     naturalorder="2"/>
+  <SkillCategory
+     parent="resource"
+     id="silver"
+     naturalorder="0"/>
+  <SkillCategory
+     id="build"
+     naturalorder="3"/>
+  <SkillCategory
+     id="movement"
+     naturalorder="4"/>
+  <SkillCategory
+     id="trade"
+     naturalorder="5"/>
+  <SkillCategory
+     id="Misc"
+     naturalorder="6"/>
+
+  <RegionType id="mountain" inhabitants="1000">
+    <Road>
+      <Resource type="ItemType" idref="stone" amount="251"/>
+    </Road>
+  </RegionType>
+  <RegionType id="plains" inhabitants="10000">
+    <Road>
+      <Resource type="ItemType" idref="stone" amount="51"/>
+    </Road>
+  </RegionType>
+  <RegionType id="glacier" inhabitants="100">
+    <Road>
+      <Resource type="ItemType" idref="stone" amount="251"/>
+      <Resource type="buildingtype" idref="tunnel"/>
+    </Road>
+  </RegionType>
+  <RegionType id="highland" inhabitants="4000">
+    <Road>
+      <Resource type="ItemType" idref="stone" amount="101"/>
+    </Road>
+  </RegionType>
+  <RegionType id="swamp" inhabitants="2000">
+    <Road>
+      <Resource type="BuildingType" idref="damm"/>
+      <Resource type="ItemType"     idref="stone" amount="76"/>
+    </Road>
+  </RegionType>
+  <RegionType id="desert" inhabitants="500">
+    <Road>
+	  <Resource type="BuildingType" idref="karawanserei"/>
+      <Resource type="ItemType"     idref="stone" amount="101"/>
+    </Road>
+  </RegionType>
+  <RegionType id="forest" inhabitants="10000">
+    <Road>
+      <Resource type="ItemType"     idref="stone" amount="51"/>
+    </Road>
+  </RegionType>
+  <RegionType id="Ocean" inhabitants="0"/>
+<!--  <RegionType id="Feuerwand" inhabitants="0"/>-->
+
+
+  <SkillType 
+     id="Alchemie" 
+     category="build"/>
+  <SkillType 
+     id="Armbrustschießen"
+     category="War"/>
+  <SkillType 
+     id="Ausdauer"
+     category="Misc"/>
+  <SkillType 
+     id="Bergbau"
+     category="resource"/>
+  <SkillType 
+     id="Bogenschießen" 
+     category="War"/>
+  <SkillType 
+     id="Burgenbau"
+     category="build"/>
+  <SkillType 
+     id="Handeln"
+     category="trade"/>
+  <SkillType 
+     id="Hiebwaffen"
+     category="War"/>
+  <SkillType  
+     id="Holzfällen"
+     category="resource"/>
+  <SkillType  
+     id="Katapultbedienung"
+     category="War"/>
+  <SkillType  
+     id="Kräuterkunde"
+     category="resource"/>
+  <SkillType  
+     id="Magie"
+     category="Magic"/>
+  <SkillType  
+     id="Pferdedressur"
+     category="resource"/>
+  <SkillType  
+     id="Reiten"
+     category="movement"/>
+  <SkillType  
+     id="Rüstungsbau"
+     category="build"/>
+  <SkillType  
+     id="Schiffbau"
+     category="build"/>
+  <SkillType  
+     id="Segeln"
+     category="movement"/>
+  <SkillType  
+     id="Spionage"
+     category="Misc"/>
+  <SkillType  
+     id="Stangenwaffen"
+     category="War"/>
+  <SkillType  
+     id="Steinbau"
+     category="resource"/>
+  <SkillType  
+     id="Steuereintreiben"
+     category="silver"/>
+  <SkillType  
+     id="Straßenbau"
+     category="build"/>
+  <SkillType  
+     id="Taktik"
+     category="War"/>
+  <SkillType  
+     id="Tarnung"
+     category="Misc"/>
+  <SkillType  
+     id="Unterhaltung"
+     category="silver"/>
+  <SkillType  
+     id="Waffenbau"
+     category="build"/>
+  <SkillType  
+     id="Wagenbau"
+     category="build"/>
+  <SkillType  
+     id="Wahrnehmung"
+     category="Misc"/>
+
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Flachwurz"
+     region="Ebene"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Würziger"
+     region="Ebene"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Eulenauge"
+     region="Ebene"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Grüner"
+     region="Wald"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Blauer"
+     region="Wald"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Elfenlieb"
+     region="Wald"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Gurgelkraut"
+     region="Sumpf"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Knotiger"
+     region="Sumpf"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Blasenmorchel"
+     region="Sumpf"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Wasserfinder"
+     region="Wüste"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Kakteenschwitz"
+     region="Wüste"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Sandfäule"
+     region="Wüste"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Windbeutel"
+     region="Hochland"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Fjordwuchs"
+     region="Hochland"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Alraune"
+     region="Hochland"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Steinbeißer"
+     region="Gebirge"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Spaltwachs"
+     region="Gebirge"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Hoehlenglimm"
+     region="Gebirge"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Eisblume"
+     region="Gletscher"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Weißer Wüterich"
+     region="Gletscher"/>
+  <Herb
+     iconname="kraeuter"
+     category="Herbs"
+     id="Schneekristall"
+     region="Gletscher"/>
+
+
+  <Race id="dwarves" weight="10" capacity="5.4">
+    <Resource type="item" idref="silver" amount="110"/>
+    <skillmod idref="Alchemie" modifer=""/>
+    <skillmod idref="Steinbau" modifier="2"/>
+    <skillmod idref="Schiffbau" modifier="-1"/>
+    <skillmod idref="Kräuterkunde" modifier="-2"/>
+    <skillmod idref="Unterhaltung" modifier="-1"/>
+    <skillmod idref="Holzfällen" modifier="-1"/>
+    <skillmod idref="Bergbau" modifier="2"/>
+    <skillmod idref="Bogenschießen" modifier="-1"/>
+    <skillmod idref="Reiten" modifier="-2"/>
+    <skillmod idref="Segeln" modifier="-2"/>
+    <skillmod idref="Pferdedressur" modifier="-2"/>
+    <skillmod idref="Rüstungsbau" modifier="2"/>
+    <skillmod idref="Waffenbau" modifier="2"/>
+    <skillmod idref="Straßenbau" modifier="2"/>
+    <skillmod idref="Tarnung" modifier="-1"/>
+    <skillmod idref="Hiebwaffen" modifier="1"/>
+    <skillmod idref="Burgenbau" modifier="2"/>
+    <skillmod idref="Magie" modifier="-2"/>
+    <skillmod idref="Steuereintreiben" modifier="1"/>
+    <skillmod idref="Katapultbedienung" modifier="2"/>
+    <skillmod idref="Handeln" modifier="1"/>
+    <skillmod idref="Taktik" modifier="1">
+      <Resource type="region" idref="Berge"/>
+    </skillmod>
+    <skillmod idref="Taktik" modifier="1">
+      <Resource type="region" idref="Gletscher"/>
+    </skillmod>
+  </Race>
+
+<!--
+<Race id="Orks" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="50"/>
+  <skillmod idref="Steinbau" modifier="1"/>
+  <skillmod idref="Schiffbau" modifier="-1"/>
+  <skillmod idref="Kräuterkunde" modifier="-2"/>
+  <skillmod idref="Unterhaltung" modifier="-2"/>
+  <skillmod idref="Alchemie" modifier="1"/>
+  <skillmod idref="Holzfällen" modifier="1"/>
+  <skillmod idref="Bergbau" modifier="1"/>
+  <skillmod idref="Segeln" modifier="-1"/>
+  <skillmod idref="Pferdedressur" modifier="-1"/>
+    <skillmod idref="Rüstungsbau" modifier="1"/>
+     <skillmod idref="Waffenbau" modifier="2"/>
+     <skillmod idref="Wagenbau" modifier="-1"/>
+     <skillmod idref="Taktik" modifier="1"/>
+     <skillmod idref="Burgenbau" modifier="1"/>
+     <skillmod idref="Magie" modifier="-1"/>
+
+     <skillmod idref="Steuereintreiben" modifier="1"/>
+     <skillmod idref="Spionage" modifier="-1"/>
+     <skillmod idref="Handeln" modifier="-3"/>
+</Race>
+<Race id="Snotlinge" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="50"/>
+  <skillmod idref="Steinbau" modifier="1"/>
+  <skillmod idref="Schiffbau" modifier="-1"/>
+  <skillmod idref="Kräuterkunde" modifier="-2"/>
+  <skillmod idref="Unterhaltung" modifier="-2"/>
+  <skillmod idref="Alchemie" modifier="1"/>
+  <skillmod idref="Holzfällen" modifier="1"/>
+  <skillmod idref="Bergbau" modifier="1"/>
+  <skillmod idref="Segeln" modifier="-1"/>
+  <skillmod idref="Pferdedressur" modifier="-1"/>
+    <skillmod idref="Rüstungsbau" modifier="1"/>
+     <skillmod idref="Waffenbau" modifier="2"/>
+     <skillmod idref="Wagenbau" modifier="-1"/>
+     <skillmod idref="Taktik" modifier="1"/>
+     <skillmod idref="Burgenbau" modifier="1"/>
+     <skillmod idref="Magie" modifier="-1"/>
+
+     <skillmod idref="Steuereintreiben" modifier="1"/>
+     <skillmod idref="Spionage" modifier="-1"/>
+     <skillmod idref="Handeln" modifier="-3"/>
+</Race>
+<Race id="Elfen" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="130"/>
+  <skillmod idref="Steinbau" modifier="-1"/>
+  <skillmod idref="Schiffbau" modifier="-1"/>
+  <skillmod idref="Kräuterkunde" modifier="2"/>
+  <skillmod idref="Alchemie" modifier="-1"/>
+  <skillmod idref="Bergbau" modifier="-2"/>
+  <skillmod idref="Bogenschießen" modifier="2"/>
+  <skillmod idref="Segeln" modifier="-1"/>
+  <skillmod idref="Pferdedressur" modifier="1"/>
+  <skillmod idref="Wahrnehmung" modifier="1"/>
+  <skillmod idref="Rüstungsbau" modifier="-1"/>
+  <skillmod idref="Straßenbau" modifier="-1"/>
+  <skillmod idref="Tarnung" modifier="1"/>
+  <skillmod idref="Burgenbau" modifier="-1"/>
+  <skillmod idref="Magie" modifier="1"/>
+  <skillmod idref="Katapultbedienung" modifier="-2"/>
+  <skillmod idref="Wahrnehmung" modifier="1">
+    <Resource type="region" idref="Wald"/>
+  </skillmod>
+  <skillmod idref="Taktik" modifier="2">
+    <Resource type="region" idref="Wald"/>
+  </skillmod>
+  <skillmod idref="Tarnung" modifier="1">
+    <Resource type="region" idref="Wald"/>
+  </skillmod>
+</Race>
+<Race id="Katzen" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="90"/>
+  <skillmod idref="Steinbau" modifier="-1"/>
+  <skillmod idref="Schiffbau" modifier="-1"/>
+  <skillmod idref="Kräuterkunde" modifier="1"/>
+  <skillmod idref="Alchemie" modifier="-1"/>
+  <skillmod idref="Bergbau" modifier="-2"/>
+  <skillmod idref="Segeln" modifier="-2"/>
+  <skillmod idref="Wahrnehmung" modifier="2"/>
+  <skillmod idref="Rüstungsbau" modifier="-1"/>
+  <skillmod idref="Straßenbau" modifier="-1"/>
+  <skillmod idref="Tarnung" modifier="1"/>
+  <skillmod idref="Burgenbau" modifier="-1"/>
+  <skillmod idref="Steuereintreiben" modifier="1"/>
+  <skillmod idref="Katapultbedienung" modifier="-1"/>
+  <skillmod idref="Spionage" modifier="2"/>
+</Race>
+<Race id="Dämonen" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="150"/>
+     <skillmod idref="Schiffbau" modifier="-1"/>
+     <skillmod idref="Kräuterkunde" modifier="-3"/>
+     <skillmod idref="Unterhaltung" modifier="-3"/>
+     <skillmod idref="Alchemie" modifier="2"/>
+     <skillmod idref="Holzfällen" modifier="1"/>
+     <skillmod idref="Stangenwaffen" modifier="1"/>
+     <skillmod idref="Reiten" modifier="-1"/>
+     <skillmod idref="Segeln" modifier="-1"/>
+     <skillmod idref="Pferdedressur" modifier="-3"/>
+     <skillmod idref="Wahrnehmung" modifier="1"/>
+	 <skillmod idref="Waffenbau" modifier="1"/>
+     <skillmod idref="Wagenbau" modifier="-2"/>
+     <skillmod idref="Tarnung" modifier="1"/>
+     <skillmod idref="Taktik" modifier="-1"/>
+     <skillmod idref="Hiebwaffen" modifier="1"/>
+     <skillmod idref="Magie" modifier="1"/>
+     <skillmod idref="Steuereintreiben" modifier="1"/>
+     <skillmod idref="Handeln" modifier="-3"/>
+</Race>
+<Race id="Halblinge" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="80"/>
+  <skillmod idref="Schiffbau" modifier="-1"/>
+  <skillmod idref="Kräuterkunde" modifier="2"/>
+  <skillmod idref="Unterhaltung" modifier="1"/>
+  <skillmod idref="Bergbau" modifier="1"/>
+  <skillmod idref="Stangenwaffen" modifier="-1"/>
+  <skillmod idref="Bogenschießen" modifier="-1"/>
+  <skillmod idref="Reiten" modifier="-1"/>
+  <skillmod idref="Segeln" modifier="-2"/>
+  <skillmod idref="Pferdedressur" modifier="-1"/>
+  <skillmod idref="Wahrnehmung" modifier="1"/>
+  <skillmod idref="Wagenbau" modifier="2"/>
+  <skillmod idref="Straßenbau" modifier="1"/>
+  <skillmod idref="Tarnung" modifier="1"/>
+  <skillmod idref="Hiebwaffen" modifier="-1"/>
+  <skillmod idref="Burgenbau" modifier="1"/>
+  <skillmod idref="Steuereintreiben" modifier="-1"/>
+  <skillmod idref="Katapultbedienung" modifier="-1"/>
+  <skillmod idref="Armbrustschießen" modifier="1"/>
+  <skillmod idref="Spionage" modifier="1"/>
+  <skillmod idref="Handeln" modifier="2"/>
+</Race>
+<Race id="Menschen" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="75"/>
+     <skillmod idref="Schiffbau" modifier="1"/>
+     <skillmod idref="Kräuterkunde" modifier="-1"/>
+     <skillmod idref="Segeln" modifier="1"/>
+     <skillmod idref="Handeln" modifier="1"/>
+</Race>
+<Race id="Goblins" weight="6" capacity="4.4">
+  <Resource type="item" idref="silver" amount="40"/>
+     <skillmod idref="Schiffbau" modifier="-2"/>
+     <skillmod idref="Unterhaltung" modifier="-1"/>
+     <skillmod idref="Alchemie" modifier="1"/>
+     <skillmod idref="Bergbau" modifier="1"/>
+     <skillmod idref="Segeln" modifier="-2"/>
+     <skillmod idref="Wagenbau" modifier="-1"/>
+     <skillmod idref="Straßenbau" modifier="-2"/>
+     <skillmod idref="Tarnung" modifier="1"/>
+     <skillmod idref="Taktik" modifier="-2"/>
+     <skillmod idref="Burgenbau" modifier="1"/>
+     <skillmod idref="Magie" modifier="-1"/>
+     <skillmod idref="Katapultbedienung" modifier="1"/>
+     <skillmod idref="Handeln" modifier="-1"/>
+</Race>
+-->
+<Race id="insects" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="80"/>
+     <skillmod idref="Kräuterkunde" modifier="1"/>
+     <skillmod idref="Unterhaltung" modifier="-2"/>
+     <skillmod idref="Holzfällen" modifier="1"/>
+     <skillmod idref="Bergbau" modifier="1"/>
+     <skillmod idref="Stangenwaffen" modifier="1"/>
+     <skillmod idref="Bogenschießen" modifier="-2"/>
+     <skillmod idref="Reiten" modifier="-3"/>
+     <skillmod idref="Pferdedressur" modifier="-3"/>
+     <skillmod idref="Wahrnehmung" modifier="1"/>
+     <skillmod idref="Rüstungsbau" modifier="2"/>
+     <skillmod idref="Straßenbau" modifier="-1"/>
+     <skillmod idref="Tarnung" modifier="-1"/>
+     <skillmod idref="Taktik" modifier="-1"/>
+     <skillmod idref="Hiebwaffen" modifier="-1"/>
+     <skillmod idref="Burgenbau" modifier="2"/>
+     <skillmod idref="Armbrustschießen" modifier="1"/>
+     <skillmod idref="Handeln" modifier="-1"/>
+  <!-- TODO: Gletscher, Sumpf, Wüste!-->
+</Race>
+<!--
+<Race id="Trolle" weight="20" capacity="10.8">
+  <Resource type="item" idref="silver" amount="90"/>
+     <skillmod idref="Steinbau" modifier="2"/>
+     <skillmod idref="Schiffbau" modifier="-1"/>
+     <skillmod idref="Kräuterkunde" modifier="-1"/>
+     <skillmod idref="Unterhaltung" modifier="-1"/>
+     <skillmod idref="Bergbau" modifier="2"/>
+     <skillmod idref="Bogenschießen" modifier="-2"/>
+     <skillmod idref="Reiten" modifier="-2"/>
+     <skillmod idref="Segeln" modifier="-1"/>
+     <skillmod idref="Pferdedressur" modifier="-1"/>
+     <skillmod idref="Wahrnehmung" modifier="-1"/>
+     <skillmod idref="Rüstungsbau" modifier="2"/>
+     <skillmod idref="Straßenbau" modifier="2"/>
+     <skillmod idref="Tarnung" modifier="-3"/>
+     <skillmod idref="Taktik" modifier="-1"/>
+     <skillmod idref="Hiebwaffen" modifier="1"/>
+     <skillmod idref="Burgenbau" modifier="2"/>
+     <skillmod idref="Steuereintreiben" modifier="1"/>
+     <skillmod idref="Katapultbedienung" modifier="2"/>
+     <skillmod idref="Spionage" modifier="-3"/>
+</Race>
+<Race id="Meermenschen" weight="10" capacity="5.4">
+  <Resource type="item" idref="silver" amount="80"/>
+     <skillmod idref="Schiffbau" modifier="3"/>
+     <skillmod idref="Bergbau" modifier="-2"/>
+     <skillmod idref="Segeln" modifier="3"/>
+     <skillmod idref="Rüstungsbau" modifier="-1"/>
+     weight="10"
+     <skillmod idref="Straßenbau" modifier="-1"/>
+     <skillmod idref="Burgenbau" modifier="-1"/>
+     recruitmentcosts="80"
+     capacity="5.4"
+     <skillmod idref="Handeln" modifier="2"/>
+</Race>
+<Race id="Untote" weight="10"/>
+-->
+<ItemType
+     weight="0.01"
+     category="Misc"
+     id="Silber"/>
+<ItemType
+     weight="1"
+     category="Luxuries"
+     id="Juwel">
+     <Resource idref="Silber" amount="7"/>  </ItemType>
+<ItemType
+     weight="2"
+     category="Luxuries"
+     id="Weihrauch">
+     <Resource idref="Silber" amount="4"/>  </ItemType>
+<ItemType
+     weight="2"
+     category="Luxuries"
+     id="Balsam">
+     <Resource idref="Silber" amount="4"/>  </ItemType>
+<ItemType
+     weight="2"
+     category="Luxuries"
+     id="Gewürz">
+     <Resource idref="Silber" amount="5"/>  </ItemType>
+<ItemType
+     weight="2"
+     category="Luxuries"
+     id="Myrrhe">
+     <Resource idref="Silber" amount="5"/>  </ItemType>
+<ItemType
+     weight="3"
+     category="Luxuries"
+     id="Oel">
+     <Resource idref="Silber" amount="3"/>  </ItemType>
+<ItemType
+     weight="3"
+     category="Luxuries"
+     id="Seide">
+     <Resource idref="Silber" amount="6"/>  </ItemType>
+<!--
+<ItemType
+     weight="5"
+     category="Resources"
+     id="Eisen"
+     makeskill="Bergbau"/>
+<ItemType
+     weight="2"
+     category="Resources"
+     id="Laen"
+     makeskill="Bergbau"/>
+<ItemType
+     weight="5"
+     category="Resources"
+     id="Holz"
+     makeskill="Holzfällen"/>
+<ItemType
+     weight="5"
+     category="Resources"
+     id="Mallorn"
+     makeskill="Holzfällen"/>
+<ItemType
+     weight="60"
+     category="Resources"
+     id="Stein"
+     makeskill="Steinbau"/>
+<ItemType
+     weight="50"
+     category="Resources"
+     id="Pferd"
+     makeskilllevel="1"
+     makeskill="Pferdedressur"/>
+<ItemType
+     weight="0"
+     category="Resources"
+     id="Kräuter"
+     makeskilllevel="1"
+     makeskill="Kräuterkunde"/>
+<ItemType
+     weight="0"
+     category="Resources"
+     id="Samen"
+     makeskilllevel="1"
+     makeskill="Kräuterkunde"/>
+<ItemType
+     weight="40"
+     category="Resources"
+     id="Wagen"
+     Holz="5"
+     makeskilllevel="1"
+     makeskill="Wagenbau"/>
+<ItemType
+     weight="120"
+     category="Distance weapons"
+     id="Katapult"
+     useskill="Katapultbedienung"
+     Holz="10"
+     makeskilllevel="5"
+     makeskill="Wagenbau"/>
+<ItemType
+     Stein="1"
+     weight="10"
+     category="Ammunition"
+     id="Katapultmunition"
+     useskill="Katapultbedienung"
+     makeskilllevel="3"
+     makeskill="Steinbau"/>
+<ItemType
+     weight="1"
+     category="Weapons"
+     id="Schwert"
+     useskill="Hiebwaffen"
+     makeskilllevel="3"
+     Eisen="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="1"
+     category="Weapons"
+     id="Schartiges"
+     useskill="Hiebwaffen"/>
+<ItemType
+     iconname="hiebwaffen"
+     weight="1"
+     category="Weapons"
+     id="Runenschwert"
+     useskill="Hiebwaffen"
+     <Resource idref="Silber" amount="3000"/>  </ItemType>
+<ItemType
+     Laen="1"
+     weight="1"
+     category="Weapons"
+     id="Laenschwert"
+     useskill="Hiebwaffen"
+     makeskilllevel="8"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="2"
+     category="Weapons"
+     id="Bihänder"
+     useskill="Hiebwaffen"
+     makeskilllevel="4"
+     Eisen="2"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="1"
+     category="Weapons"
+     id="Speer"
+     useskill="Stangenwaffen"
+     Holz="1"
+     makeskilllevel="2"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="2"
+     category="Weapons"
+     id="Lanze"
+     useskill="Stangenwaffen"
+     Holz="2"
+     makeskilllevel="2"
+     makeskill="Waffenbau"/>
+<ItemType
+     iconname="hellebarde"
+     weight="2"
+     category="Weapons"
+     id="Hellebarde"
+     useskill="Stangenwaffen"
+     Holz="1"
+     makeskilllevel="3"
+     Eisen="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="2"
+     category="Weapons"
+     id="Kriegsaxt"
+     useskill="Hiebwaffen"
+     Holz="1"
+     makeskilllevel="3"
+     Eisen="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="1"
+     category="Distance weapons"
+     id="Armbrust"
+     useskill="Armbrustschießen"
+     Holz="1"
+     makeskilllevel="3"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="1"
+     category="Distance weapons"
+     id="Bogen"
+     useskill="Bogenschießen"
+     Holz="1"
+     makeskilllevel="2"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="1"
+     category="Distance weapons"
+     id="Elfenbogen"
+     useskill="Bogenschießen"
+     makeskilllevel="5"
+     Mallorn="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     iconname="bogen"
+     weight="1"
+     category="Distance weapons"
+     id="Mallornbogen"
+     useskill="Bogenschießen"
+     makeskilllevel="5"
+     Mallorn="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     iconname="armbrust"
+     weight="1"
+     category="Distance weapons"
+     id="Mallornarmbrust"
+     useskill="Armbrustschießen"
+     makeskilllevel="5"
+     Mallorn="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="2"
+     category="Weapons"
+     id="Mallornlanze"
+     useskill="Stangenwaffen"
+     makeskilllevel="5"
+     Mallorn="2"
+     makeskill="Waffenbau"/>
+<ItemType
+     weight="1"
+     category="Weapons"
+     id="Mallornspeer"
+     useskill="Stangenwaffen"
+     makeskilllevel="5"
+     Mallorn="1"
+     makeskill="Waffenbau"/>
+<ItemType
+     iconname="ruestungen"
+     weight="2"
+     category="Armour"
+     id="Kettenhemd"
+     makeskilllevel="3"
+     Eisen="3"
+     makeskill="Rüstungsbau"/>
+<ItemType
+     weight="2"
+     category="Armour"
+     id="Rostiges"/>
+<ItemType
+     Laen="3"
+     weight="1"
+     category="Armour"
+     id="Laenkettenhemd"
+     makeskilllevel="9"
+     makeskill="Rüstungsbau"/>
+<ItemType
+     weight="4"
+     category="Armour"
+     id="Plattenpanzer"
+     makeskilllevel="4"
+     Eisen="5"
+     makeskill="Rüstungsbau"/>
+<ItemType
+     weight="1"
+     category="Shield"
+     id="Schild"
+     makeskilllevel="2"
+     Eisen="1"
+     makeskill="Rüstungsbau"/>
+<ItemType
+     weight="1"
+     category="Shield"
+     id="Rostiges"/>
+<ItemType
+     Laen="1"
+     category="Shield"
+     id="Laenschild"
+     makeskilllevel="7"
+     makeskill="Rüstungsbau"/>
+<ItemType
+     iconname="ruestungen"
+     category="Armour"
+     id="Mantel der Unverletzlichkeit"/>
+     <Resource idref="Silber" amount="3000"/>
+</ItemType>
+<ItemType
+     Blauer="1"
+     Windbeutel="1"
+     category="Potions"
+     id="Siebenmeilentee"
+     makeskilllevel="2"
+     makeskill="Alchemie"/>
+<ItemType
+     category="Potions"
+     id="Goliathwasser"
+     Fjordwuchs="1"
+     Gurgelkraut="1"
+     makeskilllevel="2"
+     makeskill="Alchemie"/>
+<ItemType
+     Knotiger="1"
+     category="Potions"
+     id="Wasser"
+     Elfenlieb="1"
+     makeskilllevel="2"
+     makeskill="Alchemie"/>
+<ItemType
+     Flachwurz="1"
+     category="Potions"
+     id="Trank"
+     Fjordwuchs="1"
+     makeskilllevel="2"
+     makeskill="Alchemie"/>
+<ItemType
+     Würziger="1"
+     Alraune="1"
+     category="Potions"
+     id="Schaffenstrunk"
+     Spaltwachs="1"
+     makeskilllevel="4"
+     makeskill="Alchemie"/>
+<ItemType
+     Würziger="1"
+     Blauer="1"
+     category="Potions"
+     id="Wundsalbe"
+     makeskilllevel="4"
+     Weißer="1"
+     makeskill="Alchemie"/>
+<ItemType
+     Blauer="1"
+     category="Potions"
+     id="Bauernblut"
+     Fjordwuchs="1"
+     Hoehlenglimm="1"
+     makeskilllevel="4"
+     Bauer="1"
+     makeskill="Alchemie"/>
+<ItemType
+     Windbeutel="1"
+     category="Potions"
+     id="Gehirnschmalz"
+     Gurgelkraut="1"
+     Steinbeißer="1"
+     makeskilllevel="6"
+     makeskill="Alchemie"
+     Wasserfinder="1"/>
+<ItemType
+     category="Potions"
+     id="Dumpfbackenbrot"
+     Fjordwuchs="1"
+     Grüner="1"
+     Hoehlenglimm="1"
+     Eulenauge="1"
+     makeskilllevel="6"
+     makeskill="Alchemie"/>
+<ItemType
+     Eisblume;="1"
+     category="Potions"
+     id="Nestwärme"
+     Grüner="1"
+     Spaltwachs="1"
+     Kakteenschwitz="1"
+     makeskilllevel="6"
+     makeskill="Alchemie"/>
+<ItemType
+     Blauer="1"
+     Knotiger="1"
+     Sandfäule="1"
+     category="Potions"
+     id="Pferdeglück"
+     Kakteenschwitz="1"
+     makeskilllevel="6"
+     makeskill="Alchemie"/>
+<ItemType
+     Flachwurz="1"
+     Alraune="1"
+     Sandfäule="1"
+     category="Potions"
+     id="Berserkerblut"
+     makeskilllevel="6"
+     Weißer="1"
+     makeskill="Alchemie"/>
+<ItemType
+     Alraune="1"
+     category="Potions"
+     id="Bauernlieb"
+     Elfenlieb="1"
+     Schneekristall="1"
+     Steinbeißer="1"
+     makeskilllevel="8"
+     Blasenmorchel="1"
+     makeskill="Alchemie"/>
+<ItemType
+     Drachenblut="1"
+     Windbeutel="1"
+     category="Potions"
+     id="Elixier"
+     Grüner="1"
+     Elfenlieb="1"
+     makeskilllevel="8"
+     Blasenmorchel="1"
+     makeskill="Alchemie"
+     Wasserfinder="1"/>
+<ItemType
+     Windbeutel="1"
+     category="Potions"
+     id="Heiltrank"
+     Elfenlieb="1"
+     Gurgelkraut="1"
+     Eisblume="1"
+     Spaltwachs="1"
+     makeskilllevel="8"
+     makeskill="Alchemie"/>
+<ItemType
+     iconname="traenke"
+     category="Potions"
+     id="Phiole"/>
+<ItemType
+     category="Misc"
+     id="Kraeuterbeutel"/>
+<ItemType
+     category="Misc"
+     id="Silberbeutel"/>
+<ItemType
+     category="Misc"
+     id="Silberkassette"/>
+<ItemType
+     weight="1"
+     category="Misc"
+     id="Trollhorn"/>
+-->
+<ShipType
+     range="2"
+     size="5"
+     id="Boot"
+     sailorlevel="2"
+     captainlevel="1"
+     capacity="50"
+     level="1"/>
+<!--
+<ShipType
+     range="3"
+     size="50"
+     id="Langboot"
+     sailorlevel="10"
+     captainlevel="1"
+     capacity="500"
+     level="1"/>
+<ShipType
+     range="5"
+     size="100"
+     id="Drachenschiff"
+     sailorlevel="50"
+     captainlevel="2"
+     capacity="1000"
+     level="2"/>
+<ShipType
+     range="5"
+     size="250"
+     id="Karavelle"
+     sailorlevel="30"
+     captainlevel="3"
+     capacity="3000"
+     level="3"/>
+<ShipType
+     range="7"
+     size="200"
+     id="Trireme"
+     sailorlevel="120"
+     captainlevel="4"
+     capacity="2000"
+     level="4"/>
+-->
+<CastleType
+     minsize="1"
+     Stein="1"
+     maxsize="1"
+     wage="11"
+     id="Grundmauern"
+     tradetax="0"
+     level="1"/>
+
+<!--
+<CastleType
+     minsize="2"
+     Stein="1"
+     maxsize="9"
+     wage="11"
+     id="Handelsposten"
+     tradetax="0"
+     level="1"/>
+<CastleType
+     minsize="10"
+     Stein="1"
+     maxsize="49"
+     wage="12"
+     id="Befestigung"
+     tradetax="6"
+     level="2"/>
+<CastleType
+     minsize="50"
+     Stein="1"
+     maxsize="249"
+     wage="13"
+     id="Turm"
+     tradetax="12"
+     level="3"/>
+<CastleType
+     minsize="250"
+     Stein="1"
+     maxsize="1249"
+     wage="14"
+     id="Burg"
+     tradetax="18"
+     level="4"/>
+<CastleType
+     minsize="1250"
+     Stein="1"
+     maxsize="6249"
+     wage="15"
+     id="Festung"
+     tradetax="24"
+     level="5"/>
+<CastleType
+     minsize="6250"
+     Stein="1"
+     wage="16"
+     id="Zitadelle"
+     tradetax="30"
+     level="6"/>
+-->
+
+<BuildingType
+     Stein="2"
+     id="Leuchtturm"
+     Holz="1"
+     level="3"
+     Eisen="1"
+     Silber="100"/>
+<!--
+<BuildingType
+
+     Stein="5"
+     Bergbau="1"
+     id="Bergwerk"
+     Holz="10"
+     level="4"
+     Eisen="1"
+     Silber="250"/>
+<BuildingType
+     Steinbau="1"
+     Stein="1"
+     id="Steinbruch"
+     Holz="5"
+     level="2"
+     Eisen="1"
+     Silber="250"/>
+<BuildingType
+     Stein="5"
+     Holzfaellen="1"
+     id="Saegewerk"
+     Holz="5"
+     level="3"
+     Eisen="3"
+     Silber="200"/>
+<BuildingType
+     Stein="5"
+     id="Schmiede"
+     Holz="5"
+     level="3"
+     Eisen="2"
+     Silber="200"/>
+<BuildingType
+     Stein="2"
+     id="Pferdezucht"
+     Holz="4"
+     level="2"
+     Eisen="1"
+     Silber="100"/>
+<BuildingType
+     Stein="5"
+     maxsize="25"
+     id="Hafen"
+     Holz="5"
+     level="3"
+     Silber="250"/>
+<BuildingType
+     Stein="4"
+     id="Taverne"
+     Holz="3"
+     level="2"
+     Eisen="1"
+     Silber="200"/>
+<BuildingType
+     Stein="5"
+     maxsize="25"
+     id="Akademie"
+     Holz="5"
+     level="3"
+     Eisen="1"
+     Silber="500"/>
+<BuildingType
+     Stein="5"
+     maxsize="50"
+     Laen="2"
+     id="Magierturm"
+     Holz="3"
+     Magie="1"
+     level="5"
+     Mallorn="2"
+     Eisen="3"
+     Silber="500"/>
+<BuildingType
+     Stein="1"
+     maxsize="10"
+     Pferd="2"
+     id="Karawanserei"
+     Holz="5"
+     level="2"
+     Eisen="1"
+     Silber="500"/>
+<BuildingType
+     Stein="5"
+     maxsize="50"
+     id="Damm"
+     Holz="10"
+     level="4"
+     Eisen="1"
+     Silber="500"/>
+<BuildingType
+     Stein="10"
+     maxsize="100"
+     id="Tunnel"
+     Holz="5"
+     level="6"
+     Eisen="1"
+     Silber="300"/>
+<BuildingType
+     Stein="1"
+     id="Monument"
+     Holz="1"
+     level="4"
+     Eisen="1"
+     Silber="400"/>
+-->
+  <Translations language="de">
+    <translate 
+      from="TEMPLATE" 
+        to="VORLAGE"/>
+    <translate 
+      from="SILVERPOOL" 
+        to="SILBERPOOL"/>
+    <translate 
+      from="STATISTICS" 
+        to="STATISTIK"/>
+    <translate 
+      from="NEWSPAPER" 
+        to="ZEITUNG"/>
+    <translate 
+      from="ITEMPOOL" 
+        to="MATERIALPOOL"/>
+    <translate 
+      from="ADDRESSES" 
+        to="ADRESSEN"/>
+    <translate 
+      from="POINTS" 
+        to="PUNKTE"/>
+    <translate 
+      from="SILVER" 
+        to="SILBER"/>
+    <translate 
+      from="COMBAT" 
+        to="KÄMPFE"/>
+    <translate 
+      from="GIVE" 
+        to="GIB"/>
+    <translate 
+      from="GUARD" 
+        to="BEWACHEN"/>
+    <translate 
+      from="FACTIONSTEALTH" 
+        to="PARTEITARNUNG"/>
+    <translate 
+      from="ALL" 
+        to="ALLES"/>
+    <translate 
+      from="Weapons" 
+        to="Waffen"/>
+    <translate 
+      from="Front" 
+        to="Front"/>
+    <translate 
+      from="Distance" 
+        to="Fern"/>
+    <translate 
+      from="Ammunition" 
+        to="Munition"/>
+    <translate 
+      from="Armour" 
+        to="Rüstung"/>
+    <translate 
+      from="Shield" 
+        to="Schild"/>
+    <translate 
+      from="Resources" 
+        to="Resourcen"/>
+    <translate 
+      from="Luxuries" 
+        to="Luxusgüter"/>
+    <translate 
+      from="Herbs" 
+        to="Kräuter"/>
+    <translate 
+      from="Misc" 
+        to="Sonstige"/>
+    <translate 
+      from="War" 
+        to="Kampf"/>
+    <translate 
+      from="Magic" 
+        to="Magie"/>
+
+
+  </Translations>
+</Rules>
