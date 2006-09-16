@@ -67,6 +67,7 @@ import com.eressea.swing.tree.UnitContainerNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.SkillStats;
+import com.eressea.util.StringFactory;
 import com.eressea.util.Units;
 import com.eressea.util.comparator.AllianceFactionComparator;
 import com.eressea.util.comparator.FactionTrustComparator;
@@ -612,8 +613,15 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 		for(Iterator iter = buildingsCounter.keySet().iterator(); iter.hasNext();) {
 			UnitContainerType buildingType = (UnitContainerType) iter.next();
-			m = new DefaultMutableTreeNode(buildingType.getName() + ": " +
-										   ((List) buildingsCounter.get(buildingType)).size());
+			// Fiete 20060916: changed to display icons instead of folders
+			// m = new DefaultMutableTreeNode(buildingType.getName() + ": " +
+			//							   ((List) buildingsCounter.get(buildingType)).size());
+			
+			String buildingIconName = StringFactory.getFactory().intern(buildingType.getID().toString());
+			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(buildingType.getName() + ": " +
+					((List) buildingsCounter.get(buildingType)).size(),
+					buildingIconName));
+			
 			n.add(m);
 
 			for(Iterator i = ((List) buildingsCounter.get(buildingType)).iterator(); i.hasNext();) {
@@ -658,9 +666,11 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 										   ((List) shipsCounter.get(shipType)).size());
 			*/
 			// Fiete 20060911: added support for shiptypeicons
+			// Fiete 20060915: get rid of english icon names...using stringfactory to get the orginal names
+			String shipIconName = StringFactory.getFactory().intern(shipType.getID().toString());
 			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(shipType.getName() + ": " +
 					   ((List) shipsCounter.get(shipType)).size(),
-					   shipType.getName()));
+					   shipIconName));
 			
 			n.add(m);
 
