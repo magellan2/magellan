@@ -1,3 +1,10 @@
+2006-09-16  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\EMapDetailsPanel.java (appendUnitInfo): 
+	display max Horses for riding and walking
+	* src\java\com\eressea\swing\FactionStatsPanel.java (updateTree): 
+	display Icons for building category in faction stats
+
 2006-09-13  Fiete  <Fiete@users.sourceforge.net>
 
 	* updated this changeLog
