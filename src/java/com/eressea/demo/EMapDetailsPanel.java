@@ -106,6 +106,7 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
+import com.eressea.gamebinding.eressea.EresseaConstants;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.UnitRelation;
@@ -1839,6 +1840,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		text += (" " + getString("node.weightunits"));
 		parent.add(createSimpleNode(text, "gewicht"));
+		
+		// Fiete 20060915: feature wish..calculate max Horses for walking and riding
+
+		int skillLevel = 0;
+		Skill s = u.getModifiedSkill(new SkillType(StringID.create("Reiten")));
+
+		if(s != null) {
+			skillLevel = s.getLevel();
+		}
+
+		int maxHorsesWalking = ((skillLevel * u.getModifiedPersons() * 4) + u.getModifiedPersons());
+		int maxHorsesRiding = (skillLevel * u.getModifiedPersons() * 2);
+		
+		text = "max: " + maxHorsesWalking + " / " + maxHorsesRiding;
+		parent.add(createSimpleNode(text, "pferd"));
 
 		// load
 		int load = u.getLoad();
