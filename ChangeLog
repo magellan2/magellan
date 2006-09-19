@@ -1,3 +1,28 @@
+2006-09-19  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\EMapDetailsPanel.java (appendGroupInfo): 
+	added Icon for Talente
+	* src\java\com\eressea\swing\tree\ItemCategoryNodeWrapper.java: 
+	added implementation of CellObject
+
+2006-09-18  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\util\Units.java (addCategorizedUnitItems): 
+	added icons for category
+	* src\java\com\eressea\swing\FactionStatsPanel.java (getStatPanel): 
+	added and named rootNode
+	(updateTree): added Icons to all categories
+
+2006-09-17  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\io\GameDataReader.java (readGameData): 
+	added list of supported FileTypes	
+	* src\java\com\eressea\io\file\FileType.java (isXMLFile): moved From GameDataReader
+	(isCRFile): moved from GameDataReader
+	(isZIPFile): added
+	(isGZIPFile): added
+	(isBZIP2File): added
+
 2006-09-16  Fiete  <Fiete@users.sourceforge.net>
 
 	* src\java\com\eressea\demo\EMapDetailsPanel.java (appendUnitInfo): 

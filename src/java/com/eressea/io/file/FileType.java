@@ -237,6 +237,68 @@ public class FileType {
 	public static final String DEFAULT_ENCODING = "iso-8859-1";
 
 	/**
+	 * Determines, whether a file is of XML filetype, moved from
+	 * com.eressea.io.GameDataReader
+	 * by Jonathan 20060917 (Fiete)
+	 *
+	 * @return true, if the file is of XML type
+	 *
+	 * @throws IOException
+	 */
+	public boolean isXMLFile() throws IOException {
+        return getInnerName().endsWith(FileType.XML);
+	}
+
+	/**
+	 * Determines, whether a file is of CR filetype, moved from
+	 * com.eressea.io.GameDataReader
+	 * by Jonathan 20060917 (Fiete)
+	 *
+	 * @return true, if the file is of CR type or of unknown type
+	 *
+	 * @throws IOException
+	 */
+	public boolean isCRFile() throws IOException {
+        /* Unknown files are treated like CR files
+         */
+        return getInnerName().endsWith(FileType.CR) || this instanceof UnknownFileType;
+	}
+
+	/**
+	 * Determines, whether a file is a ZIP filetype
+	 * by Jonathan 20060917 (Fiete)
+	 * @return true, if the file is of ZIP type
+	 *
+	 * @throws IOException
+	 */
+	public boolean isZIPFile() throws IOException {
+        return this instanceof ZipFileType;
+	}
+
+	/**
+	 * Determines, whether a file is a GZIP filetype
+	 * by Jonathan 20060917 (Fiete)
+	 * @return true, if the file is of GZIP type
+	 *
+	 * @throws IOException
+	 */
+	public boolean isGZIPFile() throws IOException {
+        return this instanceof GZipFileType;
+	}
+
+	/**
+	 * Determines, whether a file is a BZIP2 filetype
+	 * by Jonathan 20060917 (Fiete)
+	 * @return true, if the file is of BZIP2 type
+	 *
+	 * @throws IOException
+	 */
+	public boolean isBZIP2File() throws IOException {
+        return this instanceof BZip2FileType;
+	}	
+	
+	
+	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @author $author$

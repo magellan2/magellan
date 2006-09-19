@@ -34,6 +34,7 @@ import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.logging.Logger;
+import com.eressea.util.Umlaut;
 
 /**
  * A class providing various utility functions regarding units.
@@ -48,6 +49,7 @@ public class Units {
 
 	private static ItemType silberbeutel = new ItemType(StringID.create("Silberbeutel"));
 	private static ItemType silberkassette = new ItemType(StringID.create("Silberkassette"));
+	
 
 	/**
 	 * Creates a new Units object.
@@ -193,7 +195,7 @@ public class Units {
 	public Collection addCategorizedUnitItems(Collection units, DefaultMutableTreeNode parentNode,
 											  Comparator itemComparator, Comparator unitComparator,
 											  boolean showUnits, NodeWrapperFactory factory) {
-
+		
 		DefaultMutableTreeNode catNode = null;
 		Collection catNodes = CollectionFactory.createLinkedList();
 
@@ -209,8 +211,17 @@ public class Units {
 			StatItemContainer sic = (StatItemContainer) contIter.next();
 
 			if(sic.size() > 0) {
-				ItemCategoryNodeWrapper wrapper = new ItemCategoryNodeWrapper(sic.getCategory(), -1);
+				
+				String catIconName = com.eressea.util.Umlaut.convertUmlauts(sic.getCategory().getName());
+				String nodeName = getString(catIconName);
+				ItemCategoryNodeWrapper wrapper = new ItemCategoryNodeWrapper(sic.getCategory(), -1,nodeName);
+				wrapper.setIcons(catIconName);
 				catNode = new DefaultMutableTreeNode(wrapper);
+				
+				/**
+				catNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(wrapper,
+						catIconName));
+				*/
 				parentNode.add(catNode);
 				catNodes.add(catNode);
 
@@ -479,5 +490,39 @@ public class Units {
 			StatItemContainer sic = (StatItemContainer) iter.next();
 			sic.clear();
 		}
+	}
+	
+	protected String getString(String key) {
+		return Translations.getTranslation(this, key);
+	}
+	
+//	 pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
+	// it is called by reflection (we could force the implementation of an interface,
+	// this way it is more flexible.)
+	// Pls use this mechanism, so the translation files can be created automagically
+	// by inspecting all classes.
+	private static Map defaultTranslations;
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
+		if(defaultTranslations == null) {
+			defaultTranslations = CollectionFactory.createHashtable();
+			defaultTranslations.put("Waffen", "Weapons");
+			defaultTranslations.put("Front-Waffen", "Front-Weapons");
+			defaultTranslations.put("Distanz-Waffen", "Distance-Weapons");
+			defaultTranslations.put("Munition", "Ammunition");
+			defaultTranslations.put("Ruestungen", "Armour");
+			defaultTranslations.put("Schilde", "Shields");
+			defaultTranslations.put("Ressourcen", "Ressources");
+			defaultTranslations.put("Luxusgueter", "Luxuries");
+			defaultTranslations.put("Kraeuter", "Herbs");
+			defaultTranslations.put("Traenke", "Potions");
+			defaultTranslations.put("Sonstiges", "Misc");
+		}
+		return defaultTranslations;
 	}
 }
