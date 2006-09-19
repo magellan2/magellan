@@ -1,3 +1,9 @@
+2006-09-19  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
+
+	* src/java/com/eressea/io/cr/CRWriter.java: only export building
+	owners if unit shall be exported (prevent old bug that produces
+	problems in the cr). 
+
 2006-09-19  Fiete  <Fiete@users.sourceforge.net>
 
 	* src\java\com\eressea\demo\EMapDetailsPanel.java (appendGroupInfo): 
