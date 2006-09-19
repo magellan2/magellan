@@ -949,7 +949,7 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
-		if(ship.getOwnerUnit() != null) {
+		if(shallExportUnit(ship.getOwnerUnit())) {
 			write(((UnitID) ship.getOwnerUnit().getID()).intValue() + ";Kapitaen");
 			newLine();
 
@@ -1041,7 +1041,7 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
-		if(building.getOwnerUnit() != null) {
+		if(shallExportUnit(building.getOwnerUnit())) {
 			write(((UnitID) building.getOwnerUnit().getID()).intValue() + ";Besitzer");
 			newLine();
 
@@ -1255,14 +1255,18 @@ public class CRWriter extends BufferedWriter {
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
-			if(this.units != null && this.units.size()>0) {
-				if(this.units.contains(u)) {
-					writeUnit(u);
-				}
-			} else {
-				writeUnit(u);
-			}
+			writeUnit(u);
 		}
+	}
+
+	/**
+	 * 
+	 * @param u the unit to export
+	 * @return true iff units == null or empty or units contains u
+	 */
+	private boolean shallExportUnit(Unit u) {
+		return u != null && 
+			(units == null || units.isEmpty() || units.contains(u));
 	}
 
 	/**
@@ -1273,7 +1277,7 @@ public class CRWriter extends BufferedWriter {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public void writeUnit(Unit unit) throws IOException {
-		if(unit instanceof TempUnit) {
+		if(unit instanceof TempUnit || !shallExportUnit(unit)) {
 			return;
 		}
 
@@ -1362,7 +1366,7 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
-		if(unit.follows != null) {
+		if(shallExportUnit(unit.follows)) {
 			write(((UnitID) unit.follows.getID()).intValue() + ";folgt");
 			newLine();
 		}
