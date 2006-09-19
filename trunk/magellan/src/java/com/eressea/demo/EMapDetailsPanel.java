@@ -1442,7 +1442,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 
 		if(skills.size() > 0) {
-			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
+			// DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
+			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.skills"),
+				"skills"));
 			parent.add(skillsNode);
 			expandableNodes.add(new NodeWrapper(skillsNode, "EMapDetailsPanel.FactionSkillsExpanded"));
 
@@ -1567,7 +1569,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 
 			if(skills.size() > 0) {
-				n = new DefaultMutableTreeNode(getString("node.skills"));
+				// n = new DefaultMutableTreeNode(getString("node.skills"));
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.skills"),
+					"skills"));
 				parent.add(n);
 				expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.RegionSkillsExpanded"));
 
@@ -2003,7 +2007,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Collections.sort(sortedSkills, new SkillComparator());
 
 		if(!sortedSkills.isEmpty()) {
-			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
+			// DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(getString("node.skills"));
+			DefaultMutableTreeNode skillsNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.skills"),
+				"skills"));
 			parent.add(skillsNode);
 			expandableNodes.add(new NodeWrapper(skillsNode, "EMapDetailsPanel.UnitSkillsExpanded"));
 

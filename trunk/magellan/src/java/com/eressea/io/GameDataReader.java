@@ -20,7 +20,6 @@ import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.io.cr.CRParser;
 import com.eressea.io.file.FileType;
-import com.eressea.io.file.UnknownFileType;
 
 /**
  * The <code>GameDataReader</code> reads a <code>GameData</code> from a given <code>FileType</code>
@@ -47,7 +46,7 @@ public class GameDataReader {
 			throw new IOException("Unable to determine game name of file " + aFileType);
 		}
 
-		if(isXMLFile(aFileType)) {
+		if(aFileType.isXMLFile()) {
 			GameData data = readGameDataXML(aFileType, gameName);
 
 			if(data != null) {
@@ -57,14 +56,24 @@ public class GameDataReader {
 			return data;
 		}
 
-		if(isCRFile(aFileType)) {
+		if(   aFileType.isZIPFile()
+		   || aFileType.isGZIPFile()
+		   || aFileType.isBZIP2File()
+		   || aFileType.isCRFile()) {
+			
+			/*
+			 * readGameDataCR invokes method aFileType.createReader(). This method
+			 * deals wih the different treatment of different filetypes, hence we
+			 * can simply say here "all known cr types are treated the same" 
+			 * 20060917: Jonathan (Fiete) 
+			 */
 			GameData data = readGameDataCR(aFileType, gameName);
-
+			
 			if(data != null) {
-				data.postProcess();
+					data.postProcess();
 			}
-
-			return data;
+			
+				return data;
 		}
 
 		throw new IOException("Don't know how to read unknown file format in " + aFileType);
@@ -133,13 +142,5 @@ public class GameDataReader {
 		}
 
 		return rules.getGameSpecificStuff().createGameData(rules, aGameName);
-	}
-
-	private boolean isXMLFile(FileType aFileType) throws IOException {
-        return aFileType.getInnerName().endsWith(FileType.XML);
-	}
-
-	private boolean isCRFile(FileType aFileType) throws IOException {
-        return aFileType.getInnerName().endsWith(FileType.CR) || aFileType instanceof UnknownFileType;
 	}
 }
