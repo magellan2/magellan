@@ -1,3 +1,12 @@
+2006-09-20  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\swing\FactionStatsPanel.java (updateTree): 
+	added info for current and max amount of heros
+	* src\java\com\eressea\Unit.java (getRealRaceName): 
+	added function getRealRaceName to show the perfect icon
+	* src\java\com\eressea\demo\EMapDetailsPanel.java (appendUnitsInfo): 
+	unitInfo und unitsInfo now showing Icon for race
+
 2006-09-19  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/io/cr/CRWriter.java: only export building

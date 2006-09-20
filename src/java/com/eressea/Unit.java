@@ -706,6 +706,14 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		return null;
 	}
 
+	public String getRealRaceName(){
+		if (this.realRace==null) {
+			return this.race.toString();
+		} else {
+			return this.realRace.toString();
+		}
+	}
+	
 	/** A map containing all temp units created by this unit. */
 	private Map tempUnits = null;
 

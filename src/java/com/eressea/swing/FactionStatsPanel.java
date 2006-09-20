@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.lang.Math;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -266,6 +267,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		 */
 		Map specialPersons = CollectionFactory.createOrderedHashtable();
 		Collection heroes = CollectionFactory.createLinkedList();
+		int heros_count = 0;
 
 		if(factions.size() == 1) {
 			f = (Faction) factions.values().iterator().next();
@@ -302,6 +304,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					}
 					if(u.isHero) {
 						heroes.add(u);
+						heros_count += u.persons;
 					}
 
 					/**
@@ -341,53 +344,12 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		
 		rootNode.add(n);
 
-		if(!heroes.isEmpty()) {
-			// n = new DefaultMutableTreeNode(getString("node.heroes"));
-			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.heroes"),
-					"heroes"));
-			rootNode.add(n);
-
-			for(Iterator iter = heroes.iterator(); iter.hasNext(); ) {
-				Unit u = (Unit) iter.next();
-				
-				m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u));
-				n.add(m);
-			}
-
-		}
-		
-
 		if(f != null) {
 			if(f.getType() != null) {
 				// n = new DefaultMutableTreeNode(getString("node.race") + f.getType().getName());
 				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.race") + f.getType().getName(),
 					"race"));
 				rootNode.add(n);
-			}
-
-			if(specialPersons.size() > 0) {
-				// n = new DefaultMutableTreeNode(getString("node.otherrace"));
-				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.otherrace"),
-					"persons_of_other_race"));
-				rootNode.add(n);
-
-				for(Iterator iter = specialPersons.keySet().iterator(); iter.hasNext();) {
-					Object obj = iter.next();
-					List v = (List) specialPersons.get(obj);
-					int count = 0;
-
-					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
-						count += ((Unit) iterator.next()).persons;
-					}
-
-					m = new DefaultMutableTreeNode(obj + ": " + count);
-					n.add(m);
-
-					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
-						o = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper((Unit) iterator.next()));
-						m.add(o);
-					}
-				}
 			}
 
 			if(f.spellSchool != null) {
@@ -434,15 +396,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 				rootNode.add(n);
 			}
 
-			if(f.migrants > 0) {
-				/**
-				n = new DefaultMutableTreeNode(getString("node.migrants") + f.migrants + "/" +
-											   f.maxMigrants);
-				*/
-				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.migrants") + f.migrants + "/" +
-						   f.maxMigrants,"migrants"));
-				rootNode.add(n);
-			}
+			
 
 			if(f.getRaceNamePrefix() != null) {
 				/**
@@ -454,6 +408,16 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 				rootNode.add(n);
 			}
 
+			if(f.migrants > 0) {
+				/**
+				n = new DefaultMutableTreeNode(getString("node.migrants") + f.migrants + "/" +
+											   f.maxMigrants);
+				*/
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.migrants") + f.migrants + "/" +
+						   f.maxMigrants,"migrants"));
+				rootNode.add(n);
+			}
+			
 			if((f.allies != null) && (f.allies.size() > 0)) {
 				// n = new DefaultMutableTreeNode(getString("node.alliances"));
 				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.alliances"),
@@ -481,8 +445,58 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					showAlliances(g.allies(), m);
 				}
 			}
-		}
+			if(specialPersons.size() > 0) {
+				// n = new DefaultMutableTreeNode(getString("node.otherrace"));
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.otherrace"),
+					"persons_of_other_race"));
+				rootNode.add(n);
 
+				for(Iterator iter = specialPersons.keySet().iterator(); iter.hasNext();) {
+					Object obj = iter.next();
+					List v = (List) specialPersons.get(obj);
+					int count = 0;
+
+					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
+						count += ((Unit) iterator.next()).persons;
+					}
+					String raceNameLang = com.eressea.util.Umlaut.convertUmlauts(obj.toString());
+					String iconNameEn = getString(raceNameLang);
+					if (iconNameEn.equalsIgnoreCase(raceNameLang)) {
+						m = new DefaultMutableTreeNode(obj + ": " + count);
+					} else {
+						m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj + ": " + count,
+							iconNameEn));
+					}
+					n.add(m);
+
+					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
+						o = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper((Unit) iterator.next()));
+						m.add(o);
+					}
+				}
+			}
+			
+		}
+		if(!heroes.isEmpty()) {
+			// n = new DefaultMutableTreeNode(getString("node.heroes"));
+			double maxHeros = 0;
+			long maxHeros2 = 0;
+			if (personCounter>50) {
+				maxHeros = (java.lang.Math.log(personCounter/50)/java.lang.Math.log(10)) * 20;
+				maxHeros2 = java.lang.Math.round(java.lang.Math.floor(maxHeros));
+			}
+			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.heroes") + " " + heros_count + "/" + maxHeros2,
+					"heroes"));
+			rootNode.add(n);
+
+			for(Iterator iter = heroes.iterator(); iter.hasNext(); ) {
+				Unit u = (Unit) iter.next();
+				
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u));
+				n.add(m);
+			}
+
+		}
 		// earned amount of money
 		// it is necessary to parse messages to get this information
 		for(Iterator fIter = factions.values().iterator(); fIter.hasNext();) {
@@ -1003,6 +1017,18 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations.put("node.production", "Production");
 			defaultTranslations.put("node.otherrace", "Persons of other race");
 			defaultTranslations.put("node.rootName", "Statistics");
+			defaultTranslations.put("aquarians", "aquariansgif");
+			defaultTranslations.put("cats", "catsgif");
+			defaultTranslations.put("demons", "demonsgif");
+			defaultTranslations.put("dwarves", "dwarvesgif");
+			defaultTranslations.put("elves", "elvesgif");
+			defaultTranslations.put("goblins", "goblinsgif");
+			defaultTranslations.put("halflings", "halflingsgif");
+			defaultTranslations.put("humans", "humansgif");
+			defaultTranslations.put("insects", "insectsgif");
+			defaultTranslations.put("orcs", "orcsgif");
+			defaultTranslations.put("toads", "toadsgif");
+			defaultTranslations.put("trolls", "trollsgif");
 		}
 
 		return defaultTranslations;
