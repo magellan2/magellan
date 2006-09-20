@@ -34,7 +34,6 @@ import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.logging.Logger;
-import com.eressea.util.Umlaut;
 
 /**
  * A class providing various utility functions regarding units.
@@ -517,11 +516,12 @@ public class Units {
 			defaultTranslations.put("Munition", "Ammunition");
 			defaultTranslations.put("Ruestungen", "Armour");
 			defaultTranslations.put("Schilde", "Shields");
-			defaultTranslations.put("Ressourcen", "Ressources");
+			defaultTranslations.put("Ressourcen", "Resources");
 			defaultTranslations.put("Luxusgueter", "Luxuries");
 			defaultTranslations.put("Kraeuter", "Herbs");
 			defaultTranslations.put("Traenke", "Potions");
-			defaultTranslations.put("Sonstiges", "Misc");
+			defaultTranslations.put("Sonstiges", "Miscellaneous");
+			defaultTranslations.put("Trophaeen", "Trophies");
 		}
 		return defaultTranslations;
 	}

@@ -1350,8 +1350,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		Map skills = CollectionFactory.createHashtable();
 
 //		 key: racename (string), Value: Integer-Object containing number of persons of that race
+		// Fiete: Value: raceInfo with realRace ( nor Prefix, and the amount of Persons
 		Map races = CollectionFactory.createHashtable();
-		Map races_modified = CollectionFactory.createHashtable();
+
 		
 		// Fiete: calculate weight and modified wight within this loop
 		float uWeight = 0;
@@ -1369,20 +1370,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			Float actModUWeight= new Float(u.getModifiedWeight() / 100.0F);
 			modUWeight += actModUWeight.floatValue();
 			
-			Integer number = (Integer) races.get(u.getRaceName(data));
-			Integer number_modified = (Integer) races_modified.get(u.getRaceName(data));
-			int personCount = u.getPersons();
-			int personCount_modified = u.getModifiedPersons();
+			RaceInfo rInfo = (RaceInfo) races.get(u.getRaceName(data));
+			if (rInfo == null){
+				rInfo = new RaceInfo();
+				rInfo.raceNoPrefix = com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName());
+			}
 			
-			if(number != null) {
-				personCount += number.intValue();
-			}
-			if(number_modified != null) {
-				personCount_modified += number_modified.intValue();
-			}
-
-			races.put(u.getRaceName(data), new Integer(personCount));
-			races_modified.put(u.getRaceName(data), new Integer(personCount_modified));
+			rInfo.amount +=u.getPersons();
+			rInfo.amount_modified += u.getModifiedPersons();
+			
+			races.put(u.getRaceName(data), rInfo);
+			
 
 			for(Iterator i = u.getSkills().iterator(); i.hasNext();) {
 				Skill skill = (Skill) i.next();
@@ -1402,12 +1400,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		for(Iterator iter = races.keySet().iterator(); iter.hasNext();) {
 			String race = (String) iter.next();
-			int i = ((Integer) races.get(race)).intValue();
-			int i_modified = ((Integer) races_modified.get(race)).intValue();
+			RaceInfo rI = (RaceInfo) races.get(race);
+			int i = rI.amount;
+			int i_modified = rI.amount_modified;
+			String personIconName = "person";
+			String gifNameEN = getString(rI.raceNoPrefix);
+			if (!gifNameEN.equalsIgnoreCase(rI.raceNoPrefix)){
+				personIconName = gifNameEN;
+			}
 			if (i_modified==i){
-				parent.add(createSimpleNode(i + " " + race, "person"));
+				parent.add(createSimpleNode(i + " " + race, personIconName));
 			} else {
-				parent.add(createSimpleNode(i + " (" + i_modified + ") " + race, "person"));
+				parent.add(createSimpleNode(i + " (" + i_modified + ") " + race, personIconName));
 			}
 		}
 
@@ -2257,8 +2261,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if(u.getPersons() != u.getModifiedPersons()) {
 			strPersons += (" (" + u.getModifiedPersons() + ")");
 		}
-
-		DefaultMutableTreeNode personNode = createSimpleNode(strPersons, "person");
+		String iconPersonName = "person";
+		String iconNameEN = getString(com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName()));
+		if (!iconNameEN.equalsIgnoreCase(com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName()))) {
+			iconPersonName = iconNameEN;
+		}
+		DefaultMutableTreeNode personNode = createSimpleNode(strPersons, iconPersonName);
 		parent.add(personNode);
 		expandableNodes.add(new NodeWrapper(personNode, "EMapDetailsPanel.PersonsExpanded"));
 
@@ -4220,6 +4228,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 	}
 
+	private class RaceInfo {
+		int amount = 0;
+		int amount_modified = 0;
+		String raceNoPrefix = null;
+	}
+	
+	
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)
@@ -4271,7 +4286,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("node.of", "of ");
 			defaultTranslations.put("node.skills", "Skills");
 			defaultTranslations.put("node.group", "Group");
-			defaultTranslations.put("node.Hero", "Hero");
+			defaultTranslations.put("node.hero", "Hero");
 			defaultTranslations.put("node.starved", "Unit is starving");
 			defaultTranslations.put("node.guards", "Guards");
 			defaultTranslations.put("node.stealth", "Stealth");
@@ -4345,6 +4360,18 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("menu.caption", "Details");
 			defaultTranslations.put("menu.mnemonic", "D");
 			defaultTranslations.put("menu.supertitle", "Tree");
+			defaultTranslations.put("aquarians", "aquariansgif");
+			defaultTranslations.put("cats", "catsgif");
+			defaultTranslations.put("demons", "demonsgif");
+			defaultTranslations.put("dwarves", "dwarvesgif");
+			defaultTranslations.put("elves", "elvesgif");
+			defaultTranslations.put("goblins", "goblinsgif");
+			defaultTranslations.put("halflings", "halflingsgif");
+			defaultTranslations.put("humans", "humansgif");
+			defaultTranslations.put("insects", "insectsgif");
+			defaultTranslations.put("orcs", "orcsgif");
+			defaultTranslations.put("toads", "toadsgif");
+			defaultTranslations.put("trolls", "trollsgif");
 		}
 
 		return defaultTranslations;
