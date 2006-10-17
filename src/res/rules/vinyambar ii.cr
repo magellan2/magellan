@@ -409,7 +409,7 @@ TALENTBONI "Gletscher"
 
 RACE "Orks"
 "Orks";name
-50;recruitmentcosts
+70;recruitmentcosts
 10;weight
 5.4;capacity
 TALENTBONI
@@ -434,7 +434,7 @@ TALENTBONI
 
 RACE "Snotlinge"
 "Snotlinge";name
-50;recruitmentcosts
+70;recruitmentcosts
 10;weight
 5.4;capacity
 TALENTBONI

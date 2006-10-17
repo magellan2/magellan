@@ -407,7 +407,7 @@
 
 <!--
 <Race id="Orks" weight="10" capacity="5.4">
-  <Resource type="item" idref="silver" amount="50"/>
+  <Resource type="item" idref="silver" amount="70"/>
   <skillmod idref="Steinbau" modifier="1"/>
   <skillmod idref="Schiffbau" modifier="-1"/>
   <skillmod idref="Kräuterkunde" modifier="-2"/>
@@ -429,7 +429,7 @@
      <skillmod idref="Handeln" modifier="-3"/>
 </Race>
 <Race id="Snotlinge" weight="10" capacity="5.4">
-  <Resource type="item" idref="silver" amount="50"/>
+  <Resource type="item" idref="silver" amount="70"/>
   <skillmod idref="Steinbau" modifier="1"/>
   <skillmod idref="Schiffbau" modifier="-1"/>
   <skillmod idref="Kräuterkunde" modifier="-2"/>
@@ -1039,6 +1039,7 @@
      category="Potions"
      id="Phiole"/>
 <ItemType
+     iconname="kraeuterbeutel"
      category="Misc"
      id="Kraeuterbeutel"/>
 <ItemType

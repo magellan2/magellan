@@ -1,3 +1,13 @@
+2006-10-18  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\swing\FactionStatsPanel.java (updateTree): icons for production subnodes
+
+2006-10-16  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\EMapDetailsPanel.java (getDefaultTranslations): Seeschlangen added
+	* src\res\lang\com-eressea-demo-emapdetailspanel_de.properties: Seeschlangen added
+	* src\res\rules\eressea.cr: Ork recruitment costs 50->70, icon for Kraeuterbeutel added
+
 2006-09-20  Fiete  <Fiete@users.sourceforge.net>
 
 	* src\java\com\eressea\swing\FactionStatsPanel.java (updateTree): 
