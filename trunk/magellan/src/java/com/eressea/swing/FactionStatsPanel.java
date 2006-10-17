@@ -43,6 +43,7 @@ import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Item;
 import com.eressea.Message;
+import com.eressea.NamedObject;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Skill;
@@ -62,6 +63,7 @@ import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.tree.CellRenderer;
 import com.eressea.swing.tree.CopyTree;
+import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
@@ -903,7 +905,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 		for(Iterator iter = production.keySet().iterator(); iter.hasNext();) {
 			ItemCategory iCategory = (ItemCategory) iter.next();
-			m = new DefaultMutableTreeNode();
+			String catIconName = com.eressea.util.Umlaut.convertUmlauts(iCategory.getName());
+			String nodeName = getString(catIconName);
+			m = createSimpleNode(nodeName, catIconName);
+			// m = new DefaultMutableTreeNode();
 			prodNode.add(m);
 
 			Map h = (Map) production.get(iCategory);
@@ -913,7 +918,13 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 				String resource = (String) iterator.next();
 				ProductionStats stats = (ProductionStats) h.get(resource);
 				totalAmount += stats.totalAmount;
-				o = new DefaultMutableTreeNode(resource + ": " + stats.totalAmount);
+				// o = new DefaultMutableTreeNode(resource + ": " + stats.totalAmount);
+				if (catIconName.equalsIgnoreCase("kraeuter")) {
+					o = createSimpleNode(data.getTranslation(resource) + ": " + stats.totalAmount, "items/" + "kraeuter");
+				} else {
+					o = createSimpleNode(data.getTranslation(resource) + ": " + stats.totalAmount, "items/" + resource);
+				}
+				
 				m.add(o);
 
 				for(Iterator i = stats.units.keySet().iterator(); i.hasNext();) {
@@ -923,8 +934,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 																							  amount)));
 				}
 			}
-
-			m.setUserObject(iCategory.toString() + ": " + totalAmount);
+			// Fiete: zerstört das Icon...erstmal raus
+			// m.setUserObject(iCategory.toString() + ": " + totalAmount);
 		}
 
 		if(prodNode.getChildCount() > 0) {
@@ -970,6 +981,22 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		return stats;
 	}
 
+	/**
+	 * Returns a simple node
+	 *
+	 * @param obj TODO: DOCUMENT ME!
+	 * @param icons TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	private DefaultMutableTreeNode createSimpleNode(Object obj, String icons) {
+		return new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj, icons));
+	}
+
+    private DefaultMutableTreeNode createSimpleNode(NamedObject obj, String icons) {
+        return new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj,this.data.getTranslation(obj),(Object) icons));
+    }
+	
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)
@@ -1029,6 +1056,18 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations.put("orcs", "orcsgif");
 			defaultTranslations.put("toads", "toadsgif");
 			defaultTranslations.put("trolls", "trollsgif");
+			defaultTranslations.put("Waffen", "Weapons");
+			defaultTranslations.put("Front-Waffen", "Front-Weapons");
+			defaultTranslations.put("Distanz-Waffen", "Distance-Weapons");
+			defaultTranslations.put("Munition", "Ammunition");
+			defaultTranslations.put("Ruestungen", "Armour");
+			defaultTranslations.put("Schilde", "Shields");
+			defaultTranslations.put("Ressourcen", "Resources");
+			defaultTranslations.put("Luxusgueter", "Luxuries");
+			defaultTranslations.put("Kraeuter", "Herbs");
+			defaultTranslations.put("Traenke", "Potions");
+			defaultTranslations.put("Sonstiges", "Miscellaneous");
+			defaultTranslations.put("Trophaeen", "Trophies");
 		}
 
 		return defaultTranslations;

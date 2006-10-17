@@ -4372,6 +4372,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("orcs", "orcsgif");
 			defaultTranslations.put("toads", "toadsgif");
 			defaultTranslations.put("trolls", "trollsgif");
+			defaultTranslations.put("seaserpents", "seeschlangengif");
 		}
 
 		return defaultTranslations;
