@@ -29,13 +29,12 @@ import com.eressea.Battle;
 import com.eressea.Border;
 import com.eressea.Building;
 import com.eressea.CombatSpell;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
 import com.eressea.HotSpot;
-import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Island;
 import com.eressea.Item;
@@ -283,7 +282,7 @@ public class CRWriter extends BufferedWriter {
 					write(value + ";" + key);
 					newLine();
 				} catch(NumberFormatException e) {
-					ID c = Coordinate.parse((String) value, " ");
+					CoordinateID c = CoordinateID.parse((String) value, " ");
 
 					if(c != null) {
 						write(value + ";" + key);

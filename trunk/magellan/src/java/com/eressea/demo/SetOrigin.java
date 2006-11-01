@@ -15,7 +15,7 @@ package com.eressea.demo;
 
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
@@ -180,7 +180,10 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 			iY = Integer.parseInt(editY.getText());
 			iLevel = Integer.parseInt(editLevel.getText());
 
-			data.placeOrigin(new Coordinate(iX, iY, iLevel));
+			// stm 2006.10.20
+//			data.placeOrigin(new CoordinateID(iX, iY, iLevel));
+			if (iX != 0 || iY != 0)
+				data = (GameData) data.clone(new CoordinateID(iX, iY, iLevel));
 
 			setVisible(false);
 			dispose();

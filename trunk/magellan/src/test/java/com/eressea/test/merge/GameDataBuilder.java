@@ -114,7 +114,7 @@ public class GameDataBuilder {
 	}
 
 	public Region addRegion(GameData data, String number, String name, String type, int sortIndex) {
-		ID c = Coordinate.parse(number, " ");
+		CoordinateID c = CoordinateID.parse(number, " ");
 		
 		Region region = new Region(c, data);
 		data.addRegion(region);

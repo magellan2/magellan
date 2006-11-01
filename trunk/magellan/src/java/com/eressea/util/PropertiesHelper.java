@@ -14,7 +14,6 @@
 package com.eressea.util;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;

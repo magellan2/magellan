@@ -193,10 +193,10 @@ public class Message extends Identifiable {
 	 */
 	private static String renderAttribute(GameData data, String id, String attribute) {
 		if(id.equalsIgnoreCase("region")) {
-			ID coord = Coordinate.parse(attribute, ",");
+			CoordinateID coord = CoordinateID.parse(attribute, ",");
 
 			if(coord == null) {
-				coord = Coordinate.parse(attribute, " ");
+				coord = CoordinateID.parse(attribute, " ");
 			}
 
 			return data.getRegion(coord).toString();

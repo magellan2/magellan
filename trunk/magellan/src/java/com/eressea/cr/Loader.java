@@ -16,6 +16,7 @@ package com.eressea.cr;
 import java.io.File;
 import java.io.IOException;
 
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.io.GameDataReader;
 import com.eressea.io.cr.CRWriter;
@@ -43,12 +44,26 @@ public class Loader {
 	 * @throws CloneNotSupportedException if cloning failed
 	 */
 	public GameData cloneGameData(GameData data) throws CloneNotSupportedException {
+		return cloneGameData(data, new CoordinateID(0,0));
+	}
+		
+	/**
+	 * Creates a clone of the GameData using CRWriter/CRParser
+	 *
+	 * @param data the given GameData
+	 *
+	 * @return a clone of the given GameData
+	 *
+	 * @throws CloneNotSupportedException if cloning failed
+	 */
+	public GameData cloneGameData(GameData data, CoordinateID newOrigin) throws CloneNotSupportedException {
 		try {
 			File tempFile = CopyFile.createCrTempFile();
 			tempFile.deleteOnExit();
 
 			FileType filetype = FileTypeFactory.singleton().createFileType(tempFile, false);
-
+			filetype.setCreateBackup(false);
+			
 			// write cr to file
 			CRWriter crw = new CRWriter(filetype);
 
@@ -57,11 +72,11 @@ public class Loader {
 			} finally {
 				crw.close();
 			}
-
-			GameData newData = new GameDataReader().readGameData(filetype);
+			
+			GameData newData = new GameDataReader().readGameData(filetype, newOrigin);
 			newData.filetype = data.filetype;
 			tempFile.delete();
-
+			
 			return newData;
 		} catch(IOException ioe) {
 			log.error("Loader.cloneGameData failed!", ioe);

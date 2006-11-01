@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 
 /**
  * A class providing convience functions for handling directions like in ships or borders. There
@@ -74,7 +74,7 @@ public class Direction {
 	 *
 	 * @throws IllegalArgumentException if the c param is null.
 	 */
-	public Direction(Coordinate c) {
+	public Direction(CoordinateID c) {
 		if(c != null) {
 			dir = toInt(c);
 		} else {
@@ -124,7 +124,7 @@ public class Direction {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static Coordinate toCoordinate(int dir) {
+	public static CoordinateID toCoordinate(int dir) {
 		int x = 0;
 		int y = 0;
 
@@ -156,7 +156,7 @@ public class Direction {
 			break;
 		}
 
-		return new Coordinate(x, y);
+		return new CoordinateID(x, y);
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class Direction {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static String toString(Coordinate c) {
+	public static String toString(CoordinateID c) {
 		return toString(toInt(c));
 	}
 
@@ -208,7 +208,7 @@ public class Direction {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static int toInt(Coordinate c) {
+	public static int toInt(CoordinateID c) {
 		int dir = DIR_INVALID;
 
 		if(c.x == -1) {

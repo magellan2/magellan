@@ -66,9 +66,9 @@ public abstract class Date extends Object implements ID {
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
-	 * @param o TODO: DOCUMENT ME!
+	 * @param o the date to compare this date to
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return <tt>true</tt> if this date equals o, <tt> false </tt> otherwise
 	 */
 	public boolean equals(Object o) {
 		try {
@@ -111,9 +111,11 @@ public abstract class Date extends Object implements ID {
 	 * Imposes a natural ordering on date objects based on the numeric ordering of the integer date
 	 * value.
 	 *
-	 * @param o TODO: DOCUMENT ME!
+	 * @param o the date to compare this date to
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return &gt; 0 if this date is greater than <tt>o</tt><br/>, 
+	 *         &lt; 0 if this date is smaller, 
+	 *         0 if the dates are equal
 	 */
 	public int compareTo(Object o) {
 		Date d = (Date) o;

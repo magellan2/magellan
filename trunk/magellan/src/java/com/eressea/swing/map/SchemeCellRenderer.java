@@ -18,7 +18,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
@@ -51,7 +51,7 @@ public class SchemeCellRenderer extends ImageCellRenderer {
 
 			Image schemeImage = getImage("schemen");
 
-			Coordinate c = r.getCoordinate();
+			CoordinateID c = r.getCoordinate();
 			Point pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 			pos.translate(-offset.x, -offset.y);
 

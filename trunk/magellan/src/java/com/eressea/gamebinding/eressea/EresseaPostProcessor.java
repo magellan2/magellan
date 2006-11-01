@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.eressea.Building;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -91,10 +91,10 @@ public class EresseaPostProcessor {
 								// a certain amount of herbs has been detected in a region
 								if((m.attributes != null) && m.attributes.containsKey("region")) {
 									String str = (String) m.attributes.get("region");
-									ID coord = Coordinate.parse(str, ",");
+									CoordinateID coord = CoordinateID.parse(str, ",");
 
 									if(coord == null) {
-										coord = Coordinate.parse(str, " ");
+										coord = CoordinateID.parse(str, " ");
 									}
 
 									Region r = data.getRegion(coord);

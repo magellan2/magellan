@@ -16,7 +16,7 @@ package com.eressea.demo.actions;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
@@ -89,7 +89,7 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 		int maxY = Integer.MIN_VALUE;
 
 		for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
-			Coordinate c = (Coordinate) iter.next();
+			CoordinateID c = (CoordinateID) iter.next();
 
 			if(c.z == client.getLevel()) {
 				if(c.x > maxX) {
@@ -111,7 +111,7 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 		}
 
 		for(Iterator iter = client.getData().regions().keySet().iterator(); iter.hasNext();) {
-			Coordinate c = (Coordinate) iter.next();
+			CoordinateID c = (CoordinateID) iter.next();
 
 			if((c.z == client.getLevel()) && (c.x <= maxX) && (c.x >= minX) && (c.y <= maxY) &&
 				   (c.y >= minY)) {

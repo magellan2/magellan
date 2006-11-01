@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.ID;
 import com.eressea.Region;
@@ -559,7 +559,7 @@ public class JECheck extends Reader {
 						}
 					} else if(regionOrder.startsWith(token)) {
 						try {
-							ID id = Coordinate.parse(tokenizer.nextToken(), ",");
+							CoordinateID id = CoordinateID.parse(tokenizer.nextToken(), ",");
 							Region r = data.getRegion(id);
 
 							if(r != null) {

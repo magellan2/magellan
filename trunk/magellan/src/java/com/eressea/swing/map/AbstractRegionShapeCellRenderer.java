@@ -19,7 +19,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 
@@ -45,7 +45,7 @@ public abstract class AbstractRegionShapeCellRenderer extends HexCellRenderer {
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
 			Region r = (Region) obj;
-			Coordinate c = r.getCoordinate();
+			CoordinateID c = r.getCoordinate();
 
 			Point pos = cellGeo.getCellPosition(c.x, c.y);
 			pos.translate(-offset.x, -offset.y);

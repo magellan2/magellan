@@ -25,7 +25,7 @@ import com.eressea.Battle;
 import com.eressea.Border;
 import com.eressea.Building;
 import com.eressea.CombatSpell;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -85,7 +85,24 @@ public class CRParser implements RulesIO, GameDataIO {
 	String game;
 	boolean umlauts;
 	int version = 0; // the version of the report
-
+	
+	CoordinateID newOrigin = new CoordinateID(0,0,0);
+	
+	public CRParser(){
+		
+	}
+	
+    public CRParser(CoordinateID newOrigin){
+    	this.newOrigin = newOrigin;
+    }
+    
+    CoordinateID originTranslate(CoordinateID c){
+    	if (c.z == newOrigin.z){
+    		c.x-=newOrigin.x;
+    		c.y-=newOrigin.y;
+    	}
+    	return c;
+    }
     
     private Collection warnedLines = CollectionFactory.createHashSet();
 	/**
@@ -471,8 +488,9 @@ public class CRParser implements RulesIO, GameDataIO {
 	 */
 	private List parseBattles(GameData world, List list) throws IOException {
 		while(!sc.eof && sc.argv[0].startsWith("BATTLE ")) {
-			ID c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
-
+			CoordinateID c = CoordinateID.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+			originTranslate(c);
+			
 			if(c == null) {
 				unknown("BATTLE", true);
 
@@ -505,8 +523,9 @@ public class CRParser implements RulesIO, GameDataIO {
 	 */
 	private List parseBattleSpecs(GameData world, List list) throws IOException {
 		while(!sc.eof && sc.argv[0].startsWith("BATTLESPEC ")) {
-			ID c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
-
+			CoordinateID c = CoordinateID.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+			originTranslate(c);
+			
 			if(c == null) {
 				unknown("BATTLESPEC", true);
 
@@ -2217,8 +2236,10 @@ public class CRParser implements RulesIO, GameDataIO {
 				bld.effects = parseStringSequence(bld.effects);
 			} else if((sc.argc == 1) && sc.argv[0].equals("COMMENTS")) {
 				bld.comments = parseStringSequence(bld.comments);
-			} else {
+			} else if (sc.isBlock){
 				break;
+			} else {
+				unknown("BURG", true);
 			}
 		}
 	}
@@ -2294,7 +2315,7 @@ public class CRParser implements RulesIO, GameDataIO {
 
 		while(!sc.eof && !sc.isBlock) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("coord")) {
-				h.setCenter(Coordinate.parse(sc.argv[0], " "));
+				h.setCenter(originTranslate(CoordinateID.parse(sc.argv[0], " ")));
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("name")) {
 				h.setName(sc.argv[0]);
@@ -2318,7 +2339,9 @@ public class CRParser implements RulesIO, GameDataIO {
 		int unitSortIndex = 0;
 		int shipSortIndex = 0;
 		int buildingSortIndex = 0;
-		ID c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+		CoordinateID c = CoordinateID.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+		originTranslate(c);
+
 
 		if(c == null) {
 			unknown("REGION", true);
@@ -2571,10 +2594,12 @@ public class CRParser implements RulesIO, GameDataIO {
 		sc.getNextToken(); // skip "SPEZIALREGION x y"
 
 		if(specialRegion == null) {
-			Coordinate c = new Coordinate(0, 0, 1);
+			CoordinateID c = new CoordinateID(0, 0, 1);
+			originTranslate(c);
 
 			while(world.getRegion(c) != null) {
-				c = new Coordinate(0, 0, (int) (Math.random() * (Integer.MAX_VALUE - 1)) + 1);
+				c = new CoordinateID(0, 0, (int) (Math.random() * (Integer.MAX_VALUE - 1)) + 1);
+				originTranslate(c);
 			}
 
 			specialRegion = new Region(c, world);
@@ -2661,7 +2686,8 @@ public class CRParser implements RulesIO, GameDataIO {
 	}
 
 	private void parseScheme(GameData world, Region region) throws IOException {
-		Coordinate c = Coordinate.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+		CoordinateID c = CoordinateID.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
+		originTranslate(c);
 
 		if(c == null) {
 			unknown("SCHEMEN", true);

@@ -349,6 +349,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 						lstFaction.repaint();
 						pnlStats.setFactions(CollectionFactory.createLinkedList());
 					}
+					// TODO: delete properties belonging to this faction (like password) also?
 				}
 			});
 
@@ -559,6 +560,8 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 
 			return skillChartPanel;
 		} catch(Throwable t) {
+			log.warn(t+": "+t.getLocalizedMessage());
+			t.printStackTrace();
 			log.warn("FactionStatsDialog.getSkillChartPanel(): Couldn't create skillChartPanel! Delivering null.");
 		}
 

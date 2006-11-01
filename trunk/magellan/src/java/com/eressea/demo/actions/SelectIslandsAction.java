@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
@@ -91,7 +91,7 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 		// or that belong to the active level region _and_ that belong to an island
 		// that contained at least one selected region before
 		for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
-			Coordinate c = (Coordinate) iter.next();
+			CoordinateID c = (CoordinateID) iter.next();
 
 			if(c.z != client.getLevel()) {
 				newSelectedRegions.put(c, client.getData().regions().get(c));

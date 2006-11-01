@@ -46,7 +46,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.eressea.Battle;
 import com.eressea.Building;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.IntegerID;
@@ -190,10 +190,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 
 						while(iter.hasNext()) {
 							String attribute = (String) iter.next();
-							Coordinate c = Coordinate.parse(attribute, ",");
+							CoordinateID c = CoordinateID.parse(attribute, ",");
 
 							if(c == null) {
-								c = Coordinate.parse(attribute, " ");
+								c = CoordinateID.parse(attribute, " ");
 							}
 
 							if((c != null) && (i.getRegion(c) != null)) {
@@ -332,10 +332,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 
 							while(iter.hasNext()) {
 								String attribute = (String) iter.next();
-								Coordinate c = Coordinate.parse(attribute, ",");
+								CoordinateID c = CoordinateID.parse(attribute, ",");
 
 								if(c == null) {
-									c = Coordinate.parse(attribute, " ");
+									c = CoordinateID.parse(attribute, " ");
 								}
 
 								if((c != null) && r.getID().equals(c)) {
@@ -479,7 +479,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 		DefaultMutableTreeNode node = null;
 		DefaultMutableTreeNode subNode = null;
 
-		Coordinate c = (Coordinate) b.getID();
+		CoordinateID c = (CoordinateID) b.getID();
 		Region r = data.getRegion(c);
 
 		if(r != null) {
@@ -589,10 +589,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 
 			for(Iterator attributes = m.attributes.values().iterator(); attributes.hasNext();) {
 				String val = (String) attributes.next();
-				Coordinate c = Coordinate.parse(val, ",");
+				CoordinateID c = CoordinateID.parse(val, ",");
 
 				if(c == null) {
-					c = Coordinate.parse(val, " ");
+					c = CoordinateID.parse(val, " ");
 				}
 
 				if(c != null) {

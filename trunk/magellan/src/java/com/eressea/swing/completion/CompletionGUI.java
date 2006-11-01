@@ -42,6 +42,9 @@ public interface CompletionGUI {
 
 	/**
 	 * Called the advice this GUI to offer the given completions in the given Editor to the user.
+	 * 
+	 * @param editor The editor where the completions should be shown.
+	 * @param completions A list of completions.
 	 */
 	public void offerCompletion(JTextComponent editor, Collection completions, String stub);
 

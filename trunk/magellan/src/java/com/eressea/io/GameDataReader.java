@@ -16,6 +16,7 @@ package com.eressea.io;
 import java.io.IOException;
 import java.io.Reader;
 
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.Rules;
 import com.eressea.io.cr.CRParser;
@@ -39,6 +40,20 @@ public class GameDataReader {
 	 * @throws IOException iff something went wrong while reading the file.
 	 */
 	public GameData readGameData(FileType aFileType) throws IOException {
+		return readGameData(aFileType, new CoordinateID(0,0));
+	}
+	
+	/**
+	 * Read a gamedata from a given File. At the beginning the game name is read by a
+	 * <code>GameNameReader</code>. With this  name the corresponding rules and game
+	 *
+	 * @param aFileType the filetype representing a cr or xml file.
+	 *
+	 * @return a GameData object read from the cr or xml file.
+	 *
+	 * @throws IOException iff something went wrong while reading the file.
+	 */
+	public GameData readGameData(FileType aFileType, CoordinateID newOrigin) throws IOException {
 		// a) read game name
 		String gameName = new GameNameReader().getGameName(aFileType);
 
@@ -47,7 +62,7 @@ public class GameDataReader {
 		}
 
 		if(aFileType.isXMLFile()) {
-			GameData data = readGameDataXML(aFileType, gameName);
+			GameData data = readGameDataXML(aFileType, gameName, newOrigin);
 
 			if(data != null) {
 				data.postProcess();
@@ -67,7 +82,7 @@ public class GameDataReader {
 			 * can simply say here "all known cr types are treated the same" 
 			 * 20060917: Jonathan (Fiete) 
 			 */
-			GameData data = readGameDataCR(aFileType, gameName);
+			GameData data = readGameDataCR(aFileType, gameName, newOrigin);
 			
 			if(data != null) {
 					data.postProcess();
@@ -103,14 +118,42 @@ public class GameDataReader {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
+	public GameData readGameDataXML(FileType aFileType, String aGameName, CoordinateID newOrigin) throws IOException {
+		throw new IOException("Reading of xml files unfinished");
+	}
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param aFileType TODO: DOCUMENT ME!
+	 * @param aGameName TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
+	 */
 	public GameData readGameDataCR(FileType aFileType, String aGameName) throws IOException {
+		return readGameDataCR(aFileType, aGameName, new CoordinateID(0,0));
+	}
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param aFileType TODO: DOCUMENT ME!
+	 * @param aGameName TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
+	 */
+	public GameData readGameDataCR(FileType aFileType, String aGameName, CoordinateID newOrigin) throws IOException {
 		GameData newData = createGameData(aGameName);
 		newData.filetype = aFileType;
 
 		Reader reader = aFileType.createReader();
 
 		try {
-			new CRParser().read(reader, newData);
+			new CRParser(newOrigin).read(reader, newData);
 		} finally {
 			try {
 				reader.close();

@@ -367,7 +367,7 @@ public class CellGeometry {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public com.eressea.Coordinate getCoordinate(int sx, int sy, int z) {
+	public com.eressea.CoordinateID getCoordinate(int sx, int sy, int z) {
 		int mx = 0;
 		float mfy = (float) sy / (cellShiftYY * scaleFactor);
 		int my = roundPosUp(mfy);
@@ -391,7 +391,7 @@ public class CellGeometry {
 			}
 		}
 
-		return new com.eressea.Coordinate(mx, my, z);
+		return new com.eressea.CoordinateID(mx, my, z);
 	}
 
 	/**

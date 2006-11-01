@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
@@ -61,7 +61,7 @@ public class MarkingsImageCellRenderer extends ImageCellRenderer {
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region && ((Region) obj).hasTags()) {
 			Region r = (Region) obj;
-			Coordinate c = r.getCoordinate();
+			CoordinateID c = r.getCoordinate();
 
 			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);

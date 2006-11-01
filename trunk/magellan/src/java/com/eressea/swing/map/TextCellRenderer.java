@@ -32,7 +32,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -132,7 +132,7 @@ public class TextCellRenderer extends AbstractTextCellRenderer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String[] getText(Region r, Rectangle rect) {
-		Coordinate c = r.getCoordinate();
+		CoordinateID c = r.getCoordinate();
 
 		if((r.getName() == null) || ((c.x % 2) != 0) || ((c.y % 2) != 0)) {
 			return null;

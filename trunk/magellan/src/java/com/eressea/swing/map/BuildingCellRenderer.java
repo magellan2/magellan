@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.Building;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.rules.UnitContainerType;
@@ -54,7 +54,7 @@ public class BuildingCellRenderer extends ImageCellRenderer {
 			Iterator iter = r.buildings().iterator();
 
 			if(iter.hasNext()) {
-				Coordinate c = r.getCoordinate();
+				CoordinateID c = r.getCoordinate();
 				Point pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 				pos.translate(-offset.x, -offset.y);
 

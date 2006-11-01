@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -704,7 +705,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 * Parses the Magellan Desktop Configuration file for Split sets and custom layouts.
 	 */
 	protected void initSplitSets() {
-		Map loaded = CollectionFactory.createHashMap();
+		Vector loadedNames = new Vector();
+		Vector loadedBlocks = new Vector();
 		boolean read = false;
 		List block = CollectionFactory.createLinkedList();
 
@@ -724,7 +726,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 					if(s.startsWith("[")) {
 						if(inBlock) {
-							loaded.put(blockName, block);
+							loadedNames.add(blockName);
+							loadedBlocks.add(block);
 						}
 
 						block = CollectionFactory.createArrayList();
@@ -738,7 +741,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			} while(s != null);
 
 			if(inBlock && (block.size() > 0)) { // put the last block
-				loaded.put(blockName, block);
+				loadedNames.add(blockName);
+				loadedBlocks.add(block);
 			}
 
 			r.close();
@@ -747,23 +751,24 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		}
 
 		//maybe old-style file
-		if(read && (loaded.size() == 0)) {
-			loaded.put("Standard", block);
+		if(read && (loadedNames.size() == 0)) {
+			loadedNames.add("Standard");
+			loadedBlocks.add(block);
 		}
 
 		// make sure there's a default set or even any set
-		if(!loaded.containsKey("Standard")) {
-			loaded.put("Standard", createStandardSplitSet());
+		if(!loadedNames.contains("Standard")) {
+			loadedNames.add("Standard");
+			loadedBlocks.add(createStandardSplitSet());
 			log.info("Creating \"Standard\" Split-Set.");
 		}
 
 		// Parse the loaded definitions
 		FrameTreeBuilder builder = new FrameTreeBuilder();
-		Iterator it = loaded.keySet().iterator();
-
-		while(it.hasNext()) {
-			String name = (String) it.next();
-			List def = (List) loaded.get(name);
+		
+		for (int i = 0; i < loadedNames.size();i++) {
+			String name = (String) loadedNames.get(i);
+			List def = (List) loadedBlocks.get(i);
 
 			// that's a layout
 			if(name.startsWith("Layout_")) {
@@ -784,7 +789,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 				if(node != null) {
 					if(splitSets == null) {
-						splitSets = CollectionFactory.createHashMap();
+						splitSets = CollectionFactory.createOrderedHashtable();
 					}
 
 					splitSets.put(name, node);
@@ -797,7 +802,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 		// create default values if nothing was successfully parsed
 		if(splitSets == null) {
-			splitSets = CollectionFactory.createHashMap();
+			splitSets = CollectionFactory.createOrderedHashtable();
 
 			try {
 				builder.buildTree(createStandardSplitSet().iterator());

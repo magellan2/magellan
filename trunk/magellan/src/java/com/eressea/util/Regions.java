@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.eressea.Building;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.ID;
 import com.eressea.Message;
@@ -55,8 +55,8 @@ public class Regions {
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
 	public static Map getAllNeighbours(Map regions, ID center, int radius, Map excludedRegionTypes) {
-		if(center instanceof Coordinate) {
-			return getAllNeighbours(regions, (Coordinate) center, radius, excludedRegionTypes);
+		if(center instanceof CoordinateID) {
+			return getAllNeighbours(regions, (CoordinateID) center, radius, excludedRegionTypes);
 		} else {
 			throw new IllegalArgumentException("center is not an eressea coordinate. Support for e2 incomplete!");
 		}
@@ -74,10 +74,10 @@ public class Regions {
 	 * @return a map with all neighbours that were found, including     region center. The keys are
 	 * 		   instances of class Coordinate,     values are objects of class Region.
 	 */
-	private static Map getAllNeighbours(Map regions, Coordinate center, int radius,
+	private static Map getAllNeighbours(Map regions, CoordinateID center, int radius,
 										Map excludedRegionTypes) {
 		Map neighbours = CollectionFactory.createHashtable();
-		Coordinate c = new Coordinate(0, 0, center.z);
+		CoordinateID c = new CoordinateID(0, 0, center.z);
 
 		for(int dx = -radius; dx <= radius; dx++) {
 			for(int dy = (-radius + Math.abs(dx)) - ((dx > 0) ? dx : 0);
@@ -200,19 +200,19 @@ public class Regions {
 
 		List directions = CollectionFactory.createArrayList(coordinates.size());
 
-		Coordinate prev = null;
-		Coordinate cur = null;
+		CoordinateID prev = null;
+		CoordinateID cur = null;
 
 		Iterator iter = coordinates.iterator();
 
 		if(iter.hasNext()) {
-			prev = (Coordinate) iter.next();
+			prev = (CoordinateID) iter.next();
 		}
 
 		while(iter.hasNext()) {
-			cur = (Coordinate) iter.next();
+			cur = (CoordinateID) iter.next();
 
-			Coordinate diffCoord = new Coordinate(cur.x - prev.x, cur.y - prev.y, 0);
+			CoordinateID diffCoord = new CoordinateID(cur.x - prev.x, cur.y - prev.y, 0);
 			int intDir = Direction.toInt(diffCoord);
 
 			if(intDir != -1) {
@@ -243,8 +243,8 @@ public class Regions {
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
 	public static List getPath(Map regions, ID start, ID dest, Map excludedRegionTypes) {
-		if(start instanceof Coordinate && dest instanceof Coordinate) {
-			return getPath(regions, (Coordinate) start, (Coordinate) dest, excludedRegionTypes);
+		if(start instanceof CoordinateID && dest instanceof CoordinateID) {
+			return getPath(regions, (CoordinateID) start, (CoordinateID) dest, excludedRegionTypes);
 		} else {
 			throw new IllegalArgumentException("start of dest is not an eressea coordinate. Support for e2 incomplete!");
 		}
@@ -261,7 +261,7 @@ public class Regions {
 	 * @return a Collection of regions that have to be trespassed in  order to get from the one to
 	 * 		   the other specified region, including both of them.
 	 */
-	private static List getPath(Map regions, Coordinate start, Coordinate dest,
+	private static List getPath(Map regions, CoordinateID start, CoordinateID dest,
 								Map excludedRegionTypes) {
 		if((regions == null) || (start == null) || (dest == null)) {
 			log.warn("Regions.getPath(): invalid argument");
@@ -276,7 +276,7 @@ public class Regions {
 		LinkedList backlogList = new LinkedList(); // contains regions with unknown distance to the start region
 		Map backlogMap = CollectionFactory.createHashMap(); // contains the same entries as the backlog list. It's contents are unordered but allow a fast look-up by coordinate
 		Region curRegion = null;
-		Coordinate curCoord = null;
+		CoordinateID curCoord = null;
 		int consecutiveReenlistings = 0; // safe-guard against endless loops
 
 		if(excludedRegionTypes == null) {
@@ -330,7 +330,7 @@ public class Regions {
 			   its neighbour's distances to the start region */
 			for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 				Region curNb = (Region) iter.next();
-				Coordinate curNbCoord = curNb.getCoordinate();
+				CoordinateID curNbCoord = curNb.getCoordinate();
 				Float dist = (Float) distances.get(curNbCoord);
 
 				if(dist != null) {
@@ -398,13 +398,13 @@ public class Regions {
 
 			if(dist != null) {
 				float minDistance = dist.floatValue();
-				Coordinate closestNbCoord = null;
+				CoordinateID closestNbCoord = null;
 				Map neighbours = getAllNeighbours(regions, curCoord, excludedRegionTypes);
 				neighbours.remove(curCoord);
 
 				for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 					Region curNb = (Region) iter.next();
-					Coordinate curNbCoord = curNb.getCoordinate();
+					CoordinateID curNbCoord = curNb.getCoordinate();
 					Float nbDist = (Float) distances.get(curNbCoord);
 
 					if(nbDist != null) {
@@ -478,7 +478,7 @@ public class Regions {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public static List planShipRoute(Ship ship, Coordinate destination, Map allregions,
+	public static List planShipRoute(Ship ship, CoordinateID destination, Map allregions,
 									 
 	/*RegionType oceanType,*/ BuildingType harbour, int speedBonus) {
 		if(destination != null) {
@@ -526,7 +526,7 @@ public class Regions {
 				 * these paths will be taken and the way from the land to that
 				 * oceanregion will be added.
 				 */
-				Coordinate c = null;
+				CoordinateID c = null;
 				Region r = null;
 
 				// central direction
@@ -676,7 +676,7 @@ public class Regions {
 		String ID = (u.getShip() == null) ? u.toString() : u.getShip().toString(false);
 
 		// run over neighbours recursively
-		Coordinate c = getMovement(data, ID, u.getRegion().getCoordinate(), coordinates);
+		CoordinateID c = getMovement(data, ID, u.getRegion().getCoordinate(), coordinates);
 
 		while((c != null) && !coordinates.contains(c)) {
 			coordinates.add(c);
@@ -690,13 +690,13 @@ public class Regions {
 		// return getDirectionObjectsOfCoordinates(coordinates);
 	}
 
-	private static Coordinate getMovement(GameData data, String ID, Coordinate c,
+	private static CoordinateID getMovement(GameData data, String ID, CoordinateID c,
 										  List travelledRegions) {
 		Map neighbours = getAllNeighbours(data.regions(), c, Collections.EMPTY_MAP);
 
 		for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 			Region r = (Region) iter.next();
-			Coordinate neighbour = r.getCoordinate();
+			CoordinateID neighbour = r.getCoordinate();
 
 			if(neighbour.equals(c) || travelledRegions.contains(neighbour)) {
 				// dont add our own or an already visited coordinate

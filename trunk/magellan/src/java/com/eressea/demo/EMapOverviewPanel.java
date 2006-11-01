@@ -3291,8 +3291,12 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		treeBuilder.setShipNodes(shipNodes);
 		treeBuilder.setBuildingNodes(buildingNodes);
 		treeBuilder.setActiveAlliances(activeAlliances);
+		/**
+		 * Fiete Default für den Modus auf UNITS | SHIPS | BUILDINGS |COMMENTS setzen
+		 * nach Vorgabe stm
 		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters", "1")));
-
+		**/
+		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters", "16391")));
 		return treeBuilder;
 	}
 

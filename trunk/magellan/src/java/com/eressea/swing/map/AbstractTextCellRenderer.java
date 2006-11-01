@@ -21,7 +21,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
@@ -191,7 +191,7 @@ public abstract class AbstractTextCellRenderer extends HexCellRenderer {
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
 			Region r = (Region) obj;
-			Coordinate c = r.getCoordinate();
+			CoordinateID c = r.getCoordinate();
 			Rectangle rect = cellGeo.getCellRect(c.x, c.y);
 
 			String display[] = getText(r, rect);

@@ -288,7 +288,8 @@ public abstract class GameData implements Cloneable {
 	 * @return an instance of class <tt>Region</tt> or <tt>null</tt> if there is no region with the
 	 * 		   specified coordinates or if regions() is <tt>null</tt>.
 	 */
-	public Region getRegion(ID id) {
+	public Region getRegion(CoordinateID c) {
+		CoordinateID id = new CoordinateID(c);
 		return (regions() == null) ? null : (Region) regions().get(id);
 	}
 
@@ -568,95 +569,93 @@ public abstract class GameData implements Cloneable {
 	 */
 	public boolean noSkillPoints = false;
 
-	/**
-	 * Sets the region at origin as the map origin. (e.g. an origin of (1,0,0) moves all regions in
-	 * level 0 one step to the west using eressea coordinates)
-	 *
-	 * @param origin translation vector as coordinate object
-	 */
-	public void placeOrigin(Coordinate origin) {
-		// fast break
-		if((regions() == null) || (origin == null) ||
-			   ((origin.x == 0) && (origin.y == 0) && (origin.z == 0))) {
-			return;
-		}
+	// TODO: clean up
+    //////	deleted by stm (2006-10-20) 
+//	/**
+//	 * Sets the region at origin as the map origin. (e.g. an origin of (1,0,0) moves all regions in
+//	 * level 0 one step to the west using eressea coordinates)
+//	 *
+//	 * @param origin translation vector as coordinate object
+//	 */
+//	public abstract void placeOrigin(CoordinateID origin);
+//
+//		// It can be assumed safely that a region's coordinate and the
+//		// key in the regions map are the same object.
+//		for(Iterator iter = regions().keySet().iterator(); iter.hasNext();) {
+//			Coordinate coord = (Coordinate) iter.next();
+//
+//			if(coord.z == origin.z) {
+//				coord.x -= origin.x;
+//				coord.y -= origin.y;
+//			}
+//		}
+//
+//		// since the coordinate is the hash key, the modified
+//		// coordinates produce invalid hash codes in all maps
+//		// so everything has to be rehashed. Unfortunately, the
+//		// regions map has to be copied two times.
+//		Map r = CollectionFactory.createOrderedHashtable(regions());
+//		regions().clear();
+//		regions().putAll(r);
+//
+//		for(Iterator iter = islands().values().iterator(); iter.hasNext();) {
+//			Island i = (Island) iter.next();
+//			i.invalidateRegions();
+//		}
+//
+//		// now we must change the messages because they use string representations
+//		// of coordinates
+//		// all factions
+//		for(Iterator iter = factions().values().iterator(); iter.hasNext();) {
+//			Faction f = (Faction) iter.next();
+//
+//			// all messages
+//			if(f.messages != null) {
+//				for(Iterator msgIter = f.messages.iterator(); msgIter.hasNext();) {
+//					Message msg = (Message) msgIter.next();
+//
+//					if(msg.attributes != null) {
+//						for(Iterator attrIter = msg.attributes.keySet().iterator();
+//								attrIter.hasNext();) {
+//							Object key = attrIter.next();
+//							String strCoord = (String) msg.attributes.get(key);
+//							Coordinate coord = Coordinate.parse(strCoord, ",");
+//
+//							if((coord != null) && (coord.z == origin.z)) {
+//								coord.x -= origin.x;
+//								coord.y -= origin.y;
+//								msg.attributes.put(key, coord.toString(","));
+//							} else {
+//								coord = Coordinate.parse(strCoord, " ");
+//
+//								if((coord != null) && (coord.z == origin.z)) {
+//									coord.x -= origin.x;
+//									coord.y -= origin.y;
+//									msg.attributes.put(key, coord.toString(" ", true));
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//
+//			// change battle IDs
+//			if(f.battles != null) {
+//				for(Iterator battles = f.battles.iterator(); battles.hasNext();) {
+//					Battle b = (Battle) battles.next();
+//
+//					// currently the coordinate can overwritten, it
+//					// does not serve as key in any map
+//					Coordinate newCoord = (Coordinate) b.getID();
+//
+//					// we dont need to copy the coordinate as they are mutable
+//					newCoord.x -= origin.x;
+//					newCoord.y -= origin.y;
+//				}
+//			}
+//		}
+//	}
 
-		// It can be assumed safely that a region's coordinate and the
-		// key in the regions map are the same object.
-		for(Iterator iter = regions().keySet().iterator(); iter.hasNext();) {
-			Coordinate coord = (Coordinate) iter.next();
-
-			if(coord.z == origin.z) {
-				coord.x -= origin.x;
-				coord.y -= origin.y;
-			}
-		}
-
-		// since the coordinate is the hash key, the modified
-		// coordinates produce invalid hash codes in all maps
-		// so everything has to be rehashed. Unfortunately, the
-		// regions map has to be copied two times.
-		Map r = CollectionFactory.createOrderedHashtable(regions());
-		regions().clear();
-		regions().putAll(r);
-
-		for(Iterator iter = islands().values().iterator(); iter.hasNext();) {
-			Island i = (Island) iter.next();
-			i.invalidateRegions();
-		}
-
-		// now we must change the messages because they use string representations
-		// of coordinates
-		// all factions
-		for(Iterator iter = factions().values().iterator(); iter.hasNext();) {
-			Faction f = (Faction) iter.next();
-
-			// all messages
-			if(f.messages != null) {
-				for(Iterator msgIter = f.messages.iterator(); msgIter.hasNext();) {
-					Message msg = (Message) msgIter.next();
-
-					if(msg.attributes != null) {
-						for(Iterator attrIter = msg.attributes.keySet().iterator();
-								attrIter.hasNext();) {
-							Object key = attrIter.next();
-							String strCoord = (String) msg.attributes.get(key);
-							Coordinate coord = Coordinate.parse(strCoord, ",");
-
-							if((coord != null) && (coord.z == origin.z)) {
-								coord.x -= origin.x;
-								coord.y -= origin.y;
-								msg.attributes.put(key, coord.toString(","));
-							} else {
-								coord = Coordinate.parse(strCoord, " ");
-
-								if((coord != null) && (coord.z == origin.z)) {
-									coord.x -= origin.x;
-									coord.y -= origin.y;
-									msg.attributes.put(key, coord.toString(" ", true));
-								}
-							}
-						}
-					}
-				}
-			}
-
-			// change battle IDs
-			if(f.battles != null) {
-				for(Iterator battles = f.battles.iterator(); battles.hasNext();) {
-					Battle b = (Battle) battles.next();
-
-					// currently the coordinate can overwritten, it
-					// does not serve as key in any map
-					Coordinate newCoord = (Coordinate) b.getID();
-
-					// we dont need to copy the coordinate as they are mutable
-					newCoord.x -= origin.x;
-					newCoord.y -= origin.y;
-				}
-			}
-		}
-	}
 
 	/**
 	 * Sets the valid locale for this report. Currently, this is only used to remember this setting
@@ -921,7 +920,7 @@ public abstract class GameData implements Cloneable {
 				Region r = (Region) iter.next();
 
 				try {
-					newGD.addRegion(new Region((ID) r.getID().clone(), newGD));
+					newGD.addRegion(new Region((CoordinateID) r.getID().clone(), newGD));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
@@ -932,9 +931,9 @@ public abstract class GameData implements Cloneable {
 			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
-				if(newGD.getRegion(r.getID()) == null) {
+				if(newGD.getRegion((CoordinateID) r.getID()) == null) {
 					try {
-						newGD.addRegion(new Region((ID) r.getID().clone(), newGD));
+						newGD.addRegion(new Region((CoordinateID) r.getID().clone(), newGD));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -1022,7 +1021,7 @@ public abstract class GameData implements Cloneable {
 					// not know the region anymore or if it was
 					// destroyed
 					// FIXME(pavkovic): shouldn't it be Region curRegion = b.getRegion(); ?
-					Region curRegion = gd2.getRegion(b.getRegion().getID());
+					Region curRegion = gd2.getRegion((CoordinateID) b.getRegion().getID());
 
 					if((curRegion == null) || curRegion.units().isEmpty()) {
 						try {
@@ -1118,7 +1117,7 @@ public abstract class GameData implements Cloneable {
 		if(gd1.regions() != null) {
 			for(Iterator iter = gd1.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
-				Region newRegion = newGD.getRegion(curRegion.getID());
+				Region newRegion = newGD.getRegion((CoordinateID) curRegion.getID());
 
 				// first pass
 				Region.merge(gd1, curRegion, newGD, newRegion, sameRound);
@@ -1234,7 +1233,7 @@ public abstract class GameData implements Cloneable {
 		if(gd2.regions() != null) {
 			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
-				Region newRegion = newGD.getRegion(curRegion.getID());
+				Region newRegion = newGD.getRegion((CoordinateID) curRegion.getID());
 				
 				// second pass
 				Region.merge(gd2, curRegion, newGD, newRegion, true);
@@ -1371,6 +1370,21 @@ public abstract class GameData implements Cloneable {
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return new Loader().cloneGameData(this);
+	}
+
+	/**
+	 * returns a clone of the game data (using CRWriter/CRParser  trick encapsulated in Loader)
+	 * and at the same time translates the origin two <code>newOrigin</code>
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 *
+	 * @throws CloneNotSupportedException TODO: DOCUMENT ME!
+	 */
+	public Object clone(CoordinateID newOrigin) throws CloneNotSupportedException {
+		if (newOrigin.x == 0 && newOrigin.y == 0)
+			return this.clone();
+		else
+			return new Loader().cloneGameData(this, newOrigin);
 	}
 
 	/**

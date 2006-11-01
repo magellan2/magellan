@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.StringID;
@@ -121,7 +121,7 @@ public class ShipInspector extends AbstractInspector implements Inspector {
 			return Collections.EMPTY_LIST;
 		}
 
-		Coordinate nextRegionCoord = (Coordinate) modifiedMovement.get(1);
+		CoordinateID nextRegionCoord = (CoordinateID) modifiedMovement.get(1);
 		Region nextRegion = s.getRegion().getData().getRegion(nextRegionCoord);
 
 		if(nextRegion != null) {
