@@ -23,6 +23,7 @@ import com.eressea.Island;
 import com.eressea.Region;
 import com.eressea.Rules;
 import com.eressea.util.logging.Logger;
+import com.eressea.rules.RegionType;
 
 /**
  * A class offering common operations on islands and regions.
@@ -114,6 +115,10 @@ public class Islands {
 
 		Map excludedRegionTypes = Regions.getOceanRegionTypes(rules);
 
+		// Feature wish: Feuerwände nicht dabei (Fiete)
+		RegionType Feuerwand = Regions.getFeuerwandRegionType(rules);
+		excludedRegionTypes.put(Feuerwand.getID(),Feuerwand);
+		
 		if(excludedRegionTypes.isEmpty()) {
 			log.warn("Islands.getIsland(): unable to determine ocean region types!");
 

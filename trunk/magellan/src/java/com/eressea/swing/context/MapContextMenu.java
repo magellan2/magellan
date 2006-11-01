@@ -375,7 +375,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 			ID id;
 
 			while(true) {
-				id = IntegerID.create((int) Math.random() * Integer.MAX_VALUE);
+				id = IntegerID.create((int) (Math.random() * Integer.MAX_VALUE));
 
 				if(data.getHotSpot(id) == null) {
 					break;

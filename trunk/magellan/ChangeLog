@@ -1,5 +1,12 @@
 2006-11-01  Fiete  <Fiete@users.sourceforge.net>
 
+	* src\java\com\eressea\swing\context\MapContextMenu.java (changeHotSpot): 
+	Fixed calculation of random Integer (was allways zero)
+	* src\java\com\eressea\util\Islands.java (getIsland): Feuerwände nicht in Inselauswahl
+	* src\res\lang\orders_de.properties: BEWACHEN->BEWACHE
+
+2006-11-01  Fiete  <Fiete@users.sourceforge.net>
+
 	* src\java\com\eressea\demo\EMapOverviewPanel.java (createTreeBuilder): Default für den Modus auf UNITS | SHIPS | BUILDINGS |
 COMMENTS (Bug 1560157)
 	* Renamed Coordinate -> CoordinateID (Solthar)
