@@ -748,4 +748,23 @@ public class Regions {
 
 		return ret;
 	}
+	
+	/**
+	 * Returns the RegionType that is named as <tt>Feuerwand</tt>.
+	 *
+	 * @param rules Rules of the game
+	 *
+	 * @return RegionType Feuerwand
+	 */
+	public static RegionType getFeuerwandRegionType(Rules rules){
+		for(Iterator iter = rules.getRegionTypeIterator(); iter.hasNext();) {
+			RegionType rt = (RegionType) iter.next();
+
+			if(rt.getName().equalsIgnoreCase("Feuerwand")) {
+				return rt;
+			}
+		}
+		return null;
+	}
+	
 }
