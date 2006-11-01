@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.eressea.Border;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
@@ -58,7 +58,7 @@ public class BorderCellRenderer extends ImageCellRenderer {
 			if(borders.isEmpty() == false) {
 				// since border objects are rare initialization is
 				// done as late as possible
-				Coordinate c = null;
+				CoordinateID c = null;
 				Point pos = null;
 				Dimension size = null;
 

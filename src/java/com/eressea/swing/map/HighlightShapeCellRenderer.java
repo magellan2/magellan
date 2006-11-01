@@ -30,7 +30,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -98,7 +98,7 @@ public class HighlightShapeCellRenderer extends HexCellRenderer {
 	}
 
 	private void drawAndPossiblyFillPolygon(Region r, Color col) {
-		Coordinate c = r.getCoordinate();
+		CoordinateID c = r.getCoordinate();
 
 		Rectangle rect = cellGeo.getCellRect(c.x, c.y);
 		rect.translate(-offset.x, -offset.y);

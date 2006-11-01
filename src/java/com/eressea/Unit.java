@@ -2511,7 +2511,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		}
 
 		if(curUnit.getRegion() != null) {
-			newUnit.setRegion(newGD.getRegion(curUnit.getRegion().getID()));
+			newUnit.setRegion(newGD.getRegion((CoordinateID) curUnit.getRegion().getID()));
 		}
 
 		if(curUnit.combatStatus != -1) {

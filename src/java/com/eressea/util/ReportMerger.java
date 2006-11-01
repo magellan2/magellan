@@ -34,7 +34,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Region;
@@ -401,7 +401,8 @@ public class ReportMerger extends Object {
 			report.data = loader.load(report.file);
 		}
 
-		if(!data.name.equalsIgnoreCase(report.data.name)) {
+		if(report.data == null || !data.name.equalsIgnoreCase(report.data.name)) {
+			// no report loaded or 
 			// game types doesn't match. Make sure, it will not be tried again.
 			// TODO: maybe issue a message here.
 			report.merged = true;
@@ -447,6 +448,9 @@ public class ReportMerger extends Object {
 			report.data.setCurTempID(-1);
 		}
 
+		boolean reportHasAstralRegions=false;
+		boolean dataHasAstralRegions=false;
+
 		// it is safe to assume, that when regionMap is null, schemeMap is null, too
 		if(report.regionMap == null) {
 			iProgress += 1;
@@ -469,6 +473,7 @@ public class ReportMerger extends Object {
 				}
 
 				if(region.getCoordinate().z == 1) {
+					reportHasAstralRegions=true;
 					for(Iterator schemes = region.schemes().iterator(); schemes.hasNext();) {
 						Scheme scheme = (Scheme) schemes.next();
 						Collection col = (Collection) report.schemeMap.get(scheme.getName());
@@ -504,16 +509,16 @@ public class ReportMerger extends Object {
 		for(Iterator iter = data.regions().values().iterator(); iter.hasNext();) {
 			Region region = (Region) iter.next();
 
-			Coordinate coord = region.getCoordinate();
+			CoordinateID coord = region.getCoordinate();
 
 			if(coord.z == 0) {
 				if((region.getName() != null) && (region.getName().length() > 0)) {
 					Region foundRegion = (Region) report.regionMap.get(region.getName());
 
 					if(foundRegion != null) {
-						Coordinate foundCoord = foundRegion.getCoordinate();
+						CoordinateID foundCoord = foundRegion.getCoordinate();
 
-						Coordinate translation = new Coordinate(foundCoord.x - coord.x,
+						CoordinateID translation = new CoordinateID(foundCoord.x - coord.x,
 																foundCoord.y - coord.y);
 
 						Integer count = (Integer) translationMap.get(translation);
@@ -534,6 +539,7 @@ public class ReportMerger extends Object {
 				// Since all schemes have to match it's sufficient to look at the
 				// first one to find a possible match. To check whether that
 				// match really is one, we have to look at all schemes.
+				dataHasAstralRegions=true;
 				if(!region.schemes().isEmpty()) {
 					Scheme scheme = (Scheme) region.schemes().iterator().next();
 					Object o = report.schemeMap.get(scheme.getName());
@@ -572,8 +578,8 @@ public class ReportMerger extends Object {
 
 								if(!mismatch) {
 									// allright, seems we found a valid translation
-									Coordinate foundCoord = foundRegion.getCoordinate();
-									Coordinate translation = new Coordinate(foundCoord.x - coord.x,
+									CoordinateID foundCoord = foundRegion.getCoordinate();
+									CoordinateID translation = new CoordinateID(foundCoord.x - coord.x,
 																			foundCoord.y - coord.y,
 																			1);
 									Integer count = (Integer) astralTranslationMap.get(translation);
@@ -599,7 +605,7 @@ public class ReportMerger extends Object {
 		   comparing the terrains */
 		int maxTerrainMismatches = (int) (Math.max(data.regions().size(),
 												   report.data.regions().size()) * 0.02);
-		Coordinate loopCoord = new Coordinate(0, 0, 0);
+		CoordinateID loopCoord = new CoordinateID(0, 0, 0);
 		RegionType forestTerrain = data.rules.getRegionType(StringID.create("Wald"));
 		RegionType plainTerrain = data.rules.getRegionType(StringID.create("Ebene"));
 		RegionType oceanTerrain = data.rules.getRegionType(StringID.create("Ozean"));
@@ -608,7 +614,7 @@ public class ReportMerger extends Object {
 		RegionType volcanoTerrain = data.rules.getRegionType(StringID.create("Vulkan"));
 
 		for(Iterator iter = translationMap.keySet().iterator(); iter.hasNext();) {
-			Coordinate translation = (Coordinate) iter.next();
+			CoordinateID translation = (CoordinateID) iter.next();
 			int mismatches = 0; // the number of regions not having the same region type at the current translations
 
 			/* for each traslations we have to compare the regions'
@@ -620,7 +626,7 @@ public class ReportMerger extends Object {
 					continue;
 				}
 
-				Coordinate c = r.getCoordinate();
+				CoordinateID c = r.getCoordinate();
 
 				/* do the translation and find the corresponding
 				   region in the report data */
@@ -682,7 +688,7 @@ public class ReportMerger extends Object {
 		 * wrong!
 		 */
 		for(Iterator iter = astralTranslationMap.keySet().iterator(); iter.hasNext();) {
-			Coordinate translation = (Coordinate) iter.next();
+			CoordinateID translation = (CoordinateID) iter.next();
 
 			// the number of astral space region where a scheme mismatch was found.
 			int mismatches = 0;
@@ -695,7 +701,7 @@ public class ReportMerger extends Object {
 					continue;
 				}
 
-				Coordinate c = r.getCoordinate();
+				CoordinateID c = r.getCoordinate();
 
 				/* do the translation and find the corresponding
 				   region in the report data */
@@ -753,7 +759,7 @@ public class ReportMerger extends Object {
 		while(iter.hasNext()) {
 			Map.Entry entry = (Map.Entry) iter.next();
 
-			Coordinate translation = (Coordinate) entry.getKey();
+			CoordinateID translation = (CoordinateID) entry.getKey();
 			int count = ((Integer) entry.getValue()).intValue();
 
 			/*System.out.println( "Translation X:" + translation.x + " Y:" + translation.y +
@@ -771,11 +777,11 @@ public class ReportMerger extends Object {
 		}
 
 		// search for best astral translation
-		Coordinate bestAstralTranslation = new Coordinate(0, 0, 1);
+		CoordinateID bestAstralTranslation = new CoordinateID(0, 0, 1);
 		int bestHitCount = -1;
 
 		for(iter = astralTranslationMap.keySet().iterator(); iter.hasNext();) {
-			Coordinate translation = (Coordinate) iter.next();
+			CoordinateID translation = (CoordinateID) iter.next();
 			int count = ((Integer) astralTranslationMap.get(translation)).intValue();
 
 			if(count > bestHitCount) {
@@ -784,44 +790,91 @@ public class ReportMerger extends Object {
 			}
 		}
 
-		if(bestHitCount <= 0) {
-			System.out.println("Warning: ReportMerger: Couldn't find a good translation for astral space coordinate systems. Merge results on level 1 may be poor and undefined!");
+		if(reportHasAstralRegions && dataHasAstralRegions && bestHitCount <= 0) {
+			log.warn("Warning: ReportMerger: Couldn't find a good translation for astral space coordinate systems. " + 
+					 "Merge results on level 1 may be poor and undefined!");
 		} else if(astralTranslationMap.size() > 0) {
-			System.out.println("ReportMerger: Found " + astralTranslationMap.size() +
+			log.info("ReportMerger: Found " + astralTranslationMap.size() +
 							   " possible translations for astral space. Using this one: " +
 							   bestAstralTranslation);
 		}
 
+		CoordinateID usedAstralTranslation = null;
+		
 		// use astral space translation anyway
 		if((data.getDate() == null) || (report.data.getDate() == null)) {
-			report.data.placeOrigin(bestAstralTranslation);
+			usedAstralTranslation = bestAstralTranslation;
+//			report.data.placeOrigin(bestAstralTranslation);
 		} else {
-			if(data.getDate().getDate() < report.data.getDate().getDate()) {
-				data.placeOrigin(new Coordinate(-bestAstralTranslation.x, -bestAstralTranslation.y,
-												bestAstralTranslation.z));
+			// TODO: figure out if it is "<" or ">" here
+			if(data.getDate().getDate() > report.data.getDate().getDate()) {
+				usedAstralTranslation = new CoordinateID(-bestAstralTranslation.x, -bestAstralTranslation.y,
+						bestAstralTranslation.z);
+//				data.placeOrigin(new Coordinate(-bestAstralTranslation.x, -bestAstralTranslation.y,
+//												bestAstralTranslation.z));
 			} else {
-				report.data.placeOrigin(bestAstralTranslation);
+				usedAstralTranslation = bestAstralTranslation;
+//				report.data.placeOrigin(bestAstralTranslation);
+			}
+		}
+
+		// TODO: manual translation
+//		if (newAstralOrigin!= null && forceAstralOrigin)
+//			usedAstralTranslation= newAstralOrigin;
+		
+		if (usedAstralTranslation != null && usedAstralTranslation != new CoordinateID(0,0,1)){
+			log.info("ReportMerger: Using this astral translation: " + usedAstralTranslation.toString());
+//			report.data.placeOrigin(usedAstralTranslation);
+			try {
+				if (usedAstralTranslation.x != 0 || usedAstralTranslation.y != 0)
+					report.data = (GameData) report.data.clone(usedAstralTranslation);
+			} catch (CloneNotSupportedException e) {
+				log.error(e);
+			}
+
+		}
+		
+
+		CoordinateID usedTranslation = null;
+
+		if ((data.getDate() == null) || (report.data.getDate() == null)) {
+			usedTranslation = new CoordinateID(iDX, iDY);
+			// report.data.placeOrigin(new Coordinate(iDX, iDY));
+		} else {
+			if (data.getDate().getDate() > report.data.getDate().getDate()) {
+				usedTranslation = new CoordinateID(-iDX, -iDY);
+				// data.placeOrigin(new Coordinate(-iDX, -iDY));
+			} else {
+				usedTranslation = new CoordinateID(iDX, iDY);
+				// report.data.placeOrigin(new Coordinate(iDX, iDY));
+			}
+		}
+
+		// TODO: manual translation
+//		if (newOrigin != null && forceOrigin)
+//			usedTranslation = newOrigin;
+
+		if (usedTranslation != null
+				&& usedTranslation != new CoordinateID(0, 0, 0)) {
+			log.info("ReportMerger: Using this translation: "
+					+ usedTranslation.toString());
+//			report.data.placeOrigin(usedTranslation);
+			try {				
+				if (usedTranslation.x != 0 || usedTranslation.y != 0)
+					report.data = (GameData) report.data.clone(usedTranslation);
+			} catch (CloneNotSupportedException e) {
+				log.error(e);
 			}
 		}
 
 		// valid translation?
-		if((iCount > 0) && (!bEqual)) {
+		if ((iCount > 0) && (!bEqual)) {
 			iProgress += 1;
-			if(ui != null) {								
-				ui.setProgress(report.file.getName() + " - " + getString("status.merging"), iProgress);
+			if (ui != null) {
+				ui.setProgress(report.file.getName() + " - "
+						+ getString("status.merging"), iProgress);
 			}
-
-			if((data.getDate() == null) || (report.data.getDate() == null)) {
-				report.data.placeOrigin(new Coordinate(iDX, iDY));
-			} else {
-				if(data.getDate().getDate() < report.data.getDate().getDate()) {
-					data.placeOrigin(new Coordinate(-iDX, -iDY));
-				} else {
-					report.data.placeOrigin(new Coordinate(iDX, iDY));
-				}
-			}
-
-			//data.mergeWith( report.data );
+			// data.mergeWith( report.data );
 			data = GameData.merge(data, report.data);
 			report.merged = true;
 

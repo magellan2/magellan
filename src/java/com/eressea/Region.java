@@ -123,7 +123,7 @@ public class Region extends UnitContainer {
 	 * @param id TODO: DOCUMENT ME!
 	 * @param data TODO: DOCUMENT ME!
 	 */
-	public Region(ID id, GameData data) {
+	public Region(CoordinateID id, GameData data) {
 		super(id, data);
 	}
 
@@ -494,27 +494,32 @@ public class Region extends UnitContainer {
 		return scheme;
 	}
 
-	/**
-	 * Removes the scheme with the specified id from this region.
-	 *
-	 * @param s TODO: DOCUMENT ME!
-	 *
-	 * @return the removed scheme or null if no scheme with the specified id exists in this region.
-	 */
-	public Scheme removeScheme(Scheme s) {
-		if(this.schemes == null) {
-			return null;
-		}
+	
+	// TODO: clean up
+	// stm  2006.10.20
+	// this is needed by nobody and unclear if it works, so I commented it out
+//	/**
+//	 * Removes the scheme with the specified id from this region.
+//	 *
+//	 * @param s TODO: DOCUMENT ME!
+//	 *
+//	 * @return the removed scheme or null if no scheme with the specified id exists in this region.
+//	 */
+//	public Scheme removeScheme(Scheme s) {
+//		if(this.schemes == null) {
+//			return null;
+//		}
+//
+//		Scheme ret = (Scheme) this.schemes.remove(id);
+//
+//		if(this.schemes.isEmpty()) {
+//			this.schemes = null;
+//			this.schemeCollection = null;
+//		}
+//
+//		return ret;
+//	}
 
-		Scheme ret = (Scheme) this.schemes.remove(id);
-
-		if(this.schemes.isEmpty()) {
-			this.schemes = null;
-			this.schemeCollection = null;
-		}
-
-		return ret;
-	}
 
 	/**
 	 * Removes all schemes from this region.
@@ -588,26 +593,30 @@ public class Region extends UnitContainer {
 		return border;
 	}
 
-	/**
-	 * Removes the border with the specified id from this region.
-	 *
-	 * @param b TODO: DOCUMENT ME!
-	 *
-	 * @return the removed border or null if no border with the specified id exists in this region.
-	 */
-	public Border removeBorder(Border b) {
-		if(borders == null) {
-			return null;
-		}
-
-		Border ret = (Border) borders.remove(id);
-
-		if(borders.isEmpty()) {
-			clearBorders();
-		}
-
-		return ret;
-	}
+	// TODO: clean up
+	// stm
+	// see removeScheme above
+//	/**
+//	 * Removes the border with the specified id from this region.
+//	 *
+//	 * @param b TODO: DOCUMENT ME!
+//	 *
+//	 * @return the removed border or null if no border with the specified id exists in this region.
+//	 */
+//	public Border removeBorder(Border b) {
+//		if(borders == null) {
+//			return null;
+//		}
+//
+//		Border ret = (Border) borders.remove(id);
+//
+//		if(borders.isEmpty()) {
+//			clearBorders();
+//		}
+//
+//		return ret;
+//	}
+	//// edited by stm
 
 	/**
 	 * Removes all borders from this region.
@@ -1001,8 +1010,8 @@ public class Region extends UnitContainer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Coordinate getCoordinate() {
-		return (Coordinate) this.getID();
+	public CoordinateID getCoordinate() {
+		return (CoordinateID) this.getID();
 	}
 
 	/**

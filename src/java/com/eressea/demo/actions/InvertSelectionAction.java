@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
@@ -90,7 +90,7 @@ public class InvertSelectionAction extends MenuAction implements GameDataListene
 
 		// add all regions that belong to the active level XOR were selected befor
 		for(Iterator iter = client.getData().regions().keySet().iterator(); iter.hasNext();) {
-			Coordinate c = (Coordinate) iter.next();
+			CoordinateID c = (CoordinateID) iter.next();
 
 			if((c.z == client.getLevel()) ^ selectedRegions.containsKey(c)) {
 				newSelectedRegions.put(c, client.getData().regions().get(c));

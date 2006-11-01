@@ -60,7 +60,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.HasRegion;
 import com.eressea.HotSpot;
 import com.eressea.ID;
@@ -180,7 +180,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 
 		// update the currently selected item in the level combo box
 		Object o = se.getActiveObject();
-		Coordinate newCenter = null;
+		CoordinateID newCenter = null;
 
 		if(o != null) {
 			Region newCenterRegion = null;
@@ -210,14 +210,14 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 			// yet know the right active region
 			class CenterRunner implements Runnable {
 				/** TODO: DOCUMENT ME! */
-				public Coordinate center = null;
+				public CoordinateID center = null;
 
 				/**
 				 * Creates a new CenterRunner object.
 				 *
 				 * @param c TODO: DOCUMENT ME!
 				 */
-				public CenterRunner(Coordinate c) {
+				public CenterRunner(CoordinateID c) {
 					center = c;
 				}
 
@@ -255,7 +255,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 			if(!island.regions().isEmpty()) {
 				// first set right level
 				Region r = (Region) island.regions().iterator().next();
-				Coordinate coord = r.getCoordinate();
+				CoordinateID coord = r.getCoordinate();
 
 				if(cmbLevel.isVisible()) {
 					Integer level = new Integer(coord.z);
@@ -282,7 +282,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 
 						for(Iterator iter = island.regions().iterator(); iter.hasNext();) {
 							Region r = (Region) iter.next();
-							Coordinate coord = r.getCoordinate();
+							CoordinateID coord = r.getCoordinate();
 
 							if(islandBounds == null) {
 								islandBounds = mapper.getCellRect(coord);
@@ -326,7 +326,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		setCursor(waitCursor);
 		mapper.setCursor(waitCursor);
 
-		Coordinate center = mapper.getCenter(scpMapper.getViewport().getViewRect());
+		CoordinateID center = mapper.getCenter(scpMapper.getViewport().getViewRect());
 		mapper.setScaleFactor((float) ((sldScaling.getValue() / 50.0) + 0.3));
 		setCenter(center);
 		this.repaint();
@@ -618,12 +618,12 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		// i.e. from Astralraum back to normal map we
 		// try to intelligently center the map
 		if(mapper.getActiveRegion() != null) {
-			Coordinate c = mapper.getActiveRegion().getCoordinate();
+			CoordinateID c = mapper.getActiveRegion().getCoordinate();
 
 			if(c.z == level) {
 				setCenter(c);
 			} else if((c.z == 1) && (level == 0)) {
-				Coordinate newCoordinate = new Coordinate(c.x * 4, c.y * 4, 0);
+				CoordinateID newCoordinate = new CoordinateID(c.x * 4, c.y * 4, 0);
 				setCenter(newCoordinate);
 			}
 		}
@@ -634,7 +634,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 *
 	 * @param center the coordinate of the region to center the map on.
 	 */
-	public void setCenter(Coordinate center) {
+	public void setCenter(CoordinateID center) {
 		Point newViewPosition = mapper.getCenteredViewPosition(scpMapper.getSize(), center);
 
 		if(newViewPosition != null) {
@@ -654,7 +654,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 *
 	 * @param center the coordinate of the region to center the map on.
 	 */
-	public void setMinimapCenter(Coordinate center) {
+	public void setMinimapCenter(CoordinateID center) {
 		Point newViewPosition = minimap.getCenteredViewPosition(minimapPane.getSize(), center);
 
 		if(newViewPosition != null) {
@@ -676,7 +676,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	 * @param name the id to assign to the hot spot.
 	 */
 	public void assignHotSpot(String name) {
-		Coordinate center = mapper.getCenter(scpMapper.getViewport().getViewRect());
+		CoordinateID center = mapper.getCenter(scpMapper.getViewport().getViewRect());
 
 		if(center != null) {
 			ID id = getNewHotSpotID();
@@ -721,15 +721,15 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	public void showHotSpot(HotSpot h) {
 		// switch planes
 		if((mapper.getActiveRegion() == null) ||
-			   (mapper.getActiveRegion().getCoordinate().z != (((Coordinate) h.getCenter()).z))) {
+			   (mapper.getActiveRegion().getCoordinate().z != (((CoordinateID) h.getCenter()).z))) {
 			if(cmbLevel.isVisible()) {
-				cmbLevel.setSelectedItem(new Integer(((Coordinate) h.getCenter()).z));
+				cmbLevel.setSelectedItem(new Integer(((CoordinateID) h.getCenter()).z));
 			}
 		}
 
 		// re-center mapper
 		Point viewPos = mapper.getCenteredViewPosition(scpMapper.getSize(),
-													   (Coordinate) h.getCenter());
+													   (CoordinateID) h.getCenter());
 
 		if(viewPos != null) {
 			scpMapper.getViewport().setViewPosition(viewPos);
@@ -765,7 +765,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	public void quit() {
 		settings.setProperty("Map.scaleFactor", Float.toString(getScaleFactor()));
 
-		Coordinate center = mapper.getCenter(scpMapper.getViewport().getViewRect());
+		CoordinateID center = mapper.getCenter(scpMapper.getViewport().getViewRect());
 
 		if(center != null) {
 			settings.setProperty("Map.lastCenterRegion", center.toString());

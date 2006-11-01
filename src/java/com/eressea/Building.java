@@ -162,7 +162,7 @@ public class Building extends UnitContainer implements HasRegion {
 		}
 
 		if(curBuilding.getRegion() != null) {
-			newBuilding.setRegion(newGD.getRegion(curBuilding.getRegion().getID()));
+			newBuilding.setRegion(newGD.getRegion((CoordinateID) curBuilding.getRegion().getID()));
 		}
 
 		if(curBuilding.getSize() != -1) {

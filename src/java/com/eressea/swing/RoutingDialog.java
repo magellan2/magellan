@@ -43,7 +43,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.util.CollectionFactory;
@@ -206,7 +206,7 @@ public class RoutingDialog extends InternationalizedDialog {
 			regions.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						Region r = (Region) regions.getSelectedItem();
-						Coordinate co = r.getCoordinate();
+						CoordinateID co = r.getCoordinate();
 						xCor.setText(co.x + "");
 						yCor.setText(co.y + "");
 					}
@@ -305,7 +305,7 @@ public class RoutingDialog extends InternationalizedDialog {
 				try {
 					x = Integer.parseInt(xCor.getText());
 					y = Integer.parseInt(yCor.getText());
-					retVal.dest = new Coordinate(x, y);
+					retVal.dest = new CoordinateID(x, y);
 					retVal.makeRoute = createRoute.isSelected();
 					retVal.useRange = considerShipRange.isSelected();
 					retVal.useVorlage = createVorlageOrders.isSelected();
@@ -379,7 +379,7 @@ public class RoutingDialog extends InternationalizedDialog {
 	 */
 	public class RetValue {
 		/** TODO: DOCUMENT ME! */
-		public Coordinate dest;
+		public CoordinateID dest;
 
 		/** TODO: DOCUMENT ME! */
 		public boolean makeRoute;
@@ -402,7 +402,7 @@ public class RoutingDialog extends InternationalizedDialog {
 		 * @param b3 TODO: DOCUMENT ME!
 		 * @param b4 TODO: DOCUMENT ME!
 		 */
-		public RetValue(Coordinate d, boolean b1, boolean b2, boolean b3, boolean b4) {
+		public RetValue(CoordinateID d, boolean b1, boolean b2, boolean b3, boolean b4) {
 			dest = d;
 			makeRoute = b1;
 			useRange = b2;

@@ -237,7 +237,7 @@ public class Ship extends UnitContainer implements HasRegion {
 		}
 
 		if(curShip.getRegion() != null) {
-			newShip.setRegion(newGD.getRegion(curShip.getRegion().getID()));
+			newShip.setRegion(newGD.getRegion((CoordinateID) curShip.getRegion().getID()));
 		}
 
 		newShip.shoreId = curShip.shoreId;

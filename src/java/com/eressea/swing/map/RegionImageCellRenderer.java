@@ -24,7 +24,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.rules.UnitContainerType;
@@ -86,7 +86,7 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 	public void render(Object obj, boolean active, boolean selected) {
 		if(obj instanceof Region) {
 			Region r = (Region) obj;
-			Coordinate c = r.getCoordinate();
+			CoordinateID c = r.getCoordinate();
 
 			Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 			rect.translate(-offset.x, -offset.y);

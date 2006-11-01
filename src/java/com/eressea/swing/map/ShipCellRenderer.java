@@ -20,7 +20,7 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.EntityID;
 import com.eressea.ID;
 import com.eressea.Message;
@@ -61,7 +61,7 @@ public class ShipCellRenderer extends ImageCellRenderer {
 			Iterator iter = r.ships().iterator();
 
 			if(iter.hasNext()) {
-				Coordinate c = r.getCoordinate();
+				CoordinateID c = r.getCoordinate();
 				Point pos = new Point(cellGeo.getImagePosition(c.x, c.y));
 				pos.translate(-offset.x, -offset.y);
 
@@ -145,7 +145,7 @@ public class ShipCellRenderer extends ImageCellRenderer {
 		if(foundAllied) {
 			Image img = getImage("durchschiffung_alliiert");
 			if(img != null) {
-				Coordinate c = region.getCoordinate();
+				CoordinateID c = region.getCoordinate();
 				Rectangle rect = cellGeo.getImageRect(c.x, c.y);		
 				rect.translate(-offset.x, -offset.y);
 				graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);
@@ -154,7 +154,7 @@ public class ShipCellRenderer extends ImageCellRenderer {
 		if(foundEnemy) {
 			Image img = getImage("durchschiffung_feindlich");
 			if(img != null) {
-				Coordinate c = region.getCoordinate();
+				CoordinateID c = region.getCoordinate();
 				Rectangle rect = cellGeo.getImageRect(c.x, c.y);		
 				rect.translate(-offset.x, -offset.y);
 				graphics.drawImage(img, rect.x, rect.y, rect.width, rect.height, null);

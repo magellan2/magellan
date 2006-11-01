@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.EntityID;
 import com.eressea.GameData;
 import com.eressea.Item;
@@ -163,7 +163,7 @@ public class EresseaRelationFactory implements RelationFactory {
 
 				// dissect the order into pieces to detect which way the unit
 				// is taking
-				Coordinate c = u.getRegion().getCoordinate();
+				CoordinateID c = u.getRegion().getCoordinate();
 				modifiedMovement.add(c);
 
 				for(Iterator iter2 = tokens.listIterator(1); iter2.hasNext();) {
@@ -171,7 +171,7 @@ public class EresseaRelationFactory implements RelationFactory {
 					int dir = Direction.toInt(token.getText());
 
 					if(dir != -1) {
-						c = new Coordinate(c); // make c a new copy
+						c = new CoordinateID(c); // make c a new copy
 						c.translate(Direction.toCoordinate(dir));
 						modifiedMovement.add(c);
 					} else {

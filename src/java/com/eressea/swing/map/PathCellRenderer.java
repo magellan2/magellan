@@ -31,7 +31,7 @@ import javax.swing.GrayFilter;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.IntegerID;
 import com.eressea.Message;
 import com.eressea.Ship;
@@ -280,18 +280,18 @@ public class PathCellRenderer extends ImageCellRenderer {
 
 	private void renderPath(Unit u, List coordinates, int imageType) {
 		if((coordinates != null) && (coordinates.size() > 0)) {
-			renderPath(u, (Coordinate) coordinates.get(0),
+			renderPath(u, (CoordinateID) coordinates.get(0),
 					   Regions.getDirectionObjectsOfCoordinates(coordinates), imageType);
 		}
 	}
 
-	private void renderPath(Unit u, Coordinate start, List directions, int imageType) {
+	private void renderPath(Unit u, CoordinateID start, List directions, int imageType) {
 		if(log.isDebugEnabled()) {
 			log.debug("renderPath for unit " + u + " from " + start + " with list " + directions +
 					  ", imageType " + imageType);
 		}
 
-		Coordinate actCoord = new Coordinate(start); //  make Coordinate a copy 
+		CoordinateID actCoord = new CoordinateID(start); //  make Coordinate a copy 
 
 		for(Iterator iter = directions.iterator(); iter.hasNext();) {
 			Direction dirObj = (Direction) iter.next();

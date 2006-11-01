@@ -289,6 +289,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 	}
 
 	private Container getOptionPanel() {
+		// TODO: add tooltips
 		chkServerConformance = new JCheckBox(getString("chk.servercompatibility.caption"),
 											 (Boolean.valueOf(settings.getProperty("CRWriterDialog.serverConformance",
 																			   "true"))).booleanValue());
@@ -496,6 +497,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 							f.maxMigrants = -1;
 							f.spellSchool = null;
 							f.allies = null;
+							// TODO: heroes?
 
 							if(excludeBRegions && (f.messages != null)) {
 								Iterator it2 = f.messages.iterator();

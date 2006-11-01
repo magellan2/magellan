@@ -43,7 +43,7 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.JVMUtilities;
 
 /**
- * DOCUMENT ME!
+ * TODO: DOCUMENT ME!
  *
  * @author Andreas
  * @version
@@ -105,7 +105,11 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		}
 	}
 
-	// sets the currently selected index in the list
+	/** sets the currently selected index in the list
+	 *  TODO: DOCUMENT ME!
+	 *  
+	 * @see com.eressea.swing.completion.CompletionGUI#cycleCompletion(javax.swing.text.JTextComponent, java.util.Collection, java.lang.String, int)
+	 */
 	public void cycleCompletion(JTextComponent editor, Collection completions, String stub,
 								int index) {
 		listPane.setSelectedIndex(index);
@@ -121,13 +125,15 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return TODO: the currently selected item from the completion list
 	 */
 	public Completion getSelectedCompletion() {
 		return (Completion) listPane.choiceList.getSelectedValue();
 	}
 
-	// Inserts a completion triggered by the Choice list
+	/**
+	 * Inserts a completion triggered by the Choice list
+	 */ 
 	protected void insertCompletion() {
 		ac.insertCompletion((Completion) listPane.choiceList.getSelectedValue());
 	}
@@ -153,6 +159,11 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		return defaultTranslations;
 	}
 
+	/**
+	 * Extends JList with a KeyListener which handles the key and mouse
+	 * events for the completion list, i.e. VK_TAB, VK_ESC and VK 
+	 * 
+	 */
 	class CompletionList extends JList implements KeyListener {
 		/**
 		 * Creates a new CompletionList object.
@@ -168,6 +179,8 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 
 		/**
 		 * TODO: DOCUMENT ME!
+		 * 
+		 * @deprecated Deprecated. As of 1.4, replaced by Component.setFocusTraversalKeys(int, Set) and Container.setFocusCycleRoot(boolean).
 		 *
 		 * @return TODO: DOCUMENT ME!
 		 */
@@ -176,9 +189,9 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * We are not interested in KeyPressed events.
 		 *
-		 * @param e TODO: DOCUMENT ME!
+		 * @param e 
 		 */
 		public void keyPressed(KeyEvent e) {
 			if((e.getKeyCode() == KeyEvent.VK_TAB) || (e.getKeyCode() == KeyEvent.VK_ENTER)) {
@@ -194,17 +207,17 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * We are not interested in KeyReleased events.
 		 *
-		 * @param e TODO: DOCUMENT ME!
+		 * @param e 
 		 */
 		public void keyReleased(KeyEvent e) {
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Manage key Events for the list.
 		 *
-		 * @param e TODO: DOCUMENT ME!
+		 * @param e The event that just happened.
 		 */
 		public void keyTyped(KeyEvent e) {
 		}
@@ -218,8 +231,16 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		}
 	}
 
-	class ListPane extends JWindow {
-		/** TODO: DOCUMENT ME! */
+	/**
+	 * A floating window that holds a list of choices. Implements FocusListener
+	 * in order to be distroyed if the "owning" window loses the focus.
+	 *
+	 */
+	class ListPane extends JWindow { // implements FocusListener{
+		/** 
+		 * The list components that displays the selection. 
+		 * 
+		 */
 		public CompletionList choiceList = null;
 
 		/**
@@ -260,9 +281,9 @@ public class ListCompletionGUI extends AbstractCompletionGUI {
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Set the selected index to <tt>index</tt>.
 		 *
-		 * @param index TODO: DOCUMENT ME!
+		 * @param index The index we want to select.
 		 */
 		public void setSelectedIndex(int index) {
 			choiceList.setSelectedIndex(index);

@@ -1,3 +1,12 @@
+2006-11-01  Fiete  <Fiete@users.sourceforge.net>
+
+	* src\java\com\eressea\demo\EMapOverviewPanel.java (createTreeBuilder): Default für den Modus auf UNITS | SHIPS | BUILDINGS |
+COMMENTS (Bug 1560157)
+	* Renamed Coordinate -> CoordinateID (Solthar)
+	* OriginTransformation schon beim Mergen (Solthar)
+	* SplitSets-Reihenfolge beim Laden der magellan.ini wie in *.ini (Solthar)
+	* io.cr.CRParser parseBuilding small fix 
+
 2006-10-18  Fiete  <Fiete@users.sourceforge.net>
 
 	* src\java\com\eressea\swing\FactionStatsPanel.java (updateTree): icons for production subnodes

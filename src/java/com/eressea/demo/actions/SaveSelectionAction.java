@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
@@ -142,7 +142,7 @@ public class SaveSelectionAction extends MenuAction implements SelectionListener
 				pw = new PrintWriter(new BufferedWriter(new FileWriter(fc.getSelectedFile())));
 
 				for(Iterator iter = selectedRegions.keySet().iterator(); iter.hasNext();) {
-					pw.println(((Coordinate) iter.next()).toString(DELIMITER));
+					pw.println(((CoordinateID) iter.next()).toString(DELIMITER));
 				}
 
 				pw.close();

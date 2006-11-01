@@ -17,7 +17,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.main.MagellanContext;
 import com.eressea.util.CollectionFactory;
@@ -64,7 +64,7 @@ public class HighlightImageCellRenderer extends ImageCellRenderer {
 	}
 
 	private void renderIt(Region r, String imgName) {
-		Coordinate c = r.getCoordinate();
+		CoordinateID c = r.getCoordinate();
 
 		Rectangle rect = cellGeo.getImageRect(c.x, c.y);
 		rect.translate(-offset.x, -offset.y);

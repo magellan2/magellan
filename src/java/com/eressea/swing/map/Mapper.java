@@ -39,7 +39,7 @@ import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 
 import com.eressea.Building;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.Scheme;
 import com.eressea.Ship;
@@ -211,7 +211,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 						return;
 					}
 
-					Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
+					CoordinateID c = cellGeometry.getCoordinate(me.getPoint().x +
 															  mapToScreenBounds.x,
 															  me.getPoint().y +
 															  mapToScreenBounds.y, showLevel);
@@ -272,7 +272,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 							return;
 						}
 
-						Coordinate c = cellGeometry.getCoordinate(me.getPoint().x +
+						CoordinateID c = cellGeometry.getCoordinate(me.getPoint().x +
 																  mapToScreenBounds.x,
 																  me.getPoint().y +
 																  mapToScreenBounds.y, showLevel);
@@ -316,50 +316,50 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 						return;
 					}
 
-					Coordinate translationCoord = null;
+					CoordinateID translationCoord = null;
 
 					switch(e.getKeyCode()) {
 					case KeyEvent.VK_UP:
 					case KeyEvent.VK_NUMPAD9:
-						translationCoord = new Coordinate(0, 1);
+						translationCoord = new CoordinateID(0, 1);
 
 						break;
 
 					case KeyEvent.VK_RIGHT:
 					case KeyEvent.VK_NUMPAD6:
-						translationCoord = new Coordinate(1, 0);
+						translationCoord = new CoordinateID(1, 0);
 
 						break;
 
 					case KeyEvent.VK_DOWN:
 					case KeyEvent.VK_NUMPAD1:
-						translationCoord = new Coordinate(0, -1);
+						translationCoord = new CoordinateID(0, -1);
 
 						break;
 
 					case KeyEvent.VK_LEFT:
 					case KeyEvent.VK_NUMPAD4:
-						translationCoord = new Coordinate(-1, 0);
+						translationCoord = new CoordinateID(-1, 0);
 
 						break;
 
 					case KeyEvent.VK_NUMPAD3:
-						translationCoord = new Coordinate(1, -1);
+						translationCoord = new CoordinateID(1, -1);
 
 						break;
 
 					case KeyEvent.VK_NUMPAD7:
-						translationCoord = new Coordinate(-1, 1);
+						translationCoord = new CoordinateID(-1, 1);
 
 						break;
 
 					case KeyEvent.VK_NUMPAD2:
-						translationCoord = new Coordinate(1, -2);
+						translationCoord = new CoordinateID(1, -2);
 
 						break;
 
 					case KeyEvent.VK_NUMPAD8:
-						translationCoord = new Coordinate(-1, 2);
+						translationCoord = new CoordinateID(-1, 2);
 
 						break;
 
@@ -368,7 +368,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 					}
 
 					if(translationCoord != null) {
-						Coordinate c = new Coordinate(activeRegion.getCoordinate());
+						CoordinateID c = new CoordinateID(activeRegion.getCoordinate());
 						activeRegion = data.getRegion(c.translate(translationCoord));
 						data.setSelectedRegionCoordinates(null);
 						dispatcher.fire(new SelectionEvent(mapper, null,
@@ -401,7 +401,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	public String getToolTipText(MouseEvent e) {
 		if(tooltipDefinition != null) {
 			try {
-				Coordinate c = cellGeometry.getCoordinate(e.getPoint().x + mapToScreenBounds.x,
+				CoordinateID c = cellGeometry.getCoordinate(e.getPoint().x + mapToScreenBounds.x,
 														  e.getPoint().y + mapToScreenBounds.y,
 														  showLevel);
 				Region r = data.getRegion(c);
@@ -598,7 +598,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			if(newRegion != null) {
 				activeRegion = newRegion;
 
-				Coordinate c = activeRegion.getCoordinate();
+				CoordinateID c = activeRegion.getCoordinate();
 
 				if(c.z != showLevel) {
 					setLevel(c.z);
@@ -723,7 +723,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	protected List createSubList(int condition, Coordinate upperLeft, Coordinate lowerRight,
+	protected List createSubList(int condition, CoordinateID upperLeft, CoordinateID lowerRight,
 								 List regionList, int duration, int paintNumber) {
 		List main = null;
 
@@ -751,7 +751,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			int xstart = upperLeft.x - 2;
 			int xend = lowerRight.x + 1;
 			int yCounter = 0;
-			Coordinate c = new Coordinate(0, 0, upperLeft.z);
+			CoordinateID c = new CoordinateID(0, 0, upperLeft.z);
 
 			for(int y = upperLeft.y + 1; y >= (lowerRight.y - 1); y--) {
 				if((++yCounter % 2) == 0) {
@@ -867,8 +867,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		//super.paint(g);
 		Point offset = new Point(mapToScreenBounds.x + clipBounds.x,
 								 mapToScreenBounds.y + clipBounds.y);
-		Coordinate upperLeftCorner = cellGeometry.getCoordinate(offset.x, offset.y, showLevel);
-		Coordinate lowerRightCorner = cellGeometry.getCoordinate(offset.x + clipBounds.width,
+		CoordinateID upperLeftCorner = cellGeometry.getCoordinate(offset.x, offset.y, showLevel);
+		CoordinateID lowerRightCorner = cellGeometry.getCoordinate(offset.x + clipBounds.width,
 																 offset.y + clipBounds.height,
 																 showLevel);
 
@@ -1010,7 +1010,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 					if((activeRegion.schemes() != null) && !activeRegion.schemes().isEmpty()) {
 						for(Iterator iter = activeRegion.schemes().iterator(); iter.hasNext();) {
 							Scheme scheme = (Scheme) iter.next();
-							Region r = data.getRegion(scheme.getID());
+							Region r = data.getRegion((CoordinateID) scheme.getID());
 
 							if(r != null) {
 								regionSchemeList.add(r);
@@ -1122,7 +1122,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			Iterator iter = data.regions().values().iterator();
 
 			while(iter.hasNext()) {
-				Coordinate c = ((Region) iter.next()).getCoordinate();
+				CoordinateID c = ((Region) iter.next()).getCoordinate();
 				Integer i = new Integer(c.z);
 
 				if(levels.contains(i) == false) {
@@ -1190,7 +1190,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @return the bounds (the upper left corner and the size) of the region cell in component
 	 * 		   coordinates.
 	 */
-	public Rectangle getCellRect(Coordinate cell) {
+	public Rectangle getCellRect(CoordinateID cell) {
 		Rectangle bounds = null;
 
 		if(cellGeometry != null) {
@@ -1211,8 +1211,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Coordinate getCenter(Rectangle clipBounds) {
-		Coordinate center = null;
+	public CoordinateID getCenter(Rectangle clipBounds) {
+		CoordinateID center = null;
 
 		if(mapToScreenBounds != null) {
 			Point centerScreen = new Point(mapToScreenBounds.x + clipBounds.x +
@@ -1241,7 +1241,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 * @return a Point with x and y so that a view port of size viewSize is centered over the
 	 * 		   specified region center.
 	 */
-	public Point getCenteredViewPosition(Dimension viewSize, Coordinate center) {
+	public Point getCenteredViewPosition(Dimension viewSize, CoordinateID center) {
 		Point viewPos = null;
 
 		if((cellGeometry != null) && (viewSize != null) && (center != null)) {
@@ -1343,7 +1343,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		Iterator iter = data.regions().values().iterator();
 
 		while(iter.hasNext()) {
-			Coordinate c = ((Region) iter.next()).getCoordinate();
+			CoordinateID c = ((Region) iter.next()).getCoordinate();
 
 			if(c.z == showLevel) {
 				int x = cellGeometry.getCellPositionX(c.x, c.y);

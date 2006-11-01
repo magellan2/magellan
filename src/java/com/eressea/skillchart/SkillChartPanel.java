@@ -42,7 +42,7 @@ import com.eressea.rules.SkillType;
 import com.eressea.swing.InternationalizedDataPanel;
 import com.eressea.util.SkillStats;
 import com.eressea.util.Translations;
-
+import com.eressea.util.logging.Logger;
 import com.jrefinery.chart.Axis;
 import com.jrefinery.chart.AxisNotCompatibleException;
 import com.jrefinery.chart.DefaultCategoryDataSource;
@@ -58,6 +58,7 @@ import com.jrefinery.chart.VerticalNumberAxis;
  * 		   the units to be considered is received solely by SelectionEvents.
  */
 public class SkillChartPanel extends InternationalizedDataPanel implements SelectionListener {
+	private static final Logger log = Logger.getInstance(SkillChartPanel.class);
 	private SkillChartJFreeChartPanel chartPanel;
 	private JComboBox persons;
 	private JComboBox totalSkillPoints;
@@ -94,6 +95,7 @@ public class SkillChartPanel extends InternationalizedDataPanel implements Selec
 																			   24), dataSource,
 																	  verticalBarPlot), this);
 		} catch(AxisNotCompatibleException e) { // work on this later...
+			log.warn(e);
 		}
 
 		JFreeChart chart = chartPanel.getChart();

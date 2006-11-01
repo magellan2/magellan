@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
@@ -85,7 +85,7 @@ public class SelectAllAction extends MenuAction implements SelectionListener, Ga
 	 */
 	public void actionPerformed(ActionEvent e) {
 		for(Iterator iter = client.getData().regions().keySet().iterator(); iter.hasNext();) {
-			Coordinate c = (Coordinate) iter.next();
+			CoordinateID c = (CoordinateID) iter.next();
 
 			if(c.z == client.getLevel()) {
 				selectedRegions.put(c, client.getData().regions().get(c));

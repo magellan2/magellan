@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
@@ -105,7 +105,7 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 						line = line.substring(0, line.indexOf(SaveSelectionAction.COMMENT));
 					}
 
-					coordinates.add(Coordinate.parse(line, SaveSelectionAction.DELIMITER));
+					coordinates.add(CoordinateID.parse(line, SaveSelectionAction.DELIMITER));
 				}
 
 				br.close();
@@ -124,7 +124,7 @@ public class OpenSelectionAction extends MenuAction implements GameDataListener 
 			preSetCleanSelection();
 
 			for(Iterator iter = coordinates.iterator(); iter.hasNext();) {
-				Coordinate c = (Coordinate) iter.next();
+				CoordinateID c = (CoordinateID) iter.next();
 
 				if(client.getData().regions().get(c) != null) {
 					selectedRegions.put(c, client.getData().regions().get(c));

@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.lang.Math;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,7 +34,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.eressea.Building;
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.Group;
@@ -63,7 +62,6 @@ import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.tree.CellRenderer;
 import com.eressea.swing.tree.CopyTree;
-import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
@@ -526,10 +524,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 						if(value != null) {
 							String regionCoordinate = value;
-							ID coordinate = Coordinate.parse(regionCoordinate, ",");
+							ID coordinate = CoordinateID.parse(regionCoordinate, ",");
 
 							if(coordinate == null) {
-								coordinate = Coordinate.parse(regionCoordinate, " ");
+								coordinate = CoordinateID.parse(regionCoordinate, " ");
 							}
 
 							if(!regions.containsKey(coordinate)) {
@@ -550,7 +548,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 									Region r = unit.getRegion();
 
 									if(r != null) {
-										Coordinate c = r.getCoordinate();
+										CoordinateID c = r.getCoordinate();
 
 										if(!regions.containsKey(c)) {
 											continue;
@@ -816,10 +814,10 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 						String regionCoordinate = (String) msg.attributes.get("region");
 
 						if(regionCoordinate != null) {
-							ID coordinate = Coordinate.parse(regionCoordinate, ",");
+							ID coordinate = CoordinateID.parse(regionCoordinate, ",");
 
 							if(coordinate == null) {
-								coordinate = Coordinate.parse(regionCoordinate, " ");
+								coordinate = CoordinateID.parse(regionCoordinate, " ");
 							}
 
 							if(!regions.containsKey(coordinate)) {

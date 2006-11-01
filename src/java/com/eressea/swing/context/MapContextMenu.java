@@ -28,12 +28,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import com.eressea.Coordinate;
+import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.HotSpot;
 import com.eressea.ID;
 import com.eressea.IntegerID;
 import com.eressea.Region;
+import com.eressea.demo.Client;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
@@ -41,6 +42,7 @@ import com.eressea.swing.map.MapCellRenderer;
 import com.eressea.swing.map.Mapper;
 import com.eressea.swing.map.RenderingPlane;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.logging.Logger;
 
 /**
  * A context menu for the map. Currently providing copy of the name and the coordinates of the
@@ -49,6 +51,9 @@ import com.eressea.util.CollectionFactory;
  * @author Ulrich Küster
  */
 public class MapContextMenu extends JPopupMenu implements ContextObserver {
+	
+	private static final Logger log = Logger.getInstance(Client.class);
+	
 	// the region on which the menu is inferred
 	private Region region;
 	private EventDispatcher dispatcher;
@@ -335,8 +340,15 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	private void setOrigin() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		Coordinate c = new Coordinate(region.getCoordinate());
-		data.placeOrigin(c);
+		CoordinateID c = new CoordinateID(region.getCoordinate());
+//		data.placeOrigin(c);
+		try {
+			if (c.x != 0 || c.y != 0)
+				data = (GameData) data.clone(c);
+		} catch (CloneNotSupportedException e) {
+			log.error(e);
+		}
+
 		dispatcher.fire(new GameDataEvent(this, data));
 		setCursor(Cursor.getDefaultCursor());
 	}
