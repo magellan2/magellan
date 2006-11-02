@@ -88,6 +88,21 @@ public class Faction extends UnitContainer {
 	 * this faction (e.g. being able to edit its units' orders).
 	 */
 	public int trustLevel = TL_DEFAULT;
+	
+	/**
+	 * taken from the cr: actual amount of heroes (Fiete)
+	 */
+	public int heroes = -1;
+	
+	/**
+	 * taken from the cr: actual max amount of heroes (Fiete)
+	 */
+	public int maxHeroes = -1;
+	
+	/**
+	 * taken from the cr: actual age of faction (Fiete)
+	 */
+	public int age = -1;
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -350,6 +365,21 @@ public class Faction extends UnitContainer {
 
 			if(curFaction.score != -1) {
 				newFaction.score = curFaction.score;
+			}
+			
+			/**
+			 * Fiete: merge also new (20061102) hereos values and age
+			 */
+			if(curFaction.heroes != -1) {
+				newFaction.heroes = curFaction.heroes;
+			}
+			
+			if(curFaction.maxHeroes != -1) {
+				newFaction.maxHeroes = curFaction.maxHeroes;
+			}
+			
+			if(curFaction.age != -1) {
+				newFaction.age = curFaction.age;
 			}
 		}
 	}
