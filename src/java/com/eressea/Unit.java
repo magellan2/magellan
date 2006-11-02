@@ -33,6 +33,7 @@ import com.eressea.relation.LeaveRelation;
 import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
+import com.eressea.relation.ReserveRelation;
 import com.eressea.relation.TransportRelation;
 import com.eressea.relation.UnitContainerRelation;
 import com.eressea.relation.UnitRelation;
@@ -706,6 +707,9 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		return null;
 	}
 
+	/**
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getRealRaceName(){
 		if (this.realRace==null) {
 			return this.race.toString();
@@ -736,13 +740,13 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Return the child temp unit with the specified ID.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public TempUnit getTempUnit(ID id) {
+	public TempUnit getTempUnit(ID key) {
 		if(tempUnits != null) {
-			return (TempUnit) tempUnits.get(id);
+			return (TempUnit) tempUnits.get(key);
 		}
 
 		return null;
@@ -771,15 +775,15 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Removes a temp unit from the list of child temp units created by this unit's orders.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private Unit removeTemp(ID id) {
+	private Unit removeTemp(ID key) {
 		Unit ret = null;
 
 		if(tempUnits != null) {
-			ret = (Unit) tempUnits.remove(id);
+			ret = (Unit) tempUnits.remove(key);
 
 			if(tempUnits.isEmpty()) {
 				tempUnits = null;
@@ -810,6 +814,12 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
         return getCompleteOrders(false);
     }
         
+    /**
+     * TODO: DOCUMENT ME!
+     * 
+     * @param writeUnitTagsAsVorlageComment
+     * @return TODO: DOCUMENT ME!
+     */
     public List getCompleteOrders(boolean writeUnitTagsAsVorlageComment) {
 		List cmds = CollectionFactory.createLinkedList();
 		cmds.addAll(ordersObject.getOrders());
@@ -866,18 +876,18 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 * faction, building or ship, region, faction stealth status, group, race and combat status
 	 * settings and adds itself to the corresponding unit collections.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *
 	 * @throws IllegalArgumentException TODO: DOCUMENT ME!
 	 */
-	public TempUnit createTemp(ID id) {
-		if(((UnitID) id).intValue() >= 0) {
+	public TempUnit createTemp(ID key) {
+		if(((UnitID) key).intValue() >= 0) {
 			throw new IllegalArgumentException("Unit.createTemp(): cannot create temp unit with non-negative ID.");
 		}
 
-		TempUnit t = new TempUnit(id, this);
+		TempUnit t = new TempUnit(key, this);
 		this.addTemp(t);
 		t.persons = 0;
 		t.hideFaction = this.hideFaction;
@@ -923,11 +933,11 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Removes a temp unit with this unit as the parent completely from the game data.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 * @param data TODO: DOCUMENT ME!
 	 */
-	public void deleteTemp(ID id, GameData data) {
-		TempUnit t = (TempUnit) this.removeTemp(id);
+	public void deleteTemp(ID key, GameData data) {
+		TempUnit t = (TempUnit) this.removeTemp(key);
         
 		if(t != null) {
             t.clearOrders();
@@ -949,7 +959,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 
 
             t.setParent(null);
-			data.tempUnits().remove(id);
+			data.tempUnits().remove(key);
 
             // enforce refreshing of unit relations in the whole region
             if(this.getRegion() != null) {
@@ -974,6 +984,9 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		}
 	}
 
+    /**
+     * @see com.eressea.Named#getModifiedName()
+     */
     public String getModifiedName() {
         if(cache == null) {
             cache = new Cache();
@@ -1007,7 +1020,6 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 *
 	 * @param rel TODO: DOCUMENT ME!
 	 *
-	 * @return TODO: DOCUMENT ME!
 	 */
 	public void addRelation(UnitRelation rel) {
         super.addRelation(rel);
@@ -1259,7 +1271,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 
 				PersonTransferRelation rel = (PersonTransferRelation) unitRel;
 				Unit srcClone = (Unit) clones.get(srcUnit.getID());
-				Unit targetUnit = (Unit) rel.target;
+				Unit targetUnit = rel.target;
 				Unit targetClone = (Unit) clones.get(targetUnit.getID());
 				int transferredPersons = Math.max(0, Math.min(srcClone.getPersons(), rel.amount));
 
@@ -1270,8 +1282,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 				/* modify the target clone */
 				/* first modify all skills that are available in the
 				 target clone */
-				for(Iterator skills = targetClone.getSkills().iterator(); skills.hasNext();) {
-					Skill targetSkill = (Skill) skills.next();
+				for(Iterator targetSkills = targetClone.getSkills().iterator(); targetSkills.hasNext();) {
+					Skill targetSkill = (Skill) targetSkills.next();
 					Skill srcSkill = srcClone.getSkill(targetSkill.getSkillType());
 					int skillModifier = targetSkill.getModifier(targetClone);
 
@@ -1309,15 +1321,15 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 																 : lostSkillLevel);
 					} else {
 						targetSkill.setPoints(targetSkill.getPoints() +
-											  (int) (((float) srcSkill.getPoints() * (float) transferredPersons) / (float) srcClone.getPersons()));
+											  (int) (( srcSkill.getPoints() *  transferredPersons) / (float) srcClone.getPersons()));
 					}
 				}
 
 				/* now modify the skills that only exist in the source
 				 clone */
-				for(Iterator skills = srcClone.getSkills().iterator(); skills.hasNext();) {
-					Skill srcSkill = (Skill) skills.next();
-					Skill targetSkill = (Skill) targetClone.getSkill(srcSkill.getSkillType());
+				for(Iterator srcCloneSkills = srcClone.getSkills().iterator(); srcCloneSkills.hasNext();) {
+					Skill srcSkill = (Skill) srcCloneSkills.next();
+					Skill targetSkill = targetClone.getSkill(srcSkill.getSkillType());
 
 					if(targetSkill == null) {
 						/* skill exists only in the source clone, this
@@ -1352,7 +1364,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 							targetSkill.setLevel((newSkillLevel > 0)
 												 ? (newSkillLevel + skillModifier) : lostSkillLevel);
 						} else {
-							int newSkillPoints = (int) (srcSkill.getPoints() * (float) ((float) transferredPersons / (float) srcClone.getPersons()));
+							int newSkillPoints = (int) (srcSkill.getPoints() * ( transferredPersons / (float) srcClone.getPersons()));
 							targetSkill.setPoints(newSkillPoints);
 						}
 					}
@@ -1360,7 +1372,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 					/* modify the skills in the source clone (no extra
 					 loop for this) */
 					if(!srcSkill.noSkillPoints()) {
-						int transferredSkillPoints = (int) (((float) srcSkill.getPoints() * (float) transferredPersons) / (float) srcClone.getPersons());
+						int transferredSkillPoints = (int) ((srcSkill.getPoints() * transferredPersons) / (float) srcClone.getPersons());
 						srcSkill.setPoints(srcSkill.getPoints() - transferredSkillPoints);
 					}
 				}
@@ -1377,8 +1389,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		if(clone.getSkills().size() > 0) {
 			this.cache.modifiedSkills = CollectionFactory.createHashtable();
 
-			for(Iterator skills = clone.getSkills().iterator(); skills.hasNext();) {
-				Skill skill = (Skill) skills.next();
+			for(Iterator cloneSkills = clone.getSkills().iterator(); cloneSkills.hasNext();) {
+				Skill skill = (Skill) cloneSkills.next();
 				skill.setPersons(clone.persons);
 
 				/* When skill points are relevant, all we did up to
@@ -1579,6 +1591,26 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
+	 * Returns a collection of the reserve relations concerning the given Item.
+	 * 
+	 * @param itemType 
+	 * @return a collection of ReserveRelation objects.
+	 */
+	public Collection getItemReserveRelations(ItemType itemType) {
+		List ret = CollectionFactory.createArrayList(getRelations().size());
+
+		for(Iterator iter = getRelations(ReserveRelation.class).iterator(); iter.hasNext();) {
+			ReserveRelation rel = (ReserveRelation) iter.next();
+
+			if(rel.itemType.equals(itemType)) {
+				ret.add(rel);
+			}
+		}
+
+		return ret;
+	}
+
+	/**
 	 * Returns a collection of the itemrelations concerning the given Item.
 	 *
 	 * @param type TODO: DOCUMENT ME!
@@ -1605,7 +1637,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 * @return a collection of PersonTransferRelation objects.
 	 */
 	public List getPersonTransferRelations() {
-		List ret = (List) getRelations(PersonTransferRelation.class);
+		List ret = getRelations(PersonTransferRelation.class);
 
 		if(log.isDebugEnabled()) {
 			log.debug("Unit.getPersonTransferRelations for " + this);
@@ -1670,7 +1702,34 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 									new Item(i.getItemType(), i.getAmount()));
 		}
 
-		// 3. now check relations for possible modifications
+		// 3a. now check relations for possible modifications; RESERVE orders first
+		for(Iterator iter = getRelations().iterator(); iter.hasNext();) {
+			UnitRelation rel = (UnitRelation) iter.next();
+
+			if(rel instanceof ReserveRelation) {
+				ReserveRelation itr = (ReserveRelation) rel;
+				Item modifiedItem = (Item) cache.modifiedItems.get(itr.itemType.getID());
+
+				if(modifiedItem != null) { // the transferred item can be found among this unit's items
+
+					if(this.equals(itr.source)) {
+						modifiedItem.setAmount(modifiedItem.getAmount() - itr.amount);
+					} else {
+						modifiedItem.setAmount(modifiedItem.getAmount() + itr.amount);
+					}
+				} else { // the transferred item is not among the items the unit already has
+
+					if(this.equals(itr.source)) {
+						modifiedItem = new Item(itr.itemType, -itr.amount);
+					} else {
+						modifiedItem = new Item(itr.itemType, itr.amount);
+					}
+
+					cache.modifiedItems.put(itr.itemType.getID(), modifiedItem);
+				}
+			}
+		}
+		// 3b. now check relations for possible modifications; GIVE orders second
 		for(Iterator iter = getRelations().iterator(); iter.hasNext();) {
 			UnitRelation rel = (UnitRelation) iter.next();
 
@@ -1711,15 +1770,15 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 				Item modifiedItem = (Item) cache.modifiedItems.get(StringID.create("Silber"));
 
 				if(modifiedItem != null) {
-					Race race = this.realRace;
+					Race recruitmentRace = this.realRace;
 
-					if(race == null) {
-						race = this.race;
+					if(recruitmentRace == null) {
+						recruitmentRace = this.race;
 					}
 
-					if((race != null) && (race.getRecruitmentCosts() > 0)) {
+					if((recruitmentRace != null) && (recruitmentRace.getRecruitmentCosts() > 0)) {
 						modifiedItem.setAmount(modifiedItem.getAmount() -
-											   (rr.amount * race.getRecruitmentCosts()));
+											   (rr.amount * recruitmentRace.getRecruitmentCosts()));
 					}
 				}
 			}
@@ -2118,6 +2177,10 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
         return toString(true);
     }
     
+    /**
+     * @param withName
+     * @return TODO: DOCUMENT ME!
+     */
     public String toString(boolean withName) {
         if(withName) {
             String myName = getModifiedName();
@@ -2704,28 +2767,28 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 * and removes the corresponding orders from this unit. Uses the default order locale to parse
 	 * the orders.
 	 *
-	 * @param sortIndex an index for sorting units (required to reconstruct the original order in
+	 * @param tempSortIndex an index for sorting units (required to reconstruct the original order in
 	 * 		  the report) which is incremented with each new temp unit.
 	 *
 	 * @return the new sort index. <tt>return value</tt> - sortIndex is the number of temp units
 	 * 		   read from this unit's orders.
 	 */
-	public int extractTempUnits(int sortIndex) {
-		return extractTempUnits(sortIndex, Locales.getOrderLocale());
+	public int extractTempUnits(int tempSortIndex) {
+		return extractTempUnits(tempSortIndex, Locales.getOrderLocale());
 	}
 
 	/**
 	 * Scans this unit's orders for temp units to create. It constructs them as TempUnit objects
 	 * and removes the corresponding orders from this unit.
 	 *
-	 * @param sortIndex an index for sorting units (required to reconstruct the original order in
+	 * @param tempSortIndex an index for sorting units (required to reconstruct the original order in
 	 * 		  the report) which is incremented with each new temp unit.
 	 * @param locale the locale to parse the orders with.
 	 *
 	 * @return the new sort index. <tt>return value</tt> - sortIndex is the number of temp units
 	 * 		   read from this unit's orders.
 	 */
-	public int extractTempUnits(int sortIndex, Locale locale) {
+	public int extractTempUnits(int tempSortIndex, Locale locale) {
 		if(!this.ordersAreNull()) {
 			TempUnit tempUnit = null;
 
@@ -2744,11 +2807,11 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 							try {
                                 int base = this.getRegion().getData().base;
                                 int idInt = IDBaseConverter.parse(token.getText(), base);
-								UnitID id = UnitID.createUnitID(idInt * -1, base);
+								UnitID orderTempID = UnitID.createUnitID(idInt * -1, base);
 
-								if(this.getRegion().getUnit(id) == null) {
-									tempUnit = this.createTemp(id);
-									tempUnit.setSortIndex(++sortIndex);
+								if(this.getRegion().getUnit(orderTempID) == null) {
+									tempUnit = this.createTemp(orderTempID);
+									tempUnit.setSortIndex(++tempSortIndex);
 									cmdIterator.remove();
 									token = ct.getNextToken();
 
@@ -2761,7 +2824,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 									}
 								} else {
 									log.warn("Unit.extractTempUnits(): region " + this.getRegion() +
-											 " already contains a temp unit with the id " + id +
+											 " already contains a temp unit with the id " + orderTempID +
 											 ". This temp unit remains in the orders of its parent " +
 											 "unit instead of being created as a unit in its own right.");
 								}
@@ -2781,7 +2844,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 			}
 		}
 
-		return sortIndex;
+		return tempSortIndex;
 	}
 
     private void scanTempOrder(TempUnit tempUnit, String line) {
@@ -2825,7 +2888,11 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		return com.eressea.util.Translations.getTranslation(Unit.class, key);
 	}
 
-	// EXTERNAL TAG METHODS
+	/** EXTERNAL TAG METHODS
+	 * TODO: DOCUMENT ME! 
+	 * 
+	 * @see com.eressea.util.Taggable#deleteAllTags()
+	 */
 	public void deleteAllTags() {
 		externalMap = null;
 	}
@@ -3049,4 +3116,5 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 			this.changed = changed;
 		}
 	}
+
 }

@@ -66,9 +66,12 @@ public class EresseaPostProcessor {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * This method tries to fix some issues that arise right after reading a report file.
 	 *
-	 * @param data TODO: DOCUMENT ME!
+	 * It scans messages for herbs, removes dummy units, creates temp units and tries to 
+	 * detect if resources should be set to zero because they are not in the report.
+	 *
+	 * @param data 
 	 */
 	public void postProcess(GameData data) {
 		/* scan the messages for additional information */
@@ -174,23 +177,54 @@ public class EresseaPostProcessor {
 				if(!region.units().isEmpty()) {
 					/* now patch as much missing information as
 					possible */
-					if(region.horses < 0) {
-						region.horses = 0;
-					}
+					// FIXME (stm) 2006-10-28: this has bitten us already
+					// check what is visible in what visibility 
+					// (lighthouse, neigbbour, travel)   
+					
+					// the following tags seem to be present under undefined visibility even if they are zero :
+					// Bauern, Silber, Unterh, Rekruten, Pferde, (Lohn)
+					if (region.getVisibility()==null){
+						if(region.peasants < 0) {
+							region.peasants = 0;
+						}
 
-					if(region.peasants < 0) {
-						region.peasants = 0;
-					}
+						if(region.silver < 0) {
+							region.silver = 0;
+						}
 
-					if(region.silver < 0) {
-						region.silver = 0;
-					}
+						if(region.wage < 0) {
+							// TODO: should we set this to 10 instead?
+							region.wage = 0;
+						}
 
+						if(region.horses < 0) {
+							region.horses = 0;
+						}
+					}
+					// ------------------------------------------------------------------
+					// the following tags seem to be visible for "lighthouse";visibility:
+					// DURCHSCHIFFUNG
+					// SCHIFF: Name, Beschr, Typ, Groesse, Kapitaen, Partei, (Kueste)
+					// EINHEIT: Name, Beschr, Partei, Anderepartei, typprefix, Typ, Anzahl, Schiff, (Burg)
+					// GEGENSTÄNDE
+					// ------------------------------------------------------------------
+					// the following tags seem to be visible for "travel";visibility:
+					// Baeume, Schoesslinge, Bauern, Pferde, Effects 
+					// DURCHSCHIFFUNG
+					// DURCHREISE
+					// BURG: Typ, Name, Beschr, Groesse, Besitzer, Partei
+					// SCHIFF: Name, Beschr, Typ, Groesse, Kapitaen, Partei, Kueste
+					// EINHEIT: Name, Beschr, Partei, Anderepartei, typprefix, Typ, Anzahl, Burg, Schiff
+					// ------------------------------------------------------------------
+					// the following tags seem to be visible even vor "neighbour";visibilty:
+					// Name, Terrain, Beschr 
+					
 					if(region.sprouts < 0) {
 						region.sprouts = 0;
 					}
 
 					if(data.rules != null) {
+						// FIXME: we should finally remove this code, shouldn't we?
 						// 2002.05.21 pavkovic:
 						// first of all: Remove resource information for sprouts, trees,
 						// mallornsprouts and mallorntrees!
@@ -274,9 +308,6 @@ public class EresseaPostProcessor {
 						}
 					}
 
-					if(region.wage < 0) {
-						region.wage = 0;
-					}
 				}
 			}
 		}

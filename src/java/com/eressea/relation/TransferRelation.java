@@ -40,6 +40,19 @@ public class TransferRelation extends InterUnitRelation {
 	}
 
 	/**
+	 * Creates a new TransferRelation object.
+	 *
+	 * @param s TODO: DOCUMENT ME!
+	 * @param t TODO: DOCUMENT ME!
+	 * @param a TODO: DOCUMENT ME!
+	 * @param line TODO: DOCUMENT ME!
+	 */
+	public TransferRelation(Unit s, Unit t, int a, int line, boolean w) {
+		super(s, t, line, w);
+		this.amount = a;
+	}
+
+	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!

@@ -38,6 +38,20 @@ public class ItemTransferRelation extends TransferRelation {
 	}
 
 	/**
+	 * Creates a new ItemTransferRelation object.
+	 *
+	 * @param s TODO: DOCUMENT ME!
+	 * @param t TODO: DOCUMENT ME!
+	 * @param a TODO: DOCUMENT ME!
+	 * @param i TODO: DOCUMENT ME!
+	 * @param line TODO: DOCUMENT ME!
+	 */
+	public ItemTransferRelation(Unit s, Unit t, int a, ItemType i, int line, boolean w) {
+		super(s, t, a, line, w);
+		this.itemType = i;
+	}
+
+	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!

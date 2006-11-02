@@ -35,6 +35,18 @@ public class InterUnitRelation extends UnitRelation {
 	}
 
 	/**
+	 * Creates a new InterUnitRelation object.
+	 *
+	 * @param s TODO: DOCUMENT ME!
+	 * @param t TODO: DOCUMENT ME!
+	 * @param line TODO: DOCUMENT ME!
+	 */
+	public InterUnitRelation(Unit s, Unit t, int line, boolean w) {
+		super(s, line, w);
+		this.target = t;
+	}
+
+	/**
 	 * TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!

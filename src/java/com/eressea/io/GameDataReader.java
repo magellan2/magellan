@@ -48,6 +48,8 @@ public class GameDataReader {
 	 * <code>GameNameReader</code>. With this  name the corresponding rules and game
 	 *
 	 * @param aFileType the filetype representing a cr or xml file.
+	 * 
+	 * @param newOrigin the loaded report is translated by this coordinates.
 	 *
 	 * @return a GameData object read from the cr or xml file.
 	 *
@@ -141,6 +143,7 @@ public class GameDataReader {
 	 *
 	 * @param aFileType TODO: DOCUMENT ME!
 	 * @param aGameName TODO: DOCUMENT ME!
+	 * @param newOrigin the loaded report is translated by this coordinates.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *

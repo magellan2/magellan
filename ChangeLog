@@ -1,5 +1,10 @@
 2006-11-02  Fiete  <Fiete@users.sourceforge.net>
 
+	* stm: fixed merge_bug for region ressources
+	* stm: added ReserveRelation for support if order "RESERVE"
+
+2006-11-02  Fiete  <Fiete@users.sourceforge.net>
+
 	* added support for heroes and age (CRParse, FactionStats)
 	* fixed Parsing of options, set BitMasks in rule files
 	* fixed Parsing of AllianceCategories

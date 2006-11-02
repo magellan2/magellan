@@ -966,7 +966,7 @@ public class Region extends UnitContainer {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public int getPeasantWage() {
-		int wage = 11;
+		int realWage = 11;
 
 		if(buildings != null) {
 			for(Iterator iter = buildings().iterator(); iter.hasNext();) {
@@ -974,12 +974,12 @@ public class Region extends UnitContainer {
 
 				if(b.getType() instanceof CastleType) {
 					CastleType ct = (CastleType) b.getType();
-					wage = Math.max(ct.getPeasantWage(), wage);
+					realWage = Math.max(ct.getPeasantWage(), realWage);
 				}
 			}
 		}
 
-		return wage;
+		return realWage;
 	}
 
 	/**
@@ -1089,26 +1089,36 @@ public class Region extends UnitContainer {
 	 * @param newRegion TODO: DOCUMENT ME!
 	 * @param sameTurn TODO: DOCUMENT ME!
 	 */
+	// TODO should name this either sameTurn everywhere or sameRound everywhere
+	// sameTurn == false actually indicates that this method is to be called again
+	// with the same "newRegion" but a more recent "curRegion".
 	public static void merge(GameData curGD, Region curRegion, GameData newGD, Region newRegion,
 							 boolean sameTurn) {
 		UnitContainer.merge(curGD, curRegion, newGD, newRegion);
 
 		if(sameTurn) {
+			// if both regions are from the same turn, "old" information is always assumed to be accurate. 
+			// this is true, if curRegion is always younger for successive calls of Region.merge(). 
 			if(curRegion.oldTrees != -1) {
 				newRegion.oldTrees = curRegion.oldTrees;
 			}
 		} else {
 			if(!curGD.getDate().equals(newGD.getDate())) {
+				// curRegion is actually from an older round, so its information is old!
 				if(curRegion.trees != -1) {
 					newRegion.oldTrees = curRegion.trees;
 				}
 			} else {
+				// curRegion is from a more recent round. Therefore
+				// TODO: (stm) thinks this can never happen!
+				log.error("Warning: reached code in Region.merge, that (stm) thought could never be reached!");
 				if(curRegion.trees == -1) {
 					newRegion.oldTrees = -1;
 				}
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldSprouts != -1) {
 				newRegion.oldSprouts = curRegion.oldSprouts;
@@ -1125,6 +1135,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldIron != -1) {
 				newRegion.oldIron = curRegion.oldIron;
@@ -1141,6 +1152,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldLaen != -1) {
 				newRegion.oldLaen = curRegion.oldLaen;
@@ -1158,11 +1170,13 @@ public class Region extends UnitContainer {
 		}
 
 		if(sameTurn) {
+			// region is considered orc infested if one of the two regions considers it orc infested.
 			newRegion.orcInfested |= curRegion.orcInfested;
 		} else {
 			newRegion.orcInfested = curRegion.orcInfested;
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldPeasants != -1) {
 				newRegion.oldPeasants = curRegion.oldPeasants;
@@ -1179,6 +1193,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldSilver != -1) {
 				newRegion.oldSilver = curRegion.oldSilver;
@@ -1195,6 +1210,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldStones != -1) {
 				newRegion.oldStones = curRegion.oldStones;
@@ -1211,6 +1227,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldHorses != -1) {
 				newRegion.oldHorses = curRegion.oldHorses;
@@ -1227,6 +1244,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldWage != -1) {
 				newRegion.oldWage = curRegion.oldWage;
@@ -1243,6 +1261,7 @@ public class Region extends UnitContainer {
 			}
 		}
 
+		// same as with the old trees
 		if(sameTurn) {
 			if(curRegion.oldRecruits != -1) {
 				newRegion.oldRecruits = curRegion.oldRecruits;
@@ -1348,7 +1367,7 @@ public class Region extends UnitContainer {
 		}
 
 		if(curRegion.herbAmount != null) {
-			/* There was a bug around 2002.02.16 where numbers would be
+			/* FIXME There was a bug around 2002.02.16 where numbers would be
 			 stored in this field - filter them out. This should only
 			 be here for one or two weeks. */
 			if(curRegion.herbAmount.length() > 2) {
@@ -1517,6 +1536,7 @@ public class Region extends UnitContainer {
 			newRegion.trees = curRegion.trees;
 		}
 
+		// TODO
 		if(!sameTurn) {
 			/* as long as both reports are from different turns we
 			 can just overwrite the visibility status with the newer
