@@ -24,6 +24,8 @@ import javax.swing.KeyStroke;
 import com.eressea.demo.Client;
 import com.eressea.demo.desktop.DesktopEnvironment;
 import com.eressea.demo.desktop.ShortcutListener;
+import com.eressea.event.GameDataEvent;
+import com.eressea.event.GameDataListener;
 import com.eressea.swing.OrderWriterDialog;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
@@ -34,7 +36,7 @@ import com.eressea.util.Translations;
  * @author Andreas
  * @version
  */
-public class SaveOrdersAction extends MenuAction implements ShortcutListener {
+public class SaveOrdersAction extends MenuAction implements ShortcutListener,GameDataListener {
 	private List shortCuts;
 
 	/**
@@ -51,6 +53,8 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 		shortCuts.add(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK |
 											 KeyEvent.SHIFT_MASK));
 		DesktopEnvironment.registerShortcutListener(this);
+        setEnabled(false);
+        client.getDispatcher().addGameDataListener(this);
 	}
 
 	/**
@@ -121,7 +125,18 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener {
 	public java.lang.String getListenerDescription() {
 		return com.eressea.util.Translations.getTranslation(this, "shortcuts.title");
 	}
-
+	
+	public void gameDataChanged(GameDataEvent e) {
+		// TODO Auto-generated method stub
+		int i = super.client.getData().regions().size();
+		if (i>0) {
+			setEnabled(true);
+		} else {
+			setEnabled(false);
+		}
+	}
+	
+	
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)
