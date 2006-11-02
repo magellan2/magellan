@@ -15,7 +15,6 @@ package com.eressea.util.comparator;
 
 import java.util.Comparator;
 
-import com.eressea.Unique;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
 

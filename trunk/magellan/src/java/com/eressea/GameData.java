@@ -283,7 +283,7 @@ public abstract class GameData implements Cloneable {
 	/**
 	 * Retrieve a region from regions() by id.
 	 *
-	 * @param id region coordinate
+	 * @param c region coordinate
 	 *
 	 * @return an instance of class <tt>Region</tt> or <tt>null</tt> if there is no region with the
 	 * 		   specified coordinates or if regions() is <tt>null</tt>.
@@ -458,7 +458,7 @@ public abstract class GameData implements Cloneable {
 	/**
 	 * set a collection of selected regions.
 	 *
-	 * @param region the Map of coordinates of selected regions
+	 * @param regions the Map of coordinates of selected regions
 	 */
 	public abstract void setSelectedRegionCoordinates(Map regions);
 
@@ -521,8 +521,8 @@ public abstract class GameData implements Cloneable {
      *
      * @return an instance of class <tt>String</tt>. If no translation could be found, the name of the object is returned.
      */    
-    public String getTranslation(NamedObject obj) {
-        return obj == null ? null : getTranslation(obj.getName());
+    public String getTranslation(NamedObject key) {
+        return key == null ? null : getTranslation(key.getName());
     }
     
 	/**
@@ -706,71 +706,71 @@ public abstract class GameData implements Cloneable {
 	}
 
 	/**
-	 * Merges the two game data containers yielding a third one. By convention, gd1 must not be
-	 * newer than gd2. The resulting game data container inherits the rules and name from
-	 * <b>gd2</b>.
+	 * Merges the two game data containers yielding a third one. By convention, olderGD must not be
+	 * newer than newerGD. The resulting game data container inherits the rules and name from
+	 * <b>newerGD</b>.
 	 *
-	 * @param gd1 TODO: DOCUMENT ME!
-	 * @param gd2 TODO: DOCUMENT ME!
+	 * @param olderGD A GaemData object, must be the newer one of the two
+	 * @param newerGD The older GameData object.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the merged GameData
 	 */
-	private static GameData mergeIt(GameData gd1, GameData gd2) {
+	private static GameData mergeIt(GameData olderGD, GameData newerGD) {
 		// 2002.02.20 pavkovic: the newer rules are in GameData gd2. So we take
 		// them for the new GameData
 		// FIXME(pavkovic) rules should be loaded instead of just used in this situation
-		GameData newGD = new CompleteData(gd2.rules, gd2.name);
+		GameData resultGD = new CompleteData(newerGD.rules, newerGD.name);
 
 		// DATE
-		EresseaDate date = new EresseaDate(gd2.getDate().getDate());
-		date.setEpoch(((EresseaDate) gd2.getDate()).getEpoch());
-		newGD.setDate(date);
+		EresseaDate date = new EresseaDate(newerGD.getDate().getDate());
+		date.setEpoch(((EresseaDate) newerGD.getDate()).getEpoch());
+		resultGD.setDate(date);
 
-		boolean sameRound = gd1.getDate().equals(gd2.getDate());
+		boolean sameRound = olderGD.getDate().equals(newerGD.getDate());
 
 		// MAIL TO, MAIL SUBJECT
-		if(gd2.mailTo != null) {
-			newGD.mailTo = gd2.mailTo;
+		if(newerGD.mailTo != null) {
+			resultGD.mailTo = newerGD.mailTo;
 		} else {
-			newGD.mailTo = gd1.mailTo;
+			resultGD.mailTo = olderGD.mailTo;
 		}
 
-		if(gd2.mailSubject != null) {
-			newGD.mailSubject = gd2.mailSubject;
+		if(newerGD.mailSubject != null) {
+			resultGD.mailSubject = newerGD.mailSubject;
 		} else {
-			newGD.mailSubject = gd1.mailSubject;
+			resultGD.mailSubject = olderGD.mailSubject;
 		}
 
 		// BASE
-		if(gd2.base != 0) {
-			newGD.base = gd2.base;
+		if(newerGD.base != 0) {
+			resultGD.base = newerGD.base;
 		} else {
-			newGD.base = gd1.base;
+			resultGD.base = olderGD.base;
 		}
 
 		// NOSKILLPOINTS: the newer report determines the skill point handling
-		newGD.noSkillPoints = gd2.noSkillPoints;
+		resultGD.noSkillPoints = newerGD.noSkillPoints;
 
 		// curTempID
 		// (it is assured, that at least on of the GameData-objects
 		//  contains a default value for curTempID)
-		if(gd2.curTempID != -1) {
-			newGD.curTempID = gd2.curTempID;
+		if(newerGD.curTempID != -1) {
+			resultGD.curTempID = newerGD.curTempID;
 		} else {
-			newGD.curTempID = gd1.curTempID;
+			resultGD.curTempID = olderGD.curTempID;
 		}
 
 		// LOCALE
-		if(gd2.getLocale() != null) {
-			newGD.setLocale(gd2.getLocale());
+		if(newerGD.getLocale() != null) {
+			resultGD.setLocale(newerGD.getLocale());
 		} else {
-			newGD.setLocale(gd1.getLocale());
+			resultGD.setLocale(olderGD.getLocale());
 		}
 
 		// MESSAGETYPES
 		// simple objects, created and merged in one step
-		if(gd1.msgTypes() != null) {
-			for(Iterator iter = gd1.msgTypes().values().iterator(); iter.hasNext();) {
+		if(olderGD.msgTypes() != null) {
+			for(Iterator iter = olderGD.msgTypes().values().iterator(); iter.hasNext();) {
 				MessageType mt = (MessageType) iter.next();
 				MessageType newMT = null;
 
@@ -780,15 +780,15 @@ public abstract class GameData implements Cloneable {
 					log.error(e);
 				}
 
-				MessageType.merge(gd1, mt, newGD, newMT);
-				newGD.addMsgType(newMT);
+				MessageType.merge(olderGD, mt, resultGD, newMT);
+				resultGD.addMsgType(newMT);
 			}
 		}
 
-		if(gd2.msgTypes() != null) {
-			for(Iterator iter = gd2.msgTypes().values().iterator(); iter.hasNext();) {
+		if(newerGD.msgTypes() != null) {
+			for(Iterator iter = newerGD.msgTypes().values().iterator(); iter.hasNext();) {
 				MessageType mt = (MessageType) iter.next();
-				MessageType newMT = newGD.getMsgType(mt.getID());
+				MessageType newMT = resultGD.getMsgType(mt.getID());
 
 				if(newMT == null) {
 					try {
@@ -798,15 +798,15 @@ public abstract class GameData implements Cloneable {
 					}
 				}
 
-				MessageType.merge(gd2, mt, newGD, newMT);
-				newGD.addMsgType(newMT);
+				MessageType.merge(newerGD, mt, resultGD, newMT);
+				resultGD.addMsgType(newMT);
 			}
 		}
 
 		// SPELLS
 		// simple objects, created and merged in one step
-		if(gd1.spells() != null) {
-			for(Iterator iter = gd1.spells().values().iterator(); iter.hasNext();) {
+		if(olderGD.spells() != null) {
+			for(Iterator iter = olderGD.spells().values().iterator(); iter.hasNext();) {
 				Spell spell = (Spell) iter.next();
 				Spell newSpell = null;
 
@@ -816,15 +816,15 @@ public abstract class GameData implements Cloneable {
 					log.error(e);
 				}
 
-				Spell.merge(gd1, spell, newGD, newSpell);
-				newGD.addSpell(newSpell);
+				Spell.merge(olderGD, spell, resultGD, newSpell);
+				resultGD.addSpell(newSpell);
 			}
 		}
 
-		if(gd2.spells() != null) {
-			for(Iterator iter = gd2.spells().values().iterator(); iter.hasNext();) {
+		if(newerGD.spells() != null) {
+			for(Iterator iter = newerGD.spells().values().iterator(); iter.hasNext();) {
 				Spell spell = (Spell) iter.next();
-				Spell newSpell = newGD.getSpell(spell.getID());
+				Spell newSpell = resultGD.getSpell(spell.getID());
 
 				if(newSpell == null) {
 					try {
@@ -834,15 +834,15 @@ public abstract class GameData implements Cloneable {
 					}
 				}
 
-				Spell.merge(gd2, spell, newGD, newSpell);
-				newGD.addSpell(newSpell);
+				Spell.merge(newerGD, spell, resultGD, newSpell);
+				resultGD.addSpell(newSpell);
 			}
 		}
 
 		// POTIONS
 		// simple objects, created and merged in one step
-		if(gd1.potions() != null) {
-			for(Iterator iter = gd1.potions().values().iterator(); iter.hasNext();) {
+		if(olderGD.potions() != null) {
+			for(Iterator iter = olderGD.potions().values().iterator(); iter.hasNext();) {
 				Potion potion = (Potion) iter.next();
 				Potion newPotion = null;
 
@@ -852,15 +852,15 @@ public abstract class GameData implements Cloneable {
 					log.error(e);
 				}
 
-				Potion.merge(gd1, potion, newGD, newPotion);
-				newGD.addPotion(newPotion);
+				Potion.merge(olderGD, potion, resultGD, newPotion);
+				resultGD.addPotion(newPotion);
 			}
 		}
 
-		if(gd2.potions() != null) {
-			for(Iterator iter = gd2.potions().values().iterator(); iter.hasNext();) {
+		if(newerGD.potions() != null) {
+			for(Iterator iter = newerGD.potions().values().iterator(); iter.hasNext();) {
 				Potion potion = (Potion) iter.next();
-				Potion newPotion = newGD.getPotion(potion.getID());
+				Potion newPotion = resultGD.getPotion(potion.getID());
 
 				if(newPotion == null) {
 					try {
@@ -870,43 +870,43 @@ public abstract class GameData implements Cloneable {
 					}
 				}
 
-				Potion.merge(gd2, potion, newGD, newPotion);
-				newGD.addPotion(newPotion);
+				Potion.merge(newerGD, potion, resultGD, newPotion);
+				resultGD.addPotion(newPotion);
 			}
 		}
 
 		// TRANSLATIONS
 		// simple objects, created and merged in one step
-		if(newGD.translations() != null) {
-			if(gd1.translations() != null) {
-				newGD.translations().putAll(gd1.translations());
+		if(resultGD.translations() != null) {
+			if(olderGD.translations() != null) {
+				resultGD.translations().putAll(olderGD.translations());
 			}
 
-			if((gd2.translations() != null) && gd1.getLocale().equals(gd2.getLocale())) {
-				newGD.translations().putAll(gd2.translations());
+			if((newerGD.translations() != null) && olderGD.getLocale().equals(newerGD.getLocale())) {
+				resultGD.translations().putAll(newerGD.translations());
 			}
 		}
 
 		// FACTIONS
-		if(gd1.factions() != null) {
-			for(Iterator iter = gd1.factions().values().iterator(); iter.hasNext();) {
+		if(olderGD.factions() != null) {
+			for(Iterator iter = olderGD.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
 				try {
-					newGD.addFaction(new Faction((ID) f.getID().clone(), newGD));
+					resultGD.addFaction(new Faction((ID) f.getID().clone(), resultGD));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
 			}
 		}
 
-		if(gd2.factions() != null) {
-			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
+		if(newerGD.factions() != null) {
+			for(Iterator iter = newerGD.factions().values().iterator(); iter.hasNext();) {
 				Faction f = (Faction) iter.next();
 
-				if(newGD.getFaction(f.getID()) == null) {
+				if(resultGD.getFaction(f.getID()) == null) {
 					try {
-						newGD.addFaction(new Faction((ID) f.getID().clone(), newGD));
+						resultGD.addFaction(new Faction((ID) f.getID().clone(), resultGD));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -915,25 +915,26 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// REGIONS
-		if(gd1.regions() != null) {
-			for(Iterator iter = gd1.regions().values().iterator(); iter.hasNext();) {
+		// this just adds all the regions to newGD. No content yet.
+		if(olderGD.regions() != null) {
+			for(Iterator iter = olderGD.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
 				try {
-					newGD.addRegion(new Region((CoordinateID) r.getID().clone(), newGD));
+					resultGD.addRegion(new Region((CoordinateID) r.getID().clone(), resultGD));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
 			}
 		}
 
-		if(gd2.regions() != null) {
-			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
+		if(newerGD.regions() != null) {
+			for(Iterator iter = newerGD.regions().values().iterator(); iter.hasNext();) {
 				Region r = (Region) iter.next();
 
-				if(newGD.getRegion((CoordinateID) r.getID()) == null) {
+				if(resultGD.getRegion((CoordinateID) r.getID()) == null) {
 					try {
-						newGD.addRegion(new Region((CoordinateID) r.getID().clone(), newGD));
+						resultGD.addRegion(new Region((CoordinateID) r.getID().clone(), resultGD));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -942,25 +943,25 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// ISLANDS
-		if(gd1.islands() != null) {
-			for(Iterator iter = gd1.islands().values().iterator(); iter.hasNext();) {
+		if(olderGD.islands() != null) {
+			for(Iterator iter = olderGD.islands().values().iterator(); iter.hasNext();) {
 				Island i = (Island) iter.next();
 
 				try {
-					newGD.addIsland(new Island((ID) i.getID().clone(), newGD));
+					resultGD.addIsland(new Island((ID) i.getID().clone(), resultGD));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
 			}
 		}
 
-		if(gd2.islands() != null) {
-			for(Iterator iter = gd2.islands().values().iterator(); iter.hasNext();) {
+		if(newerGD.islands() != null) {
+			for(Iterator iter = newerGD.islands().values().iterator(); iter.hasNext();) {
 				Island i = (Island) iter.next();
 
-				if(gd1.getIsland(i.getID()) == null) {
+				if(olderGD.getIsland(i.getID()) == null) {
 					try {
-						newGD.addIsland(new Island((ID) i.getID().clone(), newGD));
+						resultGD.addIsland(new Island((ID) i.getID().clone(), resultGD));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -969,25 +970,25 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// HOTSPOTS
-		if(gd1.hotSpots() != null) {
-			for(Iterator iter = gd1.hotSpots().values().iterator(); iter.hasNext();) {
+		if(olderGD.hotSpots() != null) {
+			for(Iterator iter = olderGD.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot h = (HotSpot) iter.next();
 
 				try {
-					newGD.setHotSpot(new HotSpot((ID) h.getID().clone()));
+					resultGD.setHotSpot(new HotSpot((ID) h.getID().clone()));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
 			}
 		}
 
-		if(gd2.hotSpots() != null) {
-			for(Iterator iter = gd2.hotSpots().values().iterator(); iter.hasNext();) {
+		if(newerGD.hotSpots() != null) {
+			for(Iterator iter = newerGD.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot h = (HotSpot) iter.next();
 
-				if(newGD.getHotSpot(h.getID()) == null) {
+				if(resultGD.getHotSpot(h.getID()) == null) {
 					try {
-						newGD.setHotSpot(new HotSpot((ID) h.getID().clone()));
+						resultGD.setHotSpot(new HotSpot((ID) h.getID().clone()));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -996,36 +997,36 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// BUILDINGS
-		if(gd2.buildings() != null) {
-			for(Iterator iter = gd2.buildings().values().iterator(); iter.hasNext();) {
+		if(newerGD.buildings() != null) {
+			for(Iterator iter = newerGD.buildings().values().iterator(); iter.hasNext();) {
 				Building b = (Building) iter.next();
 
 				try {
-					newGD.addBuilding(new Building((ID) b.getID().clone(), newGD));
+					resultGD.addBuilding(new Building((ID) b.getID().clone(), resultGD));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
 			}
 		}
 
-		if(gd1.buildings() != null) {
+		if(olderGD.buildings() != null) {
 			// buildings are persistent.
 			// Accept old buildings not occuring in the new report
 			// only if there are no units in that region
-			for(Iterator iter = gd1.buildings().values().iterator(); iter.hasNext();) {
+			for(Iterator iter = olderGD.buildings().values().iterator(); iter.hasNext();) {
 				Building b = (Building) iter.next();
-				Building curBuilding = gd2.getBuilding(b.getID());
+				Building curBuilding = newerGD.getBuilding(b.getID());
 
 				if(curBuilding == null) {
 					// check if the building disappeared because we do
 					// not know the region anymore or if it was
 					// destroyed
 					// FIXME(pavkovic): shouldn't it be Region curRegion = b.getRegion(); ?
-					Region curRegion = gd2.getRegion((CoordinateID) b.getRegion().getID());
+					Region curRegion = newerGD.getRegion((CoordinateID) b.getRegion().getID());
 
 					if((curRegion == null) || curRegion.units().isEmpty()) {
 						try {
-							newGD.addBuilding(new Building((ID) b.getID().clone(), newGD));
+							resultGD.addBuilding(new Building((ID) b.getID().clone(), resultGD));
 						} catch(CloneNotSupportedException e) {
 							log.error(e);
 						}
@@ -1041,25 +1042,25 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// SHIPS
-		if(sameRound && (gd1.ships() != null)) {
-			for(Iterator iter = gd1.ships().values().iterator(); iter.hasNext();) {
+		if(sameRound && (olderGD.ships() != null)) {
+			for(Iterator iter = olderGD.ships().values().iterator(); iter.hasNext();) {
 				Ship s = (Ship) iter.next();
 
 				try {
-					newGD.addShip(new Ship((ID) s.getID().clone(), newGD));
+					resultGD.addShip(new Ship((ID) s.getID().clone(), resultGD));
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
 			}
 		}
 
-		if(gd2.ships() != null) {
-			for(Iterator iter = gd2.ships().values().iterator(); iter.hasNext();) {
+		if(newerGD.ships() != null) {
+			for(Iterator iter = newerGD.ships().values().iterator(); iter.hasNext();) {
 				Ship s = (Ship) iter.next();
 
-				if(newGD.getShip(s.getID()) == null) {
+				if(resultGD.getShip(s.getID()) == null) {
 					try {
-						newGD.addShip(new Ship((ID) s.getID().clone(), newGD));
+						resultGD.addShip(new Ship((ID) s.getID().clone(), resultGD));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -1074,13 +1075,15 @@ public abstract class GameData implements Cloneable {
 		 *       that are also in the second report are added to the new one and
 		 *       temp units are ignored. IDs are used for comparism.
 		*/
-		if(gd1.units() != null) {
-			for(Iterator iter = gd1.units().values().iterator(); iter.hasNext();) {
+		if(olderGD.units() != null) {
+			for(Iterator iter = olderGD.units().values().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
-				if(sameRound || (gd2.getUnit(u.getID()) != null)) {
+				if(sameRound || (newerGD.getUnit(u.getID()) != null)) {
+					// TODO (stm): Isn't that nonsense? Doesn't it suffice to add the units of the new report
+					// if they are not from the same round?
 					try {
-						newGD.addUnit(new Unit((ID) u.getID().clone()));
+						resultGD.addUnit(new Unit((ID) u.getID().clone()));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -1088,13 +1091,13 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
-		if(gd2.units() != null) {
-			for(Iterator iter = gd2.units().values().iterator(); iter.hasNext();) {
+		if(newerGD.units() != null) {
+			for(Iterator iter = newerGD.units().values().iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
-				if(newGD.getUnit(u.getID()) == null) {
+				if(resultGD.getUnit(u.getID()) == null) {
 					try {
-						newGD.addUnit(new Unit((ID) u.getID().clone()));
+						resultGD.addUnit(new Unit((ID) u.getID().clone()));
 					} catch(CloneNotSupportedException e) {
 						log.error(e);
 					}
@@ -1103,82 +1106,82 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// MERGE FACTIONS
-		if(gd1.factions() != null) {
-			for(Iterator iter = gd1.factions().values().iterator(); iter.hasNext();) {
+		if(olderGD.factions() != null) {
+			for(Iterator iter = olderGD.factions().values().iterator(); iter.hasNext();) {
 				Faction curFaction = (Faction) iter.next();
-				Faction newFaction = newGD.getFaction(curFaction.getID());
+				Faction newFaction = resultGD.getFaction(curFaction.getID());
 
 				// first pass
-				Faction.merge(gd1, curFaction, newGD, newFaction);
+				Faction.merge(olderGD, curFaction, resultGD, newFaction);
 			}
 		}
 
 		// MERGE REGIONS
-		if(gd1.regions() != null) {
-			for(Iterator iter = gd1.regions().values().iterator(); iter.hasNext();) {
+		if(olderGD.regions() != null) {
+			for(Iterator iter = olderGD.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
-				Region newRegion = newGD.getRegion((CoordinateID) curRegion.getID());
+				Region newRegion = resultGD.getRegion((CoordinateID) curRegion.getID());
 
 				// first pass
-				Region.merge(gd1, curRegion, newGD, newRegion, sameRound);
+				Region.merge(olderGD, curRegion, resultGD, newRegion, sameRound);
 			}
 		}
 
 		// MERGE ISLANDS
-		if(gd1.islands() != null) {
-			for(Iterator iter = gd1.islands().values().iterator(); iter.hasNext();) {
+		if(olderGD.islands() != null) {
+			for(Iterator iter = olderGD.islands().values().iterator(); iter.hasNext();) {
 				Island curIsland = (Island) iter.next();
-				Island newIsland = newGD.getIsland(curIsland.getID());
+				Island newIsland = resultGD.getIsland(curIsland.getID());
 
 				// first pass
-				Island.merge(gd1, curIsland, newGD, newIsland);
+				Island.merge(olderGD, curIsland, resultGD, newIsland);
 			}
 		}
 
 		// MERGE HOTSPOTS
-		if(gd1.hotSpots() != null) {
-			for(Iterator iter = gd1.hotSpots().values().iterator(); iter.hasNext();) {
+		if(olderGD.hotSpots() != null) {
+			for(Iterator iter = olderGD.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot curHotSpot = (HotSpot) iter.next();
-				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
+				HotSpot newHotSpot = resultGD.getHotSpot(curHotSpot.getID());
 				// first pass
-				HotSpot.merge(gd1, curHotSpot, newGD, newHotSpot);
+				HotSpot.merge(olderGD, curHotSpot, resultGD, newHotSpot);
 			}
 		}
 
 		// MERGE BUILDINGS
-		if(gd1.buildings() != null) {
-			for(Iterator iter = gd1.buildings().values().iterator(); iter.hasNext();) {
+		if(olderGD.buildings() != null) {
+			for(Iterator iter = olderGD.buildings().values().iterator(); iter.hasNext();) {
 				Building curBuilding = (Building) iter.next();
-				Building newBuilding = newGD.getBuilding(curBuilding.getID());
+				Building newBuilding = resultGD.getBuilding(curBuilding.getID());
 
 				if(newBuilding != null) {
 					// first pass
-					Building.merge(gd1, curBuilding, newGD, newBuilding);
+					Building.merge(olderGD, curBuilding, resultGD, newBuilding);
 				}
 			}
 		}
 
 		// MERGE SHIPS
 		// only merge ships from the "older" game data if they are from the same round
-		if(sameRound && (gd1.ships() != null)) {
-			for(Iterator iter = gd1.ships().values().iterator(); iter.hasNext();) {
+		if(sameRound && (olderGD.ships() != null)) {
+			for(Iterator iter = olderGD.ships().values().iterator(); iter.hasNext();) {
 				Ship curShip = (Ship) iter.next();
-				Ship newShip = newGD.getShip(curShip.getID());
+				Ship newShip = resultGD.getShip(curShip.getID());
 
 				// first pass
-				Ship.merge(gd1, curShip, newGD, newShip);
+				Ship.merge(olderGD, curShip, resultGD, newShip);
 			}
 		}
 
 		// MERGE FACTIONS, SECOND PASS
 		// must be done before merging units to keep group information
-		if(gd2.factions() != null) {
-			for(Iterator iter = gd2.factions().values().iterator(); iter.hasNext();) {
+		if(newerGD.factions() != null) {
+			for(Iterator iter = newerGD.factions().values().iterator(); iter.hasNext();) {
 				Faction curFaction = (Faction) iter.next();
-				Faction newFaction = newGD.getFaction(curFaction.getID());
+				Faction newFaction = resultGD.getFaction(curFaction.getID());
 				
 				// second pass
-				Faction.merge(gd2, curFaction, newGD, newFaction);
+				Faction.merge(newerGD, curFaction, resultGD, newFaction);
 			}
 		}
 		
@@ -1189,11 +1192,11 @@ public abstract class GameData implements Cloneable {
 		 *       If the dates are equal, a fully merge is done, if not, only the
 		 *       skills are retrieved.
 		 */
-		for(Iterator it = newGD.units().values().iterator(); it.hasNext(); ) {
+		for(Iterator it = resultGD.units().values().iterator(); it.hasNext(); ) {
 			Unit newUnit = (Unit) it.next();
 
 			// find the second first since we may need the temp id
-			Unit curUnit2 = gd2.findUnit(newUnit.getID(), null, null);
+			Unit curUnit2 = newerGD.findUnit(newUnit.getID(), null, null);
 
 			// find a temp ID to gather information out of the temp unit
 			ID tempID = null;
@@ -1203,18 +1206,18 @@ public abstract class GameData implements Cloneable {
 				tempID = curUnit2.getTempID();
 
 				if(tempID != null) {
-					tempID = UnitID.createUnitID(-((UnitID) tempID).intValue(), gd2.base);
+					tempID = UnitID.createUnitID(-((UnitID) tempID).intValue(), newerGD.base);
 				}
 
 				newRegion = curUnit2.getRegion();
 			}
 
-			Unit curUnit1 = gd1.findUnit(newUnit.getID(), tempID, newRegion); // now get the unit of the first report
+			Unit curUnit1 = olderGD.findUnit(newUnit.getID(), tempID, newRegion); // now get the unit of the first report
 
 			// first merge step
 			if(curUnit1 != null) {
 				if(sameRound) { // full merge
-					Unit.merge(gd1, curUnit1, newGD, newUnit, sameRound);
+					Unit.merge(olderGD, curUnit1, resultGD, newUnit, sameRound);
 				} else { // only copy the skills to get change-level base
 
 					if((curUnit2.skills != null) || (curUnit1.getFaction().isPrivileged())) {
@@ -1225,70 +1228,70 @@ public abstract class GameData implements Cloneable {
 
 			// second merge step
 			if(curUnit2 != null) {
-				Unit.merge(gd2, curUnit2, newGD, newUnit, sameRound);
+				Unit.merge(newerGD, curUnit2, resultGD, newUnit, sameRound);
 			}
 		}
 
 		// MERGE REGIONS, SECOND PASS
-		if(gd2.regions() != null) {
-			for(Iterator iter = gd2.regions().values().iterator(); iter.hasNext();) {
+		if(newerGD.regions() != null) {
+			for(Iterator iter = newerGD.regions().values().iterator(); iter.hasNext();) {
 				Region curRegion = (Region) iter.next();
-				Region newRegion = newGD.getRegion((CoordinateID) curRegion.getID());
+				Region newRegion = resultGD.getRegion((CoordinateID) curRegion.getID());
 				
 				// second pass
-				Region.merge(gd2, curRegion, newGD, newRegion, true);
+				Region.merge(newerGD, curRegion, resultGD, newRegion, true);
 			}
 		}
 
 		// MERGE ISLANDS, SECOND PASS
-		if(gd2.islands() != null) {
-			for(Iterator iter = gd2.islands().values().iterator(); iter.hasNext();) {
+		if(newerGD.islands() != null) {
+			for(Iterator iter = newerGD.islands().values().iterator(); iter.hasNext();) {
 				Island curIsland = (Island) iter.next();
-				Island newIsland = newGD.getIsland(curIsland.getID());
+				Island newIsland = resultGD.getIsland(curIsland.getID());
 
 				// second pass
-				Island.merge(gd2, curIsland, newGD, newIsland);
+				Island.merge(newerGD, curIsland, resultGD, newIsland);
 			}
 		}
 
 		// MERGE HOTSPOTS, SECOND PASS
-		if(gd2.hotSpots() != null) {
-			for(Iterator iter = gd2.hotSpots().values().iterator(); iter.hasNext();) {
+		if(newerGD.hotSpots() != null) {
+			for(Iterator iter = newerGD.hotSpots().values().iterator(); iter.hasNext();) {
 				HotSpot curHotSpot = (HotSpot) iter.next();
-				HotSpot newHotSpot = newGD.getHotSpot(curHotSpot.getID());
+				HotSpot newHotSpot = resultGD.getHotSpot(curHotSpot.getID());
 				// second pass
-				HotSpot.merge(gd2, curHotSpot, newGD, newHotSpot);
+				HotSpot.merge(newerGD, curHotSpot, resultGD, newHotSpot);
 			}
 		}
 
 		// MERGE BUILDINGS, SECOND PASS
-		if(gd2.buildings() != null) {
-			for(Iterator iter = gd2.buildings().values().iterator(); iter.hasNext();) {
+		if(newerGD.buildings() != null) {
+			for(Iterator iter = newerGD.buildings().values().iterator(); iter.hasNext();) {
 				Building curBuilding = (Building) iter.next();
-				Building newBuilding = newGD.getBuilding(curBuilding.getID());
+				Building newBuilding = resultGD.getBuilding(curBuilding.getID());
 
 				if(newBuilding != null) {
 					// second pass
-					Building.merge(gd2, curBuilding, newGD, newBuilding);
+					Building.merge(newerGD, curBuilding, resultGD, newBuilding);
 				}
 			}
 		}
 
 		// MERGE SHIPS, SECOND PASS
-		if(gd2.ships() != null) {
-			for(Iterator iter = gd2.ships().values().iterator(); iter.hasNext();) {
+		if(newerGD.ships() != null) {
+			for(Iterator iter = newerGD.ships().values().iterator(); iter.hasNext();) {
 				Ship curShip = (Ship) iter.next();
-				Ship newShip = newGD.getShip(curShip.getID());
+				Ship newShip = resultGD.getShip(curShip.getID());
 
 				// second pass
-				Ship.merge(gd2, curShip, newGD, newShip);
+				Ship.merge(newerGD, curShip, resultGD, newShip);
 			}
 		}
 		
-		newGD.postProcess();
-		newGD.resetToUnchanged();
+		resultGD.postProcess();
+		resultGD.resetToUnchanged();
 
-		return newGD;
+		return resultGD;
 	}
 
 	protected Unit findUnit(ID id, ID tempID, Region newRegion) {

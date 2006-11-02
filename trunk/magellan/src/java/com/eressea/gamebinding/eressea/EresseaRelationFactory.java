@@ -14,7 +14,9 @@
 package com.eressea.gamebinding.eressea;
 
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,7 @@ import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
 import com.eressea.relation.RenameNamedRelation;
+import com.eressea.relation.ReserveRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransferRelation;
 import com.eressea.relation.TransportRelation;
@@ -113,10 +116,19 @@ public class EresseaRelationFactory implements RelationFactory {
 
 		// 4. parse the orders and create new relations
 		EresseaOrderParser parser = new EresseaOrderParser(data);
-		boolean tempOrders = false;
+
 		int line = 0;
 
+		List ordersCopy = new LinkedList();
 		for(Iterator iter = orders; iter.hasNext();) {
+			String order = (String) iter.next();
+			ordersCopy.add(order);
+		}
+		
+		// parse RESERVE orders first
+		Map reservedItems = new HashMap();
+		
+		for(Iterator iter = ordersCopy.iterator(); iter.hasNext();) {
 			String order = (String) iter.next();
 
 			line++; // keep track of line
@@ -131,10 +143,111 @@ public class EresseaRelationFactory implements RelationFactory {
 
 			List tokens = parser.getTokens();
 
+
 			if(((OrderToken) tokens.get(0)).ttype == OrderToken.TT_COMMENT) {
 				continue;
 			}
 
+			if(((OrderToken) tokens.get(0)).ttype == OrderToken.TT_PERSIST) {
+				tokens.remove(0);
+			}
+
+			if(((OrderToken) tokens.get(0)).equalsToken(getOrder(EresseaConstants.O_RESERVE))){
+				// RESERVE <amount> <object><EOC>
+				OrderToken t = (OrderToken) tokens.get(1);
+				int amount = -1; boolean warning = false;
+				ReserveRelation rel = null;
+				if(t.ttype == OrderToken.TT_NUMBER) {
+					amount = Integer.parseInt(t.getText());
+
+					if(amount != -1) { // -1 means that the amount could not determined
+						t = (OrderToken) tokens.get(2);
+						if(t.ttype != OrderToken.TT_EOC) {
+							String itemName = stripQuotes(t.getText());
+							
+							if(itemName.length() > 0) {
+								// TODO(pavkovic): korrigieren!!! Hier soll eigentlich das Item über den 
+								// übersetzten Namen gefunden werden!!!
+								ItemType iType = data.rules.getItemType(itemName);
+										
+								//ItemType iType = data.rules.getItemType(StringID.create(itemName));
+								if(iType != null) {
+									// get the item from the list of modified items
+									Item i = (Item) modItems.get(iType.getID());
+									
+									if(i == null) {
+										// item unknown
+										amount = 0;
+										warning = true;
+									} else {
+										// if the specified amount is 'all', convert u to a decent number
+										if(amount == REFRESHRELATIONS_ALL) {
+											amount = i.getAmount();
+											warning = true;
+										} else {
+											// if not, only transfer the minimum amount the unit has
+											if (i.getAmount()<amount)
+												warning=true;
+											amount = Math.min(i.getAmount(), amount);
+										}
+									}
+									
+									// create the new reserve relation
+									rel = new ReserveRelation(u, amount, iType, line, warning);
+									
+									// update the modified item amount and record reserved amount
+									if(i != null) {
+										i.setAmount(Math.max(0, i.getAmount() - rel.amount));
+										Item rItem = (Item) reservedItems.get(iType.getID());
+										if (rItem == null){
+											rItem = new Item(i.getItemType(), rel.amount);
+											reservedItems.put(i.getItemType(), rItem);
+										}else{
+											rItem.setAmount(rItem.getAmount()+rel.amount);
+										}
+									}
+								}
+							}
+						}
+						
+						// let's see whether there is a valid relation to add
+						if(rel != null) {
+							rels.add(rel);
+						}
+					}
+				}  else {
+					log.warn("Unit.updateRelations(): cannot parse amount in order " +
+							order);
+				}
+			}
+		}
+	
+
+		
+		
+		
+		boolean tempOrders = false;
+		line = 0;
+		
+		for(Iterator iter = ordersCopy.iterator(); iter.hasNext();) {
+			String order = (String) iter.next();
+			
+			line++; // keep track of line
+			
+			if(line < from) {
+				continue;
+			}
+			
+			if(!parser.read(new StringReader(order))) {
+				continue;
+			}
+			
+			List tokens = parser.getTokens();
+			
+			if(((OrderToken) tokens.get(0)).ttype == OrderToken.TT_COMMENT) {
+				continue;
+			}
+			
 			if(((OrderToken) tokens.get(0)).ttype == OrderToken.TT_PERSIST) {
 				tokens.remove(0);
 			}
@@ -341,13 +454,15 @@ public class EresseaRelationFactory implements RelationFactory {
 													rel.amount = i.getAmount();
 												} else {
 													// if not, only transfer the minimum amount the unit has
+													if (i.getAmount()<rel.amount)
+														rel.warning=true;
 													rel.amount = Math.min(i.getAmount(), rel.amount);
 												}
 											}
 
 											// create the new transfer relation
 											rel = new ItemTransferRelation(u, target, rel.amount,
-																		   iType, line);
+																		   iType, line, rel.warning);
 
 											// update the modified item amount
 											if(i != null) {

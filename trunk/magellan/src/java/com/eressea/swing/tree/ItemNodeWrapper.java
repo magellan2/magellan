@@ -40,6 +40,8 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	protected Unit unit;
 	protected String text;
 
+	protected boolean warning = false;
+	
 	//protected ItemNodeWrapperPreferencesAdapter adapter=null;
 	protected boolean showRegionItemAmount = false;
 	protected DetailsNodeWrapperDrawPolicy adapter;
@@ -89,9 +91,26 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 		propertiesChanged();
 	}
 
+	/**
+	 * sets the warning flag for this node
+	 * 
+	 * @param b the new value of the warning flag
+	 * @return the old value of the warning flag
+	 */
+	public boolean setWarningFlag(boolean b){
+		boolean res = warning;
+		warning = b;
+		text = null;
+		return res;
+	}
+	
 	// pavkovic 2003.10.01: prevent multiple Lists to be generated for nearly static code
 	private static Map iconNamesLists = CollectionFactory.createHashtable();
 
+	/**
+	 *  
+	 * @return the modified item stored in this node
+	 */
 	public Item getItem() {
 		return modItem;
 	}
@@ -122,15 +141,24 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * produces the string describing an item that a unit (or the like) has.
+	 * 
+	 * The string is:
+	 *  "<amount>[(!!!)] of <regionamount> <itemname>: <weight> GE " 
+	 *  for items, the unit already has or
+	 *  "<amount> (<modamount>[,!!!]) of <regionamount> <itemname>: <weight> (<modweight>) GE [(!!!)]"
+	 *  for new items.  
+	 *  
+	 *  (!!!) is added if the warning flag is set.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return the string representation of this item node.
 	 */
 	public String toString() {
 		if(text == null) {
 			boolean showRegion = isShowingRegionItemAmount();
 
 			// do not show region amounts if faction is not priviliged
+			// TODO: make this configurable
 			if((unit == null) || (unit.getFaction().trustLevel < Faction.TL_PRIVILEGED)) {
 				showRegion = false;
 			}
@@ -149,6 +177,8 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 
 			if(item == null) {
 				nodeText.append(modItem.getAmount()).append(' ');
+				if (warning)
+					  nodeText.append(" (!!!) ");
 
 				if(showRegion) {
 					Item ri = unit.getRegion().getItem(modItem.getItemType());
@@ -170,7 +200,15 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 				nodeText.append(item.getAmount()).append(" ");
 
 				if(modItem.getAmount() != item.getAmount()) {
-					nodeText.append("(").append(modItem.getAmount()).append(") ");
+					nodeText.append("(").append(modItem.getAmount());
+					if (warning)
+						nodeText.append("!!!) ");
+					else
+						nodeText.append(") ");
+					
+				}else{
+					if (warning)
+						nodeText.append("(!!!) ");
 				}
 
 				if(showRegion) {
@@ -194,7 +232,6 @@ public class ItemNodeWrapper implements CellObject, SupportsClipboard {
 							nodeText.append(" (")
 									.append(weightNumberFormat.format(new Float(modWeight))).append(")");
 						}
-
 						nodeText.append(" " + getString("node.weightunits"));
 					}
 				}

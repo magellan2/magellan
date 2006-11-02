@@ -51,9 +51,9 @@ import com.eressea.util.logging.Logger;
  * @author Ulrich Küster
  */
 public class MapContextMenu extends JPopupMenu implements ContextObserver {
-	
-	private static final Logger log = Logger.getInstance(Client.class);
-	
+
+	private static final Logger log = Logger.getInstance(MapContextMenu.class);
+
 	// the region on which the menu is inferred
 	private Region region;
 	private EventDispatcher dispatcher;

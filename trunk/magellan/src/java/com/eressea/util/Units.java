@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +29,13 @@ import com.eressea.Rules;
 import com.eressea.StringID;
 import com.eressea.Unit;
 import com.eressea.relation.ItemTransferRelation;
+import com.eressea.relation.ReserveRelation;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
+import com.eressea.swing.tree.ItemNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
+import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.logging.Logger;
 
@@ -44,6 +48,8 @@ public class Units {
 
 	// items without category
 	private StatItemContainer catLessContainer = null;
+	/** A Map&lt;ItemCategory, StatItemContainer&gt; mapping the item categories to containers with items of the corresponding category.
+	 */
 	private Map itemCategoriesMap = CollectionFactory.createHashtable();
 
 	private static ItemType silberbeutel = new ItemType(StringID.create("Silberbeutel"));
@@ -73,11 +79,11 @@ public class Units {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Calculates the amounts of all items of all units and records the amount in the itemCategoriesMap. 
 	 *
-	 * @param units TODO: DOCUMENT ME!
+	 * @param units All items of all units in this Collection are accounted for.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The sorted list of categories.
 	 */
 	public Collection categorizeUnitItems(Collection units) {
 		if((itemCategoriesMap == null) || (itemCategoriesMap.size() == 0)) {
@@ -88,9 +94,11 @@ public class Units {
 
 		clearItemContainers();
 
+		// iterate over all units...
 		for(Iterator it = units.iterator(); it.hasNext();) {
 			Unit u = (Unit) it.next();
 
+			// ...and their items
 			for(Iterator i = u.getModifiedItems().iterator(); i.hasNext();) {
 				Item item = (Item) i.next();
 
@@ -195,36 +203,36 @@ public class Units {
 											  Comparator itemComparator, Comparator unitComparator,
 											  boolean showUnits, NodeWrapperFactory factory) {
 		
-		DefaultMutableTreeNode catNode = null;
-		Collection catNodes = CollectionFactory.createLinkedList();
+		DefaultMutableTreeNode categoryNode = null;
+		Collection categoryNodes = CollectionFactory.createLinkedList();
 
-		Collection catContainers = categorizeUnitItems(units);
+		Collection listOfCategorizedItems = categorizeUnitItems(units);
 
-		if(catContainers == null) {
+		if(listOfCategorizedItems == null) {
 			log.warn("addCategorizedUnitItems(): categorizing unit items failed!");
 
 			return null;
 		}
 
-		for(Iterator contIter = catContainers.iterator(); contIter.hasNext();) {
-			StatItemContainer sic = (StatItemContainer) contIter.next();
+		for(Iterator contIter = listOfCategorizedItems.iterator(); contIter.hasNext();) {
+			StatItemContainer currentCategoryMap = (StatItemContainer) contIter.next();
 
-			if(sic.size() > 0) {
+			if(currentCategoryMap.size() > 0) {
 				
-				String catIconName = com.eressea.util.Umlaut.convertUmlauts(sic.getCategory().getName());
+				String catIconName = com.eressea.util.Umlaut.convertUmlauts(currentCategoryMap.getCategory().getName());
 				String nodeName = getString(catIconName);
-				ItemCategoryNodeWrapper wrapper = new ItemCategoryNodeWrapper(sic.getCategory(), -1,nodeName);
+				ItemCategoryNodeWrapper wrapper = new ItemCategoryNodeWrapper(currentCategoryMap.getCategory(), -1,nodeName);
 				wrapper.setIcons(catIconName);
-				catNode = new DefaultMutableTreeNode(wrapper);
+				categoryNode = new DefaultMutableTreeNode(wrapper);
 				
 				/**
 				catNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(wrapper,
 						catIconName));
 				*/
-				parentNode.add(catNode);
-				catNodes.add(catNode);
+				parentNode.add(categoryNode);
+				categoryNodes.add(categoryNode);
 
-				List sortedItems = CollectionFactory.createLinkedList(sic.values());
+				List sortedItems = CollectionFactory.createLinkedList(currentCategoryMap.values());
 
 				if(itemComparator != null) {
 					Collections.sort(sortedItems, itemComparator);
@@ -239,10 +247,11 @@ public class Units {
 					u = (Unit) units.iterator().next();
 				}
 				for(Iterator iter = sortedItems.iterator(); iter.hasNext();) {
-					StatItem si = (StatItem) iter.next();
-					catNumber += si.getAmount();
+					StatItem currentItem = (StatItem) iter.next();
+					catNumber += currentItem.getAmount();
 
-					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createItemNodeWrapper(u,si));
+					ItemNodeWrapper itemNodeWrapper = factory.createItemNodeWrapper(u,currentItem);
+					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(itemNodeWrapper);
 
 // 					DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(si.getItemType()
 // 																												   .getName() +
@@ -251,46 +260,72 @@ public class Units {
 // 																												 "items/" +
 // 																												 si.getItemType()
 // 																												   .getIconName()));
-					catNode.add(itemNode);
+					categoryNode.add(itemNode);
 
 					if(!showUnits && units.size() == 1) {
 						boolean addItemNode = false;
 
-						for(Iterator iter2 = u.getItemTransferRelations(si.getItemType()).iterator(); iter2.hasNext();) {
-							ItemTransferRelation itr = (ItemTransferRelation) iter2.next();
-							String prefix = String.valueOf(itr.amount) + " ";
+						for(Iterator reservedIterator = u.getItemReserveRelations(currentItem.getItemType()).iterator(); reservedIterator.hasNext();) {
+							ReserveRelation itr = (ReserveRelation) reservedIterator.next();
+							String text = String.valueOf(itr.amount) + " ";
+							List icons = new LinkedList();
+							if (itr.warning){
+								itemNodeWrapper.setWarningFlag(true);
+								text = String.valueOf(itr.amount) + " (!!!) "; //TODO: use append
+								icons.add("warnung");
+							}
+							text = text + getString("node.reserved");
+							icons.add("reserve");
+							
+							SimpleNodeWrapper reserveNodeWrapper = factory.createSimpleNodeWrapper(text, icons);
+							
+							itemNode.add(new DefaultMutableTreeNode(reserveNodeWrapper));
+							
+							addItemNode = true;
+						}
+						
+						for(Iterator iter2 = u.getItemTransferRelations(currentItem.getItemType()).iterator(); iter2.hasNext();) {
+							ItemTransferRelation currentRelation = (ItemTransferRelation) iter2.next();
+							String prefix = String.valueOf(currentRelation.amount) + " ";
+							if (currentRelation.warning){
+								itemNodeWrapper.setWarningFlag(true);
+								// TODO: use append
+								prefix = String.valueOf(currentRelation.amount) + " (!!!) ";
+								
+							}
+							
 							String addIcon = null;
 							Unit u2 = null;
 							
-							if(itr.source == u) {
+							if(currentRelation.source == u) {
 								addIcon = "get";
-								u2 = itr.target;
-							} else if(itr.target == u) {
+								u2 = currentRelation.target;
+							} else if(currentRelation.target == u) {
 								addIcon = "give";
-								u2 = itr.source;
+								u2 = currentRelation.source;
 							}
 							
-							UnitNodeWrapper unw = factory.createUnitNodeWrapper(u2, prefix,
+							UnitNodeWrapper giveNodeWrapper = factory.createUnitNodeWrapper(u2, prefix,
 																				u2.getPersons(),
 																				u2.getModifiedPersons());
-							unw.setAdditionalIcon(addIcon);
-							unw.setReverseOrder(true);
+							giveNodeWrapper.setReverseOrder(true);
+							giveNodeWrapper.setAdditionalIcon(addIcon);
 
 
-							itemNode.add(new DefaultMutableTreeNode(unw));
+							itemNode.add(new DefaultMutableTreeNode(giveNodeWrapper));
 
 							addItemNode = true;
 						}
 						if(addItemNode) {
 							// FIXME: we return different objects here!!
-							catNode.add(itemNode);
+							categoryNode.add(itemNode);
 						}
 					}
 
-					if(showUnits && (si.units != null)) {
-						Collections.sort(si.units, new UnitWrapperComparator(unitComparator));
+					if(showUnits && (currentItem.units != null)) {
+						Collections.sort(currentItem.units, new UnitWrapperComparator(unitComparator));
 
-						for(Iterator it = si.units.iterator(); it.hasNext();) {
+						for(Iterator it = currentItem.units.iterator(); it.hasNext();) {
 							UnitWrapper uw = (UnitWrapper) it.next();
 							itemNode.add(new DefaultMutableTreeNode(factory.createUnitNodeWrapper(uw.getUnit(),
 																								  uw.getAmount())));
@@ -299,13 +334,13 @@ public class Units {
 				}
 					
 				if((catNumber > 0) &&
-					   !sic.category.equals(rules.getItemCategory(StringID.create("misc")))) {
+					   !currentCategoryMap.category.equals(rules.getItemCategory(StringID.create("misc")))) {
 					wrapper.setAmount(catNumber);
 				}
 			}
 		}
 
-		return catNodes;
+		return categoryNodes;
 	}
 
 	private static class StatItem extends Item implements Comparable {
@@ -430,6 +465,13 @@ public class Units {
 		}
 	}
 
+	/**
+	 * This will be a Map&lt;ItemType.id, StatItem&gt;, which is a Map of items of one category.
+	 * 
+	 * @author 
+	 *
+	 * 
+	 */
 	private static class StatItemContainer extends Hashtable implements Comparable {
 		private ItemCategory category = null;
 
@@ -476,6 +518,11 @@ public class Units {
 		}
 	}
 
+	/**
+	 * Returns the Container for the specified ItemType
+	 * @param type
+	 * @return
+	 */
 	private StatItemContainer getItemContainer(ItemType type) {
 		if((type.getCategory() == null) || (itemCategoriesMap.get(type.getCategory()) == null)) {
 			return catLessContainer;

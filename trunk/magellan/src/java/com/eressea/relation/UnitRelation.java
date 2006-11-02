@@ -28,6 +28,22 @@ public abstract class UnitRelation {
 	/** TODO: DOCUMENT ME! */
 	public final int line;
 
+	/** if somethin is amiss, this should be true */
+	public boolean warning;
+	
+	/**
+	 * Creates a new UnitRelation object.
+	 *
+	 * @param s TODO: DOCUMENT ME!
+	 * @param line TODO: DOCUMENT ME!
+	 */
+	public UnitRelation(Unit s, int line, boolean w) {
+		this.origin = s;
+		this.source = s;
+		this.line = line;
+		this.warning = w;
+	}
+
 	/**
 	 * Creates a new UnitRelation object.
 	 *
@@ -38,6 +54,7 @@ public abstract class UnitRelation {
 		this.origin = s;
 		this.source = s;
 		this.line = line;
+		this.warning = false;
 	}
 
 	/**

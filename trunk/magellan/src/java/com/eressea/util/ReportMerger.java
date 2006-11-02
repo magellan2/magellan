@@ -391,6 +391,14 @@ public class ReportMerger extends Object {
 		return data;
 	}
 
+	
+	/**
+	 * Merges a report to the current report.
+	 * 
+	 * @param report
+	 * @return true iff reports were merged or report data null or report types don't match 
+	 */
+	// TODO: We need to break this monster method up, urgently!!!
 	private boolean mergeReport(Report report) {
 		if(report.data == null) {
 			iProgress += 1;
@@ -405,6 +413,11 @@ public class ReportMerger extends Object {
 			// no report loaded or 
 			// game types doesn't match. Make sure, it will not be tried again.
 			// TODO: maybe issue a message here.
+			if (report.data == null)
+				log.warn("ReportMerger.mergeReport(): got empty data.");
+			else
+				log.warn("ReportMerger.mergeReport(): game types don't match.");
+
 			report.merged = true;
 
 			return true;
@@ -874,6 +887,11 @@ public class ReportMerger extends Object {
 				ui.setProgress(report.file.getName() + " - "
 						+ getString("status.merging"), iProgress);
 			}
+			
+			
+			///////////////////////////////////////////////////
+			// Merge the reports, finally!
+			
 			// data.mergeWith( report.data );
 			data = GameData.merge(data, report.data);
 			report.merged = true;
