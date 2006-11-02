@@ -34,7 +34,7 @@ public class IslandAction extends MenuAction {
 	/**
 	 * Creates a new IslandAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public IslandAction(Client client) {
         super(client);

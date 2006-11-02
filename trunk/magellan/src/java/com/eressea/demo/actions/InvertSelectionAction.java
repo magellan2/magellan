@@ -39,7 +39,7 @@ public class InvertSelectionAction extends MenuAction implements GameDataListene
 	/**
 	 * Creates a new InvertSelectionAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public InvertSelectionAction(Client client) {
         super(client);

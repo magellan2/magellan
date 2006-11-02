@@ -36,7 +36,7 @@ public class FillSelectionAction extends MenuAction implements SelectionListener
 	/**
 	 * Creates a new FillSelectionAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public FillSelectionAction(Client client) {
         super(client);

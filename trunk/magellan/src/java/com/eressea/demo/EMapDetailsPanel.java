@@ -82,7 +82,6 @@ import com.eressea.ID;
 import com.eressea.Island;
 import com.eressea.Item;
 import com.eressea.LuxuryPrice;
-import com.eressea.Named;
 import com.eressea.NamedObject;
 import com.eressea.Potion;
 import com.eressea.Region;
@@ -106,7 +105,6 @@ import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
-import com.eressea.gamebinding.eressea.EresseaConstants;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.UnitRelation;
@@ -317,7 +315,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								//}
 							}
 						} else {
-							JOptionPane.showMessageDialog((Client) ((JComponent) e.getSource()).getTopLevelAncestor(),
+							JOptionPane.showMessageDialog(((JComponent) e.getSource()).getTopLevelAncestor(),
 														  getString("msg.cannotrename.text"),
 														  getString("error"),
 														  javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -394,7 +392,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								//}
 							}
 						} else {
-							JOptionPane.showMessageDialog((Client) ((JComponent) e.getSource()).getTopLevelAncestor(),
+							JOptionPane.showMessageDialog(((JComponent) e.getSource()).getTopLevelAncestor(),
 														  getString("msg.cannotdescribe.text"),
 														  getString("error"),
 														  javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -1300,6 +1298,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		appendTags(uc, parent, expandableNodes, "UnitTagsExpanded");
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+     *
+	 * @param uc
+	 * @param parent
+	 * @param expandableNodes
+	 * @param nodeInfo
+	 */
 	private void appendTags(Taggable uc, DefaultMutableTreeNode parent, Collection expandableNodes,
 							String nodeInfo) {
 		if(!uc.hasTags()) {
@@ -1309,9 +1315,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		DefaultMutableTreeNode tags = new DefaultMutableTreeNode(getString("node.tags"));
 
 		for(Iterator iter = uc.getTagMap().keySet().iterator(); iter.hasNext();) {
-			String name = (String) iter.next();
-			String value = uc.getTag(name);
-			tags.add(new DefaultMutableTreeNode(name + ": " + value));
+			String tempName = (String) iter.next();
+			String value = uc.getTag(tempName);
+			tags.add(new DefaultMutableTreeNode(tempName + ": " + value));
 		}
 
 		parent.add(tags);
@@ -3409,15 +3415,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					int index = ((String) o2).indexOf(": ");
 
 					if(index > 0) {
-						String name = ((String) o2).substring(0, index);
-						log.info("Removing " + name);
+						String tagName = ((String) o2).substring(0, index);
+						log.info("Removing " + tagName);
 
 						if(displayedObject instanceof UnitContainer) {
-							((UnitContainer) displayedObject).removeTag(name);
+							((UnitContainer) displayedObject).removeTag(tagName);
 							show(displayedObject, false);
 						} else if(displayedObject instanceof Unit) {
 							Unit u = (Unit) displayedObject;
-							u.removeTag(name);
+							u.removeTag(tagName);
 							show(displayedObject, false);
 
 						    // TODO: Coalesce unitordersevent
@@ -3474,10 +3480,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		        }*/
 
 		// Use the UI Fix
-		javax.swing.plaf.TreeUI ui = tree.getUI();
+		javax.swing.plaf.TreeUI treeUI = tree.getUI();
 
-		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
-			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
+		if(treeUI instanceof javax.swing.plaf.basic.BasicTreeUI) {
+			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) treeUI;
 			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
@@ -3678,12 +3684,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			return subAdapters;
 		}
 
+        /**
+         * @deprecated not implemented?
+         * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+         */
         public void initPreferences() {
             regionPref.initPreferences();
             // TODO: implement it
         }
 
-		// preferences adapter code:
+		/**
+		 * preferences adapter code:
+		 * @see com.eressea.swing.preferences.PreferencesAdapter#applyPreferences()
+		 */
 		public void applyPreferences() {
 			source.setShowTagButtons(chkShowTagButtons.isSelected());
 			regionPref.applyPreferences();

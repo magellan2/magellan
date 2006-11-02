@@ -135,6 +135,11 @@ public class Ship extends UnitContainer implements HasRegion {
 										  .intValue();
 	}
 
+	/**
+	 * 
+	 * 
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public int getCargo() {
 		if(cargo != -1) return cargo;
 		return deprecatedLoad*100;
@@ -157,7 +162,11 @@ public class Ship extends UnitContainer implements HasRegion {
 		return modLoad;
 	}
 
-	// this is a helper function for showing inner object state
+	/**
+	 * this is a helper function for showing inner object state
+	 * 
+	 * @return a debug message
+	 */
 	public String toDebugString() {
 		return "SHIP[" + "shoreId=" + shoreId + "," + "size=" + size + "," + "damageRation=" +
 			   damageRatio + "," + "deprecatedLoad=" + deprecatedLoad + "," + "deprecatedCapacity=" + deprecatedCapacity + "]";

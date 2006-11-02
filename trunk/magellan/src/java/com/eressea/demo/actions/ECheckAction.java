@@ -38,7 +38,7 @@ public class ECheckAction extends MenuAction implements ShortcutListener {
 	/**
 	 * Creates a new ECheckAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public ECheckAction(Client client) {
         super(client);

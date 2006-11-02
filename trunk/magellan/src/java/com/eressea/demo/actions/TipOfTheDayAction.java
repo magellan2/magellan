@@ -31,8 +31,7 @@ public class TipOfTheDayAction extends MenuAction {
 	/**
 	 * Creates a new TipOfTheDayAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
-	 * @param settings TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public TipOfTheDayAction(Client client) {
         super(client);

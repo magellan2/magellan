@@ -33,7 +33,7 @@ import java.lang.ref.WeakReference;
  * @version $Revision$
  */
 public class BZip2FileType extends FileType {
-	BZip2FileType(String aFile, boolean readonly) throws IOException {
+	BZip2FileType(File aFile, boolean readonly) throws IOException {
 		super(aFile, readonly);
 	}
 
@@ -50,7 +50,7 @@ public class BZip2FileType extends FileType {
 		if(tmpfile == null) {
 			tmpfile = CopyFile.createTempFile();
 			tmpfileRef = new WeakReference(tmpfile);
-			InputStream fis = new FileInputStream(new File(filename));
+			InputStream fis = new FileInputStream(filename);
 			int magic3 = fis.read();
 			int magic4 = fis.read();
 
@@ -66,7 +66,7 @@ public class BZip2FileType extends FileType {
 
 	protected OutputStream createOutputStream() throws IOException {
 		tmpfileRef = null;
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filename)));
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filename));
 		bos.write('B');
 		bos.write('Z');
 

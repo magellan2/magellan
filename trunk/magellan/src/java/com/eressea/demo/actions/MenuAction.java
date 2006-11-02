@@ -37,6 +37,8 @@ public abstract class MenuAction extends AbstractAction {
 	/**
 	 * Creates a new MenuAction object reading its name, mnemonic and accelerator from the
 	 * dictionary.
+	 * 
+	 * @param client The client for this MenuAction object.
 	 */
 	public MenuAction(Client client) {
         this.client = client;

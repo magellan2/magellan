@@ -29,16 +29,16 @@ import java.util.zip.GZIPOutputStream;
  * @version $Revision$
  */
 public class GZipFileType extends FileType {
-	GZipFileType(String aFile, boolean readonly) throws IOException {
+	GZipFileType(File aFile, boolean readonly) throws IOException {
 		super(aFile, readonly);
 	}
 
 	protected InputStream createInputStream() throws IOException {
-		return new GZIPInputStream(new FileInputStream(new File(filename)));
+		return new GZIPInputStream(new FileInputStream(filename));
 	}
 
 	protected OutputStream createOutputStream() throws IOException {
-		return new GZIPOutputStream(new FileOutputStream(new File(filename)));
+		return new GZIPOutputStream(new FileOutputStream(filename));
 	}
     
     /**

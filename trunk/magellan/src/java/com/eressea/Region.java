@@ -390,7 +390,7 @@ public class Region extends UnitContainer {
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param type TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
@@ -432,7 +432,7 @@ public class Region extends UnitContainer {
 	/**
 	 * Returns the resource with the ID of its item type.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param type TODO: DOCUMENT ME!
 	 *
 	 * @return the resource object or null if no resource with the specified ID exists in this
 	 * 		   region.
@@ -632,12 +632,12 @@ public class Region extends UnitContainer {
 	/**
 	 * Returns the border with the specified id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return the border object or null if no border with the specified id exists in this region.
 	 */
-	public Border getBorder(ID id) {
-		return (borders != null) ? (Border) borders.get(id) : null;
+	public Border getBorder(ID key) {
+		return (borders != null) ? (Border) borders.get(key) : null;
 	}
 
 	/** All ships that are in this container. */
@@ -666,12 +666,12 @@ public class Region extends UnitContainer {
 	/**
 	 * Retrieve a ship in this container by id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Ship getShip(ID id) {
-		return (ships != null) ? (Ship) ships.get(id) : null;
+	public Ship getShip(ID key) {
+		return (ships != null) ? (Ship) ships.get(key) : null;
 	}
 
 	/**
@@ -740,12 +740,12 @@ public class Region extends UnitContainer {
 	/**
 	 * Retrieve a building in this container by id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Building getBuilding(ID id) {
-		return (buildings != null) ? (Building) buildings.get(id) : null;
+	public Building getBuilding(ID key) {
+		return (buildings != null) ? (Building) buildings.get(key) : null;
 	}
 
 	/**
@@ -840,8 +840,8 @@ public class Region extends UnitContainer {
 			Unit u = (Unit) iter.next();
 
 			if(u.getFaction().isPrivileged()) {
-				for(Iterator items = u.getItems().iterator(); items.hasNext();) {
-					Item item = (Item) items.next();
+				for(Iterator unitItemIterator = u.getItems().iterator(); unitItemIterator.hasNext();) {
+					Item item = (Item) unitItemIterator.next();
 					Item i = (Item) cache.regionItems.get(item.getItemType().getID());
 
 					if(i == null) {
@@ -883,7 +883,7 @@ public class Region extends UnitContainer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private int maxRecruit(int peasants) {
+	private static int maxRecruit(int peasants) {
 		if(peasants >= 0) {
 			return peasants / 40; // 2.5 %
 		}
@@ -917,7 +917,7 @@ public class Region extends UnitContainer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private int maxEntertain(int silver) {
+	private static int maxEntertain(int silver) {
 		if(silver >= 0) {
 			return silver / 20;
 		}
@@ -953,7 +953,7 @@ public class Region extends UnitContainer {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private int maxLuxuries(int peasants) {
+	private static int maxLuxuries(int peasants) {
 		return (peasants >= 0) ? (peasants / 100) : (-1);
 	}
 
@@ -1095,7 +1095,7 @@ public class Region extends UnitContainer {
 	public static void merge(GameData curGD, Region curRegion, GameData newGD, Region newRegion,
 							 boolean sameTurn) {
 		UnitContainer.merge(curGD, curRegion, newGD, newRegion);
-
+		
 		if(sameTurn) {
 			// if both regions are from the same turn, "old" information is always assumed to be accurate. 
 			// this is true, if curRegion is always younger for successive calls of Region.merge(). 
@@ -1716,15 +1716,15 @@ public class Region extends UnitContainer {
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Unit getUnit(ID id) {
-		if(ZeroUnit.ZERO_ID.equals(id)) {
+	public Unit getUnit(ID key) {
+		if(ZeroUnit.ZERO_ID.equals(key)) {
 			return getZeroUnit();
 		} else {
-			return super.getUnit(id);
+			return super.getUnit(key);
 		}
 	}
 

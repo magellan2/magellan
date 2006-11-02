@@ -13,6 +13,7 @@
 
 package com.eressea.io.file;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -20,7 +21,7 @@ import java.io.IOException;
  * files.
  */
 public class UnknownFileType extends FileType {
-	UnknownFileType(String aFile, boolean readonly) throws IOException {
+	UnknownFileType(File aFile, boolean readonly) throws IOException {
 		super(aFile, readonly);
 	}
 }

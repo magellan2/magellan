@@ -177,10 +177,10 @@ public class ResourcePathClassLoader extends ClassLoader {
 	/**
 	 * Finds the resource with the given name in the given resource paths.
 	 *
-	 * @param name the resource name
-	 * @param resourcePaths additional resource paths to find the resource in
-	 *
-	 * @return a URL for reading the resource, or <code>null</code> if the resource could not be
+	 * @param aName The resource name, a relative path!
+	 * @param resourcePaths Additional resource paths to find the resource in
+	 * 
+	 * @return A URL for reading the resource, or <code>null</code> if the resource could not be
 	 * 		   found
 	 */
 	public static URL getResourceStatically(String aName, Collection resourcePaths) {
@@ -245,10 +245,11 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 * Searches the available resource paths for a resource with the specified name and returns the
 	 * first match.
 	 *
-	 * @param name TODO: DOCUMENT ME!
-	 * @param resourcePaths TODO: DOCUMENT ME!
+	 * @param name The resource name, a relative path!
+	 * @param resourcePaths The collection of resource paths.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a URL for reading the resource, or <code>null</code> if the resource could not be
+	 * 		   found
 	 */
 	private static URL getResourceFromPaths(String name, Collection resourcePaths) {
 		URL url = null;
@@ -263,10 +264,11 @@ public class ResourcePathClassLoader extends ClassLoader {
 	/**
 	 * Searches the available resource paths for all resources with the specified name.
 	 *
-	 * @param name TODO: DOCUMENT ME!
-	 * @param resourcePaths TODO: DOCUMENT ME!
+	 * @param name The resource name, a relative path!
+	 * @param resourcePaths The collection of resource paths.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A Collection of all the URLs found for reading the resource, an empty collection if the resource could not be
+	 * 		   found
 	 */
 	private static Collection getResourcesFromPaths(String name, Collection resourcePaths) {
 		Collection urls = CollectionFactory.createLinkedList();
@@ -286,10 +288,11 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 * Searches the available resource paths for the resources with the specified names until at
 	 * least one is found.
 	 *
-	 * @param names TODO: DOCUMENT ME!
-	 * @param resourcePaths TODO: DOCUMENT ME!
+	 * @param names A Collection of resource names
+	 * @param resourcePaths The collection of resource paths.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A Collection of the URLs for reading the resource found at the first location, an empty collection if the resource could not be
+	 * 		   found
 	 */
 	private static Collection getResourcesFromPaths(Collection names, Collection resourcePaths) {
 		Collection urls = CollectionFactory.createLinkedList();
@@ -313,9 +316,10 @@ public class ResourcePathClassLoader extends ClassLoader {
 	/**
 	 * Searches the current directory for a resource with the specified name.
 	 *
-	 * @param name TODO: DOCUMENT ME!
+	 * @param name The resource name, a relative path!
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return a URL for reading the resource, or <code>null</code> if the resource could not be
+	 * 		   found
 	 */
 	private static URL getResourceFromCurrentDir(String name) {
 		URL url = null;
@@ -334,9 +338,10 @@ public class ResourcePathClassLoader extends ClassLoader {
 	/**
 	 * Searches the current directory for the resources with the specified names.
 	 *
-	 * @param names TODO: DOCUMENT ME!
+	 * @param names A Collection of resource names.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A Collection of URLs for reading the resource, empty if the resource could not be
+	 * 		   found.
 	 */
 	private static Collection getResourcesFromCurrentDir(Collection names) {
 		Collection urls = CollectionFactory.createLinkedList();

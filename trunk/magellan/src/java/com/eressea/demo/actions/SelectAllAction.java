@@ -37,7 +37,7 @@ public class SelectAllAction extends MenuAction implements SelectionListener, Ga
 	/**
 	 * Creates a new SelectAllAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public SelectAllAction(Client client) {
         super(client);

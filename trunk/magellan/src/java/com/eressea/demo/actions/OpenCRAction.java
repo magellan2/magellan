@@ -37,7 +37,7 @@ public class OpenCRAction extends MenuAction {
 	/**
 	 * Creates new OpenCRAction
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public OpenCRAction(Client client) {
         super(client);
@@ -97,18 +97,29 @@ public class OpenCRAction extends MenuAction {
 				settings.setProperty("Client.lastCRSaved", fc.getSelectedFile().getAbsolutePath());
 			}
 
-            new Thread(new LoadCR(client,fc.getSelectedFile().getPath())).start();
+            new Thread(new LoadCR(client,fc.getSelectedFile())).start();
 		}
 	}
 
     private static class LoadCR implements Runnable {
         Client client;
-        String file;
-        public LoadCR(Client client, String file) {
+        File file;
+        /**
+         * Creates a new LoadCR object for the given client and file.
+         * 
+         * Reads GameData froma a file and passes it to the specified client.
+         *
+         * @param client The client to which the loaded data is passed.
+         * @param file The name of the file containing the game data.
+         */
+        public LoadCR(Client client, File file) {
             this.client = client;
             this.file = file;
         }
 
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
         public void run() {
             GameData data = client.loadCR(file);
             

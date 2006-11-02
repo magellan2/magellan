@@ -194,7 +194,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 					} catch(IOException ioe) {
 						log.error(ioe);
 
-						Object msgArgs[] = { outputFile.getPath() };
+						String msgArgs[] = { outputFile.getPath() };
 						JOptionPane.showMessageDialog((JButton) e.getSource(),
 													  (new java.text.MessageFormat(getString("msg.writeerror.text"))).format(msgArgs),
 													  getString("msg.exporterror.title"),

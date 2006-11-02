@@ -26,11 +26,6 @@ import com.eressea.io.xml.XMLGameNameIO;
  * @version $Revision$
  */
 public class GameNameReader {
-	/**
-	 * Creates a new GameNameReader object.
-	 */
-	public GameNameReader() {
-	}
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -39,7 +34,7 @@ public class GameNameReader {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public String getGameName(FileType filetype) {
+	public static String getGameName(FileType filetype) {
 		try {
 			String gameName = new CRGameNameIO().getGameName(filetype);
 

@@ -27,7 +27,15 @@ import com.eressea.io.GameDataIO;
  * @version $Revision$
  */
 public interface GameSpecificStuff {
-	// for io binding
+	/**
+	 * For io binding.
+	 *
+	 * TODO DOCUMENT ME! Long description.
+	 *
+	 * @param rules
+	 * @param name
+	 * @return TODO DOCUMENT ME!
+	 */
 	public GameData createGameData(Rules rules, String name);
 
 	/**
@@ -49,7 +57,13 @@ public interface GameSpecificStuff {
 	 */
 	public void postProcess(GameData data);
 
-	// for TrustLevels
+	/**
+	 * For TrustLevels.
+	 *
+	 * TODO DOCUMENT ME! Long description.
+	 *
+	 * @param data
+	 */
 	public void postProcessAfterTrustlevelChange(GameData data);
 
 	// for Unit

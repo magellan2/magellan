@@ -41,6 +41,9 @@ public class Spell extends DescribedObject {
 	}
 
 	// TODO: this is bad, but right now i dont have a better idea
+	/** 
+	 * @see com.eressea.Unique#getID()
+	 */
 	public ID getID() {
 	    return StringID.create(getName());
 	}

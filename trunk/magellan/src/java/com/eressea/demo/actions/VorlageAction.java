@@ -31,7 +31,7 @@ public class VorlageAction extends MenuAction {
 	/**
 	 * Creates a new VorlageAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public VorlageAction(Client client) {
         super(client);

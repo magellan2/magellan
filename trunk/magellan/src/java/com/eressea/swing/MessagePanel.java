@@ -623,7 +623,6 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
-	 * @param e TODO: DOCUMENT ME!
 	 */
 	private void handleValueChange() {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();

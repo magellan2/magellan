@@ -79,5 +79,10 @@ public interface OrderChanger {
 	public void addRecruitOrder(Unit u, int amount);
 
 	// for UnitContextMenu
+	/**
+	 * Adds command lines for hiding all that could identify this unit, like name, number, description etc.
+	 * 
+	 * @param u The affected unit.
+	 */
 	public void addMultipleHideOrder(Unit u);
 }

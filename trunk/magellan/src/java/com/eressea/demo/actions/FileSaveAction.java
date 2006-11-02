@@ -20,13 +20,18 @@ import com.eressea.io.file.FileType;
 import com.eressea.util.CollectionFactory;
 
 /**
- * DOCUMENT ME!
+ * TODO: DOCUMENT ME!
  *
  * @author Andreas
  * @version
  */
 public class FileSaveAction extends FileSaveAsAction {
 	// pavkovic 2003.05.20: this object is essentially doing the same as FileSaveAsAction
+	/**
+	 * The standard constructor.
+	 *
+	 * @param parent The client object for this action.
+	 */
 	public FileSaveAction(Client parent) {
 		super(parent);
 	}

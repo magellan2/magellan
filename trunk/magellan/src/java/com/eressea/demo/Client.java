@@ -979,6 +979,11 @@ public class Client extends JFrame implements ShortcutListener,
     // ////////////////////
     // START & END Code //
     // ////////////////////
+    /**
+     * START & END Code
+     * 
+     * @param args TODO: DOCUMENT ME!
+     */
     public static void main(String args[]) {
         try {
             String report = null; // the report to be loaded on startup
@@ -1111,7 +1116,7 @@ public class Client extends JFrame implements ShortcutListener,
                 c.dataFile = crFile;
 
                 // load new data
-                c.setData(c.loadCR(crFile.getAbsolutePath()));
+                c.setData(c.loadCR(crFile));
             }
 
             c.setReportChanged(false);
@@ -1283,7 +1288,7 @@ public class Client extends JFrame implements ShortcutListener,
      * @return a new <tt>GameData</tt> object filled with the data from the
      *         CR.
      */
-    public GameData loadCR(String fileName) {
+    public GameData loadCR(File fileName) {
         GameData d = null;
 
         try {
@@ -1329,7 +1334,11 @@ public class Client extends JFrame implements ShortcutListener,
             this.client = client;
         }
 
-        // open selection window to choose a zipentry
+        /** 
+         * open selection window to choose a zipentry
+         * 
+         * @see com.eressea.io.file.FileTypeFactory.FileTypeChooser#chooseZipEntry(java.util.zip.ZipEntry[])
+         */
         public ZipEntry chooseZipEntry(ZipEntry entries[]) {
             String stringEntries[] = new String[entries.length];
 
@@ -1486,7 +1495,7 @@ public class Client extends JFrame implements ShortcutListener,
         setTitle(title);
     }
 
-    private String createTitle(GameData data, boolean showStatus,
+    private String createTitle(GameData data, boolean showStatusOverride,
             boolean longTitle) {
         // set frame title (date)
         String title = "Magellan";
@@ -1519,7 +1528,7 @@ public class Client extends JFrame implements ShortcutListener,
             title = title
                     + " - "
                     + data.getDate().toString(
-                            showStatus ? EresseaDate.TYPE_SHORT
+                            showStatusOverride ? EresseaDate.TYPE_SHORT
                                     : EresseaDate.TYPE_PHRASE_AND_SEASON)
                     + " (" + data.getDate().getDate() + ")";
         }
@@ -1528,7 +1537,7 @@ public class Client extends JFrame implements ShortcutListener,
             return title;
         }
 
-        if (showStatus) {
+        if (showStatusOverride) {
             int units = 0;
             int done = 0;
 
@@ -1559,7 +1568,7 @@ public class Client extends JFrame implements ShortcutListener,
             }
 
             if (units > 0) {
-                BigDecimal percent = (new BigDecimal(((float) done * 100)
+                BigDecimal percent = (new BigDecimal(( done * 100)
                         / ((float) units))).setScale(2, BigDecimal.ROUND_DOWN);
                 title += (" (" + units + " " + getString("title.unit") + ", "
                         + done + " " + getString("title.done") + ", "
@@ -1619,6 +1628,9 @@ public class Client extends JFrame implements ShortcutListener,
     // ////////////
     // L&F Code //
     // ////////////
+    /**
+     * @param laf
+     */
     public void setLookAndFeel(String laf) {
         boolean lafSet = true;
 
@@ -1714,8 +1726,12 @@ public class Client extends JFrame implements ShortcutListener,
     // ///////////////////
     // PROPERTY Access //
     // ///////////////////
-    // Changes to the report state can be done here. Normally, a change
-    // is recognized by the following events.
+    /**
+     * Changes to the report state can be done here. Normally, a change
+     * is recognized by the following events.
+     *
+     * @param changed
+     */
     public void setReportChanged(boolean changed) {
         if (changed == false) {
             // for call from FileSaveAsAction
@@ -2009,6 +2025,9 @@ public class Client extends JFrame implements ShortcutListener,
     // /////////////////////////////
     // REPAINT & VISIBILITY Code //
     // /////////////////////////////
+    /**
+     * @param v
+     */
     public void setAllVisible(boolean v) {
         desktop.setAllVisible(v);
         resetExtendedState();
@@ -2030,6 +2049,9 @@ public class Client extends JFrame implements ShortcutListener,
 
     // The repaint functions are overwritten to repaint the whole Magellan
     // Desktop. This is necessary because of the desktop mode FRAME.
+    /**
+     * @see java.awt.Component#repaint()
+     */
     public void repaint() {
         super.repaint();
 

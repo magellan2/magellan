@@ -178,7 +178,7 @@ public class FileHistory {
 			settings.setProperty("Client.lastCRSaved", file.getAbsolutePath());
 		}
 
-		GameData data = client.loadCR(file.getPath());
+		GameData data = client.loadCR(file);
 
 		if(data != null) {
 			client.setData(data);

@@ -32,7 +32,7 @@ public class TradeOrganizerAction extends MenuAction implements GameDataListener
 	/**
 	 * Creates a new TradeOrganizerAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public TradeOrganizerAction(Client client) {
         super(client);

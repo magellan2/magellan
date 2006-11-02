@@ -1,5 +1,10 @@
 2006-11-02  Fiete  <Fiete@users.sourceforge.net>
 
+	* some code beautifings from solthan (stm)
+	* changed FileHandlung (CRs) from String FileName to File FileName (stm)
+
+2006-11-02  Fiete  <Fiete@users.sourceforge.net>
+
 	* Some menuItems only enabled when regions.size > 0
 	* fixed bug, that heroes and age were not in CRWriter
 

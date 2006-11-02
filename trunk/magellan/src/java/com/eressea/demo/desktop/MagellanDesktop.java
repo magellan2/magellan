@@ -409,6 +409,11 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 # Property access code #
 	 ########################
 	 */
+	/**
+	 * Returns the current desktop menu.
+	 *
+	 * @return The current desktop menu.
+	 */
 	public JMenu getDesktopMenu() {
 		return desktopMenu;
 	}
@@ -568,6 +573,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			this.putValue(Action.ACTION_COMMAND_KEY, splitSetName);
 			this.putValue(Action.SHORT_DESCRIPTION, tooltip);
 		}
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
 		public void actionPerformed(ActionEvent e) {
 			setMode(MODE_SPLIT, e.getActionCommand());
 		}
@@ -579,6 +587,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			this.putValue(Action.ACTION_COMMAND_KEY, splitSetName);
 			this.putValue(Action.SHORT_DESCRIPTION, tooltip);
 		}
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
 		public void actionPerformed(ActionEvent e) {
 			setMode(MODE_LAYOUT, e.getActionCommand());
 		}
@@ -3265,6 +3276,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	/////////////////////////
 	// PREFERENCES ADAPTER //
 	/////////////////////////
+	/* (non-Javadoc)
+	 * @see com.eressea.swing.preferences.PreferencesFactory#createPreferencesAdapter()
+	 */
 	public PreferencesAdapter createPreferencesAdapter() {
 		return new DesktopPreferences();
 	}
@@ -3502,6 +3516,10 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			return getString("prefs.title");
 		}
 
+        /**
+         * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+         * @deprecated TODO: implement it
+         */
         public void initPreferences() {
             // TODO: implement it
         }
@@ -3714,9 +3732,14 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 				}
 			}
 
+            /**
+             * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+             * @deprecated TODO: implement it!
+             */
             public void initPreferences() {
                 // TODO: implement it
             }
+            
 			/**
 			 * TODO: DOCUMENT ME!
 			 */
@@ -4186,7 +4209,9 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 					public void keyTyped(KeyEvent p1) {
 					}
 
-					// to allow "tab" as a key
+					/** To allow "tab" as a key.
+					 * 
+					 */
 					public boolean isManagingFocus() {
 						return true;
 					}

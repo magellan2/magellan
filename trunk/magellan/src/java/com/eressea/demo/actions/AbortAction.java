@@ -29,7 +29,7 @@ public class AbortAction extends MenuAction {
 	/**
 	 * Creates a new AbortAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client 
 	 */
 	public AbortAction(Client client) {
         super(client);

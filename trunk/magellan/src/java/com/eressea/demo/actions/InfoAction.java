@@ -31,7 +31,7 @@ public class InfoAction extends MenuAction {
 	/**
 	 * Creates a new InfoAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public InfoAction(Client client) {
         super(client);

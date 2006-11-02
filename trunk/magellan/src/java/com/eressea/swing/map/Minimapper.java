@@ -31,10 +31,9 @@ public class Minimapper extends Mapper {
 	protected int minimapLastType = -1;
 
 	/**
-	 * Creates new Minimapper
+	 * Creates new Minimapper.
 	 *
-	 * @param ed TODO: DOCUMENT ME!
-	 * @param settings TODO: DOCUMENT ME!
+	 * @param context
 	 */
     public Minimapper(MagellanContext context) {
 		super(context, null, new CellGeometry("cellgeometry.txt"));
@@ -44,9 +43,10 @@ public class Minimapper extends Mapper {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Never shows tooltips.
 	 *
-	 * @param b TODO: DOCUMENT ME!
+	 * @param b ignored
+	 * @see com.eressea.swing.map.Mapper#setShowTooltip(boolean)
 	 */
 	public void setShowTooltip(boolean b) {
 		// never show tooltips

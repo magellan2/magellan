@@ -30,7 +30,7 @@ public class QuitAction extends MenuAction {
 	/**
 	 * Creates new OpenCRAction
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public QuitAction(Client client) {
         super(client);

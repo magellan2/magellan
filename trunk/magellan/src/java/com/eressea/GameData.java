@@ -51,6 +51,15 @@ public abstract class GameData implements Cloneable {
 	public final String name;
 
 	/**
+	 * TODO: Comment for <code>ownerFaction</code>
+	 */
+	public EntityID ownerFaction;
+	/**
+	 * TODO: Comment for <code>recommendedOffset</code>
+	 */
+	public String recommendedOffset;
+	
+	/**
 	 * The current TempUnit-ID. This means, if a new TempUnit is created, it's suggested ID is
 	 * usually curTempID and if this suggestion is accepted by the user (which means, that a
 	 * TempUnit with this id was created) curTempID is increased. A value of -1 indicates, that

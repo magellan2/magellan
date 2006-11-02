@@ -37,6 +37,9 @@ public abstract class NamedObject extends Identifiable implements Named {
 		this.name = name;
 	}
 
+    /** 
+     * @see com.eressea.Named#getName()
+     */
     public String getName() {
         return name;
     }

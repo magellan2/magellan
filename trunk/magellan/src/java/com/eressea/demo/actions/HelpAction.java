@@ -40,7 +40,7 @@ public class HelpAction extends MenuAction {
 	/**
 	 * Creates a new HelpAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client TODO: DOCUMENT ME!
 	 */
 	public HelpAction(Client client) {
         super(client);

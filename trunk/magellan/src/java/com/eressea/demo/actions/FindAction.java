@@ -37,7 +37,7 @@ public class FindAction extends MenuAction implements SelectionListener, GameDat
 	/**
 	 * Creates a new FindAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public FindAction(Client client) {
         super(client);

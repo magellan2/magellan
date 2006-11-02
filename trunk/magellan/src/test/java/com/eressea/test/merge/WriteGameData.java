@@ -1,5 +1,6 @@
 package com.eressea.test.merge;
 
+import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
@@ -26,7 +27,7 @@ public class WriteGameData extends TestCase {
 	public final static String FILE_PREFIX="build/build/test/";
 
 	public static void writeCR(GameData data, String fName) throws IOException {
-		String file = FILE_PREFIX + fName;
+		File file = new File(FILE_PREFIX + fName);
 		// System.out.println("Writing file "+file);
 		FileType ft = FileTypeFactory.singleton().createFileType(file, false);
 		ft.setCreateBackup(false);

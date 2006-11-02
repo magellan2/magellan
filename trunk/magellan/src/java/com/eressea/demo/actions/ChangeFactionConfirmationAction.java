@@ -45,7 +45,7 @@ public class ChangeFactionConfirmationAction extends MenuAction {
 	/**
 	 * Creates a new ChangeFactionConfirmationAction object.
 	 *
-	 * @param c TODO: DOCUMENT ME!
+	 * @param client TODO: DOCUMENT ME!
 	 * @param f TODO: DOCUMENT ME!
 	 * @param conf TODO: DOCUMENT ME!
 	 * @param r TODO: DOCUMENT ME!

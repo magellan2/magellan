@@ -88,10 +88,25 @@ public class CRParser implements RulesIO, GameDataIO {
 	
 	CoordinateID newOrigin = new CoordinateID(0,0,0);
 	
+	/**
+	 * Creates a new parser.
+	 *
+	 */
 	public CRParser(){
 		
 	}
 	
+	/**
+	 * Creates a new parser. This new parser translates coordinates according to newOrigin.
+	 * 
+	 * All coordinates which are read from the report are translated by newOrigin. That is, if a coordinate read and its level
+	 * (the z coordinate) equals the new origins level, its x and y coordinates are decreased by origin.x and origin.y, respectively.
+	 * That means, that the reports origin is transferred to newOrigin.
+	 * 
+	 * @param newOrigin The coordinates (relative to the origin of the report) of the new origin. 
+	 *
+	 */
+	// FIXME Other games might want to change coordinate systems on all levels at once!
     public CRParser(CoordinateID newOrigin){
     	this.newOrigin = newOrigin;
     }
@@ -2377,7 +2392,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				if(region.getType() == null) {
 					region.setName(sc.argv[0]);
 				} else {
-					// FIX this will bite us sooner or later
+					// FIXME? this will bite us sooner or later
 					//	if (!region.getType().getName().equals(sc.argv[0])) {
 					region.setName(sc.argv[0]);
 
@@ -2434,7 +2449,7 @@ public class CRParser implements RulesIO, GameDataIO {
 				// regions doesn't have name if name == type; e.g. "Ozean"=="Ozean"
 				if(region.getType() != null) {
 					if(region.getType().getName() != null) {
-						// FIX this will bite us sooner or later
+						// FIXME? this will bite us sooner or later
 						//			if (region.getType().getName().equals(region.getName())) {
 						//				region.setName( null );
 						//			}

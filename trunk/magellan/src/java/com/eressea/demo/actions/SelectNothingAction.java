@@ -37,7 +37,7 @@ public class SelectNothingAction extends MenuAction implements SelectionListener
 	/**
 	 * Creates a new SelectNothingAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public SelectNothingAction(Client client) {
         super(client);

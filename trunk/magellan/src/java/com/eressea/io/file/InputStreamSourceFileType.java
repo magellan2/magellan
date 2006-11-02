@@ -26,15 +26,15 @@ import com.eressea.resource.ResourcePathClassLoader;
  * encapsulating ClassLoader stuff.
  */
 public class InputStreamSourceFileType extends FileType {
-	InputStreamSourceFileType(String url) throws IOException {
+	InputStreamSourceFileType(File url) throws IOException {
 		super(url, true);
 	}
 
 	protected InputStream createInputStream() throws IOException {
-		URL url = ResourcePathClassLoader.getResourceStatically(filename.toLowerCase());
+		URL url = ResourcePathClassLoader.getResourceStatically(filename.getPath().toLowerCase());
 
 		if(url == null) {
-			throw new IOException("URL '" + filename + "' not readable.");
+			throw new IOException("URL '" + filename.getPath().toLowerCase() + "' not readable.");
 		}
 
 		return url.openStream();

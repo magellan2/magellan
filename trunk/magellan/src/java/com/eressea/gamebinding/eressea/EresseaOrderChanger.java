@@ -273,9 +273,10 @@ public class EresseaOrderChanger implements OrderChanger {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Adds camouflage orders, for hiding all that could identify the unit and remembering the old values in comments.
+	 *  
 	 *
-	 * @param unit TODO: DOCUMENT ME!
+	 * @param unit The affected unit.
 	 */
 	public void addMultipleHideOrder(Unit unit) {
 		List orders = CollectionFactory.createLinkedList();
