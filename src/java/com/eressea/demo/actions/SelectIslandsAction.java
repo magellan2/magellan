@@ -38,7 +38,7 @@ public class SelectIslandsAction extends MenuAction implements GameDataListener,
 	/**
 	 * Creates a new SelectIslandsAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public SelectIslandsAction(Client client) {
         super(client);

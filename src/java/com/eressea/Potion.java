@@ -67,13 +67,13 @@ public class Potion extends DescribedObject {
 	/**
 	 * Returns a specific ingredient of this potion.
 	 *
-	 * @param id the item type id of the ingredient to be returned.
+	 * @param key the item type id of the ingredient to be returned.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Item getIngredient(ID id) {
+	public Item getIngredient(ID key) {
 		if(this.ingredients != null) {
-			return (Item) this.ingredients.get(id);
+			return (Item) this.ingredients.get(key);
 		}
 
 		return null;
@@ -99,13 +99,13 @@ public class Potion extends DescribedObject {
 	/**
 	 * Removes an item from the list of ingredients required to brew this potion.
 	 *
-	 * @param id the id of the item's item type to be removed.
+	 * @param key the id of the item's item type to be removed.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Item removeIngredient(ID id) {
+	public Item removeIngredient(ID key) {
 		if(this.ingredients != null) {
-			return (Item) this.ingredients.remove(id);
+			return (Item) this.ingredients.remove(key);
 		}
 
 		return null;

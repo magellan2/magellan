@@ -84,6 +84,11 @@ public abstract class Identifiable extends Object implements Unique, Comparable,
 		return getID() == null ? super.hashCode() : getID().hashCode();
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 * 
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public int superHashCode() {
 		return super.hashCode();
 	}

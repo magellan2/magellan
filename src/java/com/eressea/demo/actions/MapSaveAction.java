@@ -33,7 +33,7 @@ public class MapSaveAction extends MenuAction {
 	/**
 	 * Creates a new MapSaveAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 * @param m TODO: DOCUMENT ME!
 	 */
 	public MapSaveAction(Client client, MapperPanel m) {

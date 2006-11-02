@@ -42,7 +42,7 @@ public class AddCRAction extends MenuAction implements GameDataListener{
 	/**
 	 * Creates new AddCRAction
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public AddCRAction(Client client) {
         super(client);
@@ -110,7 +110,7 @@ public class AddCRAction extends MenuAction implements GameDataListener{
 										  new ReportMerger.Loader() {
 						// pavkovic 2002.11.05: prevent name clash with variable "file"
 						public GameData load(File aFile) {
-							return theclient.loadCR(aFile.getAbsolutePath());
+							return theclient.loadCR(aFile);
 						}
 					},
 										  new ReportMerger.AssignData() {
@@ -124,7 +124,7 @@ public class AddCRAction extends MenuAction implements GameDataListener{
 										  new ReportMerger.Loader() {
 						// pavkovic 2002.11.05: prevent name clash with variable "file"
 						public GameData load(File aFile) {
-							return theclient.loadCR(aFile.getAbsolutePath());
+							return theclient.loadCR(aFile);
 						}
 					},
 										  new ReportMerger.AssignData() {

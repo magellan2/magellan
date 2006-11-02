@@ -25,9 +25,9 @@ import com.eressea.io.file.FileType;
  */
 public interface GameNameIO {
 	/**
-	 * Returns the game data found in the given FileType
+	 * Returns the game data found in the given FileType.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A String representing the name of the game.
 	 */
 	public String getGameName(FileType file) throws IOException;
 }

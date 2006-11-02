@@ -295,6 +295,12 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		return pnlLocales;
 	}
 
+    /**
+     * TODO: implement it
+     * @deprecated not implemented!
+     * 
+     * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+     */
     public void initPreferences() {
         // TODO: implement it
     }
@@ -568,6 +574,12 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 			return getString("border.lookandfeel");
 		}
 
+        /**
+         * TODO: implement it
+         * @deprecated not implemented!
+         * 
+         * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+         */
         public void initPreferences() {
             // TODO: implement it
         }
@@ -686,6 +698,12 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 			return getString("border.filehistory");
 		}
 
+        /**
+         * TODO: implement it
+         * @deprecated not implemented!
+         * 
+         * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+         */
         public void initPreferences() {
             // TODO: implement it
         }

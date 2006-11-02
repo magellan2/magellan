@@ -519,9 +519,10 @@ public class Units {
 	}
 
 	/**
-	 * Returns the Container for the specified ItemType
-	 * @param type
-	 * @return
+	 * Returns the Container for the specified items type.
+	 * 
+	 * @param type The item whose category you want.
+	 * @return The Container if items of type <code>type</code>. 
 	 */
 	private StatItemContainer getItemContainer(ItemType type) {
 		if((type.getCategory() == null) || (itemCategoriesMap.get(type.getCategory()) == null)) {

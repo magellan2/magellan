@@ -21,10 +21,16 @@ public abstract class RelatedObject extends DescribedObject implements Related {
         super(id);
     }
 
+    /**
+     * @see com.eressea.Related#addRelation(com.eressea.relation.UnitRelation)
+     */
     public void addRelation(UnitRelation rel) {
         getRelations().add(rel);
     }
 
+    /**
+     * @see com.eressea.Related#removeRelation(com.eressea.relation.UnitRelation)
+     */
     public UnitRelation removeRelation(UnitRelation rel) {
         if(getRelations().remove(rel)) {
             return rel;
@@ -59,6 +65,9 @@ public abstract class RelatedObject extends DescribedObject implements Related {
     }
 
     
+    /**
+     * @see com.eressea.Named#getModifiedName()
+     */
     public String getModifiedName() {
         List renameRelations = getRelations(RenameNamedRelation.class);
         if(renameRelations.isEmpty()) {

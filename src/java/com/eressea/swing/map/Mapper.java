@@ -158,8 +158,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	/**
 	 * Creates a new Mapper object.
 	 *
-	 * @param ed TODO: DOCUMENT ME!
-	 * @param p TODO: DOCUMENT ME!
+	 * @param context TODO: DOCUMENT ME!
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geom TODO: DOCUMENT ME!
 	 */

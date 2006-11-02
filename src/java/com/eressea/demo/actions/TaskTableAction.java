@@ -31,7 +31,7 @@ public class TaskTableAction extends MenuAction {
 	/**
 	 * Creates a new TaskTableAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public TaskTableAction(Client client) {
         super(client);

@@ -59,7 +59,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.SimpleAttributeSet;
 
-import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
 import com.eressea.event.SelectionEvent;
@@ -123,7 +122,6 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 	 * Creates new AutoCompletion
 	 *
 	 * @param context The magellan context holding Client-Global informations
-	 * @param d EventDispatcher to connect with
 	 */
 	public AutoCompletion(MagellanContext context) {
 		this.settings = context.getProperties();
@@ -250,7 +248,11 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
         return result;
     }
 
-    // to choose the current GUI
+	/**
+	 * to choose the current GUI
+	 * 
+	 * TODO: DOCUMENT ME!
+	 */
 	public void loadComplete() {
 		if(completionGUIs.size() == 0) {
 			return;
@@ -1257,9 +1259,13 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 			return getString("prefs.title");
 		}
 
+        /** TODO: DOCUMENT ME!
+         * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+         */
         public void initPreferences() {
             // TODO: implement it
         }
+        
 		/**
 		 * TODO: DOCUMENT ME!
 		 */
@@ -1426,7 +1432,9 @@ public class AutoCompletion implements SelectionListener, KeyListener, ActionLis
 			public void keyTyped(java.awt.event.KeyEvent p1) {
 			}
 
-			// to allow "tab" as a key
+			/** to allow "tab" as a key
+			 * @see javax.swing.JComponent#isManagingFocus()
+			 */
 			public boolean isManagingFocus() {
 				return true;
 			}

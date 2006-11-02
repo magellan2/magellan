@@ -44,6 +44,12 @@ public class EventDispatcher {
 	private static final int PRIORITIES[] = { 0, 4, 1, 1, 1 };
 	private EQueue queue;
 
+	/**
+	 * TODO DOCUMENT ME! One line description.
+	 *
+	 * TODO DOCUMENT ME! Long description.
+	 *
+	 */
 	public EventDispatcher() {
 		listeners = new List[PRIORITIES.length];
 		notifierIsAliveOnList = new boolean[PRIORITIES.length];
@@ -61,7 +67,7 @@ public class EventDispatcher {
 		t.start();
 	}
 
-	private static final EventDispatcher INSTANCE = new EventDispatcher();
+//	private static final EventDispatcher INSTANCE = new EventDispatcher();
 
 	/**
 	 * Returns the shared instance of the event dispatcher. This will create a new one if there's
@@ -79,12 +85,21 @@ public class EventDispatcher {
 	*/
 
     /**
-     * @deprecated: don't use, will be thrown away soon 
+     * @deprecated don't use, will be thrown away soon 
      */
     public MagellanContext getMagellanContext() {
         return context;
     }
     private MagellanContext context;
+
+    /**
+     * TODO DOCUMENT ME! One line description.
+     *
+     * TODO DOCUMENT ME! Long description.
+     *
+     * TODO DOCUMENT ME! @Tag Tag description.
+     * @param context
+     */
     public void setMagellanContext(MagellanContext context) {
         this.context = context;
     }

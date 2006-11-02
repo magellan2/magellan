@@ -24,6 +24,11 @@ public interface Named {
 	 */
 	public String getName();
 
+	/**
+	 * TODO DOCUMENT ME!
+	 * 
+	 * @return TODO DOCUMENT ME!
+	 */
 	public String getModifiedName();
 
 }

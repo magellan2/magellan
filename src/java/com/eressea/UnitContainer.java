@@ -201,13 +201,13 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 	/**
 	 * Retrieve a unit in this container by id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Unit getUnit(ID id) {
+	public Unit getUnit(ID key) {
 		if(units != null) {
-			return (Unit) units.get(id);
+			return (Unit) units.get(key);
 		} else {
 			return null;
 		}
@@ -233,13 +233,13 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 	 * Removes a unit from this container. This method should only be invoked by Unit.setXXX()
 	 * methods.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	Unit removeUnit(ID id) {
+	Unit removeUnit(ID key) {
 		if(units != null) {
-			Unit u = (Unit) units.remove(id);
+			Unit u = (Unit) units.remove(key);
 
 			if(units.isEmpty()) {
 				units = null;
@@ -280,11 +280,11 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Unit getModifiedUnit(ID id) {
+	public Unit getModifiedUnit(ID key) {
 		if((cache == null) || (cache.modifiedContainerUnits == null)) {
 			refreshModifiedUnits();
 		}
@@ -293,7 +293,7 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 			return null;
 		}
 
-		return (Unit) cache.modifiedContainerUnits.get(id);
+		return (Unit) cache.modifiedContainerUnits.get(key);
 	}
 
 	private void refreshModifiedUnits() {
@@ -497,7 +497,6 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 	 *
 	 * @param rel TODO: DOCUMENT ME!
 	 *
-	 * @return TODO: DOCUMENT ME!
 	 */
 	public void addRelation(UnitRelation rel) {
 		if(cache == null) {
@@ -521,6 +520,9 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
         }
     }
     
+    /**
+     * @see com.eressea.Named#getModifiedName()
+     */
     public String getModifiedName() {
         if(cache == null) {
             cache = new Cache();
@@ -551,7 +553,12 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 		return r;
 	}
 
-	// EXTERNAL TAG METHODS
+	/** EXTERNAL TAG METHODS
+	 * 
+	 * TODO: DOCUMENT ME!
+	 * 
+	 * @see com.eressea.util.Taggable#deleteAllTags()
+	 */
 	public void deleteAllTags() {
 		externalMap = null;
 	}

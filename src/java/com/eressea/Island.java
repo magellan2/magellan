@@ -86,17 +86,17 @@ public class Island extends DescribedObject {
 	/**
 	 * Retrieve a region in this container by id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Region getRegion(ID id) {
+	public Region getRegion(ID key) {
 		if(regionsInvalidated) {
 			refreshRegions();
 		}
 
 		if(regions != null) {
-			return (Region) regions.get(id);
+			return (Region) regions.get(key);
 		} else {
 			return null;
 		}

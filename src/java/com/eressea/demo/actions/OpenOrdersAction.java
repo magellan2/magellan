@@ -44,7 +44,7 @@ public class OpenOrdersAction extends MenuAction implements GameDataListener {
 	/**
 	 * Creates a new OpenOrdersAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public OpenOrdersAction(Client client) {
         super(client);

@@ -30,7 +30,7 @@ public class EresseaOptionsAction extends MenuAction {
 	/**
 	 * Creates a new EresseaOptionsAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public EresseaOptionsAction(Client client) {
         super(client);

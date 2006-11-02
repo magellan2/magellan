@@ -23,8 +23,8 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.eressea.Building;
 import com.eressea.Border;
+import com.eressea.Building;
 import com.eressea.GameData;
 import com.eressea.Region;
 import com.eressea.Ship;
@@ -38,7 +38,6 @@ import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.comparator.TaggableComparator;
 import com.eressea.util.comparator.UnitCombatStatusComparator;
-import com.eressea.util.comparator.UnitContainerOwnerComparator;
 import com.eressea.util.comparator.UnitFactionComparator;
 import com.eressea.util.comparator.UnitFactionDisguisedComparator;
 import com.eressea.util.comparator.UnitGroupComparator;

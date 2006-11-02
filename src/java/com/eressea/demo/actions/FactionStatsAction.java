@@ -32,7 +32,7 @@ public class FactionStatsAction extends MenuAction implements GameDataListener {
 	/**
 	 * Creates a new FactionStatsAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public FactionStatsAction(Client client) {
         super(client);

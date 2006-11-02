@@ -268,7 +268,6 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 				// then set center rectangle on right pane
 				class ParamRunnable implements Runnable {
 					Island island;
-					Rectangle centerRect;
 
 					ParamRunnable(Island i) {
 						island = i;
@@ -337,8 +336,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 	/**
 	 * Creates a new <tt>MapperPanel</tt> object.
 	 *
-	 * @param ed TODO: DOCUMENT ME!
-	 * @param p TODO: DOCUMENT ME!
+	 * @param context TODO: DOCUMENT ME!
 	 * @param customRenderers TODO: DOCUMENT ME!
 	 * @param geo TODO: DOCUMENT ME!
 	 */
@@ -447,7 +445,7 @@ public class MapperPanel extends InternationalizedDataPanel implements ActionLis
 		} catch(Exception exc) {
 		}
 
-		lastScale = (float) (size / (float) d.width);
+		lastScale = size / (float) d.width;
 		minimap.setScaleFactor(lastScale);
 		minimapPane = new JScrollPane(minimap);
 

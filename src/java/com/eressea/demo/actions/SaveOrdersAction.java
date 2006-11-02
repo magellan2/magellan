@@ -42,7 +42,7 @@ public class SaveOrdersAction extends MenuAction implements ShortcutListener,Gam
 	/**
 	 * Creates new OpenCRAction
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public SaveOrdersAction(Client client) {
         super(client);

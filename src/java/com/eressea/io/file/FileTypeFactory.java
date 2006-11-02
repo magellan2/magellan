@@ -45,7 +45,7 @@ public class FileTypeFactory {
 	 *
 	 * @throws IOException
 	 */
-	public FileType createInputStreamSourceFileType(String url) throws IOException {
+	public FileType createInputStreamSourceFileType(File url) throws IOException {
 		return new InputStreamSourceFileType(url).checkConnection();
 	}
 
@@ -60,20 +60,6 @@ public class FileTypeFactory {
 	 * @throws IOException
 	 */
 	public FileType createFileType(File fileName, boolean readonly) throws IOException {
-		return createFileType(fileName.getPath(), readonly);
-	}
-
-	/**
-	 * Creates an <code>InputStreamSourceFileType</code> of the given file name.
-	 *
-	 * @param fileName the URL to the InputStream
-	 * @param readonly file shall be readonly
-	 *
-	 * @return a FileType pointing to the given File.
-	 *
-	 * @throws IOException
-	 */
-	public FileType createFileType(String fileName, boolean readonly) throws IOException {
 		return createFileType(fileName, readonly, null);
 	}
 
@@ -88,20 +74,20 @@ public class FileTypeFactory {
 	 *
 	 * @throws IOException
 	 */
-	public FileType createFileType(String fileName, boolean readonly, FileTypeChooser ftc)
+	public FileType createFileType(File fileName, boolean readonly, FileTypeChooser ftc)
 							throws IOException
 	{
 		return doCreateFileType(fileName, readonly, ftc).checkConnection();
 	}
 
-	private FileType doCreateFileType(String fileName, boolean readonly, FileTypeChooser ftc)
+	private FileType doCreateFileType(File fileName, boolean readonly, FileTypeChooser ftc)
 							   throws IOException
 	{
 		if(fileName == null) {
 			throw new NullPointerException();
 		}
 
-		String fileNameLC = fileName.toLowerCase();
+		String fileNameLC = fileName.getName().toLowerCase();
 
 		if(fileNameLC.endsWith(FileType.GZIP)) {
 			return new GZipFileType(fileName, readonly);
@@ -124,7 +110,7 @@ public class FileTypeFactory {
 
 	private static final String ENDINGS[] = new String[] { FileType.CR, FileType.XML };
 
-	protected FileType createZipFileType(String fileName, boolean readonly, FileTypeChooser ftc)
+	protected FileType createZipFileType(File fileName, boolean readonly, FileTypeChooser ftc)
 								  throws IOException
 	{
 		ZipFile zFile = new ZipFile(fileName);

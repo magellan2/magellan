@@ -32,7 +32,7 @@ public class SetOriginAction extends MenuAction {
 	/**
 	 * Creates a new SetOriginAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public SetOriginAction(Client client) {
         super(client);

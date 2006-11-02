@@ -39,6 +39,10 @@ public class CopyTree extends JTree implements KeyListener {
 		initTree();
 	}
 
+	/**
+	 * Creates a new object.
+	 *
+	 */
 	public CopyTree() {
 		super();
 		initTree();
@@ -47,12 +51,11 @@ public class CopyTree extends JTree implements KeyListener {
 	/**
 	 * Used for initialization issues
 	 *
-	 * @param dispatcher TODO: DOCUMENT ME!
 	 */
 	private void initTree() {
 		// delete F2-key-binding to startEditing to allow bookmarking to be activ
 		// @see com.eressea.demo.desktop.BookmarkManager
-		((InputMap) getInputMap()).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "none");
+		getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "none");
 
 
 		//		shortcuts = new Vector();
@@ -101,10 +104,8 @@ public class CopyTree extends JTree implements KeyListener {
 													  null);
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param e TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 		if((e.getModifiers() == InputEvent.CTRL_MASK) &&
@@ -113,18 +114,14 @@ public class CopyTree extends JTree implements KeyListener {
 		}
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param e TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	public void keyTyped(KeyEvent e) {
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param e TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
 	public void keyReleased(KeyEvent e) {
 	}

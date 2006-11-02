@@ -82,9 +82,9 @@ public class RulesReader {
 			log.debug("loading rules for \"" + name + "\" (ending: " + ending + ")");
 		}
 
-		FileType filetype = FileTypeFactory.singleton().createInputStreamSourceFileType("rules/" +
+		FileType filetype = FileTypeFactory.singleton().createInputStreamSourceFileType(new File("rules/" +
 																						name +
-																						ending);
+																						ending));
 
 		return new CRParser().readRules(filetype);
 	}

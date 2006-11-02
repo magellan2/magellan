@@ -26,7 +26,8 @@ import com.eressea.util.ExternalTagMap;
 public class Group extends NamedObject {
 	private Faction faction = null;
 	private Map allies = CollectionFactory.createOrderedHashtable();
-	private GameData data = null;
+	// TODO: this does not seem to be needed.
+	// private GameData data = null;
 	private static ExternalTagMap externalMap = null; // Map for external tags
 
 	/**
@@ -60,7 +61,7 @@ public class Group extends NamedObject {
 	 */
 	public Group(ID id, GameData data, String name, Faction faction) {
 		super(id);
-		this.data = data;
+//		this.data = data;
 		this.setName(name);
 		this.faction = faction;
 	}
@@ -162,13 +163,13 @@ public class Group extends NamedObject {
 	/**
 	 * Retrieve a unit in this container by id.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	public Unit getUnit(ID id) {
+	public Unit getUnit(ID key) {
 		if(units != null) {
-			return (Unit) units.get(id);
+			return (Unit) units.get(key);
 		} else {
 			return null;
 		}
@@ -194,13 +195,13 @@ public class Group extends NamedObject {
 	 * Removes a unit from this container. This method should only be invoked by Unit.setXXX()
 	 * methods.
 	 *
-	 * @param id TODO: DOCUMENT ME!
+	 * @param key TODO: DOCUMENT ME!
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	Unit removeUnit(ID id) {
+	Unit removeUnit(ID key) {
 		if(units != null) {
-			Unit u = (Unit) units.remove(id);
+			Unit u = (Unit) units.remove(key);
 
 			if(units.isEmpty()) {
 				units = null;
@@ -263,6 +264,13 @@ public class Group extends NamedObject {
 	}
 
 	// EXTERNAL TAG METHODS
+	/**
+	 * TODO DOCUMENT ME!
+	 * 
+	 * @param tag
+	 * @param value
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String putTag(String tag, String value) {
 		if(externalMap == null) {
 			externalMap = new ExternalTagMap();

@@ -23,7 +23,8 @@ import com.eressea.Unit;
 import com.eressea.UnitContainer;
 
 /**
- * DOCUMENT ME!
+ * This class provides helper function to remember a style and 
+ * apply a style to various GraphicsElements.
  *
  * @author Andreas
  * @version
@@ -33,9 +34,9 @@ public class Tag2Element {
 	protected static final String STYLE_TAG = "magStyle";
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * remembers the style tag of the given unit
 	 *
-	 * @param u TODO: DOCUMENT ME!
+	 * @param u 
 	 */
 	public static void start(Unit u) {
 		lastStyle = null;
@@ -46,9 +47,9 @@ public class Tag2Element {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * remembers the style tag of the given UnitContainer
 	 *
-	 * @param u TODO: DOCUMENT ME!
+	 * @param u 
 	 */
 	public static void start(UnitContainer u) {
 		lastStyle = null;
@@ -59,9 +60,9 @@ public class Tag2Element {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * remembers the style tag of the given Group
 	 *
-	 * @param g TODO: DOCUMENT ME!
+	 * @param g 
 	 */
 	public static void start(Group g) {
 		lastStyle = null;
@@ -72,9 +73,9 @@ public class Tag2Element {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * apllies the remembered style to the given GraphicsElement
 	 *
-	 * @param ge TODO: DOCUMENT ME!
+	 * @param ge 
 	 */
 	public static void apply(GraphicsElement ge) {
 		if((ge.getStyleset() == null) || (lastStyle != null)) {

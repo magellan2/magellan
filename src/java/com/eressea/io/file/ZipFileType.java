@@ -35,7 +35,7 @@ public class ZipFileType extends FileType {
 	// TODO: ZipEntry may also be a "normal" FileType
 	protected ZipEntry zipentry = null;
 
-	ZipFileType(String aFile, boolean readonly, ZipEntry aEntry) throws IOException {
+	ZipFileType(File aFile, boolean readonly, ZipEntry aEntry) throws IOException {
 		super(aFile, readonly);
 
 		if(aEntry == null) {
@@ -94,9 +94,9 @@ public class ZipFileType extends FileType {
 
 	protected OutputStream createOutputStream() throws IOException {
 		// here we need to do something special: all entries are copied expect the named zipentry, which will be overwritten
-		File tmpfile = CopyFile.copy(new File(filename));
+		File tmpfile = CopyFile.copy(filename);
 		ZipFile zfile = new ZipFile(tmpfile);
-		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(new File(filename)));
+		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(filename));
 
 		for(Enumeration e = zfile.entries(); e.hasMoreElements();) {
 			ZipEntry oldEntry = (ZipEntry) e.nextElement();

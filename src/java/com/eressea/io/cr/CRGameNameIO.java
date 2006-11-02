@@ -22,7 +22,7 @@ import com.eressea.io.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
- * TODO: DOCUMENT ME!
+ * The purpose of this class is to try to read the game name from a cr report file.
  *
  * @author $author$
  * @version $Revision$
@@ -30,16 +30,15 @@ import com.eressea.util.logging.Logger;
 public class CRGameNameIO implements GameNameIO {
 	private static final Logger log = Logger.getInstance(CRGameNameIO.class);
 
-	public CRGameNameIO() {
-	}
-
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Tries to determine the game name from a report.
+	 * 
+	 * It tries to get it from the "Spiel" tag and returns "Eressea" if no such tag is found.
 	 *
-	 * @param filetype TODO: DOCUMENT ME!
+	 * @param filetype 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A String representing the name of the game.
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */

@@ -30,7 +30,7 @@ public class RepaintAction extends MenuAction {
 	/**
 	 * Creates a new RepaintAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public RepaintAction(Client client) {
         super(client);

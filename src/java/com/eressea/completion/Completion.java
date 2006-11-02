@@ -147,6 +147,9 @@ public class Completion {
 	    this.priority = prio;
 	}
 	*/
+	/**
+	 * @return TODO: DOCUMENT ME!
+	 */
 	public String getPostfix() {
 		return postfix;
 	}
@@ -181,6 +184,9 @@ public class Completion {
 	    this.value = value;
 	}
 	*/
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return name;
 	}

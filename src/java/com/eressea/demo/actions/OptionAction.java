@@ -42,7 +42,7 @@ public class OptionAction extends MenuAction {
 	/**
 	 * Creates a new OptionAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 * @param adapters TODO: DOCUMENT ME!
 	 */
 	public OptionAction(Client client, List adapters) {

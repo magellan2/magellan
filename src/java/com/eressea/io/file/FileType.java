@@ -30,7 +30,7 @@ import java.io.Writer;
 import com.eressea.util.logging.Logger;
 
 /**
- * A FileType represents a file for reading and writing data Special care will be taken for
+ * A FileType represents a file for reading and writing data. Special care will be taken for
  * compressed files in the corresponding child objects.
  */
 public class FileType {
@@ -48,13 +48,13 @@ public class FileType {
 	static final String ZIP = ".zip";
 
 	/** The file this file type identifies. */
-	protected String filename;
+	protected File filename;
 
 	/** true iff file is readonly. */
 	protected boolean readonly = false;
 	protected boolean createBackup = true;
 
-	FileType(String aFile, boolean readonly) throws IOException {
+	FileType(File aFile, boolean readonly) throws IOException {
 		if(aFile == null) {
 			throw new IOException();
 		}
@@ -135,7 +135,7 @@ public class FileType {
 	 * @return the name of the FileType
 	 */
 	public String getName() {
-		return filename;
+		return filename.getAbsolutePath();
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class FileType {
 		}
 
 		if(createBackup) {
-            File backup = FileBackup.create(new File(filename));
+            File backup = FileBackup.create(filename);
             log.info("Created backupfile " + backup +" (FileType.java)");
 		}
 
@@ -191,7 +191,7 @@ public class FileType {
 	 * @throws IOException
 	 */
 	protected InputStream createInputStream() throws IOException {
-		return new FileInputStream(new File(filename));
+		return new FileInputStream(filename);
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class FileType {
 	 * @throws IOException
 	 */
 	protected OutputStream createOutputStream() throws IOException {
-		return new FileOutputStream(new File(filename));
+		return new FileOutputStream(filename);
 	}
 
 	/**

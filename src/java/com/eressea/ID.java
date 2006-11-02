@@ -43,7 +43,7 @@ public interface ID extends Comparable, Cloneable {
 	 * @return <code>true</code> if this object is the same as the obj argument; <code>false</code>
 	 * 		   otherwise.
 	 */
-	public boolean equals(Object o);
+	public boolean equals(Object obj);
 
 	/**
 	 * Returns a hashcode for this ID.

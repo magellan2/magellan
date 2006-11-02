@@ -33,7 +33,7 @@ public class ArmyStatsAction extends MenuAction implements GameDataListener {
 	/**
 	 * Creates a new ArmyStatsAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public ArmyStatsAction(Client client) {
         super(client);

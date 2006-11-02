@@ -412,6 +412,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		//}
 		//}
 		// initialize variables used in while loop
+		
+		// TODO: this needs explanations
 		boolean createIslandNodes = 
 			PropertiesHelper.getboolean(settings, "EMapOverviewPanel.displayIslands", true) &&
 				PropertiesHelper.getboolean(settings, "EMapOverviewPanel.sortRegions", true) &&
@@ -423,8 +425,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
         TreeBuilder treeBuilder = getTreeBuilder();
         treeBuilder.setSortShipUnderUnitParent(sortShipUnderUnitParent);
-		treeBuilder.setMode((treeBuilder.getMode() & 16383) |
-							(createIslandNodes ? treeBuilder.CREATE_ISLANDS : 0));
+        // FIXME: using 16383 here is bad style, what is it good for anyway?
+		treeBuilder.setDisplayMode((treeBuilder.getDisplayMode() & 16383) |
+							(createIslandNodes ? TreeBuilder.CREATE_ISLANDS : 0));
 
 		// creation of Comparator outsourced to Comparator getUnitSorting(java.util.Properties)
 		treeBuilder.setUnitComparator(getUnitSorting(settings));
@@ -798,6 +801,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
         
     }
     
+    /* (non-Javadoc)
+     * @see com.eressea.demo.desktop.Initializable#getComponentConfiguration()
+     */
     public String getComponentConfiguration() {
         StringBuffer sb = new StringBuffer();
         sb.append("EMapOverviewPanel.treeStructure");
@@ -1922,10 +1928,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		tree.treeDidChange();
 
 		// Use the UI Fix
-		javax.swing.plaf.TreeUI ui = tree.getUI();
+		javax.swing.plaf.TreeUI treeUI = tree.getUI();
 
-		if(ui instanceof javax.swing.plaf.basic.BasicTreeUI) {
-			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) ui;
+		if(treeUI instanceof javax.swing.plaf.basic.BasicTreeUI) {
+			javax.swing.plaf.basic.BasicTreeUI ui2 = (javax.swing.plaf.basic.BasicTreeUI) treeUI;
 			int i = ui2.getLeftChildIndent();
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
@@ -2152,7 +2158,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			/**
 			 * TODO: DOCUMENT ME!
 			 *
-			 * @param b TODO: DOCUMENT ME!
+			 * @param enable TODO: DOCUMENT ME!
 			 */
 			public void setEnabled(boolean enable) {
                 super.setEnabled(enable);
@@ -2209,6 +2215,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		/** TODO: DOCUMENT ME! */
 		public JCheckBox chkSortRegions = null;
 
+		/**
+		 * TODO DOCUMENT ME! Comment for <code>chkSortShipUnderUnitParent</code>.
+		 */
 		public JCheckBox chkSortShipUnderUnitParent = null;
 		
 		/** TODO: DOCUMENT ME! */
@@ -2289,20 +2298,20 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			elementsPanel.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 													 getString("prefs.treeStructure.available")));
 
-			DefaultListModel model = new DefaultListModel();
-			model.add(TreeHelper.FACTION, getString("prefs.treeStructure.element.faction"));
-			model.add(TreeHelper.GROUP, getString("prefs.treeStructure.element.group"));
-			model.add(TreeHelper.COMBAT_STATUS, getString("prefs.treeStructure.element.combat"));
-			model.add(TreeHelper.HEALTH, getString("prefs.treeStructure.element.health"));
-			model.add(TreeHelper.FACTION_DISGUISE_STATUS, getString("prefs.treeStructure.element.factiondisguise"));
-			model.add(TreeHelper.TRUSTLEVEL, getString("prefs.treeStructure.element.trustlevel"));
-            model.add(TreeHelper.TAGGABLE,  getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING }));
-            model.add(TreeHelper.TAGGABLE2, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING2 }));
-            model.add(TreeHelper.TAGGABLE3, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING3 }));
-            model.add(TreeHelper.TAGGABLE4, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING4 }));
-            model.add(TreeHelper.TAGGABLE5, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING5 }));
+			DefaultListModel elementsListModel = new DefaultListModel();
+			elementsListModel.add(TreeHelper.FACTION, getString("prefs.treeStructure.element.faction"));
+			elementsListModel.add(TreeHelper.GROUP, getString("prefs.treeStructure.element.group"));
+			elementsListModel.add(TreeHelper.COMBAT_STATUS, getString("prefs.treeStructure.element.combat"));
+			elementsListModel.add(TreeHelper.HEALTH, getString("prefs.treeStructure.element.health"));
+			elementsListModel.add(TreeHelper.FACTION_DISGUISE_STATUS, getString("prefs.treeStructure.element.factiondisguise"));
+			elementsListModel.add(TreeHelper.TRUSTLEVEL, getString("prefs.treeStructure.element.trustlevel"));
+            elementsListModel.add(TreeHelper.TAGGABLE,  getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING }));
+            elementsListModel.add(TreeHelper.TAGGABLE2, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING2 }));
+            elementsListModel.add(TreeHelper.TAGGABLE3, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING3 }));
+            elementsListModel.add(TreeHelper.TAGGABLE4, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING4 }));
+            elementsListModel.add(TreeHelper.TAGGABLE5, getString("prefs.treeStructure.element.taggable",new Object[] {TreeHelper.TAGGABLE_STRING5 }));
 
-			elementsList = new JList(model);
+			elementsList = new JList(elementsListModel);
 
 			JScrollPane pane = new JScrollPane(elementsList);
 			elementsPanel.add(pane, BorderLayout.CENTER);
@@ -2528,6 +2537,9 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			subAdapter.add(skillSort = new SkillPreferences());
 		}
 
+        /* (non-Javadoc)
+         * @see com.eressea.swing.preferences.PreferencesAdapter#initPreferences()
+         */
         public void initPreferences() {
             chkSortRegions.setSelected(
             		PropertiesHelper.getboolean(settings,
@@ -3065,21 +3077,25 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 
 	class TreeBuilder {
-		/** TODO: DOCUMENT ME! */
-		public final int UNITS = 1;
+		/** Units are interesting. */
+		public static final int UNITS = 1;
 
-		/** TODO: DOCUMENT ME! */
-		public final int BUILDINGS = 2;
+		/** Buildings are interesting. */
+		public static final int BUILDINGS = 2;
 
-		/** TODO: DOCUMENT ME! */
-		public final int SHIPS = 4;
+		/** Ships are interesting. */
+		public static final int SHIPS = 4;
 
-		/** TODO: DOCUMENT ME! */
-		public final int COMMENTS = 8;
+		/** Comments are interesting. */
+		public static final int COMMENTS = 8;
 
-		/** TODO: DOCUMENT ME! */
-		public final int CREATE_ISLANDS = 16384;
-		private int mode = UNITS | BUILDINGS | SHIPS | COMMENTS;
+		/** Islands should be displayed. */
+		public static final int CREATE_ISLANDS = 16384;
+		
+		/** the mode controls which elements are displayed */
+		private int displayMode = UNITS | BUILDINGS | SHIPS | COMMENTS;
+		
+		// TODO hides fields form EmapOverviewPanel! */
 		private Map regionNodes;
 		private Map unitNodes;
 		private Map buildingNodes;
@@ -3090,24 +3106,30 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		private boolean sortShipUnderUnitParent=true;
 		
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Sets the display mode, which controls what elements to display.
 		 *
-		 * @param mode TODO: DOCUMENT ME!
+		 * @param mode 
 		 */
-		public void setMode(int mode) {
-			this.mode = mode;
+		public void setDisplayMode(int mode) {
+			this.displayMode = mode;
 		}
 
+		/**
+		 * Controls if ships nodes should be sorted under their parents node.
+		 *
+		 * @param b
+		 */
 		public void setSortShipUnderUnitParent(boolean b) {
 			sortShipUnderUnitParent = b;
 		}
+		
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Return the display mode, which controls what elements to display.
 		 *
-		 * @return TODO: DOCUMENT ME!
+		 * @return The current display mode.
 		 */
-		public int getMode() {
-			return mode;
+		public int getDisplayMode() {
+			return displayMode;
 		}
 
 		/**
@@ -3208,11 +3230,11 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 							  Collection units, Map regionNodes, Map unitNodes, Map buildingNodes,
 							  Map shipNodes, Comparator unitSorting, Map activeAlliances,
 							  int treeStructure[], GameData data) {
-			boolean unitInteresting = (mode & UNITS) != 0;
-			boolean buildingInteresting = (mode & BUILDINGS) != 0;
-			boolean shipInteresting = (mode & SHIPS) != 0;
-			boolean commentInteresting = (mode & COMMENTS) != 0;
-			boolean createIslandNodes = (mode & CREATE_ISLANDS) != 0;
+			boolean unitInteresting = (getDisplayMode() & UNITS) != 0;
+			boolean buildingInteresting = (getDisplayMode() & BUILDINGS) != 0;
+			boolean shipInteresting = (getDisplayMode() & SHIPS) != 0;
+			boolean commentInteresting = (getDisplayMode() & COMMENTS) != 0;
+			boolean createIslandNodes = (getDisplayMode() & CREATE_ISLANDS) != 0;
 
 			DefaultMutableTreeNode islandNode = null;
 			DefaultMutableTreeNode regionNode = null;
@@ -3291,16 +3313,24 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		treeBuilder.setShipNodes(shipNodes);
 		treeBuilder.setBuildingNodes(buildingNodes);
 		treeBuilder.setActiveAlliances(activeAlliances);
+		
 		/**
-		 * Fiete Default für den Modus auf UNITS | SHIPS | BUILDINGS |COMMENTS setzen
+		 * Fiete Default fuer den Modus auf UNITS | SHIPS | BUILDINGS |COMMENTS setzen
 		 * nach Vorgabe stm
-		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters", "1")));
 		**/
-		treeBuilder.setMode(Integer.parseInt(settings.getProperty("EMapOverviewPanel.filters", "16391")));
+		treeBuilder.setDisplayMode(
+								Integer.parseInt(
+										settings.getProperty("EMapOverviewPanel.filters", 
+												new Integer(TreeBuilder.UNITS | TreeBuilder.BUILDINGS | TreeBuilder.SHIPS | TreeBuilder.COMMENTS).toString() )));
 		return treeBuilder;
 	}
 
-	// class encapsulating the whole menu
+	/** 
+	 * Class encapsulating the menu for the Overview.
+	 * 
+	 * @deprecated I think this is needless. (stm)
+	 * 
+	 */
 	class OverviewMenu extends JMenu implements ActionListener {
 		JCheckBoxMenuItem items[];
 
@@ -3320,7 +3350,7 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			JMenuItem item = this.add(getString("menu.filter"));
 			item.setEnabled(false);
 
-			int mode = getTreeBuilder().getMode();
+			int mode = getTreeBuilder().getDisplayMode();
 
 			items = new JCheckBoxMenuItem[4];
 
@@ -3344,25 +3374,27 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		protected void updateState() {
             TreeBuilder treeBuilder = getTreeBuilder();
             
-			int mode = treeBuilder.getMode() & treeBuilder.CREATE_ISLANDS;
+			int mode = treeBuilder.getDisplayMode() & TreeBuilder.CREATE_ISLANDS;
 
 			for(int i = 0; i < items.length; i++) {
 				mode |= ((items[i].isSelected() ? 1 : 0) << i);
 			}
 
-			if(mode != treeBuilder.getMode()) {
-				treeBuilder.setMode(mode);
+			if(mode != treeBuilder.getDisplayMode()) {
+				treeBuilder.setDisplayMode(mode);
 				rebuildTree();
 				settings.setProperty("EMapOverviewPanel.filters",
-									 String.valueOf(mode ^ treeBuilder.CREATE_ISLANDS));
+									 String.valueOf(mode ^ TreeBuilder.CREATE_ISLANDS));
 			}
 		}
 	}
 
-	// returns the menu that is used by the client
-	// we will create it every time the method is invoked since that should be
-	// only once...
+	/** Returns the menu for the overview panel that is used by the client. 
+	 * @deprecated I think this is needless.
+	 * */
 	public JMenu getMenu() {
+		// We will create it every time the method is invoked since that should be
+		// only once...
 		return new OverviewMenu(getString("menu.caption"), getString("menu.mnemonic").charAt(0));
 	}
 

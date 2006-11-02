@@ -33,7 +33,7 @@ public class ExportCRAction extends MenuAction implements GameDataListener{
 	/**
 	 * Creates a new ExportCRAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client
 	 */
 	public ExportCRAction(Client client) {
         super(client);

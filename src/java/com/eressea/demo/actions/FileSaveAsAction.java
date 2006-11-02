@@ -45,7 +45,7 @@ public class FileSaveAsAction extends MenuAction implements GameDataListener{
 	/**
 	 * Creates a new FileSaveAsAction object.
 	 *
-	 * @param parent TODO: DOCUMENT ME!
+	 * @param client The client object for this action.
 	 */
 	public FileSaveAsAction(Client client) {
         super(client);
