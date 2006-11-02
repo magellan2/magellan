@@ -1397,13 +1397,16 @@ public class CRParser implements RulesIO, GameDataIO {
 		while(!sc.eof) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("name")) {
 				opt.setName(sc.argv[0]);
-				sc.getNextToken();
+				// sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("order")) {
 				opt.setOrder(sc.argv[0].equals("true"));
-				sc.getNextToken();
+				// sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("bitmask")) {
-				opt.setBitMask(1 << Integer.parseInt(sc.argv[0]));
-				sc.getNextToken();
+				// alt (Fiete)
+				// opt.setBitMask(1 << Integer.parseInt(sc.argv[0]));
+				// neu (Fiete)
+				opt.setBitMask(Integer.parseInt(sc.argv[0]));
+				// sc.getNextToken();
 			} else if(sc.argc == 2) {
 				unknown("OPTIONCATEGORY", true);
 			} else {
@@ -1576,6 +1579,15 @@ public class CRParser implements RulesIO, GameDataIO {
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Max. Immigranten")) {
 				faction.maxMigrants = Integer.parseInt(sc.argv[0]);
+				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("heroes")) {
+				faction.heroes = Integer.parseInt(sc.argv[0]);
+				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("max_heroes")) {
+				faction.maxHeroes = Integer.parseInt(sc.argv[0]);
+				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("age")) {
+				faction.age = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Parteiname")) {
 				faction.setName(sc.argv[0]);

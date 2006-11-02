@@ -8,52 +8,56 @@
   <OptionCategory
      id="REPORT"
      order="true"
-     bitmask="0"/>
+     bitmask="1"/>
   <OptionCategory
      id="COMPUTER"
      order="true"
-     bitmask="1"/>
+     bitmask="2"/>
   <OptionCategory
      id="TEMPLATE"
      order="true"
-     bitmask="2"/>
+     bitmask="4"/>
   <OptionCategory
      id="SILVERPOOL"
      order="true"
-     bitmask="3"/>
+     bitmask="8"/>
   <OptionCategory
      id="STATISTICS"
      order="true"
-     bitmask="4"/>
+     bitmask="16"/>
   <OptionCategory
      id="DEBUG"
      order="false"
-     bitmask="5"/>
+     bitmask="32"/>
   <OptionCategory
      id="ZIPPED"
      order="true"
-     bitmask="6"/>
+     bitmask="64"/>
   <OptionCategory
      id="NEWSPAPER"
      order="false"
-     bitmask="7"/>
+     bitmask="128"/>
   <OptionCategory
      id="ITEMPOOL"
      order="true"
-     bitmask="8"/>
+     bitmask="256"/>
   <OptionCategory
      id="ADDRESSES"
      order="true"
-     bitmask="9"/>
+     bitmask="512"/>
   <OptionCategory 
      id="BZIP2" 
      order="true" 
-     bitmask="10"/>
+     bitmask="1024"/>
   <OptionCategory 
      id="POINTS" 
      order="false" 
-     bitmask="11"/>
-
+     bitmask="2048"/>
+  <OptionCategory 
+     id="SHOWSKCHANGE" 
+     order="false" 
+     bitmask="4096"/>
+     
   <AllianceCategory 
      id="SILVER" 
      bitmask="1"/>
@@ -70,11 +74,8 @@
      id="FACTIONSTEALTH" 
      bitmask="32"/>
   <AllianceCategory 
-     id="WHATEVER" 
-     bitmask="64"/>
-  <AllianceCategory 
      id="ALL" 
-     bitmask="123"/>
+     bitmask="59"/>
 
   <ItemCategory
      id="Weapons"

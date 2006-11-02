@@ -78,13 +78,19 @@ public class Options {
 	 * @param bitMap TODO: DOCUMENT ME!
 	 */
 	public void setValues(int bitMap) {
+		// log.info("CR BitMap: " + Integer.toBinaryString(bitMap));
 		for(Iterator iter = options.values().iterator(); iter.hasNext();) {
 			OptionCategory o = (OptionCategory) iter.next();
-			o.setActive((bitMap & o.getBitMask()) != 0);
+	        int test = bitMap & o.getBitMask();
+	        // log.info("Option: " + o.getName() + " Bitmask:(" + o.getBitMask() + "):" + Integer.toBinaryString(o.getBitMask()));
+	        // log.info("test: " + test);
+			o.setActive(test != 0);
 		}
 
 		if(bitMap != getBitMap()) {
-			log.info("Options.setValues(): invalid value computed!");
+			log.info("Options.setValues(): invalid value computed! (" + bitMap + "<>" + getBitMap() + ")");
+			// log.info("CR BitMap: " + Integer.toBinaryString(bitMap));
+			// log.info("calculated BitMap: " + Integer.toBinaryString(getBitMap()));
 		}
 	}
 

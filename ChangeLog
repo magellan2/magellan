@@ -1,3 +1,11 @@
+2006-11-02  Fiete  <Fiete@users.sourceforge.net>
+
+	* added support for heroes and age (CRParse, FactionStats)
+	* fixed Parsing of options, set BitMasks in rule files
+	* fixed Parsing of AllianceCategories
+	* added person info for faction stats: heroes, other races, skills
+	
+
 2006-11-01  Fiete  <Fiete@users.sourceforge.net>
 
 	* src\java\com\eressea\swing\context\MapContextMenu.java (changeHotSpot): 

@@ -352,6 +352,12 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 				rootNode.add(n);
 			}
 
+			if (f.age>-1) {
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.age") + ": " + f.age,
+				    "age"));
+				rootNode.add(n);
+			}
+			
 			if(f.spellSchool != null) {
 				// n = new DefaultMutableTreeNode(getString("node.magicschool") + f.spellSchool);
 				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.magicschool") + f.spellSchool,"magicschool"));
@@ -470,14 +476,16 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					n.add(m);
 
 					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
-						o = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper((Unit) iterator.next()));
+						Unit actUnit = (Unit) iterator.next();
+						o = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(actUnit,actUnit.persons));
 						m.add(o);
 					}
 				}
 			}
 			
 		}
-		if(!heroes.isEmpty()) {
+		// if(!heroes.isEmpty()) {
+		if (f.maxHeroes>-1 || !heroes.isEmpty()) {
 			// n = new DefaultMutableTreeNode(getString("node.heroes"));
 			double maxHeros = 0;
 			long maxHeros2 = 0;
@@ -485,14 +493,27 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 				maxHeros = (java.lang.Math.log(personCounter/50)/java.lang.Math.log(10)) * 20;
 				maxHeros2 = java.lang.Math.round(java.lang.Math.floor(maxHeros));
 			}
-			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.heroes") + " " + heros_count + "/" + maxHeros2,
+			
+			if (f.maxHeroes>-1) {
+				maxHeros2 = f.maxHeroes;
+			}
+			
+			
+			String actHeroes = "";
+			if (f.heroes != heros_count && f.heroes > -1) {
+				actHeroes = getString("node.heroes") + " " + f.heroes + "(" + heros_count + ")" + "/" + maxHeros2;
+			} else {
+				actHeroes = getString("node.heroes") + " " + heros_count + "/" + maxHeros2;
+			}
+			
+			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(actHeroes,
 					"heroes"));
 			rootNode.add(n);
 
 			for(Iterator iter = heroes.iterator(); iter.hasNext(); ) {
 				Unit u = (Unit) iter.next();
 				
-				m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u));
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u,u.persons));
 				n.add(m);
 			}
 
@@ -789,6 +810,9 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 
 							text += (": " + " [" + currentDays + " -> " + nextLevelDays + " {" +
 							turnsToLearn + "}], " + u.persons);
+				
+						} else {
+							text += ": " + u.persons;
 						}
 
 						UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(u, text);
@@ -1066,6 +1090,8 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations.put("Traenke", "Potions");
 			defaultTranslations.put("Sonstiges", "Miscellaneous");
 			defaultTranslations.put("Trophaeen", "Trophies");
+			defaultTranslations.put("node.age", "Age");
+			
 		}
 
 		return defaultTranslations;

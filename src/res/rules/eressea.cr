@@ -7,66 +7,71 @@ MAGELLAN
 OPTIONCATEGORY "REPORT"
 "REPORT";name
 "true";order
-0;bitmask
+1;bitmask
 
 OPTIONCATEGORY "COMPUTER"
 "COMPUTER";name
 "true";order
-1;bitmask
+2;bitmask
 
 OPTIONCATEGORY "ZUGVORLAGE"
 "ZUGVORLAGE";name
 "true";order
-2;bitmask
+4;bitmask
 
 OPTIONCATEGORY "SILBERPOOL"
 "SILBERPOOL";name
 "true";order
-3;bitmask
+8;bitmask
 
 OPTIONCATEGORY "STATISTIK"
 "STATISTIK";name
 "true";order
-4;bitmask
+16;bitmask
 
 OPTIONCATEGORY "DEBUG"
 "DEBUG";name
 "false";order
-5;bitmask
+32;bitmask
 
 OPTIONCATEGORY "ZIPPED"
 "ZIPPED";name
 "true";order
-6;bitmask
+64;bitmask
 
 OPTIONCATEGORY "ZEITUNG"
 "ZEITUNG";name
 "false";order
-7;bitmask
+128;bitmask
 
 OPTIONCATEGORY "MATERIALPOOL"
 "MATERIALPOOL";name
 "true";order
-8;bitmask
+256;bitmask
 
 OPTIONCATEGORY "ADRESSEN"
 "ADRESSEN";name
 "true";order
-9;bitmask
+512;bitmask
 
 OPTIONCATEGORY "BZIP2"
 "BZIP2";name
 "true";order
-10;bitmask
+1024;bitmask
 
 OPTIONCATEGORY "PUNKTE"
 "PUNKTE";name
 "false";order
-11;bitmask
+2048;bitmask
+
+OPTIONCATEGORY "SHOWSKCHANGE"
+"SHOWSKCHANGE";name
+"false";order
+4096;bitmask
 
 ALLIANCECATEGORY "ALLES"
 "ALL";name
-123;bitmask
+59;bitmask
 
 ALLIANCECATEGORY "SILBER"
 "SILVER";name
@@ -77,6 +82,11 @@ ALLIANCECATEGORY "KÄMPFE"
 "COMBAT";name
 "ALLES";parent
 2;bitmask
+
+ALLIANCECATEGORY "WAHRNEHMUNG"
+"PERCEPTON";name
+"ALLES";parent
+4;bitmask
 
 ALLIANCECATEGORY "GIB"
 "GIVE";name
@@ -92,11 +102,6 @@ ALLIANCECATEGORY "PARTEITARNUNG"
 "FACTIONSTEALTH";name
 "ALLES";parent
 32;bitmask
-
-ALLIANCECATEGORY "WHATEVER"
-"WHATEVER";name
-"ALLES";parent
-64;bitmask
 
 ITEMCATEGORY "weapons"
 "Waffen";name
