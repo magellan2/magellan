@@ -837,7 +837,22 @@ public class CRWriter extends BufferedWriter {
 			write(faction.migrants + ";Anzahl Immigranten");
 			newLine();
 		}
-
+		
+		if(faction.heroes != -1) {
+			write(faction.heroes + ";heroes");
+			newLine();
+		}
+		
+		if(faction.maxHeroes != -1) {
+			write(faction.maxHeroes + ";max_Heroes");
+			newLine();
+		}
+		
+		if(faction.age != -1) {
+			write(faction.age + ";age");
+			newLine();
+		}
+		
 		if(faction.maxMigrants != -1) {
 			write(faction.maxMigrants + ";Max. Immigranten");
 			newLine();

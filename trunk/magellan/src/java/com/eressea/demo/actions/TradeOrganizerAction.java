@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
+import com.eressea.event.GameDataEvent;
+import com.eressea.event.GameDataListener;
 import com.eressea.swing.TradeOrganizer;
 import com.eressea.util.CollectionFactory;
 
@@ -25,7 +27,7 @@ import com.eressea.util.CollectionFactory;
  *
  * @author Ulrich Küster
  */
-public class TradeOrganizerAction extends MenuAction {
+public class TradeOrganizerAction extends MenuAction implements GameDataListener {
 
 	/**
 	 * Creates a new TradeOrganizerAction object.
@@ -34,6 +36,8 @@ public class TradeOrganizerAction extends MenuAction {
 	 */
 	public TradeOrganizerAction(Client client) {
         super(client);
+        setEnabled(false);
+        client.getDispatcher().addGameDataListener(this);
 	}
 
 	/**
@@ -46,6 +50,16 @@ public class TradeOrganizerAction extends MenuAction {
 						   client.getSelectedRegions().values());
 	}
 
+	public void gameDataChanged(GameDataEvent e) {
+		// TODO Auto-generated method stub
+		int i = super.client.getData().regions().size();
+		if (i>0) {
+			setEnabled(true);
+		} else {
+			setEnabled(false);
+		}
+	}
+	
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)

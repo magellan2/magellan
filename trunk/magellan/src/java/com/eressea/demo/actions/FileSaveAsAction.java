@@ -23,6 +23,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.eressea.demo.Client;
+import com.eressea.event.GameDataEvent;
+import com.eressea.event.GameDataListener;
 import com.eressea.io.cr.CRWriter;
 import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
@@ -37,7 +39,7 @@ import com.eressea.util.logging.Logger;
  * @author Andreas
  * @version
  */
-public class FileSaveAsAction extends MenuAction {
+public class FileSaveAsAction extends MenuAction implements GameDataListener{
 	private static final Logger log = Logger.getInstance(FileSaveAsAction.class);
 
 	/**
@@ -47,6 +49,8 @@ public class FileSaveAsAction extends MenuAction {
 	 */
 	public FileSaveAsAction(Client client) {
         super(client);
+        setEnabled(false);
+        client.getDispatcher().addGameDataListener(this);
 	}
 
 	/**
@@ -178,7 +182,15 @@ public class FileSaveAsAction extends MenuAction {
 	protected FileType getFile() {
 		return null;
 	}
-
+	public void gameDataChanged(GameDataEvent e) {
+		// TODO Auto-generated method stub
+		int i = super.client.getData().regions().size();
+		if (i>0) {
+			setEnabled(true);
+		} else {
+			setEnabled(false);
+		}
+	}
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)

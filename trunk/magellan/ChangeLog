@@ -1,5 +1,10 @@
 2006-11-02  Fiete  <Fiete@users.sourceforge.net>
 
+	* Some menuItems only enabled when regions.size > 0
+	* fixed bug, that heroes and age were not in CRWriter
+
+2006-11-02  Fiete  <Fiete@users.sourceforge.net>
+
 	* stm: fixed merge_bug for region ressources
 	* stm: added ReserveRelation for support if order "RESERVE"
 

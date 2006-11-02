@@ -27,12 +27,17 @@ import com.eressea.swing.HistoryAccessory;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ReportMerger;
 
+import com.eressea.event.GameDataEvent;
+import com.eressea.event.GameDataListener;
+
 /**
  * DOCUMENT ME!
  *
  * @author Andreas, Ulrich Küster
  */
-public class AddCRAction extends MenuAction {
+public class AddCRAction extends MenuAction implements GameDataListener{
+
+	
 
 	/**
 	 * Creates new AddCRAction
@@ -41,6 +46,9 @@ public class AddCRAction extends MenuAction {
 	 */
 	public AddCRAction(Client client) {
         super(client);
+        // Test..disabled at start
+        setEnabled(false);
+        client.getDispatcher().addGameDataListener(this);
 	}
 
 	/**
@@ -131,6 +139,16 @@ public class AddCRAction extends MenuAction {
 		}
 	}
 
+	public void gameDataChanged(GameDataEvent e) {
+		// TODO Auto-generated method stub
+		int i = super.client.getData().regions().size();
+		if (i>0) {
+			setEnabled(true);
+		} else {
+			setEnabled(false);
+		}
+	}
+	
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
 	// this way it is more flexible.)
