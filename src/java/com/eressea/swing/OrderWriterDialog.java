@@ -170,7 +170,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			});
 		setContentPane(getMainPane());
 		setTitle(getString("window.title"));
-		setSize(550, 500);
+		setSize(550, 580);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = Integer.parseInt(settings.getProperty("OrderWriterDialog.x",
