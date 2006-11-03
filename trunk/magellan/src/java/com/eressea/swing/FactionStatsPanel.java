@@ -482,41 +482,41 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					}
 				}
 			}
-			
-		}
-		// if(!heroes.isEmpty()) {
-		if (f.maxHeroes>-1 || !heroes.isEmpty()) {
-			// n = new DefaultMutableTreeNode(getString("node.heroes"));
-			double maxHeros = 0;
-			long maxHeros2 = 0;
-			if (personCounter>50) {
-				maxHeros = (java.lang.Math.log(personCounter/50)/java.lang.Math.log(10)) * 20;
-				maxHeros2 = java.lang.Math.round(java.lang.Math.floor(maxHeros));
-			}
-			
-			if (f.maxHeroes>-1) {
-				maxHeros2 = f.maxHeroes;
-			}
-			
-			
-			String actHeroes = "";
-			if (f.heroes != heros_count && f.heroes > -1) {
-				actHeroes = getString("node.heroes") + " " + f.heroes + "(" + heros_count + ")" + "/" + maxHeros2;
-			} else {
-				actHeroes = getString("node.heroes") + " " + heros_count + "/" + maxHeros2;
-			}
-			
-			n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(actHeroes,
-					"heroes"));
-			rootNode.add(n);
-
-			for(Iterator iter = heroes.iterator(); iter.hasNext(); ) {
-				Unit u = (Unit) iter.next();
+		
+			// if(!heroes.isEmpty()) {
+			if (f.maxHeroes>-1 || heros_count>0) {
+				// n = new DefaultMutableTreeNode(getString("node.heroes"));
+				double maxHeros = 0;
+				long maxHeros2 = 0;
+				if (personCounter>50) {
+					maxHeros = (java.lang.Math.log(personCounter/50)/java.lang.Math.log(10)) * 20;
+					maxHeros2 = java.lang.Math.round(java.lang.Math.floor(maxHeros));
+				}
 				
-				m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u,u.persons));
-				n.add(m);
+				if (f.maxHeroes>-1) {
+					maxHeros2 = f.maxHeroes;
+				}
+				
+				
+				String actHeroes = "";
+				if (f.heroes != heros_count && f.heroes > -1) {
+					actHeroes = getString("node.heroes") + " " + f.heroes + "(" + heros_count + ")" + "/" + maxHeros2;
+				} else {
+					actHeroes = getString("node.heroes") + " " + heros_count + "/" + maxHeros2;
+				}
+				
+				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(actHeroes,
+						"heroes"));
+				rootNode.add(n);
+	
+				for(Iterator iter = heroes.iterator(); iter.hasNext(); ) {
+					Unit u = (Unit) iter.next();
+					
+					m = new DefaultMutableTreeNode(nodeWrapperFactory.createUnitNodeWrapper(u,u.persons));
+					n.add(m);
+				}
+	
 			}
-
 		}
 		// earned amount of money
 		// it is necessary to parse messages to get this information

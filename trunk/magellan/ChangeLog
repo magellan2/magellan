@@ -1,3 +1,8 @@
+2006-11-03  Fiete  <Fiete@users.sourceforge.net>
+
+	* FactionStatsPanel: fixed bug nullpointerexception when setting new password
+	* OrderWriterDialog: Changed Initial size
+
 2006-11-02  Fiete  <Fiete@users.sourceforge.net>
 
 	* some code beautifings from solthan (stm)
