@@ -3313,15 +3313,14 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		treeBuilder.setShipNodes(shipNodes);
 		treeBuilder.setBuildingNodes(buildingNodes);
 		treeBuilder.setActiveAlliances(activeAlliances);
-		
 		/**
 		 * Fiete Default fuer den Modus auf UNITS | SHIPS | BUILDINGS |COMMENTS setzen
 		 * nach Vorgabe stm
-		**/
+		 **/
 		treeBuilder.setDisplayMode(
-								Integer.parseInt(
-										settings.getProperty("EMapOverviewPanel.filters", 
-												new Integer(TreeBuilder.UNITS | TreeBuilder.BUILDINGS | TreeBuilder.SHIPS | TreeBuilder.COMMENTS).toString() )));
+				Integer.parseInt(
+						settings.getProperty("EMapOverviewPanel.filters", 
+								new Integer(TreeBuilder.UNITS | TreeBuilder.BUILDINGS | TreeBuilder.SHIPS | TreeBuilder.COMMENTS).toString() )));
 		return treeBuilder;
 	}
 
