@@ -2,6 +2,7 @@
 
 	* FactionStatsPanel: fixed bug nullpointerexception when setting new password
 	* OrderWriterDialog: Changed Initial size
+	* Fixed new ReserveRealtion (stm)
 
 2006-11-02  Fiete  <Fiete@users.sourceforge.net>
 

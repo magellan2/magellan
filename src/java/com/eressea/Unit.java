@@ -1711,12 +1711,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 				Item modifiedItem = (Item) cache.modifiedItems.get(itr.itemType.getID());
 
 				if(modifiedItem != null) { // the transferred item can be found among this unit's items
-
-					if(this.equals(itr.source)) {
-						modifiedItem.setAmount(modifiedItem.getAmount() - itr.amount);
-					} else {
-						modifiedItem.setAmount(modifiedItem.getAmount() + itr.amount);
-					}
+					// nothing to do
 				} else { // the transferred item is not among the items the unit already has
 
 					if(this.equals(itr.source)) {
