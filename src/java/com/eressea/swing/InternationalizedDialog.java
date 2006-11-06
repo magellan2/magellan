@@ -38,8 +38,9 @@ public class InternationalizedDialog extends JDialog {
 	/**
 	 * Creates a new InternationalizedDialog object.
 	 *
-	 * @param owner TODO: DOCUMENT ME!
-	 * @param modal TODO: DOCUMENT ME!
+	 * @param owner the <code>Frame</code> from which the dialog is displayed
+	 * @param modal <code>true</code> for a modal dialog, false for one that allows others windows to be 
+	 * active at the same time
 	 */
 	public InternationalizedDialog(Frame owner, boolean modal) {
 		super(owner, modal);

@@ -17,6 +17,7 @@ import java.util.Map;
 
 import com.eressea.CoordinateID;
 import com.eressea.GameData;
+import com.eressea.event.EventDispatcher;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
 
@@ -26,19 +27,26 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
-	private static final Logger log = Logger.getInstance(SetOrigin.class);
+public class SetOriginDialog extends com.eressea.swing.InternationalizedDataDialog {
+	private static final Logger log = Logger.getInstance(SetOriginDialog.class);
+	private boolean approved = false;
+	private CoordinateID newOrigin = new CoordinateID(0,0,0);
+	private Client client = null;
 
 	/**
-	 * Creates new form SetOrigin
+	 * Creates new form SetOriginDialog
 	 *
-	 * @param parent TODO: DOCUMENT ME!
-	 * @param _data TODO: DOCUMENT ME!
-	 */
-	public SetOrigin(java.awt.Frame parent, GameData _data) {
-		super(parent, true, null, _data, new java.util.Properties());
+	 * @param parent the <code>Frame</code> from which the dialog is displayed
+	 * @param ed The event dispatcher that this dialog should use
+	 * @param _data The corresponding GameData
+	 * 
+ 	 */
+	public SetOriginDialog(java.awt.Frame parent, EventDispatcher ed, GameData _data) {
+		super(parent, true, ed, _data, new java.util.Properties());
+		this.client = (Client) parent;
 		initComponents();
 		pack();
+		approved = false;
 	}
 
 	private void initComponents() {
@@ -174,29 +182,36 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 		int iX;
 		int iY;
 		int iLevel;
+		approved = true;
 
-		try {
+//		try {
 			iX = Integer.parseInt(editX.getText());
 			iY = Integer.parseInt(editY.getText());
 			iLevel = Integer.parseInt(editLevel.getText());
 
-			// stm 2006.10.20
-//			data.placeOrigin(new CoordinateID(iX, iY, iLevel));
-			if (iX != 0 || iY != 0)
-				data = (GameData) data.clone(new CoordinateID(iX, iY, iLevel));
-
+			newOrigin = new CoordinateID(iX, iY, iLevel);
+//			// stm 2006.10.20
+////			data.placeOrigin(new CoordinateID(iX, iY, iLevel));
+//			if (iX != 0 || iY != 0){
+//				GameData newData = (GameData) data.clone(new CoordinateID(iX, iY, iLevel));
+//				getDispatcher().fire(new GameDataEvent(this, newData));
+//			}
+			if (iX!=0 || iY!=0) {
+				this.client.setOrigin(newOrigin);
+			}
 			setVisible(false);
 			dispose();
-		} catch(Exception ex) {
-			log.error(ex);
-			javax.swing.JOptionPane.showMessageDialog(this, ex.toString(),
-													  getString("msg.error.title"),
-													  javax.swing.JOptionPane.ERROR_MESSAGE);
-		}
+//		} catch(Exception ex) {
+//			log.error(ex);
+//			javax.swing.JOptionPane.showMessageDialog(this, ex.toString(),
+//													  getString("msg.error.title"),
+//													  javax.swing.JOptionPane.ERROR_MESSAGE);
+//		}
 	}
 
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
 		quit();
+		approved = false;
 	}
 
 	private javax.swing.JButton btnOK;
@@ -233,11 +248,29 @@ public class SetOrigin extends com.eressea.swing.InternationalizedDataDialog {
 
 			defaultTranslations.put("lbl.x.caption", "X");
 			defaultTranslations.put("lbl.y.caption", "Y");
-			defaultTranslations.put("lbl.z.caption", "Plain");
+			defaultTranslations.put("lbl.z.caption", "Plane");
 
 			defaultTranslations.put("msg.error.title", "Error");
 		}
 
 		return defaultTranslations;
+	}
+
+	/**
+	 * Returns if user has pressed the OK-Button.
+	 * 
+	 * @return true if OK-Button has been pressed
+	 */
+	public boolean approved() {
+		return approved;
+	}
+
+	/**
+	 * Return the selected new origin.
+	 * 
+	 * @return The coordinates of the new origin
+	 */
+	public CoordinateID getNewOrigin() {
+		return newOrigin;
 	}
 }

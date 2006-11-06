@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.util.Map;
 
 import com.eressea.demo.Client;
-import com.eressea.demo.SetOrigin;
+import com.eressea.demo.SetOriginDialog;
 import com.eressea.event.GameDataEvent;
 import com.eressea.util.CollectionFactory;
 
@@ -44,7 +44,7 @@ public class SetOriginAction extends MenuAction {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		new SetOrigin(client, client.getData()).show();
+		new SetOriginDialog(client, client.getDispatcher(),client.getData()).show();
 		client.getDispatcher().fire(new GameDataEvent(client, client.getData()));
 	}
 

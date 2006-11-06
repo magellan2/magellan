@@ -1,3 +1,7 @@
+2006-11-06  Fiete  <Fiete@users.sourceforge.net>
+
+	* (stm,Fiete) fixed setOrigin, setOriginDialog
+
 2006-11-05  Fiete  <Fiete@users.sourceforge.net>
 
 	* fixed determining Feuerwand RegionType for locale!=de.

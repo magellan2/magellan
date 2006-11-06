@@ -139,9 +139,11 @@ public class AddCRAction extends MenuAction implements GameDataListener{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.eressea.event.GameDataListener#gameDataChanged(com.eressea.event.GameDataEvent)
+	 */
 	public void gameDataChanged(GameDataEvent e) {
-		// TODO Auto-generated method stub
-		int i = super.client.getData().regions().size();
+		int i = e.getGameData().regions().size();
 		if (i>0) {
 			setEnabled(true);
 		} else {

@@ -185,6 +185,7 @@ public class ResourcePathClassLoader extends ClassLoader {
 	 */
 	public static URL getResourceStatically(String aName, Collection resourcePaths) {
 		URL url = null;
+		log.debug("trying to find \""+aName+"\"");
 
 		//String name = Umlaut.replace(aName," ","\\ ");
 		String name=aName;

@@ -62,6 +62,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.FontUIResource;
 
+import com.eressea.CoordinateID;
 import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
@@ -349,7 +350,7 @@ public class Client extends JFrame implements ShortcutListener,
                         + settingsFile, e);
             }
         } else {
-            log.info("Client.loadSettings: settings file does not exist, using default values.");
+            log.info("Client.loadSettings: settings file "+settingsFile+" does not exist, using default values.");
             newFile = true;
         }
 
@@ -369,6 +370,8 @@ public class Client extends JFrame implements ShortcutListener,
         return settings;
     }
 
+    // TODO (stm) this is used by exactly once in the whole project. Why do we
+    // need context anyway?
     /**
      * Returns the MagellanContext
      */
@@ -1315,6 +1318,27 @@ public class Client extends JFrame implements ShortcutListener,
         return d;
     }
 
+	/**
+	 * Sets the origin of this client's data to newOrigin.
+	 *
+	 * 
+	 * @param newOrigin The region in the GameData that is going to be the new origin
+	 */
+	public void setOrigin(CoordinateID newOrigin) {
+		GameData newData=null;
+		try {
+			newData = (GameData) getData().clone(newOrigin);
+		} catch (final CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		if(newData != null) {
+			setData(newData);
+			setReportChanged(false);
+		}
+	}
+	
+
     /**
      * Callbacks of FileTypeFactory are handled by this object. Right now it
      * returns the first ZipEntry to mimic old cr loading behaviour for zip
@@ -1787,12 +1811,13 @@ public class Client extends JFrame implements ShortcutListener,
     /**
      * TODO: DOCUMENT ME!
      * 
-     * @param data
+     * @param newData
      *            TODO: DOCUMENT ME!
      */
-    public void setData(GameData data) {
-        context.setGameData(data);
-        postProcessLoadedCR(data);
+    public void setData(GameData newData) {
+        context.setGameData(newData);
+        postProcessLoadedCR(newData);
+        getDispatcher().fire(new GameDataEvent(this, newData));
         
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {        
@@ -2271,4 +2296,6 @@ public class Client extends JFrame implements ShortcutListener,
             }
         }
     }
+
+
 }
