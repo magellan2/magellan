@@ -1842,6 +1842,50 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			parent.add(createSimpleNode(getString("node.aura") + ": " + u.aura + " / " + u.auraMax,
 										"aura"));
 		}
+		
+		// familiar mages (Fiete)
+		// we use auraMax to determine a mage...should be OK
+		if (u.auraMax != -1) {
+			if (u.familiarmageID != null) {
+				// ok..this unit is a familiar (Vertrauter)
+				// get the parent unit
+				
+				Unit parentUnit = this.data.getUnit(u.familiarmageID);
+				if (parentUnit != null) {
+					// DefaultMutableTreeNode parentsNode = new DefaultMutableTreeNode("Parents");
+					DefaultMutableTreeNode parentsNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.FamiliarParents"),
+						"aura"));
+					parent.add(parentsNode);
+					expandableNodes.add(new NodeWrapper(parentsNode, "EMapDetailsPanel.FamiliarParentsExpanded"));
+					UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(parentUnit);
+					DefaultMutableTreeNode parentUnitNode = new DefaultMutableTreeNode(w);
+					parentsNode.add(parentUnitNode);
+				}
+			} else {
+				// ok..we have a real mage..may be he has an familiar...
+				// for further purpose lets look for all familiars...
+				Collection familiars = CollectionFactory.createLinkedList();
+				for (Iterator iter = this.data.units().keySet().iterator();iter.hasNext();){
+					UnitID uID = (UnitID) iter.next();
+					Unit uTest = this.data.getUnit(uID);
+					if (uTest.familiarmageID == u.getID()) {
+						familiars.add(uTest);
+					}
+				}
+				if (familiars.size()>0){
+					DefaultMutableTreeNode childsNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.FamiliarChilds"),
+						"aura"));
+					parent.add(childsNode);
+					expandableNodes.add(new NodeWrapper(childsNode, "EMapDetailsPanel.FamiliarChildsExpanded"));
+					for (Iterator iter=familiars.iterator();iter.hasNext();){
+						Unit uT = (Unit) iter.next();
+						UnitNodeWrapper w = nodeWrapperFactory.createUnitNodeWrapper(uT);
+						DefaultMutableTreeNode parentUnitNode = new DefaultMutableTreeNode(w);
+						childsNode.add(parentUnitNode);
+					}
+				}
+			}
+		}
 
 		// weight
 		Float uWeight = new Float(u.getWeight() / 100.0F);
@@ -4369,6 +4413,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("node.coordinates", "Coordinates");
 			defaultTranslations.put("node.horses", "Horses");
 			defaultTranslations.put("node.resources", "Resources");
+			defaultTranslations.put("node.FamiliarParents", "familiar mage:");
+			defaultTranslations.put("node.FamiliarChilds", "familiar with:");
 
 			defaultTranslations.put("menu.caption", "Details");
 			defaultTranslations.put("menu.mnemonic", "D");

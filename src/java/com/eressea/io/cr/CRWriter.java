@@ -88,6 +88,9 @@ public class CRWriter extends BufferedWriter {
 	// incremented whenever a unit is written, can then be compared
 	// to the total number of units in the game data
 	private int unitsWritten = 0;
+	
+	// fiete: see no other choice to find the familiarmage - unit
+	private GameData data = null;
 
 	/**
 	 * Escape quotation marks in <tt>text</tt> with a backslash.
@@ -1385,6 +1388,9 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
+		
+		
+		
 		if(unit.guard != 0) {
 			write(unit.guard + ";bewacht");
 			newLine();
@@ -1438,6 +1444,13 @@ public class CRWriter extends BufferedWriter {
 			write(unit.weight+";weight");
 			newLine();
 		}
+		
+		//  fiete: familiarmage
+		if (unit.familiarmageID!=null) {
+			write(((UnitID) data.getUnit(unit.familiarmageID).getID()).intValue() + ";familiarmage");
+			newLine();
+		}
+		
 		
 		if(unit.getRaceNamePrefix() != null) {
 			writeQuotedTag(unit.getRaceNamePrefix(), "typprefix");
@@ -1982,6 +1995,8 @@ public class CRWriter extends BufferedWriter {
 			throw new NullPointerException("CRWriter.write(GameData): argument world is null");
 		}
 
+		this.data = world;
+		
 		writeVersion(world);
 
 		if(!serverConformance) {

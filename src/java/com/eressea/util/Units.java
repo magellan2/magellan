@@ -570,6 +570,8 @@ public class Units {
 			defaultTranslations.put("Traenke", "Potions");
 			defaultTranslations.put("Sonstiges", "Miscellaneous");
 			defaultTranslations.put("Trophaeen", "Trophies");
+			defaultTranslations.put("node.reserved", "reserved");
+			
 		}
 		return defaultTranslations;
 	}
