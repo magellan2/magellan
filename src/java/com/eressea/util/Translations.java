@@ -331,6 +331,10 @@ public class Translations {
 		String fileName = null;
 		InputStream in = null;
 
+		if (name.equalsIgnoreCase("lang/orders")) {
+			in = null;
+		}
+		
 		try {
 			// baseclass + "_" + language1 + "_" + country1 + "_" + variant1
 			fileName = name + "_" + l.getLanguage() + "_" + l.getCountry() + "_" + l.getVariant() +

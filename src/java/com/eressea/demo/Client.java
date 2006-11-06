@@ -328,7 +328,7 @@ public class Client extends JFrame implements ShortcutListener,
      *            TODO: DOCUMENT ME!
      */
     protected Properties loadSettings(File directory, String fileName, boolean checkForNew) {
-        Properties settings = settings = new SelfCleaningProperties();
+        Properties settings =  new SelfCleaningProperties();
         // settings = new OrderedOutputProperties();
         // settings = new AgingProperties();
 
