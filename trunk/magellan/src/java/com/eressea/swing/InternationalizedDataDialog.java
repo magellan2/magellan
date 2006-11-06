@@ -37,11 +37,12 @@ public abstract class InternationalizedDataDialog extends InternationalizedDialo
 	/**
 	 * Creates a new InternationalizedDataDialog object.
 	 *
-	 * @param owner TODO: DOCUMENT ME!
-	 * @param modal TODO: DOCUMENT ME!
-	 * @param ed TODO: DOCUMENT ME!
-	 * @param initData TODO: DOCUMENT ME!
-	 * @param p TODO: DOCUMENT ME!
+	 * @param owner the <code>Frame</code> from which the dialog is displayed
+	 * @param modal <code>true</code> for a modal dialog, false for one that allows others windows to be 
+	 * active at the same time
+	 * @param ed The event dispatcher that this dialog should use
+	 * @param initData The corresponding GameData
+	 * @param p The corresponding properties
 	 */
 	public InternationalizedDataDialog(Frame owner, boolean modal, EventDispatcher ed,
 									   GameData initData, Properties p) {
@@ -74,5 +75,26 @@ public abstract class InternationalizedDataDialog extends InternationalizedDialo
 			// remove stale listeners
 			dispatcher.removeAllListeners(this);
 		}
+	}
+
+	/**
+	 * @return the data
+	 */
+	protected GameData getData() {
+		return data;
+	}
+
+	/**
+	 * @return the dispatcher
+	 */
+	protected EventDispatcher getDispatcher() {
+		return dispatcher;
+	}
+
+	/**
+	 * @return the settings
+	 */
+	protected Properties getSettings() {
+		return settings;
 	}
 }

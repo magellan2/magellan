@@ -51,8 +51,7 @@ public class TradeOrganizerAction extends MenuAction implements GameDataListener
 	}
 
 	public void gameDataChanged(GameDataEvent e) {
-		// TODO Auto-generated method stub
-		int i = super.client.getData().regions().size();
+		int i = e.getGameData().regions().size();
 		if (i>0) {
 			setEnabled(true);
 		} else {

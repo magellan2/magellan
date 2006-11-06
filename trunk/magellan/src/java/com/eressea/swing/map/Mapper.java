@@ -167,7 +167,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
         this.context = context;
         
-		conMenu = new MapContextMenu(context.getEventDispatcher(), context.getProperties());
+        conMenu = new MapContextMenu(context.getClient(), context.getEventDispatcher(), context.getProperties());
 
 		setTooltipDefinition(settings.getProperty("Mapper.ToolTip.Definition",
 												  "<html><font=-1>§rname§</font></html>"));
@@ -552,6 +552,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	public void gameDataChanged(GameDataEvent e) {
 		data = e.getGameData();
 
+		// FIXME (stm) shouldn't we make contextMenu a GameDataListener, too?
 		conMenu.setGameData(data);
 
 		mapToScreenBounds = getMapToScreenBounds();
