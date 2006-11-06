@@ -32,6 +32,7 @@ import com.eressea.Unit;
 import com.eressea.rules.BuildingType;
 import com.eressea.rules.RegionType;
 import com.eressea.util.logging.Logger;
+import com.eressea.StringID;
 
 /**
  * A class offering common operations on regions.
@@ -751,20 +752,19 @@ public class Regions {
 	
 	/**
 	 * Returns the RegionType that is named as <tt>Feuerwand</tt>.
-	 *
+	 * @author Fiete
+	 * 
 	 * @param rules Rules of the game
+	 * @param data GameDate - needed to find Translation
 	 *
 	 * @return RegionType Feuerwand
 	 */
-	public static RegionType getFeuerwandRegionType(Rules rules){
-		for(Iterator iter = rules.getRegionTypeIterator(); iter.hasNext();) {
-			RegionType rt = (RegionType) iter.next();
-
-			if(rt.getName().equalsIgnoreCase("Feuerwand")) {
-				return rt;
-			}
+	public static RegionType getFeuerwandRegionType(Rules rules, GameData data){
+		String actFeuerwandName = "Feuerwand";
+		if (data != null) {
+			actFeuerwandName = data.getTranslation("Feuerwand");
 		}
-		return null;
+		return rules.getRegionType(StringID.create(actFeuerwandName));	
 	}
 	
 }

@@ -116,9 +116,11 @@ public class Islands {
 		Map excludedRegionTypes = Regions.getOceanRegionTypes(rules);
 
 		// Feature wish: Feuerwände nicht dabei (Fiete)
-		RegionType Feuerwand = Regions.getFeuerwandRegionType(rules);
-		excludedRegionTypes.put(Feuerwand.getID(),Feuerwand);
 		
+		RegionType Feuerwand = Regions.getFeuerwandRegionType(rules,r.getData());
+		if (Feuerwand != null) {
+			excludedRegionTypes.put(Feuerwand.getID(),Feuerwand);
+		}
 		if(excludedRegionTypes.isEmpty()) {
 			log.warn("Islands.getIsland(): unable to determine ocean region types!");
 
