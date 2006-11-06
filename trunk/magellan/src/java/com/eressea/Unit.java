@@ -81,6 +81,11 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 
 	/** The real race of the (daemon) unit */
 	public Race realRace = null;
+	
+	/** unitID of the "father"-mage 
+	 *  or mother.mage...
+	 * */
+	public ID familiarmageID = null;
 
 	/** The weight in silver */
 	public int weight = -1;

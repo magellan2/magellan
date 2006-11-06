@@ -1927,6 +1927,9 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("folgt")) {
 				unit.follows = getAddUnit(world, UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base));
 				sc.getNextToken();
+			}  else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("familiarmage")) {
+				unit.familiarmageID =  UnitID.createUnitID(Integer.parseInt(sc.argv[0]), world.base);
+				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Silber")) {
 				int money = Integer.parseInt(sc.argv[0]);
 				Item item = new Item(world.rules.getItemType(StringID.create("Silber"), true), money);

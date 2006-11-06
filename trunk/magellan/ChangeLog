@@ -1,11 +1,16 @@
 2006-11-06  Fiete  <Fiete@users.sourceforge.net>
 
 	* (stm,Fiete) fixed setOrigin, setOriginDialog
+	* fixed determining Feuerwand RegionType for locale!=de.
+	* added icon for reserve and trophies
+	* added support for familiarmage
 
 2006-11-05  Fiete  <Fiete@users.sourceforge.net>
 
+	* fixed loosing passwords after set new origin
 	* fixed determining Feuerwand RegionType for locale!=de.
 	* added icon for reserve and trophies
+	* added support for familiarmage
 
 2006-11-05  Fiete  <Fiete@users.sourceforge.net>
 
