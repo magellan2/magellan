@@ -202,7 +202,9 @@ public class ResourcePathClassLoader extends ClassLoader {
 
 		// try to get the resource from the jar
 		if(url == null) {
-			url = getSystemClassLoader().getResource("res/" + name);
+			// FFTest...do not use \ but / (Fiete)
+			String myName = name.replace("\\".charAt(0), "/".charAt(0));
+			url = getSystemClassLoader().getResource("res/" + myName);
 		}
 
 		if(url != null) {
@@ -417,7 +419,9 @@ public class ResourcePathClassLoader extends ClassLoader {
 		}
 
 		// try to get the resource from the jar
-		url = getSystemClassLoader().getResource("res/" + name);
+		//		 FFTest...do not use \ but / (Fiete)
+		String myName = name.replace("\\".charAt(0), "/".charAt(0));
+		url = getSystemClassLoader().getResource("res/" + myName);
 
 		if(url != null) {
 			urls.add(url);
@@ -459,7 +463,9 @@ public class ResourcePathClassLoader extends ClassLoader {
 		if(urls.size() == 0) {
 			for(Iterator iter = names.iterator(); iter.hasNext();) {
 				String name = (String) iter.next();
-				URL url = getSystemClassLoader().getResource("res/" + name);
+				// FFTest...do not use \ but / (Fiete)
+				String myName = name.replace("\\".charAt(0), "/".charAt(0));
+				URL url = getSystemClassLoader().getResource("res/" + myName);
 
 				if(url != null) {
 					urls.add(url);
