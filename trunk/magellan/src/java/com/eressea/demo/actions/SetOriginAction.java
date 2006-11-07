@@ -18,7 +18,6 @@ import java.util.Map;
 
 import com.eressea.demo.Client;
 import com.eressea.demo.SetOriginDialog;
-import com.eressea.event.GameDataEvent;
 import com.eressea.util.CollectionFactory;
 
 /**
@@ -39,13 +38,18 @@ public class SetOriginAction extends MenuAction {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Opens the SetOriginDialog, waits for user input
+	 * if approved, then setOrigin of class Client is called
+	 * sets the new Origin
 	 *
-	 * @param e TODO: DOCUMENT ME!
+	 * @param e ActionEvent
 	 */
 	public void actionPerformed(ActionEvent e) {
-		new SetOriginDialog(client, client.getDispatcher(),client.getData()).show();
-		client.getDispatcher().fire(new GameDataEvent(client, client.getData()));
+		SetOriginDialog dialog = new SetOriginDialog(client, client.getDispatcher(), client.getData());
+		dialog.show();
+		if (dialog.approved()){
+			client.setOrigin(dialog.getNewOrigin());
+		}
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class

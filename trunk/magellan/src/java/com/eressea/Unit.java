@@ -2449,6 +2449,10 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 			newUnit.auraMax = curUnit.auraMax;
 		}
 		
+		if(curUnit.familiarmageID != null) {
+			newUnit.familiarmageID = curUnit.familiarmageID;
+		}
+		
 		if(curUnit.weight != -1) {
 			newUnit.weight = curUnit.weight;
 		}
