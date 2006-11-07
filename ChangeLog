@@ -1,3 +1,10 @@
+2006-11-07  Fiete  <Fiete@users.sourceforge.net>
+
+	* reworked setOriginAction and setOriginDialog
+	* added familiarmage-tag to unit.merge
+	* added icon for munition = katapultmunition
+	* added section.mail for showing player-messages
+
 2006-11-06  Fiete  <Fiete@users.sourceforge.net>
 
 	* (stm,Fiete) fixed setOrigin, setOriginDialog

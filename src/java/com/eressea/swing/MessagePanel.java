@@ -815,6 +815,7 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 			defaultTranslations.put("section.events", "Events");
 			defaultTranslations.put("section.magic", "Magic and Artefacts");
 			defaultTranslations.put("section.study", "Learning and Teaching");
+			defaultTranslations.put("section.mail", "Messages (Player)");
 			defaultTranslations.put("prefs.linewrap", "Activate line wrapping");
 			defaultTranslations.put("prefs.border.title", "Line Wrapping");
 			defaultTranslations.put("prefs.title", "Messages");

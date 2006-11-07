@@ -29,9 +29,15 @@ import com.eressea.util.logging.Logger;
  */
 public class SetOriginDialog extends com.eressea.swing.InternationalizedDataDialog {
 	private static final Logger log = Logger.getInstance(SetOriginDialog.class);
+	/**
+	 * if true, SetOriginAction initiate client.setOrigin
+	 */
 	private boolean approved = false;
+	/**
+	 * new Origin, entered eventually by the user
+	 */
 	private CoordinateID newOrigin = new CoordinateID(0,0,0);
-	private Client client = null;
+
 
 	/**
 	 * Creates new form SetOriginDialog
@@ -43,7 +49,6 @@ public class SetOriginDialog extends com.eressea.swing.InternationalizedDataDial
  	 */
 	public SetOriginDialog(java.awt.Frame parent, EventDispatcher ed, GameData _data) {
 		super(parent, true, ed, _data, new java.util.Properties());
-		this.client = (Client) parent;
 		initComponents();
 		pack();
 		approved = false;
@@ -182,31 +187,19 @@ public class SetOriginDialog extends com.eressea.swing.InternationalizedDataDial
 		int iX;
 		int iY;
 		int iLevel;
-		approved = true;
-
-//		try {
-			iX = Integer.parseInt(editX.getText());
-			iY = Integer.parseInt(editY.getText());
-			iLevel = Integer.parseInt(editLevel.getText());
-
+		
+		iX = Integer.parseInt(editX.getText());
+		iY = Integer.parseInt(editY.getText());
+		iLevel = Integer.parseInt(editLevel.getText());
+		
+		// setOrigin only, if new Origin is wanted...
+		if (iX!=0 || iY!=0){
+			approved = true;
 			newOrigin = new CoordinateID(iX, iY, iLevel);
-//			// stm 2006.10.20
-////			data.placeOrigin(new CoordinateID(iX, iY, iLevel));
-//			if (iX != 0 || iY != 0){
-//				GameData newData = (GameData) data.clone(new CoordinateID(iX, iY, iLevel));
-//				getDispatcher().fire(new GameDataEvent(this, newData));
-//			}
-			if (iX!=0 || iY!=0) {
-				this.client.setOrigin(newOrigin);
-			}
-			setVisible(false);
-			dispose();
-//		} catch(Exception ex) {
-//			log.error(ex);
-//			javax.swing.JOptionPane.showMessageDialog(this, ex.toString(),
-//													  getString("msg.error.title"),
-//													  javax.swing.JOptionPane.ERROR_MESSAGE);
-//		}
+		}
+		
+		setVisible(false);
+		dispose();
 	}
 
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
