@@ -59,6 +59,7 @@ import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.logging.Logger;
+import com.eressea.skillchart.SkillChartPanel;
 
 /**
  * A dialog wrapper for the faction statistics display.
@@ -555,8 +556,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 		    return (JPanel) skillChartPanel;
 		    */
 		try {
-			JPanel skillChartPanel = new com.eressea.skillchart.SkillChartPanel(dispatcher, data,
-																				settings);
+			JPanel skillChartPanel = new SkillChartPanel(dispatcher, data,settings);
 
 			return skillChartPanel;
 		} catch(Throwable t) {
