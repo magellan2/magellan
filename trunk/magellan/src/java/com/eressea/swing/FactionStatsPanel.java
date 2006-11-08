@@ -1054,7 +1054,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations.put("node.income1", "Entertainment: {0} silver");
 			defaultTranslations.put("node.income2", "Tax collection: {0} silver");
 			defaultTranslations.put("node.income3", "Trade: {0} silver");
-			defaultTranslations.put("node.income4", "Trace tax: {0} silver");
+			defaultTranslations.put("node.income4", "Trade tax: {0} silver");
 			defaultTranslations.put("node.income5", "Theft: {0} silver");
 			defaultTranslations.put("node.income6", "Magic: {0} silver");
 			defaultTranslations.put("node.incomewanted", " of {0} silver");

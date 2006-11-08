@@ -1,3 +1,10 @@
+2006-11-08  Fiete  <Fiete@users.sourceforge.net>
+
+	* added Auto-FileName Generation for orderWriterDialog
+	*		- new Class FileNameGenerator
+	*		- new Class FileNameGeneratorFeed
+	*		- new entry in preferences (Optionen) for editing the pattern
+
 2006-11-07  Fiete  <Fiete@users.sourceforge.net>
 
 	* reworked setOriginAction and setOriginDialog
@@ -5,6 +12,7 @@
 	* added icon for munition = katapultmunition
 	* added section.mail for showing player-messages
 	* fixed bug for region zauber (dist = 2 had x,y)
+	* trace tax -> trade tax
 	* added context menu item "select units" in EMapDetail
 
 2006-11-06  Fiete  <Fiete@users.sourceforge.net>

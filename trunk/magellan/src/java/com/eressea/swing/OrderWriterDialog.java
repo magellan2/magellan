@@ -69,6 +69,8 @@ import com.eressea.Unit;
 import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileType;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.FileNameGenerator;
+import com.eressea.util.FileNameGeneratorFeed;
 import com.eressea.util.FixedWidthWriter;
 import com.eressea.util.OrderWriter;
 import com.eressea.util.PropertiesHelper;
@@ -112,7 +114,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	public OrderWriterDialog(GameData data) {
 		super(null, false, null, data, new Properties());
 		standAlone = true;
-
+		
 		try {
 			settings.load(new FileInputStream(new File(System.getProperty("user.home"),
 													   "OrderWriterDialog.ini")));
@@ -199,9 +201,9 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.gridheight = 2;
+		c.gridheight = 4;
 		c.fill = GridBagConstraints.NONE;
-		c.insets = new Insets(0, 5, 0, 0);
+		c.insets = new Insets(8, 5, 0, 0);
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		mainPanel.add(getButtonPanel(), c);
@@ -276,6 +278,15 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			});
 		sendButton = mailButton;
 
+		JButton autoFileNameButton = new JButton(getString("btn.autofilename.caption"));
+		autoFileNameButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ae) {
+					autoFileName();
+				}
+			});
+		
+
+		
 		JButton cancelButton = new JButton(getString("btn.close.caption"));
 		cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -283,12 +294,13 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 				}
 			});
 
-		JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 0, 4));
+		JPanel buttonPanel = new JPanel(new GridLayout(6, 1, 0, 6));
 		buttonPanel.add(saveButton);
 		buttonPanel.add(clipboardButton);
 		buttonPanel.add(mailButton);
+		buttonPanel.add(autoFileNameButton);
 		buttonPanel.add(cancelButton);
-
+		
 		return buttonPanel;
 	}
 
@@ -841,12 +853,43 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	}
 
 	/**
+	 * @author Fiete
+	 * 
+	 * Generates a new Filename according to the predefined (and stored) pattern
+	 *
+	 */
+	protected void autoFileName(){
+		FileNameGeneratorFeed feed = new FileNameGeneratorFeed(super.getData().getDate().getDate());
+		Faction f = (Faction) cmbFaction.getSelectedItem();
+		if (f!=null) {
+			feed.setFaction(f.getName());
+			feed.setFactionnr(f.getID().toString());
+		}
+		Object o = cmbGroup.getSelectedItem();
+		Group g = null;
+		if(o != null && !"".equals(o)) {
+			g = (Group) o;
+		}
+		if (g!=null){
+			feed.setGroup(g.getName());
+		}
+		
+		String pattern = settings.getProperty("FileNameGenerator.ordersSaveFileNamePattern");
+		
+		String newFileName = FileNameGenerator.getFileName(pattern, feed);
+		
+		cmbOutputFile.insertItemAt(newFileName, 0);
+		cmbOutputFile.setSelectedItem(newFileName);
+		
+	}
+	
+	/**
 	 * TODO: DOCUMENT ME!
 	 */
 	public void runMail() {
 		sendMail();
 	}
-
+	
 	protected void sendMail() {
 		if(!checkPassword()) {
 			return;
@@ -1064,6 +1107,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			defaultTranslations.put("msg.writtenunits.title", "Information");
 			defaultTranslations.put("msg.writtenunits.text",
 									"Wrote {0} of {1} units from faction {2}.");
+			defaultTranslations.put("btn.autofilename.caption", "Auto-Filename");
 		}
 
 		return defaultTranslations;

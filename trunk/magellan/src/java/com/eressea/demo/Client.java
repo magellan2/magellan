@@ -149,6 +149,7 @@ import com.eressea.swing.tree.IconAdapterFactory;
 import com.eressea.util.BookmarkManager;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FileHistory;
+import com.eressea.util.FileNameGenerator;
 import com.eressea.util.JVMUtilities;
 import com.eressea.util.LanguageDialog;
 import com.eressea.util.Locales;
