@@ -58,6 +58,7 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Locales;
 import com.eressea.util.NameGenerator;
+import com.eressea.util.FileNameGenerator;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -123,7 +124,11 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		// add the history only as sub adapter
 		subAdapters.add(new HistoryPanel());
 
-		// add the name generator only as sub adapter
+		// add the file name generator only as sub adapter
+		FileNameGenerator.init(settings);
+		subAdapters.add(FileNameGenerator.getInstance().createPreferencesAdapter());
+		
+//		 add the name generator only as sub adapter
 		subAdapters.add(NameGenerator.getInstance().createPreferencesAdapter());
 
 		// layout this container
