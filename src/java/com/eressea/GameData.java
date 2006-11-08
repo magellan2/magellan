@@ -756,7 +756,20 @@ public abstract class GameData implements Cloneable {
 		} else {
 			resultGD.base = olderGD.base;
 		}
-
+		
+		/**
+		 * 
+		 * Tracking an Bug
+		 * warn, if we do not have 36 with eressea or vinyambar
+		 * and set it to 36
+		 */
+		String actGameName = newerGD.name.toLowerCase();
+		if ((actGameName.indexOf("eressea")>-1 || actGameName.indexOf("vinyambar")>-1) && (newerGD.base!=36)){
+			// this should not happen
+			log.warn("BASE ERROR !! merged report could have not base36 !! Changed to base36.");
+			newerGD.base = 36;
+		}
+		
 		// NOSKILLPOINTS: the newer report determines the skill point handling
 		resultGD.noSkillPoints = newerGD.noSkillPoints;
 

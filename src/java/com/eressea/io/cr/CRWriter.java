@@ -408,6 +408,14 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		writeQuotedTag("Hex", "Koordinaten");
+		
+		// Tracking a bug
+		String actGameName = world.name.toLowerCase();
+		if ((actGameName.indexOf("eressea")>-1 || actGameName.indexOf("vinyambar")>-1) && (world.base!=36)){
+			// this should not happen
+			log.warn("BASE ERROR !! report to write could have not base36 !! Changed to base36. (Was " + world.base + ")");
+			world.base = 36;
+		}
 		write(world.base + ";Basis");
 		newLine();
 		write("1;Umlaute");

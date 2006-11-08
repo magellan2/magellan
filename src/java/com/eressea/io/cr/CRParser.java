@@ -798,7 +798,21 @@ public class CRParser implements RulesIO, GameDataIO {
 				if((world.base <= 0) || (world.base > 36)) {
 					world.base = 10;
 				}
-
+				/**
+				 * asuing we have already the gamename we can make an additional check
+				 * Buck Tracking wrong base...
+				 */
+				if (world.name!=null){
+					String actGameName = world.name.toLowerCase();
+					if ((actGameName.indexOf("eressea")>-1 || actGameName.indexOf("vinyambar")>-1) && (world.base!=36)){
+						// this should not happen
+						log.warn("BASE ERROR !! read report could have not base36 !! Changed to base36.");
+						world.base = 36;
+					}
+				}
+				
+				
+				
 				//com.eressea.util.IDBaseConverter.setBase(world.base);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Umlaute")) {

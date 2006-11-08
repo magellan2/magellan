@@ -1,5 +1,7 @@
 2006-11-08  Fiete  <Fiete@users.sourceforge.net>
 
+	* adjusted weight of trophies to 0.01 (was 1), removed html-rules-files
+	* ensured, that eressea and vinyambar games will read and write base36
 	* added Auto-FileName Generation for orderWriterDialog
 	*		- new Class FileNameGenerator
 	*		- new Class FileNameGeneratorFeed
