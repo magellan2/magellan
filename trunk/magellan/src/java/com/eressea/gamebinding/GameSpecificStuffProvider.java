@@ -37,7 +37,10 @@ public class GameSpecificStuffProvider {
 
 		if((className == null) || (gameSpecificStuff == null)) {
 			gameSpecificStuff = new EresseaSpecificStuff();
-			log.warn("Unable to determine GameSpecificStuff. Falling back to EresseaSpecificStuff.");
+			// if classname is not provided..no warning is needed
+			if (className != null){
+				log.warn("Unable to determine GameSpecificStuff (class: " + className + ") . Falling back to EresseaSpecificStuff.");
+			}
 		}
 
 		return gameSpecificStuff;

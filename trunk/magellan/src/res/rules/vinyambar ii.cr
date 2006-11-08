@@ -770,7 +770,7 @@ ITEM "Kräuter"
 
 ITEM "Samen"
 "Samen";name
-0;weight
+0.1;weight
 "Kräuterkunde";makeskill
 1;makeskilllevel
 "resources";category
@@ -1215,57 +1215,57 @@ ITEM "Silberkassette"
 ITEM "Trollhorn"
 "Trollhorn";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Zwergenbart"
 "Zwergenbart";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Halblingfuß"
 "Halblingfuß";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Katzenschwanz"
 "Katzenschwanz";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Elfenohr"
 "Elfenohr";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Dämonenblut"
 "Dämonenblut";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Insektenfühler"
 "Insektenfühler";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Meermenschschuppe"
 "Meermenschschuppe";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Goblinkopf"
 "Goblinkopf";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Menschenskalp"
 "Menschenskalp";name
 "trophies";category
-1;weight
+0.01;weight
 
 ITEM "Orkhauer"
 "Orkhauer";name
 "trophies";category
-1;weight
+0.01;weight
 
 SHIPTYPE "Boot"
 "Boot";name
