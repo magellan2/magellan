@@ -2370,15 +2370,16 @@ public class CRParser implements RulesIO, GameDataIO {
 		int shipSortIndex = 0;
 		int buildingSortIndex = 0;
 		CoordinateID c = CoordinateID.parse(sc.argv[0].substring(sc.argv[0].indexOf(" ", 0)), " ");
-		originTranslate(c);
-
-
+	
 		if(c == null) {
 			unknown("REGION", true);
 
 			return;
 		}
-
+		
+		// this we should make after checking c!=null
+		originTranslate(c);
+		
 		sc.getNextToken(); // skip "REGION x y"
 
 		Region region = world.getRegion(c);

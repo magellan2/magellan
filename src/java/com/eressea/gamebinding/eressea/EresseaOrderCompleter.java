@@ -1566,11 +1566,11 @@ public class EresseaOrderCompleter implements Completer {
 			int prio = 9;
 
 			if(name == null) {
-				name = c.toString();
+				name = c.toString(" ");
 				prio = 10;
 			}
 
-			completions.add(new Completion(name, c.toString(), " ", prio));
+			completions.add(new Completion(name, c.toString(" "), " ", prio));
 		}
 	}
 

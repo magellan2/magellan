@@ -43,6 +43,7 @@ import com.eressea.Unit;
 import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.OrderConfirmEvent;
+import com.eressea.event.SelectionEvent;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.relation.TeachRelation;
 import com.eressea.swing.GiveOrderDialog;
@@ -72,10 +73,10 @@ public class UnitContextMenu extends JPopupMenu {
 	/**
 	 * Creates new UnitContextMenu
 	 *
-	 * @param unit TODO: DOCUMENT ME!
-	 * @param selectedObjects TODO: DOCUMENT ME!
-	 * @param dispatcher TODO: DOCUMENT ME!
-	 * @param data TODO: DOCUMENT ME!
+	 * @param unit last selected unit - is not required to be in selected objects
+	 * @param selectedObjects null or Collection of selected objects
+	 * @param dispatcher EventDispatcher
+	 * @param data the actual GameData or World
 	 */
 	public UnitContextMenu(Unit unit, Collection selectedObjects,
 						   EventDispatcher dispatcher, GameData data) {
@@ -120,6 +121,21 @@ public class UnitContextMenu extends JPopupMenu {
             
         }
 
+        if (this.selectedUnits.size()>0) {
+        	JMenuItem selectUnits = null;
+        	if (this.selectedUnits.size() == 1) {
+        		selectUnits = new JMenuItem(getString("setasunitselection_singular.caption"));
+        	} else {
+        		selectUnits = new JMenuItem(getString("setasunitselection_plural.caption"));
+        	}
+            selectUnits.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        event_selectUnits();
+                    }
+                });
+            add(selectUnits);
+        }
+        
         // tag stuff
         if(getComponentCount() > 0) {
             addSeparator();
@@ -301,6 +317,21 @@ public class UnitContextMenu extends JPopupMenu {
         }
 
     }
+    
+    /**
+     * Sets the selected Units as selected Units in Overview
+     * FeatureRequest
+     * @author Fiete
+     */
+    private void event_selectUnits() {
+    	if (this.selectedUnits.size()>1) {
+    		dispatcher.fire(new SelectionEvent(this,this.selectedUnits,null));
+    	}
+    	if (this.selectedUnits.size()==1) {
+    		dispatcher.fire(new SelectionEvent(this,this.selectedUnits,(Unit)this.selectedUnits.toArray()[0]));
+    	}
+    }
+    
 	/**
 	 * Gives an order (optional replacing the existing ones) to the selected units.
 	 */
@@ -686,6 +717,8 @@ public class UnitContextMenu extends JPopupMenu {
 			defaultTranslations.put("addtag.tagname.message", "Please enter tag name");
 			defaultTranslations.put("addtag.caption", "Add tag");
 			defaultTranslations.put("removetag.caption", "Remove tag");
+			defaultTranslations.put("setasunitselection_singular.caption", "Select Unit");
+			defaultTranslations.put("setasunitselection_plural.caption", "Select Units");
 
 		}
 
