@@ -4,6 +4,8 @@
 	* added familiarmage-tag to unit.merge
 	* added icon for munition = katapultmunition
 	* added section.mail for showing player-messages
+	* fixed bug for region zauber (dist = 2 had x,y)
+	* added context menu item "select units" in EMapDetail
 
 2006-11-06  Fiete  <Fiete@users.sourceforge.net>
 

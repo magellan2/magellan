@@ -63,6 +63,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -119,6 +121,7 @@ import com.eressea.swing.MenuProvider;
 import com.eressea.swing.completion.MultiEditorOrderEditorList;
 import com.eressea.swing.context.ContextFactory;
 import com.eressea.swing.context.UnitContextMenu;
+import com.eressea.swing.context.actions.ContextAction;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
@@ -193,7 +196,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	/** The currently displayed object */
 	private Object displayedObject = null;
-
+	
+	/**
+	 * A list containing selected units
+	 */
+	private Collection mySelectedUnits = CollectionFactory.createLinkedList();
+	
+	
 	/** split pane */
 	JSplitPane topSplitPane;
 
@@ -428,7 +437,15 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					}
 				}
 			});
-
+		
+		// keeping track of selection changes for mySelectedUnits (fiete)
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+				public void valueChanged(TreeSelectionEvent tslE) {
+					handleTreeSelectionChangeEvent(tslE);
+				}
+			});
+		
+		
 		// FIXME: bugzilla bug #823 ?
 		tree.putClientProperty("JTree.lineStyle", "Angled");
 
@@ -3088,7 +3105,14 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	public void selectionChanged(SelectionEvent se) {
 		addTag.setEnabled(false);
 		removeTag.setEnabled(false);
-
+		
+		/**
+		 * @author Fiete
+		 * if selection changes, our mySelectedUnits should be cleared
+		 */
+		this.mySelectedUnits.clear();
+		
+		
 		/**
 		 * Decide whether to show a single object (activeObject) or a collection of objects
 		 * (selectedObjects). The display for collection is at the moment limited to collections
@@ -4254,6 +4278,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * lists.
 	 */
 	private class DetailsUnitContextFactory implements ContextFactory {
+		
 		/**
 		 * TODO: DOCUMENT ME!
 		 *
@@ -4268,6 +4293,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
                                 GameData data, Object argument,
 								Collection selectedObjects,
                                 DefaultMutableTreeNode node) {
+			
+			
 			if(argument instanceof Unit) {
 				return new UnitContextMenu((Unit) argument, selectedObjects, dispatcher, data);
 			} else if(argument instanceof UnitNodeWrapper) {
@@ -4467,4 +4494,32 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	public String getSuperMenuTitle() {
 		return getString("menu.supertitle");
 	}
+	
+	/**
+	 * outsourced handling of changes in tree-selections
+	 * updating mySelectedUnits
+	 * @author Fiete
+	 * @param tslE the TreeSelectionEvent from The Listener of our Tree
+	 */
+	private void handleTreeSelectionChangeEvent(TreeSelectionEvent tslE){
+		this.mySelectedUnits.clear();
+		TreePath paths[] = tree.getSelectionPaths();
+		if (paths != null) {
+			for(int i = 0; i < paths.length; i++) {
+				DefaultMutableTreeNode actNode = (DefaultMutableTreeNode) paths[i].getLastPathComponent();
+				Object o = actNode.getUserObject();
+				if(o instanceof UnitNodeWrapper) {
+					UnitNodeWrapper unitNodeWrapper = (UnitNodeWrapper)o;
+					Unit actUnit = unitNodeWrapper.getUnit();
+					this.mySelectedUnits.add(actUnit);
+				}
+			}
+		}
+		if (this.mySelectedUnits.size()>0) {
+			contextManager.setSelection(this.mySelectedUnits);
+		} else {
+			contextManager.setSelection(null);
+		}
+	}
+	
 }
