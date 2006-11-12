@@ -410,7 +410,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 											   f.getRaceNamePrefix());
 				*/
 				n = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.racenameprefix") +
-						   f.getRaceNamePrefix(),"racenameprefix"));
+						   f.getRaceNamePrefix(),"prefix"));
 				rootNode.add(n);
 			}
 
