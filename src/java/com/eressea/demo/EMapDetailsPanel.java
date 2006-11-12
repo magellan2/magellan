@@ -1732,9 +1732,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		// Group
 		if(u.getGroup() != null) {
 			Group group = u.getGroup();
+			/**
 			DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(getString("node.group") +
 																		  ": \"" + group.getName() +
 																		  "\"");
+			*/
+			
+			DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.group") +
+					  ": \"" + group.getName() +
+					  "\"","groups"));
+			
 			parent.add(groupNode);
 			expandableNodes.add(new NodeWrapper(groupNode, "EMapDetailsPanel.UnitGroupExpanded"));
 			appendAlliances(group.allies(), groupNode);

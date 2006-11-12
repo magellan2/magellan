@@ -301,7 +301,9 @@ public class TreeHelper {
 						// Do the units belong to a group?
 						if(prevUnit.getGroup() != null) {
 							GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(prevUnit.getGroup());
-							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(groupNodeWrapper);
+	
+							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
+							// DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(groupNodeWrapper);
 							mother.add(groupNode);
 
 							if(se != null) {
@@ -459,7 +461,9 @@ public class TreeHelper {
 				case GROUP:
 
 					if(curUnit.getGroup() != null) {
-						node = new DefaultMutableTreeNode(factory.createGroupNodeWrapper(curUnit.getGroup()));
+						// node = new DefaultMutableTreeNode(factory.createGroupNodeWrapper(curUnit.getGroup()));
+						GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(curUnit.getGroup());
+						node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
 					} else {
 						node = null;
 					}
