@@ -127,7 +127,9 @@ import com.eressea.event.UnitOrdersEvent;
 import com.eressea.event.UnitOrdersListener;
 import com.eressea.extern.ExternalModule;
 import com.eressea.extern.ExternalModule2;
+import com.eressea.extern.ExternalModule3;
 import com.eressea.extern.ExternalModuleLoader;
+import com.eressea.extern.ExternalModule3Loader;
 import com.eressea.io.GameDataReader;
 import com.eressea.io.file.FileBackup;
 import com.eressea.io.file.FileTypeFactory;
@@ -585,18 +587,20 @@ public class Client extends JFrame implements ShortcutListener,
                 }
             }
         }
-
-        if (direction.size() > 0) {
-            it = direction.iterator();
-
-            while (it.hasNext()) {
-                JMenu menu = (JMenu) it.next();
-
-                if (menu.getItemCount() > 0) {
-                    menuBar.add(menu);
-                }
-            }
+        
+        log.info("Checking for menu-providers...(Module3");
+        // add external modules if some can be found
+        Collection menuS = getExternalModules3();
+        if (menuS!=null && menuS.size()>0) {
+        	for (Iterator i3 = menuS.iterator();i3.hasNext();){
+        		ExternalModule3 externalModule3 = (ExternalModule3)i3.next();
+        		JMenu externalJMenu3 = externalModule3.getJMenu(this);
+        		if (externalJMenu3!=null) {
+        			menuBar.add(externalJMenu3);
+        		}
+        	}
         }
+        
 
         // menuBar.add(createTreeMenu());
         // desktop and extras last
@@ -883,6 +887,43 @@ public class Client extends JFrame implements ShortcutListener,
 
     }
 
+    private Collection externalModules3 = null;
+    
+    /**
+     * delivers all externalModules3
+     */
+    public synchronized Collection getExternalModules3() {
+        if (externalModules3 == null) {
+            externalModules3 = new ArrayList();
+
+            Collection c = ExternalModule3Loader
+                    .getExternalModuleClasses(getProperties());
+            for (Iterator iter = c.iterator(); iter.hasNext();) {
+                Class foundClass = (Class) iter.next();
+                try {
+
+                    // get it's constructor
+                    Object externalModule3 = foundClass.getConstructor(
+                            new Class[] {}).newInstance(new Object[] {});
+
+                    if (externalModule3 instanceof ExternalModule3) {
+                        // do not register as SelectionListener if applicable
+                        externalModules3.add(externalModule3);
+                    }
+                } catch (IllegalAccessException e) {
+                    log.error(e);
+                } catch (NoSuchMethodException e) {
+                    log.error(e);
+                } catch (InstantiationException e) {
+                    log.error(e);
+                } catch (InvocationTargetException e) {
+                    log.error(e);
+                }
+            }
+        }
+        return externalModules3;
+    }
+    
     /**
      * Retrieves the menu items for the external modules.
      * 
