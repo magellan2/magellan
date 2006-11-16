@@ -1,3 +1,7 @@
+2006-11-16  Fiete  <Fiete@users.sourceforge.net>
+
+	* added support for writeTimeStamp on OrderWriter
+
 2006-11-08  Fiete  <Fiete@users.sourceforge.net>
 
 	* added ExternalModule3: for binding external modules into mainmenubar
