@@ -49,6 +49,11 @@ public class OrderWriter {
 	private boolean forceUnixLineBreaks = false;
 	private Collection regions = null;
 	private boolean writeUnitTagsAsVorlageComment = false;
+	/**
+	 * sometimes I don't want the timestamp..
+	 * @author Fiete
+	 */
+	private boolean writeTimeStamp = true;
 	
 	/**
 	 * Creates a new OrderWriter object extracting the orders of faction f's units and writing them
@@ -172,8 +177,10 @@ public class OrderWriter {
 		stream.write(Translations.getOrderTranslation(EresseaOrderConstants.O_ERESSEA));
 		stream.write(" " + faction.getID());
 		writeln(stream, " \"" + faction.password + "\"");
-		writeln(stream, "; TIMESTAMP " + getTimeStamp());
-
+		
+		if (this.writeTimeStamp) {
+			writeln(stream, "; TIMESTAMP " + getTimeStamp());
+		}
 		if(addECheckComments) {
 			writeln(stream, "; ECHECK " + echeckOptions);
 		}
@@ -428,5 +435,19 @@ public class OrderWriter {
 	 */
 	public void setRegions(Collection aRegions) {
 		regions = aRegions;
+	}
+
+	/**
+	 * @return the writeTimeStamp
+	 */
+	public boolean isWriteTimeStamp() {
+		return writeTimeStamp;
+	}
+
+	/**
+	 * @param writeTimeStamp the writeTimeStamp to set
+	 */
+	public void setWriteTimeStamp(boolean writeTimeStamp) {
+		this.writeTimeStamp = writeTimeStamp;
 	}
 }
