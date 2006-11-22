@@ -877,7 +877,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		if((e.getSource() == this) || (e.getUnits() == null) || (e.getUnits().size() == 0)) {
 			return;
 		}
-
+		/**
+		 * BUG JTree UI see OrderConfimEvent
+		 * @author Fiete
+		 */
+		if (e.changedToUnConfirmed()) {
+			tree.updateUI();
+		}
 		tree.repaint();
 	}
 
@@ -1936,7 +1942,6 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			ui2.setLeftChildIndent(100);
 			ui2.setLeftChildIndent(i);
 		}
-
 		tree.revalidate();
 		tree.repaint();
 	}
