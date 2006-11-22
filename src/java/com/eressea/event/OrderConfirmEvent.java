@@ -14,6 +14,9 @@
 package com.eressea.event;
 
 import java.util.Collection;
+import java.util.Iterator;
+
+import com.eressea.Unit;
 
 /**
  * An event indicating that the order confirmation status of one or more units has changed.
@@ -23,6 +26,7 @@ import java.util.Collection;
  */
 public class OrderConfirmEvent extends TimeStampedEvent {
 	private Collection units;
+	private boolean changedToUnConfirmed = false;
 
 	/**
 	 * Constructs a new order confirmation event.
@@ -33,6 +37,7 @@ public class OrderConfirmEvent extends TimeStampedEvent {
 	public OrderConfirmEvent(Object source, Collection units) {
 		super(source);
 		this.units = units;
+		this.changedToUnConfirmed = this.calcChangedToUnConfirmed();
 	}
 
 	/**
@@ -43,4 +48,29 @@ public class OrderConfirmEvent extends TimeStampedEvent {
 	public Collection getUnits() {
 		return units;
 	}
+	
+	/**
+	 * BUG in JTree. UI calculates the bounding not correct
+	 * if text is not bold when init
+	 * Overviewpanel - tree calls updateUI if one or more units
+	 * had changed the order confirm to yes
+	 * this is here calculated 
+	 * @return true, if one or more units are confirmed, else false
+	 * @author Fiete
+	 */
+	private boolean calcChangedToUnConfirmed(){
+		if (units==null){
+			return false;
+		}
+		for (Iterator iter = this.units.iterator();iter.hasNext();){
+			Unit u = (Unit)iter.next();
+			if (!u.ordersConfirmed){return true;}
+		}
+		return false;
+	}
+	
+	public boolean changedToUnConfirmed(){
+		return this.changedToUnConfirmed;
+	}
+	
 }
