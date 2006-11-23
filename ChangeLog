@@ -2,6 +2,8 @@
 
 	* added updateUI for Tree in EMapOverview when orderconfirm
 	  to prevent JTree Bug
+	* added hunger.gif
+	* reworked plaf.ini
 
 2006-11-16  Fiete  <Fiete@users.sourceforge.net>
 
