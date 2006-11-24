@@ -116,6 +116,16 @@ public class Region extends UnitContainer {
 
 	/** TODO: DOCUMENT ME! */
 	public int oldRecruits = -1;
+	
+	/**
+	 * a flag which indicates if this region is Ozean with a neighboring not-ozean region
+	 * used for better pathfindung for ships
+	 * -1 -> not computed yet
+	 * 0 -> either no ozean or no neighboring land
+	 * 1 -> ozean and neighboring land 
+	 */
+	private int ozeanWithCoast = -1;
+	
 
 	/**
 	 * Constructs a new Region object uniquely identifiable by the specified id.
@@ -1765,4 +1775,34 @@ public class Region extends UnitContainer {
 
 		return c;
 	}
+
+	/**
+	 * @return the ozeanWithCoast
+	 */
+	public int getOzeanWithCoast() {
+		if (this.ozeanWithCoast==-1){
+			this.ozeanWithCoast = this.calcOzeanWithCoast();
+		}
+		return ozeanWithCoast;
+	}
+	
+	/**
+	 * calculates the OzeanWithCoast-value
+	 * @return 1 if this region is ozean and has neighboring non-ozean regions
+	 */
+	private int calcOzeanWithCoast(){
+		// start only if we are a ozean region
+		if (!this.getRegionType().isOcean()){
+			return 0;
+		}
+		// run through the neighbors
+		for (Iterator iter = this.getNeighbours().iterator();iter.hasNext();){
+			CoordinateID checkRegionID = (CoordinateID) iter.next();
+			if (!getData().getRegion(checkRegionID).getRegionType().isOcean()){
+				return 1;
+			}
+		}
+		return 0;
+	}
+	
 }

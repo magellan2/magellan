@@ -271,7 +271,8 @@ public class Regions {
 		}
 
 		Map distances = CollectionFactory.createHashtable();
-		distances.put(start, new Float(0.0f)); // contains the distances from the start region to all other regions as Float objects
+		// distances.put(start, new Float(0.0f)); // contains the distances from the start region to all other regions as Float objects
+		distances.put(start, new Double(0)); // contains the distances from the start region to all other regions as Float objects
 
 		LinkedList path = new LinkedList();
 		LinkedList backlogList = new LinkedList(); // contains regions with unknown distance to the start region
@@ -322,7 +323,8 @@ public class Regions {
 
 			/* determine all neighbours of the current region taken
 			   from the backlog list */
-			float minDistance = Float.MAX_VALUE;
+			// float minDistance = Float.MAX_VALUE;
+			double minDistance = Double.MAX_VALUE;
 			Map neighbours = getAllNeighbours(regions, curCoord, excludedRegionTypes);
 			neighbours.remove(curCoord);
 
@@ -332,14 +334,15 @@ public class Regions {
 			for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 				Region curNb = (Region) iter.next();
 				CoordinateID curNbCoord = curNb.getCoordinate();
-				Float dist = (Float) distances.get(curNbCoord);
-
+				// Float dist = (Float) distances.get(curNbCoord);
+				Double dist = (Double) distances.get(curNbCoord);
 				if(dist != null) {
 					/* we know the distance from the start region to
 					   this neighbour, so we can determine the
 					   distance from the start region to the current
 					   region taken from the backlog list */
-					float curDistance = getDistance(curNb, curRegion) + dist.floatValue();
+					// float curDistance = getDistance(curNb, curRegion) + dist.floatValue();
+					double curDistance = getDistance(curNb, curRegion,true) + dist.floatValue();
 
 					if(curDistance < minDistance) {
 						minDistance = curDistance;
@@ -359,11 +362,11 @@ public class Regions {
 			   region to the current region taken from the backlog
 			   list, we can remove it from that list and record the
 			   distance */
-			if(minDistance < Float.MAX_VALUE) {
+			if(minDistance < Double.MAX_VALUE) {
 				consecutiveReenlistings = 0;
 				backlogList.removeFirst();
 				backlogMap.remove(curCoord);
-				distances.put(curCoord, new Float(minDistance));
+				distances.put(curCoord, new Double(minDistance));
 			} else {
 				backlogList.removeFirst();
 
@@ -395,10 +398,10 @@ public class Regions {
 		path.add(curRegion);
 
 		while((curRegion != null) && (curCoord != null) && !curCoord.equals(start)) {
-			Float dist = (Float) distances.get(curCoord);
+			Double dist = (Double) distances.get(curCoord);
 
 			if(dist != null) {
-				float minDistance = dist.floatValue();
+				double minDistance = dist.doubleValue();
 				CoordinateID closestNbCoord = null;
 				Map neighbours = getAllNeighbours(regions, curCoord, excludedRegionTypes);
 				neighbours.remove(curCoord);
@@ -406,10 +409,10 @@ public class Regions {
 				for(Iterator iter = neighbours.values().iterator(); iter.hasNext();) {
 					Region curNb = (Region) iter.next();
 					CoordinateID curNbCoord = curNb.getCoordinate();
-					Float nbDist = (Float) distances.get(curNbCoord);
+					Double nbDist = (Double) distances.get(curNbCoord);
 
 					if(nbDist != null) {
-						float curDistance = nbDist.floatValue();
+						double curDistance = nbDist.doubleValue();
 
 						if(curDistance < minDistance) {
 							minDistance = curDistance;
@@ -654,8 +657,30 @@ public class Regions {
 		return null;
 	}
 
-	private static float getDistance(Region r1, Region r2) {
-		return 1.0f;
+	private static double getDistance(Region r1, Region r2) {
+		return 1;
+	}
+	
+	private static double getDistance(Region r1, Region r2,boolean useExtendedVersion){
+		double erg = 1;
+		if (!useExtendedVersion) {
+			return getDistance(r1, r2);
+		}
+		// Fiete 20061123
+		// for Ships...prefer Regions near coasts
+		// for land units...prfer Regions with roads
+		// Trick: if suitable situation, reduce the distance minimal 
+		double suitErg = 0.999999999999999;
+		
+		// if we have 2 Ozean regions...
+		if (r1.getRegionType().isOcean() && r2.getRegionType().isOcean()) {
+			if (r2.getOzeanWithCoast()==1){
+				return suitErg;
+			}
+		}
+		
+		
+		return erg;
 	}
 
 	/**
