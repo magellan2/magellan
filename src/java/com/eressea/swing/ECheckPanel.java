@@ -25,9 +25,11 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
@@ -64,10 +66,12 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
 import com.eressea.gamebinding.eressea.EresseaConstants;
+import com.eressea.io.file.FileType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.JECheck;
 import com.eressea.util.JVMUtilities;
 import com.eressea.util.OrderWriter;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -218,7 +222,7 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 
 		/* check version */
 		try {
-			if(!JECheck.checkVersion(exeFile)) {
+			if(!JECheck.checkVersion(exeFile,settings)) {
 				this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 				Object msgArgs[] = { JECheck.getRequiredVersion() };
@@ -247,7 +251,15 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 		try {
 			orderFile = File.createTempFile("orders", null);
 
-			Writer stream = new FileWriter(orderFile);
+			//	apexo (Fiete) 20061205: if in properties, force ISO encoding
+			Writer stream = null;
+			if (!PropertiesHelper.getboolean(settings, "TextEncoding.ISOrunEcheck", false)) {
+				// old = default = system dependend
+				stream = new FileWriter(orderFile);
+			} else {
+				// new: force our default = ISO
+				stream = new OutputStreamWriter(new FileOutputStream(orderFile), FileType.DEFAULT_ENCODING);
+			}
 			OrderWriter cmdWriter = new OrderWriter(data, selectedFaction, options);
 
 			if(chkSelRegionsOnly.isSelected() && (regions != null) && (regions.size() > 0)) {
@@ -273,7 +285,7 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 
 		// run ECheck and display the ECheck output
 		try {
-			LineNumberReader r = new LineNumberReader(new JECheck(exeFile, orderFile, options));
+			LineNumberReader r = new LineNumberReader(new JECheck(exeFile, orderFile, options,settings));
 			StringBuffer sb = new StringBuffer();
 
 			while(r.ready()) {
@@ -290,7 +302,7 @@ public class ECheckPanel extends InternationalizedDataPanel implements Selection
 		try {
 			List messages = CollectionFactory.createLinkedList(JECheck.getMessages(exeFile,
 																				   orderFile,
-																				   options));
+																				   options,settings));
 
 			if(messages.size() > 0) {
 				JECheck.determineAffectedObjects(data, orderFile, messages);

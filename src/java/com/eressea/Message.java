@@ -108,16 +108,23 @@ public class Message extends Identifiable {
 	 * @param msg TODO: DOCUMENT ME!
 	 */
 	public Message(Message msg) {
-		this(msg.getID(), msg.getText(), msg.getType(), msg.attributes);
+		this(msg.getID(), msg.getText(), msg.getMessageType(), msg.attributes);
 	}
 
 	/**
 	 * Creates a new Message object.
-	 *
-	 * @param id TODO: DOCUMENT ME!
-	 * @param text TODO: DOCUMENT ME!
-	 * @param type TODO: DOCUMENT ME!
-	 * @param attributes TODO: DOCUMENT ME!
+	 * 
+	 * If <code>text</code> is not <code>null</code> the text is set directly; if it is null, it
+	 * is rendered from the type and attributes.
+	 * 
+	 * @param id
+	 *            id ID of the Message
+	 * @param text
+	 *            The message text
+	 * @param type
+	 *            The message type
+	 * @param attributes
+	 *            The attributes
 	 */
 	public Message(ID id, String text, MessageType type, Map attributes) {
 		super(id);
@@ -136,47 +143,36 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Gets the rendered message text.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The message text
 	 */
 	public String getText() {
 		return text;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Sets the text of this message to <code>text</code>.
 	 *
-	 * @param text TODO: DOCUMENT ME!
+	 * @param text The new text
 	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the <code>MessageType</code> of this message.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The message type
 	 */
 	public MessageType getMessageType() {
 		return type;
 	}
 
 	/**
-	 * DOCUMENT ME!
+	 * Sets the <code>MessageType</code> of this message.
 	 *
-	 * @return TODO: DOCUMENT ME!
-	 *
-	 * @deprecated
-	 */
-	public MessageType getType() {
-		return getMessageType();
-	}
-
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param type TODO: DOCUMENT ME!
+	 * @param type The new message type
 	 */
 	public void setType(MessageType type) {
 		this.type = type;
@@ -216,13 +212,18 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Renderes a message text from the given <code>pattern</code> and <code>attributes</code>.
+	 * 
+	 * <p>Expects the tokens of the form {name1 name2} and replaces them by the attribute values for name1, name2 etc. 
+	 * If these values are unit names or region coordinates, their names are taken from the provided GameData.</p>
+	 * 
+	 * <p>WARNING! This does not work for the current cr format (41) which expects tokens of the form $unit($unit).</p>
 	 *
-	 * @param data TODO: DOCUMENT ME!
-	 * @param pattern TODO: DOCUMENT ME!
-	 * @param attributes TODO: DOCUMENT ME!
+	 * @param data The game for replacing unit IDs and region coordinates
+	 * @param pattern The pattern to render
+	 * @param attributes A map of (String,Value)-pairs for replacing tokens in the pattern
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The rendered text as string
 	 */
 	public static String render(GameData data, String pattern, Map attributes) {
 		if((pattern == null) || (attributes == null)) {
@@ -260,16 +261,16 @@ public class Message extends Identifiable {
 	/**
 	 * Renders the message and updates the message text.
 	 *
-	 * @param data TODO: DOCUMENT ME!
+	 * @param data The GameData for replacing unit IDs and region coordinates
 	 */
 	public void render(GameData data) {
 		setText(Message.render(data, type.getPattern(), attributes));
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A hash code for this message
 	 */
 	public int hashCode() {
 		// identify Message by message text
@@ -320,7 +321,7 @@ public class Message extends Identifiable {
 	}
 
 	/**
-	 * This checks if Messages are of new style (CR version >= 41 with id. But the id is not an
+	 * This checks if Messages are of new style (CR version >= 41 with id). But the id is not an
 	 * identifying characteristica.
 	 *
 	 * @param o TODO: DOCUMENT ME!
@@ -332,7 +333,7 @@ public class Message extends Identifiable {
 		return !this.getID().equals(ambiguousID) &&
 			   (this.getID().equals(o.getID()) ||
 			   (equalObjects(this.getText(), o.getText()) &&
-			   equalObjects(this.getType(), o.getType())));
+			   equalObjects(this.getMessageType(), o.getMessageType())));
 	}
 
 	private static final boolean equalObjects(Object a, Object b) {
@@ -362,8 +363,8 @@ public class Message extends Identifiable {
 			newMsg.setText(curMsg.getText());
 		}
 
-		if(curMsg.getType() != null) {
-			newMsg.setType(newGD.getMsgType(curMsg.getType().getID()));
+		if(curMsg.getMessageType() != null) {
+			newMsg.setType(newGD.getMsgType(curMsg.getMessageType().getID()));
 		}
 	}
 

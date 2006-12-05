@@ -1026,7 +1026,16 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		} 
 		
 		try {
-			if(write(new FileWriter(outputFile), false)) {
+			// apexo (Fiete) 20061205: if in properties, force ISO encoding
+			Writer stream = null;
+			if (!PropertiesHelper.getboolean(settings, "TextEncoding.ISOsaveOrders", false)) {
+				// old = default = system dependend
+				stream = new FileWriter(outputFile);
+			} else {
+				// new: force our default = ISO
+				stream = new OutputStreamWriter(new FileOutputStream(outputFile), FileType.DEFAULT_ENCODING);
+			}
+			if(write(stream, false)) {
 				quit(true);
 			}
 		} catch(IOException ioe) {

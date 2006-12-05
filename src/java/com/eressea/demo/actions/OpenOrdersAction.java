@@ -15,7 +15,13 @@ package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,10 +31,12 @@ import javax.swing.JOptionPane;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.io.file.FileType;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.swing.OpenOrdersAccessory;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.OrderReader;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
@@ -74,7 +82,15 @@ public class OpenOrdersAction extends MenuAction implements GameDataListener {
 			r.ignoreSemicolonComments(acc.getIgnoreSemicolonComments());
 
 			try {
-				r.read(new FileReader(fc.getSelectedFile().getAbsolutePath()));
+				// apexo (Fiete) 20061205: if in properties, force ISO encoding
+				if (!PropertiesHelper.getboolean(settings, "TextEncoding.ISOopenOrders", false)) {
+					// old = default = system dependend
+					r.read(new FileReader(fc.getSelectedFile().getAbsolutePath()));
+				} else {
+					// new: force our default = ISO
+					Reader stream = new InputStreamReader(new FileInputStream(fc.getSelectedFile().getAbsolutePath()), FileType.DEFAULT_ENCODING);
+					r.read(stream);
+				}
 
 				OrderReader.Status status = r.getStatus();
 				Object msgArgs[] = { new Integer(status.factions), new Integer(status.units) };

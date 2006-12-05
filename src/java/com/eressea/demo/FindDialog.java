@@ -838,6 +838,13 @@ public class FindDialog extends InternationalizedDataDialog
 		return retVal;
 	}
 
+	/**
+	 * Returns true iff <code>item</code>'s messages contain one of the patterns. 
+	 *
+	 * @param item
+	 * @param patterns
+	 * @return <code>true</code> if  <code>item</code>'s messages contain one of the patterns
+	 */
 	private boolean filterMessage(Object item, Collection patterns) {
 		boolean retVal = false;
 		Collection msgs = getMessages(item);
