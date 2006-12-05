@@ -16,30 +16,30 @@ package com.eressea;
 import java.util.StringTokenizer;
 
 /**
- * A coordinate uniquely identifies a location in a three dimensional space by x-, y- and z-axis
+ * A CoordinateID uniquely identifies a location in a three dimensional space by x-, y- and z-axis
  * components.
  */
 public class CoordinateID implements ID {
 	/**
-	 * The x-axis part of this coordinate. Modifying the x, y and z values changes the hash value
-	 * of this Coordinate!
+	 * The x-axis part of this CoordinateID. Modifying the x, y and z values changes the hash value
+	 * of this CoordinateID!
 	 */
 	public int x;
 
 	/**
-	 * The y-axis part of this coordinate. Modifying the x, y and z values changes the hash value
-	 * of this Coordinate!
+	 * The y-axis part of this CoordinateID. Modifying the x, y and z values changes the hash value
+	 * of this CoordinateID!
 	 */
 	public int y;
 
 	/**
-	 * The z-axis part of this coordinate. Modifying the x, y and z values changes the hash value
-	 * of this Coordinate!
+	 * The z-axis part of this CoordinateID. Modifying the x, y and z values changes the hash value
+	 * of this CoordinateID!
 	 */
 	public int z;
 
 	/**
-	 * Create a new Coordinate with a z-value of 0.
+	 * Create a new CoordinateID with a z-value of 0.
 	 *
 	 * @param x TODO: DOCUMENT ME!
 	 * @param y TODO: DOCUMENT ME!
@@ -51,7 +51,7 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Creates a new Coordinate object.
+	 * Creates a new CoordinateID object.
 	 *
 	 * @param x TODO: DOCUMENT ME!
 	 * @param y TODO: DOCUMENT ME!
@@ -64,7 +64,7 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Creates a new Coordinate object.
+	 * Creates a new CoordinateID object.
 	 *
 	 * @param c TODO: DOCUMENT ME!
 	 */
@@ -102,7 +102,7 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Returns a String representation of this coordinate consisting of the x, y and, if not 0, z
+	 * Returns a String representation of this CoordinateID consisting of the x, y and, if not 0, z
 	 * coordinates delimited by delim.
 	 *
 	 * @param delim TODO: DOCUMENT ME!
@@ -114,7 +114,7 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Returns a String representation of this coordinate. The x, y and z components are seperated
+	 * Returns a String representation of this CoordinateID. The x, y and z components are seperated
 	 * by the specified string and the z component is ommitted if it equals 0 and forceZ is false.
 	 *
 	 * @param delim the string to delimit the x, y and z components.
@@ -132,7 +132,7 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Returns a hash code value for this Coordinate. The value depends on the x, y and z values,
+	 * Returns a hash code value for this CoordinateID. The value depends on the x, y and z values,
 	 * so be careful when modifying these values.
 	 *
 	 * @return TODO: DOCUMENT ME!
@@ -142,13 +142,20 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Creates a new <tt>Coordinate</tt> object from a string containing the coordinates separated
-	 * by delimiters.
-	 *
-	 * @param coords TODO: DOCUMENT ME!
-	 * @param delim TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Creates a new <tt>CoordinateID</tt> object from a string containing the coordinates
+	 * separated by delimiters.
+	 * 
+	 * The string can contain two resp. three integers separated by one resp. two delimiters. For
+	 * example, <code>parse("12 4"," ")</code> returns the CoordinateID (12,4,0). Leading and
+	 * trailing whitespace around numbers is ignored. For instance, <code>parse("13, 4, 1",",")</code>
+	 * returns the CoordinateID (13,4,1), but the result of <code>parse("14  4  5
+	 * 
+	 * @param coords
+	 *            A string which presumably contains a coordinate description
+	 * @param delim
+	 *            The delimiters of the coordinates. See java.util.StringTokenizer
+	 * 
+	 * @return The CoordinateID as read from coord; <code>null</code> if parsing failed
 	 */
 	public static CoordinateID parse(String coords, String delim) {
 		CoordinateID c = null;
@@ -158,17 +165,17 @@ public class CoordinateID implements ID {
 
 			if(st.countTokens() == 2) {
 				try {
-					c = new CoordinateID(Integer.parseInt(st.nextToken()),
-									   Integer.parseInt(st.nextToken()));
-				} catch(Exception e) {
+					c = new CoordinateID(Integer.parseInt(st.nextToken().trim()),
+									   Integer.parseInt(st.nextToken().trim()));
+				} catch(NumberFormatException e) {
 					c = null;
 				}
 			} else if(st.countTokens() == 3) {
 				try {
-					c = new CoordinateID(Integer.parseInt(st.nextToken()),
-									   Integer.parseInt(st.nextToken()),
-									   Integer.parseInt(st.nextToken()));
-				} catch(Exception e) {
+					c = new CoordinateID(Integer.parseInt(st.nextToken().trim()),
+									   Integer.parseInt(st.nextToken().trim()),
+									   Integer.parseInt(st.nextToken().trim()));
+				} catch(NumberFormatException e) {
 					c = null;
 				}
 			}
@@ -178,11 +185,11 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Translates this coordinate by c.x on the x-axis and c.y on the y-axis and c.z on the z-axis.
+	 * Translates this CoordinateID by c.x on the x-axis and c.y on the y-axis and c.z on the z-axis.
 	 * Be careful when using this method on a coordinate used as a key in a hash map: modifying
 	 * the x, y and z values changes the hash value.
 	 *
-	 * @param c the relative coordinate to translate the current one by.
+	 * @param c the relative CoordinateID to translate the current one by.
 	 *
 	 * @return this.
 	 */
@@ -229,7 +236,7 @@ public class CoordinateID implements ID {
 	}
 
 	/**
-	 * Returns a copy of this Coordinate object.
+	 * Returns a copy of this CoordinateID object.
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 *

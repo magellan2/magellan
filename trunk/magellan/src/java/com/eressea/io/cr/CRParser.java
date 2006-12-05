@@ -19,6 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.eressea.Alliance;
 import com.eressea.Battle;
@@ -88,6 +91,8 @@ public class CRParser implements RulesIO, GameDataIO {
 	
 	CoordinateID newOrigin = new CoordinateID(0,0,0);
 	
+	private Collection warnedLines = CollectionFactory.createHashSet();
+
 	/**
 	 * Creates a new parser.
 	 *
@@ -119,7 +124,42 @@ public class CRParser implements RulesIO, GameDataIO {
     	return c;
     }
     
-    private Collection warnedLines = CollectionFactory.createHashSet();
+	/**
+	 * Tries to replace coordinates in string by the translated version.
+	 * 
+	 * The string is searched for occurences of the form "(123,123)" or "(123,123,123)" or
+	 * "(123,123,Astralraum)", transforms them and replaces them. This is note completely fool-proof!
+	 * 
+	 * @param string Usually a message text which might contain coordinates
+	 * @deprecated We should rather use Message.render() for this purpose 
+	 */
+	private String originTranslate(String string) {
+//		String debugString="Vogt";
+//		if (string.indexOf(debugString)>=0){
+//			log.info(string);
+//		}
+		StringBuffer result = new StringBuffer();
+		String number = "[\\+\\-]?\\d+";
+		// FIXME Look up "Astralraum"
+		Matcher matcher = Pattern.compile("\\(("+number+")\\,\\ ?("+number+")(\\,\\ ?(("+number+")|Astralraum))?\\)").matcher(string);
+		while(matcher.find()){
+			String candi = matcher.group();
+		    candi=candi.replaceAll("Astralraum", "1");
+			CoordinateID coord = CoordinateID.parse(candi.substring(1,candi.length()-1), ",");
+			if (coord!=null){
+				originTranslate(coord);
+				matcher.appendReplacement(result, "("+coord.toString()+")");	
+			}else
+				matcher.appendReplacement(result, matcher.group());
+//			if (string.indexOf(debugString)>=0){
+//			log.info(candi+" "+candi.substring(1,candi.length()-1)+" = "+coord);
+//			log.info(result.toString());
+//			}
+		}
+		matcher.appendTail(result);
+		return result.toString();
+	}
+
 	/**
 	 * Print an error message on the standard output channel.
 	 *
@@ -469,13 +509,27 @@ public class CRParser implements RulesIO, GameDataIO {
 
 					msg.setType(mt);
 				} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("rendered")) {
-					msg.setText(sc.argv[0]);
+					msg.setText(originTranslate(sc.argv[0]));
 				} else if(sc.argc == 2) {
 					if(msg.attributes == null) {
 						msg.attributes = CollectionFactory.createOrderedHashtable();
 					}
+					
+					
+					CoordinateID coord = CoordinateID.parse(sc.argv[0], ",");
 
-					msg.attributes.put(sc.argv[1], sc.argv[0]);
+					if (coord !=null){
+						CoordinateID newCoord = originTranslate(coord);
+						msg.attributes.put(sc.argv[1], newCoord.toString(","));
+					}else{
+						coord = CoordinateID.parse(sc.argv[0], " ");
+						if (coord !=null){
+							CoordinateID newCoord = originTranslate(coord);
+							msg.attributes.put(sc.argv[1], newCoord.toString(" ", true));
+						}else{
+							msg.attributes.put(sc.argv[1], sc.argv[0]);
+						}
+					}
 				}
 
 				sc.getNextToken();
@@ -484,7 +538,6 @@ public class CRParser implements RulesIO, GameDataIO {
 			if(list == null) {
 				list = CollectionFactory.createLinkedList();
 			}
-
 			list.add(msg);
 		}
 

@@ -42,7 +42,7 @@ public class SetOriginAction extends MenuAction {
 	 * if approved, then setOrigin of class Client is called
 	 * sets the new Origin
 	 *
-	 * @param e ActionEvent
+	 * @param e 
 	 */
 	public void actionPerformed(ActionEvent e) {
 		SetOriginDialog dialog = new SetOriginDialog(client, client.getDispatcher(), client.getData());

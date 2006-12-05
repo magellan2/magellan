@@ -1,3 +1,11 @@
+2006-12-05  Fiete  <Fiete@users.sourceforge.net>
+
+	* apexo: added enforcing ISO encoding for writing and
+	  reading orders, and for feeding ECheck
+	* fiete: added preferences for TextEncoding
+	* stm: added support for new origin in messages
+	* stm: CoordinateID parser updated, CRParser updated
+
 2006-11-24  Fiete  <Fiete@users.sourceforge.net>
 
 	* adjusted the Regions.getPath to like coastnear paths

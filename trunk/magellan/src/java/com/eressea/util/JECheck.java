@@ -15,14 +15,20 @@ package com.eressea.util;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Properties;
 
 import com.eressea.CoordinateID;
 import com.eressea.GameData;
@@ -30,6 +36,7 @@ import com.eressea.ID;
 import com.eressea.Region;
 import com.eressea.Unit;
 import com.eressea.UnitID;
+import com.eressea.io.file.FileType;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -41,6 +48,7 @@ public class JECheck extends Reader {
 	private Reader outputReader = null;
 	private File tempFile = null;
 
+		
 	/**
 	 * Creates a new JECheck object by executing ECheck with the specified parameters and making
 	 * its output accessible through the Reader interface.
@@ -51,10 +59,11 @@ public class JECheck extends Reader {
 	 * 		  ECheck is executed without a specified orders file.
 	 * @param options additional options to be passed to ECheck to control its operation and
 	 * 		  output.
+	 * @param settings the settings of the client, needed to find out about forced ISO encod 
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public JECheck(File eCheckExe, File orders, String options) throws IOException {
+	public JECheck(File eCheckExe, File orders, String options, Properties settings) throws IOException {
 		List commandLine = CollectionFactory.createLinkedList();
 		Process p = null;
 		long start = 0;
@@ -96,7 +105,7 @@ public class JECheck extends Reader {
 			/* do this so the -m option is not necessarily specified
 			   in the arguments but prevent problems with older
 			   versions */
-			if(JECheck.getVersion(eCheckExe).compareTo(new Version("4.0.6", ".")) >= 0) {
+			if(JECheck.getVersion(eCheckExe,settings).compareTo(new Version("4.0.6", ".")) >= 0) {
 				commandLine.add("-m");
 			}
 
@@ -142,7 +151,15 @@ public class JECheck extends Reader {
 
 		// get a reader on the temporary output file (which is deleted on close)
 		try {
-			outputReader = new FileReader(tempFile);
+			//	apexo (Fiete) 20061205: if in properties, force ISO encoding
+			
+			if (!PropertiesHelper.getboolean(settings, "TextEncoding.ISOopenOrders", false)) {
+				// old = default = system dependend
+				outputReader = new FileReader(tempFile);
+			} else {
+				// new: force our default = ISO
+				outputReader = new InputStreamReader(new FileInputStream(tempFile), FileType.DEFAULT_ENCODING);	
+			}
 		} catch(Exception e) {
 			log.error("JECheck.JECheck(): cannot create a file reader on the temporary output file",
 					  e);
@@ -278,10 +295,10 @@ public class JECheck extends Reader {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 * @throws java.text.ParseException TODO: DOCUMENT ME!
 	 */
-	public static Collection getMessages(File eCheckExe, File orders, String options)
+	public static Collection getMessages(File eCheckExe, File orders, String options, Properties settings)
 								  throws IOException, java.text.ParseException
 	{
-		return getMessages(new JECheck(eCheckExe, orders, options));
+		return getMessages(new JECheck(eCheckExe, orders, options, settings));
 	}
 
 	/**
@@ -587,14 +604,14 @@ public class JECheck extends Reader {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static Version getVersion(File eCheckExe) throws IOException {
+	public static Version getVersion(File eCheckExe,Properties settings) throws IOException {
 		Version v = null;
 		String version = null;
 		String line = null;
 		BufferedReader br = null;
 
 		try {
-			br = new BufferedReader(new JECheck(eCheckExe, null, "-h"));
+			br = new BufferedReader(new JECheck(eCheckExe, null, "-h",settings));
 			line = br.readLine().toLowerCase();
 			br.close();
 
@@ -634,8 +651,8 @@ public class JECheck extends Reader {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public static boolean checkVersion(File eCheckExe) throws IOException {
-		Version version = JECheck.getVersion(eCheckExe);
+	public static boolean checkVersion(File eCheckExe,Properties settings) throws IOException {
+		Version version = JECheck.getVersion(eCheckExe,settings);
 
 		return (version.compareTo(JECheck.getRequiredVersion()) >= 0);
 	}
