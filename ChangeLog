@@ -1,5 +1,12 @@
 2006-12-05  Fiete  <Fiete@users.sourceforge.net>
 
+	* Fiete: fixed Bug: german luxurynames in trade organizer
+	* Fiete: fixed Bug: german EresseaDate -> Internationalized
+	* Fiete: added context-menu for toggle switch: show capacity for all items
+	  (not finished yet)
+
+2006-12-05  Fiete  <Fiete@users.sourceforge.net>
+
 	* apexo: added enforcing ISO encoding for writing and
 	  reading orders, and for feeding ECheck
 	* fiete: added preferences for TextEncoding
