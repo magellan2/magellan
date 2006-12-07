@@ -121,6 +121,7 @@ import com.eressea.swing.MenuProvider;
 import com.eressea.swing.completion.MultiEditorOrderEditorList;
 import com.eressea.swing.context.ContextFactory;
 import com.eressea.swing.context.UnitContextMenu;
+import com.eressea.swing.context.UnitCapacityContextMenu;
 import com.eressea.swing.context.actions.ContextAction;
 import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -482,7 +483,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		contextManager.putSimpleObject(CommentNode.class, commentContext);
 		contextManager.putSimpleObject(UnitNodeWrapper.class, unitContext);
 		contextManager.putSimpleObject(UnitListNodeWrapper.class, unitContext);
-
+		contextManager.putSimpleObject(DefaultMutableTreeNode.class, unitContext);
+		
+		
+		
 		JScrollPane treeScrollPane = new JScrollPane(tree);
 
 		// ClearLook suggests to remove border
@@ -4312,6 +4316,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 				if((col != null) && (col.size() > 0)) {
 					return new UnitContextMenu((Unit) col.iterator().next(), col, dispatcher, data);
+				}
+			} else if(argument instanceof DefaultMutableTreeNode) {
+				DefaultMutableTreeNode actArg = (DefaultMutableTreeNode)argument;
+				Object actUserObject = actArg.getUserObject();
+				if (actUserObject  instanceof SimpleNodeWrapper) {
+					SimpleNodeWrapper actSNW = (SimpleNodeWrapper) actUserObject;
+					if (actSNW.toString().toLowerCase().startsWith(getString("node.capacityonfoot").toLowerCase())){
+						// OK, this is right klick in Capacity...
+						
+						return new UnitCapacityContextMenu(dispatcher, data);
+					}
 				}
 			}
 
