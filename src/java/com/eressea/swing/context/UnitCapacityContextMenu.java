@@ -13,80 +13,69 @@
 
 package com.eressea.swing.context;
 
-import java.awt.BorderLayout;
-import java.awt.Frame;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import com.eressea.GameData;
-import com.eressea.Region;
-import com.eressea.Unit;
-import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.event.EventDispatcher;
-import com.eressea.event.OrderConfirmEvent;
-import com.eressea.event.SelectionEvent;
-import com.eressea.event.UnitOrdersEvent;
-import com.eressea.relation.TeachRelation;
-import com.eressea.swing.GiveOrderDialog;
-import com.eressea.swing.context.actions.ContextAction;
+import com.eressea.event.GameDataEvent;
 import com.eressea.util.CollectionFactory;
-import com.eressea.util.ShipRoutePlanner;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.Translations;
-import com.eressea.util.UnitRoutePlanner;
+
 
 /**
  * TODO: DOCUMENT ME!
  *
- * @author $author$
+ * @author Fiete
  * @version $Revision: 313 $
  */
 public class UnitCapacityContextMenu extends JPopupMenu {
 
 	private GameData data;
 	private EventDispatcher dispatcher;
+	private Properties settings;
 
 	
 	/**
 	 * Creates new UnitCapacityContextMenu
 	 *
-	 * @param unit last selected unit - is not required to be in selected objects
-	 * @param selectedObjects null or Collection of selected objects
 	 * @param dispatcher EventDispatcher
 	 * @param data the actual GameData or World
 	 */
-	public UnitCapacityContextMenu(EventDispatcher dispatcher, GameData data) {
+	public UnitCapacityContextMenu(EventDispatcher dispatcher, GameData data,Properties settings) {
 		super(":-)");
 
 		this.data = data;
 		this.dispatcher = dispatcher;
+		this.settings = settings;
 
         init();
     }
     
     private void init() {
-    	JMenuItem toogleAllItems = new JMenuItem(getString("menu.toggleShowAllItems.caption"));
+    	
+    	boolean actStatusShowAll = PropertiesHelper.getboolean(this.settings, "unitCapacityContextMenuShowAll", false);
+    	JMenuItem toogleAllItems = null;
+    	if (!actStatusShowAll){
+    		toogleAllItems = new JMenuItem(getString("menu.toggleShowAllItems.caption"));
+    	} else {
+    		toogleAllItems = new JMenuItem(getString("menu.toggleShowSomeItems.caption"));
+    	}
+    		
         toogleAllItems.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                   
+                	boolean actStatusShowAll = PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowAll", false);
+                	settings.setProperty("unitCapacityContextMenuShowAll", actStatusShowAll ? "false" : "true");
+                	// how to notify to rebuild the tree
+                	// just for now only one idea: gamedatachangevent
+                	GameDataEvent newE = new GameDataEvent(this,data);
+                	dispatcher.fire(newE);
                 }
             });
         add(toogleAllItems);
@@ -113,70 +102,11 @@ public class UnitCapacityContextMenu extends JPopupMenu {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("menu.toggleShowAllItems.caption", "all Items");
-
+			defaultTranslations.put("menu.toggleShowAllItems.caption", "show all Items");
+			defaultTranslations.put("menu.toggleShowSomeItems.caption", "show Items useful here");
 		}
 
 		return defaultTranslations;
 	}
 
-	private class RemoveUnitFromTeachersListAction implements ActionListener {
-		private Unit student;
-		private Unit teacher;
-
-		/**
-		 * Creates a new RemoveUnitFromTeachersListAction object.
-		 *
-		 * @param student TODO: DOCUMENT ME!
-		 * @param teacher TODO: DOCUMENT ME!
-		 */
-		public RemoveUnitFromTeachersListAction(Unit student, Unit teacher) {
-			this.student = student;
-			this.teacher = teacher;
-		}
-
-		/**
-		 * TODO: DOCUMENT ME!
-		 *
-		 * @param e TODO: DOCUMENT ME!
-		 */
-		public void actionPerformed(ActionEvent e) {
-			String id = student.getID().toString();
-			Collection orders = teacher.getOrders();
-			int i = 0;
-			boolean found = false;
-			String order = null;
-
-			for(Iterator iter = orders.iterator(); iter.hasNext(); i++) {
-				order = (String) iter.next();
-
-				if(order.toUpperCase().trim().startsWith("LEHRE")) {
-					if(order.indexOf(id) > -1) {
-						found = true;
-
-						break;
-					}
-				}
-			}
-
-			if(found) {
-				String newOrder = order.substring(0, order.indexOf(id)) +
-								  order.substring(java.lang.Math.min(order.indexOf(id) + 1 +
-																	 id.length(), order.length()),
-												  order.length());
-
-				// FIXME(pavkovic: Problem hier!
-				UnitOrdersEvent event = new UnitOrdersEvent(this, teacher);
-				teacher.removeOrderAt(i, false);
-
-				if(!newOrder.trim().equalsIgnoreCase("LEHREN") &&
-					   !newOrder.trim().equalsIgnoreCase("LEHRE")) {
-					// FIXME(pavkovic: Problem hier!
-					teacher.addOrderAt(i, newOrder);
-				}
-
-				dispatcher.fire(event);
-			}
-		}
-	}
 }
