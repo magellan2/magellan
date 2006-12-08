@@ -214,6 +214,14 @@ public abstract class GameData implements Cloneable {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public abstract Map translations();
+	
+	/**
+	 * is set to true, if while proceeding some
+	 * functions (e.g. CRParse) and we are running
+	 * out of memory...
+	 * data may be corrupted or empty then
+	 */
+	public boolean outOfMemory = false;
 
 	/**
 	 * Creates a new GameData object.

@@ -41,6 +41,7 @@ import com.eressea.Item;
 import com.eressea.LongID;
 import com.eressea.LuxuryPrice;
 import com.eressea.Message;
+import com.eressea.MissingData;
 import com.eressea.Potion;
 import com.eressea.Region;
 import com.eressea.RegionResource;
@@ -2835,6 +2836,11 @@ public class CRParser implements RulesIO, GameDataIO {
 	public synchronized GameData read(Reader in, GameData world) throws IOException {
 		boolean bCorruptReportMsg = false;
 		int regionSortIndex = 0;
+		// Fiete 20061208
+        // set finalizer prio to max
+		com.eressea.util.MemoryManagment.setFinalizerPriority(Thread.MAX_PRIORITY);
+		
+		
 		this.world = world;
 		sc = new Scanner(in);
 		sc.getNextToken();
@@ -2855,6 +2861,18 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else {
 				unknown("top level", true);
 			}
+			
+			// Fiete 20061208  check Memory
+			if (!com.eressea.util.MemoryManagment.isFreeMemory()){
+				// we have a problem..
+				// like in startup of client..we reset the data
+				this.world = new MissingData();
+				// marking the problem
+				this.world.outOfMemory = true;
+				// end exit
+				return this.world;
+			}
+			
 		}
 
 		return this.world;
