@@ -28,7 +28,7 @@ import com.eressea.util.Umlaut;
  * @author $author$
  * @version $Revision$
  */
-public class ItemType extends ObjectType {
+public class ItemType extends ObjectType implements Comparable {
 	private float weight = 0;
 	private String iconName = null;
 	private Skill makeSkill = null;
@@ -190,5 +190,9 @@ public class ItemType extends ObjectType {
 	public void setIconName(String iName) {
 		iconName = iName;
 		iconNameEvaluated = false;
+	}
+	public int compareTo(Object o){
+		ItemType cmpItemType = (ItemType)o;
+		return this.getName().compareTo(cmpItemType.getName());
 	}
 }

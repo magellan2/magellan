@@ -1,4 +1,11 @@
-2006-12-05  Fiete  <Fiete@users.sourceforge.net>
+2006-12-06  Fiete  <Fiete@users.sourceforge.net>
+
+	* finished the show capacity for all items - thing
+	* had to add Comparable Interface to ItemType
+	* feature request: added BACK button in showPotions
+
+
+2006-12-06  Fiete  <Fiete@users.sourceforge.net>
 
 	* Fiete: fixed Bug: german luxurynames in trade organizer
 	* Fiete: fixed Bug: german EresseaDate -> Internationalized

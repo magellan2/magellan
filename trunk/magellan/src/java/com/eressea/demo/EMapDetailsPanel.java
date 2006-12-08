@@ -40,6 +40,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Properties;
@@ -145,6 +146,7 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.EresseaRaceConstants;
 import com.eressea.util.EresseaSkillConstants;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.Taggable;
 import com.eressea.util.Umlaut;
@@ -2392,18 +2394,55 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		ItemType horses = data.rules.getItemType(StringID.create("Pferd"));
 		ItemType carts = data.rules.getItemType(StringID.create("Wagen"));
 		ItemType silver = data.rules.getItemType(StringID.create("Silber"));
-
-		for(Iterator iter = u.getRegion().items().iterator(); iter.hasNext();) {
-			Item item = (Item) iter.next();
-			ItemType type = item.getItemType();
-
-			if((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
-				   !type.equals(silver)) {
-				int weight = (int) (type.getWeight() * 100);
-				parent.add(createSimpleNode("Max. " + type.getName() + ": " +
-											(freeCapacity / weight), "items/" + type.getIconName()));
+		// Fiete: feature request...showing not only capacity for "good" items in region...
+		if (!PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowAll", false)){
+			for(Iterator iter = u.getRegion().items().iterator(); iter.hasNext();) {
+				Item item = (Item) iter.next();
+				ItemType type = item.getItemType();
+	
+				if((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
+					   !type.equals(silver)) {
+					int weight = (int) (type.getWeight() * 100);
+					parent.add(createSimpleNode("Max. " + type.getName() + ": " +
+												(freeCapacity / weight), "items/" + type.getIconName()));
+				}
+			}
+		} else {
+			// show all itemtypes...need to built and sort a list
+			// we take natural order - it works - added Comparable to ItemType (Fiete)
+			TreeSet l = new TreeSet();
+			// only use the items found in gamedata
+			// without fancy merging, for all items should pe Translation present
+			for (Iterator iter2 = u.getRegion().getData().regions().values().iterator();iter2.hasNext();){
+				Region r  = (Region) iter2.next();
+				for (Iterator iteri = r.items().iterator();iteri.hasNext();){
+					Item item = (Item) iteri.next();
+					ItemType type = item.getItemType();
+					l.add(type);
+				}
+			}
+			String actLocale = u.getRegion().getData().getLocale().toString();
+			if (actLocale.equalsIgnoreCase("de")) {
+				// ok...a de GameData...here we use all defined ItemTypes from the rules...too
+				// need no present Translation for those...in CR all in german...
+				for (Iterator iter2 = u.getRegion().getData().rules.getItemTypeIterator();iter2.hasNext();){
+					ItemType type = (ItemType)iter2.next();
+					l.add(type);
+				}
+			} 
+			
+			for (Iterator iter3 = l.iterator();iter3.hasNext();){
+				ItemType type = (ItemType) iter3.next();
+				
+				if((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
+					   !type.equals(silver)) {
+					int weight = (int) (type.getWeight() * 100);
+					parent.add(createSimpleNode("Max. " + type.getName() + ": " +
+												(freeCapacity / weight), "items/" + type.getIconName()));
+				}
 			}
 		}
+		
 	}
 
 	/**
@@ -3038,6 +3077,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 													 ingredient.getItemType().getIconName()));
 			}
 		}
+		parent.add(new DefaultMutableTreeNode(new BackButton(backTarget)));
 	}
 
 	/**
@@ -4322,10 +4362,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				Object actUserObject = actArg.getUserObject();
 				if (actUserObject  instanceof SimpleNodeWrapper) {
 					SimpleNodeWrapper actSNW = (SimpleNodeWrapper) actUserObject;
-					if (actSNW.toString().toLowerCase().startsWith(getString("node.capacityonfoot").toLowerCase())){
+					if (actSNW.toString().toLowerCase().startsWith(getString("node.capacityonfoot").toLowerCase())
+							|| actSNW.toString().toLowerCase().startsWith(getString("node.capacityonhorse").toLowerCase()
+							)){
 						// OK, this is right klick in Capacity...
 						
-						return new UnitCapacityContextMenu(dispatcher, data);
+						return new UnitCapacityContextMenu(dispatcher, data, settings);
 					}
 				}
 			}
