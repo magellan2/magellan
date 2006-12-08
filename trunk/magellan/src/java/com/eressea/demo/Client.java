@@ -1038,6 +1038,10 @@ public class Client extends JFrame implements ShortcutListener,
             /* set the stderr to stdout while there is no log attached */
             System.setErr(System.out);
 
+            // Fiete 20061208
+            // set finalizer prio to max
+            com.eressea.util.MemoryManagment.setFinalizerPriority(Thread.MAX_PRIORITY);
+            
             // initialize start window
             Icon startIcon = null;
 
@@ -1356,7 +1360,13 @@ public class Client extends JFrame implements ShortcutListener,
                     JOptionPane.ERROR_MESSAGE);
             log.error(exc);
         }
-
+        if (d.outOfMemory){
+        	JOptionPane.showMessageDialog(this,
+                    getString("msg.outofmemory.text"),
+                    getString("msg.outofmemory.title"),
+                    JOptionPane.ERROR_MESSAGE);
+            log.error(getString("msg.outofmemory.text"));
+        }
         return d;
     }
 
@@ -2084,6 +2094,8 @@ public class Client extends JFrame implements ShortcutListener,
             defaultTranslations.put("menu.bookmarks.show.caption", "Show list");
             defaultTranslations
                     .put("menu.bookmarks.clear.caption", "Clear all");
+            defaultTranslations.put("msg.outofmemory.text","Java VM is running out of memory.");
+            defaultTranslations.put("msg.outofmemory.title","Out Of Memory.");
         }
 
         return defaultTranslations;
