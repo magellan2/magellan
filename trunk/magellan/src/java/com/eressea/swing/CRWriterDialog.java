@@ -244,7 +244,9 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 					String outputFile = getFileName((String) comboOutputFile.getSelectedItem());
 
 					if(outputFile != null) {
-						comboOutputFile.addItem(outputFile);
+						// comboOutputFile.addItem(outputFile);
+						// bug Fiete 20061217
+						comboOutputFile.insertItemAt(outputFile,0);
 						comboOutputFile.setSelectedItem(outputFile);
 					}
 				}
@@ -374,7 +376,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 		settings.setProperty("CRWriterDialog.delStats",
 							 String.valueOf(chkDelStats.isSelected()));
 		settings.setProperty("CRWriterDialog.delTrans",
-							 String.valueOf(chkDelStats.isSelected()));
+							 String.valueOf(chkDelTrans.isSelected()));
 
 		if(chkSelRegionsOnly.isEnabled()) {
 			settings.setProperty("CRWriterDialog.includeSelRegionsOnly",

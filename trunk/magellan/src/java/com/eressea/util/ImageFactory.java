@@ -236,4 +236,19 @@ public class ImageFactory implements GameDataListener {
 	public Image loadMapImage(String imageName) {
 		return loadImage("images/map/" + imageName);
 	}
+	
+	/**
+	 * Checks, if icon exists
+	 * @param imageName the name of the icon to check
+	 * @return true, if a loadImage order would be succesfull...
+	 * @author Fiete
+	 * 
+	 */
+	public boolean existImageIcon(String imageName) {
+		Image img = loadImage("images/icons/" + imageName);
+
+		return (img == null) ? false : true;
+	}
+	
+	
 }

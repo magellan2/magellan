@@ -1378,7 +1378,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 								 Collection expandableNodes) {
 		Map skills = CollectionFactory.createHashtable();
 
-//		 key: racename (string), Value: Integer-Object containing number of persons of that race
+		// key: racename (string), Value: Integer-Object containing number of persons of that race
 		// Fiete: Value: raceInfo with realRace ( nor Prefix, and the amount of Persons
 		Map races = CollectionFactory.createHashtable();
 
@@ -1402,7 +1402,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			RaceInfo rInfo = (RaceInfo) races.get(u.getRaceName(data));
 			if (rInfo == null){
 				rInfo = new RaceInfo();
-				rInfo.raceNoPrefix = com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName());
+				// rInfo.raceNoPrefix = com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName());
+				// umlaut check is done late when loading the image
+				rInfo.raceNoPrefix = u.getRealRaceName();
 			}
 			
 			rInfo.amount +=u.getPersons();
@@ -1433,9 +1435,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			int i = rI.amount;
 			int i_modified = rI.amount_modified;
 			String personIconName = "person";
+			/**
 			String gifNameEN = getString(rI.raceNoPrefix);
 			if (!gifNameEN.equalsIgnoreCase(rI.raceNoPrefix)){
 				personIconName = gifNameEN;
+			}
+			*/
+			// we check if specific icon for race exists, if so, we use it
+			// Fiete 20061218
+			if (getMagellanContext().getImageFactory().existImageIcon(rI.raceNoPrefix)){
+				personIconName = rI.raceNoPrefix;
 			}
 			if (i_modified==i){
 				parent.add(createSimpleNode(i + " " + race, personIconName));
@@ -2342,9 +2351,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			strPersons += (" (" + u.getModifiedPersons() + ")");
 		}
 		String iconPersonName = "person";
+		/**
+		 * Fiete 20061218...was just a first try....not that good, needs 
+		 * allways some support..
 		String iconNameEN = getString(com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName()));
 		if (!iconNameEN.equalsIgnoreCase(com.eressea.util.Umlaut.convertUmlauts(u.getRealRaceName()))) {
 			iconPersonName = iconNameEN;
+		}
+		*/
+		// now we check if a specific race icon exists, if true, we use it
+		if (getMagellanContext().getImageFactory().existImageIcon(u.getRealRaceName())){
+			iconPersonName = u.getRealRaceName();
 		}
 		DefaultMutableTreeNode personNode = createSimpleNode(strPersons, iconPersonName);
 		parent.add(personNode);
@@ -4510,19 +4527,6 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("menu.caption", "Details");
 			defaultTranslations.put("menu.mnemonic", "D");
 			defaultTranslations.put("menu.supertitle", "Tree");
-			defaultTranslations.put("aquarians", "aquariansgif");
-			defaultTranslations.put("cats", "catsgif");
-			defaultTranslations.put("demons", "demonsgif");
-			defaultTranslations.put("dwarves", "dwarvesgif");
-			defaultTranslations.put("elves", "elvesgif");
-			defaultTranslations.put("goblins", "goblinsgif");
-			defaultTranslations.put("halflings", "halflingsgif");
-			defaultTranslations.put("humans", "humansgif");
-			defaultTranslations.put("insects", "insectsgif");
-			defaultTranslations.put("orcs", "orcsgif");
-			defaultTranslations.put("toads", "toadsgif");
-			defaultTranslations.put("trolls", "trollsgif");
-			defaultTranslations.put("seaserpents", "seeschlangengif");
 		}
 
 		return defaultTranslations;
