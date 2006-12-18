@@ -685,7 +685,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 * Returns the name of this unit's race including the prefixes of itself, its faction and group
 	 * if it has such and those prefixes are set.
 	 *
-	 * @param data TODO: DOCUMENT ME!
+	 * @param data The GameData
 	 *
 	 * @return the name or null if this unit's race or its name is not set.
 	 */
@@ -713,15 +713,31 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * @return TODO: DOCUMENT ME!
+	 * @return The String of the RealRace. If no RealRace is known( = null)
+	 * the normal raceName is returned.
+	 * @author Fiete
+	 * 
 	 */
 	public String getRealRaceName(){
 		if (this.realRace==null) {
-			return this.race.toString();
+			// return this.race.toString();
+			return this.race.id.toString();
 		} else {
-			return this.realRace.toString();
+			return this.realRace.id.toString();
 		}
 	}
+	
+	/**
+	 * Delivers the info "typ" from CR
+	 * without any prefixes and translations
+	 * used for displaying the according race icon
+	 * @return Name of the race
+	 * @author Fiete
+	 */
+	public String getSimpleRaceName(){
+		return this.race.toString();
+	}
+	
 	
 	/** A map containing all temp units created by this unit. */
 	private Map tempUnits = null;

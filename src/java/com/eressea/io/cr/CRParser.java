@@ -1936,7 +1936,8 @@ public class CRParser implements RulesIO, GameDataIO {
 			region.trees = Math.max(region.trees, 0);
 			region.peasants = Math.max(region.peasants, 0);
 			region.horses = Math.max(region.horses, 0);
-			region.trees = Math.max(region.trees, 0);
+			// Fiete 20061217 this was double...
+			// region.trees = Math.max(region.trees, 0);
 		}
 
 		sc.getNextToken(); // skip "EINHEIT nr"
