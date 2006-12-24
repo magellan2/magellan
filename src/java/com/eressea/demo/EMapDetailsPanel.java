@@ -2449,7 +2449,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			// without fancy merging, for all items should pe Translation present
 			for (Iterator iter2 = u.getRegion().getData().regions().values().iterator();iter2.hasNext();){
 				Region r  = (Region) iter2.next();
-				for (Iterator iteri = r.items().iterator();iteri.hasNext();){
+				for (Iterator iteri = r.allItems().iterator();iteri.hasNext();){
 					Item item = (Item) iteri.next();
 					ItemType type = item.getItemType();
 					l.add(type);
