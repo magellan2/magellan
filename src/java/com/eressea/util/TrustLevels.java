@@ -43,6 +43,8 @@ public class TrustLevels {
 				if(!f.trustLevelSetByUser) {
 					f.trustLevel = Faction.TL_DEFAULT;
 				}
+				
+				f.hasGiveAlliance = false;
 			}
 
 			for(Iterator factions = data.factions().values().iterator(); factions.hasNext();) {
@@ -75,6 +77,13 @@ public class TrustLevels {
 
 						if(!ally.trustLevelSetByUser) {
 							ally.trustLevel = Math.max(ally.trustLevel, alliance.getTrustLevel());
+						}
+						/**
+						 * not really fine..but bitmask 8 means "GIVE"
+						 * Fiete
+						 */
+						if (alliance.getState(8)){
+							ally.hasGiveAlliance=true;
 						}
 					}
 				}

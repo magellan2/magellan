@@ -90,6 +90,13 @@ public class Faction extends UnitContainer {
 	public int trustLevel = TL_DEFAULT;
 	
 	/**
+	 * Indicates, if one priviliged faction has set the "GIVE" right
+	 * to this faction.
+	 * used for showing unit capacity only for items of such factions
+	 */
+	public boolean hasGiveAlliance = false;
+	
+	/**
 	 * taken from the cr: actual amount of heroes (Fiete)
 	 */
 	public int heroes = -1;

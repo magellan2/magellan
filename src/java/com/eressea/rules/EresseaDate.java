@@ -63,6 +63,13 @@ public class EresseaDate extends Date {
 												   };
 	private static final String year_long_alt2 = "_im_Jahre_";
 	private static final String age_long_alt2 = "_des_zweiten_Zeitalters.";
+	
+	// short internationalized
+	private static final String week_short[] = {
+		"1.",
+		"2.",
+		"3."
+	};
 
 	// phrase
 	private static final String begin_phrase = "Wir_schreiben_";
@@ -187,10 +194,12 @@ public class EresseaDate extends Date {
 			default:
 			case Date.TYPE_SHORT: {
 				int iWeek = (iDate2 % 3) + 1;
+				String strWeek = getString(week_short[iWeek-1]);
 				String strMonth = getString(months_new[(iDate2 / 3) % 9]);
 				int iYear = (iDate2 / 27) + 1;
 
-				strDate = iWeek + " " + getString("._Woche_") +" " + strMonth  + iYear;
+				// strDate = iWeek + " " + getString("._Woche_") +" " + strMonth  + iYear;
+				strDate = strWeek + " " + getString("Woche") +" " + strMonth  + " " + getString("Jahr") + " " + iYear;
 			}
 
 			break;
@@ -344,7 +353,7 @@ public class EresseaDate extends Date {
             defaultTranslations.put("Zweite_Woche_des_Monats_", "second week of month");
             defaultTranslations.put("Dritte_Woche_des_Monats_", "third week of month");
             defaultTranslations.put("_im_Jahre_", "in year ");
-            defaultTranslations.put("_des_zweiten_Zeitalters.", "of the second epoch.");
+            defaultTranslations.put("_des_zweiten_Zeitalters.", "of the second age.");
             defaultTranslations.put("Anfang_des_Monats_", "Start of month");
             defaultTranslations.put("Mitte_des_Monats_", "Middle of month");
             defaultTranslations.put("Ende_des_Monats_", "End of month");
@@ -362,6 +371,11 @@ public class EresseaDate extends Date {
             defaultTranslations.put("Es_ist_Winter", "It is winter");
             defaultTranslations.put("Es_ist_Frühling", "It is spring");
             defaultTranslations.put("._Woche_", ". week");
+            defaultTranslations.put("1.", "1st");
+            defaultTranslations.put("2.", "2nd");
+            defaultTranslations.put("3.", "3rd");
+            defaultTranslations.put("Woche", "week");
+            defaultTranslations.put("Jahr", "year");
         }
 
         return defaultTranslations;

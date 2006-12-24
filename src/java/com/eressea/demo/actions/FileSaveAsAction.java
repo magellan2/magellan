@@ -140,6 +140,7 @@ public class FileSaveAsAction extends MenuAction implements GameDataListener{
 
 	protected void doSaveAction(File file) {
 		try {
+			// log.info("debuging: doSaveAction(File) called for file: " + file.toString());
 			doSaveAction(FileTypeFactory.singleton().createFileType(file, false));
 		} catch(IOException exc) {
 			log.error(exc);
@@ -152,8 +153,8 @@ public class FileSaveAsAction extends MenuAction implements GameDataListener{
 
 	protected void doSaveAction(FileType filetype) {
 		try {
-
-			//
+			
+			// log.info("debugging: doSaveAction (FileType) called for FileType: " + filetype.toString());
 			// write cr to file
 			CRWriter crw = new CRWriter(filetype);
 			crw.write(client.getData());

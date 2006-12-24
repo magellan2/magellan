@@ -16,10 +16,16 @@ package com.eressea.io.file;
 import java.io.File;
 import java.io.IOException;
 
+import com.eressea.demo.Client;
+import com.eressea.util.logging.Logger;
+
 /**
  * Handles backup generation for files.
  */
 public class FileBackup {
+	
+	private static final Logger log = Logger.getInstance(FileBackup.class);
+	
 	/** this is normally a bad idea, but we allow this global */
 	private static int DEFAULT_BACKUP_LEVEL = 5;
 
@@ -91,7 +97,13 @@ public class FileBackup {
 		if(!(file.exists())) {
 			return null;
 		}
-
+		
+		if (directory==null){
+			log.error("error getting dir for file " + file.toString());
+			log.error("the returned directory is null - failed to create backup!");
+			return null;
+		} 
+		
 		// ensure that target directory exists
 		if(!directory.exists()) {
 			if(!directory.mkdirs()) {

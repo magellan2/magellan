@@ -149,6 +149,7 @@ import com.eressea.util.EresseaSkillConstants;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.Taggable;
+import com.eressea.util.Translations;
 import com.eressea.util.Umlaut;
 import com.eressea.util.Units;
 import com.eressea.util.comparator.AllianceFactionComparator;
@@ -2412,7 +2413,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		ItemType carts = data.rules.getItemType(StringID.create("Wagen"));
 		ItemType silver = data.rules.getItemType(StringID.create("Silber"));
 		// Fiete: feature request...showing not only capacity for "good" items in region...
-		if (!PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowAll", false)){
+		if (PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowFriendly", true)){
 			for(Iterator iter = u.getRegion().items().iterator(); iter.hasNext();) {
 				Item item = (Item) iter.next();
 				ItemType type = item.getItemType();
@@ -2424,7 +2425,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 												(freeCapacity / weight), "items/" + type.getIconName()));
 				}
 			}
-		} else {
+		} 
+		
+		if (PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowSome", false)){
+			for(Iterator iter = u.getRegion().allItems().iterator(); iter.hasNext();) {
+				Item item = (Item) iter.next();
+				ItemType type = item.getItemType();
+	
+				if((type.getWeight() > 0.0) && !type.equals(horses) && !type.equals(carts) &&
+					   !type.equals(silver)) {
+					int weight = (int) (type.getWeight() * 100);
+					parent.add(createSimpleNode("Max. " + type.getName() + ": " +
+												(freeCapacity / weight), "items/" + type.getIconName()));
+				}
+			}
+		} 
+		
+		if (PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowAll", false)) {
 			// show all itemtypes...need to built and sort a list
 			// we take natural order - it works - added Comparable to ItemType (Fiete)
 			TreeSet l = new TreeSet();
@@ -3051,13 +3068,52 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 														" * " + getLevelAtDays + " * " +
 														getString("node.level"), "aura");
 						}
+
 					} else {
 						compNode = createSimpleNode(key + ": " + val, "aura");
 					}
-				} else {
-					compNode = createSimpleNode(key + ": " + val, "items/" + key);
-				}
+				} else if(key.equalsIgnoreCase("permanente Aura")){
+					int blankPos = val.indexOf(" ");
 
+					if((blankPos > 0) && (blankPos < val.length())) {
+						String aura = val.substring(0, blankPos);
+						String getLevelAtDays = val.substring(blankPos + 1, val.length());
+
+						if(getLevelAtDays.equals("0")) {
+							compNode = createSimpleNode(aura + " " + getString("node.permanenteaura"), "permanentaura");
+						} else if(getLevelAtDays.equals("1")) {
+							compNode = createSimpleNode(aura + " " + getString("node.permanenteaura") +
+														" * " + getString("node.level"), "permanentaura");
+						} else {
+							compNode = createSimpleNode(aura + " " + getString("node.permanenteaura") +
+														" * " + getLevelAtDays + " * " +
+														getString("node.level"), "permanentaura");
+						}
+
+					} else {
+						compNode = createSimpleNode(key + ": " + val, "permanentaura");
+					}
+					
+				} else {
+					int blankPos = val.indexOf(" ");
+
+					if((blankPos > 0) && (blankPos < val.length())) {
+						String usage = val.substring(0, blankPos);
+						String getLevelAtDays = val.substring(blankPos + 1, val.length());
+						if(getLevelAtDays.equals("0")) {
+							compNode = createSimpleNode(usage + " " + Translations.getOrderTranslation(key), "items/" + key);
+						} else if(getLevelAtDays.equals("1")) {
+							compNode = createSimpleNode(usage + " " + Translations.getOrderTranslation(key) +
+														" * " + getString("node.level"), "items/" + key);
+						} else {
+							compNode = createSimpleNode(usage + " " + getString("node.permanenteaura") +
+														" * " + getLevelAtDays + " * " +
+														getString("node.level"), "items/" + key);
+						}
+					} else {
+						compNode = createSimpleNode(key + ": " + val, "items/" + key);
+					}
+				}
 				componentsNode.add(compNode);
 			}
 		}
@@ -4428,6 +4484,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("node.combatstatus", "Combat status");
 			defaultTranslations.put("node.health", "Health");
 			defaultTranslations.put("node.aura", "Aura");
+			defaultTranslations.put("node.permanenteaura", "permanent Aura");
 			defaultTranslations.put("node.capacityonfoot", "Capacity on foot");
 			defaultTranslations.put("node.capacityonhorse", "Capacity on horse");
 			defaultTranslations.put("node.type", "Type");
