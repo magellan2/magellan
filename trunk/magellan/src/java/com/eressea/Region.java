@@ -814,6 +814,22 @@ public class Region extends UnitContainer {
 
 		return CollectionFactory.unmodifiableCollection(cache.regionItems);
 	}
+	
+	/**
+	 * Returns the items of all units that are stationed in this region 
+	 * The amount of the items of a particular item
+	 * type are added up, so two units with 5 pieces of silver yield one silver item of amount 10
+	 * here.
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public Collection allItems() {
+		if((cache == null) || (cache.allRegionItems == null)) {
+			refreshAllItems();
+		}
+
+		return CollectionFactory.unmodifiableCollection(cache.allRegionItems);
+	}
 
 	/**
 	 * Returns a specific item from the items() collection identified by the item type.
@@ -849,7 +865,8 @@ public class Region extends UnitContainer {
 		for(Iterator iter = units().iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 
-			if(u.getFaction().isPrivileged()) {
+			// if(u.getFaction().isPrivileged()) {
+			if(u.getFaction().hasGiveAlliance) {
 				for(Iterator unitItemIterator = u.getItems().iterator(); unitItemIterator.hasNext();) {
 					Item item = (Item) unitItemIterator.next();
 					Item i = (Item) cache.regionItems.get(item.getItemType().getID());
@@ -862,6 +879,40 @@ public class Region extends UnitContainer {
 					i.setAmount(i.getAmount() + item.getAmount());
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Updates the cache of items owned by all factions in this region.
+	 * @author Fiete
+	 */
+	private void refreshAllItems() {
+		if(cache != null) {
+			if(cache.allRegionItems != null) {
+				cache.allRegionItems.clear();
+			} else {
+				cache.allRegionItems = CollectionFactory.createHashtable();
+			}
+		} else {
+			cache = new Cache();
+			cache.allRegionItems = CollectionFactory.createHashtable();
+		}
+
+		for(Iterator iter = units().iterator(); iter.hasNext();) {
+			Unit u = (Unit) iter.next();
+			
+			for(Iterator unitItemIterator = u.getItems().iterator(); unitItemIterator.hasNext();) {
+				Item item = (Item) unitItemIterator.next();
+				Item i = (Item) cache.allRegionItems.get(item.getItemType().getID());
+
+				if(i == null) {
+					i = new Item(item.getItemType(), 0);
+					cache.allRegionItems.put(item.getItemType().getID(), i);
+				}
+
+				i.setAmount(i.getAmount() + item.getAmount());
+			}
+			
 		}
 	}
 
@@ -1804,5 +1855,20 @@ public class Region extends UnitContainer {
 		}
 		return 0;
 	}
+	
+	/**
+	 * Used for replacers..showing coordinates of region
+	 * @author Fiete
+	 * @return
+	 */
+	public int getCoordX(){
+		CoordinateID myCID = this.getCoordinate();
+		return myCID.x;
+	}
+	public int getCoordY(){
+		CoordinateID myCID = this.getCoordinate();
+		return myCID.y;
+	}
+	
 	
 }

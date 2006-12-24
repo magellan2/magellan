@@ -70,8 +70,17 @@ public class Cache {
 	*/
 	public Map modifiedContainerUnits = null;
 
-	/** TODO: DOCUMENT ME! */
+	/**
+	 * Used in Region for creating a list of Items of priviliged 
+	 * factions in the region
+	 */
 	public Map regionItems = null;
+	
+	/**
+	 * Used in Region for creating a list of Items of all 
+	 * factions in the region
+	 */
+	public Map allRegionItems = null;
 
 	/**
 	 * Used in Unit (FIXME(pavkovic): right now used in PathCellRenderer) to store
@@ -140,6 +149,11 @@ public class Cache {
 		if(regionItems != null) {
 			regionItems.clear();
 			regionItems = null;
+		}
+		
+		if(allRegionItems != null) {
+			allRegionItems.clear();
+			allRegionItems = null;
 		}
 
 		movementPath = null;

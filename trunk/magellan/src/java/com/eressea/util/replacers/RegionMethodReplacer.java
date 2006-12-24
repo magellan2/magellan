@@ -14,8 +14,10 @@
 package com.eressea.util.replacers;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import com.eressea.Region;
+import com.eressea.util.CollectionFactory;
 
 /**
  * DOCUMENT ME!
@@ -99,5 +101,22 @@ public class RegionMethodReplacer extends AbstractRegionReplacer {
 		}
 
 		return null;
+	}
+	public String getDescription() {
+		String s = super.getDescription();
+
+		if(s == null) {
+			if(method != null) {
+				return method.getName();
+			}
+
+			return "no desc";
+		} else {
+			if(method != null) {
+				return s + " " + method.getName();
+			}
+
+			return s + " no further desc";
+		}
 	}
 }

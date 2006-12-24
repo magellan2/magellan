@@ -53,7 +53,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import com.eressea.GameData;
-import com.eressea.ID;
 import com.eressea.Item;
 import com.eressea.LuxuryPrice;
 import com.eressea.Region;
@@ -87,6 +86,7 @@ public class TradeOrganizer extends InternationalizedDataDialog implements Selec
 	protected JList factionList;
 	// Fiete: Keys: German Values:locale (en)
 	protected Hashtable luxuryTranslations = null;
+	protected LinkedList luxuryListTranslated = null;
 
 	/**
 	 * Creates a new TradeOrganizer object.
@@ -202,7 +202,12 @@ public class TradeOrganizer extends InternationalizedDataDialog implements Selec
 		*/
 		
 		this.builtLuxuryTranslations();
-		luxuries = new JComboBox(this.luxuryTranslations.values().toArray());
+		
+		// this was in random order...Fiete 20061219
+		// luxuries = new JComboBox(this.luxuryTranslations.values().toArray());
+		// this is better:
+		luxuries = new JComboBox(this.luxuryListTranslated.toArray());
+	
 		
 		luxuries.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1241,6 +1246,12 @@ public class TradeOrganizer extends InternationalizedDataDialog implements Selec
 			this.luxuryTranslations.clear();
 		}
 		
+		if (this.luxuryListTranslated==null){
+			this.luxuryListTranslated = new LinkedList();
+		} else {
+			this.luxuryListTranslated.clear();
+		}
+		
 		if((data != null) && (data.rules != null)) {
 			String help[] = new String[] {
 								"Balsam", "Gewürz", "Juwel", "Myrrhe", "Öl", "Seide", "Weihrauch"
@@ -1248,6 +1259,7 @@ public class TradeOrganizer extends InternationalizedDataDialog implements Selec
 
 			for(int i = 0; i < help.length; i++) {
 				this.luxuryTranslations.put(help[i],data.getTranslation(help[i]));
+				this.luxuryListTranslated.add(data.getTranslation(help[i]));
 			}
 		}
 	}

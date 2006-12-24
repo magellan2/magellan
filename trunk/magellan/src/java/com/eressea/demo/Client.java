@@ -151,7 +151,6 @@ import com.eressea.swing.tree.IconAdapterFactory;
 import com.eressea.util.BookmarkManager;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.FileHistory;
-import com.eressea.util.FileNameGenerator;
 import com.eressea.util.JVMUtilities;
 import com.eressea.util.LanguageDialog;
 import com.eressea.util.Locales;
@@ -1140,14 +1139,21 @@ public class Client extends JFrame implements ShortcutListener,
                     + settFileDir.toString());
 
             // now redirect stderr through our log
-            {
-                Log LOG = new Log(fileDir);
-                System.setErr(LOG.getPrintStream());
+           
+            Log LOG = new Log(fileDir);
+            System.setErr(LOG.getPrintStream());
 
-                log.error("Start writing error file with encoding "
-                        + LOG.encoding);
+            log.error("Start writing error file with encoding "
+                    + LOG.encoding);
+            
+            String version = VersionInfo.getVersion();
+            if (version==null){
+            	log.info("no magellan version available");
+            } else {
+            	log.info("This is Magellan Version " + version);
             }
-
+         
+            
             // can't call loadRules from here, so we initially work with an
             // empty ruleset.
             // This is not very nice, though...

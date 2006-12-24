@@ -286,6 +286,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					skillStats.addUnit(u);
 
 					Race race = u.realRace;
+			
 
 					if(race == null) {
 						race = u.race;
@@ -461,10 +462,22 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 					Object obj = iter.next();
 					List v = (List) specialPersons.get(obj);
 					int count = 0;
-
+					String actRealRaceName = "";
 					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
-						count += ((Unit) iterator.next()).persons;
+						Unit actU = (Unit) iterator.next();
+						count += actU.persons;
+						actRealRaceName = actU.getRealRaceName();
+						
 					}
+					String iconPersonName = "person";
+					//	now we check if a specific race icon exists, if true, we use it
+					if (getMagellanContext().getImageFactory().existImageIcon(actRealRaceName)){
+						iconPersonName = actRealRaceName;
+					}
+					
+					m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj + ": " + count,
+							iconPersonName));
+					/**
 					String raceNameLang = com.eressea.util.Umlaut.convertUmlauts(obj.toString());
 					String iconNameEn = getString(raceNameLang);
 					if (iconNameEn.equalsIgnoreCase(raceNameLang)) {
@@ -473,6 +486,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 						m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(obj + ": " + count,
 							iconNameEn));
 					}
+					*/
 					n.add(m);
 
 					for(Iterator iterator = v.iterator(); iterator.hasNext();) {
@@ -1066,18 +1080,6 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations.put("node.production", "Production");
 			defaultTranslations.put("node.otherrace", "Persons of other race");
 			defaultTranslations.put("node.rootName", "Statistics");
-			defaultTranslations.put("aquarians", "aquariansgif");
-			defaultTranslations.put("cats", "catsgif");
-			defaultTranslations.put("demons", "demonsgif");
-			defaultTranslations.put("dwarves", "dwarvesgif");
-			defaultTranslations.put("elves", "elvesgif");
-			defaultTranslations.put("goblins", "goblinsgif");
-			defaultTranslations.put("halflings", "halflingsgif");
-			defaultTranslations.put("humans", "humansgif");
-			defaultTranslations.put("insects", "insectsgif");
-			defaultTranslations.put("orcs", "orcsgif");
-			defaultTranslations.put("toads", "toadsgif");
-			defaultTranslations.put("trolls", "trollsgif");
 			defaultTranslations.put("Waffen", "Weapons");
 			defaultTranslations.put("Front-Waffen", "Front-Weapons");
 			defaultTranslations.put("Distanz-Waffen", "Distance-Weapons");

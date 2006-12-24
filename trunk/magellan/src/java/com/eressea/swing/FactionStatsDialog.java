@@ -662,8 +662,10 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 			defaultTranslations.put("msg.passwdinput.text",
 									"Please enter the password to be used for faction \"{0}\":");
 			defaultTranslations.put("msg.passwdinput.title", "Enter password");
-			defaultTranslations.put("msg.trustlevelinput.text=Please input a trustlevel (signed integer).\nNote:\n - Factions with a trust > 0 will be treated as allied\n - Factions with a trust >",
-									" 100 are privileged and will therefore have\nthe same rights just like factions with a set password\n - making an empty input will cause Magellan to calculate\nthe trustlevel for this faction on its own.");
+			defaultTranslations.put("msg.trustlevelinput.text","Please input a trustlevel (signed integer).\nNote:\n - Factions " +
+					"with a trust > 0 will be treated as allied\n - Factions with a trust >100 are privileged and will " +
+					"therefore have\nthe same rights just like factions with a set password\n - making an empty input will cause " +
+					"Magellan to calculate\nthe trustlevel for this faction on its own.");
 			defaultTranslations.put("msg.trustlevelinput.title", "Set trustlevel");
 			defaultTranslations.put("msg.trustlevelinputinvalid", "Invalid input format!");
 		}

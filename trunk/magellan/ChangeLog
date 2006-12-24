@@ -1,3 +1,22 @@
+2006-12-24  Fiete  <Fiete@users.sourceforge.net>
+
+	* added better output to appendSpellinfo
+	* changed region.items to getting all items from faction with
+	  alliance state "give" activated
+
+
+2006-12-22  Fiete  <Fiete@users.sourceforge.net>
+
+	* added replacer for Region Coordinates X and Y
+
+
+2006-12-19  Fiete  <Fiete@users.sourceforge.net>
+
+	* fixed order of luxury goods in trade organizer (for khadar)
+	* reworked short eressea date for better english
+	* added another feature for showing capacity for all items in region
+	* fixed missing translation of settrustlevel.text
+
 2006-12-17  Fiete  <Fiete@users.sourceforge.net>
 
 	* fixed bugs in CR Export Dialog (CRWriter)

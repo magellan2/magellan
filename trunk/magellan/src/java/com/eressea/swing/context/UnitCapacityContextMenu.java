@@ -60,18 +60,14 @@ public class UnitCapacityContextMenu extends JPopupMenu {
     
     private void init() {
     	
-    	boolean actStatusShowAll = PropertiesHelper.getboolean(this.settings, "unitCapacityContextMenuShowAll", false);
+    	// new: all Items in CR/rules.cr
     	JMenuItem toogleAllItems = null;
-    	if (!actStatusShowAll){
-    		toogleAllItems = new JMenuItem(getString("menu.toggleShowAllItems.caption"));
-    	} else {
-    		toogleAllItems = new JMenuItem(getString("menu.toggleShowSomeItems.caption"));
-    	}
-    		
+    	toogleAllItems = new JMenuItem(getString("menu.toggleShowAllItems.caption"));	
         toogleAllItems.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                	boolean actStatusShowAll = PropertiesHelper.getboolean(settings, "unitCapacityContextMenuShowAll", false);
-                	settings.setProperty("unitCapacityContextMenuShowAll", actStatusShowAll ? "false" : "true");
+                	settings.setProperty("unitCapacityContextMenuShowAll", "true");
+                	settings.setProperty("unitCapacityContextMenuShowSome", "false");
+                	settings.setProperty("unitCapacityContextMenuShowFriendly", "false");
                 	// how to notify to rebuild the tree
                 	// just for now only one idea: gamedatachangevent
                 	GameDataEvent newE = new GameDataEvent(this,data);
@@ -79,6 +75,42 @@ public class UnitCapacityContextMenu extends JPopupMenu {
                 }
             });
         add(toogleAllItems);
+        
+        
+        // new: all Items in region, regardles which faction (= some)
+        JMenuItem toogleSomeItems = null;
+    	toogleSomeItems = new JMenuItem(getString("menu.toggleShowSomeItems.caption"));	
+        toogleSomeItems.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	settings.setProperty("unitCapacityContextMenuShowAll", "false");
+                	settings.setProperty("unitCapacityContextMenuShowSome", "true");
+                	settings.setProperty("unitCapacityContextMenuShowFriendly", "false");
+                	// how to notify to rebuild the tree
+                	// just for now only one idea: gamedatachangevent
+                	GameDataEvent newE = new GameDataEvent(this,data);
+                	dispatcher.fire(newE);
+                }
+            });
+        add(toogleSomeItems);
+        
+        // old = normal behaviour
+        JMenuItem toogleFriendlyItems = null;
+    	toogleFriendlyItems = new JMenuItem(getString("menu.toggleShowFriendlyItems.caption"));	
+        toogleFriendlyItems.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	settings.setProperty("unitCapacityContextMenuShowAll", "false");
+                	settings.setProperty("unitCapacityContextMenuShowSome", "false");
+                	settings.setProperty("unitCapacityContextMenuShowFriendly", "true");
+                	// how to notify to rebuild the tree
+                	// just for now only one idea: gamedatachangevent
+                	GameDataEvent newE = new GameDataEvent(this,data);
+                	dispatcher.fire(newE);
+                }
+            });
+        add(toogleFriendlyItems);
+        
+        
+        
 	}
   	
 	
@@ -102,8 +134,9 @@ public class UnitCapacityContextMenu extends JPopupMenu {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("menu.toggleShowAllItems.caption", "show all Items");
-			defaultTranslations.put("menu.toggleShowSomeItems.caption", "show Items useful here");
+			defaultTranslations.put("menu.toggleShowAllItems.caption", "show all items");
+			defaultTranslations.put("menu.toggleShowSomeItems.caption", "show all items here");
+			defaultTranslations.put("menu.toggleShowFriendlyItems.caption", "show friendly items here");
 		}
 
 		return defaultTranslations;
