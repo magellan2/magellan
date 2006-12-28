@@ -866,7 +866,7 @@ public class Region extends UnitContainer {
 			Unit u = (Unit) iter.next();
 
 			// if(u.getFaction().isPrivileged()) {
-			if(u.getFaction().hasGiveAlliance) {
+			if(u.getFaction().hasGiveAlliance || u.getFaction().isPrivileged()) {
 				for(Iterator unitItemIterator = u.getItems().iterator(); unitItemIterator.hasNext();) {
 					Item item = (Item) unitItemIterator.next();
 					Item i = (Item) cache.regionItems.get(item.getItemType().getID());
