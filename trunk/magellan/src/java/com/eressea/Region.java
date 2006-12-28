@@ -849,6 +849,7 @@ public class Region extends UnitContainer {
 
 	/**
 	 * Updates the cache of items owned by privileged factions in this region.
+	 * Fiete 20061224: ...and the factions with "GIVE" alliances too.
 	 */
 	private void refreshItems() {
 		if(cache != null) {
