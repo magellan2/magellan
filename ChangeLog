@@ -1,5 +1,9 @@
 2006-12-24  Fiete  <Fiete@users.sourceforge.net>
 
+	* Region.refreshItems: changed small bug (giveAlliance or priviliged)
+
+2006-12-24  Fiete  <Fiete@users.sourceforge.net>
+
 	* added better output to appendSpellinfo
 	* changed region.items to getting all items from faction with
 	  alliance state "give" activated
