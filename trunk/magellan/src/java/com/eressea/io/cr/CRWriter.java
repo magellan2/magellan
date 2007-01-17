@@ -1636,6 +1636,15 @@ public class CRWriter extends BufferedWriter {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	public void writeRegion(Region region) throws IOException {
+		
+		// Fiete 20070117
+		// Exception: Magellan-added Regions to show TheVoid
+		// these regions should not be written
+		if (region.getRegionType().equals(data.rules.getRegionType("Leere"))){
+			return;
+		}
+		
+		
 		write("REGION " + region.getID().toString(" "));
 		newLine();
 
