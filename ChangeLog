@@ -3,6 +3,8 @@
 	* merging and showing faction pool items
 	* added CLAIM to orderparser and ordercompleter
 	* took over khadars transparent icons
+	* introducing theVoid regions: generating in postProcess
+	* is not written wit CRWriter
 
 2006-12-24  Fiete  <Fiete@users.sourceforge.net>
 

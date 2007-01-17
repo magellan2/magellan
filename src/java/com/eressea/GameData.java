@@ -13,6 +13,7 @@
 
 package com.eressea;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -24,10 +25,12 @@ import com.eressea.io.file.FileType;
 import com.eressea.rules.Date;
 import com.eressea.rules.EresseaDate;
 import com.eressea.rules.MessageType;
+import com.eressea.rules.RegionType;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Locales;
 import com.eressea.util.Regions;
+import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -1451,10 +1454,79 @@ public abstract class GameData implements Cloneable {
 
 		// do game specific post processing 
 		getGameSpecificStuff().postProcess(this);
+		
+		// TheVoid
+		postProcessTheVoid();
 
 		postProcessed = true;
 	}
+	
+	/**
+	 * scans the regions for missing regions, for regions with
+	 * regionType "The Void" or "Leere"
+	 * These Regions are not created in the world on the server, but we 
+	 * are so near, that we should have some information about it.
+	 * So we add these Regions with the special RegionType "Leere"
+	 *
+	 */
+	private void postProcessTheVoid(){
+		ArrayList newRegions = new ArrayList();
+		for (Iterator iter = this.regions().keySet().iterator();iter.hasNext();){
+			CoordinateID actRegionID = (CoordinateID)iter.next();
+			Region actRegion = (Region) regions().get(actRegionID);
+			boolean shouldHaveAllNeighbours = false;
+			if (actRegion.getVisibility()!=null && actRegion.getVisibility().equalsIgnoreCase("travel")){
+				shouldHaveAllNeighbours = true;
+			} else {
+				// if we have a unit in the region?
+				for (Iterator iter2 = actRegion.units().iterator();iter2.hasNext();){
+					Unit actUnit = (Unit)iter2.next();
+					
+					if (actUnit.getFaction().isPrivileged()){
+						shouldHaveAllNeighbours = true;
+						break;
+						
+					}
+				}
+			}
+			if (shouldHaveAllNeighbours){
+				CoordinateID center = actRegion.getCoordinate();
+				
+				int radius = 1;
+				for(int dx = -radius; dx <= radius; dx++) {
+					for(int dy = (-radius + Math.abs(dx)) - ((dx > 0) ? dx : 0);
+							dy <= ((radius - Math.abs(dx)) - ((dx < 0) ? dx : 0)); dy++) {
+						CoordinateID c = new CoordinateID(0, 0, center.z);
+						c.x = center.x + dx;
+						c.y = center.y + dy;
 
+						Region neighbour = (Region) regions().get(c);
+
+						if(neighbour == null) {
+							// Missing Neighbor
+							Region r = new Region(c,this);
+							RegionType type = this.rules.getRegionType(StringID.create("Leere"), true);
+							r.setType(type);
+							r.setName(Translations.getTranslation(this,"region.thevoid.name"));
+							r.setDescription(Translations.getTranslation(this,"region.thevoid.beschr"));
+							newRegions.add(r);
+							this.addTranslation("Leere", Translations.getTranslation(this,"region.thevoid.name"));
+						}
+					}
+				}
+			}
+		}
+		if (newRegions.size()>0){
+			for (Iterator iter = newRegions.iterator();iter.hasNext();){
+				Region actRegion = (Region)iter.next();
+				if (!this.regions().containsKey(actRegion.getID())){
+					this.addRegion(actRegion);
+				}
+			}
+		}
+	}
+	
+	
 	/**
 	 * Adds the order locale of Magellan if locale is null. This should prevent some NPE with the
 	 * sideeffect to store a locale in a locale-less game data object.
@@ -1517,4 +1589,27 @@ public abstract class GameData implements Cloneable {
 	public void postProcessAfterTrustlevelChange() {
 		getGameSpecificStuff().postProcessAfterTrustlevelChange(this);
 	}
+	
+//	 pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
+	// it is called by reflection (we could force the implementation of an interface,
+	// this way it is more flexible.)
+	// Pls use this mechanism, so the translation files can be created automagically
+	// by inspecting all classes.
+	private static Map defaultTranslations;
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static synchronized Map getDefaultTranslations() {
+		if(defaultTranslations == null) {
+			defaultTranslations = CollectionFactory.createHashtable();
+			defaultTranslations.put("region.thevoid.name", "The Void");
+			defaultTranslations.put("region.thevoid.beschr", "Added by magellan to indicate unexpected missing regions");
+		}
+
+		return defaultTranslations;
+	}
+	
 }
