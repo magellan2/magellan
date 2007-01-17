@@ -508,6 +508,10 @@ public class Regions {
 
 			if(destRegion != null) {
 				regions.put(destination, destRegion);
+			} else {
+				// FF 20061231
+				// if dest is null...for sure no path can be found..
+				return null;
 			}
 
 			// determine the possible ways off (ships casually can not leave
