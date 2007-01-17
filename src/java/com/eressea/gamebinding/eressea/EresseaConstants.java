@@ -375,6 +375,9 @@ public class EresseaConstants {
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_WORK = "WORK";
+	
+	/** TODO: DOCUMENT ME! */
+	public static final String O_CLAIM = "CLAIM";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_ZIPPED = "ZIPPED";

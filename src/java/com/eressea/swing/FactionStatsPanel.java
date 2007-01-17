@@ -62,6 +62,7 @@ import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
 import com.eressea.swing.tree.CellRenderer;
 import com.eressea.swing.tree.CopyTree;
+import com.eressea.swing.tree.ItemNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
 import com.eressea.swing.tree.SimpleNodeWrapper;
 import com.eressea.swing.tree.UnitContainerNodeWrapper;
@@ -978,6 +979,26 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			rootNode.add(prodNode);
 		}
 
+		
+		// Fiete: Displaying Faction-Items
+		// only if one faction is selected
+		if (f!=null){
+			if (f.getItems()!=null){
+				if (f.getItems().size()>0){
+					DefaultMutableTreeNode factionPoolNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.factionpool"),
+					"production"));
+					for (Iterator iter = f.getItems().iterator();iter.hasNext();){
+						Item actItem = (Item)iter.next();
+						ItemNodeWrapper itemNodeWrapper = nodeWrapperFactory.createItemNodeWrapper(actItem);
+						DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(itemNodeWrapper);
+						factionPoolNode.add(itemNode);
+					}
+					rootNode.add(factionPoolNode);
+				}
+			}
+		}
+		
+		
 		treeModel.reload();
 		setCursor(Cursor.getDefaultCursor());
 	}
@@ -1093,7 +1114,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			defaultTranslations.put("Sonstiges", "Miscellaneous");
 			defaultTranslations.put("Trophaeen", "Trophies");
 			defaultTranslations.put("node.age", "Age");
-			
+			defaultTranslations.put("node.factionpool", "Factionpool");	
 		}
 
 		return defaultTranslations;

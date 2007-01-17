@@ -130,6 +130,8 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readAttack(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_BANNER))) {
 			retVal = readBanner(t);
+		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CLAIM))) {
+			retVal = readBeanspruche(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_PROMOTION))) {
 			retVal = readBefoerderung(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_STEAL))) {
@@ -995,6 +997,44 @@ public class EresseaOrderParser implements OrderParser {
 		return retVal;
 	}
 
+	//************* BEANSPRUCHE (Fiete)
+	private boolean readBeanspruche(OrderToken token){
+		boolean retVal = false;
+		token.ttype = OrderToken.TT_KEYWORD;
+
+		OrderToken t = (OrderToken) tokens.next();
+
+		if (isNumeric(t.getText())){
+			retVal = readBeansprucheAmount(t);
+		} else if (isString(t.getText())) {
+			retVal = readFinalString(t);
+		} else {
+			if(completer != null) {
+				completer.cmpltBeanspruche();
+			}
+			unexpected(t);
+		}
+		return retVal;
+	}
+	
+	private boolean readBeansprucheAmount(OrderToken token){
+		boolean retVal = false;
+		token.ttype = OrderToken.TT_NUMBER;
+
+		OrderToken t = (OrderToken) tokens.next();
+
+		if (isString(t.getText())){
+			retVal = readFinalString(t);
+		} else {
+			if(completer != null) {
+				completer.cmpltBeanspruche();
+			}
+			unexpected(t);
+		}
+		return retVal;
+	}
+	
+	
 	//************* FORSCHE
 	private boolean readForsche(OrderToken token) {
 		boolean retVal = false;
