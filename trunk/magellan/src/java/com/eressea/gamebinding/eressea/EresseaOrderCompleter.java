@@ -209,6 +209,13 @@ public class EresseaOrderCompleter implements Completer {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_DESCRIBE),
 									   " "));
 
+		if (unit.getFaction().getItems().size()>0) {
+			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_CLAIM),
+					   Translations.getOrderTranslation(EresseaConstants.O_CLAIM),
+					   " "));
+		}
+		
+		
 		if(!region.buildings().isEmpty() || !region.ships().isEmpty()) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_ENTER),
 										   " "));
@@ -604,6 +611,13 @@ public class EresseaOrderCompleter implements Completer {
 		addUnitItems("");
 	}
 
+	void cmpltBeanspruche(){
+		for (Iterator iter = unit.getFaction().getItems().iterator();iter.hasNext();){
+			Item actItem = (Item)iter.next();
+			completions.add(new Completion(actItem.getName()));
+		}
+	}
+	
 	void cmpltBeschreibe() {
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_UNIT),
 									   Translations.getOrderTranslation(EresseaConstants.O_UNIT),

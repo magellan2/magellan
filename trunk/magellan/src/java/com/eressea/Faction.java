@@ -388,6 +388,18 @@ public class Faction extends UnitContainer {
 			if(curFaction.age != -1) {
 				newFaction.age = curFaction.age;
 			}
+			
+			
+			if(curFaction.getItems()!=null){
+				if(curFaction.getItems().size()>0){
+					for (Iterator iter = curFaction.getItems().iterator();iter.hasNext();){
+						Item currentItem = (Item)iter.next();
+						newFaction.addItem(currentItem);
+					}
+				}
+			}
+			
+			
 		}
 	}
 }
