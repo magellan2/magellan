@@ -1,5 +1,12 @@
 2007-01-17  Fiete  <Fiete@users.sourceforge.net>
 
+	* fixed bug: TreeHelper.addUnits for Groups not correct wrapper was 
+	  added to se
+	* made creating of void region optional,new icons for it
+	* before merging, void regions are removed from gamedata
+
+2007-01-17  Fiete  <Fiete@users.sourceforge.net>
+
 	* merging and showing faction pool items
 	* added CLAIM to orderparser and ordercompleter
 	* took over khadars transparent icons

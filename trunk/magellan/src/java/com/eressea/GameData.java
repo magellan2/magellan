@@ -1456,7 +1456,8 @@ public abstract class GameData implements Cloneable {
 		getGameSpecificStuff().postProcess(this);
 		
 		// TheVoid
-		postProcessTheVoid();
+		// make it optional
+		// postProcessTheVoid();
 
 		postProcessed = true;
 	}
@@ -1469,7 +1470,7 @@ public abstract class GameData implements Cloneable {
 	 * So we add these Regions with the special RegionType "Leere"
 	 *
 	 */
-	private void postProcessTheVoid(){
+	public void postProcessTheVoid(){
 		ArrayList newRegions = new ArrayList();
 		for (Iterator iter = this.regions().keySet().iterator();iter.hasNext();){
 			CoordinateID actRegionID = (CoordinateID)iter.next();
@@ -1610,6 +1611,27 @@ public abstract class GameData implements Cloneable {
 		}
 
 		return defaultTranslations;
+	}
+	
+	/**
+	 * removes all "Leere" Regions
+	 * needed for merging
+	 */
+	public void removeTheVoid(){
+		ArrayList delRegionID = new ArrayList();
+		for (Iterator iter = this.regions().keySet().iterator();iter.hasNext();){
+			CoordinateID actRegionID = (CoordinateID)iter.next();
+			Region actRegion = (Region) regions().get(actRegionID);
+			if (actRegion.getRegionType().equals(this.rules.getRegionType("Leere"))){
+				delRegionID.add(actRegionID);
+			}
+		}
+		if (delRegionID.size()>0){
+			for (Iterator iter = delRegionID.iterator();iter.hasNext();){
+				CoordinateID actID = (CoordinateID)iter.next();
+				this.regions().remove(actID);
+			}
+		}
 	}
 	
 }

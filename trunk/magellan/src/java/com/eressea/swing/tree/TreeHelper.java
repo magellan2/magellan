@@ -301,13 +301,14 @@ public class TreeHelper {
 						// Do the units belong to a group?
 						if(prevUnit.getGroup() != null) {
 							GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(prevUnit.getGroup());
-	
-							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
+							SimpleNodeWrapper simpleGroupNodeWrapper = factory.createSimpleNodeWrapper(groupNodeWrapper, "groups");
+							// DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
 							// DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(groupNodeWrapper);
+							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(simpleGroupNodeWrapper);
 							mother.add(groupNode);
 
 							if(se != null) {
-								se.getSubordinatedElements().add(groupNodeWrapper);
+								se.getSubordinatedElements().add(simpleGroupNodeWrapper);
 							}
 
 							retVal += addUnits(groupNode, treeStructure, sortCriteria + 1,

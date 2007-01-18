@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -62,6 +63,7 @@ import javax.swing.border.EmptyBorder;
 import com.eressea.swing.InternationalizedPanel;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -74,10 +76,13 @@ public class MapperPreferences extends InternationalizedPanel implements Prefere
 
 	// The source component to configure
 	private Mapper source = null;
+	
 
+	
 	// GUI elements
 	private JCheckBox chkDeferPainting = null;
 	private JCheckBox showTooltips;
+
 	private JTabbedPane planes;
 
 	// the map holding the associations between planes and renderers
@@ -225,7 +230,8 @@ public class MapperPreferences extends InternationalizedPanel implements Prefere
 	public void applyPreferences() {
 		source.deferPainting(chkDeferPainting.isSelected());
 		source.setShowTooltip(showTooltips.isSelected());
-
+		// settings.setProperty("map.creating.void",(createVoidRegions.isSelected() ? "true" : "false"));
+		
 		if(dialogShown) {
 			String tDefinition = ttsDialog.getSelectedToolTip();
 

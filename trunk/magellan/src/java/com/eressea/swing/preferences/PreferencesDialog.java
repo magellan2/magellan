@@ -180,7 +180,8 @@ public class PreferencesDialog extends InternationalizedDialog {
 
 	private void applyPreferences() {
 		for(Iterator iter = adapters.iterator(); iter.hasNext();) {
-			((PreferencesAdapter) iter.next()).applyPreferences();
+			PreferencesAdapter pA = (PreferencesAdapter)iter.next();
+			pA.applyPreferences();
 		}
 	}
 

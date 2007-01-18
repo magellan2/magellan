@@ -426,6 +426,8 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
         TreeBuilder treeBuilder = getTreeBuilder();
         treeBuilder.setSortShipUnderUnitParent(sortShipUnderUnitParent);
         // FIXME: using 16383 here is bad style, what is it good for anyway?
+        // Fiete: was a hint of someone to have regions in the tree, with no own units, but whith other items besides buildings,e.g. ships
+        // I agree: bad style here
 		treeBuilder.setDisplayMode((treeBuilder.getDisplayMode() & 16383) |
 							(createIslandNodes ? TreeBuilder.CREATE_ISLANDS : 0));
 

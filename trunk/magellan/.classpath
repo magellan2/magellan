@@ -3,11 +3,11 @@
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry including="res/" kind="src" path="src"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2re1.4.2_13"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2re1.4.2_12"/>
 	<classpathentry kind="lib" path="src/release/lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="src/release/lib/xml/jaxp-api.jar"/>
 	<classpathentry kind="lib" path="buildlib/xml-apis.jar"/>
-	<classpathentry sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.0.0/src/org.junit_3.8.1/junitsrc.zip" kind="var" path="JUNIT_HOME/junit.jar"/>
+	<classpathentry kind="var" path="JUNIT_HOME/junit.jar" sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.0.0/src/org.junit_3.8.1/junitsrc.zip"/>
 	<classpathentry kind="lib" path="src/release/lib/skins/kunststoff.jar"/>
 	<classpathentry kind="lib" path="src/release/lib/skins/metouia.jar"/>
 	<classpathentry kind="lib" path="src/release/lib/skins/xplookandfeel.jar"/>
