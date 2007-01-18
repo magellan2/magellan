@@ -1366,6 +1366,9 @@ public class Client extends JFrame implements ShortcutListener,
                     JOptionPane.ERROR_MESSAGE);
             log.error(exc);
         }
+        if (d!=null && PropertiesHelper.getboolean(getProperties(), "map.creating.void", true)) {
+        	d.postProcessTheVoid();
+        }
         if (d.outOfMemory){
         	JOptionPane.showMessageDialog(this,
                     getString("msg.outofmemory.text"),
@@ -1875,6 +1878,11 @@ public class Client extends JFrame implements ShortcutListener,
     public void setData(GameData newData) {
         context.setGameData(newData);
         postProcessLoadedCR(newData);
+        
+        if (newData!=null && PropertiesHelper.getboolean(getProperties(), "map.creating.void", true)) {
+        	newData.postProcessTheVoid();
+        }
+        
         getDispatcher().fire(new GameDataEvent(this, newData));
         
         SwingUtilities.invokeLater(new Runnable() {

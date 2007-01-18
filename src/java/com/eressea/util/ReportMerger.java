@@ -251,7 +251,7 @@ public class ReportMerger extends Object {
 	 */
 	public ReportMerger(GameData _data, File files[], Loader _loader, AssignData _assignData) {
 		data = _data;
-
+		data.removeTheVoid(); // removes void regions
 		reports = new Report[files.length];
 
 		for(int i = 0; i < files.length; i++) {
@@ -273,7 +273,7 @@ public class ReportMerger extends Object {
 	 */
 	public ReportMerger(GameData _data, File file, Loader _loader, AssignData _assignData) {
 		data = _data;
-
+		data.removeTheVoid(); // removes void regions
 		reports = new Report[1];
 		reports[0] = new Report();
 		reports[0].file = file;

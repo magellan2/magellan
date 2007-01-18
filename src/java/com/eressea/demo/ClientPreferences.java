@@ -59,6 +59,7 @@ import com.eressea.util.IDBaseConverter;
 import com.eressea.util.Locales;
 import com.eressea.util.NameGenerator;
 import com.eressea.util.FileNameGenerator;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.TextEncodingPreferences;
 import com.eressea.util.logging.Logger;
 
@@ -92,6 +93,7 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 	private JRadioButton descendingOrder;
 	private JCheckBox showTempUnitDialog;
 	private JCheckBox showProgress;
+	private JCheckBox createVoidRegions;	
 	protected List subAdapters;
 
 	/**
@@ -158,12 +160,20 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		// temp unit panel
 		add(getTempUnitPanel(), c);
 
-		GridBagHelper.setConstraints(c, 0, 2, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
+		GridBagHelper.setConstraints(c, 0, 2, GridBagConstraints.REMAINDER, 1, 1.0, 0.0,
 									 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
 									 c.insets, 0, 0);
 
 		// progress panel
 		add(getProgressPanel(), c);
+		
+		GridBagHelper.setConstraints(c, 0, 3, GridBagConstraints.REMAINDER, 1, 1.0, 1.0, /* different weighty!*/
+				 					 GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL,
+				 					 c.insets, 0, 0);
+		
+		// create void regions panel
+		add(getCreateVoidPanel(), c);
+		
 	}
 
 	private Component getProgressPanel() {
@@ -175,6 +185,17 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		progressPanel.add(showProgress);
 
 		return progressPanel;
+	}
+	
+	private Component getCreateVoidPanel() {
+		// create Void Regions
+		JPanel voidPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		voidPanel.setBorder(new TitledBorder(getString("create.void.regions.border")));
+
+		createVoidRegions = new JCheckBox(getString("create.void.regions.caption"), PropertiesHelper.getboolean(settings, "map.creating.void", true));
+		voidPanel.add(createVoidRegions);
+
+		return voidPanel;
 	}
 
 	private Component getTempUnitPanel() {
@@ -365,6 +386,9 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		settings.setProperty("MultiEditorOrderEditorList.ButtonPanel.ShowTempUnitDialog",
 							 String.valueOf(showTempUnitDialog.isSelected()));
 
+		settings.setProperty("map.creating.void",
+							String.valueOf(createVoidRegions.isSelected()));
+		
 		source.setShowStatus(showProgress.isSelected());
 	}
 
@@ -783,6 +807,11 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 			defaultTranslations.put("tempids.countdecimal.tooltip", "0, 1, 2, ..., 9, 10, 11, ...");
 			defaultTranslations.put("tempids.countbase36.tooltip", "0, 1, 2, ..., 9, a, b, ...");
 			defaultTranslations.put("showtempunitdialog", "Show dialog on temp unit creation");
+			defaultTranslations.put("create.void.regions.border", "Helpers");
+			defaultTranslations.put("create.void.regions.caption", "Create regions \"The Void\" wherever regions are missing");
+			
+			
+			// create.void.regions.border
 		}
 
 		return defaultTranslations;
