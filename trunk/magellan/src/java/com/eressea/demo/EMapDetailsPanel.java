@@ -852,7 +852,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private void appendRegionResourceInfo(Region r, DefaultMutableTreeNode parent,
 										  Collection expandableNodes) {
 		DefaultMutableTreeNode resourceNode = new DefaultMutableTreeNode(getString("node.resources"));
-
+		String icon = null;
 		if(!r.resources().isEmpty()) {
 			// resources of region
 			for(Iterator iter = r.resources().iterator(); iter.hasNext();) {
@@ -866,35 +866,55 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				DefaultMutableTreeNode treeNode;
 
 				if(r.mallorn) {
+					icon = "items/" + mallornID;
+					if (getMagellanContext().getImageFactory().existImageIcon(icon + "_region")){
+						icon += "_region";
+					}
 					treeNode = createSimpleNode(getString("node.mallorntrees") + ": " +
 												getDiffString(r.trees, r.oldTrees),
-												"items/" + mallornID);
+												icon);
 				} else {
+					icon = "items/" + treesID;
+					if (getMagellanContext().getImageFactory().existImageIcon(icon + "_region")){
+						icon += "_region";
+					}
 					treeNode = createSimpleNode(getString("node.trees") + ": " +
 												getDiffString(r.trees, r.oldTrees),
-												"items/" + treesID);
+												icon);
 				}
 
 				resourceNode.add(treeNode);
 			}
 
 			if((r.iron > 0) || (r.oldIron > 0)) {
+				icon = "items/eisen";
+				if (getMagellanContext().getImageFactory().existImageIcon(icon + "_region")){
+					icon += "_region";
+				}
 				resourceNode.add(createSimpleNode(data.rules.getItemType(StringID.create("Eisen"))
 															.getName() + ": " +
-												  getDiffString(r.iron, r.oldIron), "items/Eisen"));
+												  getDiffString(r.iron, r.oldIron), icon));
 			}
 
 			if((r.laen > 0) || (r.oldLaen > 0)) {
+				icon = "items/" + laenID;
+				if (getMagellanContext().getImageFactory().existImageIcon(icon + "_region")){
+					icon += "_region";
+				}
 				resourceNode.add(createSimpleNode(getString("node.laen") + ": " +
 												  getDiffString(r.laen, r.oldLaen),
-												  "items/" + laenID));
+												  icon));
 			}
 		}
 
 		// horse
 		if((r.horses > 0) || (r.oldHorses > 0)) {
+			icon = "items/pferd";
+			if (getMagellanContext().getImageFactory().existImageIcon(icon + "_region")){
+				icon += "_region";
+			}
 			resourceNode.add(createSimpleNode(getString("node.horses") + ": " +
-											  getDiffString(r.horses, r.oldHorses), "items/pferd"));
+											  getDiffString(r.horses, r.oldHorses), icon));
 		}
 
 		// herb
@@ -905,7 +925,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				sb.append(" (").append(r.herbAmount).append(")");
 			}
 
-			String icon = null;
+			icon = null;
 
 			try {
 				icon = r.herb.getMakeSkill().getSkillType().getID().toString();
@@ -1270,7 +1290,11 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if(icon.equalsIgnoreCase("Steine")) {
 			icon = "stein";
 		}
-
+		
+		if (getMagellanContext().getImageFactory().existImageIcon("items/" + icon + "_region")){
+			icon = icon + "_region";
+		}
+		
 		parent.add(createSimpleNode(sb.toString(), "items/" + icon));
 	}
 

@@ -4,6 +4,7 @@
 	* added: mallornreplacer
 	* finetuned region merger for skill independent items
 	* added icon for factionpool, updated icon for delphin
+	* support for differnt icons for resources in regions name_region.gif
 
 2007-01-17  Fiete  <Fiete@users.sourceforge.net>
 
