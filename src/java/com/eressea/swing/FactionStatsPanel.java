@@ -986,7 +986,7 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 			if (f.getItems()!=null){
 				if (f.getItems().size()>0){
 					DefaultMutableTreeNode factionPoolNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.factionpool"),
-					"production"));
+					"factionpool"));
 					for (Iterator iter = f.getItems().iterator();iter.hasNext();){
 						Item actItem = (Item)iter.next();
 						ItemNodeWrapper itemNodeWrapper = nodeWrapperFactory.createItemNodeWrapper(actItem);

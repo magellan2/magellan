@@ -222,7 +222,7 @@ public class EresseaPostProcessor {
 					if(region.sprouts < 0) {
 						region.sprouts = 0;
 					}
-
+					/**
 					if(data.rules != null) {
 						// FIXME: we should finally remove this code, shouldn't we?
 						// 2002.05.21 pavkovic:
@@ -277,11 +277,11 @@ public class EresseaPostProcessor {
 							}
 						}
 					}
-
+					**/
 					if(region.trees < 0) {
 						region.trees = 0;
 					}
-
+					/**
 					if(region.mallorn) {
 						// pavkovic 2002.05.06: remove disjunct resource (trees and sprouts)
 						region.removeResource(treeResourceID);
@@ -307,6 +307,7 @@ public class EresseaPostProcessor {
 							}
 						}
 					}
+					**/
 
 				}
 			}

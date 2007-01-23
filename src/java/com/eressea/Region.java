@@ -13,6 +13,7 @@
 
 package com.eressea;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -125,6 +126,12 @@ public class Region extends UnitContainer {
 	 * 1 -> ozean and neighboring land 
 	 */
 	private int ozeanWithCoast = -1;
+	
+	
+	private ID treesID = StringID.create("Baeume");
+	private ID mallornID = StringID.create("Mallorn");
+	private ID sproutsID = StringID.create("Schoesslinge");
+	private ID mallornSproutsID = StringID.create("Mallornschösslinge");
 	
 
 	/**
@@ -1503,7 +1510,15 @@ public class Region extends UnitContainer {
 					 * report are merged into that new object. At this time sameTurn is guaranteed
 					 * to be true! The crucial point is when a resource is suddenly not seen any
 					 * longer, because its level has increased.
+					 * 
+					 * Fiete Special case Mallorn: it could be disappeard -> fully cutted. In above way
+					 * it is added from old region and not removed, if not in new region.
+					 * but we should only erase that mallorn info, if we have a unit in the region
+					 * for that we have to use curRegion (units not yet merged)
+					 * 
+					 * 
 					 */
+					
 					if(newRes == null) {
 						// add Resource
 						newRes = new RegionResource((ID) curRes.getID().clone(),
@@ -1511,8 +1526,9 @@ public class Region extends UnitContainer {
 																			true));
 						newRegion.addResource(newRes);
 					}
-
+					
 					RegionResource.merge(curGD, curRes, newGD, newRes, sameTurn);
+					
 				} catch(CloneNotSupportedException e) {
 					log.error(e);
 				}
@@ -1522,7 +1538,22 @@ public class Region extends UnitContainer {
 		// Now look for those resources, that are in the new created game data,
 		// but not in the current one. These are those, that are not seen in the
 		// maybe newer report! This maybe because their level has changed.
+		
+		// Types for which no skill is needed to see
+		ItemType treesType = newGD.rules.getItemType("Baeume");
+		ItemType mallornType = newGD.rules.getItemType("Mallorn");
+		ItemType schoesslingeType = newGD.rules.getItemType("Schoesslinge");
+		ItemType mallornSchoesslingeType = newGD.rules.getItemType("Mallornschoesslinge");
+		
+		// ArrayList of above Types
+		ArrayList skillIrrelavntTypes = new ArrayList();
+		skillIrrelavntTypes.add(treesType);
+		skillIrrelavntTypes.add(mallornType);
+		skillIrrelavntTypes.add(schoesslingeType);
+		skillIrrelavntTypes.add(mallornSchoesslingeType);
+		
 		if((newRegion.resources != null) && !newRegion.resources.isEmpty()) {
+			ArrayList deleteRegionRessources = null;
 			for(Iterator iter = newRegion.resources.values().iterator(); iter.hasNext();) {
 				RegionResource newRes = (RegionResource) iter.next();
 				RegionResource curRes = curRegion.getResource(newRes.getType());
@@ -1559,7 +1590,33 @@ public class Region extends UnitContainer {
 							newRes.setSkillLevel(newRes.getSkillLevel() + 1);
 							newRes.setAmount(-1);
 						}
+					} 
+					// Fiete: check here if we have skillIrrelevantResources
+					// if curRes == null AND we have units in curReg -> these
+					// resources are realy not there anymore: Baeume, Mallorn
+					if (sameTurn){
+						if (skillIrrelavntTypes.contains(newRes.getType())){
+							// we have "our" Type
+							// do we have units in newRegion
+							if (newRegion.units()!=null && newRegion.units().size()>0){
+								// we have...so we know now for sure, that these 
+								// ressource disappeared..so lets delete it
+								if (deleteRegionRessources==null){
+									deleteRegionRessources = new ArrayList();
+								}
+								deleteRegionRessources.add(newRes.getType());
+							}
+							
+						}
 					}
+					
+				}
+			}
+			if (deleteRegionRessources!=null){
+				// so we have Ressources, which are not present any more
+				for (Iterator iter = deleteRegionRessources.iterator();iter.hasNext();){
+					ItemType regResID = (ItemType)iter.next();
+					newRegion.resources.remove(regResID);
 				}
 			}
 		}

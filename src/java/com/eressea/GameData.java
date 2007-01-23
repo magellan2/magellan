@@ -1480,14 +1480,8 @@ public abstract class GameData implements Cloneable {
 				shouldHaveAllNeighbours = true;
 			} else {
 				// if we have a unit in the region?
-				for (Iterator iter2 = actRegion.units().iterator();iter2.hasNext();){
-					Unit actUnit = (Unit)iter2.next();
-					
-					if (actUnit.getFaction().isPrivileged()){
+				if (actRegion.units()!=null && actRegion.units().size()>0){
 						shouldHaveAllNeighbours = true;
-						break;
-						
-					}
 				}
 			}
 			if (shouldHaveAllNeighbours){
