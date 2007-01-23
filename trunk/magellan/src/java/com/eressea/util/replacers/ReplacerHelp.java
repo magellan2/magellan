@@ -64,10 +64,14 @@ public class ReplacerHelp implements GameDataListener {
 		drf.putReplacer("trees", regionField, args);
 		args[0] = "horses";
 		drf.putReplacer("horses", regionField, args);
-		args[0] = "iron";
-		drf.putReplacer("iron", regionField, args);
-		args[0] = "laen";
-		drf.putReplacer("laen", regionField, args);
+		// Fiete 20070123
+		// args[0] = "iron";
+		// drf.putReplacer("iron", regionField, args);
+		drf.putReplacer("iron", IronReplacer.class);
+		
+		// args[0] = "laen";
+		// drf.putReplacer("laen", regionField, args);
+		drf.putReplacer("laen", LaenReplacer.class);
 		args[0] = "wage";
 		drf.putReplacer("wage", regionField, args);
 		args[0] = "sprouts";
@@ -114,6 +118,8 @@ public class ReplacerHelp implements GameDataListener {
 		drf.putReplacer("herb", HerbReplacer.class);
 
 		drf.putReplacer("maxWorkers", MaxWorkersReplacer.class);
+		// FF 20070123
+		drf.putReplacer("mallorn", MallornReplacer.class);
 
 		//luxury price, sold luxury
 		drf.putReplacer("price", LuxuryPriceReplacer.class);
