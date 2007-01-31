@@ -2,6 +2,7 @@
 
 	* fixed bug writing familiarID in CRWriter.java
 	* fixed bug: merging with void regions
+	* changed some icons, added special _region icons
 
 2007-01-23  Fiete  <Fiete@users.sourceforge.net>
 
