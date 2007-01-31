@@ -192,7 +192,7 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 		JPanel voidPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		voidPanel.setBorder(new TitledBorder(getString("create.void.regions.border")));
 
-		createVoidRegions = new JCheckBox(getString("create.void.regions.caption"), PropertiesHelper.getboolean(settings, "map.creating.void", true));
+		createVoidRegions = new JCheckBox(getString("create.void.regions.caption"), PropertiesHelper.getboolean(settings, "map.creating.void", false));
 		voidPanel.add(createVoidRegions);
 
 		return voidPanel;

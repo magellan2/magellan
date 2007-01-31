@@ -1455,7 +1455,8 @@ public class CRWriter extends BufferedWriter {
 		
 		//  fiete: familiarmage
 		if (unit.familiarmageID!=null) {
-			write(((UnitID) data.getUnit(unit.familiarmageID).getID()).intValue() + ";familiarmage");
+			IntegerID iID = (IntegerID) unit.familiarmageID;
+			write(iID.intValue() + ";familiarmage");
 			newLine();
 		}
 		

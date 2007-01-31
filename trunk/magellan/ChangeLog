@@ -1,5 +1,10 @@
 2007-01-23  Fiete  <Fiete@users.sourceforge.net>
 
+	* fixed bug writing familiarID in CRWriter.java
+	* fixed bug: merging with void regions
+
+2007-01-23  Fiete  <Fiete@users.sourceforge.net>
+
 	* repaired replacers iron laen
 	* added: mallornreplacer
 	* finetuned region merger for skill independent items

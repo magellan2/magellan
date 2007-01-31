@@ -230,7 +230,6 @@ public class MapperPreferences extends InternationalizedPanel implements Prefere
 	public void applyPreferences() {
 		source.deferPainting(chkDeferPainting.isSelected());
 		source.setShowTooltip(showTooltips.isSelected());
-		// settings.setProperty("map.creating.void",(createVoidRegions.isSelected() ? "true" : "false"));
 		
 		if(dialogShown) {
 			String tDefinition = ttsDialog.getSelectedToolTip();
