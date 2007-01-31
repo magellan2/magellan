@@ -1476,7 +1476,9 @@ public abstract class GameData implements Cloneable {
 			CoordinateID actRegionID = (CoordinateID)iter.next();
 			Region actRegion = (Region) regions().get(actRegionID);
 			boolean shouldHaveAllNeighbours = false;
-			if (actRegion.getVisibility()!=null && actRegion.getVisibility().equalsIgnoreCase("travel")){
+			if (actRegion.getVisibility()!=null && (actRegion.getVisibility().equalsIgnoreCase("travel") 
+					// || actRegion.getVisibility().equalsIgnoreCase("neighbour")
+					)){
 				shouldHaveAllNeighbours = true;
 			} else {
 				// if we have a unit in the region?
@@ -1519,6 +1521,8 @@ public abstract class GameData implements Cloneable {
 				}
 			}
 		}
+		int i = 1;
+		i = 2;
 	}
 	
 	

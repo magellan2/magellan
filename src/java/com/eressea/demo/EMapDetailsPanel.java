@@ -1976,7 +1976,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		int maxHorsesWalking = ((skillLevel * u.getModifiedPersons() * 4) + u.getModifiedPersons());
 		int maxHorsesRiding = (skillLevel * u.getModifiedPersons() * 2);
 		
-		text = "max: " + maxHorsesWalking + " / " + maxHorsesRiding;
+		text = "Max: " + maxHorsesWalking + " / " + maxHorsesRiding;
 		parent.add(createSimpleNode(text, "pferd"));
 
 		// load
