@@ -834,7 +834,6 @@ public class JVorlage extends InternationalizedDialog {
 	public static void main(String args[]) throws IOException {
 		Properties settings = new Properties();
 		settings.load(new FileInputStream("magellan.ini"));
-		com.eressea.util.Locales.init(settings);
 		com.eressea.util.Translations.setClassLoader(new com.eressea.resource.ResourcePathClassLoader(settings));
 
 		JVorlage v = new JVorlage();

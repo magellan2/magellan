@@ -200,6 +200,8 @@ public class Spell extends DescribedObject {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public Map getComponents() {
+		if (components==null)
+			components = CollectionFactory.createOrderedHashtable();
 		return components;
 	}
 

@@ -254,7 +254,7 @@ public class StartWindow extends JWindow {
 		Toolkit t = getToolkit();
 		Dimension screen = t.getScreenSize();
 		Dimension size = getSize();
-		setLocation((screen.width - size.width) / 2, (screen.height - size.height) / 2);
+		setLocation((screen.width - size.width) / 2, (screen.height - size.height) / 3);
 	}
 
 	/**

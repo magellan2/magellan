@@ -98,8 +98,6 @@ public class MagellanContext implements MagellanEnvironment {
 	public synchronized void init() {
 		ResourcePathClassLoader.init(settings); // init resource class with new settings
 		
-		Locales.init(settings); // init the locales with new settings
-		
 		// init the translations with the loaded settings
 		Translations.setClassLoader(new ResourcePathClassLoader(settings));
 		

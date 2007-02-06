@@ -67,7 +67,8 @@ public class RedoAction extends MenuAction implements PropertyChangeListener {
 	 * @param e TODO: DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		undo.redo();
+		if (undo.canRedo())
+			undo.redo();
 	}
 
 	/**

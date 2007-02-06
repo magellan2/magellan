@@ -17,6 +17,9 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -29,9 +32,11 @@ import com.eressea.GameData;
 import com.eressea.Ship;
 import com.eressea.Unit;
 import com.eressea.UnitContainer;
+import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.UnitOrdersEvent;
 import com.eressea.swing.FactionStatsDialog;
+import com.eressea.swing.GiveOrderDialog;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ShipRoutePlanner;
 
@@ -46,6 +51,7 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	private EventDispatcher dispatcher;
 	private GameData data;
 	private Properties settings;
+	private Collection selectedObjects;
 
 	/**
 	 * Creates a new UnitContainerContextMenu object.
@@ -56,12 +62,13 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 * @param settings TODO: DOCUMENT ME!
 	 */
 	public UnitContainerContextMenu(UnitContainer uc, EventDispatcher dispatcher, GameData data,
-									Properties settings) {
+									Properties settings,Collection selectedObjects) {
 		super(uc.toString());
 		this.uc = uc;
 		this.dispatcher = dispatcher;
 		this.data = data;
 		this.settings = settings;
+		this.selectedObjects = selectedObjects;
 
 		initMenu();
 	}
@@ -113,6 +120,30 @@ public class UnitContainerContextMenu extends JPopupMenu {
 			add(copyMail);
 			add(factionStats);
 		}
+		
+		// check, if we have ships in the selection...
+		// we want to offer: give orders to ship-captns
+		boolean shipsInSelection = false;
+		if (this.selectedObjects!=null){
+			for (Iterator iter = this.selectedObjects.iterator();iter.hasNext();){
+				Object o = iter.next();
+				if (o instanceof Ship) {
+					shipsInSelection = true;
+					break;
+				}
+			}
+		}
+		if (shipsInSelection){
+			JMenuItem shipOrders = new JMenuItem(getString("menu.shiporders.caption"));
+			shipOrders.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_addShipOrder();
+				}
+			});
+			add(shipOrders);
+		}
+		
+		
 	}
 
 	/**
@@ -168,6 +199,57 @@ public class UnitContainerContextMenu extends JPopupMenu {
 		}
 	}
 
+	/**
+	 * Gives an order (optional replacing the existing ones) to the selected units.
+	 * Gives the orders only to actual captns of selected ships
+	 */
+	private void event_addShipOrder() {
+		String s[] = (new GiveOrderDialog(JOptionPane.getFrameForComponent(this))).showGiveOrderDialog();
+
+		// remember: s[0] : inserted Order (null if the ok-button wasn't pressed)
+		// s[1] : String represantative for "replace order ?"
+		// c[2] : String represantative for "keep comments"
+		if(s[0] != null) {
+			boolean replace = Boolean.valueOf(s[1]).booleanValue();
+			boolean keepComments = Boolean.valueOf(s[2]).booleanValue();
+
+			for(Iterator iter = this.selectedObjects.iterator(); iter.hasNext();) {
+				Object o = iter.next();
+				if (o instanceof Ship){
+					Ship ship = (Ship)o;
+					Unit u = ship.getOwnerUnit();
+
+					if(u!=null && EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
+						if(replace) {
+							if(keepComments) {
+								Collection oldOrders = u.getOrders();
+								Collection newOrders = CollectionFactory.createLinkedList();
+	
+								for(Iterator iterator = oldOrders.iterator(); iterator.hasNext();) {
+									String order = (String) iterator.next();
+	
+									if(order.trim().startsWith("//") || order.trim().startsWith(";")) {
+										newOrders.add(order);
+									}
+								}
+	
+								newOrders.add(s[0]);
+								u.setOrders(newOrders);
+							} else {
+								u.setOrders(Collections.singleton(s[0]));
+							}
+						} else {
+							u.addOrder(s[0], false, 0);
+						}
+	
+						dispatcher.fire(new UnitOrdersEvent(this, u));
+					}
+				}
+			}
+		}
+	}
+	
+	
 	private String getString(String key) {
 		return com.eressea.util.Translations.getTranslation(this, key);
 	}
@@ -192,6 +274,8 @@ public class UnitContainerContextMenu extends JPopupMenu {
 			defaultTranslations.put("menu.planshiproute.caption", "Ship route scheduler");
 			defaultTranslations.put("menu.copymail.caption", "Copy email address");
 			defaultTranslations.put("menu.factionstats.caption", "Factionstats");
+			defaultTranslations.put("menu.shiporders.caption", "Order ships (give orders to captains)");
+
 		}
 
 		return defaultTranslations;

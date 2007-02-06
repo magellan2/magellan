@@ -13,16 +13,22 @@
 
 package com.eressea.util;
 
+import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import com.eressea.demo.desktop.MagellanDesktop;
+import com.eressea.util.logging.Logger;
+
 /**
  * This class logically accesses values in a given Properties object
  */
 public class PropertiesHelper {
+	private static final Logger log = Logger.getInstance(PropertiesHelper.class);
+
 	/**
 	 * Extracts properties by given prefix. If there exists a key called prefix.count this is used
 	 * as order
@@ -147,4 +153,50 @@ public class PropertiesHelper {
 
 		return def;
 	}
+	
+	/**
+	 * Loads a rectangle from the settings using the given key. If <code>r</code> is null, a new
+	 * object is created. Else the result is stored in <code>r</code>. In either case, the
+	 * resulting rectangle is returned.
+	 * 
+	 * @param settings
+	 * @param r
+	 * @param key
+	 * 
+	 * @return The loaded rectangle or null if an error occurs.
+	 */
+	public static Rectangle loadRect(Properties settings, Rectangle r, String key) {
+		if(r == null) {
+			r = new Rectangle();
+		}
+
+		try {
+			r.x = Integer.parseInt(settings.getProperty(key + ".x"));
+			r.y = Integer.parseInt(settings.getProperty(key + ".y"));
+			r.width = Integer.parseInt(settings.getProperty(key + ".width"));
+			r.height = Integer.parseInt(settings.getProperty(key + ".height"));
+		} catch(Exception exc) {
+			log.warn("Bad rectangle: "+key);
+			log.debug("", exc);
+			return null;
+		}
+		return r;
+	}
+
+	/**
+	 * Saves the rectangle r with property-key key to the settings. The rectangle is stored as
+	 * key.x, key.y, key.width, key.height.
+	 * 
+	 * @param settings
+	 * @param r
+	 * @param key
+	 */
+	public static void saveRectangle(Properties settings, Rectangle r, String key) {
+		settings.setProperty(key + ".x", String.valueOf(r.x));
+		settings.setProperty(key + ".y", String.valueOf(r.y));
+		settings.setProperty(key + ".width", String.valueOf(r.width));
+		settings.setProperty(key + ".height", String.valueOf(r.height));
+	}
+
+
 }

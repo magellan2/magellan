@@ -98,6 +98,7 @@ import com.eressea.swing.preferences.ExtendedPreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesAdapter;
 import com.eressea.swing.preferences.PreferencesFactory;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.PropertiesHelper;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -758,7 +759,8 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 
 			r.close();
 		} catch(Exception exc) {
-			log.error("Error reading desktop file " + exc.toString(), exc);
+			log.warn("Error reading desktop file " + exc.toString());
+			log.debug("", exc);
 		}
 
 		//maybe old-style file
@@ -1226,7 +1228,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	protected void setClientBounds() {
 		if((mode == MODE_SPLIT) || (mode == MODE_LAYOUT)) {
 			if(splitRect == null) { // not initialized before, load it
-				splitRect = loadRect(splitRect, "Client");
+				splitRect = PropertiesHelper.loadRect(settings, splitRect, "Client");
 			}
 
 			if(splitRect == null) { // still null - use full screen
@@ -1234,14 +1236,14 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 				Dimension d = getToolkit().getScreenSize();
 				splitRect = new Rectangle(0, 0, d.width, d.height);
 			}
-
+			log.debug("ClientBounds: "+splitRect);
 			client.setBounds(splitRect);
 		}
 
 		if(mode == MODE_FRAME) {
 			// find client frame bounds
 			if(frameRect == null) {
-				frameRect = loadRect(frameRect, "Client.Frame");
+				frameRect = PropertiesHelper.loadRect(settings, frameRect, "Client.Frame");
 			}
 
 			if(frameRect == null) { // still null -> optimize
@@ -2738,10 +2740,10 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	protected void saveSplitModeProperties() {
 		if(getMode() == MODE_SPLIT) {
 			settings.setProperty("Desktop.Type", "SPLIT");
-			splitRect = client.getBounds(splitRect);
+			splitRect = client.getBounds();
 		}
 
-		saveRectangle(splitRect, "Client");
+		PropertiesHelper.saveRectangle(settings, splitRect, "Client");
 		settings.setProperty("Desktop.SplitSet", splitName);
 	}
 
@@ -2766,7 +2768,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 			frameRect = client.getBounds(frameRect);
 		}
 
-		saveRectangle(frameRect, "Client.Frame");
+		PropertiesHelper.saveRectangle(settings, frameRect, "Client.Frame");
 		saveFrames(frames, settings);
 	}
 
@@ -2792,7 +2794,7 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 		}
 
 		settings.setProperty("Desktop.Layout", layoutName);
-		saveRectangle(splitRect, "Client");
+		PropertiesHelper.saveRectangle(settings, splitRect, "Client");
 	}
 
 	/**
@@ -2866,44 +2868,6 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	private void saveList(String name, FrameTreeNode root, PrintWriter out) {
 		out.println('[' + name + ']');
 		root.write(out);
-	}
-
-	/**
-	 * Loads a rectangle from the settings using the given key.
-	 *
-	 * @param r TODO: DOCUMENT ME!
-	 * @param key TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
-	 */
-	private Rectangle loadRect(Rectangle r, String key) {
-		if(r == null) {
-			r = new Rectangle();
-		}
-
-		try {
-			r.x = Integer.parseInt(settings.getProperty(key + ".x"));
-			r.y = Integer.parseInt(settings.getProperty(key + ".y"));
-			r.width = Integer.parseInt(settings.getProperty(key + ".width"));
-			r.height = Integer.parseInt(settings.getProperty(key + ".height"));
-		} catch(Exception exc) {
-			return null;
-		}
-
-		return r;
-	}
-
-	/**
-	 * Saves the rectangle r with property-key key to the settings.
-	 *
-	 * @param r TODO: DOCUMENT ME!
-	 * @param key TODO: DOCUMENT ME!
-	 */
-	private void saveRectangle(Rectangle r, String key) {
-		settings.setProperty(key + ".x", String.valueOf(r.x));
-		settings.setProperty(key + ".y", String.valueOf(r.y));
-		settings.setProperty(key + ".width", String.valueOf(r.width));
-		settings.setProperty(key + ".height", String.valueOf(r.height));
 	}
 
 	/**

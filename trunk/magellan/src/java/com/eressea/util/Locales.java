@@ -14,7 +14,6 @@
 package com.eressea.util;
 
 import java.util.Locale;
-import java.util.Properties;
 
 import com.eressea.util.logging.Logger;
 
@@ -26,22 +25,8 @@ import com.eressea.util.logging.Logger;
 public class Locales {
     private final static Logger log = Logger.getInstance(Locales.class);
     
-	private static Properties settings = null;
 	private static Locale guiLocale = null;
 	private static Locale orderLocale = null;
-
-	/**
-	 * Provides this class with settings to load the default locales from and store them to, if
-	 * they are changed.
-	 *
-	 * @param p TODO: DOCUMENT ME!
-	 */
-	public static void init(Properties p) {
-		settings = p;
-
-		// initialize Locale
-		getGUILocale();
-	}
 
 	/**
 	 * Sets the locale for the user interface. If Locales was initialized with a Properties object
@@ -50,11 +35,11 @@ public class Locales {
 	 * @param l TODO: DOCUMENT ME!
 	 */
 	public static void setGUILocale(Locale l) {
-		Locale.setDefault(l);
-		guiLocale = l;
-
-		if(settings != null) {
-			settings.setProperty("locales.gui", l.getLanguage());
+		if (l==null)
+			guiLocale=Locale.getDefault();
+		else {
+			Locale.setDefault(l);
+			guiLocale = l;
 		}
 	}
 
@@ -66,14 +51,8 @@ public class Locales {
 	 */
 	public static Locale getGUILocale() throws IllegalStateException {
 		if(guiLocale == null) {
-			if(settings != null) {
-				setGUILocale(new Locale(settings.getProperty("locales.gui",
-															 Locale.getDefault().getLanguage()), ""));
-			} else {
-                // bugzilla #861
-                log.warn("Locales.getGUILocale: Locales is not initialized, falling back to default locale");
-                return Locale.getDefault();
-			}
+			log.warn("Locales.getGUILocale: Locales is not initialized, falling back to default locale");
+			return Locale.getDefault();
 		}
 
 		return guiLocale;
@@ -86,11 +65,10 @@ public class Locales {
 	 * @param l TODO: DOCUMENT ME!
 	 */
 	public static void setOrderLocale(Locale l) {
-		orderLocale = l;
-
-		if(settings != null) {
-			settings.setProperty("locales.orders", l.getLanguage());
-		}
+		if (l == null){
+			orderLocale=Locale.GERMAN;
+		}else
+			orderLocale = l;
 	}
 
 	/**
@@ -103,13 +81,8 @@ public class Locales {
 	 */
 	public static Locale getOrderLocale() throws IllegalStateException {
 		if(orderLocale == null) {
-			if(settings != null) {
-				orderLocale = new Locale(settings.getProperty("locales.orders",
-															  Locale.getDefault().getLanguage()), "");
-			} else {
-                return Locale.GERMAN;
-                // throw new IllegalStateException("Locales is not initialized");
-			}
+			log.warn("Locales.getOrderLocale: Locales is not initialized, falling back to GERMAN locale");
+			return Locale.GERMAN;
 		}
 
 		return orderLocale;

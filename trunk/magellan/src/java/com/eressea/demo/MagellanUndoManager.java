@@ -96,7 +96,8 @@ public class MagellanUndoManager extends UndoManager {
 			list.firePropertyChange(REDO, false, canRedo());
 			list.firePropertyChange(UNDO, false, canUndo());
 		} catch(CannotUndoException e) {
-			log.error("MagellanUndoManager.undo: catched exception", e);
+			log.info("MagellanUndoManager.undo: cannot undo");
+			log.debug("", e);
 		}
 	}
 
@@ -111,7 +112,8 @@ public class MagellanUndoManager extends UndoManager {
 			list.firePropertyChange(REDO, false, canRedo());
 			list.firePropertyChange(UNDO, false, canUndo());
 		} catch(CannotRedoException e) {
-			log.error("MagellanUndoManager.redo: catched exception", e);
+			log.info("MagellanUndoManager.redo: cannot redo");
+			log.debug("", e);
 		}
 	}
 

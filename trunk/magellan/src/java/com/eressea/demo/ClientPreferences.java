@@ -339,8 +339,12 @@ public class ClientPreferences extends InternationalizedPanel implements Extende
 	 * TODO: DOCUMENT ME!
 	 */
 	public void applyPreferences() {
-		Locales.setGUILocale(((LocaleWrapper) cmbGUILocale.getSelectedItem()).getLocale());
-		Locales.setOrderLocale(((LocaleWrapper) cmbOrderLocale.getSelectedItem()).getLocale());
+		Locale guiLocale = ((LocaleWrapper) cmbGUILocale.getSelectedItem()).getLocale();
+		Locale orderLocale = ((LocaleWrapper) cmbOrderLocale.getSelectedItem()).getLocale();
+		settings.setProperty("locales.gui", guiLocale.getLanguage());
+		settings.setProperty("locales.orders", orderLocale.getLanguage());
+		Locales.setGUILocale(guiLocale);
+		Locales.setOrderLocale(orderLocale);
 
 		if(source.getData() != null) {
 			source.getData().setCurTempID(-1);

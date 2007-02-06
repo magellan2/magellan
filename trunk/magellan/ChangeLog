@@ -1,5 +1,18 @@
 2007-01-23  Fiete  <Fiete@users.sourceforge.net>
 
+	* Spell.java. CRWriterDialog.java fixed NPE while exporting (stm)
+	* Client.java Language dialog was behind splash (stm)
+	* Client.java, Locales.java, ClientPreferences.java, MagellanContext.java, JVorlage.java, PropertiesHelper.java
+	  fixed bug in saving language-selection in properties (stm)
+	* Client.java, MagellanDesktop.java fixed bug window with size 0 (stm)
+	* OpenCRAction.java, EresseaFileFilter.java, src/res/lang/com-eressea-swing-eresseafilefilter_de.properties
+	  Added All-Reports to fileFilters (stm)
+	* OpenArdersAction: added extra refreshing of unit relations after load (stm)
+	* ExpandSelectionAction added -> expand a selection about 1 region
+	* Added support for giving orders to ship-captns (UnitContainerContextMenu)
+
+2007-01-23  Fiete  <Fiete@users.sourceforge.net>
+
 	* fixed bug writing familiarID in CRWriter.java
 	* fixed bug: merging with void regions
 	* changed some icons, added special _region icons
