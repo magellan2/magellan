@@ -17,6 +17,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,6 +78,7 @@ import com.eressea.demo.actions.ArmyStatsAction;
 import com.eressea.demo.actions.ChangeFactionConfirmationAction;
 import com.eressea.demo.actions.ConfirmAction;
 import com.eressea.demo.actions.ECheckAction;
+import com.eressea.demo.actions.ExpandSelectionAction;
 import com.eressea.demo.actions.ExportCRAction;
 import com.eressea.demo.actions.ExternalModuleAction;
 import com.eressea.demo.actions.FactionStatsAction;
@@ -303,6 +305,10 @@ public class Client extends JFrame implements ShortcutListener,
         // init desktop
         startWindow.progress(3, (startBundle != null) ? startBundle
                 .getString("3") : "Creating desktop environment...");
+        Rectangle bounds = PropertiesHelper.loadRect(settings, null, "Client");
+        if (bounds!=null)
+        	setBounds(bounds);
+
         desktop = new MagellanDesktop(this, context, settings, components,
                 settingsDirectory);
 
@@ -340,8 +346,6 @@ public class Client extends JFrame implements ShortcutListener,
         File settingsFile = new File(directory, fileName);
 
         // load settings from file
-        boolean newFile = false;
-
         if (settingsFile.exists()) {
             try {
                 settings.load(new BufferedInputStream(new FileInputStream(
@@ -353,22 +357,27 @@ public class Client extends JFrame implements ShortcutListener,
             }
         } else {
             log.info("Client.loadSettings: settings file "+settingsFile+" does not exist, using default values.");
-            newFile = true;
-        }
+            if (checkForNew) {
+            	LanguageDialog ld = new LanguageDialog(settings, filesDirectory);
 
-        if (checkForNew && newFile) {
-            LanguageDialog ld = new LanguageDialog(settings, filesDirectory);
+            	if (ld.languagesFound()) {
+            		Locale locale = ld.showDialog(startWindow);
 
-            if (ld.languagesFound()) {
-                Locale locale = ld.showDialog(this);
-
-                if ((locale != null) && !locale.equals(Locale.getDefault())) {
-                    Locales.setGUILocale(locale);
-                    Locales.setOrderLocale(locale);
-                }
+            		if ((locale != null) && !locale.equals(Locale.getDefault())) {
+            			settings.setProperty("locales.gui", locale.getLanguage());
+            			settings.setProperty("locales.orders", locale.getLanguage());
+            		}
+            	}
             }
         }
-
+        if (settings.getProperty("locales.gui") != null)
+        	Locales.setGUILocale(new Locale(settings.getProperty("locales.gui")));
+        else
+        	Locales.setGUILocale(Locale.getDefault());
+        if (settings.getProperty("locales.orders") != null)
+        	Locales.setOrderLocale(new Locale(settings.getProperty("locales.orders")));
+        else
+        	Locales.setOrderLocale(Locale.GERMAN);
         return settings;
     }
 
@@ -724,6 +733,7 @@ public class Client extends JFrame implements ShortcutListener,
         addMenuItem(map, new InvertSelectionAction(this));
         addMenuItem(map, new SelectIslandsAction(this));
         addMenuItem(map, new FillSelectionAction(this));
+        addMenuItem(map, new ExpandSelectionAction(this));
         map.addSeparator();
         addMenuItem(map, new OpenSelectionAction(this));
         addMenuItem(map, new AddSelectionAction(this));

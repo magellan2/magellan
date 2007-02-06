@@ -22,12 +22,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.eressea.Region;
 import com.eressea.demo.Client;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
@@ -84,7 +86,7 @@ public class OpenOrdersAction extends MenuAction implements GameDataListener {
 			try {
 				// apexo (Fiete) 20061205: if in properties, force ISO encoding
 				if (!PropertiesHelper.getboolean(settings, "TextEncoding.ISOopenOrders", false)) {
-					// old = default = system dependend
+					// old = default = system dependent
 					r.read(new FileReader(fc.getSelectedFile().getAbsolutePath()));
 				} else {
 					// new: force our default = ISO
@@ -92,6 +94,15 @@ public class OpenOrdersAction extends MenuAction implements GameDataListener {
 					r.read(stream);
 				}
 
+				// OrderReaderPatch010207 stm (manually by Fiete):
+				if (client.getData().regions()!=null){ // added by fiete to be failsafe
+					for (Iterator it = client.getData().regions().values().iterator();it.hasNext();){
+						Region region = (Region)it.next();
+						region.refreshUnitRelations(true);
+					}
+				}
+				// OrderReaderPatch end
+				
 				OrderReader.Status status = r.getStatus();
 				Object msgArgs[] = { new Integer(status.factions), new Integer(status.units) };
 				JOptionPane.showMessageDialog(client,

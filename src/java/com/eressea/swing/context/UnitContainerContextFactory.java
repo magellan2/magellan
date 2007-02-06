@@ -62,16 +62,16 @@ public class UnitContainerContextFactory implements ContextFactory {
 													DefaultMutableTreeNode node) {
 		if(argument instanceof UnitContainer) {
 			return new UnitContainerContextMenu((UnitContainer) argument,
-												dispatcher, data, settings);
+												dispatcher, data, settings,selectedObjects);
 		} else if(argument instanceof RegionNodeWrapper) {
 			return new UnitContainerContextMenu(((RegionNodeWrapper) argument).getRegion(),
-												dispatcher, data, settings);
+												dispatcher, data, settings,selectedObjects);
 		} else if(argument instanceof FactionNodeWrapper) {
 			return new UnitContainerContextMenu(((FactionNodeWrapper) argument).getFaction(),
-												dispatcher, data, settings);
+												dispatcher, data, settings,selectedObjects);
 		} else if(argument instanceof UnitContainerNodeWrapper) {
 			return new UnitContainerContextMenu(((UnitContainerNodeWrapper) argument).getUnitContainer(),
-												dispatcher, data, settings);
+												dispatcher, data, settings,selectedObjects);
 		}
 
 		return null;

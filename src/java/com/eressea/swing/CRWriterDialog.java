@@ -628,11 +628,10 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 						Spell sp = (Spell) it.next();
 						trans.remove(sp.getID().toString());
                         trans.remove(sp.getName());
-						it2 = sp.getComponents().keySet().iterator();
-
-						while(it2.hasNext()) {
-							trans.remove(it2.next());
-						}
+                        it2 = sp.getComponents().keySet().iterator();
+                        while(it2.hasNext()) {
+                        	trans.remove(it2.next());
+                        }
 					}
 
 					it = data.potions().values().iterator();
@@ -644,7 +643,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 						while(it2.hasNext()) {
 							trans.remove(((com.eressea.Item) it2.next()).getItemType().getID()
-										  .toString());
+									.toString());
 						}
 					}
 				}
