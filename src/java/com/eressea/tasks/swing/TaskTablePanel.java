@@ -56,16 +56,19 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 																		  SelectionListener
 {
 	private static final Logger log = Logger.getInstance(TaskTablePanel.class);
-	protected TaskTableModel model;
+	
 	protected JTable table;
+	TableSorter sorter;
+	TaskTableModel model;
 	protected List inspectors;
 
 	/**
 	 * Creates a new TaskTablePanel object.
 	 *
-	 * @param d TODO: DOCUMENT ME!
-	 * @param initData TODO: DOCUMENT ME!
-	 * @param p TODO: DOCUMENT ME!
+	 * @param d 
+	 * @param initData 
+	 * @param p 
+	 * @deprecated see InternationalizedDataPanel
 	 */
 	public TaskTablePanel(EventDispatcher d, GameData initData, Properties p) {
 		super(d, initData, p);
@@ -74,23 +77,24 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 
 	private void init(EventDispatcher d) {
 		d.addUnitOrdersListener(this);
-		d.addSelectionListener(this);
+		// TODO (stm): this is broken, so for now we don't care about selection
+//		d.addSelectionListener(this);
 
 		initGUI();
-		initTimer();
 		initInspectors();
+		refreshProblems();
 	}
 
 	private void initGUI() {
 		model = new TaskTableModel(getHeaderTitles());
-
-		// table = new JTable(model);
-		TableSorter sorter = new TableSorter(model);
+		sorter = new TableSorter(model);
 		table = new JTable(sorter);
-		sorter.addMouseListenerToHeaderInTable(table);
-
-		// disallow reordering of headers
-		table.getTableHeader().setReorderingAllowed(false);
+//		sorter.addMouseListenerToHeaderInTable(table); // OLD
+		sorter.setTableHeader(table.getTableHeader());   //NEW
+		
+		
+		// allow reordering of headers
+		table.getTableHeader().setReorderingAllowed(true);
 
 		// set row selection to single selection
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -99,20 +103,19 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		table.getColumnModel().getColumn(TaskTableModel.IMAGE_POS).setResizable(false);
 		table.getColumnModel().getColumn(TaskTableModel.IMAGE_POS).setMaxWidth(table.getColumnModel()
 																					.getColumn(TaskTableModel.IMAGE_POS)
-																					.getMinWidth());
+																					.getMinWidth()*3);
 
-		// Row 1 ("!"): smallest possible, not resizeable
-		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setResizable(false);
-		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setMaxWidth(table.getColumnModel()
-																					  .getColumn(TaskTableModel.UNKNOWN_POS)
-																					  .getMinWidth());
+//		// Row 1 ("!"): smallest possible, not resizeable
+//		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setResizable(false);
+//		table.getColumnModel().getColumn(TaskTableModel.UNKNOWN_POS).setMaxWidth(table.getColumnModel()
+//																					  .getColumn(TaskTableModel.UNKNOWN_POS)
+//																					  .getMinWidth()*3);
 
 		// Row 2 ("Line"): smallest possible, not resizeable
 		table.getColumnModel().getColumn(TaskTableModel.LINE_POS).setResizable(true);
 		table.getColumnModel().getColumn(TaskTableModel.LINE_POS).setMaxWidth(table.getColumnModel()
 																				   .getColumn(TaskTableModel.LINE_POS)
-																				   .getMinWidth());
-
+																				   .getMinWidth()*2);
 		// react on double clicks on a row
 		table.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -123,7 +126,6 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 						if(log.isDebugEnabled()) {
 							log.debug("TaskTablePanel: Double click on row " + row);
 						}
-
 						selectObjectOnRow(row);
 					}
 				}
@@ -135,17 +137,17 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	}
 
 	private void selectObjectOnRow(int row) {
-		Vector v = (Vector) model.getDataVector().get(row);
-		Object obj = v.get(TaskTableModel.OBJECT_POS);
+		Object obj = sorter.getValueAt(row, TaskTableModel.OBJECT_POS);
 		dispatcher.fire(new SelectionEvent(this, null, obj));
 	}
 
 	private static final int RECALL_IN_MS = 10;
+	// TODO make this configurable
 	private static final boolean REGIONS_WITH_UNCONFIRMED_UNITS_ONLY = true;
 	private Timer timer;
 	private Iterator regionsIterator;
 
-	private void initTimer() {
+	private void refreshProblems() {
 		if(model != null) {
 			model.clearProblems();
 		}
@@ -175,6 +177,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		Region r = getNextRegion();
 
 		if(r != null) {
+			r.refreshUnitRelations();
 			reviewRegionAndUnits(r);
 		}
 
@@ -217,7 +220,7 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * clean up
 	 */
 	public void quit() {
 		if(this.dispatcher != null) {
@@ -228,24 +231,21 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		super.quit();
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param e TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.swing.InternationalizedDataPanel#gameDataChanged(com.eressea.event.GameDataEvent)
 	 */
 	public void gameDataChanged(GameDataEvent e) {
 		super.gameDataChanged(e);
 
 		// rebuild warning list
-		initTimer();
+		refreshProblems();
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param e TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.event.SelectionListener#selectionChanged(com.eressea.event.SelectionEvent)
 	 */
 	public void selectionChanged(SelectionEvent e) {
+		// (stm) this is pretty broken
 		if((e.getSource() == this) || (e.getSelectionType() == SelectionEvent.ST_REGIONS)) {
 			// ignore multiple region selections
 			return;
@@ -277,9 +277,10 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Updates reviews when orders have changed.
 	 *
-	 * @param e TODO: DOCUMENT ME!
+	 * @param e 
+	 * @see com.eressea.event.UnitOrdersListener#unitOrdersChanged(com.eressea.event.UnitOrdersEvent)
 	 */
 	public void unitOrdersChanged(UnitOrdersEvent e) {
 		// rebuild warning list for given unit
@@ -310,35 +311,34 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 	private void reviewObjects(Unit u, Region r) {
 		for(Iterator iter = inspectors.iterator(); iter.hasNext();) {
 			Inspector c = (Inspector) iter.next();
-
 			if(r != null) {
 				// remove previous problems of this unit AND the given inspector
 				model.removeProblems(c, r);
 
 				// add new problems if found
-				model.addProblems(c.reviewRegion(r));
+				List problems = c.reviewRegion(r);
+				model.addProblems(problems);
 			}
 
 			if(u != null) {
-				u.getRegion().refreshUnitRelations();
-
 				// remove previous problems of this unit AND the given inspector
 				model.removeProblems(c, u);
 
 				// add new problems if found
-				model.addProblems(c.reviewUnit(u));
+				List problems = c.reviewUnit(u);
+				model.addProblems(problems);
 			}
 		}
 	}
 
 	private Vector getHeaderTitles() {
 		Vector v = new Vector(6);
-		v.add("I");
-		v.add("!");
+		v.add(getString("header.type"));
 		v.add(getString("header.description"));
 		v.add(getString("header.object"));
-		v.add(getString("header.line"));
 		v.add(getString("header.region"));
+		v.add(getString("header.line"));
+//		v.add(getString("header.unknown"));
 
 		return v;
 	}
@@ -347,7 +347,8 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		/**
 		 * Creates a new TaskTableModel object.
 		 *
-		 * @param header TODO: DOCUMENT ME!
+		 * @param header 
+		 * @see javax.swing.table.DefaultTableModel#DefaultTableModel(Vector, int)
 		 */
 		public TaskTableModel(Vector header) {
 			super(header, 0);
@@ -357,7 +358,9 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		private void init() {
 		}
 
-		// no cell is editable right now
+		/* (non-Javadoc)
+		 * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
+		 */
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
@@ -370,9 +373,9 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Adds a list of problems one by one.
 		 *
-		 * @param p TODO: DOCUMENT ME!
+		 * @param p 
 		 */
 		public void addProblems(List p) {
 			for(Iterator iter = p.iterator(); iter.hasNext();) {
@@ -381,26 +384,26 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		}
 
 		private static final int IMAGE_POS = 0;
-		private static final int UNKNOWN_POS = 1;
-		private static final int PROBLEM_POS = 2;
-		private static final int OBJECT_POS = 3;
+		private static final int PROBLEM_POS = 1;
+		private static final int OBJECT_POS = 2;
+		private static final int REGION_POS = 3;
 		private static final int LINE_POS = 4;
-		private static final int REGION_POS = 5;
+//		private static final int UNKNOWN_POS = 5;
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Add a problem to this model.
 		 *
-		 * @param p TODO: DOCUMENT ME!
+		 * @param p 
 		 */
 		public void addProblem(Problem p) {
 			Vector v = new Vector(6);
 			v.add(Integer.toString(p.getType()));
-			v.add("");
 			v.add(p);
 			v.add(p.getObject());
-			v.add((p.getLine() < 1) ? "" : Integer.toString(p.getLine()));
 			v.add(p.getObject().getRegion());
-
+			v.add((p.getLine() < 1) ? "" : Integer.toString(p.getLine()));
+//			v.add("");
+			
 			this.addRow(v);
 		}
 
@@ -436,10 +439,12 @@ public class TaskTablePanel extends InternationalizedDataPanel implements UnitOr
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 
+			defaultTranslations.put("header.type", "Type");
 			defaultTranslations.put("header.description", "Description");
 			defaultTranslations.put("header.object", "Object");
 			defaultTranslations.put("header.line", "Line");
 			defaultTranslations.put("header.region", "Region");
+//			defaultTranslations.put("header.unknown", "!");
 		}
 
 		return defaultTranslations;

@@ -278,6 +278,13 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 		for(Iterator iter = regions.values().iterator(); iter.hasNext();) {
 			Region r = (Region) iter.next();
 
+			/**
+			 * poorly it is necessary to refresh all relations, as at this time it is not
+			 * assured that they are always up to date. Possibly it would be better, to
+			 * calculate them only, if orders are loaded or changed...
+			 */
+			r.refreshUnitRelations();
+
 			for(Iterator it = r.units().iterator(); it.hasNext();) {
 				Unit u = (Unit) it.next();
 
@@ -308,13 +315,6 @@ public class FactionStatsPanel extends InternationalizedDataPanel implements Sel
 						heroes.add(u);
 						heros_count += u.persons;
 					}
-
-					/**
-					 * poorly it is necessary to refresh all relations, as at this time it is not
-					 * assured that they are always up to date. Possibly it would be better, to
-					 * calculate them only, if orders are loaded or changed...
-					 */
-					u.getRegion().refreshUnitRelations();
 
 					if(u.getModifiedPersons() > 0) {
 						modifiedUnitsCounter++;

@@ -22,8 +22,6 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -48,18 +46,17 @@ import com.eressea.EntityID;
 import com.eressea.Faction;
 import com.eressea.GameData;
 import com.eressea.ID;
-import com.eressea.IntegerID;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.SelectionListener;
+import com.eressea.skillchart.SkillChartPanel;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.TrustLevels;
 import com.eressea.util.comparator.FactionTrustComparator;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.logging.Logger;
-import com.eressea.skillchart.SkillChartPanel;
 
 /**
  * A dialog wrapper for the faction statistics display.
@@ -178,52 +175,56 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 	private Container getFactionPanel() {
 		factions = CollectionFactory.createLinkedList(data.factions().values());
 
-		boolean sortByTrustLevel = settings.getProperty("FactionStatsDialog.SortByTrustLevel",
-														"true").equalsIgnoreCase("true");
+		String sortByTrustLevel = settings.getProperty("FactionStatsDialog.SortByTrustLevel",
+				"true");
 
 		// sort factions
-		if(sortByTrustLevel) {
+		if(sortByTrustLevel.equals("true")) {
 			Collections.sort(factions, factionTrustComparator);
+		} else if (sortByTrustLevel.equals("detailed")){
+			Collections.sort(factions, FactionTrustComparator.DETAILED_COMPARATOR);
 		} else {
 			Collections.sort(factions, nameComparator);
 		}
 
 		final FactionStatsDialog d = this;
 		lstFaction = new JList(factions.toArray());
-
-		// to jump to first faction which name starts with the typed key
-		lstFaction.addKeyListener(new KeyAdapter() {
-				public void keyPressed(KeyEvent e) {
-					Faction dummy = new Faction(IntegerID.create(-2), null);
-					char c = e.getKeyChar();
-
-					if(!Character.isLetter(c)) {
-						return;
-					}
-
-					dummy.setName(String.valueOf(c));
-
-					int index = Collections.binarySearch(factions, dummy, nameComparator);
-
-					if(index < 0) {
-						index = -index - 1;
-					}
-
-					if(index == lstFaction.getModel().getSize()) {
-						index--;
-					}
-
-					Object o = lstFaction.getModel().getElementAt(index);
-					lstFaction.setSelectedValue(o, true);
-				}
-			});
+		
+		// (stm): The L&F should do this automatically, see j2sdk-1.4.2-doc/api/javax/swing/doc-files/Key-Index.html#JList
+//		// to jump to first faction which name starts with the typed key
+//		lstFaction.addKeyListener(new KeyAdapter() {
+//				public void keyPressed(KeyEvent e) {
+//					Faction dummy = new Faction(IntegerID.create(-2), null);
+//					char c = e.getKeyChar();
+//
+//					if(!Character.isLetter(c)) {
+//						return;
+//					}
+//
+//					dummy.setName(String.valueOf(c));
+//
+//					int index = Collections.binarySearch(factions, dummy, nameComparator);
+//
+//					if(index < 0) {
+//						index = -index - 1;
+//					}
+//
+//					if(index == lstFaction.getModel().getSize()) {
+//						index--;
+//					}
+//
+//					Object o = lstFaction.getModel().getElementAt(index);
+//					lstFaction.setSelectedValue(o, true);
+//				}
+//			});
 		lstFaction.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		lstFaction.addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent e) {
 					if(e.getValueIsAdjusting()) {
 						return;
 					}
-
+					lstFaction.ensureIndexIsVisible(lstFaction.getLeadSelectionIndex());
+					
 					SelectionEvent se = null;
 					JList list = (JList) e.getSource();
 
@@ -259,27 +260,33 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 
 		String s;
 
-		if(sortByTrustLevel) {
+		if(sortByTrustLevel.equalsIgnoreCase("true")) {
+			s = getString("btn.sort.detailed.caption");
+		} else if (sortByTrustLevel.equalsIgnoreCase("detailed")){
 			s = getString("btn.sort.name.caption");
-		} else {
+		}else{
 			s = getString("btn.sort.trustlevel.caption");
 		}
 
 		final JButton sort = new JButton(s);
 		sort.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					boolean sortByTrust = !settings.getProperty("FactionStatsDialog.SortByTrustLevel",
-																"true").equalsIgnoreCase("true");
-					settings.setProperty("FactionStatsDialog.SortByTrustLevel",
-										 String.valueOf(sortByTrust));
-
-					if(sortByTrust) {
+					String sortByTrust = settings.getProperty("FactionStatsDialog.SortByTrustLevel", "true");
+					if(sortByTrust.equalsIgnoreCase("true")) {
+						sortByTrust="detailed";
 						sort.setText(getString("btn.sort.name.caption"));
-						Collections.sort(factions, factionTrustComparator);
-					} else {
+						Collections.sort(factions, FactionTrustComparator.DETAILED_COMPARATOR);
+					} else if (sortByTrust.equalsIgnoreCase("detailed")){
+						sortByTrust="false";
 						sort.setText(getString("btn.sort.trustlevel.caption"));
 						Collections.sort(factions, nameComparator);
+					}else{
+						sortByTrust="true";
+						sort.setText(getString("btn.sort.detailed.caption"));
+						Collections.sort(factions, factionTrustComparator);
 					}
+					settings.setProperty("FactionStatsDialog.SortByTrustLevel",
+										 String.valueOf(sortByTrust));
 
 					Object o = lstFaction.getSelectedValue();
 					lstFaction.setListData(factions.toArray());
@@ -642,6 +649,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 			defaultTranslations.put("btn.trustlevel.caption", "Set trustlevel");
 			defaultTranslations.put("btn.trustlevel.mnemonic", "t");
 			defaultTranslations.put("btn.sort.trustlevel.caption", "Sort by trustlevel");
+			defaultTranslations.put("btn.sort.detailed.caption", "Sort by trust");
 			defaultTranslations.put("btn.sort.name.caption", "Sort by name");
 
 			defaultTranslations.put("tab.options.caption", "Eressea options");

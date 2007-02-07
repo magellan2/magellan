@@ -1104,6 +1104,7 @@ public class Region extends UnitContainer {
     /**
      * Refreshes all the relations of all units in this region. It is preferrable to call this
      * method instead of refreshing the unit relations 'manually'.
+     * 
      * @param forceRefresh to enforce refreshment, false for one refreshment only
      */
 

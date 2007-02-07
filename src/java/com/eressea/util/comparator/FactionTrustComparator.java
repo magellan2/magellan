@@ -46,28 +46,31 @@ public class FactionTrustComparator implements Comparator {
 		sameTrustSubCmp = sameFactionSubComparator;
 	}
 
-	// 	public final static FactionTrustComparator DEFAULT_COMPARATOR = new FactionTrustComparator(new NameComparator(new IDComparator()));
 
-	/** TODO: DOCUMENT ME! */
-	public static final FactionTrustComparator DEFAULT_COMPARATOR = new FactionTrustComparator(null);
+	/** A convenient constant providing a comparator that just compares the trust level (privilegd,allied,default,enemy) */
+	// public static final FactionTrustComparator DEFAULT_COMPARATOR = new FactionTrustComparator(null);
+	public final static FactionTrustComparator DEFAULT_COMPARATOR = new FactionTrustComparator(new NameComparator(IDComparator.DEFAULT));
 
-	/** TODO: DOCUMENT ME! */
+	/** A convenient constant providing a comparator that just compares the exact trust value */
+	public static final FactionTrustComparator DETAILED_COMPARATOR = new FactionTrustComparator(new FactionDetailComparator(new NameComparator(IDComparator.DEFAULT)));
+
+	/** The "privileged" trust level */
 	public static final int PRIVILEGED = Faction.TL_PRIVILEGED;
 
-	/** TODO: DOCUMENT ME! */
+	/** The "allied" trust level */
 	public static final int ALLIED = Faction.TL_DEFAULT + 1;
 
-	/** TODO: DOCUMENT ME! */
+	/** The "default" trust level */
 	public static final int DEFAULT = Faction.TL_DEFAULT;
 
-	/** TODO: DOCUMENT ME! */
+	/** The "enemy" trust level */
 	public static final int ENEMY = Faction.TL_DEFAULT - 1;
 
 	/**
 	 * Compares its two arguments for order with regard to their trust levels.
 	 *
-	 * @param o1 TODO: DOCUMENT ME!
-	 * @param o2 TODO: DOCUMENT ME!
+	 * @param o1 
+	 * @param o2 
 	 *
 	 * @return the difference of <tt>o2</tt>'s and <tt>o1</tt>'s     trust level values. If this is
 	 * 		   0 and a sub-comparator is specified, the result of that sub-comparator's comparison
@@ -82,22 +85,22 @@ public class FactionTrustComparator implements Comparator {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the trust level (privilegd,allied,default,enemy) of a faction.
 	 *
-	 * @param f TODO: DOCUMENT ME!
+	 * @param f 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return Returns the trust level of a faction
 	 */
 	public static int getTrustLevel(Faction f) {
 		return getTrustLevel(f.trustLevel);
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the trust level (privilegd,allied,default,enemy) for an exact trust value.
 	 *
-	 * @param trustLevel TODO: DOCUMENT ME!
+	 * @param trustLevel 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return Returns the trust level for an exact trust value.
 	 */
 	public static int getTrustLevel(int trustLevel) {
 		if(trustLevel >= PRIVILEGED) {
@@ -116,11 +119,11 @@ public class FactionTrustComparator implements Comparator {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns the name of a trust level (privilegd,allied,default,enemy).
 	 *
-	 * @param level TODO: DOCUMENT ME!
+	 * @param level One of the defined levels 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return Returns the name of the trust level
 	 */
 	public static String getTrustLevelLabel(int level) {
 		// TODO(pavkovic): move functions and translations to a suitable position

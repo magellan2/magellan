@@ -15,20 +15,24 @@ package com.eressea.tasks;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.eressea.Unit;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.Translations;
 
 /**
+ * Checks land movement for overload or too many horses.
+ * 
  */
 public class MovementInspector extends AbstractInspector implements Inspector {
-	/** TODO: DOCUMENT ME! */
+	/** The singelton instance of this Inspector */
 	public static final MovementInspector INSPECTOR = new MovementInspector();
 
 	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Returns an instance this inspector.
+	 * 
+	 * @return The singleton instance of MovementInspector
 	 */
 	public static MovementInspector getInstance() {
 		return INSPECTOR;
@@ -38,30 +42,28 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param u TODO: DOCUMENT ME!
-	 * @param type TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Checks the specified movement for overload and too many horses.
+	 * 
+	 * @see com.eressea.tasks.AbstractInspector#reviewUnit(com.eressea.Unit, int)
 	 */
 	public List reviewUnit(Unit u, int type) {
-		if((u == null) || u.ordersAreNull()) {
+		if ((u == null) || u.ordersAreNull()) {
 			return Collections.EMPTY_LIST;
 		}
 
 		// we only warn
-		if(type != Problem.WARNING) {
+		if (type != Problem.WARNING) {
 			return Collections.EMPTY_LIST;
 		}
 
 		List problems = CollectionFactory.createArrayList();
 
-		if(!u.getModifiedMovement().isEmpty()) {
+		if (!u.getModifiedMovement().isEmpty()) {
 			// only test for foot/horse movement if unit is not owner of a modified ship
-			if((u.getModifiedShip() == null) || !u.equals(u.getModifiedShip().getOwnerUnit())) {
+			if ((u.getModifiedShip() == null) || !u.equals(u.getModifiedShip().getOwnerUnit())) {
 				problems.addAll(reviewUnitOnFoot(u));
-				problems.addAll(reviewUnitOnHorse(u));
+				if (u.getModifiedMovement().size() > 2)
+					problems.addAll(reviewUnitOnHorse(u));
 			}
 		}
 
@@ -88,16 +90,16 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 	private List reviewUnitOnFoot(Unit u) {
 		int maxOnFoot = u.getPayloadOnFoot();
 
-		if(maxOnFoot == Unit.CAP_UNSKILLED) {
+		if (maxOnFoot == Unit.CAP_UNSKILLED) {
 			return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
-																		 "Foot movement too many horses!"));
+					getString("error.toomanyhorsesfoot.description")));
 		}
 
 		int modLoad = u.getModifiedLoad();
 
-		if((maxOnFoot - modLoad) < 0) {
+		if ((maxOnFoot - modLoad) < 0) {
 			return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
-																		 "Foot movement overloaded!"));
+					getString("error.footoverloaded.description")));
 		}
 
 		return Collections.EMPTY_LIST;
@@ -106,20 +108,60 @@ public class MovementInspector extends AbstractInspector implements Inspector {
 	private List reviewUnitOnHorse(Unit u) {
 		int maxOnHorse = u.getPayloadOnHorse();
 
-		if(maxOnHorse == Unit.CAP_UNSKILLED) {
+		if (maxOnHorse == Unit.CAP_UNSKILLED) {
 			return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
-																		 "Horse movement too many horses!"));
+					getString("error.toomanyhorsesride.description")));
 		}
 
-		if(maxOnHorse != Unit.CAP_NO_HORSES) {
+		if (maxOnHorse != Unit.CAP_NO_HORSES) {
 			int modLoad = u.getModifiedLoad();
 
-			if((maxOnHorse - modLoad) < 0) {
+			if ((maxOnHorse - modLoad) < 0) {
 				return CollectionFactory.singletonList(new CriticizedWarning(u, u, this,
-																			 "Horse movement overloaded!"));
+						getString("error.horseoverloaded.description")));
 			}
 		}
 
 		return Collections.EMPTY_LIST;
 	}
+
+	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
+	// it is called by reflection (we could force the implementation of an interface,
+	// this way it is more flexible.)
+	// Pls use this mechanism, so the translation files can be created automagically
+	// by inspecting all classes.
+	private static Map defaultTranslations;
+
+	/**
+	 * Returns a translation from the translation table for the specified key.
+	 * 
+	 * @param key
+	 * 
+	 * @return The translation of key, if found, or null
+	 */
+	protected String getString(String key) {
+		return Translations.getTranslation(this, key);
+	}
+
+	/**
+	 * Returns a map of keys to translations.
+	 * 
+	 * @return A map of keys to translations
+	 */
+	public static synchronized Map getDefaultTranslations() {
+		if (defaultTranslations == null) {
+			defaultTranslations = CollectionFactory.createHashtable();
+
+			defaultTranslations.put("error.toomanyhorsesfoot.description",
+					"Foot movement: too many horses!");
+			defaultTranslations.put("error.footoverloaded.description", "Foot movement: overloaded!");
+			defaultTranslations.put("error.toomanyhorsesride.description",
+					"Horse movement: too many horses!");
+			defaultTranslations
+					.put("error.horseoverloaded.description", "Horse movement: overloaded!");
+		}
+
+		return defaultTranslations;
+	}
+
 }
