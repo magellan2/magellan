@@ -1,4 +1,8 @@
-2007-01-23  Fiete  <Fiete@users.sourceforge.net>
+2007-02-07  Fiete  <Fiete@users.sourceforge.net>
+	* internationalized Task dialog, fixed sorting problem, fixed update problem, improved ship and movement inspector (TaskTableAction.java, TableSorter.java, MovementInspector.java, ShipInspector.java, TaskTablePanel.java, src/res/lang/...)
+	* fixed sorting of factions in faction stats, added "sort by trust" (FactionStatsDialog.java, FactionStatsPanel.java, FactionDetailComparator.java, FactionTrustComparator.java, src/res/lang/...)
+
+2007-02-06  Fiete  <Fiete@users.sourceforge.net>
 
 	* Spell.java. CRWriterDialog.java fixed NPE while exporting (stm)
 	* Client.java Language dialog was behind splash (stm)
@@ -11,7 +15,7 @@
 	* ExpandSelectionAction added -> expand a selection about 1 region
 	* Added support for giving orders to ship-captns (UnitContainerContextMenu)
 
-2007-01-23  Fiete  <Fiete@users.sourceforge.net>
+2007-01-31  Fiete  <Fiete@users.sourceforge.net>
 
 	* fixed bug writing familiarID in CRWriter.java
 	* fixed bug: merging with void regions

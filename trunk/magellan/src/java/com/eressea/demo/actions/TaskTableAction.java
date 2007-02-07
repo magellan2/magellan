@@ -63,7 +63,7 @@ public class TaskTableAction extends MenuAction {
 	public static synchronized Map getDefaultTranslations() {
 		if(defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
-			defaultTranslations.put("name", "Review...");
+			defaultTranslations.put("name", "Open Tasks...");
 			defaultTranslations.put("mnemonic", "r");
 			defaultTranslations.put("accelerator", "ctrl shift R");
 			defaultTranslations.put("tooltip", "tooltip for TaskTable");

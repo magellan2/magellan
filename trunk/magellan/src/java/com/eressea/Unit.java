@@ -1026,6 +1026,15 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
+    protected Collection getRelations() {
+        if(cache == null) {
+            cache = new Cache();
+        }
+        if(cache.relations == null) {
+            cache.relations = CollectionFactory.createArrayList();
+        }
+        return cache.relations;
+    }
 /*
     public Collection getRelations() {
 		if((cache != null) && (cache.relations != null)) {
@@ -1061,16 +1070,6 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
         }
 		return ret;
 	}
-
-    protected Collection getRelations() {
-        if(cache == null) {
-            cache = new Cache();
-        }
-        if(cache.relations == null) {
-            cache.relations = CollectionFactory.createArrayList();
-        }
-        return cache.relations;
-    }
 
 	/**
 	 * deliver all directly related units
@@ -1124,9 +1123,10 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Returns a List of the reached coordinates of the units movement starting with the current
+	 * region or an empty list if unit is not moving.
+	 * 
+	 * @return A list of coordinates, empty list means no movement
 	 */
 	public List getModifiedMovement() {
 		if(this.ordersAreNull()) {
@@ -2124,6 +2124,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		refreshRelations(1);
 	}
 
+	// FIXME "No relation of a unit can affect an object outside the region". This might not be true
+	// any more for familiars or ZAUBERE.
 	/**
 	 * Parses the orders of this unit and detects relations between units established by those
 	 * orders. When does this method have to be called? No relation of a unit can affect an object
