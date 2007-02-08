@@ -268,13 +268,23 @@ public class Client extends JFrame implements ShortcutListener,
         // get new dispatcher
         EventDispatcher dispatcher = new EventDispatcher();
 
-        startWindow.progress(1, (startBundle != null) ? startBundle
-                .getString("1") : "Loading settings...");
-        Properties settings = loadSettings(settingsDirectory, "magellan.ini",true);
-
+        startWindow.progress(1, (startBundle != null) ? startBundle.getString("1")
+				: "Loading settings...");
+        Properties settings = loadSettings(settingsDirectory, "magellan.ini");
+        if (settings == null) {
+			log.info("Client.loadSettings: settings file " + "magellan.ini"
+					+ " does not exist, using default values.");
+			settings = new SelfCleaningProperties();
+	        initLocales(settings, true);
+		}else{
+			initLocales(settings, false);
+		}
+        
         showStatus = PropertiesHelper.getboolean(settings,"Client.ShowOrderStatus", false);
 
-        Properties completionSettings = loadSettings(settingsDirectory, "magellan_completions.ini",false);
+        Properties completionSettings = loadSettings(settingsDirectory, "magellan_completions.ini");
+        if (completionSettings==null)
+        	completionSettings=new SelfCleaningProperties();
 
         // initialize the context, this has to be very early.
         context = new MagellanContext(this);
@@ -336,7 +346,7 @@ public class Client extends JFrame implements ShortcutListener,
      * @param fileName
      *            TODO: DOCUMENT ME!
      */
-    protected Properties loadSettings(File directory, String fileName, boolean checkForNew) {
+    protected Properties loadSettings(File directory, String fileName) {
         Properties settings =  new SelfCleaningProperties();
         // settings = new OrderedOutputProperties();
         // settings = new AgingProperties();
@@ -354,22 +364,28 @@ public class Client extends JFrame implements ShortcutListener,
             } catch (IOException e) {
                 log.error("Client.loadSettings: Error while loading "
                         + settingsFile, e);
+                return null;
             }
         } else {
-            log.info("Client.loadSettings: settings file "+settingsFile+" does not exist, using default values.");
-            if (checkForNew) {
-            	LanguageDialog ld = new LanguageDialog(settings, filesDirectory);
-
-            	if (ld.languagesFound()) {
-            		Locale locale = ld.showDialog(startWindow);
-
-            		if ((locale != null) && !locale.equals(Locale.getDefault())) {
-            			settings.setProperty("locales.gui", locale.getLanguage());
-            			settings.setProperty("locales.orders", locale.getLanguage());
-            		}
-            	}
-            }
+        	return null;
         }
+        return settings;
+    }
+    
+    protected void initLocales(Properties settings, boolean ask) {
+    	if (ask){
+    		LanguageDialog ld = new LanguageDialog(settings, filesDirectory);
+
+    		if (ld.languagesFound()) {
+    			Locale locale = ld.showDialog(startWindow);
+
+    			if ((locale != null) && !locale.equals(Locale.getDefault())) {
+    				settings.setProperty("locales.gui", locale.getLanguage());
+    				settings.setProperty("locales.orders", locale.getLanguage());
+    			}
+    		}
+    	}
+    	
         if (settings.getProperty("locales.gui") != null)
         	Locales.setGUILocale(new Locale(settings.getProperty("locales.gui")));
         else
@@ -378,7 +394,7 @@ public class Client extends JFrame implements ShortcutListener,
         	Locales.setOrderLocale(new Locale(settings.getProperty("locales.orders")));
         else
         	Locales.setOrderLocale(Locale.GERMAN);
-        return settings;
+        log.info("GUI locale: "+Locales.getGUILocale()+settings.getProperty("locales.gui")+", orders locale: "+Locales.getOrderLocale()+settings.getProperty("locales.orders"));
     }
 
     // TODO (stm) this is used by exactly once in the whole project. Why do we
@@ -1162,8 +1178,7 @@ public class Client extends JFrame implements ShortcutListener,
             } else {
             	log.info("This is Magellan Version " + version);
             }
-         
-            
+
             // can't call loadRules from here, so we initially work with an
             // empty ruleset.
             // This is not very nice, though...

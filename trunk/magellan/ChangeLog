@@ -1,3 +1,8 @@
+2007-02-08  Fiete  <Fiete@users.sourceforge.net>
+
+	* new defaults for basicregionpanel html
+	* stm patch to fixe locale-prob of orders are en
+
 2007-02-07  Fiete  <Fiete@users.sourceforge.net>
 	* internationalized Task dialog, fixed sorting problem, fixed update problem, improved ship and movement inspector (TaskTableAction.java, TableSorter.java, MovementInspector.java, ShipInspector.java, TaskTablePanel.java, src/res/lang/...)
 	* fixed sorting of factions in faction stats, added "sort by trust" (FactionStatsDialog.java, FactionStatsPanel.java, FactionDetailComparator.java, FactionTrustComparator.java, src/res/lang/...)
