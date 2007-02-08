@@ -303,4 +303,11 @@ public class ContextManager extends MouseAdapter {
 		javax.swing.SwingUtilities.convertPointFromScreen(showAtPoint, c);
 		menu.show(c, showAtPoint.x, showAtPoint.y);
 	}
+
+	/**
+	 * @return the selection
+	 */
+	public Collection getSelection() {
+		return selection;
+	}
 }

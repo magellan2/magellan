@@ -14,6 +14,7 @@
 package com.eressea.util;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.swing.JMenu;
 import com.eressea.GameData;
 import com.eressea.demo.Client;
 import com.eressea.demo.actions.FileHistoryAction;
+import com.eressea.event.SelectionEvent;
 
 /**
  * A kind of wrapper for the file history (menu) functionality.
@@ -178,11 +180,16 @@ public class FileHistory {
 			settings.setProperty("Client.lastCRSaved", file.getAbsolutePath());
 		}
 
+		Collection selectedObjects = client.getSelectedObjects();
+		
 		GameData data = client.loadCR(file);
 
 		if(data != null) {
 			client.setData(data);
 			client.setReportChanged(false);
+			if (selectedObjects!=null){
+				client.getDispatcher().fire(new SelectionEvent(this,selectedObjects,null));
+			}
 		}
 	}
 }

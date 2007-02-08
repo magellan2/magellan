@@ -42,6 +42,7 @@ import com.eressea.Region;
 import com.eressea.Unit;
 import com.eressea.demo.EMapDetailsPanel;
 import com.eressea.event.EventDispatcher;
+import com.eressea.event.GameDataEvent;
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.UnitOrdersEvent;
@@ -301,7 +302,7 @@ public class UnitContextMenu extends JPopupMenu {
                                                                  ": " + teacher.toString());
                 add(removeFromTeachersList);
                 removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
-                                                                                              teacher));
+                                                                                              teacher,this.data));
             }
         }
 
@@ -728,6 +729,7 @@ public class UnitContextMenu extends JPopupMenu {
 	private class RemoveUnitFromTeachersListAction implements ActionListener {
 		private Unit student;
 		private Unit teacher;
+		private GameData data;
 
 		/**
 		 * Creates a new RemoveUnitFromTeachersListAction object.
@@ -735,9 +737,10 @@ public class UnitContextMenu extends JPopupMenu {
 		 * @param student TODO: DOCUMENT ME!
 		 * @param teacher TODO: DOCUMENT ME!
 		 */
-		public RemoveUnitFromTeachersListAction(Unit student, Unit teacher) {
+		public RemoveUnitFromTeachersListAction(Unit student, Unit teacher, GameData data) {
 			this.student = student;
 			this.teacher = teacher;
+			this.data = data;
 		}
 
 		/**
@@ -758,7 +761,6 @@ public class UnitContextMenu extends JPopupMenu {
 				if(order.toUpperCase().trim().startsWith("LEHRE")) {
 					if(order.indexOf(id) > -1) {
 						found = true;
-
 						break;
 					}
 				}
@@ -770,17 +772,16 @@ public class UnitContextMenu extends JPopupMenu {
 																	 id.length(), order.length()),
 												  order.length());
 
-				// FIXME(pavkovic: Problem hier!
-				UnitOrdersEvent event = new UnitOrdersEvent(this, teacher);
 				teacher.removeOrderAt(i, false);
 
 				if(!newOrder.trim().equalsIgnoreCase("LEHREN") &&
 					   !newOrder.trim().equalsIgnoreCase("LEHRE")) {
-					// FIXME(pavkovic: Problem hier!
 					teacher.addOrderAt(i, newOrder);
 				}
+				unit.getRegion().refreshUnitRelations(true);
 
-				dispatcher.fire(event);
+				dispatcher.fire(new GameDataEvent(this,data));
+				
 			}
 		}
 	}

@@ -3422,6 +3422,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 		return getString("menu.supertitle");
 	}
 
+	
+	public Collection getSelectedObjects(){
+		return this.contextManager.getSelection();
+	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
 	// it is called by reflection (we could force the implementation of an interface,
