@@ -2387,6 +2387,10 @@ public class Client extends JFrame implements ShortcutListener,
             }
         }
     }
+    
+    public Collection getSelectedObjects(){
+    	return overviewPanel.getSelectedObjects();
+    }
 
 
 }

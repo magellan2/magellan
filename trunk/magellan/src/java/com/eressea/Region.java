@@ -1599,7 +1599,8 @@ public class Region extends UnitContainer {
 						if (skillIrrelavntTypes.contains(newRes.getType())){
 							// we have "our" Type
 							// do we have units in newRegion
-							if (newRegion.units()!=null && newRegion.units().size()>0){
+							// if (newRegion.units()!=null && newRegion.units().size()>0){
+							if (curRegion.units()!=null && curRegion.units().size()>0){
 								// we have...so we know now for sure, that these 
 								// ressource disappeared..so lets delete it
 								if (deleteRegionRessources==null){

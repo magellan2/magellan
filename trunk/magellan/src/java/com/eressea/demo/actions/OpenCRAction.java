@@ -15,6 +15,7 @@ package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
@@ -22,6 +23,7 @@ import javax.swing.JFileChooser;
 
 import com.eressea.GameData;
 import com.eressea.demo.Client;
+import com.eressea.event.SelectionEvent;
 import com.eressea.swing.EresseaFileFilter;
 import com.eressea.swing.HistoryAccessory;
 import com.eressea.util.CollectionFactory;
@@ -105,6 +107,7 @@ public class OpenCRAction extends MenuAction {
     private static class LoadCR implements Runnable {
         Client client;
         File file;
+        Collection selectedObjects;
         /**
          * Creates a new LoadCR object for the given client and file.
          * 
@@ -116,6 +119,7 @@ public class OpenCRAction extends MenuAction {
         public LoadCR(Client client, File file) {
             this.client = client;
             this.file = file;
+            this.selectedObjects = client.getSelectedObjects();
         }
 
         /* (non-Javadoc)
@@ -127,6 +131,11 @@ public class OpenCRAction extends MenuAction {
             if(data != null) {
                 client.setData(data);
                 client.setReportChanged(false);
+                
+                if (this.selectedObjects!=null){
+                	client.getDispatcher().fire(new SelectionEvent(this,this.selectedObjects,null));
+                }
+                
             }
         }
     }

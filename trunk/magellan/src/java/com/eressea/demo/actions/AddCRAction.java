@@ -15,6 +15,7 @@ package com.eressea.demo.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
@@ -29,6 +30,7 @@ import com.eressea.util.ReportMerger;
 
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.GameDataListener;
+import com.eressea.event.SelectionEvent;
 
 /**
  * DOCUMENT ME!
@@ -59,6 +61,7 @@ public class AddCRAction extends MenuAction implements GameDataListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		final Client theclient = client;
+		Collection selectedObjects = client.getSelectedObjects();
 		Properties settings = client.getProperties();
 		JFileChooser fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(true);
@@ -137,6 +140,9 @@ public class AddCRAction extends MenuAction implements GameDataListener{
 			}
 
 			merger.merge(client);
+			if (selectedObjects!=null){
+				client.getDispatcher().fire(new SelectionEvent(this,selectedObjects,null));
+			}
 		}
 	}
 
