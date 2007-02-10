@@ -82,6 +82,7 @@ public class Locales {
 	public static Locale getOrderLocale() throws IllegalStateException {
 		if(orderLocale == null) {
 			log.warn("Locales.getOrderLocale: Locales is not initialized, falling back to GERMAN locale");
+			setOrderLocale(Locale.GERMAN);
 			return Locale.GERMAN;
 		}
 
