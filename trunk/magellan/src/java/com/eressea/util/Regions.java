@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.eressea.Border;
 import com.eressea.Building;
 import com.eressea.CoordinateID;
 import com.eressea.GameData;
@@ -665,6 +666,17 @@ public class Regions {
 		return 1;
 	}
 	
+	/**
+	 * delivers a distance between 2 regions
+	 * we asume, that both regions are neighbours, so trivial distance is 1
+	 * for oceans, we deliver for landnearregions a significant smaller value
+	 * for landregions we calculate a new distance...as like moveoints
+	 * with propper roads: 2, without: 3
+	 * @param r1
+	 * @param r2
+	 * @param useExtendedVersion
+	 * @return
+	 */
 	private static double getDistance(Region r1, Region r2,boolean useExtendedVersion){
 		double erg = 1;
 		if (!useExtendedVersion) {
@@ -680,9 +692,19 @@ public class Regions {
 		if (r1.getRegionType().isOcean() && r2.getRegionType().isOcean()) {
 			if (r2.getOzeanWithCoast()==1){
 				return suitErg;
+			} else {
+				return erg;
 			}
 		}
 		
+		// if we have 2 non ozean regions....
+		if (!r1.getRegionType().isOcean() && !r2.getRegionType().isOcean()) {
+			if (isCompleteRoadConnection(r1, r2)){
+				return 2;
+			} else {
+				return 3;
+			}
+		}
 		
 		return erg;
 	}
@@ -795,5 +817,60 @@ public class Regions {
 		}
 		return rules.getRegionType(StringID.create(actFeuerwandName));	
 	}
+	
+	/**
+	 * returns true, if a working road connection is established between r1 and r2
+	 * we assume, both regions are neighbours
+	 * @param r1 a region
+	 * @param r2 another region
+	 * @return
+	 */
+	private static boolean isCompleteRoadConnection(Region r1,Region r2){
+		boolean erg = false;
+		// Collection of Regions
+		// r1 -> r2
+		List regions = CollectionFactory.createArrayList(2);
+		regions.add(r1);
+		regions.add(r2);
+		// generate List of directions
+		List directions = getDirectionObjectsOfRegions(regions);
+		Direction dir1 = (Direction)directions.get(0);
+		// border of r1 -> 
+		boolean border1OK = false;
+		for(Iterator iter = r1.borders().iterator(); iter.hasNext();) {
+			Border b = (Border) iter.next();
+			if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
+					   (b.direction == dir1.getDir())) {
+				border1OK = true;
+				break;
+			}
+		}
+		
+		if (!border1OK){return false;}
+		
+		// r2->r1
+		regions.clear();
+		regions.add(r2);
+		regions.add(r1);
+		directions = getDirectionObjectsOfRegions(regions);
+		dir1 = (Direction)directions.get(0);
+		// border of r1 -> 
+		boolean border2OK = false;
+		for(Iterator iter = r1.borders().iterator(); iter.hasNext();) {
+			Border b = (Border) iter.next();
+			if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
+					   (b.direction == dir1.getDir())) {
+				border2OK = true;
+				break;
+			}
+		}
+		if (border1OK && border2OK){
+			return true;
+		}
+		
+		return erg;
+	}
+	
+	
 	
 }
