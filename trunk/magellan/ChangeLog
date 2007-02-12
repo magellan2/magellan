@@ -4,6 +4,7 @@
 	* Reworked code for update if pupil-teacher-relation (stm)
 	* First try to have signs in the CR (Fiete)
 	* introduced sign.java
+	* fixed MapContextMenu - updateSign
 
 2007-02-10  Fiete  <Fiete@users.sourceforge.net>
 

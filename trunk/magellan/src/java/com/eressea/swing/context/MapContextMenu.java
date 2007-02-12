@@ -222,7 +222,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	private void updateSigns(){
 		signs.removeAll();
 		// add or delete
-		if (region.getSigns()!=null){
+		if (region.getSigns()!=null && region.getSigns().size()>0){
 			JMenuItem delSign = new JMenuItem(getString("menu.signs.selsign"));
 			delSign.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
