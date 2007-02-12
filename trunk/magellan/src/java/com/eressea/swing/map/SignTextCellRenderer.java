@@ -40,6 +40,7 @@ import javax.swing.JPanel;
 import com.eressea.CoordinateID;
 import com.eressea.GameData;
 import com.eressea.Region;
+import com.eressea.Sign;
 import com.eressea.main.MagellanContext;
 import com.eressea.swing.map.TextCellRenderer.Preferences;
 import com.eressea.swing.preferences.PreferencesAdapter;
@@ -207,7 +208,7 @@ public class SignTextCellRenderer extends HexCellRenderer {
 	 * @return Collection of Strings to put on the sign
 	 */
 	public Collection getText(Region r, Rectangle rect){
-		return r.getSignLines();
+		return r.getSigns();
 	}
 
 	/**
@@ -275,7 +276,7 @@ public class SignTextCellRenderer extends HexCellRenderer {
 				
 				i = 0;
 				for (Iterator iter = display.iterator();iter.hasNext();){
-					String s = (String)iter.next();
+					String s = ((Sign)iter.next()).getText();
 					drawString(graphics, s, leftX, upperY + (i * height));
 					i++;
 				}
@@ -291,8 +292,7 @@ public class SignTextCellRenderer extends HexCellRenderer {
 				
 				i = 0;
 				for (Iterator iter = display.iterator();iter.hasNext();){
-					String s = (String)iter.next();
-					
+					String s = ((Sign)iter.next()).getText();
 					int l = fontMetrics.stringWidth(s);
 					drawString(graphics, s, middleX - (l / 2), upperY + (i * height));
 					i++;
@@ -307,7 +307,7 @@ public class SignTextCellRenderer extends HexCellRenderer {
 
 				i = 0;
 				for (Iterator iter = display.iterator();iter.hasNext();){
-					String s = (String)iter.next();
+					String s = ((Sign)iter.next()).getText();
 					i++;
 					drawString(graphics, s, rightX - fontMetrics.stringWidth(s),
 							   upperY + (i * height));
@@ -321,8 +321,7 @@ public class SignTextCellRenderer extends HexCellRenderer {
 	private int getMaxWidth(Collection display) {
 		int maxWidth = -1;
 		for (Iterator iter = display.iterator();iter.hasNext();){
-			String s = (String)iter.next();
-		
+			String s = ((Sign)iter.next()).getText();
 			if(fontMetrics.stringWidth(s) > maxWidth) {
 				maxWidth = fontMetrics.stringWidth(s);
 			}

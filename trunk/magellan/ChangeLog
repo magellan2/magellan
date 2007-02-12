@@ -1,8 +1,9 @@
-2007-02-10  Fiete  <Fiete@users.sourceforge.net>
+2007-02-12  Fiete  <Fiete@users.sourceforge.net>
 
 	* Added option to add orders at the end or beginning (stm)
 	* Reworked code for update if pupil-teacher-relation (stm)
 	* First try to have signs in the CR (Fiete)
+	* introduced sign.java
 
 2007-02-10  Fiete  <Fiete@users.sourceforge.net>
 

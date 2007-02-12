@@ -120,7 +120,7 @@ public class Region extends UnitContainer {
 	
 	
 	// fiete 2207.02.12: we add sign support - 2 lines allowed
-	public List signLines = null;
+	private ArrayList signs = null;
 	
 	/**
 	 * a flag which indicates if this region is Ozean with a neighboring not-ozean region
@@ -1687,10 +1687,10 @@ public class Region extends UnitContainer {
 		}
 
 		//	signs
-		if (curRegion.getSignLines()!=null && curRegion.getSignLines().size()>0){
+		if (curRegion.getSigns()!=null && curRegion.getSigns().size()>0){
 			// new overwriting old ones...
-			newRegion.clearSignLines();
-			newRegion.addSignLines(curRegion.getSignLines());
+			newRegion.clearSigns();
+			newRegion.addSigns(curRegion.getSigns());
 		}
 		
 		
@@ -1948,35 +1948,35 @@ public class Region extends UnitContainer {
 	/**
 	 * @return the signLines
 	 */
-	public Collection getSignLines() {
-		return signLines;
+	public Collection getSigns() {
+		return signs;
 	}
 
 	/**
 	 * @param signLines the signLines to set
 	 */
-	public void setSignLines(ArrayList signLines) {
-		this.signLines = signLines;
+	public void setSigns(ArrayList signLines) {
+		this.signs = signLines;
 	}
 	
 	
-	public void addSignLine(String s){
-		if (this.signLines==null){
-			this.signLines = new ArrayList(1);
+	public void addSign(Sign s){
+		if (this.signs==null){
+			this.signs = new ArrayList(1);
 		}
-		this.signLines.add(s);
+		this.signs.add(s);
 	}
 	
-	public void addSignLines(Collection c){
-		if (this.signLines==null){
-			this.signLines = new ArrayList(1);
+	public void addSigns(Collection c){
+		if (this.signs==null){
+			this.signs = new ArrayList(1);
 		}
-		this.signLines.addAll(c);
+		this.signs.addAll(c);
 	}
 	
-	public void clearSignLines(){
-		if (this.signLines!=null){
-			this.signLines.clear();
+	public void clearSigns(){
+		if (this.signs!=null){
+			this.signs.clear();
 		}
 	}
 	

@@ -30,6 +30,7 @@ import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
 import com.eressea.Region;
+import com.eressea.Sign;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.swing.basics.SpringUtilities;
@@ -148,10 +149,10 @@ public class AddSignDialog extends InternationalizedDialog {
 		String s2 = Line2.getText();
 		
 		if (s1!=null && s1.length()>0){
-			region.addSignLine(s1);
+			region.addSign(new Sign(s1));
 		} 
 		if (s2!=null && s2.length()>0){
-			region.addSignLine(s2);
+			region.addSign(new Sign(s2));
 		} 
 		dispatcher.fire(new GameDataEvent(this,region.getData()));
 		quit();
