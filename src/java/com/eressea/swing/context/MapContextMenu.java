@@ -38,6 +38,7 @@ import com.eressea.demo.Client;
 import com.eressea.event.EventDispatcher;
 import com.eressea.event.GameDataEvent;
 import com.eressea.event.SelectionEvent;
+import com.eressea.swing.AddSignDialog;
 import com.eressea.swing.map.MapCellRenderer;
 import com.eressea.swing.map.Mapper;
 import com.eressea.swing.map.RenderingPlane;
@@ -71,6 +72,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	protected JMenuItem copyNameID;
 	protected JMenuItem setOriginItem;
 	protected JMenuItem changeHotSpot;
+	protected JMenu signs;
 	protected JMenuItem armystats;
 	protected JMenu renderer;
 	protected JMenu tooltips;
@@ -155,7 +157,9 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 				}
 			});
 		add(armystats);
-
+		
+		signs = new JMenu(getString("menu.signs"));
+		add(signs);
 		addSeparator();
 
 		tooltips = new JMenu(getString("menu.tooltips"));
@@ -190,6 +194,8 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		setOriginItem.setEnabled(true);
 		changeHotSpot.setEnabled(true);
 		armystats.setEnabled(true);
+		signs.setEnabled(true);
+		updateSigns();
 	}
 
 	/**
@@ -204,8 +210,84 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 		setOriginItem.setEnabled(false);
 		changeHotSpot.setEnabled(false);
 		armystats.setEnabled(false);
+		signs.setEnabled(false);
 	}
 
+	/**
+	 * sets the option (submenuentries) in the signmenu
+	 * depends on status of signs of actual region
+	 * Fiete
+	 *
+	 */
+	private void updateSigns(){
+		signs.removeAll();
+		// add or delete
+		if (region.getSignLines()!=null){
+			JMenuItem delSign = new JMenuItem(getString("menu.signs.selsign"));
+			delSign.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						delSign();
+					}
+				});
+			signs.add(delSign);
+		} else {
+			JMenuItem delSign = new JMenuItem(getString("menu.signs.addsign"));
+			delSign.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						addSign();
+					}
+				});
+			signs.add(delSign);
+		}
+		
+		// remove all
+		JMenuItem delAllSigns = new JMenuItem(getString("menu.signs.selallsigns"));
+		delAllSigns.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delAllSigns();
+			}
+		});
+		signs.add(delAllSigns);
+	}
+	
+	/**
+	 * deletes all signs of the actual region
+	 *
+	 */
+	private void delSign(){
+		region.clearSignLines();
+		updateMap();
+	}
+	
+	/**
+	 * deletes all signs of the actual gamedata (CR)
+	 *
+	 */
+	private void delAllSigns(){
+		for (Iterator iter = region.getData().regions().values().iterator();iter.hasNext();){
+			((Region)iter.next()).clearSignLines();
+		}
+		updateMap();
+	}
+	
+	/**
+	 * fires gamedatachanged to refresh map (and everything..;-))
+	 *
+	 */
+	private void updateMap(){
+		dispatcher.fire(new GameDataEvent(this,region.getData()));
+	}
+	
+	
+	/**
+	 * adds a new sign - using the AddSignDialog
+	 *
+	 */
+	private void addSign(){
+		AddSignDialog addSignDialog = new AddSignDialog(client,true,settings,dispatcher,region);
+		addSignDialog.show();
+	}
+	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -411,6 +493,10 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 			defaultTranslations.put("menu.renderer.none", "Off");
 			defaultTranslations.put("menu.noregion", "No region");
 			defaultTranslations.put("menu.renderer", "Renderer");
+			defaultTranslations.put("menu.signs.selallsigns", "Delete all signs");
+			defaultTranslations.put("menu.signs.selsign", "Delete sign");
+			defaultTranslations.put("menu.signs.addsign", "Add sign");
+			defaultTranslations.put("menu.signs", "Signs");
 		}
 
 		return defaultTranslations;

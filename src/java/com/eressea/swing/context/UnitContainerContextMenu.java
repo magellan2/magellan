@@ -39,6 +39,7 @@ import com.eressea.swing.FactionStatsDialog;
 import com.eressea.swing.GiveOrderDialog;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.ShipRoutePlanner;
+import com.eressea.util.Units;
 
 /**
  * DOCUMENT ME!
@@ -204,46 +205,17 @@ public class UnitContainerContextMenu extends JPopupMenu {
 	 * Gives the orders only to actual captns of selected ships
 	 */
 	private void event_addShipOrder() {
-		String s[] = (new GiveOrderDialog(JOptionPane.getFrameForComponent(this))).showGiveOrderDialog();
+		GiveOrderDialog giveOderDialog = new GiveOrderDialog(JOptionPane.getFrameForComponent(this));
+		String s[] = giveOderDialog.showGiveOrderDialog();
+		for(Iterator iter = this.selectedObjects.iterator(); iter.hasNext();) {
+			Object o = iter.next();
+			if (o instanceof Ship){
+				Ship ship = (Ship)o;
+				Unit u = ship.getOwnerUnit();
 
-		// remember: s[0] : inserted Order (null if the ok-button wasn't pressed)
-		// s[1] : String represantative for "replace order ?"
-		// c[2] : String represantative for "keep comments"
-		if(s[0] != null) {
-			boolean replace = Boolean.valueOf(s[1]).booleanValue();
-			boolean keepComments = Boolean.valueOf(s[2]).booleanValue();
-
-			for(Iterator iter = this.selectedObjects.iterator(); iter.hasNext();) {
-				Object o = iter.next();
-				if (o instanceof Ship){
-					Ship ship = (Ship)o;
-					Unit u = ship.getOwnerUnit();
-
-					if(u!=null && EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
-						if(replace) {
-							if(keepComments) {
-								Collection oldOrders = u.getOrders();
-								Collection newOrders = CollectionFactory.createLinkedList();
-	
-								for(Iterator iterator = oldOrders.iterator(); iterator.hasNext();) {
-									String order = (String) iterator.next();
-	
-									if(order.trim().startsWith("//") || order.trim().startsWith(";")) {
-										newOrders.add(order);
-									}
-								}
-	
-								newOrders.add(s[0]);
-								u.setOrders(newOrders);
-							} else {
-								u.setOrders(Collections.singleton(s[0]));
-							}
-						} else {
-							u.addOrder(s[0], false, 0);
-						}
-	
-						dispatcher.fire(new UnitOrdersEvent(this, u));
-					}
+				if(u!=null && EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
+					Units.changeOrders(u, s);
+					dispatcher.fire(new UnitOrdersEvent(this, u));
 				}
 			}
 		}

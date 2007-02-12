@@ -166,8 +166,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Adds the order at position <tt>i</tt> and refreshes the relations
 	 *
-	 * @param i TODO: DOCUMENT ME!
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param i An index between 0 and getOrders().getSize() (inclusively)
+	 * @param newOrders 
 	 */
 	public void addOrderAt(int i, String newOrders) {
 		addOrderAt(i, newOrders, true);
@@ -176,8 +176,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Adds the order at position <tt>i</tt> and possibly refreshes the relations
 	 *
-	 * @param i TODO: DOCUMENT ME!
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param i An index between 0 and getOrders().getSize() (inclusively)
+	 * @param newOrders 
 	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void addOrderAt(int i, String newOrders, boolean refreshRelations) {
@@ -191,7 +191,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Adds the order and refreshes the relations
 	 *
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param newOrders 
 	 */
 	public void addOrders(String newOrders) {
 		addOrders(newOrders, true);
@@ -200,7 +200,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Adds the order and possibly refreshes the relations
 	 *
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param newOrders 
 	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void addOrders(String newOrders, boolean refreshRelations) {
@@ -210,7 +210,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Adds the orders and refreshes the relations
 	 *
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param newOrders 
 	 */
 	public void addOrders(Collection newOrders) {
 		addOrders(newOrders, true);
@@ -219,7 +219,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Adds the orders and possibly refreshes the relations
 	 *
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param newOrders 
 	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void addOrders(Collection newOrders, boolean refreshRelations) {
@@ -233,7 +233,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Sets the orders and refreshes the relations
 	 *
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param newOrders 
 	 */
 	public void setOrders(Collection newOrders) {
 		setOrders(newOrders, true);
@@ -242,7 +242,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Sets the orders and possibly refreshes the relations
 	 *
-	 * @param newOrders TODO: DOCUMENT ME!
+	 * @param newOrders 
 	 * @param refreshRelations if true also refresh the relations of the unit.
 	 */
 	public void setOrders(Collection newOrders, boolean refreshRelations) {
@@ -3094,10 +3094,10 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
+		 * Inserts the specified order at the specified position.
 		 *
-		 * @param i TODO: DOCUMENT ME!
-		 * @param newOrders TODO: DOCUMENT ME!
+		 * @param i An index between 0 and getOrders().getSize() (inclusively)
+		 * @param newOrders 
 		 */
 		public void addOrderAt(int i, String newOrders) {
 			if(orders == null) {

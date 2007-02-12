@@ -2358,6 +2358,22 @@ public class CRParser implements RulesIO, GameDataIO {
 	}
 
 	/**
+	 * Parse consecutive SIGN sub blocks of the REGION block.
+	 *
+	 * @param r the actual region
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
+	 */
+	private void parseSigns(Region r) throws IOException {
+		while(!sc.eof && sc.isBlock && sc.argv[0].startsWith("SIGN ")) {
+			String s = parseSign();
+			r.addSignLine(s);
+		}
+	}
+	
+	
+	
+	/**
 	 * Parse one GRENZE sub block of the REGION block.
 	 *
 	 * @return the resulting <tt>Border</tt> object.
@@ -2407,6 +2423,33 @@ public class CRParser implements RulesIO, GameDataIO {
 		return b;
 	}
 
+	
+	/**
+	 * Parse one SIGN sub block of the REGION block.
+	 *
+	 * @return the resulting <tt>SIGN</tt> object.
+	 *
+	 * @throws IOException TODO: DOCUMENT ME!
+	 */
+	private String parseSign() throws IOException {
+		String s = null;
+		// Border b = new Border(id);
+		// create new sign...
+		sc.getNextToken(); // skip the block
+
+		while(!sc.eof && !sc.isBlock) {
+			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("text")) {
+				s = new String(sc.argv[0]);
+				sc.getNextToken();
+			} else if(sc.isBlock) {
+				break;
+			} else {
+				unknown("SIGN", false);
+			}
+		}
+		return s;
+	}
+	
 	private void parseHotSpot(GameData data) throws IOException {
 		ID id = IntegerID.create(sc.argv[0].substring(8));
 		HotSpot h = new HotSpot(id);
@@ -2629,6 +2672,8 @@ public class CRParser implements RulesIO, GameDataIO {
 				region.oldPrices = parsePrices(region.oldPrices);
 			} else if(sc.isBlock && sc.argv[0].startsWith("GRENZE ")) {
 				parseBorders(region);
+			} else if(sc.isBlock && sc.argv[0].startsWith("SIGN ")) {
+				parseSigns(region);
 			} else if(sc.isBlock && sc.argv[0].startsWith("EINHEIT ")) {
 				unitSortIndex = parseUnit(world, region, ++unitSortIndex);
 			} else if(sc.isBlock && sc.argv[0].startsWith("SCHIFF ")) {
@@ -2687,6 +2732,8 @@ public class CRParser implements RulesIO, GameDataIO {
 		}
 	}
 
+	
+	
 	private Region parseSpecialRegion(GameData world, Region specialRegion)
 							   throws IOException
 	{

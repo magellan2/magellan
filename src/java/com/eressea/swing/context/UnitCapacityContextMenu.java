@@ -68,7 +68,7 @@ public class UnitCapacityContextMenu extends JPopupMenu {
                 	settings.setProperty("unitCapacityContextMenuShowAll", "true");
                 	settings.setProperty("unitCapacityContextMenuShowSome", "false");
                 	settings.setProperty("unitCapacityContextMenuShowFriendly", "false");
-                	// how to notify to rebuild the tree
+                	// FIXME how to notify to rebuild the tree
                 	// just for now only one idea: gamedatachangevent
                 	GameDataEvent newE = new GameDataEvent(this,data);
                 	dispatcher.fire(newE);
@@ -85,7 +85,7 @@ public class UnitCapacityContextMenu extends JPopupMenu {
                 	settings.setProperty("unitCapacityContextMenuShowAll", "false");
                 	settings.setProperty("unitCapacityContextMenuShowSome", "true");
                 	settings.setProperty("unitCapacityContextMenuShowFriendly", "false");
-                	// how to notify to rebuild the tree
+                	// FIXME how to notify to rebuild the tree
                 	// just for now only one idea: gamedatachangevent
                 	GameDataEvent newE = new GameDataEvent(this,data);
                 	dispatcher.fire(newE);
@@ -101,7 +101,7 @@ public class UnitCapacityContextMenu extends JPopupMenu {
                 	settings.setProperty("unitCapacityContextMenuShowAll", "false");
                 	settings.setProperty("unitCapacityContextMenuShowSome", "false");
                 	settings.setProperty("unitCapacityContextMenuShowFriendly", "true");
-                	// how to notify to rebuild the tree
+                	// FIXME how to notify to rebuild the tree
                 	// just for now only one idea: gamedatachangevent
                 	GameDataEvent newE = new GameDataEvent(this,data);
                 	dispatcher.fire(newE);

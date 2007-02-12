@@ -454,7 +454,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 						if(stringValue != null) {
 							for(int index = 0; index < selectedFactions.length; index++) {
 								Faction faction = (Faction) selectedFactions[index];
-
+								
 								// this indicates, that further on Magellan shall
 								// calculate the trustlevel for this faction on its own
 								if(stringValue.length() == 0) {
@@ -477,6 +477,7 @@ public class FactionStatsDialog extends InternationalizedDataDialog {
 
 								// GameData did probably change
 								dispatcher.fire(new GameDataEvent(this, data));
+								Collections.sort(factions, factionTrustComparator);
 							} else {
 								JOptionPane.showMessageDialog(FactionStatsDialog.this,
 															  getString("msg.trustlevelinputinvalid"));

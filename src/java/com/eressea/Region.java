@@ -118,6 +118,10 @@ public class Region extends UnitContainer {
 	/** TODO: DOCUMENT ME! */
 	public int oldRecruits = -1;
 	
+	
+	// fiete 2207.02.12: we add sign support - 2 lines allowed
+	public List signLines = null;
+	
 	/**
 	 * a flag which indicates if this region is Ozean with a neighboring not-ozean region
 	 * used for better pathfindung for ships
@@ -1682,6 +1686,14 @@ public class Region extends UnitContainer {
 			newRegion.wage = curRegion.wage;
 		}
 
+		//	signs
+		if (curRegion.getSignLines()!=null && curRegion.getSignLines().size()>0){
+			// new overwriting old ones...
+			newRegion.clearSignLines();
+			newRegion.addSignLines(curRegion.getSignLines());
+		}
+		
+		
 		// Messages are special because they can contain different
 		// data for different factions in the same turn.
 		// Take new messages and stuff only into the new game data
@@ -1831,6 +1843,9 @@ public class Region extends UnitContainer {
 					}
 				}
 			}
+			
+			
+			
 		}
 	}
 
@@ -1929,6 +1944,40 @@ public class Region extends UnitContainer {
 		CoordinateID myCID = this.getCoordinate();
 		return myCID.y;
 	}
+
+	/**
+	 * @return the signLines
+	 */
+	public Collection getSignLines() {
+		return signLines;
+	}
+
+	/**
+	 * @param signLines the signLines to set
+	 */
+	public void setSignLines(ArrayList signLines) {
+		this.signLines = signLines;
+	}
 	
+	
+	public void addSignLine(String s){
+		if (this.signLines==null){
+			this.signLines = new ArrayList(1);
+		}
+		this.signLines.add(s);
+	}
+	
+	public void addSignLines(Collection c){
+		if (this.signLines==null){
+			this.signLines = new ArrayList(1);
+		}
+		this.signLines.addAll(c);
+	}
+	
+	public void clearSignLines(){
+		if (this.signLines!=null){
+			this.signLines.clear();
+		}
+	}
 	
 }

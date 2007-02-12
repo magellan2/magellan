@@ -1272,8 +1272,10 @@ public class EresseaOrderCompleter implements Completer {
 
 			if((s.getOwnerUnit() != null) && ownerFaction.equals(s.getOwnerUnit().getFaction())) {
 				completions.add(new Completion(s.getName() + " (" + id + ")", id, "", 8));
+				completions.add(new Completion(id + " (" + s.getName() + ")", id, "", 8));
 			} else {
 				completions.add(new Completion(s.getName() + " (" + id + ")", id, ""));
+				completions.add(new Completion(id + " (" + s.getName() + ")", id, ""));
 			}
 		}
 	}
