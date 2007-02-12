@@ -48,6 +48,7 @@ import com.eressea.RegionResource;
 import com.eressea.Rules;
 import com.eressea.Scheme;
 import com.eressea.Ship;
+import com.eressea.Sign;
 import com.eressea.Skill;
 import com.eressea.Spell;
 import com.eressea.StringID;
@@ -2366,8 +2367,8 @@ public class CRParser implements RulesIO, GameDataIO {
 	 */
 	private void parseSigns(Region r) throws IOException {
 		while(!sc.eof && sc.isBlock && sc.argv[0].startsWith("SIGN ")) {
-			String s = parseSign();
-			r.addSignLine(s);
+			Sign s = parseSign();
+			r.addSign(s);
 		}
 	}
 	
@@ -2431,15 +2432,15 @@ public class CRParser implements RulesIO, GameDataIO {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	private String parseSign() throws IOException {
-		String s = null;
+	private Sign parseSign() throws IOException {
+		Sign s = new Sign();
 		// Border b = new Border(id);
 		// create new sign...
 		sc.getNextToken(); // skip the block
 
 		while(!sc.eof && !sc.isBlock) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("text")) {
-				s = new String(sc.argv[0]);
+				s.setText(sc.argv[0]);
 				sc.getNextToken();
 			} else if(sc.isBlock) {
 				break;

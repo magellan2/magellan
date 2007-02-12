@@ -222,7 +222,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	private void updateSigns(){
 		signs.removeAll();
 		// add or delete
-		if (region.getSignLines()!=null){
+		if (region.getSigns()!=null){
 			JMenuItem delSign = new JMenuItem(getString("menu.signs.selsign"));
 			delSign.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -255,7 +255,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	 *
 	 */
 	private void delSign(){
-		region.clearSignLines();
+		region.clearSigns();
 		updateMap();
 	}
 	
@@ -265,7 +265,7 @@ public class MapContextMenu extends JPopupMenu implements ContextObserver {
 	 */
 	private void delAllSigns(){
 		for (Iterator iter = region.getData().regions().values().iterator();iter.hasNext();){
-			((Region)iter.next()).clearSignLines();
+			((Region)iter.next()).clearSigns();
 		}
 		updateMap();
 	}

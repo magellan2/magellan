@@ -45,6 +45,7 @@ import com.eressea.Region;
 import com.eressea.RegionResource;
 import com.eressea.Scheme;
 import com.eressea.Ship;
+import com.eressea.Sign;
 import com.eressea.Skill;
 import com.eressea.Spell;
 import com.eressea.TempUnit;
@@ -1839,17 +1840,8 @@ public class CRWriter extends BufferedWriter {
 				writeOldPrices(region.oldPrices);
 			}
 			
-			if(!serverConformance && (region.getSignLines()!=null)) {
-				int i = 1;
-				for (Iterator iter = region.getSignLines().iterator();iter.hasNext();){
-					String actS = (String)iter.next();
-					if (actS!=null && actS.length()>0){
-						write("SIGN " + i);
-						newLine();
-						i++;
-						writeQuotedTag(actS,"text");
-					}
-				}
+			if(!serverConformance && (region.getSigns()!=null)) {
+				writeSigns(region.getSigns());
 			}
 
 			writeBorders(region.borders());
@@ -1887,6 +1879,38 @@ public class CRWriter extends BufferedWriter {
 		}
 	}
 
+	/**
+	 * Write a collection of signs to the underlying stream
+	 *
+	 * @param signs Collection of signs
+	 *
+	 * @throws IOException passes a IOException from streamwriter
+	 */
+	private void writeSigns(Collection signs) throws IOException {
+		if (signs == null || signs.isEmpty()){
+			return;
+		}
+		int counter = 1;
+		for (Iterator iter = signs.iterator();iter.hasNext();){
+			writeSign((Sign)iter.next(),counter);
+			counter++;
+		}
+	}
+	
+	/**
+	 * Write a presentation of a sign to the underlying stream
+	 *
+	 * @param sign the sign
+	 * @param int counter  just a counter for IDing the sign
+	 *
+	 * @throws IOException passes a IOException from streamwriter
+	 */
+	private void writeSign(Sign s, int counter) throws IOException {
+		write("SIGN " + counter);
+		newLine();
+		writeQuotedTag(s.getText(), "text");
+	}
+	
 	/**
 	 * Write a collection of schemes to the underlying stream
 	 *
