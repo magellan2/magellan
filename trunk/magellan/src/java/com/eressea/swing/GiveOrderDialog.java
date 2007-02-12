@@ -23,12 +23,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.eressea.demo.actions.OpenOrdersAction;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.logging.Logger;
 
 /**
  * A Dialog that asks the user for a string input (usually an eressea order). In Addition the user
@@ -37,6 +41,12 @@ import com.eressea.util.CollectionFactory;
  * @author Ulrich Küster
  */
 public class GiveOrderDialog extends InternationalizedDialog {
+	private static final Logger log = Logger.getInstance(GiveOrderDialog.class);
+	
+	public static final String FIRST_POS="first"; 
+	public static final String LAST_POS="last";
+		
+	private ButtonGroup position;
 	private JCheckBox replaceOrders;
 	private JCheckBox keepComments;
 	private JTextField order;
@@ -67,22 +77,42 @@ public class GiveOrderDialog extends InternationalizedDialog {
 		c.weightx = 0.5;
 		cp.add(order, c);
 
-		replaceOrders = new JCheckBox(getString("chkbox.replaceOrder.title"));
+		JRadioButton firstButton = new JRadioButton(getString("radio.first.title"));
+		firstButton.setActionCommand(FIRST_POS);
+		JRadioButton lastButton = new JRadioButton(getString("radio.last.title"));
+		lastButton.setActionCommand(LAST_POS);
+		position = new ButtonGroup();
+		position.add(firstButton);
+		position.add(lastButton);
+		position.setSelected(firstButton.getModel(), true);
 		c.gridx = 0;
 		c.gridy = 1;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.WEST;
+		cp.add(firstButton, c);
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.anchor = GridBagConstraints.EAST;
+		cp.add(lastButton, c);
+		
+		
+		replaceOrders = new JCheckBox(getString("chkbox.replaceOrder.title"));
+		c.gridx = 0;
+		c.gridy = 2;
 		c.weightx = 0;
 		cp.add(replaceOrders, c);
 
 		keepComments = new JCheckBox(getString("chkbox.keepComments.title"));
 		keepComments.setSelected(true);
-		c.gridy = 2;
+		c.gridy = 3;
 		cp.add(keepComments, c);
 
 		ok = new JButton(getString("btn.ok.caption"));
 		ok.setMnemonic(getString("btn.ok.mnemonic").charAt(0));
 
 		// actionListener is added in the show() method
-		c.gridy = 3;
+		c.gridy = 4;
 		c.anchor = GridBagConstraints.EAST;
 		cp.add(ok, c);
 
@@ -99,20 +129,23 @@ public class GiveOrderDialog extends InternationalizedDialog {
 	}
 
 	/**
-	 * Shows the dialog
+	 * Shows the dialog.
 	 *
-	 * @return A string array with the following values: <br>
-	 * 		   [0] : The order that was given <br>
-	 * 		   [1] : A String represantative of the boolean value for "Replace orders" <br>
-	 * 		   [2] : A String represantative of the boolean value for "Keep comments"
+	 * @return A string array with the following values: <br/>
+	 * 		   [0] : The order that was given <br/>
+	 * 		   [1] : A String representative of the boolean value for "Replace orders" <br/>
+	 * 		   [2] : A String representative of the boolean value for "Keep comments" <br/>
+	 * 		   [3] : One of {@link GiveOrderDialog#FIRST_POS}, {@link GiveOrderDialog#LAST_POS}
 	 */
 	public String[] showGiveOrderDialog() {
-		final String retVal[] = new String[3];
+		final String retVal[] = new String[4];
 		ActionListener okButtonAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				retVal[0] = GiveOrderDialog.this.order.getText();
 				retVal[1] = String.valueOf(GiveOrderDialog.this.replaceOrders.isSelected());
 				retVal[2] = String.valueOf(GiveOrderDialog.this.keepComments.isSelected());
+				retVal[3] = String.valueOf(position.getSelection().getActionCommand());
+				log.info(position.getSelection()+" "+retVal[3]);
 				quit();
 			}
 		};
@@ -143,6 +176,8 @@ public class GiveOrderDialog extends InternationalizedDialog {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("window.title", "Give order");
 			defaultTranslations.put("window.message", "Please insert an order:");
+			defaultTranslations.put("radio.first.title", "Insert as first order");
+			defaultTranslations.put("radio.last.title", "Insert as last order");
 			defaultTranslations.put("chkbox.replaceOrder.title", "Replace existing orders");
 			defaultTranslations.put("chkbox.keepComments.title", "Keep comments");
 			defaultTranslations.put("btn.ok.caption", "OK");

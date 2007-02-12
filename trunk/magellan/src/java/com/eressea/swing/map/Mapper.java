@@ -87,7 +87,8 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 	 */
 	public static final String PLANE_STRINGS[] = {
 													 "REGION", "BORDER", "BUILDING", "SHIP", "TEXT",
-													 "PATH", "HIGHLIGHT", "MARKINGS", "SCHEMES"
+													 "PATH", "HIGHLIGHT", "MARKINGS", "SCHEMES",
+													 "SIGNS"
 												 };
 
 	/** TODO: DOCUMENT ME! */
@@ -116,7 +117,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 
 	/** TODO: DOCUMENT ME! */
 	public static final int PLANE_SCHEMES = 8;
-	private static final int PLANES = 9;
+	
+	/** TODO: DOCUMENT ME! */
+	public static final int PLANE_SIGNS = 9;
+	private static final int PLANES = 10;
 	private RenderingPlane planes[] = null;
 	private Collection availableRenderers = null;
 	private MediaTracker tracker = null;
@@ -1034,6 +1038,53 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			/**
 			 * End of paint scheme-markings
 			 */
+			
+			
+			/**
+			 * signs paint
+			 */
+			
+			clipChanged = !clipBounds.equals(currentBounds);
+			int planeIndex = PLANE_SIGNS;
+			
+			
+
+			MapCellRenderer renderer = planes[planeIndex].getRenderer();
+
+			if((planes[planeIndex].getRegionTypes() != getLastRegionRenderingType()) ||
+				   clipChanged) {
+				setLastRegionRenderingType(planes[planeIndex].getRegionTypes());
+				regList = createSubList(lastRegionRenderingType, upperLeftCorner,
+										lowerRightCorner, regList, duration, paintNumber);
+				duration++;
+			}
+
+			if((renderer !=null) && (regList != null) && (regList.size() > 0)) {
+
+				renderer.init(data, g, offset);
+	
+				for(Iterator iter = regList.iterator(); iter.hasNext();) {
+					Object obj = iter.next();
+					boolean selected = false;
+					boolean active = false;
+	
+					if(obj instanceof Region) {
+						Region r = (Region) obj;
+	
+						selected = selectedRegions.containsKey(r.getID());
+	
+						if(activeRegion != null) {
+							active = activeRegion.equals(r);
+						}
+					}
+	
+					renderer.render(obj, active, selected);
+				}
+			}
+			
+			/**
+			 * end paint signs
+			 */
 		}
 
 		currentBounds = clipBounds;
@@ -1409,6 +1460,10 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		p[PLANE_SCHEMES] = new RenderingPlane(PLANE_SCHEMES, getString("plane.schemes.name"),
 											  RenderingPlane.VISIBLE_REGIONS);
 		p[PLANE_SCHEMES].setRenderer(getRenderer("com.eressea.swing.map.SchemeCellRenderer"));
+		
+		p[PLANE_SIGNS] = new RenderingPlane(PLANE_SIGNS, getString("plane.signs.name"));
+		p[PLANE_SIGNS].setRenderer(getRenderer("com.eressea.swing.map.SignTextCellRenderer"));
+		
 
 		return p;
 	}
@@ -1430,6 +1485,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 		renderers.add(new HighlightShapeCellRenderer(geo, context));
 		renderers.add(new MarkingsImageCellRenderer(geo, context));
 		renderers.add(new SchemeCellRenderer(geo, context));
+		renderers.add(new SignTextCellRenderer(geo, context));
 
 		if(cRenderers != null) {
 			for(Iterator iter = cRenderers.iterator(); iter.hasNext();) {
@@ -1746,6 +1802,7 @@ public class Mapper extends InternationalizedDataPanel implements SelectionListe
 			defaultTranslations.put("plane.highlight.name", "Markers");
 			defaultTranslations.put("plane.markings.name", "Addit. Markers");
 			defaultTranslations.put("plane.schemes.name", "Schemes");
+			defaultTranslations.put("plane.signs.name", "Signs");
 		}
 
 		return defaultTranslations;

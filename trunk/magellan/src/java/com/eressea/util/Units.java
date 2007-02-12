@@ -28,10 +28,13 @@ import com.eressea.Item;
 import com.eressea.Rules;
 import com.eressea.StringID;
 import com.eressea.Unit;
+import com.eressea.demo.EMapDetailsPanel;
+import com.eressea.event.UnitOrdersEvent;
 import com.eressea.relation.ItemTransferRelation;
 import com.eressea.relation.ReserveRelation;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
+import com.eressea.swing.GiveOrderDialog;
 import com.eressea.swing.tree.ItemCategoryNodeWrapper;
 import com.eressea.swing.tree.ItemNodeWrapper;
 import com.eressea.swing.tree.NodeWrapperFactory;
@@ -574,5 +577,55 @@ public class Units {
 			
 		}
 		return defaultTranslations;
+	}
+
+	/**
+	 * Modifies <code>u</code>'s orders as specified in <code>s</code>.
+	 *
+	 * @see GiveOrderDialog#showGiveOrderDialog()
+	 *
+	 * @param s  
+	 */
+	public static void changeOrders(Unit u, String[] s) {
+		if (s==null || s.length!=4)
+			throw new IllegalArgumentException("expecting exactly 4 arguments");
+
+		if(s[0] != null) {
+			boolean replace = Boolean.valueOf(s[1]).booleanValue();
+			boolean keepComments = Boolean.valueOf(s[2]).booleanValue();
+			String position = s[3];
+
+			if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
+				if(replace) {
+					if(keepComments) {
+						Collection oldOrders = u.getOrders();
+						List newOrders = CollectionFactory.createLinkedList();
+
+						for(Iterator iterator = oldOrders.iterator(); iterator.hasNext();) {
+							String order = (String) iterator.next();
+
+							if(order.trim().startsWith("//") || order.trim().startsWith(";")) {
+								newOrders.add(order);
+							}
+						}
+						
+						System.err.println(position);
+						if (position.equals(GiveOrderDialog.FIRST_POS))
+							newOrders.add(0, s[0]);
+						else
+							newOrders.add(newOrders.size(), s[0]);
+						u.setOrders(newOrders);
+					} else {
+						u.setOrders(Collections.singleton(s[0]));
+					}
+				} else {
+					if (position.equals(GiveOrderDialog.FIRST_POS))
+						u.addOrderAt(0, s[0], true);
+					else
+						u.addOrderAt(u.getOrders().size(), s[0], true);
+				}
+
+			}
+		}
 	}
 }

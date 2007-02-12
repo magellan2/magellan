@@ -1838,6 +1838,19 @@ public class CRWriter extends BufferedWriter {
 			if(!serverConformance && (region.oldPrices != null)) {
 				writeOldPrices(region.oldPrices);
 			}
+			
+			if(!serverConformance && (region.getSignLines()!=null)) {
+				int i = 1;
+				for (Iterator iter = region.getSignLines().iterator();iter.hasNext();){
+					String actS = (String)iter.next();
+					if (actS!=null && actS.length()>0){
+						write("SIGN " + i);
+						newLine();
+						i++;
+						writeQuotedTag(actS,"text");
+					}
+				}
+			}
 
 			writeBorders(region.borders());
 

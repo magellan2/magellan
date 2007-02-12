@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,13 +47,17 @@ import com.eressea.event.GameDataEvent;
 import com.eressea.event.OrderConfirmEvent;
 import com.eressea.event.SelectionEvent;
 import com.eressea.event.UnitOrdersEvent;
+import com.eressea.gamebinding.eressea.EresseaConstants;
+import com.eressea.gamebinding.eressea.EresseaOrderParser;
 import com.eressea.relation.TeachRelation;
 import com.eressea.swing.GiveOrderDialog;
 import com.eressea.swing.context.actions.ContextAction;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.OrderToken;
 import com.eressea.util.ShipRoutePlanner;
 import com.eressea.util.Translations;
 import com.eressea.util.UnitRoutePlanner;
+import com.eressea.util.Units;
 
 /**
  * TODO: DOCUMENT ME!
@@ -62,7 +67,9 @@ import com.eressea.util.UnitRoutePlanner;
  */
 public class UnitContextMenu extends JPopupMenu {
 	private Unit unit;
+
 	private GameData data;
+
 	private EventDispatcher dispatcher;
 
 	/**
@@ -73,305 +80,280 @@ public class UnitContextMenu extends JPopupMenu {
 
 	/**
 	 * Creates new UnitContextMenu
-	 *
-	 * @param unit last selected unit - is not required to be in selected objects
-	 * @param selectedObjects null or Collection of selected objects
-	 * @param dispatcher EventDispatcher
-	 * @param data the actual GameData or World
+	 * 
+	 * @param unit
+	 *            last selected unit - is not required to be in selected objects
+	 * @param selectedObjects
+	 *            null or Collection of selected objects
+	 * @param dispatcher
+	 *            EventDispatcher
+	 * @param data
+	 *            the actual GameData or World
 	 */
-	public UnitContextMenu(Unit unit, Collection selectedObjects,
-						   EventDispatcher dispatcher, GameData data) {
+	public UnitContextMenu(Unit unit, Collection selectedObjects, EventDispatcher dispatcher,
+			GameData data) {
 		super(unit.toString());
 		this.unit = unit;
 		this.data = data;
 		this.dispatcher = dispatcher;
 
-        init(selectedObjects);
-    }
-    
-    private void init(Collection selectedObjects) {
-        selectedUnits = ContextAction.filterObjects(selectedObjects,Unit.class);
-
-		if(selectedUnits.size() <= 1) {
-            initSingle();
-		} else {
-            initMultiple();
-		}
-
-        initBoth(selectedObjects);
+		init(selectedObjects);
 	}
 
-    private void initBoth(Collection selectedObjects) {
-        // this part for both (but only for selectedUnits)
-        if(containsPrivilegedUnit()) {
-            JMenuItem validateOrders = new JMenuItem(getString("menu.confirm.caption"));
-            validateOrders.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        event_confirmOrders();
-                    }
-                });
-            add(validateOrders);
+	private void init(Collection selectedObjects) {
+		selectedUnits = ContextAction.filterObjects(selectedObjects, Unit.class);
 
-            JMenuItem addOrder = new JMenuItem(getString("menu.addorder.caption"));
-            addOrder.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        event_addOrder();
-                    }
-                });
-            add(addOrder);
-            
-        }
+		if (selectedUnits.size() <= 1) {
+			initSingle();
+		} else {
+			initMultiple();
+		}
 
-        if (this.selectedUnits.size()>0) {
-        	JMenuItem selectUnits = null;
-        	if (this.selectedUnits.size() == 1) {
-        		selectUnits = new JMenuItem(getString("setasunitselection_singular.caption"));
-        	} else {
-        		selectUnits = new JMenuItem(getString("setasunitselection_plural.caption"));
-        	}
-            selectUnits.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        event_selectUnits();
-                    }
-                });
-            add(selectUnits);
-        }
-        
-        // tag stuff
-        if(getComponentCount() > 0) {
-            addSeparator();
-        }
+		initBoth(selectedObjects);
+	}
 
-        JMenuItem addTag = new JMenuItem(getString("addtag.caption"));
-        addTag.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                event_addTag();
-                }
-            });
-        add(addTag);
+	private void initBoth(Collection selectedObjects) {
+		// this part for both (but only for selectedUnits)
+		if (containsPrivilegedUnit()) {
+			JMenuItem validateOrders = new JMenuItem(getString("menu.confirm.caption"));
+			validateOrders.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_confirmOrders();
+				}
+			});
+			add(validateOrders);
 
-        Collection tags = CollectionFactory.createTreeSet();
-        for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
-            Unit u = (Unit) iter.next();
-            tags.addAll(u.getTagMap().keySet());
-        }
-        for(Iterator iter = tags.iterator(); iter.hasNext(); ) {
-            String tag = (String) iter.next();
+			JMenuItem addOrder = new JMenuItem(getString("menu.addorder.caption"));
+			addOrder.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_addOrder();
+				}
+			});
+			add(addOrder);
 
-            JMenuItem removeTag = new JMenuItem(getString("removetag.caption")+": "+tag);
-            removeTag.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    event_removeTag(e);
-                    }
-                });
-            add(removeTag);
-        }
+		}
 
-        
-        
-        // test route planning capability
-        boolean canPlan = UnitRoutePlanner.canPlan(unit);
-        Region reg = unit.getRegion();
+		if (this.selectedUnits.size() > 0) {
+			JMenuItem selectUnits = null;
+			if (this.selectedUnits.size() == 1) {
+				selectUnits = new JMenuItem(getString("setasunitselection_singular.caption"));
+			} else {
+				selectUnits = new JMenuItem(getString("setasunitselection_plural.caption"));
+			}
+			selectUnits.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_selectUnits();
+				}
+			});
+			add(selectUnits);
+		}
 
-        if(canPlan && (selectedUnits != null)) {
-            Iterator it = selectedUnits.iterator();
+		// tag stuff
+		if (getComponentCount() > 0) {
+			addSeparator();
+		}
 
-            while(canPlan && it.hasNext()) {
-                Unit u = (Unit) it.next();
-                canPlan = UnitRoutePlanner.canPlan(u);
+		JMenuItem addTag = new JMenuItem(getString("addtag.caption"));
+		addTag.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				event_addTag();
+			}
+		});
+		add(addTag);
 
-                if((u.getRegion() == null) || !reg.equals(u.getRegion())) {
-                    canPlan = false;
-                }
-            }
-        }
-        
-        if(canPlan) {
-            if(getComponentCount() > 0) {
-                addSeparator();
-            }
+		Collection tags = CollectionFactory.createTreeSet();
+		for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+			Unit u = (Unit) iter.next();
+			tags.addAll(u.getTagMap().keySet());
+		}
+		for (Iterator iter = tags.iterator(); iter.hasNext();) {
+			String tag = (String) iter.next();
 
-            JMenuItem planRoute = new JMenuItem(getString("menu.planroute"));
+			JMenuItem removeTag = new JMenuItem(getString("removetag.caption") + ": " + tag);
+			removeTag.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_removeTag(e);
+				}
+			});
+			add(removeTag);
+		}
 
-            planRoute.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        planRoute(e);
-                    }
-                });
-            add(planRoute);
-        }
-        
-        initContextMenuProviders(selectedObjects);
-    }
+		// test route planning capability
+		boolean canPlan = UnitRoutePlanner.canPlan(unit);
+		Region reg = unit.getRegion();
 
-    private void initContextMenuProviders(Collection selectedObjects) {
-        Collection cmpList = getContextMenuProviders();
-        if(!cmpList.isEmpty()) {
-            addSeparator();
-        }
-        for(Iterator iter = cmpList.iterator(); iter.hasNext(); ) {
-            ContextMenuProvider cmp = (ContextMenuProvider) iter.next();
-            add(cmp.createContextMenu(dispatcher,data, (Object) unit,selectedObjects));
-        }
-       
-    }
-    
+		if (canPlan && (selectedUnits != null)) {
+			Iterator it = selectedUnits.iterator();
 
-    
-    private Collection getExternalModules() {
-        return dispatcher.getMagellanContext().getClient().getExternalModules();
-    }
-    
-    private Collection getContextMenuProviders() {
-        Collection cmpList = new ArrayList();
-        for(Iterator iter = getExternalModules().iterator(); iter.hasNext(); ) {
-            Object obj = iter.next();
-            
-            if(obj instanceof ContextMenuProvider) {
-                cmpList.add(obj);
-            }
-        }
-        return cmpList;
-    }
+			while (canPlan && it.hasNext()) {
+				Unit u = (Unit) it.next();
+				canPlan = UnitRoutePlanner.canPlan(u);
 
-    private void initMultiple() {
-        // this part for multiple unit-selections
-        JMenuItem unitString = new JMenuItem(selectedUnits.size() + " " + getString("units"));
-        unitString.setEnabled(false);
-        add(unitString);
+				if ((u.getRegion() == null) || !reg.equals(u.getRegion())) {
+					canPlan = false;
+				}
+			}
+		}
 
-        JMenuItem copyMultipleID = new JMenuItem(getString("menu.copyids.caption"));
-        copyMultipleID.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    event_copyMultipleID(e);
-                }
-            });
-        add(copyMultipleID);
+		if (canPlan) {
+			if (getComponentCount() > 0) {
+				addSeparator();
+			}
 
-        JMenuItem copyMultipleNameID = new JMenuItem(getString("menu.copyidsandnames.caption"));
-        copyMultipleNameID.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    event_copyMultipleNameID(e);
-                }
-            });
-        add(copyMultipleNameID);
+			JMenuItem planRoute = new JMenuItem(getString("menu.planroute"));
 
-    }
-    private void initSingle() {
-        // This part for single-unit-selections
-        JMenuItem unitString = new JMenuItem(unit.toString());
-        unitString.setEnabled(false);
-        add(unitString);
+			planRoute.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					planRoute(e);
+				}
+			});
+			add(planRoute);
+		}
 
-        JMenuItem copyUnitID = new JMenuItem(getString("menu.copyid.caption"));
-        copyUnitID.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    event_copyID(e);
-                }
-            });
-        add(copyUnitID);
+		initContextMenuProviders(selectedObjects);
+	}
 
-        JMenuItem copyUnitNameID = new JMenuItem(getString("menu.copyidandname.caption"));
-        copyUnitNameID.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    event_copyNameID(e);
-                }
-            });
-        add(copyUnitNameID);
+	private void initContextMenuProviders(Collection selectedObjects) {
+		Collection cmpList = getContextMenuProviders();
+		if (!cmpList.isEmpty()) {
+			addSeparator();
+		}
+		for (Iterator iter = cmpList.iterator(); iter.hasNext();) {
+			ContextMenuProvider cmp = (ContextMenuProvider) iter.next();
+			add(cmp.createContextMenu(dispatcher, data, (Object) unit, selectedObjects));
+		}
 
-        if(EMapDetailsPanel.isPrivilegedAndNoSpy(unit)) {
-            JMenuItem hideID = new JMenuItem(getString("menu.disguise.caption"));
+	}
 
-            hideID.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        event_hideID(e);
-                    }
-                });
-            add(hideID);
-        }
+	private Collection getExternalModules() {
+		return dispatcher.getMagellanContext().getClient().getExternalModules();
+	}
 
-        // is student of someone?
-        Collection c = unit.getRelations(TeachRelation.class);
+	private Collection getContextMenuProviders() {
+		Collection cmpList = new ArrayList();
+		for (Iterator iter = getExternalModules().iterator(); iter.hasNext();) {
+			Object obj = iter.next();
 
-        for(Iterator iter = c.iterator(); iter.hasNext();) {
-            TeachRelation tr = (TeachRelation) iter.next();
+			if (obj instanceof ContextMenuProvider) {
+				cmpList.add(obj);
+			}
+		}
+		return cmpList;
+	}
 
-            if(tr.target == unit) {
-                Unit teacher = tr.source;
-                JMenuItem removeFromTeachersList = new JMenuItem(getString("menu.removeFromTeachersList") +
-                                                                 ": " + teacher.toString());
-                add(removeFromTeachersList);
-                removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
-                                                                                              teacher,this.data));
-            }
-        }
+	private void initMultiple() {
+		// this part for multiple unit-selections
+		JMenuItem unitString = new JMenuItem(selectedUnits.size() + " " + getString("units"));
+		unitString.setEnabled(false);
+		add(unitString);
 
-        if((unit.getShip() != null) && unit.equals(unit.getShip().getOwnerUnit())) {
-            JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));
-            planShipRoute.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        planShipRoute();
-                    }
-                });
-            planShipRoute.setEnabled(ShipRoutePlanner.canPlan(unit.getShip()));
-            add(planShipRoute);
-        }
+		JMenuItem copyMultipleID = new JMenuItem(getString("menu.copyids.caption"));
+		copyMultipleID.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				event_copyMultipleID(e);
+			}
+		});
+		add(copyMultipleID);
 
-    }
-    
-    /**
-     * Sets the selected Units as selected Units in Overview
-     * FeatureRequest
-     * @author Fiete
-     */
-    private void event_selectUnits() {
-    	if (this.selectedUnits.size()>1) {
-    		dispatcher.fire(new SelectionEvent(this,this.selectedUnits,null));
-    	}
-    	if (this.selectedUnits.size()==1) {
-    		dispatcher.fire(new SelectionEvent(this,this.selectedUnits,(Unit)this.selectedUnits.toArray()[0]));
-    	}
-    }
-    
+		JMenuItem copyMultipleNameID = new JMenuItem(getString("menu.copyidsandnames.caption"));
+		copyMultipleNameID.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				event_copyMultipleNameID(e);
+			}
+		});
+		add(copyMultipleNameID);
+
+	}
+
+	private void initSingle() {
+		// This part for single-unit-selections
+		JMenuItem unitString = new JMenuItem(unit.toString());
+		unitString.setEnabled(false);
+		add(unitString);
+
+		JMenuItem copyUnitID = new JMenuItem(getString("menu.copyid.caption"));
+		copyUnitID.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				event_copyID(e);
+			}
+		});
+		add(copyUnitID);
+
+		JMenuItem copyUnitNameID = new JMenuItem(getString("menu.copyidandname.caption"));
+		copyUnitNameID.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				event_copyNameID(e);
+			}
+		});
+		add(copyUnitNameID);
+
+		if (EMapDetailsPanel.isPrivilegedAndNoSpy(unit)) {
+			JMenuItem hideID = new JMenuItem(getString("menu.disguise.caption"));
+
+			hideID.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					event_hideID(e);
+				}
+			});
+			add(hideID);
+		}
+
+		// is student of someone?
+		Collection c = unit.getRelations(TeachRelation.class);
+
+		for (Iterator iter = c.iterator(); iter.hasNext();) {
+			TeachRelation tr = (TeachRelation) iter.next();
+
+			if (tr.target == unit) {
+				Unit teacher = tr.source;
+				JMenuItem removeFromTeachersList = new JMenuItem(
+						getString("menu.removeFromTeachersList") + ": " + teacher.toString());
+				add(removeFromTeachersList);
+				removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
+						teacher, this.data));
+			}
+		}
+
+		if ((unit.getShip() != null) && unit.equals(unit.getShip().getOwnerUnit())) {
+			JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));
+			planShipRoute.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					planShipRoute();
+				}
+			});
+			planShipRoute.setEnabled(ShipRoutePlanner.canPlan(unit.getShip()));
+			add(planShipRoute);
+		}
+
+	}
+
+	/**
+	 * Sets the selected Units as selected Units in Overview FeatureRequest
+	 * 
+	 * @author Fiete
+	 */
+	private void event_selectUnits() {
+		if (this.selectedUnits.size() > 1) {
+			dispatcher.fire(new SelectionEvent(this, this.selectedUnits, null));
+		}
+		if (this.selectedUnits.size() == 1) {
+			dispatcher.fire(new SelectionEvent(this, this.selectedUnits, (Unit) this.selectedUnits
+					.toArray()[0]));
+		}
+	}
+
 	/**
 	 * Gives an order (optional replacing the existing ones) to the selected units.
 	 */
 	private void event_addOrder() {
-		String s[] = (new GiveOrderDialog(JOptionPane.getFrameForComponent(this))).showGiveOrderDialog();
-
-		// remember: s[0] : inserted Order (null if the ok-button wasn't pressed)
-		// s[1] : String represantative for "replace order ?"
-		// c[2] : String represantative for "keep comments"
-		if(s[0] != null) {
-			boolean replace = Boolean.valueOf(s[1]).booleanValue();
-			boolean keepComments = Boolean.valueOf(s[2]).booleanValue();
-
-			for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+		GiveOrderDialog giveOderDialog = new GiveOrderDialog(JOptionPane.getFrameForComponent(this));
+		String s[] = giveOderDialog.showGiveOrderDialog();
+		if (s[0] != null) {
+			for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 				Unit u = (Unit) iter.next();
 
-				if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
-					if(replace) {
-						if(keepComments) {
-							Collection oldOrders = u.getOrders();
-							Collection newOrders = CollectionFactory.createLinkedList();
-
-							for(Iterator iterator = oldOrders.iterator(); iterator.hasNext();) {
-								String order = (String) iterator.next();
-
-								if(order.trim().startsWith("//") || order.trim().startsWith(";")) {
-									newOrders.add(order);
-								}
-							}
-
-							newOrders.add(s[0]);
-							u.setOrders(newOrders);
-						} else {
-							u.setOrders(Collections.singleton(s[0]));
-						}
-					} else {
-						u.addOrder(s[0], false, 0);
-					}
-
+				if (EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
+					Units.changeOrders(u, s);
 					dispatcher.fire(new UnitOrdersEvent(this, u));
 				}
 			}
@@ -387,7 +369,7 @@ public class UnitContextMenu extends JPopupMenu {
 	private void event_confirmOrders() {
 		boolean status = !((Unit) selectedUnits.iterator().next()).ordersConfirmed;
 
-		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+		for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 			u.ordersConfirmed = status;
 		}
@@ -400,191 +382,194 @@ public class UnitContextMenu extends JPopupMenu {
 
 	private void event_addTag() {
 		String key = null;
-        Collection keys = CollectionFactory.createHashSet();
-        Collection values = CollectionFactory.createHashSet();
-        Collection keyUnits = CollectionFactory.createHashSet();
-        
-        {
-            Collection regions = CollectionFactory.createHashSet();
-            for(Iterator iter = selectedUnits.iterator(); iter.hasNext(); ) {
-                Unit unit = (Unit) iter.next();
-                regions.add(unit.getRegion());
-            }
-            for(Iterator iter = regions.iterator(); iter.hasNext(); ) {
-                Region r = (Region) iter.next();
-                for(Iterator iter2 = r.units().iterator(); iter2.hasNext(); ) {
-                    Unit u = (Unit) iter2.next();
-                    keyUnits.add(u);
-                    keys.addAll(u.getTagMap().keySet());
-                    values.addAll(u.getTagMap().values());
-                }
-            }
-        }
-        
-        List sortedKeys = CollectionFactory.createArrayList(keys);
-        Collections.sort(sortedKeys);
-        key = showInputDialog(getString("addtag.tagname.message"),sortedKeys);
+		Collection keys = CollectionFactory.createHashSet();
+		Collection values = CollectionFactory.createHashSet();
+		Collection keyUnits = CollectionFactory.createHashSet();
 
-		if((key != null) && (key.length() > 0)) {
-            String value = null;
-            
-            Collection keyValues = CollectionFactory.createHashSet();
-            for(Iterator iter = keyUnits.iterator(); iter.hasNext(); ) {
-            	Unit u = (Unit) iter.next();
-            	Object v = u.getTag(key);
-            	if(v!=null) {
-            		keyValues.add(v);
-            	}
-            }
-
-            List sortedKeyValues = CollectionFactory.createArrayList(keyValues);
-            Collections.sort(sortedKeyValues);
-                        
-//            values.removeAll(keyValues);
-//            List sortedValues = CollectionFactory.createArrayList(values);
-//            Collections.sort(sortedValues);
-//            sortedKeyValues.addAll(sortedValues);
-            
-            value = showInputDialog(getString("addtag.tagvalue.message"),sortedKeyValues);
-            
-            if(value != null) {
-                for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
-                    Unit u = (Unit) iter.next();
-                    u.putTag(key,value);
-                    // TODO: Coalesce unitordersevent
-                    dispatcher.fire(new UnitOrdersEvent(this,u));
-                }
-            }                
-		}
-		
-		unit = null;
-		selectedUnits.clear();
-	}
-
-    private String showInputDialog(String message, List values) {
-        if(1==2) {
-            return JOptionPane.showInputDialog(message);
-        } else {
-            
-            // the combo box (add/modify items if you like to)
-            JComboBox comboBox = new JComboBox(values.toArray());
-            // has to be editable
-            comboBox.setEditable(true);
-            comboBox.getEditor().selectAll();
-            // change the editor's document
-            // new JComboBoxCompletion(comboBox,true);
-
-            // create and show a window containing the combo box
-            Frame parent = dispatcher.getMagellanContext().getClient();
-            JDialog frame = new JDialog(parent, message, true);
-            frame.setLocationRelativeTo(parent);
-            frame.getContentPane().setLayout(new BorderLayout());
-            frame.setResizable(false);
-            frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-            JPanel pane = new JPanel(new BorderLayout());
-            pane.add(new JLabel(message),BorderLayout.NORTH);
-            pane.add(comboBox, BorderLayout.CENTER);
-            
-            frame.getContentPane().add(new JLabel("  "), BorderLayout.NORTH);
-            frame.getContentPane().add(new JLabel("  "), BorderLayout.SOUTH);
-            frame.getContentPane().add(pane, BorderLayout.CENTER);
-            frame.getContentPane().add(new JLabel("  "), BorderLayout.WEST);
-            frame.getContentPane().add(new JLabel("  "), BorderLayout.EAST);
-            frame.pack(); 
-            
-            comboBox.getEditor().getEditorComponent().addKeyListener(new MyKeyAdapter(frame,comboBox));
-                        
-            frame.setVisible(true);
-            frame.dispose();
-            
-            return (String) comboBox.getSelectedItem();            
-        }
-    }
-    
-    private static class MyOkAction extends AbstractAction {
-        private JDialog frame;
-        private JComboBox comboBox;
-        
-        private MyOkAction(JDialog frame, JComboBox comboBox) {
-            this.frame = frame;
-            this.comboBox = comboBox;
-        }
-        
-        public void actionPerformed(ActionEvent e) {
-            frame.setVisible(false); 
-        }
-    }
-
-    private static class MyCancelAction extends AbstractAction {
-        private JDialog frame;
-        private JComboBox comboBox;
-        
-        private MyCancelAction(JDialog frame, JComboBox comboBox) {
-            this.frame = frame;
-            this.comboBox = comboBox;
-        }
-        
-        public void actionPerformed(ActionEvent e) {
-            frame.setVisible(false); 
-            comboBox.setSelectedItem(null);             
-        }
-    }
-    
-    private static class MyKeyAdapter extends KeyAdapter {
-        private JDialog frame;
-        private JComboBox comboBox;
-            
-        public MyKeyAdapter(JDialog frame, JComboBox comboBox) {
-            this.frame = frame;
-            this.comboBox = comboBox;
-        }
-        
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-            case KeyEvent.VK_ESCAPE: 
-                new MyCancelAction(frame,comboBox).actionPerformed(null);
-                break;
-            case KeyEvent.VK_ENTER: 
-                new MyOkAction(frame,comboBox).actionPerformed(null);
-                break;
-            }
-        }
-    }
-
-    private void event_removeTag(ActionEvent e) {
-		String command = e.getActionCommand();
-		int index = command.indexOf(": ");
-		if(index > 0) {
-			String key = command.substring(index+2,command.length());
-			if(key != null) {	
-				for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
-					Unit u = (Unit) iter.next();
-					u.removeTag(key);
-				    // TODO: Coalesce unitordersevent
-					dispatcher.fire(new UnitOrdersEvent(this,u));
+		{
+			Collection regions = CollectionFactory.createHashSet();
+			for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+				Unit unit = (Unit) iter.next();
+				regions.add(unit.getRegion());
+			}
+			for (Iterator iter = regions.iterator(); iter.hasNext();) {
+				Region r = (Region) iter.next();
+				for (Iterator iter2 = r.units().iterator(); iter2.hasNext();) {
+					Unit u = (Unit) iter2.next();
+					keyUnits.add(u);
+					keys.addAll(u.getTagMap().keySet());
+					values.addAll(u.getTagMap().values());
 				}
 			}
 		}
-		
+
+		List sortedKeys = CollectionFactory.createArrayList(keys);
+		Collections.sort(sortedKeys);
+		key = showInputDialog(getString("addtag.tagname.message"), sortedKeys);
+
+		if ((key != null) && (key.length() > 0)) {
+			String value = null;
+
+			Collection keyValues = CollectionFactory.createHashSet();
+			for (Iterator iter = keyUnits.iterator(); iter.hasNext();) {
+				Unit u = (Unit) iter.next();
+				Object v = u.getTag(key);
+				if (v != null) {
+					keyValues.add(v);
+				}
+			}
+
+			List sortedKeyValues = CollectionFactory.createArrayList(keyValues);
+			Collections.sort(sortedKeyValues);
+
+			// values.removeAll(keyValues);
+			// List sortedValues = CollectionFactory.createArrayList(values);
+			// Collections.sort(sortedValues);
+			// sortedKeyValues.addAll(sortedValues);
+
+			value = showInputDialog(getString("addtag.tagvalue.message"), sortedKeyValues);
+
+			if (value != null) {
+				for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+					Unit u = (Unit) iter.next();
+					u.putTag(key, value);
+					// TODO: Coalesce unitordersevent
+					dispatcher.fire(new UnitOrdersEvent(this, u));
+				}
+			}
+		}
+
+		unit = null;
+		selectedUnits.clear();
+	}
+
+	private String showInputDialog(String message, List values) {
+		if (1 == 2) {
+			return JOptionPane.showInputDialog(message);
+		} else {
+
+			// the combo box (add/modify items if you like to)
+			JComboBox comboBox = new JComboBox(values.toArray());
+			// has to be editable
+			comboBox.setEditable(true);
+			comboBox.getEditor().selectAll();
+			// change the editor's document
+			// new JComboBoxCompletion(comboBox,true);
+
+			// create and show a window containing the combo box
+			Frame parent = dispatcher.getMagellanContext().getClient();
+			JDialog frame = new JDialog(parent, message, true);
+			frame.setLocationRelativeTo(parent);
+			frame.getContentPane().setLayout(new BorderLayout());
+			frame.setResizable(false);
+			frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+			JPanel pane = new JPanel(new BorderLayout());
+			pane.add(new JLabel(message), BorderLayout.NORTH);
+			pane.add(comboBox, BorderLayout.CENTER);
+
+			frame.getContentPane().add(new JLabel("  "), BorderLayout.NORTH);
+			frame.getContentPane().add(new JLabel("  "), BorderLayout.SOUTH);
+			frame.getContentPane().add(pane, BorderLayout.CENTER);
+			frame.getContentPane().add(new JLabel("  "), BorderLayout.WEST);
+			frame.getContentPane().add(new JLabel("  "), BorderLayout.EAST);
+			frame.pack();
+
+			comboBox.getEditor().getEditorComponent().addKeyListener(
+					new MyKeyAdapter(frame, comboBox));
+
+			frame.setVisible(true);
+			frame.dispose();
+
+			return (String) comboBox.getSelectedItem();
+		}
+	}
+
+	private static class MyOkAction extends AbstractAction {
+		private JDialog frame;
+
+		// private JComboBox comboBox;
+
+		private MyOkAction(JDialog frame, JComboBox comboBox) {
+			this.frame = frame;
+			// this.comboBox = comboBox;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			frame.setVisible(false);
+		}
+	}
+
+	private static class MyCancelAction extends AbstractAction {
+		private JDialog frame;
+
+		private JComboBox comboBox;
+
+		private MyCancelAction(JDialog frame, JComboBox comboBox) {
+			this.frame = frame;
+			this.comboBox = comboBox;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			frame.setVisible(false);
+			comboBox.setSelectedItem(null);
+		}
+	}
+
+	private static class MyKeyAdapter extends KeyAdapter {
+		private JDialog frame;
+
+		private JComboBox comboBox;
+
+		public MyKeyAdapter(JDialog frame, JComboBox comboBox) {
+			this.frame = frame;
+			this.comboBox = comboBox;
+		}
+
+		public void keyPressed(KeyEvent e) {
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_ESCAPE:
+				new MyCancelAction(frame, comboBox).actionPerformed(null);
+				break;
+			case KeyEvent.VK_ENTER:
+				new MyOkAction(frame, comboBox).actionPerformed(null);
+				break;
+			}
+		}
+	}
+
+	private void event_removeTag(ActionEvent e) {
+		String command = e.getActionCommand();
+		int index = command.indexOf(": ");
+		if (index > 0) {
+			String key = command.substring(index + 2, command.length());
+			if (key != null) {
+				for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+					Unit u = (Unit) iter.next();
+					u.removeTag(key);
+					// TODO: Coalesce unitordersevent
+					dispatcher.fire(new UnitOrdersEvent(this, u));
+				}
+			}
+		}
+
 		unit = null;
 		selectedUnits.clear();
 
 	}
-	
-	
-	private void event_copyID(ActionEvent e) {
-        StringSelection strSel = new StringSelection(unit.toString(false));
-        Clipboard cb = getToolkit().getSystemClipboard();
 
-        cb.setContents(strSel, null);
+	private void event_copyID(ActionEvent e) {
+		StringSelection strSel = new StringSelection(unit.toString(false));
+		Clipboard cb = getToolkit().getSystemClipboard();
+
+		cb.setContents(strSel, null);
 
 		unit = null;
 		selectedUnits.clear();
 	}
 
 	private void event_copyNameID(ActionEvent e) {
-        
+
 		StringSelection strSel = new StringSelection(unit.toString());
 		Clipboard cb = getToolkit().getSystemClipboard();
 
@@ -605,13 +590,13 @@ public class UnitContextMenu extends JPopupMenu {
 	private void event_copyMultipleID(ActionEvent e) {
 		StringBuffer idString = new StringBuffer("");
 
-		for(Iterator iter = selectedUnits.iterator(); iter.hasNext(); ) {
+		for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 
-            idString.append(u.toString(false));
-            if(iter.hasNext()) {
-                idString.append(" ");
-            }
+			idString.append(u.toString(false));
+			if (iter.hasNext()) {
+				idString.append(" ");
+			}
 		}
 
 		StringSelection strSel = new StringSelection(idString.toString());
@@ -625,7 +610,7 @@ public class UnitContextMenu extends JPopupMenu {
 	private void event_copyMultipleNameID(ActionEvent e) {
 		String s = "";
 
-		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+		for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 			s += (u.toString() + "\n");
 		}
@@ -639,12 +624,12 @@ public class UnitContextMenu extends JPopupMenu {
 	}
 
 	private void planRoute(ActionEvent e) {
-		if(UnitRoutePlanner.planUnitRoute(unit, data, this, selectedUnits)) {
-			if(selectedUnits != null) {
-                for(Iterator iter = selectedUnits.iterator(); iter.hasNext(); ) {
+		if (UnitRoutePlanner.planUnitRoute(unit, data, this, selectedUnits)) {
+			if (selectedUnits != null) {
+				for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 					Unit u = (Unit) iter.next();
 
-					if(!u.equals(unit)) {
+					if (!u.equals(unit)) {
 						dispatcher.fire(new UnitOrdersEvent(this, u));
 					}
 				}
@@ -660,7 +645,7 @@ public class UnitContextMenu extends JPopupMenu {
 	private void planShipRoute() {
 		Unit unit = ShipRoutePlanner.planShipRoute(this.unit.getShip(), data, this);
 
-		if(unit != null) {
+		if (unit != null) {
 			dispatcher.fire(new UnitOrdersEvent(this, unit));
 		}
 	}
@@ -668,14 +653,14 @@ public class UnitContextMenu extends JPopupMenu {
 	/**
 	 * Checks whether the selectedUnits contain at least one Unit-object, that belongs to a
 	 * privileged faction.
-	 *
+	 * 
 	 * @return TODO: DOCUMENT ME!
 	 */
 	private boolean containsPrivilegedUnit() {
-		for(Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
+		for (Iterator iter = selectedUnits.iterator(); iter.hasNext();) {
 			Unit u = (Unit) iter.next();
 
-			if(EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
+			if (EMapDetailsPanel.isPrivilegedAndNoSpy(u)) {
 				return true;
 			}
 		}
@@ -695,12 +680,12 @@ public class UnitContextMenu extends JPopupMenu {
 	private static Map defaultTranslations;
 
 	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Returns the default map of translations for localization.
+	 * 
+	 * @return A map of keys (Strings) to translations (Strings)
 	 */
 	public static synchronized Map getDefaultTranslations() {
-		if(defaultTranslations == null) {
+		if (defaultTranslations == null) {
 			defaultTranslations = CollectionFactory.createHashtable();
 			defaultTranslations.put("menu.copyid.caption", "Copy ID");
 			defaultTranslations.put("menu.copyidandname.caption", "Copy ID and name");
@@ -728,61 +713,73 @@ public class UnitContextMenu extends JPopupMenu {
 
 	private class RemoveUnitFromTeachersListAction implements ActionListener {
 		private Unit student;
+
 		private Unit teacher;
-		private GameData data;
+
+		private GameData gameData;
 
 		/**
-		 * Creates a new RemoveUnitFromTeachersListAction object.
-		 *
-		 * @param student TODO: DOCUMENT ME!
-		 * @param teacher TODO: DOCUMENT ME!
+		 * Creates a new RemoveUnitFromTeachersListAction object, which shall remove the student ID
+		 * from the teacher's TEACHING orders.
+		 * 
+		 * @param student
+		 *            The affected student Unit
+		 * 
+		 * @param teacher
+		 *            The affected teacher Unit
+		 * 
 		 */
 		public RemoveUnitFromTeachersListAction(Unit student, Unit teacher, GameData data) {
 			this.student = student;
 			this.teacher = teacher;
-			this.data = data;
+			this.gameData = data;
 		}
 
 		/**
-		 * TODO: DOCUMENT ME!
-		 *
-		 * @param e TODO: DOCUMENT ME!
+		 * Removes student's ID from teacher's teaching orders.
+		 * 
+		 * 
+		 * @param e
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(ActionEvent e) {
 			String id = student.getID().toString();
 			Collection orders = teacher.getOrders();
 			int i = 0;
-			boolean found = false;
 			String order = null;
 
-			for(Iterator iter = orders.iterator(); iter.hasNext(); i++) {
+			// look for teaching orders
+			for (Iterator iter = orders.iterator(); iter.hasNext(); i++) {
 				order = (String) iter.next();
+				EresseaOrderParser parser = new EresseaOrderParser(gameData);
+				if (!parser.read(new StringReader(order))) {
+					continue;
+				}
 
-				if(order.toUpperCase().trim().startsWith("LEHRE")) {
-					if(order.indexOf(id) > -1) {
-						found = true;
+				List tokens = parser.getTokens();
+				if (((OrderToken) tokens.get(0)).equalsToken(Translations
+						.getOrderTranslation(EresseaConstants.O_TEACH))) {
+					if (order.indexOf(id) > -1) {
+						teacher.removeOrderAt(i, false);
+						// FIXME The meaning of tokens.size() is undefined
+						if (tokens.size() > 3) { // teacher teaches more than one unit
+							// remove unit's ID from order
+							String newOrder = order.substring(0, order.indexOf(id))
+									+ order.substring(java.lang.Math.min(order.indexOf(id) + 1
+											+ id.length(), order.length()), order.length());
+							teacher.addOrderAt(i, newOrder);
+						}
+						// we wouldn't need this, but we get a ConcurrentModificationException
+						// without it
 						break;
 					}
 				}
+
 			}
-
-			if(found) {
-				String newOrder = order.substring(0, order.indexOf(id)) +
-								  order.substring(java.lang.Math.min(order.indexOf(id) + 1 +
-																	 id.length(), order.length()),
-												  order.length());
-
-				teacher.removeOrderAt(i, false);
-
-				if(!newOrder.trim().equalsIgnoreCase("LEHREN") &&
-					   !newOrder.trim().equalsIgnoreCase("LEHRE")) {
-					teacher.addOrderAt(i, newOrder);
-				}
-				unit.getRegion().refreshUnitRelations(true);
-
-				dispatcher.fire(new GameDataEvent(this,data));
-				
-			}
+			dispatcher.fire(new UnitOrdersEvent(this, teacher));
+			dispatcher.fire(new UnitOrdersEvent(this, student));
+			unit.getRegion().refreshUnitRelations(true);
+//			dispatcher.fire(new GameDataEvent(this, gameData));
 		}
 	}
 }
