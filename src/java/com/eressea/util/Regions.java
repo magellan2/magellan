@@ -825,7 +825,7 @@ public class Regions {
 	 * @param r2 another region
 	 * @return
 	 */
-	private static boolean isCompleteRoadConnection(Region r1,Region r2){
+	public static boolean isCompleteRoadConnection(Region r1,Region r2){
 		boolean erg = false;
 		// Collection of Regions
 		// r1 -> r2
@@ -856,7 +856,7 @@ public class Regions {
 		dir1 = (Direction)directions.get(0);
 		// border of r1 -> 
 		boolean border2OK = false;
-		for(Iterator iter = r1.borders().iterator(); iter.hasNext();) {
+		for(Iterator iter = r2.borders().iterator(); iter.hasNext();) {
 			Border b = (Border) iter.next();
 			if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
 					   (b.direction == dir1.getDir())) {
