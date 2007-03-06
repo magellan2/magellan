@@ -648,6 +648,10 @@ public class CRParser implements RulesIO, GameDataIO {
 				} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("class")) {
 					spell.setType(sc.argv[0]);
 					sc.getNextToken();
+				} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("syntax")) {
+					// FF 20070221 : new ;syntax
+					spell.setSyntax(sc.argv[0]);
+					sc.getNextToken();
 				} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("ship")) {
 					spell.setOnShip(Integer.parseInt(sc.argv[0]) != 0);
 					sc.getNextToken();

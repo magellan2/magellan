@@ -336,6 +336,29 @@ public abstract class GameData implements Cloneable {
 	public Spell getSpell(ID id) {
 		return (spells() == null) ? null : (Spell) spells().get(id);
 	}
+	
+	/**
+	 * Retrieve a spell from spells() by Name.
+	 * used for orderReader / completer
+	 * 
+	 * @param id the name of the spell to be retrieved.
+	 *
+	 * @return an instance of class <tt>Spell</tt> or <tt>null</tt> if there is no spell with the
+	 * 		   specified id or if spells() is <tt>null</tt>.
+	 */
+	public Spell getSpell(String spellName) {
+		if (spells()==null || spells().size()==0){
+			return null;
+		}
+		for (Iterator iter = spells().values().iterator();iter.hasNext();){
+			Spell spell = (Spell)iter.next();
+			if (spell.getName().equalsIgnoreCase(spellName)){
+				return spell;
+			}
+		}
+		return null;
+	}
+	
 
 	/**
 	 * Retrieve a potion from potions() by id.

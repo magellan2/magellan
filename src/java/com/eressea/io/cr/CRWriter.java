@@ -518,6 +518,11 @@ public class CRWriter extends BufferedWriter {
 			newLine();
 		}
 
+		if (spell.getSyntax()!=null){
+			writeQuotedTag(spell.getSyntax(),"syntax");
+		}
+		
+		
 		writeSpellComponents(spell.getComponents());
 	}
 

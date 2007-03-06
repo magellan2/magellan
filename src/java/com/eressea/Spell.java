@@ -15,7 +15,10 @@ package com.eressea;
 
 import java.util.Map;
 
+import com.eressea.gamebinding.eressea.EresseaConstants;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.SpellSyntax;
+import com.eressea.util.Translations;
 
 /**
  * Container class for a spell based on its representation in a cr version >= 42.
@@ -30,6 +33,12 @@ public class Spell extends DescribedObject {
 	private boolean isFamiliar = false;
 	private boolean isFar = false;
 	private Map components = null; // map of String objects
+	
+	private String syntax = null; // FF 20070221 new CR tag syntax
+	/**
+	 * the spellsytnax object
+	 */
+	private SpellSyntax spellSyntax = null;
 
 	/**
 	 * Creates a new Spell object.
@@ -237,6 +246,51 @@ public class Spell extends DescribedObject {
 	}
 
 	/**
+	 * A string with information about the syntax of the spell (FF)
+	 * @return
+	 */
+	public String getSyntaxString(){
+		String retVal = "";
+		
+		// Region, if is far
+		if (isFar){
+			retVal = "[" + getString("region") + " X Y]";
+		}
+		
+		// Level...allways possible, but not allways usefull
+		// we have no info, how to decide here - we add it.
+		if (retVal.length()>0){
+			retVal += " ";
+		}
+		retVal += "[" + getString("level") + " n]";
+		
+		// name of spell in "
+		if (retVal.length()>0){
+			retVal += " ";
+		}
+		retVal += "\"" + this.getName() + "\"";
+		
+		// Syntax
+		if (this.getSpellSyntax()!=null && this.getSpellSyntax().toString()!=null){
+			if (retVal.length()>0){
+				retVal += " ";
+			}
+			retVal += this.getSpellSyntax().toString();
+		}
+		
+		// if nothing was added, return null
+		if (retVal.length()==0) {
+			retVal = null;
+		} else {
+			// präfix: 
+			retVal = "Syntax: " + Translations.getOrderTranslation(EresseaConstants.O_CAST) + " " + retVal;
+		}
+		return retVal;
+	}
+	
+	
+	
+	/**
 	 * Merges spells.
 	 *
 	 * @param curGD TODO: DOCUMENT ME!
@@ -269,6 +323,11 @@ public class Spell extends DescribedObject {
 			newSpell.type = curSpell.type;
 		}
 
+		// FF 20070221: syntax
+		if (curSpell.getSyntax()!=null && curSpell.getSyntax().length()>0){
+			newSpell.setSyntax(curSpell.getSyntax());
+		}
+		
 		if(curSpell.onShip != false) {
 			newSpell.onShip = curSpell.onShip;
 		}
@@ -317,8 +376,62 @@ public class Spell extends DescribedObject {
 			defaultTranslations.put("precombat", "pre-combat spell");
 			defaultTranslations.put("combat", "combat spell");
 			defaultTranslations.put("postcombat", "post-combat spell");
+			defaultTranslations.put("level", "LEVEL");
+			defaultTranslations.put("region", "REGION");
 		}
 
 		return defaultTranslations;
 	}
+
+
+	/**
+	 * Enno in e-client about the syntax:
+	 * 'c' = Zeichenkette
+	 * 'k' = REGION|EINHEIT|STUFE|SCHIFF|GEBAEUDE
+	 * 'i' = Zahl
+	 * 's' = Schiffsnummer
+	 * 'b' = Gebaeudenummer
+	 * 'r' = Regionskoordinaten (x, y)
+	 * 'u' = Einheit
+	 * '+' = Wiederholung des vorangehenden Parameters
+	 * '?' = vorangegangener Parameter ist nicht zwingend
+
+	 *	Syntaxcheks, die der Server auf dieser Basis macht, sind nicht perfekt;
+	 *	es ist notwendig, aber nicht hinreichend, dass die Syntax erfuellt wird.
+	 *	Aber in den vielen Faellen kann man damit schonmal sagen, was denn
+	 *	falsch war.
+	 *
+	 * 
+	 * @return the syntax
+	 */
+	public String getSyntax() {
+		return syntax;
+	}
+	
+
+	/**
+	 * @param syntax the syntax to set
+	 */
+	public void setSyntax(String syntax) {
+		this.syntax = syntax; 
+	}
+	
+	/**
+	 * returns the spellsyntax object of this spell
+	 * @return a SpellSyntax object
+	 */
+	public SpellSyntax getSpellSyntax(){
+		if (this.syntax==null || this.syntax.length()==0){
+			return null;
+		}
+		
+		// creating a new one if it does not exists
+		if (this.spellSyntax==null){
+			this.spellSyntax = new SpellSyntax(this.syntax);
+		}
+		
+		return this.spellSyntax;
+	}
+	
+	
 }
