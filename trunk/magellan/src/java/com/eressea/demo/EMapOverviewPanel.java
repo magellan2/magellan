@@ -425,10 +425,24 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
         TreeBuilder treeBuilder = getTreeBuilder();
         treeBuilder.setSortShipUnderUnitParent(sortShipUnderUnitParent);
-        // FIXME: using 16383 here is bad style, what is it good for anyway?
-        // Fiete: was a hint of someone to have regions in the tree, with no own units, but whith other items besides buildings,e.g. ships
-        // I agree: bad style here
-		treeBuilder.setDisplayMode((treeBuilder.getDisplayMode() & 16383) |
+        
+        int displayMode = TreeBuilder.UNITS;
+        if (PropertiesHelper.getboolean(settings,
+            				"EMapOverviewPanel.treeBuilderWithBuildings", 
+            				true)) {
+			displayMode = displayMode | TreeBuilder.BUILDINGS;
+		}
+        if (PropertiesHelper.getboolean(settings,
+				"EMapOverviewPanel.treeBuilderWithShips", 
+				true)) {
+        	displayMode = displayMode | TreeBuilder.SHIPS;
+		}
+        if (PropertiesHelper.getboolean(settings,
+				"EMapOverviewPanel.treeBuilderWithComments", 
+				true)) {
+        	displayMode = displayMode | TreeBuilder.COMMENTS;
+		}
+		treeBuilder.setDisplayMode(displayMode |
 							(createIslandNodes ? TreeBuilder.CREATE_ISLANDS : 0));
 
 		// creation of Comparator outsourced to Comparator getUnitSorting(java.util.Properties)
@@ -2246,6 +2260,26 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 
 		/** TODO: DOCUMENT ME! */
 		public JRadioButton useBestSkill = null;
+		
+		
+		/**
+		 * if true, regiontree will contain regions without own units 
+		 * but with buildings known in it
+		 */
+		public JCheckBox chkRegionTreeBuilder_withBuildings = null;
+		
+		/**
+		 * if true, regiontree will contain regions without own units 
+		 * but with Ships known in it
+		 */
+		public JCheckBox chkRegionTreeBuilder_withShips = null;
+		
+		/**
+		 * if true, regiontree will contain regions without own units 
+		 * but with Comments known in it
+		 */
+		public JCheckBox chkRegionTreeBuilder_withComments = null;
+		
 
 		// use the topmost skill in (selfdefined) skilltype-list to sort it
 
@@ -2289,6 +2323,10 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			pnlRegionSortButtons.add(rdbSortRegionsIslands);
 			
 			chkDisplayIslands = new JCheckBox(getString("prefs.showislands"));
+			
+			chkRegionTreeBuilder_withBuildings = new JCheckBox(getString("prefs_treebuildings"));
+			chkRegionTreeBuilder_withShips = new JCheckBox(getString("prefs_treeships"));
+			chkRegionTreeBuilder_withComments = new JCheckBox(getString("prefs_treecomments"));
 
 			JPanel pnlTreeStructure = new JPanel();
 			pnlTreeStructure.setLayout(new GridBagLayout());
@@ -2521,6 +2559,27 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			c.fill = GridBagConstraints.NONE;
 			c.weightx = 0.0;
 			this.add(chkSortShipUnderUnitParent, c);
+			
+			c.anchor = GridBagConstraints.WEST;
+			c.gridy++;
+			c.insets.left = 10;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			this.add(chkRegionTreeBuilder_withBuildings, c);
+			
+			c.anchor = GridBagConstraints.WEST;
+			c.gridy++;
+			c.insets.left = 10;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			this.add(chkRegionTreeBuilder_withShips, c);
+			
+			c.anchor = GridBagConstraints.WEST;
+			c.gridy++;
+			c.insets.left = 10;
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0.0;
+			this.add(chkRegionTreeBuilder_withComments, c);
 
 			c.insets.left = 0;
 			c.anchor = GridBagConstraints.CENTER;
@@ -2556,6 +2615,20 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
             		PropertiesHelper.getboolean(settings,
             				"EMapOverviewPanel.sortShipUnderUnitParent", 
             				true));
+            
+            chkRegionTreeBuilder_withBuildings.setSelected(
+            		PropertiesHelper.getboolean(settings,
+            				"EMapOverviewPanel.treeBuilderWithBuildings", 
+            				true));
+            chkRegionTreeBuilder_withShips.setSelected(
+            		PropertiesHelper.getboolean(settings,
+            				"EMapOverviewPanel.treeBuilderWithShips", 
+            				true));
+            chkRegionTreeBuilder_withComments.setSelected(
+            		PropertiesHelper.getboolean(settings,
+            				"EMapOverviewPanel.treeBuilderWithComments", 
+            				true));
+            
             rdbSortRegionsCoordinates.setSelected(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria","coordinates").equals("coordinates"));
             rdbSortRegionsIslands.setSelected(settings.getProperty("EMapOverviewPanel.sortRegionsCriteria","coordinates").equals("islands"));
             chkDisplayIslands.setSelected(PropertiesHelper.getboolean(settings,"EMapOverviewPanel.displayIslands",true));
@@ -2602,6 +2675,27 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			settings.setProperty("EMapOverviewPanel.sortShipUnderUnitParent", 
 					String.valueOf(chkSortShipUnderUnitParent.isSelected()));
 
+			settings.setProperty("EMapOverviewPanel.treeBuilderWithBuildings", 
+					String.valueOf(chkRegionTreeBuilder_withBuildings.isSelected()));
+			
+			settings.setProperty("EMapOverviewPanel.treeBuilderWithShips", 
+					String.valueOf(chkRegionTreeBuilder_withShips.isSelected()));
+			
+			settings.setProperty("EMapOverviewPanel.treeBuilderWithComments", 
+					String.valueOf(chkRegionTreeBuilder_withComments.isSelected()));
+			
+			// workaround to support EMapOverviewPanel.filters
+			int newFilter = TreeBuilder.UNITS;
+			if (chkRegionTreeBuilder_withBuildings.isSelected())
+				newFilter = newFilter | TreeBuilder.BUILDINGS;
+			if (chkRegionTreeBuilder_withShips.isSelected())
+				newFilter = newFilter | TreeBuilder.SHIPS;
+			if (chkRegionTreeBuilder_withComments.isSelected())
+				newFilter = newFilter | TreeBuilder.COMMENTS;
+			
+			settings.setProperty("EMapOverviewPanel.filters", String.valueOf(newFilter));
+			
+			
 			if(rdbSortRegionsCoordinates.isSelected()) {
 				settings.setProperty("EMapOverviewPanel.sortRegionsCriteria", "coordinates");
 			} else if(rdbSortRegionsIslands.isSelected()) {
@@ -3518,6 +3612,13 @@ public class EMapOverviewPanel extends InternationalizedDataPanel implements Tre
 			defaultTranslations.put("menu.filter.2", "Ships");
 			defaultTranslations.put("menu.filter.3", "Comments");
 			defaultTranslations.put("menu.supertitle", "Tree");
+			
+			defaultTranslations.put("prefs_treebuildings", "Additional include regions with information of buildings");
+			defaultTranslations.put("prefs_treeships", "Additional include regions with information of ships");
+			defaultTranslations.put("prefs_treecomments", "Additional include regions with known comments");
+			
+			
+			
 		}
 
 		return defaultTranslations;

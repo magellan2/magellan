@@ -1,5 +1,11 @@
 2007-03-06  Fiete  <Fiete@users.sourceforge.net>
 
+	* added some information about spell syntax
+	* added SpellSyntax.java and SpellSyntaxToken.java
+	* added region (Treebuilder) filters to EMapOverviewpanel
+
+2007-03-06  Fiete  <Fiete@users.sourceforge.net>
+
 	* new SVN location: https://magellan-client.svn.sourceforge.net/svnroot/magellan-client
 
 2007-02-12  Fiete  <Fiete@users.sourceforge.net>

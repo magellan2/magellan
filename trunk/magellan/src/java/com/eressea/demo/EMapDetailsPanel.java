@@ -3053,96 +3053,112 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendSpellInfo(Spell s, DefaultMutableTreeNode parent,
 								 Collection expandableNodes, Object backTarget) {
-		parent.add(new DefaultMutableTreeNode(getString("node.type") + ": " + s.getTypeName()));
-		parent.add(new DefaultMutableTreeNode(getString("node.level") + ": " + s.getLevel()));
-		parent.add(new DefaultMutableTreeNode(getString("node.rank") + ": " + s.getRank()));
-
-		if(s.getOnShip()) {
-			parent.add(new DefaultMutableTreeNode(getString("node.spell.ship")));
-		}
-
-		if(s.getIsFar()) {
-			parent.add(new DefaultMutableTreeNode(getString("node.spell.far")));
-		}
-
-		if((s.getComponents() != null) && (s.getComponents().size() > 0)) {
-			DefaultMutableTreeNode componentsNode = new DefaultMutableTreeNode(getString("node.components"));
-			parent.add(componentsNode);
-			expandableNodes.add(new NodeWrapper(componentsNode,
-												"EMapDetailsPanel.SpellComponentsExpanded"));
-
-			for(Iterator iter = s.getComponents().keySet().iterator(); iter.hasNext();) {
-				String key = (String) iter.next();
-				String val = (String) s.getComponents().get(key);
-				DefaultMutableTreeNode compNode;
-
-				if(key.equalsIgnoreCase("Aura")) {
-					int blankPos = val.indexOf(" ");
-
-					if((blankPos > 0) && (blankPos < val.length())) {
-						String aura = val.substring(0, blankPos);
-						String getLevelAtDays = val.substring(blankPos + 1, val.length());
-
-						if(getLevelAtDays.equals("0")) {
-							compNode = createSimpleNode(aura + " " + getString("node.aura"), "aura");
-						} else if(getLevelAtDays.equals("1")) {
-							compNode = createSimpleNode(aura + " " + getString("node.aura") +
-														" * " + getString("node.level"), "aura");
-						} else {
-							compNode = createSimpleNode(aura + " " + getString("node.aura") +
-														" * " + getLevelAtDays + " * " +
-														getString("node.level"), "aura");
-						}
-
-					} else {
-						compNode = createSimpleNode(key + ": " + val, "aura");
-					}
-				} else if(key.equalsIgnoreCase("permanente Aura")){
-					int blankPos = val.indexOf(" ");
-
-					if((blankPos > 0) && (blankPos < val.length())) {
-						String aura = val.substring(0, blankPos);
-						String getLevelAtDays = val.substring(blankPos + 1, val.length());
-
-						if(getLevelAtDays.equals("0")) {
-							compNode = createSimpleNode(aura + " " + getString("node.permanenteaura"), "permanentaura");
-						} else if(getLevelAtDays.equals("1")) {
-							compNode = createSimpleNode(aura + " " + getString("node.permanenteaura") +
-														" * " + getString("node.level"), "permanentaura");
-						} else {
-							compNode = createSimpleNode(aura + " " + getString("node.permanenteaura") +
-														" * " + getLevelAtDays + " * " +
-														getString("node.level"), "permanentaura");
-						}
-
-					} else {
-						compNode = createSimpleNode(key + ": " + val, "permanentaura");
-					}
-					
-				} else {
-					int blankPos = val.indexOf(" ");
-
-					if((blankPos > 0) && (blankPos < val.length())) {
-						String usage = val.substring(0, blankPos);
-						String getLevelAtDays = val.substring(blankPos + 1, val.length());
-						if(getLevelAtDays.equals("0")) {
-							compNode = createSimpleNode(usage + " " + Translations.getOrderTranslation(key), "items/" + key);
-						} else if(getLevelAtDays.equals("1")) {
-							compNode = createSimpleNode(usage + " " + Translations.getOrderTranslation(key) +
-														" * " + getString("node.level"), "items/" + key);
-						} else {
-							compNode = createSimpleNode(usage + " " + getString("node.permanenteaura") +
-														" * " + getLevelAtDays + " * " +
-														getString("node.level"), "items/" + key);
-						}
-					} else {
-						compNode = createSimpleNode(key + ": " + val, "items/" + key);
-					}
-				}
-				componentsNode.add(compNode);
+		
+		if (s.getLevel()<0 && s.getRank()<0){
+			// no information available
+			DefaultMutableTreeNode noInfo=createSimpleNode(getString("spell.noinfo"), "spell_noinfo");
+			parent.add(noInfo);
+		} else {
+			// more information to tell about
+			parent.add(createSimpleNode(getString("node.type") + ": " + s.getTypeName(),"spell_type"));
+			parent.add(createSimpleNode(getString("node.level") + ": " + s.getLevel(),"spell_level"));
+			parent.add(createSimpleNode(getString("node.rank") + ": " + s.getRank(),"spell_rank"));
+	
+			if(s.getOnShip()) {
+				// parent.add(new DefaultMutableTreeNode(getString("node.spell.ship")));
+				parent.add(createSimpleNode(getString("node.spell.ship"),"spell_ship"));
 			}
+	
+			if(s.getIsFar()) {
+				// parent.add(new DefaultMutableTreeNode(getString("node.spell.far")));
+				parent.add(createSimpleNode(getString("node.spell.far"),"spell_far"));
+			}
+	
+			if((s.getComponents() != null) && (s.getComponents().size() > 0)) {
+				DefaultMutableTreeNode componentsNode = new DefaultMutableTreeNode(getString("node.components"));
+				parent.add(componentsNode);
+				expandableNodes.add(new NodeWrapper(componentsNode,
+													"EMapDetailsPanel.SpellComponentsExpanded"));
+	
+				for(Iterator iter = s.getComponents().keySet().iterator(); iter.hasNext();) {
+					String key = (String) iter.next();
+					String val = (String) s.getComponents().get(key);
+					DefaultMutableTreeNode compNode;
+	
+					if(key.equalsIgnoreCase("Aura")) {
+						int blankPos = val.indexOf(" ");
+	
+						if((blankPos > 0) && (blankPos < val.length())) {
+							String aura = val.substring(0, blankPos);
+							String getLevelAtDays = val.substring(blankPos + 1, val.length());
+	
+							if(getLevelAtDays.equals("0")) {
+								compNode = createSimpleNode(aura + " " + getString("node.aura"), "aura");
+							} else if(getLevelAtDays.equals("1")) {
+								compNode = createSimpleNode(aura + " " + getString("node.aura") +
+															" * " + getString("node.level"), "aura");
+							} else {
+								compNode = createSimpleNode(aura + " " + getString("node.aura") +
+															" * " + getLevelAtDays + " * " +
+															getString("node.level"), "aura");
+							}
+	
+						} else {
+							compNode = createSimpleNode(key + ": " + val, "aura");
+						}
+					} else if(key.equalsIgnoreCase("permanente Aura")){
+						int blankPos = val.indexOf(" ");
+	
+						if((blankPos > 0) && (blankPos < val.length())) {
+							String aura = val.substring(0, blankPos);
+							String getLevelAtDays = val.substring(blankPos + 1, val.length());
+	
+							if(getLevelAtDays.equals("0")) {
+								compNode = createSimpleNode(aura + " " + getString("node.permanenteaura"), "permanentaura");
+							} else if(getLevelAtDays.equals("1")) {
+								compNode = createSimpleNode(aura + " " + getString("node.permanenteaura") +
+															" * " + getString("node.level"), "permanentaura");
+							} else {
+								compNode = createSimpleNode(aura + " " + getString("node.permanenteaura") +
+															" * " + getLevelAtDays + " * " +
+															getString("node.level"), "permanentaura");
+							}
+	
+						} else {
+							compNode = createSimpleNode(key + ": " + val, "permanentaura");
+						}
+						
+					} else {
+						int blankPos = val.indexOf(" ");
+	
+						if((blankPos > 0) && (blankPos < val.length())) {
+							String usage = val.substring(0, blankPos);
+							String getLevelAtDays = val.substring(blankPos + 1, val.length());
+							if(getLevelAtDays.equals("0")) {
+								compNode = createSimpleNode(usage + " " + Translations.getOrderTranslation(key), "items/" + key);
+							} else if(getLevelAtDays.equals("1")) {
+								compNode = createSimpleNode(usage + " " + Translations.getOrderTranslation(key) +
+															" * " + getString("node.level"), "items/" + key);
+							} else {
+								compNode = createSimpleNode(usage + " " + getString("node.permanenteaura") +
+															" * " + getLevelAtDays + " * " +
+															getString("node.level"), "items/" + key);
+							}
+						} else {
+							compNode = createSimpleNode(key + ": " + val, "items/" + key);
+						}
+					}
+					componentsNode.add(compNode);
+				}
+			}
+	
+			// spellsyntax
+			if(s.getSyntaxString()!=null) {
+				parent.add(createSimpleNode(s.getSyntaxString(),"spell_syntax"));
+			}
+		
 		}
-
+		// Backbutton
 		parent.add(new DefaultMutableTreeNode(new BackButton(backTarget)));
 	}
 
@@ -4609,6 +4625,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("menu.caption", "Details");
 			defaultTranslations.put("menu.mnemonic", "D");
 			defaultTranslations.put("menu.supertitle", "Tree");
+			
+			defaultTranslations.put("spell.noinfo", "no information available (no data in CR)");
 		}
 
 		return defaultTranslations;
