@@ -6,6 +6,8 @@
 	* added region resource info in appendunit for Ironmaker and Stonemaker
 	* changed hasSkill in OrderReader to use modifiedSkills
 	* added comments.ability to unit (analog like unitContainer)
+	* added CommentNodeWrapper for having little Icons with the comments
+	* added damage info to appendShipInfo for ships beeing built.
 
 
 2007-03-06  Fiete  <Fiete@users.sourceforge.net>
