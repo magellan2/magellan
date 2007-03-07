@@ -1,3 +1,13 @@
+2007-03-07  Fiete  <Fiete@users.sourceforge.net>
+
+	* fixed sorting bug in trade organizer
+	* added buildingmaxSize and minSkillLevel to appendBuildingInfo
+	* added buildingmaxSize and minSkillLevel to appendShipInfo
+	* added region resource info in appendunit for Ironmaker and Stonemaker
+	* changed hasSkill in OrderReader to use modifiedSkills
+	* added comments.ability to unit (analog like unitContainer)
+
+
 2007-03-06  Fiete  <Fiete@users.sourceforge.net>
 
 	* added some information about spell syntax

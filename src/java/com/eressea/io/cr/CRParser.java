@@ -2135,6 +2135,8 @@ public class CRParser implements RulesIO, GameDataIO {
 				parseItems(unit);
 			} else if(sc.isBlock && sc.argv[0].equals("EINHEITSBOTSCHAFTEN")) {
 				unit.unitMessages = parseMessageSequence(unit.unitMessages);
+			} else if((sc.argc == 1) && sc.argv[0].equals("COMMENTS")) {
+				unit.comments = parseStringSequence(unit.comments);
 			} else if((sc.argc == 1) && sc.argv[0].equals("EFFECTS")) {
 				unit.effects = parseStringSequence(unit.effects);
 			} else if((sc.argc == 1) && sc.argv[0].startsWith("KAMPFZAUBER ")) {
@@ -2662,7 +2664,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("letzteSchoesslinge")) {
 				region.oldSprouts = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
-			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Steine")) {
+			} else if((sc.argc == 2) && (sc.argv[1].equalsIgnoreCase("Steine")|| sc.argv[1].equalsIgnoreCase("Stein"))) {
 				region.stones = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("letztesteine")) {

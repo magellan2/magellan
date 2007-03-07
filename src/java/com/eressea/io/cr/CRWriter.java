@@ -1492,7 +1492,11 @@ public class CRWriter extends BufferedWriter {
 		if(includeMessages) {
 			writeStringBlock("EFFECTS", unit.effects);
 			writeMessageBlock("EINHEITSBOTSCHAFTEN", unit.unitMessages);
+			if(!serverConformance) {
+				writeStringBlock("COMMENTS", unit.comments);
+			}
 		}
+		
 
 		//
 		//writeOrders(unit.orders);
