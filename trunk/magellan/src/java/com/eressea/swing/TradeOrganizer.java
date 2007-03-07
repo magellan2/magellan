@@ -1173,8 +1173,8 @@ public class TradeOrganizer extends InternationalizedDataDialog implements Selec
 		public int compare(Object o1, Object o2) {
 			Region r1 = (Region) o1;
 			Region r2 = (Region) o2;
-			LuxuryPrice p1 = (LuxuryPrice) r1.prices.get(getOriginalLuxuryTranslation((String)luxuries.getSelectedItem()));
-			LuxuryPrice p2 = (LuxuryPrice) r2.prices.get(getOriginalLuxuryTranslation((String)luxuries.getSelectedItem()));
+			LuxuryPrice p1 = (LuxuryPrice) r1.prices.get(StringID.create(getOriginalLuxuryTranslation((String)luxuries.getSelectedItem())));
+			LuxuryPrice p2 = (LuxuryPrice) r2.prices.get(StringID.create(getOriginalLuxuryTranslation((String)luxuries.getSelectedItem())));
 
 			if((p1 == null) || (p2 == null)) {
 				return 0;

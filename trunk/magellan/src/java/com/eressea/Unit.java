@@ -92,6 +92,11 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	
 	/** an object encapsulation  the orders of this unit as <tt>String</tt> objects */
 	protected Orders ordersObject = new Orders();
+	
+	/** Comments modifiable by the user. The comments are represented as String objects. */
+	/** analog to comments in unitcontainer**/
+	public List comments = null;
+	
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -2752,6 +2757,18 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 			}
 		}
 
+		
+		if((curUnit.comments != null) && (curUnit.comments.size() > 0)) {
+			if(newUnit.comments == null) {
+				newUnit.comments = CollectionFactory.createLinkedList();
+			} else {
+				newUnit.comments.clear();
+			}
+
+			newUnit.comments.addAll(curUnit.comments);
+		}
+		
+		
 		// merge tags
 		if(curUnit.hasTags()) {
 			for(Iterator iter = curUnit.getTagMap().keySet().iterator(); iter.hasNext();) {

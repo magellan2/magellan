@@ -66,6 +66,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -111,8 +112,11 @@ import com.eressea.event.UnitOrdersListener;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.TeachRelation;
 import com.eressea.relation.UnitRelation;
+import com.eressea.rules.BuildingType;
+import com.eressea.rules.CastleType;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
+import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
 import com.eressea.rules.UnitContainerType;
@@ -225,6 +229,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	protected StealthContextFactory stealthContext;
 	protected CombatStateContextFactory combatContext;
 	protected CommentContextFactory commentContext;
+	protected UnitCommentContextFactory unitCommentContext;
 	protected DetailsUnitContextFactory unitContext;
 	protected UndoManager undoMgr;
 	protected BasicRegionPanel regionPanel;
@@ -477,14 +482,36 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 					}
 				}
 			});
+		tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
+			public void editingCanceled(ChangeEvent e) {
+			}
+
+			public void editingStopped(ChangeEvent e) {
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+
+				if((selectedNode != null) && selectedNode instanceof UnitCommentNode) {
+					UnitCommentNode cn = (UnitCommentNode) selectedNode;
+					DefaultMutableTreeNode parent = (DefaultMutableTreeNode) cn.getParent();
+					Unit u = cn.getUnit();
+
+					if((u != null) && (u.comments != null)) {
+						u.comments.set(parent.getIndex(cn),
+										tree.getCellEditor().getCellEditorValue());
+					}
+				}
+			}
+		});
 
 		contextManager = new ContextManager(tree,dispatcher);
 		stealthContext = new StealthContextFactory();
 		combatContext = new CombatStateContextFactory();
 		commentContext = new CommentContextFactory();
+		unitCommentContext = new UnitCommentContextFactory();
 		unitContext = new DetailsUnitContextFactory();
 		contextManager.putSimpleObject(CommentListNode.class, commentContext);
 		contextManager.putSimpleObject(CommentNode.class, commentContext);
+		contextManager.putSimpleObject(UnitCommentNode.class, unitCommentContext);
+		contextManager.putSimpleObject(UnitCommentListNode.class, unitCommentContext);
 		contextManager.putSimpleObject(UnitNodeWrapper.class, unitContext);
 		contextManager.putSimpleObject(UnitListNodeWrapper.class, unitContext);
 		contextManager.putSimpleObject(DefaultMutableTreeNode.class, unitContext);
@@ -2109,6 +2136,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		boolean isTrader = false;
 		SkillCategory tradeCat = data.rules.getSkillCategory(StringID.create("trade"));
 		SkillType tradeSkill = null;
+		
+		boolean isIronmaker = false;
+		boolean isStonemaker = false;
 
 		if(tradeCat == null) {
 			tradeSkill = data.rules.getSkillType(StringID.create("Handeln"));
@@ -2153,7 +2183,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						isTrader = true;
 					}
 				}
-
+				String skillTypeName = "";
+				if (os!=null){
+					skillTypeName = os.getSkillType().getName(); 
+				}
+				// ms or os ? FF
+				if (!isIronmaker && os!=null && skillTypeName.equalsIgnoreCase("Bergbau")){ // check for Ironmaker
+					isIronmaker = true;
+				}
+				
+				if (!isStonemaker && os!=null && skillTypeName.equalsIgnoreCase("Steinbau")){ // check for Stonemaker
+					isStonemaker = true;
+				}
+				
 				skillsNode.add(new DefaultMutableTreeNode(nodeWrapperFactory.createSkillNodeWrapper(u,
 																									os,
 																									ms)));
@@ -2365,7 +2407,57 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if(isTrader) {
 			appendRegionLuxuriesInfo(u.getRegion(), parent, expandableNodes);
 		}
-
+		DefaultMutableTreeNode n = null;
+		if (isIronmaker){
+			if(!u.getRegion().resources().isEmpty()) {
+				
+				// resources of region
+				for(Iterator iter = u.getRegion().resources().iterator(); iter.hasNext();) {
+					RegionResource res = (RegionResource) iter.next();
+					ItemType resItemType = res.getType();
+					if (resItemType!=null ) {
+						Skill resMakeSkill = resItemType.getMakeSkill();
+						if (resMakeSkill!=null && resMakeSkill.getName().equalsIgnoreCase("Bergbau")){
+							if (n==null){
+								n=new DefaultMutableTreeNode(getString("node.resources_region"));
+								expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.UnitRegionResourceExpanded"));
+							}
+							int oldValue = findOldValueByResourceType(u.getRegion(), res);
+							appendResource(res, n, oldValue);
+						}
+					}
+				}
+			}
+		}
+		
+		// Stonemaker
+		if (isStonemaker){
+			if(!u.getRegion().resources().isEmpty()) {
+				
+				// resources of region
+				for(Iterator iter = u.getRegion().resources().iterator(); iter.hasNext();) {
+					RegionResource res = (RegionResource) iter.next();
+					ItemType resItemType = res.getType();
+					if (resItemType!=null) {
+						Skill resMakeSkill = resItemType.getMakeSkill();
+						if (resMakeSkill!=null && resMakeSkill.getName().equalsIgnoreCase("Steinbau")){
+							if (n==null){
+								n=new DefaultMutableTreeNode(getString("node.resources_region"));
+								expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.UnitRegionResourceExpanded"));
+							}
+							int oldValue = findOldValueByResourceType(u.getRegion(), res);
+							appendResource(res, n, oldValue);
+						}
+					}
+				}
+			}
+		}
+		if (n!=null){
+			parent.add(n);
+		}
+		
+		appendComments(u, parent, expandableNodes);
+		
 		appendTags(u, parent, expandableNodes);
 	}
 
@@ -2549,10 +2641,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 	private void appendBuildingInfo(Building b, DefaultMutableTreeNode parent,
 									Collection expandableNodes) {
-		int inmates = 0; // the number of persons currently on the ship
-		int modInmates = 0; // the number of persons on the ship in the next turn
-		List units = null; // the list of units currently on the ship
-		Collection modUnits = null; // the collection of units on the ship in the next turn
+		int inmates = 0; // the number of persons currently in the buildung
+		int modInmates = 0; // the number of persons in the building in the next turn
+		List units = null; // the list of units currently in the building
+		Collection modUnits = null; // the collection of units in the building in the next turn
 
 		/* make sure that all unit relations have been established
 		 (necessary for enter-/leave relations) */
@@ -2709,20 +2801,48 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			n = new DefaultMutableTreeNode(getString("node.buildingcost"));
 			parent.add(n);
 			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.BuildingCostExpanded"));
+		} else {
+			n=null;
 		}
 
 		while(iter.hasNext()) {
 			Item i = (Item) iter.next();
 			String text = i.getName();
-			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(i.getAmount() +
-																					  " " + text,
-																					  "items/" +
-																					  i.getItemType()
-																					   .getID()
-																					   .toString()));
+			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(
+					i.getAmount() +
+					  " " + text,
+					  "items/" +
+					  i.getItemType()
+					   .getID()
+					   .toString()));
 			n.add(m);
 		}
-
+		
+		if (n!=null){
+			//		 minddestTalent
+			BuildingType buildungType = b.getBuildingType();
+			if (buildungType!=null && buildungType.getMinSkillLevel()>-1){
+				m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(
+						getString("node.buildingminskilllevel") + ": " + buildungType.getMinSkillLevel(),"skills"));
+				n.add(m);
+			}
+			
+			// maxGrösse (bzw bei Burgen Min-Max)
+			// Bei Zitadelle: keine max oder min grössenangabe..(kein maxSize verfügbar)
+			if (buildungType!=null && buildungType.getMaxSize()>-1){
+				if (buildungType instanceof CastleType){
+					CastleType castleType = (CastleType) buildungType;
+					m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(
+							getString("node.buildingcastlesizelimits") + ": " +
+							      castleType.getMinSize() + " - " + castleType.getMaxSize(),"build_size"));
+				} else {
+					m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(
+							"MAX: " + buildungType.getMaxSize(),"build_size"));
+				}
+				n.add(m);
+			}
+		}
+		
 		// Kommentare
 		appendComments(b, parent, expandableNodes);
 		appendTags(b, parent, expandableNodes);
@@ -2999,7 +3119,23 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 		}
 		
-
+		// Baukosten info
+		ShipType shipType = s.getShipType();
+		if (shipType!=null && shipType.getMaxSize()>-1){
+			n = new DefaultMutableTreeNode(getString("node.buildingcost"));
+			parent.add(n);
+			expandableNodes.add(new NodeWrapper(n, "EMapDetailsPanel.ShipCostExpanded"));
+			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(
+					shipType.getMaxSize() + data.getTranslation("Holz"),"items/holz"));
+			n.add(m);
+			
+			m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(
+					getString("node.buildingminskilllevel") + ": " + shipType.getBuildLevel(),"skills"));
+			n.add(m);
+		} 
+		
+		
+		
 		// Kommentare
 		appendComments(s, parent, expandableNodes);
 	}
@@ -3386,6 +3522,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			} else if(displayedObject instanceof Unit) {
 				showUnit((Unit) displayedObject);
 				lastRegion = ((Unit) displayedObject).getRegion();
+				contextManager.setFailFallback(displayedObject, unitCommentContext);
 			} else if(displayedObject instanceof Region) {
 				showRegion((Region) displayedObject);
 				lastRegion = (Region) displayedObject;
@@ -3555,6 +3692,25 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			}
 		}
 	}
+	
+	private void appendComments(Unit u, DefaultMutableTreeNode parent,
+			Collection expandableNodes) {
+		if((u.comments != null) && (u.comments.size() > 0)) {
+			UnitCommentListNode unitCommentNode = new UnitCommentListNode(u, getString("node.comments"));
+			parent.add(unitCommentNode);
+			expandableNodes.add(new NodeWrapper(unitCommentNode, "EMapDetailsPanel.UnitCommentsExpanded"));
+			
+			int i = 0;
+			
+			for(Iterator iter = u.comments.iterator(); iter.hasNext() && (i < u.comments.size());
+			i++) {
+				unitCommentNode.add(new UnitCommentNode(u, (String) iter.next()));
+			}
+		}
+	}
+	
+	
+	
 
 	// create a popup menu
 
@@ -4269,6 +4425,45 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 	}
 
+	
+	//	 make unit comment nodes recognizable through this class
+	private class UnitCommentNode extends DefaultMutableTreeNode {
+		private Unit u = null;
+
+		/**
+		 * Creates a new CommentNode object.
+		 *
+		 * @param uc TODO: DOCUMENT ME!
+		 * @param comment TODO: DOCUMENT ME!
+		 */
+		public UnitCommentNode(Unit u, String comment) {
+			super(comment);
+			this.u = u;
+		}
+
+		/**
+		 * TODO: DOCUMENT ME!
+		 *
+		 * @return TODO: DOCUMENT ME!
+		 */
+		public Unit getUnit() {
+			return u;
+		}
+	}
+	
+	private class UnitCommentListNode extends UnitCommentNode {
+		/**
+		 * Creates a new CommentListNode object.
+		 *
+		 * @param uc TODO: DOCUMENT ME!
+		 * @param title TODO: DOCUMENT ME!
+		 */
+		public UnitCommentListNode(Unit u, String title) {
+			super(u, title);
+		}
+	}
+	
+	
 	private class CommentContextFactory implements ContextFactory {
 		/**
 		 * TODO: DOCUMENT ME!
@@ -4438,6 +4633,178 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 	}
 
+	private class UnitCommentContextFactory implements ContextFactory {
+		/**
+		 * TODO: DOCUMENT ME!
+		 *
+		 * @param data TODO: DOCUMENT ME!
+		 * @param argument TODO: DOCUMENT ME!
+		 * @param selectedObjects TODO: DOCUMENT ME!
+		 * @param node TODO: DOCUMENT ME!
+		 *
+		 * @return TODO: DOCUMENT ME!
+		 */
+		public JPopupMenu createContextMenu(EventDispatcher dispatcher, 
+		        GameData data, Object argument,
+		        Collection selectedObjects,
+		        DefaultMutableTreeNode node) {
+			if(argument instanceof Unit) {
+				return new UnitCommentContextMenu((Unit) argument, node, false);
+			} else if(argument instanceof UnitCommentListNode) {
+				return new UnitCommentContextMenu(((UnitCommentListNode) argument).getUnit(),
+											  node, true);
+			} else if(argument instanceof UnitCommentNode) {
+				return new UnitCommentContextMenu(((UnitCommentNode) argument).getUnit(), node,
+											  false);
+			}
+
+			return null;
+		}
+
+		private class UnitCommentContextMenu extends JPopupMenu implements ActionListener {
+			private Unit u = null;
+			private UnitCommentNode node = null;
+			private JMenuItem addComment;
+			private JMenuItem removeComment;
+			private JMenuItem modifyComment;
+			private JMenuItem removeAllComments;
+
+			/**
+			 * Creates a new CommentContextMenu object.
+			 *
+			 * @param container TODO: DOCUMENT ME!
+			 * @param node TODO: DOCUMENT ME!
+			 * @param removeAll TODO: DOCUMENT ME!
+			 */
+			public UnitCommentContextMenu(Unit u, DefaultMutableTreeNode node,
+									  boolean removeAll) {
+				
+				
+				this.u = u;
+				
+				if(node instanceof UnitCommentNode) {
+					this.node = (UnitCommentNode) node;
+				}
+
+				addComment = new JMenuItem(getString("menu.createcomment"));
+				addComment.addActionListener(this);
+				this.add(addComment);
+
+				if(this.node != null) {
+					if(!(node instanceof UnitCommentListNode)) {
+						modifyComment = new JMenuItem(getString("menu.changecomment"));
+						modifyComment.addActionListener(this);
+						removeComment = new JMenuItem(getString("menu.removecomment"));
+						removeComment.addActionListener(this);
+
+						this.add(modifyComment);
+						this.add(removeComment);
+					}
+				}
+
+				if(removeAll) {
+					removeAllComments = new JMenuItem(getString("menu.removecomment.all"));
+					removeAllComments.addActionListener(this);
+					this.add(removeAllComments);
+				}
+			}
+
+			private void addComment() {
+				DefaultMutableTreeNode parent = null;
+
+				for(Enumeration en = rootNode.children(); en.hasMoreElements();) {
+					DefaultMutableTreeNode n = (DefaultMutableTreeNode) en.nextElement();
+					Object obj = n.getUserObject();
+
+					if((obj != null) && obj instanceof String &&
+						   obj.equals(getString("node.comments"))) {
+						parent = n;
+
+						break;
+					}
+				}
+
+				if(parent == null) {
+					parent = new UnitCommentListNode(u, getString("node.comments"));
+					rootNode.add(parent);
+				}
+
+				if(u.comments == null) {
+					u.comments = CollectionFactory.createLinkedList();
+				}
+
+				if(u.comments.size() != parent.getChildCount()) {
+					log.info("EMapDetailsPanel.DetailsContextMenu.getCreateCommentMenuItem(): number of comments and nodes differs!");
+
+					return;
+				}
+
+				String newComment = u.toString();
+				u.comments.add(newComment);
+
+				DefaultMutableTreeNode newNode = new UnitCommentNode(u, newComment);
+				parent.add(newNode);
+				treeModel.reload();
+				restoreExpansionState();
+				tree.startEditingAtPath(new TreePath(newNode.getPath()));
+				storeExpansionState();
+			}
+
+			private void modifyComment() {
+				if((node.getUnit() != null) && (node.getUnit().comments != null)) {
+					tree.startEditingAtPath(new TreePath(node.getPath()));
+				}
+			}
+
+			private void removeComment() {
+				DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+
+				if(u.comments != null) {
+					if(u.comments.size() == parent.getChildCount()) {
+						u.comments.remove(parent.getIndex(node));
+					} else {
+						log.info("EMapDetailsPanel.DetailsUnitContextMenu.getDeleteCommentMenuItem(): number of comments and nodes differs!");
+						return;
+					}
+				}
+
+				treeModel.removeNodeFromParent(node);
+
+				if(parent.getChildCount() == 0) {
+					treeModel.removeNodeFromParent(parent);
+				}
+
+				treeModel.reload();
+				restoreExpansionState();
+			}
+
+			private void removeAllComments() {
+				u.comments.clear();
+				u.comments = null;
+				EMapDetailsPanel.this.show(u, false);
+			}
+
+			/**
+			 * Invoked when an action occurs.
+			 *
+			 * @param e TODO: DOCUMENT ME!
+			 */
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == addComment) {
+					addComment();
+				} else if(e.getSource() == removeComment) {
+					removeComment();
+				} else if(e.getSource() == modifyComment) {
+					modifyComment();
+				} else if(e.getSource() == removeAllComments) {
+					removeAllComments();
+				}
+			}
+		}
+	}
+	
+	
+	
 	/**
 	 * We need a special factory for the normal UnitContextMenu since we have to take care of unit
 	 * lists.
@@ -4484,6 +4851,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 						return new UnitCapacityContextMenu(dispatcher, data, settings);
 					}
 				}
+			} else {
+				
 			}
 
 			return null;
@@ -4627,6 +4996,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("menu.supertitle", "Tree");
 			
 			defaultTranslations.put("spell.noinfo", "no information available (no data in CR)");
+			defaultTranslations.put("node.buildingminskilllevel", "needed skill level");
+			defaultTranslations.put("node.buildingcastlesizelimits", "size-range of this castletype");
+			defaultTranslations.put("node.resources_region", "Resources (Region)");
+			
 		}
 
 		return defaultTranslations;

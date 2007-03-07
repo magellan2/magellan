@@ -1982,6 +1982,8 @@ public class EresseaOrderCompleter implements Completer {
 	/**
 	 * Determines whether the specified unit has a skill at a minimum level. Returns also true, if
 	 * the specified skill is unknown.
+	 * 
+	 * FF: changed to reflect modified skill
 	 *
 	 * @param u TODO: DOCUMENT ME!
 	 * @param id TODO: DOCUMENT ME!
@@ -1994,7 +1996,8 @@ public class EresseaOrderCompleter implements Completer {
 		SkillType skillType = data.rules.getSkillType(id);
 
 		if(skillType != null) {
-			Skill e = u.getSkill(skillType);
+			// Skill e = u.getSkill(skillType);
+			Skill e = u.getModifiedSkill(skillType);
 
 			if((e != null) && (e.getLevel() >= level)) {
 				retVal = true;
