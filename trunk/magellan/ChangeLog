@@ -1,5 +1,9 @@
 2007-03-07  Fiete  <Fiete@users.sourceforge.net>
 
+	* finally did the InfoDlg-Update and looking good
+
+2007-03-07  Fiete  <Fiete@users.sourceforge.net>
+
 	* fixed sorting bug in trade organizer
 	* added buildingmaxSize and minSkillLevel to appendBuildingInfo
 	* added buildingmaxSize and minSkillLevel to appendShipInfo
