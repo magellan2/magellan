@@ -13,14 +13,15 @@
 
 package com.eressea.swing;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,29 +56,22 @@ public class InfoDlg extends InternationalizedDialog {
 		// center
 		this.setLocation((getToolkit().getScreenSize().width - this.getWidth()) / 2,
 						 (getToolkit().getScreenSize().height - this.getHeight()) / 2);
+		
 	}
 
 	private void initComponents() {
-		jPanel = new JPanel(new BorderLayout());
-        JPanel jPanelNORTH = new JPanel(new BorderLayout());
-        JPanel jPanelSOUTH = new JPanel(new FlowLayout());
+		jPanel = new JPanel();
+		jPanel.setLayout(new BoxLayout(jPanel,BoxLayout.Y_AXIS));
         
-		btn_OK = new JButton();
+		
+		
 		magellanImage = new JLabel();
 		jTextArea1 = new JTextArea();
 
 		setModal(true);
 		setTitle(getString("window.title"));
 
-		btn_OK.setText(getString("btn.close.caption"));
-		btn_OK.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					quit();
-				}
-			});
-        
-        jPanelSOUTH.add(btn_OK);
-        jPanel.add(jPanelSOUTH,BorderLayout.SOUTH);
+		
         
         URL url = ResourcePathClassLoader.getResourceStatically("images/about/magellan.gif");
         Icon icon = null;
@@ -87,41 +81,44 @@ public class InfoDlg extends InternationalizedDialog {
             icon = new ImageIcon(image);
             magellanImage.setIcon(icon);
         }
-		// magellanImage.setPreferredSize(new java.awt.Dimension(400, 200));
-		// magellanImage.setMinimumSize(new java.awt.Dimension(400, 200));
 		magellanImage.setText("");
-		//magellanImage.setBackground(new Color(213, 169, 131));
-		// magellanImage.setMaximumSize(new java.awt.Dimension(400, 200));
-        
-        // jPanel.add(jPanelNORTH,BorderLayout.NORTH);
-        // jPanelNORTH.add(magellanImage, BorderLayout.WEST);
-        jPanelNORTH.add(magellanImage, BorderLayout.NORTH);
-        //jPanel.add(jPanelNORTH,BorderLayout.NORTH);
-
-		// String text = getString("infotext");
-        String text = getString("infotext") + "Magellan " + VersionInfo.getVersion();
+		magellanImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jPanel.add(magellanImage);
+        String text = getString("infotext") + getVersionString();
 
 
 		jTextArea1.setWrapStyleWord(true);
-
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setEditable(false);
 		jTextArea1.setText(text);
+		JScrollPane scrollPane = new JScrollPane(jTextArea1);
+		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+		scrollPane.setPreferredSize(new Dimension(400,400));
+		jPanel.add(scrollPane);
 
-		jPanelNORTH.add(new JScrollPane(jTextArea1), BorderLayout.CENTER);
-		jPanel.add(jPanelNORTH,BorderLayout.NORTH);
-		
-		jPanel.setPreferredSize(new java.awt.Dimension(400,600));
-		
+		// OK Button
+		btn_OK = new JButton(getString("btn.close.caption"));
+		btn_OK.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					quit();
+				}
+			});
+		btn_OK.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jPanel.add(btn_OK);
+
 		getContentPane().add(jPanel);
         
-
-        pack();
+		pack();
+        
 	}
 
-    private String getString() {
-        return "Magellan\n"+
-        getString("infotext.version") +" "+ VersionInfo.getVersion()+"\n";
+    private String getVersionString() {
+    	String versionInfo = VersionInfo.getVersion();
+    	if (versionInfo==null){
+    		versionInfo = "not available";
+    	}
+        return "Magellan " +
+        getString("infotext.version") +": "+ versionInfo +"\n";
     }
     
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
@@ -146,7 +143,7 @@ public class InfoDlg extends InternationalizedDialog {
 
 			defaultTranslations.put("infotext",
 									"You can find the official Magellan homepage "+
-                                    "at http://eressea.upb.de/magellan/. "+
+                                    "at http://magellan-client.sourceforge.net ."+
                                     "Check out that site if you need a new version, "+
                                     "support, or if you want to contribute to Magellan.\n\n"+
                                     "Credits:\nRoger Butenuth, Enno Rehling, Stefan G\u00f6tz,"+
@@ -157,7 +154,7 @@ public class InfoDlg extends InternationalizedDialog {
                                     "(drop us a note if somebody is missing here).\n\n"+
                                     "Last but not least we want to mention Ferdinand Magellan, "+
                                     "daring explorer and first circumnavigator of the globe of "+
-                                    "a time long ago (http://www.mariner.org/age/magellan.html)\n\n"+
+                                    "a time long ago \n(http://www.mariner.org/educationalad/ageofex/magellan.php)\n\n"+
                                     "This product includes software developed by the Apache Software "+
                                     "Foundation (http://www.apache.org/).\n\n");
 		}
