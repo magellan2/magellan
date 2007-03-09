@@ -67,11 +67,6 @@ public class StringID implements ID {
 		if(o == null) {
 			throw new NullPointerException();
 		}
-
-		// böse, aber wo sonst
-		if (o.equalsIgnoreCase("steine")){
-			o = "stein";
-		}
 		
 		StringID id = (StringID) idMap.get(o);
 
