@@ -754,6 +754,12 @@ ITEM "Stein"
 "Steinbau";makeskill
 "resources";category
 
+ITEM "Steine"
+"Steine";name
+60;weight
+"Steinbau";makeskill
+"resources";category
+
 ITEM "Pferd"
 "Pferd";name
 50;weight
