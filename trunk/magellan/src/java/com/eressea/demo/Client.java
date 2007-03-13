@@ -377,7 +377,9 @@ public class Client extends JFrame implements ShortcutListener,
     		LanguageDialog ld = new LanguageDialog(settings, filesDirectory);
 
     		if (ld.languagesFound()) {
+    			startWindow.toBack();
     			Locale locale = ld.showDialog(startWindow);
+    			startWindow.toFront();
 
     			if ((locale != null) && !locale.equals(Locale.getDefault())) {
     				settings.setProperty("locales.gui", locale.getLanguage());
