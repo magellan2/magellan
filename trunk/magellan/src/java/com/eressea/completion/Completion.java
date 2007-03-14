@@ -26,7 +26,7 @@ public class Completion {
 	/**
 	 * Creates a new Completion object.
 	 *
-	 * @param text TODO: DOCUMENT ME!
+	 * @param text The name that is to be displayed to the user <i>and</i> inserted as value 
 	 */
 	public Completion(String text) {
 		this(text, text, "", 9, 0);
@@ -35,8 +35,8 @@ public class Completion {
 	/**
 	 * Creates a new Completion object.
 	 *
-	 * @param text TODO: DOCUMENT ME!
-	 * @param prio TODO: DOCUMENT ME!
+	 * @param text The name that is to be displayed to the user <i>and</i> inserted as value 
+	 * @param prio The sorting priority, higher priority comes first
 	 */
 	public Completion(String text, int prio) {
 		this(text, text, "", prio, 0);
@@ -45,9 +45,10 @@ public class Completion {
 	/**
 	 * Creates a new Completion object.
 	 *
-	 * @param name TODO: DOCUMENT ME!
-	 * @param value TODO: DOCUMENT ME!
-	 * @param postfix TODO: DOCUMENT ME!
+	 * @param name The name that is to be displayed to the user 
+	 * @param value The value that is inserted if this completion is chosen
+	 * @param postfix This is what should be inserted after the value but should not influence, 
+	 *                for example, sorting
 	 */
 	public Completion(String name, String value, String postfix) {
 		this(name, value, postfix, 9, 0);
@@ -56,8 +57,9 @@ public class Completion {
 	/**
 	 * Creates a new Completion object.
 	 *
-	 * @param text TODO: DOCUMENT ME!
-	 * @param postfix TODO: DOCUMENT ME!
+	 * @param text The name that is to be displayed to the user <i>and</i> inserted as value 
+	 * @param postfix This is what should be inserted after the value but should not influence, 
+	 *                for example, sorting
 	 */
 	public Completion(String text, String postfix) {
 		this(text, text, postfix, 9, 0);
@@ -66,9 +68,10 @@ public class Completion {
 	/**
 	 * Creates a new Completion object.
 	 *
-	 * @param text TODO: DOCUMENT ME!
-	 * @param postfix TODO: DOCUMENT ME!
-	 * @param prio TODO: DOCUMENT ME!
+	 * @param text The name that is to be displayed to the user <i>and</i> inserted as value 
+	 * @param postfix This is what should be inserted after the value but should not influence, 
+	 *                for example, sorting
+	 * @param prio The sorting priority
 	 */
 	public Completion(String text, String postfix, int prio) {
 		this(text, text, postfix, prio, 0);
@@ -77,10 +80,11 @@ public class Completion {
 	/**
 	 * Creates a new Completion object.
 	 *
-	 * @param name TODO: DOCUMENT ME!
-	 * @param value TODO: DOCUMENT ME!
-	 * @param postfix TODO: DOCUMENT ME!
-	 * @param prio TODO: DOCUMENT ME!
+	 * @param name The name that is to be displayed to the user 
+	 * @param value The value that is inserted if this completion is chosen
+	 * @param postfix This is what should be inserted after the value but should not influence, 
+	 *                for example, sorting
+	 * @param prio The sorting priority, higher priority comes first
 	 */
 	public Completion(String name, String value, String postfix, int prio) {
 		this(name, value, postfix, prio, 0);
@@ -88,12 +92,13 @@ public class Completion {
 
 	/**
 	 * Creates a new Completion object.
-	 *
-	 * @param name TODO: DOCUMENT ME!
-	 * @param value TODO: DOCUMENT ME!
-	 * @param postfix TODO: DOCUMENT ME!
-	 * @param prio TODO: DOCUMENT ME!
-	 * @param cursorOffset TODO: DOCUMENT ME!
+	 * 
+	 * @param name The name that is to be displayed to the user 
+	 * @param value The value that is inserted if this completion is chosen
+	 * @param postfix This is what should be inserted after the value but should not influence, 
+	 *                for example, sorting
+	 * @param prio The sorting priority, higher priority comes first
+	 * @param cursorOffset Indicates that the cursor is set back this amount of characters
 	 */
 	public Completion(String name, String value, String postfix, int prio, int cursorOffset) {
 		this.name = name;

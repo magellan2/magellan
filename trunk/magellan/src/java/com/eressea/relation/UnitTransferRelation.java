@@ -14,32 +14,32 @@
 package com.eressea.relation;
 
 import com.eressea.Unit;
+import com.eressea.rules.Race;
 
 /**
- * A relation indicating that the source unit has a ATTACKIEREN order for the target unit.
+ * A relation indicating that a unit is transferred as a whole to another unit.
  */
-public class AttackRelation extends InterUnitRelation {
+public class UnitTransferRelation extends TransferRelation {
+	/** The source unit's race */
+	public final Race race;
 
 	/**
-	 * Creates a new AttackRelation object.
+	 * Creates a new UnitTransferRelation object.
 	 *
 	 * @param s The source unit
 	 * @param t The target unit
+	 * @param r The race of the source unit
 	 * @param line The line in the source's orders
 	 */
-	public AttackRelation(Unit s, Unit t, int line) {
-		super(s, t, line);
+	public UnitTransferRelation(Unit s, Unit t, Race r, int line) {
+		super(s, t, -1, line);
+		this.race = r;
 	}
 
-	/**
-	 * Creates a new AttackRelation object.
-	 *
-	 * @param s The source unit
-	 * @param t The target unit
-	 * @param line The line in the source's orders
-	 * @param w <code>true</code> iff this relation causes a warning
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.TransferRelation#toString()
 	 */
-	public AttackRelation(Unit s, Unit t, int line, boolean w) {
-		super(s, t, line, w);
+	public String toString() {
+		return super.toString() + "@RACE=" + race;
 	}
 }

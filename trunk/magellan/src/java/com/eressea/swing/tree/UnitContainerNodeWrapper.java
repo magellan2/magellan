@@ -21,6 +21,7 @@ import com.eressea.Ship;
 import com.eressea.UnitContainer;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.StringFactory;
+import com.eressea.util.Translations;
 
 /**
  * TODO: DOCUMENT ME!
@@ -31,10 +32,11 @@ import com.eressea.util.StringFactory;
 public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	private UnitContainer uc = null;
 	private boolean showFreeLoad = false;
+	private boolean hasOwner=false;
 
 	public UnitContainerNodeWrapper(UnitContainer uc) {
 // 		this(uc, false);
- 		this(uc, true);
+ 		this(uc, true, false);
 	}
 
 	/**
@@ -43,8 +45,13 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 * @param uc TODO: DOCUMENT ME!
 	 */
 	public UnitContainerNodeWrapper(UnitContainer uc, boolean showFreeLoad) {
+		this(uc, showFreeLoad, false);
+	}
+
+	public UnitContainerNodeWrapper(UnitContainer uc, boolean showFreeLoad, boolean hasOwner) {
 		this.uc = uc;
 		this.showFreeLoad = showFreeLoad;
+		this.hasOwner = hasOwner;
 	}
 
 	/**
@@ -62,19 +69,19 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
+		StringBuffer text= new StringBuffer(uc.toString());
 		if(showFreeLoad && uc instanceof Ship) {
 			int free = ((Ship) uc).getMaxCapacity() - ((Ship) uc).getModifiedLoad();
-			String strFree = String.valueOf(free/100F);
+			text.append(": ");
+			text.append(free);
 			// overloading
-			String overL = "";
 			if (free<0){
-				overL = " (!!!)";
+				text.append(" (!!!)");
 			}
-			return uc.toString() + ": "+ strFree + overL;
- 		} else {
-			return uc.toString();
 		}
-
+		if (hasOwner)
+			text.append(" ("+Translations.getTranslation(this, "owner")+")");
+		return text.toString();
 	}
 
 	private static Map iconNamesLists = CollectionFactory.createHashtable();
@@ -148,5 +155,25 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	public NodeWrapperDrawPolicy init(Properties settings, String prefix,
 									  NodeWrapperDrawPolicy adapter) {
 		return null;
+	}
+	
+//	 pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
+	// it is called by reflection (we could force the implementation of an interface,
+	// this way it is more flexible.)
+	// Pls use this mechanism, so the translation files can be created automagically
+	// by inspecting all classes.
+	private static final Map defaultTranslations = CollectionFactory.createHashtable();
+
+	static {
+		defaultTranslations.put("owner", "owner");
+	}
+
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @return TODO: DOCUMENT ME!
+	 */
+	public static Map getDefaultTranslations() {
+		return defaultTranslations;
 	}
 }

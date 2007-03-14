@@ -16,7 +16,7 @@ package com.eressea.util;
 /**
  * Contains the IDs of all Eressea options.
  *
- * @deprecated dont use
+ * @deprecated use com.eressea.gamebinding.eressea.EresseaConstants instead
  */
 public final class EresseaOptionConstants extends com.eressea.gamebinding.eressea.EresseaConstants {
 }

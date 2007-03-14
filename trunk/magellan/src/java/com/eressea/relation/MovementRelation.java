@@ -27,19 +27,17 @@ public class MovementRelation extends UnitRelation implements LongOrderRelation 
 	/**
 	 * Creates a new MovementRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param m TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param m The list of region coordinates
+	 * @param line The line in the source's orders
 	 */
 	public MovementRelation(Unit s, List m, int line) {
 		super(s, line);
 		this.movement = m;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.UnitRelation#toString()
 	 */
 	public String toString() {
 		return super.toString() + "@MOVEMENT=" + movement;

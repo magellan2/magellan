@@ -23,9 +23,9 @@ public class EnterRelation extends UnitContainerRelation {
 	/**
 	 * Creates a new EnterRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target container
+	 * @param line The line in the source's orders
 	 */
 	public EnterRelation(Unit s, UnitContainer t, int line) {
 		super(s, t, line);

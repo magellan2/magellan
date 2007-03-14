@@ -20,27 +20,25 @@ import com.eressea.rules.Race;
  * A relation indicating that a unit transfers a certain amount of persons to another unit.
  */
 public class PersonTransferRelation extends TransferRelation {
-	/** TODO: DOCUMENT ME! */
+	/** The source unit's race  */
 	public final Race race;
 
 	/**
 	 * Creates a new PersonTransferRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param a TODO: DOCUMENT ME!
-	 * @param r TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target unit
+	 * @param a The amount to transfer
+	 * @param r The race of the source Unit
+	 * @param line The line in the source's orders
 	 */
 	public PersonTransferRelation(Unit s, Unit t, int a, Race r, int line) {
 		super(s, t, a, line);
 		this.race = r;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.TransferRelation#toString()
 	 */
 	public String toString() {
 		return super.toString() + "@RACE=" + race;

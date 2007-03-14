@@ -22,6 +22,7 @@ import java.awt.Toolkit;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -140,7 +141,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 				passiveMovement = getModifiedMovement(u.getModifiedShip().getOwnerUnit());
 			} else {
 				// the unit is not on a ship, search for carriers
-				Map carriers = u.getCarriers();
+				Collection carriers = u.getCarriers();
 
 				if(log.isDebugEnabled()) {
 					log.debug("PathCellRenderer.render: " + u + " has " + carriers.size() +
@@ -148,7 +149,7 @@ public class PathCellRenderer extends ImageCellRenderer {
 				}
 
 				if(carriers.size() == 1) {
-					Unit trans = (Unit) carriers.values().iterator().next();
+					Unit trans = (Unit) carriers.iterator().next();
 					passiveMovement = getModifiedMovement(trans);
 				}
 			}

@@ -76,6 +76,9 @@ public class EresseaConstants {
 
 	/** TODO: DOCUMENT ME! */
 	public static final ID C_MISC = StringID.create("MISC");
+	
+	/** A placeholder for an "amount" of something, i.e. a number */
+	public static final String O_AMOUNT = "<amount>";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_ADDRESSES = "ADDRESSES";
@@ -117,19 +120,22 @@ public class EresseaConstants {
 	public static final String O_CASTLE = "CASTLE";
 
 	/** TODO: DOCUMENT ME! */
+	public static final String O_CLAIM = "CLAIM";
+
+	/** TODO: DOCUMENT ME! */
 	public static final String O_COMBAT = "COMBAT";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_COMBATSPELL = "COMBATSPELL";
 
 	/** TODO: DOCUMENT ME! */
+	public static final String O_COMPUTER = "COMPUTER";
+
+	/** TODO: DOCUMENT ME! */
 	public static final String O_CONTACT = "CONTACT";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_CONTROL = "CONTROL";
-
-	/** TODO: DOCUMENT ME! */
-	public static final String O_COMPUTER = "COMPUTER";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_DEFAULT = "DEFAULT";
@@ -142,6 +148,9 @@ public class EresseaConstants {
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_DESTROY = "DESTROY";
+	
+	/** EACH/JE keyword */
+	public static final String O_EACH = "EACH";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_EMAIL = "EMAIL";
@@ -376,9 +385,6 @@ public class EresseaConstants {
 	/** TODO: DOCUMENT ME! */
 	public static final String O_WORK = "WORK";
 	
-	/** TODO: DOCUMENT ME! */
-	public static final String O_CLAIM = "CLAIM";
-
 	/** TODO: DOCUMENT ME! */
 	public static final String O_ZIPPED = "ZIPPED";
 

@@ -20,6 +20,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.eressea.Alliance;
 import com.eressea.Border;
@@ -31,6 +33,7 @@ import com.eressea.Group;
 import com.eressea.ID;
 import com.eressea.Item;
 import com.eressea.LuxuryPrice;
+import com.eressea.Message;
 import com.eressea.Region;
 import com.eressea.Ship;
 import com.eressea.Skill;
@@ -786,17 +789,37 @@ public class EresseaOrderCompleter implements Completer {
 
 			while(i.hasNext()) {
 				Ship s = (Ship) i.next();
-
+				
+				int prio = 0;
+				// stm 2007-03-11: follow ships, no matter who's the owner
 				if((s.getOwnerUnit() != null) &&
 					   (unit.getFaction().equals(s.getOwnerUnit().getFaction()))) {
-					String id = s.getID().toString();
-					String name = s.getName();
+					prio = 16;
+				}
+				String id = s.getID().toString();
+				String name = s.getName();
 
-					if(name != null) {
-						completions.add(new Completion(name + " (" + id + ")", id, " ", 8));
-						completions.add(new Completion(id + " (" + name + ")", id, " "));
-					} else {
-						completions.add(new Completion(id, " "));
+				if(name != null) {
+					completions.add(new Completion(name + " (" + id + ")", id, " ", prio+8));
+					completions.add(new Completion(id + " (" + name + ")", id, " ", prio));
+				} else {
+					completions.add(new Completion(id, " ", prio));
+				}
+			}
+			
+			// add ships from DURCHSCHIFFUNG
+			for (Iterator messages =  region.travelThruShips.iterator(); messages.hasNext();){
+				String text = ((Message) messages.next()).getText();
+				
+				// try to match a ship id in the text
+				// TODO: use message type 
+				String number = "\\w+";
+				Matcher matcher = Pattern.compile("\\(("+number+")\\)").matcher(text);
+				while(matcher.find()){
+					if (1<=matcher.groupCount()){
+						String id = matcher.group(1);
+						completions.add(new Completion(text, id, " ", 8));
+						completions.add(new Completion(id + " (" + text + ")", id, " "));
 					}
 				}
 			}
@@ -831,6 +854,14 @@ public class EresseaOrderCompleter implements Completer {
 
 		//		}
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_HERBS)));
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_EACH)
+				+ " " + Translations.getOrderTranslation(EresseaConstants.O_AMOUNT), Translations
+				.getOrderTranslation(EresseaConstants.O_EACH), " "));
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_AMOUNT), "", ""));
+	}
+
+	void cmpltGibJe() {
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_AMOUNT), "", ""));
 	}
 
 	/**
@@ -840,9 +871,9 @@ public class EresseaOrderCompleter implements Completer {
 	 *
 	 * @param uid the unit's id
 	 * @param i the amount
+	 * @param persons Whether to add "PERSONEN" or not
 	 */
-	void cmpltGibUIDAmount(UnitID uid, int i) {
-		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_MEN)));
+	void cmpltGibUIDAmount(UnitID uid, int i, boolean persons) {
 		addUnitItems("");
 
 		// add completions, that create multiple Give-Orders for the resources of an item
@@ -888,10 +919,14 @@ public class EresseaOrderCompleter implements Completer {
 				}
 			}
 		}
+
+		if (persons)
+			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_MEN)));
+
 	}
 
 	void cmpltGibUIDAmount() {
-		cmpltGibUIDAmount(null, 0);
+		cmpltGibUIDAmount(null, 0, true);
 	}
 
 	void cmpltGibUIDAlles() {
@@ -1338,6 +1373,13 @@ public class EresseaOrderCompleter implements Completer {
 	}
 
 	void cmpltReserviere() {
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_EACH),
+				   " "));
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_AMOUNT), "", ""));
+	}
+
+	void cmpltReserviereJe() {
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_AMOUNT), "", ""));
 	}
 
 	void cmpltReserviereAmount() {

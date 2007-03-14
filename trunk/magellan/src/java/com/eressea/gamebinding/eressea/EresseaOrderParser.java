@@ -63,7 +63,7 @@ public class EresseaOrderParser implements OrderParser {
 	 * <tt>OrderCompleter</tt> object. This constructor should be used only by the
 	 * <tt>OrderCompleter</tt> class itself.
 	 *
-	 * @param rules TODO: DOCUMENT ME!
+	 * @param data TODO: DOCUMENT ME!
 	 * @param cc TODO: DOCUMENT ME!
 	 */
 	public EresseaOrderParser(GameData data, EresseaOrderCompleter cc) {
@@ -1083,8 +1083,10 @@ public class EresseaOrderParser implements OrderParser {
 		OrderToken t = (OrderToken) tokens.next();
 
 		if(isNumeric(t.getText()) == true) {
-			retVal = readGibUIDAmount(t, uid, Integer.parseInt(t.getText()));
-		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_ALL))) {
+			retVal = readGibUIDAmount(t, uid, Integer.parseInt(t.getText()), true);
+		} else if (t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_EACH))){
+			retVal = readGibJe(t, uid);
+		}else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_ALL))) {
 			retVal = readGibUIDAlles(t);
 		} else if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_UNIT)) ||
 					  t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_CONTROL)) ||
@@ -1103,6 +1105,32 @@ public class EresseaOrderParser implements OrderParser {
 		return retVal;
 	}
 
+	private boolean readGibJe(OrderToken token, UnitID uid) {
+		boolean retVal = false;
+		token.ttype = OrderToken.TT_KEYWORD;
+
+		OrderToken t = (OrderToken) tokens.next();
+
+		if (isNumeric(t.getText()) == true) {
+			retVal = readGibUIDAmount(t, uid, Integer.parseInt(t.getText()), false); // GIB JE PERSONS is illegal
+		} else
+		// // GIVE bla JE ALL ... does not make sense
+		// if(t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_ALL))) {
+		// retVal = readGibUIDAlles(t);
+		// } else
+		if (isString(t.getText()) == true) {
+			retVal = readFinalString(t);
+		} else {
+			if (completer != null) {
+				completer.cmpltGibJe();
+			}
+
+			unexpected(t);
+		}
+
+		return retVal;
+	}
+	
 	/**
 	 * For multiple-line-completion like the creation of give-orders for the resources of an item
 	 * in OrderCompleter.cmpltGibUIDAmount it is necessary to save the unit's id and the amount to
@@ -1114,7 +1142,7 @@ public class EresseaOrderParser implements OrderParser {
 	 *
 	 * @return TODO: DOCUMENT ME!
 	 */
-	private boolean readGibUIDAmount(OrderToken token, UnitID uid, int i) {
+	private boolean readGibUIDAmount(OrderToken token, UnitID uid, int i, boolean persons) {
 		boolean retVal = false;
 		token.ttype = OrderToken.TT_NUMBER;
 
@@ -1124,7 +1152,7 @@ public class EresseaOrderParser implements OrderParser {
 			retVal = readFinalString(t);
 		} else {
 			if(completer != null) {
-				completer.cmpltGibUIDAmount(uid, i);
+				completer.cmpltGibUIDAmount(uid, i, persons);
 			}
 
 			unexpected(t);
@@ -2040,9 +2068,10 @@ public class EresseaOrderParser implements OrderParser {
 		token.ttype = OrderToken.TT_KEYWORD;
 
 		OrderToken t = (OrderToken) tokens.next();
-
 		if(isNumeric(t.getText()) == true) {
 			retVal = readReserviereAmount(t);
+		} else if (t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_EACH))){
+			retVal = readReserviereJe(t);
 		} else {
 			if(completer != null) {
 				completer.cmpltReserviere();
@@ -2052,6 +2081,26 @@ public class EresseaOrderParser implements OrderParser {
 		}
 
 		return retVal;
+	}
+	
+	private boolean readReserviereJe(OrderToken token){
+		boolean retVal = false;
+		token.ttype = OrderToken.TT_KEYWORD;
+		
+		OrderToken t = (OrderToken) tokens.next();
+		
+		if(isNumeric(t.getText()) == true) {
+			retVal = readReserviereAmount(t);
+		} else {
+			if(completer != null) {
+				completer.cmpltReserviereJe();
+			}
+
+			retVal = checkFinal(t);
+		}
+
+		return retVal;
+
 	}
 
 	private boolean readReserviereAmount(OrderToken token) {

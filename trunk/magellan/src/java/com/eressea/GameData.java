@@ -943,6 +943,8 @@ public abstract class GameData implements Cloneable {
 			}
 		}
 
+		// FIXME (stm): Allies do not get merged correctly. We have to either swap the order here or correct
+		// something in the section "// MERGE FACTIONS" below
 		// FACTIONS
 		if(olderGD.factions() != null) {
 			for(Iterator iter = olderGD.factions().values().iterator(); iter.hasNext();) {
@@ -1218,14 +1220,18 @@ public abstract class GameData implements Cloneable {
 		}
 
 		// MERGE SHIPS
-		// only merge ships from the "older" game data if they are from the same round
-		if(sameRound && (olderGD.ships() != null)) {
+		if((olderGD.ships() != null)) {
 			for(Iterator iter = olderGD.ships().values().iterator(); iter.hasNext();) {
 				Ship curShip = (Ship) iter.next();
 				Ship newShip = resultGD.getShip(curShip.getID());
 
-				// first pass
-				Ship.merge(olderGD, curShip, resultGD, newShip);
+				// only merge ships from the "older" game data if they are from the same round
+				if (sameRound)
+					// first pass
+					Ship.merge(olderGD, curShip, resultGD, newShip);
+				else
+					// TODO (stm 2007-02-19) this is a workaround, we need a nicer solution
+					UnitContainer.mergeComments(curShip, newShip);
 			}
 		}
 

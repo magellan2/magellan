@@ -20,7 +20,7 @@ import com.eressea.rules.ShipType;
 import com.eressea.util.logging.Logger;
 
 /**
- * TODO: DOCUMENT ME!
+ * A class for representing a ship.
  *
  * @author $author$
  * @version $Revision$
@@ -42,14 +42,14 @@ public class Ship extends UnitContainer implements HasRegion {
 	public int damageRatio = 0;
 
 	/** The weight of the units and items on this ship in GE. 
-	 * @deprecated
+	 * @deprecated replaced by cargo
 	 */
 	public int deprecatedLoad = -1;
 
 	/**
 	 * The maximum payload of this ship in GE. 0 &lt;= capacity &lt;= getType().getCapacity() if
 	 * the ship is damaged.
-	 * @deprecated
+	 * @deprecated replaced by capacity
 	 */
 	public int deprecatedCapacity = -1;
 
@@ -65,8 +65,8 @@ public class Ship extends UnitContainer implements HasRegion {
 	/**
 	 * Creates a new Ship object.
 	 *
-	 * @param id TODO: DOCUMENT ME!
-	 * @param data TODO: DOCUMENT ME!
+	 * @param id 
+	 * @param data 
 	 */
 	public Ship(ID id, GameData data) {
 		super(id, data);
@@ -76,9 +76,9 @@ public class Ship extends UnitContainer implements HasRegion {
 	private Region region = null;
 
 	/**
-	 * Sets the region this ship is in.
+	 * Sets the region this ship is in and notifies region about it.
 	 *
-	 * @param region TODO: DOCUMENT ME!
+	 * @param region 
 	 */
 	public void setRegion(Region region) {
 		if(this.region != null) {
@@ -95,25 +95,25 @@ public class Ship extends UnitContainer implements HasRegion {
 	/**
 	 * Returns the region this ship is in.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The region the ship is in, possibly null
 	 */
 	public Region getRegion() {
 		return region;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * The type of this ship.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The type of this ship
 	 */
 	public ShipType getShipType() {
 		return (ShipType) getType();
 	}
 
 	/**
-	 * Returns the maximum capacity with respect to  damages of the ship in silver
+	 * Returns the maximum capacity with respect to  damages of the ship in silver.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return Returns the maximum capacity with respect to  damages of the ship in silver
 	 */
 	public int getMaxCapacity() {
 		if(capacity != -1) {
@@ -123,11 +123,12 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * Returns the maximimum capacity with respect to damages of the ship.
-	 *
-	 * @param maxCapacity TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Returns the maximimum capacity with respect to damages of the ship in GE if the undamaged
+	 * capacity was <code>maxCapacity</code>.
+	 * 
+	 * @param maxCapacity The capacity is calculated relative to this capacity 
+	 * 
+	 * @return The max damaged capacity
 	 */
 	private int getMaxCapacity(int maxCapacity) {
 		return new BigDecimal(maxCapacity).multiply(new BigDecimal(100 - damageRatio))
@@ -136,9 +137,9 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
+	 * Returns the cargo load of this ship.
 	 * 
-	 * 
-	 * @return TODO: DOCUMENT ME!
+	 * @return Returns the cargo load of this ship
 	 */
 	public int getCargo() {
 		if(cargo != -1) return cargo;
@@ -149,7 +150,7 @@ public class Ship extends UnitContainer implements HasRegion {
 	 * Returns the weight of all units of this ship that are not horses or carts in silver based
 	 * on the modified units.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The modified weight of the modified units on the ship
 	 */
 	public int getModifiedLoad() {
 		int modLoad = 0;
@@ -163,9 +164,9 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * this is a helper function for showing inner object state
+	 * This is a helper function for showing inner object state.
 	 * 
-	 * @return a debug message
+	 * @return A debug message
 	 */
 	public String toDebugString() {
 		return "SHIP[" + "shoreId=" + shoreId + "," + "size=" + size + "," + "damageRation=" +
@@ -173,20 +174,22 @@ public class Ship extends UnitContainer implements HasRegion {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * A string representation of this ship.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A string representation of this ship
 	 */
 	public String toString() {
 		return toString(true);
 	}
 
 	/**
-	 * Returns the string representation of this
-	 *
-	 * @param printExtended TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * Returns the string representation of this ship. If <code>printExtended</code> is true,
+	 * type, damage and remaing capacity are shown, too.
+	 * 
+	 * @param printExtended
+	 *            Whether to return a more detailed description
+	 * 
+	 * @return A strig representation of this ship
 	 */
 	public String toString(boolean printExtended) {
 		StringBuffer sb = new StringBuffer();

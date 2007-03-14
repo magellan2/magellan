@@ -27,19 +27,17 @@ public class UnitContainerRelation extends UnitRelation {
 	/**
 	 * Creates a new UnitContainerRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target unit
+	 * @param line The line in the source's orders
 	 */
 	public UnitContainerRelation(Unit s, UnitContainer t, int line) {
 		super(s, line);
 		this.target = t;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.UnitRelation#toString()
 	 */
 	public String toString() {
 		return super.toString() + "@TARGET=" + target;

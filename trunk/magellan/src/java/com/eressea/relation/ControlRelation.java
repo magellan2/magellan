@@ -16,30 +16,30 @@ package com.eressea.relation;
 import com.eressea.Unit;
 
 /**
- * A relation indicating that the source unit has a ATTACKIEREN order for the target unit.
+ * A relation indicating that the source unit gives command to the target unit.
  */
-public class AttackRelation extends InterUnitRelation {
-
+public class ControlRelation extends InterUnitRelation {
 	/**
-	 * Creates a new AttackRelation object.
+	 * Creates a new ControlRelation object.
 	 *
 	 * @param s The source unit
 	 * @param t The target unit
 	 * @param line The line in the source's orders
 	 */
-	public AttackRelation(Unit s, Unit t, int line) {
+	public ControlRelation(Unit s, Unit t, int line) {
 		super(s, t, line);
 	}
-
+	
 	/**
-	 * Creates a new AttackRelation object.
+	 * Creates a new ControlRelation object.
 	 *
 	 * @param s The source unit
 	 * @param t The target unit
 	 * @param line The line in the source's orders
 	 * @param w <code>true</code> iff this relation causes a warning
 	 */
-	public AttackRelation(Unit s, Unit t, int line, boolean w) {
+	public ControlRelation(Unit s, Unit t, int line, boolean w) {
 		super(s, t, line, w);
 	}
+
 }

@@ -1,3 +1,16 @@
+2007-03-14  stm <stm_@users.sourceforge.net>
+	* GIB/RESERVIERE JE/EACH implemented
+	* restructured appendUnitInfo in EMapDetailsPanel
+	* added GIVE COMMAND relation
+	* added GIVE UNIT relation
+	* OrderCompletion of FOLGEN now lists ships from SHIPTTHROUGH messages
+	* re-inserted ship radius display
+	* introduced a "SPECIALS" section into the rules file (eressea.cr,
+	  vinyambar.cr). Used for ship range bonus of aquarians.
+	* UnitContainer.comments and Unit.comments is now persistent after merging
+	* undid change for group item in overview panel
+
+
 2007-03-07  Fiete  <Fiete@users.sourceforge.net>
 
 	* finally did the InfoDlg-Update and looking good

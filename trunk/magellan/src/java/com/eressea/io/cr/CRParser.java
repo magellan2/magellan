@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -992,6 +991,8 @@ public class CRParser implements RulesIO, GameDataIO {
 				parseRaceSkillBonuses(race, rules);
 			} else if(sc.isBlock && sc.argv[0].startsWith("TALENTBONI ")) {
 				parseRaceTerrainSkillBonuses(race, rules);
+			} else if(sc.isBlock && sc.argv[0].equals("SPECIALS")) {
+				parseRaceSpecials(race, rules);
 			} else if(sc.isBlock) {
 				break;
 			} else {
@@ -1036,6 +1037,22 @@ public class CRParser implements RulesIO, GameDataIO {
 
 			sc.getNextToken();
 		}
+	}
+
+	private void parseRaceSpecials(Race race, Rules rules) throws IOException {
+		sc.getNextToken(); // skip SPECIALS
+
+		while(!sc.eof) {
+			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("shiprange")) {
+				race.setAdditiveShipBonus(Integer.parseInt(sc.argv[0]));
+				sc.getNextToken();
+			} else if(sc.isBlock) {
+				break;
+			} else {
+				unknown("RACE/SPECIALS", true);
+			}
+		}
+
 	}
 
 	private void parseItemType(Rules rules) throws IOException {
@@ -2906,7 +2923,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 1) && sc.argv[0].startsWith("REGION ")) {
 				if(!bCorruptReportMsg) {
 					log.warn("Warning: This computer report is " +
-							 "missing the header and is therfore invalid or " +
+							 "missing the header and is therefore invalid or " +
 							 "corrupted. Please contact the originator of this " +
 							 "report if you experience data loss.");
 					bCorruptReportMsg = true;

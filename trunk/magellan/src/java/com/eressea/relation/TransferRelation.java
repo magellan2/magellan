@@ -29,10 +29,10 @@ public class TransferRelation extends InterUnitRelation {
 	/**
 	 * Creates a new TransferRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param a TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target unit
+	 * @param a The amount to transfer.
+	 * @param line The line in the source's orders
 	 */
 	public TransferRelation(Unit s, Unit t, int a, int line) {
 		super(s, t, line);
@@ -42,20 +42,19 @@ public class TransferRelation extends InterUnitRelation {
 	/**
 	 * Creates a new TransferRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param a TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target unit
+	 * @param a The amount to transfer.
+	 * @param line The line in the source's orders
+	 * @param w <code>true</code> iff this relation causes a warning
 	 */
 	public TransferRelation(Unit s, Unit t, int a, int line, boolean w) {
 		super(s, t, line, w);
 		this.amount = a;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.InterUnitRelation#toString()
 	 */
 	public String toString() {
 		return super.toString() + "@AMOUNT=" + amount;

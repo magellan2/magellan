@@ -51,7 +51,7 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 	 */
 	public List effects = null;
 
-	// hm, could be private, too, just to prevent it to be null
+	// TODO hm, could be private, too, just to prevent it to be null
 	// but that probably consumes a lot of memory
 
 	/** Comments modifiable by the user. The comments are represented as String objects. */
@@ -427,9 +427,10 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 		if((curUC.comments != null) && (curUC.comments.size() > 0)) {
 			if(newUC.comments == null) {
 				newUC.comments = CollectionFactory.createLinkedList();
-			} else {
-				newUC.comments.clear();
-			}
+			} 
+//			else {
+//				newUC.comments.clear();
+//			}
 
 			newUC.comments.addAll(curUC.comments);
 		}
@@ -489,6 +490,23 @@ public abstract class UnitContainer extends RelatedObject implements Sorted,
 		newUC.cache = null;
 
 		newUC.sortIndex = Math.max(newUC.sortIndex, curUC.sortIndex);
+
+	}
+
+	/**
+	 * Merges only the comments of <code>curShip</code> to <code>newShip</code>. Use if you
+	 * don't want to do a full merge.
+	 * 
+	 * @param curShip
+	 * @param newShip
+	 */
+	// TODO (stm 2007-02-19) this is a workaround, we need a nicer solution
+	public static void mergeComments(UnitContainer curShip, UnitContainer newShip) {
+		if (newShip != null && curShip.comments != null) {
+			if (newShip.comments == null)
+				newShip.comments = CollectionFactory.createLinkedList();
+			newShip.comments.addAll(curShip.comments);
+		}
 
 	}
 
