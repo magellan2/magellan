@@ -56,7 +56,7 @@ public class SpellSyntax {
 	
 	
 	/**
-	 * adds a tolen to this SpellSyntax
+	 * adds a token to this SpellSyntax
 	 * @param t - the nw SpellSyntaxToken
 	 */
 	private void addToken(SpellSyntaxToken t){

@@ -301,14 +301,15 @@ public class TreeHelper {
 						// Do the units belong to a group?
 						if(prevUnit.getGroup() != null) {
 							GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(prevUnit.getGroup());
-							SimpleNodeWrapper simpleGroupNodeWrapper = factory.createSimpleNodeWrapper(groupNodeWrapper, "groups");
-							// DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
-							// DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(groupNodeWrapper);
-							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(simpleGroupNodeWrapper);
+							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(groupNodeWrapper);
+							// FIXME (stm 2007-03-14) wrapping groupNodeWrapper into simpleNodeWrapper has broken
+							// display of group information in details window (see SelectionEvent and EMapDetailsWrapper.appendGroupInfo)
+//							SimpleNodeWrapper simpleGroupNodeWrapper = factory.createSimpleNodeWrapper(groupNodeWrapper, "groups");
+//							DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(simpleGroupNodeWrapper);
 							mother.add(groupNode);
 
 							if(se != null) {
-								se.getSubordinatedElements().add(simpleGroupNodeWrapper);
+								se.getSubordinatedElements().add(groupNodeWrapper);
 							}
 
 							retVal += addUnits(groupNode, treeStructure, sortCriteria + 1,
@@ -462,9 +463,10 @@ public class TreeHelper {
 				case GROUP:
 
 					if(curUnit.getGroup() != null) {
-						// node = new DefaultMutableTreeNode(factory.createGroupNodeWrapper(curUnit.getGroup()));
-						GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(curUnit.getGroup());
-						node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
+						node = new DefaultMutableTreeNode(factory.createGroupNodeWrapper(curUnit.getGroup()));
+						// FIXME see above
+						// GroupNodeWrapper groupNodeWrapper = factory.createGroupNodeWrapper(curUnit.getGroup());
+						// node = new DefaultMutableTreeNode(factory.createSimpleNodeWrapper(groupNodeWrapper, "groups"));
 					} else {
 						node = null;
 					}

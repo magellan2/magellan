@@ -18,27 +18,29 @@ import java.util.List;
 import com.eressea.Unit;
 
 /**
- * TODO: DOCUMENT ME!
- *
+ * A RelationFactory creates relatations of a unit to other game objects according to the unit's
+ * orders. This interface is implemented by game specific classes.
+ * 
  * @author $author$
  * @version $Revision$
  */
 public interface RelationFactory {
 	/**
 	 * Creates a list of com.eressea.util.Relation objects  for a unit starting at order position
-	 * <tt>from</tt>
+	 * <tt>from</tt>.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @param u The unit
+	 * @param from The line of the <code>unit</code>'s orders where to start. Must be > 0
+	 * @return A List of Relations for this unit
 	 */
 	public List createRelations(Unit u, int from);
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates a list of com.eressea.util.Relation objects  for a unit using <code>orders</code>.
 	 *
-	 * @param u TODO: DOCUMENT ME!
-	 * @param orders TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @param u The unit
+	 * @param orders Use these orders instead of the unit's orders
+	 * @return A List of Relations for this unit
 	 */
 	public List createRelations(Unit u, List orders);
 }

@@ -47,17 +47,11 @@ public class ReserveRelation extends UnitRelation {
 		this.amount = a;
 	}
 
-	/**
-	 * Constructs a ReserveRelation.
-	 * 
-	 * @param s The reserving unit
-	 * @param a The amount
-	 * @param i The item (type)
-	 * @param line The line number in the unit's orders
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.UnitRelation#toString()
 	 */
-	public ReserveRelation(Unit s, int a, ItemType i, int line) {
-		super(s, line);
-		// TODO Auto-generated constructor stub
+	public String toString() {
+		return super.toString() + "@ITEMTYPE=" + itemType + "@AMOUNT="+amount;
 	}
 
 }

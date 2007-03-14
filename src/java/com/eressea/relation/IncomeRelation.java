@@ -27,10 +27,10 @@ public class IncomeRelation extends UnitContainerRelation implements LongOrderRe
 	/**
 	 * Creates a new IncomeRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param r TODO: DOCUMENT ME!
-	 * @param amount TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param r The target region
+	 * @param amount The amount of money earned
+	 * @param line The line in the source's orders
 	 */
 	public IncomeRelation(Unit s, Region r, int amount, int line) {
 		super(s, r, line);

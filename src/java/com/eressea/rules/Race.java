@@ -29,6 +29,7 @@ public class Race extends UnitContainerType {
 	private float weight = 0;
 	private float capacity = 0;
 	private Map skillBonuses = null;
+	private int additiveShipBonus;
 
 	/**
 	 * Creates a new Race object.
@@ -181,5 +182,23 @@ public class Race extends UnitContainerType {
 		}
 
 		m.put(skillType.getID(), new Integer(bonus));
+	}
+	
+	/**
+	 * Returns the bonus that is added to the ship radius for this race. 
+	 *
+	 * @return The bonus 
+	 */
+	public int getAdditiveShipBonus() {
+		return additiveShipBonus;
+	}
+
+	/**
+ 	 * Returns the bonus (or malus) that is added to the ship radius for this race. 
+	 *
+	 * @param bon
+	 */
+	public void setAdditiveShipBonus(int bon) {
+		additiveShipBonus = bon;
 	}
 }

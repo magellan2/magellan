@@ -655,6 +655,8 @@ TALENTBONI
 3;Schiffbau
 3;Segeln
 -1;Straﬂenbau
+SPECIALS
+1;shiprange
 
 RACE "Drachen"
 "Drachen";name

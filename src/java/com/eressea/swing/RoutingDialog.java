@@ -64,7 +64,7 @@ public class RoutingDialog extends InternationalizedDialog {
 	private JRadioButton createSingleTrip;
 	private JCheckBox considerShipRange;
 	private JCheckBox createVorlageOrders;
-	private JCheckBox replaceOrders;
+	private JCheckBox replaceOrdersBox;
 	private List regionList;
 	private JComboBox regions;
 	private JTextField regionName;
@@ -270,8 +270,8 @@ public class RoutingDialog extends InternationalizedDialog {
 
 		c.gridy = 5;
 		c.insets.left = 3;
-		replaceOrders = new JCheckBox(getString("chkbox.replaceorders.title"));
-		cp.add(replaceOrders, c);
+		replaceOrdersBox = new JCheckBox(getString("chkbox.replaceorders.title"));
+		cp.add(replaceOrdersBox, c);
 
 		c.gridy = 6;
 		c.gridwidth = 1;
@@ -293,7 +293,7 @@ public class RoutingDialog extends InternationalizedDialog {
 	/**
 	 * Shows the dialog and returns the above explained values
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A RetValue or <code>null</code> if no destination has been selected
 	 */
 	public RetValue showRoutingDialog() {
 		final RetValue retVal = new RetValue(null, false, false, false, false);
@@ -309,7 +309,7 @@ public class RoutingDialog extends InternationalizedDialog {
 					retVal.makeRoute = createRoute.isSelected();
 					retVal.useRange = considerShipRange.isSelected();
 					retVal.useVorlage = createVorlageOrders.isSelected();
-					retVal.replaceOrders = replaceOrders.isSelected();
+					retVal.replaceOrders = replaceOrdersBox.isSelected();
 				} catch(NumberFormatException exc) {
 				}
 
@@ -372,42 +372,47 @@ public class RoutingDialog extends InternationalizedDialog {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Represents the result of the dialog. This is basically a tuple consisting of <br/> 
+	 * <code>dest</code> - the destination coordinate<br/>
+	 * <code>makeRoute</code> - whether to construct a route rather than a simple path<br/>
+	 * <code>useRange</code> - whether to consider the ship range<br/>
+	 * <code>useVorlage</code> - whether to create Vorlage orders<br/>
+	 * <code>replaceOrders</code> - whether to replace the unit's orders  
 	 *
 	 * @author $author$
 	 * @version $Revision$
 	 */
 	public class RetValue {
-		/** TODO: DOCUMENT ME! */
+		/** The coordinates of the destination */
 		public CoordinateID dest;
 
-		/** TODO: DOCUMENT ME! */
+		/** whether to create a route rather than a simple path */
 		public boolean makeRoute;
 
-		/** TODO: DOCUMENT ME! */
+		/** whether to consider the ship's range */
 		public boolean useRange;
 
-		/** TODO: DOCUMENT ME! */
+		/** whether to create Vorlage orders */
 		public boolean useVorlage;
 
-		/** TODO: DOCUMENT ME! */
+		/** whether to replace the unit's orders */
 		public boolean replaceOrders;
 
 		/**
 		 * Creates a new RetValue object.
 		 *
-		 * @param d TODO: DOCUMENT ME!
-		 * @param b1 TODO: DOCUMENT ME!
-		 * @param b2 TODO: DOCUMENT ME!
-		 * @param b3 TODO: DOCUMENT ME!
-		 * @param b4 TODO: DOCUMENT ME!
+		 * @param d The destination
+		 * @param route whether to create a route rather than a simple path
+		 * @param range whether to consider the ship's range
+		 * @param vorlage whether to create Vorlage orders
+		 * @param replace whether to replace the unit's orders
 		 */
-		public RetValue(CoordinateID d, boolean b1, boolean b2, boolean b3, boolean b4) {
+		public RetValue(CoordinateID d, boolean route, boolean range, boolean vorlage, boolean replace) {
 			dest = d;
-			makeRoute = b1;
-			useRange = b2;
-			useVorlage = b3;
-			replaceOrders = b4;
+			makeRoute = route;
+			useRange = range;
+			useVorlage = vorlage;
+			replaceOrders = replace;
 		}
 	}
 

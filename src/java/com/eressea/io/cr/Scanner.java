@@ -22,7 +22,13 @@ import com.eressea.util.Umlaut;
 import com.eressea.util.logging.Logger;
 
 /**
- * TODO: DOCUMENT ME!
+ * A simple class for tokenizing lines of an input file. 
+ * 
+ * Lines of the form <br/>
+ * <tt>number;key</tt> are parsed as two tokens,<br/>
+ * <tt>"string";key</tt> are parsed as two tokens,<br/>
+ * <tt>BLOCK</tt> are parsed as a block,<br/>
+ * <tt>BLOCK id</tt> are parsed as a block with ID.<br/>
  *
  * @author $author$
  * @version $Revision$
@@ -31,33 +37,33 @@ public class Scanner {
 	private static final Logger log = Logger.getInstance(Scanner.class);
 	private BufferedReader stream;
 
-	/** TODO: DOCUMENT ME! */
-	public int argc; // number of tokens
+	/** number of tokens */
+	public int argc; 
 
-	/** TODO: DOCUMENT ME! */
-	public String argv[]; // the tokens
+	/** the tokens */
+	public String argv[]; 
 
-	/** TODO: DOCUMENT ME! */
-	public boolean isString[]; // Is it a string? (enclosed in "")
+	/** Is it a string? (enclosed in "") */
+	public boolean isString[];
 
-	/** TODO: DOCUMENT ME! */
-	public boolean eof; // end of file reached?
+	/** end of file reached? */
+	public boolean eof; 
 
-	/** TODO: DOCUMENT ME! */
-	public int lnr; // current line number
+	/** current line number */
+	public int lnr; 
 
-	/** TODO: DOCUMENT ME! */
-	public boolean isBlock; // Is this a begin of block token?
+	/** Is this a begin of block token? */
+	public boolean isBlock; 
 
-	/** TODO: DOCUMENT ME! */
-	public boolean isIdBlock; // Is this a block with Id?
+	/** Is this a block with Id? */
+	public boolean isIdBlock; 
 
 	/**
 	 * Creates a new Scanner object.
 	 *
-	 * @param in TODO: DOCUMENT ME!
+	 * @param in The Reader used for reading input
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException Never thrown
 	 */
 	public Scanner(Reader in) throws IOException {
 		stream = new BufferedReader(in);
@@ -68,9 +74,9 @@ public class Scanner {
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Parses until the next token, skipping empty lines.
 	 *
-	 * @throws IOException TODO: DOCUMENT ME!
+	 * @throws IOException 
 	 */
 	public void getNextToken() throws IOException {
 		String line;
@@ -130,10 +136,16 @@ public class Scanner {
 			}
 
 			if(buf[i] == '"') {
+				// quoted string
 				i++; // skip start "
 				if(line.lastIndexOf('"')!= -1) {
 					int lastQuote = line.lastIndexOf('"');
-					String str = Umlaut.replace(line.substring(i,lastQuote+1-i),"\\\"","\"");
+					if (lastQuote<i){
+						// TODO throw IOException?
+						log.warn("Error parsing line "+lnr+": "+line);
+						break;
+					}
+					String str = Umlaut.replace(line.substring(i,lastQuote),"\\\"","\"");
 					argv[argc] = StringFactory.getFactory().intern(str);
 					i = lastQuote;
 				} else {
@@ -167,6 +179,7 @@ public class Scanner {
 				argc++;
 				i++; // skip "
 			} else {
+				// normal token
 				start = i;
 
 				while((i < len) && (buf[i] != ';') && (buf[i] != '\r') && (buf[i] != '\n')) {

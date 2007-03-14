@@ -299,20 +299,16 @@ public class UnitContextMenu extends JPopupMenu {
 		}
 
 		// is student of someone?
-		Collection c = unit.getRelations(TeachRelation.class);
-
-		for (Iterator iter = c.iterator(); iter.hasNext();) {
-			TeachRelation tr = (TeachRelation) iter.next();
-
-			if (tr.target == unit) {
-				Unit teacher = tr.source;
-				JMenuItem removeFromTeachersList = new JMenuItem(
-						getString("menu.removeFromTeachersList") + ": " + teacher.toString());
-				add(removeFromTeachersList);
-				removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
-						teacher, this.data));
-			}
+		
+		for (Iterator it = unit.getTeachers().iterator(); it.hasNext();){
+			Unit teacher = (Unit) it.next();
+			JMenuItem removeFromTeachersList = new JMenuItem(
+					getString("menu.removeFromTeachersList") + ": " + teacher.toString());
+			add(removeFromTeachersList);
+			removeFromTeachersList.addActionListener(new RemoveUnitFromTeachersListAction(unit,
+					teacher, this.data));
 		}
+		
 
 		if ((unit.getShip() != null) && unit.equals(unit.getShip().getOwnerUnit())) {
 			JMenuItem planShipRoute = new JMenuItem(getString("menu.planshiproute.caption"));

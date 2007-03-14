@@ -105,9 +105,7 @@ public class ShipRoutePlanner {
 					int meerManBonus = 0;
 
 					try {
-						if(shipOwner.getFaction().getRace().toString().equals(EresseaRaceConstants.R_MEERMENSCHEN)) {
-							meerManBonus = 1;
-						}
+						meerManBonus = shipOwner.getFaction().getRace().getAdditiveShipBonus();
 					} catch(Exception exc) {
 					}
 

@@ -249,4 +249,8 @@ public class OrderToken {
 			return strTest.equalsIgnoreCase(strText);
 		}
 	}
+	
+	public boolean equals(OrderToken token){
+		return this.equalsToken(token.text) || token.equalsToken(this.text);
+	}
 }

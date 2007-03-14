@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import com.eressea.gamebinding.MovementEvaluator;
+import com.eressea.gamebinding.eressea.EresseaConstants;
 import com.eressea.relation.AttackRelation;
 import com.eressea.relation.EnterRelation;
 import com.eressea.relation.InterUnitRelation;
@@ -34,6 +35,7 @@ import com.eressea.relation.MovementRelation;
 import com.eressea.relation.PersonTransferRelation;
 import com.eressea.relation.RecruitmentRelation;
 import com.eressea.relation.ReserveRelation;
+import com.eressea.relation.TeachRelation;
 import com.eressea.relation.TransportRelation;
 import com.eressea.relation.UnitContainerRelation;
 import com.eressea.relation.UnitRelation;
@@ -225,7 +227,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 * Adds the orders and possibly refreshes the relations
 	 *
 	 * @param newOrders 
-	 * @param refreshRelations if true also refresh the relations of the unit.
+	 * @param refreshRelations If true also refresh the relations of the unit
 	 */
 	public void addOrders(Collection newOrders, boolean refreshRelations) {
 		int newPos = ordersObject.addOrders(newOrders);
@@ -873,8 +875,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 
 		for(Iterator iter = tempUnits().iterator(); iter.hasNext();) {
 			TempUnit u = (TempUnit) iter.next();
-			cmds.add(getOrder(EresseaOrderConstants.O_MAKE) + " " +
-					 getOrder(EresseaOrderConstants.O_TEMP) + " " + u.getID().toString());
+			cmds.add(getOrder(EresseaConstants.O_MAKE) + " " +
+					 getOrder(EresseaConstants.O_TEMP) + " " + u.getID().toString());
 			cmds.addAll(u.getCompleteOrders(writeUnitTagsAsVorlageComment));
 
 			if(u.ordersConfirmed) {
@@ -890,7 +892,7 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
                 }
             }
                         
-			cmds.add(getOrder(EresseaOrderConstants.O_END));
+			cmds.add(getOrder(EresseaConstants.O_END));
 		}
 
 		return cmds;
@@ -1950,9 +1952,9 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 					   .getModifiedLoad(this);
 
 		// also take care of passengers
-		Map passengers = getPassengers();
+		Collection passengers = getPassengers();
 
-		for(Iterator iter = passengers.values().iterator(); iter.hasNext();) {
+		for(Iterator iter = passengers.iterator(); iter.hasNext();) {
 			Unit passenger = (Unit) iter.next();
 			load += passenger.getModifiedWeight();
 		}
@@ -2008,16 +2010,16 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	/**
 	 * Returns all units this unit is transporting as passengers.
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A Collection of transported <code>Unit</code>s 
 	 */
-	public Map getPassengers() {
-		Map passengers = CollectionFactory.createHashtable();
+	public Collection getPassengers() {
+		Collection passengers = CollectionFactory.createLinkedList();
 
 		for(Iterator iter = getRelations(TransportRelation.class).iterator(); iter.hasNext();) {
 			TransportRelation tr = (TransportRelation) iter.next();
 
 			if(this.equals(tr.source)) {
-				passengers.put(tr.target.getID(), tr.target);
+				passengers.add(tr.target);
 			}
 		}
 
@@ -2026,24 +2028,62 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 
 	/**
 	 * Returns all units indicating by their orders that they would transport this unit as a
-	 * passanger (if there is more than one such unit, that is a semantical error of course).
+	 * passenger (if there is more than one such unit, that is a semantical error of course).
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return A Collection of <code>Unit</code>s carrying this one
 	 */
-	public Map getCarriers() {
-		Map carriers = CollectionFactory.createHashtable();
+	public Collection getCarriers() {
+		Collection carriers = CollectionFactory.createLinkedList();
 
 		for(Iterator iter = getRelations(TransportRelation.class).iterator(); iter.hasNext();) {
 			TransportRelation tr = (TransportRelation) iter.next();
 
 			if(this.equals(tr.target)) {
-				carriers.put(tr.source.getID(), tr.source);
+				carriers.add(tr.source);
 			}
 		}
 
 		return carriers;
 	}
 
+	/**
+	 * Returns a Collection of all the units that are taught by this unit.
+	 *
+	 * @return A Collection of <code>Unit</code>s taught by this unit
+	 */
+	public Collection getPupils() {
+		Collection pupils = CollectionFactory.createLinkedList();
+		for(Iterator iter = getRelations(TeachRelation.class).iterator(); iter.hasNext();) {
+			TeachRelation tr = (TeachRelation) iter.next();
+
+			if(this.equals(tr.source)) {
+				if(tr.target != null) {
+					pupils.add(tr.target);
+				}
+			} 
+		}
+		return pupils;
+	}
+	
+	/**
+	 * Returns a Collection of all the units that are teaching this unit.
+	 *
+	 * @return A Collection of <code>Unit</code>s teaching this unit
+	 */
+	public Collection getTeachers() {
+		Collection teachers = CollectionFactory.createLinkedList();
+		for(Iterator iter = getRelations(TeachRelation.class).iterator(); iter.hasNext();) {
+			TeachRelation tr = (TeachRelation) iter.next();
+
+			if(this.equals(tr.target)) {
+				if(tr.source != null) {
+					teachers.add(tr.source);
+				}
+			} 
+		}
+		return teachers;
+	}
+	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -2122,13 +2162,6 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		}
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 */
-	public void refreshRelations() {
-		refreshRelations(1);
-	}
-
 	// FIXME "No relation of a unit can affect an object outside the region". This might not be true
 	// any more for familiars or ZAUBERE.
 	/**
@@ -2140,7 +2173,21 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 	 * different relations. Therefore refreshRelations() has to be invoked on a unit after its
 	 * orders were modified.
 	 *
-	 * @param from TODO: DOCUMENT ME!
+	 */
+	public void refreshRelations() {
+		refreshRelations(1);
+	}
+
+	/**
+	 * Parses the orders of this unit <i>beginning at the <code>from</code>th order</i> and
+	 * detects relations between units established by those orders. When does this method have to be
+	 * called? No relation of a unit can affect an object outside the region that unit is in. So
+	 * when all relations regarding a certain unit as target or source need to be determined, this
+	 * method has to be called for each unit in the same region. Since relations are defined by unit
+	 * orders, modified orders may lead to different relations. Therefore refreshRelations() has to
+	 * be invoked on a unit after its orders were modified.
+	 * 
+	 * @param from Start from this line
 	 */
 	public synchronized void refreshRelations(int from) {
 		if(ordersObject.ordersAreNull() || (getRegion() == null)) {
@@ -2761,9 +2808,10 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 		if((curUnit.comments != null) && (curUnit.comments.size() > 0)) {
 			if(newUnit.comments == null) {
 				newUnit.comments = CollectionFactory.createLinkedList();
-			} else {
-				newUnit.comments.clear();
 			}
+//			 else {
+//				newUnit.comments.clear();
+//			}
 
 			newUnit.comments.addAll(curUnit.comments);
 		}

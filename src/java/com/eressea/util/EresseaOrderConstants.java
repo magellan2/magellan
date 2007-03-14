@@ -16,7 +16,7 @@ package com.eressea.util;
 /**
  * Contains the String keys of all Eressea orders
  *
- * @deprecated dont use
+ * @deprecated use com.eressea.gamebinding.eressea.EresseaConstants instead
  */
 public final class EresseaOrderConstants extends com.eressea.gamebinding.eressea.EresseaConstants {
 }

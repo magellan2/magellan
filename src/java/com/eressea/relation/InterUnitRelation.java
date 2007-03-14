@@ -25,9 +25,9 @@ public class InterUnitRelation extends UnitRelation {
 	/**
 	 * Creates a new InterUnitRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target unit
+	 * @param line The line in the source's orders
 	 */
 	public InterUnitRelation(Unit s, Unit t, int line) {
 		super(s, line);
@@ -37,19 +37,18 @@ public class InterUnitRelation extends UnitRelation {
 	/**
 	 * Creates a new InterUnitRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param t TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param t The target unit
+	 * @param line The line in the source's orders
+	 * @param w <code>true</code> iff this relation causes a warning
 	 */
 	public InterUnitRelation(Unit s, Unit t, int line, boolean w) {
 		super(s, line, w);
 		this.target = t;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see com.eressea.relation.UnitRelation#toString()
 	 */
 	public String toString() {
 		return super.toString() + "@TARGET=" + target;

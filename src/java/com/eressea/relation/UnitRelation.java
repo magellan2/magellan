@@ -34,8 +34,9 @@ public abstract class UnitRelation {
 	/**
 	 * Creates a new UnitRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param line The line in the source's orders
+	 * @param w <code>true</code> iff this relation causes a warning
 	 */
 	public UnitRelation(Unit s, int line, boolean w) {
 		this.origin = s;
@@ -47,8 +48,8 @@ public abstract class UnitRelation {
 	/**
 	 * Creates a new UnitRelation object.
 	 *
-	 * @param s TODO: DOCUMENT ME!
-	 * @param line TODO: DOCUMENT ME!
+	 * @param s The source unit
+	 * @param line The line in the source's orders
 	 */
 	public UnitRelation(Unit s, int line) {
 		this.origin = s;
@@ -57,20 +58,18 @@ public abstract class UnitRelation {
 		this.warning = false;
 	}
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
 		return this.getClass().getName() + "@ORIGIN=" + origin + "@SOURCE=" + source + "@line=" +
-			   line;
+			   line + "@WARNING=" + warning;
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Returns true iff this relation is caused by a long order
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return true iff this relation is caused by a long order
 	 */
 	public boolean isLongOrder() {
 		return this instanceof LongOrderRelation;

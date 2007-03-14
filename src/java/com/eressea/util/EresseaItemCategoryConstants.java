@@ -16,7 +16,7 @@ package com.eressea.util;
 /**
  * Contains the IDs of all Eressea item type categories.
  *
- * @deprecated dont use
+ * @deprecated use com.eressea.gamebinding.eressea.EresseaConstants instead
  */
 public final class EresseaItemCategoryConstants
 	extends com.eressea.gamebinding.eressea.EresseaConstants

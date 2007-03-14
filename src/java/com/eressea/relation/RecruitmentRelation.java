@@ -20,6 +20,13 @@ import com.eressea.Unit;
  */
 public class RecruitmentRelation extends PersonTransferRelation {
 	/* pavkovic 2003.02.17: made RecruitmentRelation an inverse PersonTransferRelation! */
+	/**
+	 * Creates a new RecruitmentRelation object.
+	 *
+	 * @param t The target unit
+	 * @param a The amount to transfer
+	 * @param line The line in the source's orders
+	 */
 	public RecruitmentRelation(Unit t, int a, int line) {
 		super(t.getRegion().getZeroUnit(), t, a, (t.realRace != null) ? t.realRace : t.race, line);
 
