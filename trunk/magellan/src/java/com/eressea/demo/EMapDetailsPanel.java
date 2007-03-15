@@ -116,7 +116,6 @@ import com.eressea.rules.BuildingType;
 import com.eressea.rules.CastleType;
 import com.eressea.rules.ItemCategory;
 import com.eressea.rules.ItemType;
-import com.eressea.rules.Race;
 import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
@@ -2728,15 +2727,21 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @param expandableNodes
 	 */
 	private void appendContainerInfo(Unit u, DefaultMutableTreeNode parent, Collection expandableNodes) {
-		if(u.getUnitContainer() != null) {
+		if (u.getUnitContainer() != null) {
 			DefaultMutableTreeNode containerNode = null;
-			UnitContainerNodeWrapper cnw = nodeWrapperFactory.createUnitContainerNodeWrapper(u.getUnitContainer(), true, true);
+			boolean isOwner = u.getUnitContainer().getOwnerUnit() == u;
+			UnitContainerNodeWrapper cnw = nodeWrapperFactory.createUnitContainerNodeWrapper(u
+					.getUnitContainer(), true, isOwner);
 			containerNode = new DefaultMutableTreeNode(cnw);
 			parent.add(containerNode);
 		}
-		if(u.getModifiedUnitContainer() != null && !u.getModifiedUnitContainer().equals(u.getUnitContainer())) {
+		if (u.getModifiedUnitContainer() != null
+				&& !u.getModifiedUnitContainer().equals(u.getUnitContainer())) {
 			DefaultMutableTreeNode containerNode = null;
-			containerNode =new DefaultMutableTreeNode(nodeWrapperFactory.createUnitContainerNodeWrapper(u.getModifiedUnitContainer(), true, true)); 
+			boolean isOwner = false; // TODO: can we calculate if the unit is going to be the
+										// owner of its new container?
+			containerNode = new DefaultMutableTreeNode(nodeWrapperFactory
+					.createUnitContainerNodeWrapper(u.getModifiedUnitContainer(), true, isOwner));
 			parent.add(containerNode);
 		}
 
@@ -3226,7 +3231,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		
 		// Besitzer
 		if (s.getOwnerUnit() != null) {
-			apendShipOwnerInfo(s, parent, expandableNodes);
+			appendShipOwnerInfo(s, parent, expandableNodes);
 		}
 
 		appendContainerCommandInfo(s, parent, expandableNodes);
@@ -3369,7 +3374,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @param parent
 	 * @param expandableNodes 
 	 */
-	private void apendShipOwnerInfo(Ship s, DefaultMutableTreeNode parent, Collection expandableNodes) {
+	private void appendShipOwnerInfo(Ship s, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		Unit owner = s.getOwnerUnit();
 		SkillType sailingSkillType = data.rules.getSkillType(StringID.create("Segeln"), true);
 		
