@@ -272,22 +272,23 @@ public class NodeWrapperFactory extends JTabbedPane implements PreferencesFactor
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates a wrapper node for a unit container.
 	 *
-	 * @param uc TODO: DOCUMENT ME!
+	 * @param uc 
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The NodeWrapper
 	 */
 	public UnitContainerNodeWrapper createUnitContainerNodeWrapper(UnitContainer uc) {
-		return createUnitContainerNodeWrapper(uc, false, false);
+		return createUnitContainerNodeWrapper(uc, true, false);
 	}
 
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Creates a wrapper node for a unit container with extended options.
 	 *
-	 * @param uc TODO: DOCUMENT ME!
-	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @param uc
+	 * @param showFreeLoad Specifies if the free load should be displayed
+	 * @param hasCommand If <code>true</code>, it is indicated the the unit has the command
+	 * @return The NodeWrapper
 	 */
 	public UnitContainerNodeWrapper createUnitContainerNodeWrapper(UnitContainer uc, boolean showFreeLoad, boolean hasCommand) {
 		UnitContainerNodeWrapper ucnw = new UnitContainerNodeWrapper(uc, showFreeLoad, hasCommand);
