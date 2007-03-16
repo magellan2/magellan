@@ -13,6 +13,7 @@
 
 package com.eressea.swing.tree;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -69,11 +70,15 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String toString() {
+		// TODO (stm 2007-03-16) possible design problem here:
+		// in some NodeWrappers the string is set from outside (e.g. in EMapDetailsPanel)
+		// sometimes it is built here
+		final NumberFormat weightNumberFormat = NumberFormat.getNumberInstance();
 		StringBuffer text= new StringBuffer(uc.toString());
 		if(showFreeLoad && uc instanceof Ship) {
-			double free = .01 * (((Ship) uc).getMaxCapacity() - ((Ship) uc).getModifiedLoad());
+			float free = (((Ship) uc).getMaxCapacity() - ((Ship) uc).getModifiedLoad())/100F;
 			text.append(": ");
-			text.append(free);
+			text.append(weightNumberFormat.format(free));
 			// overloading
 			if (free<0){
 				text.append(" (!!!)");
