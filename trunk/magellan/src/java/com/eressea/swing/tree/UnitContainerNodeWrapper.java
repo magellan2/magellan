@@ -129,11 +129,19 @@ public class UnitContainerNodeWrapper implements CellObject, SupportsClipboard {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public String getClipboardValue() {
+		// Fiete: I prefer to have just the same in the clipboard like in 
+		// the tree (toString())
+		return this.toString();
+		
+		// old:
+		
+		/**
 		if(this.uc != null) {
 			return uc.toString();
 		} else {
 			return toString();
 		}
+		**/
 	}
 
 	/**
