@@ -1,6 +1,7 @@
 2007-04-19  Fiete  <Fiete@users.sourceforge.net>
 	* clipboardvalue now equals .toString of unitcontainernodewrapper
 	* repaired icons masonry, mallorn-region, drachenblut
+	* added some regionressources to ITEMS (eressea.cr, viny.cr)
 
 2007-03-14  stm <stm_@users.sourceforge.net>
 	* GIB/RESERVIERE JE/EACH implemented

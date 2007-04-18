@@ -744,8 +744,26 @@ ITEM "Holz"
 "Holzfällen";makeskill
 "resources";category
 
+ITEM "Bäume"
+"Bäume";name
+5;weight
+"Holzfällen";makeskill
+"resources";category
+
+ITEM "Schößlinge"
+"Schößlinge";name
+5;weight
+"Holzfällen";makeskill
+"resources";category
+
 ITEM "Mallorn"
 "Mallorn";name
+5;weight
+"Holzfällen";makeskill
+"resources";category
+
+ITEM "Mallornschößlinge"
+"Mallornschößlinge";name
 5;weight
 "Holzfällen";makeskill
 "resources";category
@@ -764,6 +782,13 @@ ITEM "Steine"
 
 ITEM "Pferd"
 "Pferd";name
+50;weight
+"Pferdedressur";makeskill
+1;makeskilllevel
+"resources";category
+
+ITEM "Pferde"
+"Pferde";name
 50;weight
 "Pferdedressur";makeskill
 1;makeskilllevel
