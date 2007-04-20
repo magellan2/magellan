@@ -103,8 +103,10 @@ public class EresseaMovementEvaluator implements MovementEvaluator {
 					   (cartsWithoutHorses * 40)) * 100) -
 					   (((int) ((race.getWeight()) * 100)) * unit.getModifiedPersons());
 		}
-
-		return respectGOTS(unit, capacity);
+		// Fiete 20070421 (Runde 519)
+		// GOTS not active when riding! (tested)
+		// return respectGOTS(unit, capacity);
+		return capacity;
 	}
 
 	/**
