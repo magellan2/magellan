@@ -671,6 +671,13 @@ RACE "Untote"
 "Untote";name
 10;weight
 
+RACE "Zombies"
+"Zombies";name
+10;weight
+
+RACE "Skelette"
+"Skelette";name
+5;weight
 
 ITEM "Silber"
 "Silber";name

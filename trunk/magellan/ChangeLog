@@ -1,3 +1,9 @@
+2007-05-03  Fiete  <Fiete@users.sourceforge.net>
+	* added weight of skeletons and zombies to the rules.cr
+	* added icons for: upkeep, buildingcost,teacher,pupil,mahlstrom
+	* changed "dichter nebel-alpha" to something different from "nebel-alpha"
+	* icons: magicschool,potions,occupants(inmates),mahlstrom-detail
+
 2007-04-21  Fiete  <Fiete@users.sourceforge.net>
 	* respectGOTS deactivated for PayloadHorse
 
