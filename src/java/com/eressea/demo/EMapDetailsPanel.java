@@ -224,6 +224,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	protected Container tagContainer;
 	protected Container treeContainer;
 	protected boolean showTagButtons = false;
+	protected boolean allowCustomIcons = true;
 	protected ContextManager contextManager;
 	protected StealthContextFactory stealthContext;
 	protected CombatStateContextFactory combatContext;
@@ -549,6 +550,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if(showTagButtons) {
 			pnlRegionInfoTree.add(tagContainer, BorderLayout.SOUTH);
 		}
+		
+		allowCustomIcons = settings.getProperty("EMapDetailsPanel.AllowCustomIcons", "true").equals("true");
 
 		// split pane combining name, desc & tree
 		topSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nameDescPanel, pnlRegionInfoTree);
@@ -1440,6 +1443,17 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 */
 	private void appendFactionsInfo(Collection factions, DefaultMutableTreeNode parent,
 									Collection expandableNodes) {
+		
+		// if only one faction selected...show faction info
+		if (factions !=null && factions.size()==1){
+			Object[] oO = factions.toArray();
+			Object o = oO[0];
+			if (o instanceof Faction) {
+				Faction f = (Faction) o;
+				appendFactionInfo(f, parent, expandableNodes);
+			}
+		}
+		
 		if(lastRegion != null) {
 			Collection units = CollectionFactory.createLinkedList();
 
@@ -1937,6 +1951,19 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 */ 
 	private void appendUnitPersonInfo(Unit u, DefaultMutableTreeNode parent,
 									  Collection expandableNodes) {
+		
+		// display custom Unit Icon ?
+		String customUnitIconFileName = "/custom/units/" + u.toString(false);
+		if (this.isAllowingCustomIcons() &&  getMagellanContext().getImageFactory().existImageIcon(customUnitIconFileName)){
+			DefaultMutableTreeNode customUnitIconNode = null;
+			if (getMagellanContext().getImageFactory().imageIconSizeCheck(customUnitIconFileName,40,40)){ 
+				customUnitIconNode = createSimpleNode(u.getModifiedName(), customUnitIconFileName);
+			} else {
+				customUnitIconNode = createSimpleNode(u.getModifiedName(), "tobig");
+			}
+			parent.add(customUnitIconNode);
+		}
+		
 		String strPersons = getString("node.persons") + ": " + u.getPersons();
 	
 		if(u.getPersons() != u.getModifiedPersons()) {
@@ -2010,24 +2037,47 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	 * @param expandableNodes 
 	 */
 	private void appendUnitFactionInfo(Unit u, DefaultMutableTreeNode parent, Collection expandableNodes) {
+		appendFactionInfo(u.getFaction(), parent, expandableNodes);
+	}
+
+	/**
+	 * Appends information about this faction.
+	 *
+	 * @param u
+	 * @param parent
+	 * @param expandableNodes 
+	 */
+	private void appendFactionInfo(Faction f, DefaultMutableTreeNode parent, Collection expandableNodes) {
 		DefaultMutableTreeNode fNode;
-	
-		if(u.getFaction() == null) {
+		if(f == null) {
 			fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
 																						  ": " +
 																						  getString("node.unknownfaction"),
 																						  "faction"));
 		} else {
-			fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
+			// custom faction icon ?
+			String customFactionIconFileName = "/custom/factions/" + f.getID();
+			if (this.isAllowingCustomIcons() && getMagellanContext().getImageFactory().existImageIcon(customFactionIconFileName)){
+				if (getMagellanContext().getImageFactory().imageIconSizeCheck(customFactionIconFileName,40,40)){ 
+					fNode = createSimpleNode(f.toString(), customFactionIconFileName);
+				} else {
+					fNode = createSimpleNode(f.toString(), "tobig");
+				}
+				
+			} else {
+				fNode = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(getString("node.faction") +
 																						  ": " +
-																						  u.getFaction()
-																						   .toString(),
+																						  f.toString(),
 																						  "faction"));
+			}
 		}
 	
 		parent.add(fNode);
 	}
-
+	
+	
+	
+	
 	/**
 	 * Appends information on the unit's race.
 	 *
@@ -2468,8 +2518,12 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 										: ((u.getModifiedPersons() / 10) +
 												1)), null, teachers,"teacher"));
 			}
-	
+			
+			
+			
 			if(pupils.size() > 0) {
+				boolean duplicatePupil = false;
+				Collection checkPupils = CollectionFactory.createLinkedList();
 				// DefaultMutableTreeNode pupilsNode = new DefaultMutableTreeNode("");
 				DefaultMutableTreeNode pupilsNode = createSimpleNode("", "pupils");
 				parent.add(pupilsNode);
@@ -2486,11 +2540,22 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 							pupil.getModifiedPersons());
 					DefaultMutableTreeNode pupilNode = new DefaultMutableTreeNode(w);
 					pupilsNode.add(pupilNode);
+					
+					// duplicate check
+					if (checkPupils.contains(pupil)){
+						duplicatePupil=true;
+					} else {
+						checkPupils.add(pupil);
+					}
+					
 				}
-	
+				String duplicatePupilWarning = "";
+				if (duplicatePupil){
+					duplicatePupilWarning = " (!!!)";
+				}
 				pupilsNode.setUserObject(new UnitListNodeWrapper(getString("node.pupils") + ": " +
 						pupilCounter + " / " +
-						(u.getModifiedPersons() * 10), null,
+						(u.getModifiedPersons() * 10) + duplicatePupilWarning, null,
 						pupils,"pupils"));
 			}
 		}
@@ -4268,6 +4333,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		return showTagButtons;
 	}
 
+	public boolean isAllowingCustomIcons(){
+		return allowCustomIcons;
+	}
+	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -4291,6 +4360,16 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		}
 	}
 
+	public void setAllowCustomIcons(boolean bool) {
+		if(bool != isAllowingCustomIcons()) {
+			allowCustomIcons = bool;
+			settings.setProperty("EMapDetailsPanel.AllowCustomIcons", bool ? "true" : "false");
+			treeContainer.doLayout();
+			treeContainer.validate();
+			treeContainer.repaint();
+		}
+	}
+	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
@@ -4433,6 +4512,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		private List subAdapters;
 		private PreferencesAdapter regionPref;
 		private JCheckBox chkShowTagButtons;
+		private JCheckBox chkAllowCustomIcons;
 
 		/**
 		 * Creates a new EMapDetailsPreferences object.
@@ -4482,7 +4562,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			help.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
 											getString("prefs.datadisplay")));
 
-			GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1.0, 0,
+			GridBagConstraints c = new GridBagConstraints(0, 0, 2, 1, 1.0, 0,
 														  GridBagConstraints.NORTH,
 														  GridBagConstraints.HORIZONTAL,
 														  new Insets(3, 3, 3, 3), 0, 0);
@@ -4495,6 +4575,13 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			chkShowTagButtons = new JCheckBox(getString("prefs.showTagButtons"),
 											  source.isShowingTagButtons());
 			help.add(chkShowTagButtons, c);
+			
+			c.gridy = 1;
+			chkAllowCustomIcons = new JCheckBox(getString("prefs.allowCustomIcons"),
+					  source.isAllowingCustomIcons());
+			help.add(chkAllowCustomIcons, c);
+			
+			
 
 			return help;
 		}
@@ -4523,6 +4610,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		 */
 		public void applyPreferences() {
 			source.setShowTagButtons(chkShowTagButtons.isSelected());
+			source.setAllowCustomIcons(chkAllowCustomIcons.isSelected());
 			regionPref.applyPreferences();
 		}
 
@@ -5410,6 +5498,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("node.alliances", "Alliances");
 			defaultTranslations.put("shipplaner.text", "Ship route scheduler");
 			defaultTranslations.put("prefs.showTagButtons", "Show Tag Buttons");
+			defaultTranslations.put("prefs.allowCustomIcons", "Allow Custom Icons");
 			defaultTranslations.put("addtag.tagvalue.message", "Please enter tag value");
 			defaultTranslations.put("addtag.tagname.message", "Please enter tag name");
 			defaultTranslations.put("addtag.caption", "Add tag");

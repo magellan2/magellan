@@ -841,6 +841,8 @@ public class EresseaOrderCompleter implements Completer {
 
 	void cmpltGib() {
 		addRegionUnits(" ");
+		addRegionShipCommanders(" ");
+		addRegionBuildingOwners(" ");
 	}
 
 	void cmpltGibUID() {
@@ -1346,6 +1348,8 @@ public class EresseaOrderCompleter implements Completer {
 									   " "));
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_ITEMPOOL),
 									   " "));
+		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SCORE),
+		   							   " "));
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SILVERPOOL),
 									   " "));
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_STATISTICS),
@@ -1780,7 +1784,57 @@ public class EresseaOrderCompleter implements Completer {
 			}
 		}
 	}
+	
+	private void addRegionShipCommanders(String postfix) {
+		addRegionShipCommanders(postfix, 0);
+	}
+	
+	private void addRegionShipCommanders(String postfix, int cursorOffset) {
+		if(region != null) {
+			Iterator ships = region.ships().iterator();
+			while(ships.hasNext() == true){
+				Ship s = (Ship)ships.next();
+				if (s!=null){
+					Unit u = s.getOwnerUnit();
+					if (u!=null){
+						if((unit == null) || !u.equals(unit)) {
+							addUnitContainerOwner(s,u, postfix, cursorOffset);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void addUnitContainerOwner(UnitContainer s,Unit u,String postfix, int cursorOffset){
+		String id = u.getID().toString();
+		
+		completions.add(new Completion(s.toString() + " (" + s.getID() + ")", id, postfix, 10, cursorOffset));
+		completions.add(new Completion(s.getID() + " (" + s.toString() + ")", id, postfix, 11, cursorOffset));
+	}
 
+	private void addRegionBuildingOwners(String postfix) {
+		addRegionBuildingOwners(postfix, 0);
+	}
+	
+	private void addRegionBuildingOwners(String postfix, int cursorOffset) {
+		if(region != null) {
+			Iterator buildings = region.buildings().iterator();
+			while(buildings.hasNext() == true){
+				Building b = (Building)buildings.next();
+				if (b!=null){
+					Unit u = b.getOwnerUnit();
+					if (u!=null){
+						if((unit == null) || !u.equals(unit)) {
+							addUnitContainerOwner(b,u, postfix, cursorOffset);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
 	private void addUnitItems(String postfix) {
 		for(Iterator items = unit.getItems().iterator(); items.hasNext();) {
 			Item i = (Item) items.next();

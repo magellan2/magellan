@@ -840,7 +840,8 @@ public class Regions {
 		for(Iterator iter = r1.borders().iterator(); iter.hasNext();) {
 			Border b = (Border) iter.next();
 			if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
-					   (b.direction == dir1.getDir())) {
+					   (b.direction == dir1.getDir())
+					    && b.buildRatio==100 ) {
 				border1OK = true;
 				break;
 			}
@@ -859,7 +860,8 @@ public class Regions {
 		for(Iterator iter = r2.borders().iterator(); iter.hasNext();) {
 			Border b = (Border) iter.next();
 			if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
-					   (b.direction == dir1.getDir())) {
+					   (b.direction == dir1.getDir())
+					    && b.buildRatio==100) {
 				border2OK = true;
 				break;
 			}

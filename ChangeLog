@@ -1,3 +1,11 @@
+2007-05-09  Fiete  <Fiete@users.sourceforge.net>
+    * completeRoadConnection now accepts only finished roads
+    * added OPTION SCORE
+    * added weight of Ghoule to rules.cr
+    * added Custom Icons for units and factions, incl Optionsetting
+    * added duplicate pupil warning for teachers
+    * added Shipowners and Buildingowners to GIVE Completion
+
 2007-05-03  Fiete  <Fiete@users.sourceforge.net>
 	* added weight of skeletons and zombies to the rules.cr
 	* added icons for: upkeep, buildingcost,teacher,pupil,mahlstrom
