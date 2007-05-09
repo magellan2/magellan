@@ -679,6 +679,10 @@ RACE "Skelette"
 "Skelette";name
 5;weight
 
+RACE "Ghoule"
+"Ghoule";name
+10;weight
+
 ITEM "Silber"
 "Silber";name
 0.01;weight

@@ -321,6 +321,9 @@ public class EresseaConstants {
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_ROUTE = "ROUTE";
+	
+	/** TODO: DOCUMENT ME! */
+	public static final String O_SCORE = "SCORE";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String O_SEED = "SEED";

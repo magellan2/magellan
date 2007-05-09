@@ -246,8 +246,25 @@ public class ImageFactory implements GameDataListener {
 	 */
 	public boolean existImageIcon(String imageName) {
 		Image img = loadImage("images/icons/" + imageName);
-
 		return (img == null) ? false : true;
+	}
+	
+	/**
+	 * Checks, if icon exeeds given max sizes
+	 * @param imageName the name of the icon to check
+	 * @return true, if a loadImage order would be succesfull...
+	 * @author Fiete
+	 * 
+	 */
+	public boolean imageIconSizeCheck(String imageName,int maxHeight, int maxWidth) {
+		Image img = loadImage("images/icons/" + imageName);
+		if (img!=null){
+			int w = img.getWidth(null);
+			int h = img.getHeight(null);
+			if (w>maxWidth || h>maxHeight){
+				return false;
+			} else {return true;}
+		} else {return false;}
 	}
 	
 	

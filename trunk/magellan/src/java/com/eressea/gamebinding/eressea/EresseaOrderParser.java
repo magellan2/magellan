@@ -1883,6 +1883,7 @@ public class EresseaOrderParser implements OrderParser {
 			   t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_SILVERPOOL)) ||
 			   t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_STATISTICS)) ||
 			   t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_ZIPPED)) ||
+			   t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_SCORE)) ||
 			   t.equalsToken(Translations.getOrderTranslation(EresseaConstants.O_TEMPLATE))) {
 			retVal = readOptionOption(t);
 		} else {
