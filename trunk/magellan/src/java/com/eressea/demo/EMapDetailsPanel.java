@@ -1953,7 +1953,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 									  Collection expandableNodes) {
 		
 		// display custom Unit Icon ?
-		String customUnitIconFileName = "/custom/units/" + u.toString(false);
+		String customUnitIconFileName = "custom/units/" + u.toString(false);
 		if (this.isAllowingCustomIcons() &&  getMagellanContext().getImageFactory().existImageIcon(customUnitIconFileName)){
 			DefaultMutableTreeNode customUnitIconNode = null;
 			if (getMagellanContext().getImageFactory().imageIconSizeCheck(customUnitIconFileName,40,40)){ 
@@ -2056,7 +2056,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 																						  "faction"));
 		} else {
 			// custom faction icon ?
-			String customFactionIconFileName = "/custom/factions/" + f.getID();
+			String customFactionIconFileName = "custom/factions/" + f.getID();
 			if (this.isAllowingCustomIcons() && getMagellanContext().getImageFactory().existImageIcon(customFactionIconFileName)){
 				if (getMagellanContext().getImageFactory().imageIconSizeCheck(customFactionIconFileName,40,40)){ 
 					fNode = createSimpleNode(f.toString(), customFactionIconFileName);
