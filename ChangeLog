@@ -1,4 +1,7 @@
 2007-05-09  Fiete  <Fiete@users.sourceforge.net>
+	* fixed small bug in Regions.getPath - last mile was not calculated
+
+2007-05-09  Fiete  <Fiete@users.sourceforge.net>
     * completeRoadConnection now accepts only finished roads
     * added OPTION SCORE
     * added weight of Ghoule to rules.cr

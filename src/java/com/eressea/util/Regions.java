@@ -397,12 +397,15 @@ public class Regions {
 		curRegion = (Region) regions.get(dest);
 		curCoord = dest;
 		path.add(curRegion);
-
 		while((curRegion != null) && (curCoord != null) && !curCoord.equals(start)) {
 			Double dist = (Double) distances.get(curCoord);
 
 			if(dist != null) {
-				double minDistance = dist.doubleValue();
+				// double minDistance = dist.doubleValue();
+				// now add the last mile at minimum dist
+				double minDistance = dist.doubleValue() + 1;
+				
+				
 				CoordinateID closestNbCoord = null;
 				Map neighbours = getAllNeighbours(regions, curCoord, excludedRegionTypes);
 				neighbours.remove(curCoord);
@@ -414,7 +417,8 @@ public class Regions {
 
 					if(nbDist != null) {
 						double curDistance = nbDist.doubleValue();
-
+						// add the last mile, Fiete 20070531
+						curDistance += getDistance(curRegion, curNb, true);
 						if(curDistance < minDistance) {
 							minDistance = curDistance;
 							closestNbCoord = curNbCoord;
@@ -841,7 +845,7 @@ public class Regions {
 			Border b = (Border) iter.next();
 			if(com.eressea.util.Umlaut.normalize(b.type).equals("STRASSE") &&
 					   (b.direction == dir1.getDir())
-					    && b.buildRatio==100 ) {
+					   && b.buildRatio==100) {
 				border1OK = true;
 				break;
 			}
