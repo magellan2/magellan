@@ -54,7 +54,7 @@ public class FileType {
 	protected boolean readonly = false;
 	protected boolean createBackup = true;
 
-	FileType(File aFile, boolean readonly) throws IOException {
+	public FileType(File aFile, boolean readonly) throws IOException {
 		if(aFile == null) {
 			throw new IOException();
 		}
