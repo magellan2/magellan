@@ -364,11 +364,14 @@ public class EresseaOrderCompleter implements Completer {
 
 		completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_SHOW),
 									   " "));
-
+		// units destroying their own building or ship or...
 		if(((unit.getBuilding() != null) && (unit.getBuilding().getOwnerUnit() != null) &&
 			   (unit.getBuilding().getOwnerUnit().equals(unit))) ||
 			   ((unit.getShip() != null) && (unit.getShip().getOwnerUnit() != null) &&
-			   (unit.getShip().getOwnerUnit().equals(unit)))) {
+			   (unit.getShip().getOwnerUnit().equals(unit))) ||
+			   // ... vicious warriors destroying other peoples buildings or ships
+			   (unit.getModifiedBuilding()!=null && unit.getFaction()!=unit.getModifiedBuilding().getOwnerUnit().getFaction()) || 
+			   (unit.getModifiedShip()!=null && unit.getFaction()!=unit.getModifiedShip().getOwnerUnit().getFaction())) {
 			completions.add(new Completion(Translations.getOrderTranslation(EresseaConstants.O_DESTROY)));
 		} else {
 			if(hasSkill(unit, EresseaConstants.S_STRASSENBAU) && (region != null) &&

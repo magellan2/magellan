@@ -1,3 +1,11 @@
+2007-08-09  Fiete  <stm_@users.sourceforge.net>
+	* fixed border (-1%) bug 
+	* don't display handle of top level tree nodes in overview (optional, bug #59)
+	* "all report files" is now default for open cr/save cr file type selection
+	* added order completion for destroy for entering, non-owning units (bug #39)
+	* added a tip of the day
+	* changed unit context menu (bug #9)
+	
 2007-05-09  Fiete  <Fiete@users.sourceforge.net>
 	* fixed small bug in Regions.getPath - last mile was not calculated
 

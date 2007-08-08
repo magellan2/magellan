@@ -96,8 +96,10 @@ public class UnitContextMenu extends JPopupMenu {
 		this.unit = unit;
 		this.data = data;
 		this.dispatcher = dispatcher;
-
-		init(selectedObjects);
+		if (selectedObjects.contains(unit))
+			init(selectedObjects);
+		else
+			init(Collections.singletonList(unit));
 	}
 
 	private void init(Collection selectedObjects) {

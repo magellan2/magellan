@@ -49,4 +49,14 @@ public class Scheme extends NamedObject {
 			newScheme.setName(curScheme.getName());
 		}
 	}
+       
+       /**
+        * Returns the coordinate of this region. This method is only a type-safe short cut for
+        * retrieving and converting the ID object of this region.
+        *
+        * @return 
+        */
+       public CoordinateID getCoordinate() {
+               return (CoordinateID) this.getID();
+}
 }
