@@ -270,10 +270,10 @@ public class TipOfTheDay extends InternationalizedDialog implements ActionListen
 				}
 			}
 
-			String nonS = settings.getProperty("TipOfTheDay.Tips");
+			String nonShownProperty = settings.getProperty("TipOfTheDay.Tips");
 
-			if((nonS != null) && !nonS.equals("")) {
-				StringTokenizer st = new StringTokenizer(nonS, ",");
+			if((nonShownProperty != null) && !nonShownProperty.equals("")) {
+				StringTokenizer st = new StringTokenizer(nonShownProperty, ",");
 
 				while(st.hasMoreTokens()) {
 					try {
@@ -459,28 +459,30 @@ public class TipOfTheDay extends InternationalizedDialog implements ActionListen
 			defaultTranslations.put("title", "Tip Of The Day");
 			defaultTranslations.put("showTips", "Show tips at startup");
 			defaultTranslations.put("tip.eressea", "Eressea Tip:");
+			defaultTranslations.put("tip.obsolete.11",
+			"If there are too many icons for skills and items in the region overview it may happen that you cannot see the unit's name. In this case you may turn of the icons by choosing the appropriate icon view state from the 'Tree - Regions' menu. You can turn them on or off there.");
 			defaultTranslations.put("tip.10",
+					"If you experience strange behaviour and reports do not get saved properly sometimes, it might be a memory problem. Try starting Magellan with \"java -Xmx 256M -jar magellan.jar\" and read the FAQ.");
+			defaultTranslations.put("tip.2",
 									"The fastest way to load the last report is the key combo <u><i>CTRL-o ALT-o</i></u>.");
 			defaultTranslations.put("tip.9",
 									"ETIPYou can directly write to other units, even faction disguised ones.  With an E-Mail to <i><u>einheit-NUMBER@eressea.kn-bremen.de</u></i> you send a message to the chieftain of the faction the unit belongs to, i.e.: <u><i>einheit-wegi@eressea.kn-bremen.de</i></u>");
 			defaultTranslations.put("tip.8",
-									"Bugs or Feature-Requests can be told at <i>http://eressea.upb.de/magellan/bugs</i>.");
+									"Bugs or Feature-Requests can be told at <i>http://magellan-client.sourceforge.net/mantis/</i>.");
 			defaultTranslations.put("tip.7",
-									"To always have known spells and potions in your report you need to add the report of the last week to the current report and save them together.");
+									"To always have known spells and potions in your report you need to add the report of the current week to the report of the last week and save them together.");
 			defaultTranslations.put("tip.6",
-									"If you want to have a look on the changes of a week just add the report of an older week with <u><i>Add...</i></u> to your actual report.");
+									"To see the changes (in resources etc.) of a week just add the report of the current week with <u><i>Add...</i></u> to your old report.");
 			defaultTranslations.put("tip.5",
 									"If you choose <i>\"Skip units with unconfirmed orders\"</i> at the order save dialog, you can send orders for only a part of the units. The game server will use only orders of confirmed units, the orders of other units will remain.");
 			defaultTranslations.put("tip.4",
 									"Magellan is able to send your orders per Mail. You can find this ability under \"Files - Save orders\" by choosing \"E-Mail\".");
 			defaultTranslations.put("tip.3",
 									"If you altered the Magellan options but do not want to save them during quitting you can choose \"Abort\" from the Files menu.");
-			defaultTranslations.put("tip.2",
-									"If there are too many icons for skills and items in the region overview it may happen that you cannot see the unit's name. In this case you may turn of the icons by choosing the appropriate icon view state from the 'Tree - Regions' menu. You can turn them on or off there.");
 			defaultTranslations.put("tip.1",
 									"Magellan is able to open your report out of a zip archive. You just have to choose <i>Zip</i> from the file-type box at the open dialog.");
 			defaultTranslations.put("tip.0",
-									"To mark regions on the map simply hold the <i><u>Shift<u><i>-Key and click at the region(s).");
+									"To mark regions on the map, simply hold the <i><u>Shift<u><i>-key and click at the region(s).");
 			defaultTranslations.put("numTips", "11");
 			defaultTranslations.put("didyouknow", "Did you know...");
 			defaultTranslations.put("nextTip", "Next tip");
