@@ -125,7 +125,10 @@ public class MagellanUndoManager extends UndoManager {
 	 * @return TODO: DOCUMENT ME!
 	 */
 	public synchronized boolean addEdit(UndoableEdit e) {
-		// TODO: implement undo/redo history?
+	    // FIXME stm 10.08.07 This class is broken, so we deactivate it for the time being
+	    if (true) return false;
+
+	    // TODO: implement undo/redo history?
 		// String oldUndo=getUndoPresentationName(),oldRedo=getRedoPresentationName();
 		boolean b = super.addEdit(e);
 
