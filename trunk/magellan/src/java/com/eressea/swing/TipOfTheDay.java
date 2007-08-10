@@ -76,13 +76,13 @@ public class TipOfTheDay extends InternationalizedDialog implements ActionListen
 	protected static final String NEXT = "next";
 
 	/** TODO: DOCUMENT ME! */
-	public static final String HTML_START = "<html><body style=\"margin-left: 40px;margin-top: 15px\"><font color=#4f3f30><b>";
+	public static final String HTML_START = "<html><body style=\"margin-left: 20px;margin-top: 15px\"><font color=#4f3f30><b>";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String HTML_END = "</b></font></body></html>";
 
 	/** TODO: DOCUMENT ME! */
-	public static final String E_HTML_START = "<html><body style=\"margin-left: 40px;margin-top: 2px\"><font color=#4f3f30><b>";
+	public static final String E_HTML_START = "<html><body style=\"margin-left: 20px;margin-top: 2px\"><font color=#4f3f30><b>";
 
 	/** TODO: DOCUMENT ME! */
 	public static final String E_HTML_END = "</b></font></body></html>";
