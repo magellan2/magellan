@@ -16,6 +16,7 @@ package com.eressea.swing.completion;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -112,12 +113,12 @@ public class TempUnitDialog extends InternationalizedDialog implements ActionLis
 		con.gridx = 1;
 		con.weightx = 1;
 		con.fill = GridBagConstraints.HORIZONTAL;
-		c.add(id = new JTextField(5), con);
+		c.add(id = new JTextField(15), con);
 		id.addActionListener(this);
 		con.gridy = 1;
 		nameCon = new JPanel(new BorderLayout());
 		((JPanel) nameCon).setPreferredSize(id.getPreferredSize());
-		nameCon.add(name = new JTextField(20), BorderLayout.CENTER);
+		nameCon.add(name = new JTextField(100), BorderLayout.CENTER);
 		c.add(nameCon, con);
 		name.addActionListener(this);
 
@@ -201,6 +202,8 @@ public class TempUnitDialog extends InternationalizedDialog implements ActionLis
 			if(s.equalsIgnoreCase("true")) {
 				open = true;
 			}
+		} else {
+			open = true;
 		}
 
 		if(open) {

@@ -175,8 +175,7 @@ import com.eressea.util.logging.Logger;
  * @author $author$
  * @version $Revision$
  */
-public class Client extends JFrame implements ShortcutListener,
-        PreferencesFactory {
+public class Client extends JFrame implements ShortcutListener, PreferencesFactory {
     private static final Logger log = Logger.getInstance(Client.class);
 
     // private GameData data = null;
@@ -197,7 +196,7 @@ public class Client extends JFrame implements ShortcutListener,
      */
     private File dataFile = null;
 
-    private boolean everLoadedReport = false; // indicates that the user
+    protected boolean everLoadedReport = false; // indicates that the user
                                                 // loaded a report at least once
                                                 // in order to decide about
                                                 // showing a save dialog when
