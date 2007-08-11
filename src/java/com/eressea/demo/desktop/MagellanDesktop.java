@@ -838,22 +838,22 @@ public class MagellanDesktop extends JPanel implements WindowListener, ActionLis
 	 */
 	protected List createStandardSplitSet() {
 		List st = CollectionFactory.createArrayList(22);
-		st.add("SPLIT 400 H");
-		st.add("SPLIT 200 H");
-		st.add("SPLIT 400 V");
-		st.add("SPLIT 300 V");
+		st.add("SPLIT 0.73 H");
+		st.add("SPLIT 0.32 H");
+		st.add("SPLIT 0.63 V");
+		st.add("SPLIT 0.86 V");
 		st.add("COMPONENT OVERVIEW");
 		st.add("COMPONENT HISTORY");
 		st.add("/SPLIT");
 		st.add("COMPONENT MINIMAP");
 		st.add("/SPLIT");
-		st.add("SPLIT 400 V");
+		st.add("SPLIT 0.73 V");
 		st.add("COMPONENT MAP");
 		st.add("COMPONENT MESSAGES");
 		st.add("/SPLIT");
 		st.add("/SPLIT");
-		st.add("SPLIT 400 V");
-		st.add("SPLIT 200 V");
+		st.add("SPLIT 0.5 V");
+		st.add("SPLIT 0.23 V");
 		st.add("COMPONENT NAME&DESCRIPTION");
 		st.add("COMPONENT DETAILS");
 		st.add("/SPLIT");
