@@ -1,3 +1,6 @@
+2007-08-10  stm  <stm_@users.sourceforge.net>
+	* Added UnicodeReader, BOM support
+
 2007-08-12  Thoralf (thoralf@m84.de)
     * Checking the encoding in CR Reports (Read/Write)
     * pay attention during CR-write-out about loaded-CR encoding.
@@ -8,7 +11,10 @@
     * Open the Details View of the New Temp Unit dialog by default
     * Fixed a textual bug in the Tip of the Day buttons (HTML entities)
 
-2007-08-09  Fiete  <stm_@users.sourceforge.net>
+2007-08-10  stm  <stm_@users.sourceforge.net>
+  * deactivated undo
+  
+2007-08-09  stm  <stm_@users.sourceforge.net>
 	* fixed border (-1%) bug 
 	* don't display handle of top level tree nodes in overview (optional, bug #59)
 	* "all report files" is now default for open cr/save cr file type selection
