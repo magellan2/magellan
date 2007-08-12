@@ -85,6 +85,7 @@ public class CRWriter extends BufferedWriter {
 	private static final Logger log = Logger.getInstance(CRWriter.class);
 	private boolean useTildesForQuotes = false;
 	private Comparator sortIndexComparator = new SortIndexComparator(IDComparator.DEFAULT);
+	private String encoding = FileType.DEFAULT_ENCODING;
 
 	// incremented whenever a unit is written, can then be compared
 	// to the total number of units in the game data
@@ -387,6 +388,7 @@ public class CRWriter extends BufferedWriter {
 		// The Echecker of German Atlantis has problems with the locale line
 		// so we check the game name
 		if (!world.name.startsWith("GAV")){
+		    writeQuotedTag(encoding,"charset");
 			if(world.getLocale() != null) {
 				writeQuotedTag(world.getLocale().toString(), "locale");
 			}
@@ -2153,8 +2155,9 @@ public class CRWriter extends BufferedWriter {
 	 *
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
-	public CRWriter(FileType fileType) throws IOException {
-		super(fileType.createWriter());
+	public CRWriter(FileType fileType, String encoding) throws IOException {
+		super(fileType.createWriter(encoding));
+		this.encoding = encoding;
 	}
 
 	private boolean includeRegions = true;
