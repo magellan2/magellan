@@ -31,7 +31,7 @@ public class WriteGameData extends TestCase {
 		// System.out.println("Writing file "+file);
 		FileType ft = FileTypeFactory.singleton().createFileType(file, false);
 		ft.setCreateBackup(false);
-		CRWriter crw = new CRWriter(ft);
+		CRWriter crw = new CRWriter(ft,data.encoding);
 		crw.write(data);
 		crw.close();
 	}

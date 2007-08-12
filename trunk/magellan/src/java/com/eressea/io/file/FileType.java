@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -159,7 +160,8 @@ public class FileType {
 	 * @throws IOException
 	 */
 	public Reader createReader() throws IOException {
-		return new BufferedReader(FileType.createEncodingReader(createInputStream()));
+	    String encoding = getEncoding();
+		return new BufferedReader(FileType.createEncodingReader(createInputStream(),encoding));
 	}
 
 	/**
@@ -168,9 +170,8 @@ public class FileType {
 	 * @return a Writer of the underlying File.
 	 *
 	 * @throws IOException If file is marked as readonly or  another IOException occured.
-	 * @throws ReadOnlyException TODO: DOCUMENT ME!
 	 */
-	public Writer createWriter() throws IOException {
+	public Writer createWriter(String encoding) throws IOException {
 		if(readonly) {
 			throw new ReadOnlyException();
 		}
@@ -180,7 +181,7 @@ public class FileType {
             log.info("Created backupfile " + backup +" (FileType.java)");
 		}
 
-		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream()));
+		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream(),encoding));
 	}
 
 	/**
@@ -214,8 +215,8 @@ public class FileType {
 	 *
 	 * @throws IOException
 	 */
-	public static Reader createEncodingReader(InputStream is) throws IOException {
-		return new InputStreamReader(is, DEFAULT_ENCODING);
+	public static Reader createEncodingReader(InputStream is, String encoding) throws IOException {
+		return new InputStreamReader(is, encoding);
 	}
 
 	/**
@@ -227,10 +228,10 @@ public class FileType {
 	 *
 	 * @throws IOException
 	 */
-	public static OutputStreamWriter createEncodingWriter(OutputStream os)
+	public static OutputStreamWriter createEncodingWriter(OutputStream os, String encoding)
 												   throws IOException
 	{
-		return new OutputStreamWriter(os, DEFAULT_ENCODING);
+		return new OutputStreamWriter(os, encoding);
 	}
 
 	/** A String representation of the default encoding. */
@@ -306,4 +307,37 @@ public class FileType {
 	 */
 	public static class ReadOnlyException extends IOException {
 	}
+
+  /**
+   * This method tries to find the encoding tag in
+   * the CR file.
+   */
+  public String getEncoding() {
+    try {
+      
+      InputStream stream = createInputStream();
+      LineNumberReader reader = new LineNumberReader(new InputStreamReader(stream));
+      
+      // read at least 5 lines
+      String line;
+      String encoding = DEFAULT_ENCODING;
+      int counter = 0;
+      while ((line = reader.readLine()) != null) {
+        if (line.contains(";charset")) {
+          // found line with charset. Format is "<encoding>";charset
+          encoding = line.substring(1,line.indexOf(";charset")-1);
+        }
+        counter++;
+        if (counter >=5) break;
+      }
+      
+      stream.close();
+      return encoding;
+      
+    } catch (Exception exception) {
+      log.error(exception);
+    }
+    return null;
+  }
+		
 }

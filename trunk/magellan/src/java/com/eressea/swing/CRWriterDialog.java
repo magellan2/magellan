@@ -54,6 +54,7 @@ import com.eressea.Ship;
 import com.eressea.Spell;
 import com.eressea.Unit;
 import com.eressea.io.cr.CRWriter;
+import com.eressea.io.file.FileType;
 import com.eressea.io.file.FileTypeFactory;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.PropertiesHelper;
@@ -189,7 +190,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 					try {
 						write(FileTypeFactory.singleton().createFileType(outputFile, false)
-											 .createWriter());
+											 .createWriter(FileType.DEFAULT_ENCODING));
 						quit();
 					} catch(IOException ioe) {
 						log.error(ioe);

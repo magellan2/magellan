@@ -52,6 +52,9 @@ public abstract class GameData implements Cloneable {
 
 	/** The name of the game. */
 	public final String name;
+	
+	/** encoding */
+	public String encoding = FileType.DEFAULT_ENCODING;
 
 	/**
 	 * TODO: Comment for <code>ownerFaction</code>
