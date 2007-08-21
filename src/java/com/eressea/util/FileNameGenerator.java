@@ -40,7 +40,7 @@ import com.eressea.swing.preferences.PreferencesFactory;
 public class FileNameGenerator implements PreferencesFactory {
 	
 	String ordersSaveFileNamePattern = null;
-	public static final String defaultPattern = System.getProperty("user.home")+"{round}-{factionnr}.txt";
+	public static final String defaultPattern = System.getProperty("user.home")+System.getProperty("file.separator")+"{round}-{factionnr}.txt";
 	
 	static Properties settings;
 	static FileNameGenerator gen;
