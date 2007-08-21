@@ -50,7 +50,7 @@ public class Logger {
 
 	/** AWT messages are printed for debugging awt purposes */
 	public static final int AWT = 6;
-	private static int verboseLevel = INFO;
+	private static int verboseLevel = WARN;
 	private static Object awtLogger = null;
 	private static boolean searchAwtLogger = true;
 

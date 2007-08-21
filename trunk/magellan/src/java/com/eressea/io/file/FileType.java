@@ -71,7 +71,7 @@ public class FileType {
 	/**
 	 * Sets if file is readonly
 	 *
-	 * @param readonly TODO: DOCUMENT ME!
+	 * @param readonly
 	 */
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly;
@@ -175,6 +175,7 @@ public class FileType {
 	 * @return a Writer of the underlying File.
 	 *
 	 * @throws IOException If file is marked as readonly or  another IOException occured.
+	 * @throws ReadOnlyException DOCUMENT-ME
 	 */
 	public Writer createWriter(String encoding) throws IOException {
 		if(readonly) {
