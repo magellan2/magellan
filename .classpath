@@ -13,5 +13,8 @@
 	<classpathentry kind="lib" path="src/release/lib/skins/xplookandfeel.jar"/>
 	<classpathentry kind="lib" path="src/release/lib/jh.jar"/>
 	<classpathentry kind="lib" path="src/release/lib/looks-1.3b1.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/activation.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/commons-email-1.0.jar"/>
+	<classpathentry kind="lib" path="src/release/lib/mail.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>
