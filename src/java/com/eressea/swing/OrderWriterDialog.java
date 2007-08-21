@@ -56,9 +56,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.MultiPartEmail;
 
 import com.eressea.EntityID;
 import com.eressea.Faction;
@@ -76,8 +80,6 @@ import com.eressea.util.OrderWriter;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.comparator.NameComparator;
 import com.eressea.util.logging.Logger;
-
-import org.apache.tools.mail.MailMessage;
 
 /**
  * A GUI for writing orders to a file or copy them to the clipboard. This class can be used as a
@@ -101,10 +103,20 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	private JComboBox cmbFaction = null;
 	private JComboBox cmbGroup = null;
 	private JTextField txtMailServer = null;
+  private JTextField txtMailServerPort = null;
 	private JTextField txtMailRecipient = null;
 	private JTextField txtMailSender = null;
 	private JTextField txtMailSubject = null;
+  private JTextField txtServerUsername = null;
+  private JTextField txtServerPassword = null;
+  private JCheckBox chkUseAuth = null;
+  private JCheckBox chkAskPassword = null;
+ 
 	private JButton sendButton;
+  private JLabel lblServerUsername;
+  private JLabel lblServerPassword;
+  private JLabel lblMailRecipient;
+  private JLabel lblMailSubject;
 
 	/**
 	 * Create a stand-alone instance of OrderWriterDialog.
@@ -171,8 +183,9 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 				}
 			});
 		setContentPane(getMainPane());
-		setTitle(getString("window.title"));
-		setSize(550, 580);
+    setTitle(getString("window.title"));
+    pack();
+//    setSize(550, 580);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = Integer.parseInt(settings.getProperty("OrderWriterDialog.x",
@@ -305,8 +318,8 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	}
 
 	private Container getControlsPanel() {
-		int fixedWidth = Integer.parseInt(settings.getProperty("OrderWriter.fixedWidth", "-76"));
-		chkFixedWidth = new JCheckBox(getString("chk.wordwrap.caption"), fixedWidth > 0);
+    int fixedWidth = Integer.parseInt(settings.getProperty("OrderWriter.fixedWidth", "76"));
+    chkFixedWidth = new JCheckBox(getString("chk.wordwrap.caption"), fixedWidth > 0);
 		chkFixedWidth.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					txtFixedWidth.setEnabled(chkFixedWidth.isSelected());
@@ -465,21 +478,69 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 										   getString("border.outputfile")));
 		pnlFile.add(cmbOutputFile, BorderLayout.CENTER);
 		pnlFile.add(btnOutputFile, BorderLayout.EAST);
-
+    pnlFile.setPreferredSize(new Dimension(150,cmbOutputFile.getPreferredSize().height*2));
 		return pnlFile;
 	}
 
 	private Container getMailPanel() {
-		JLabel lblMailServer = new JLabel(getString("lbl.smtpserver"));
+		JLabel lblMailServer = new JLabel(getString("lbl.smtpserver.name"));
 		txtMailServer = new JTextField(settings.getProperty("OrderWriter.mailServer", "smtp.bar.net"),
-									   20);
+				20);
 		lblMailServer.setLabelFor(txtMailServer);
 
-		JLabel lblMailRecipient = new JLabel(getString("lbl.recipient"));
+		JLabel lblMailServerPort = new JLabel(getString("lbl.smtpserver.port"));
+		txtMailServerPort = new JTextField(settings.getProperty("OrderWriter.mailServerPort", "25"),4);
+		lblMailServerPort.setLabelFor(txtMailServerPort);
+
+		lblServerUsername = new JLabel(getString("lbl.smtpserver.user"));
+		txtServerUsername = new JTextField(settings.getProperty("OrderWriter.serverUsername", ""),20);
+		lblServerUsername.setLabelFor(txtServerUsername);
+
+		lblServerPassword = new JLabel(getString("lbl.smtpserver.password"));
+		txtServerPassword = new JTextField(settings.getProperty("OrderWriter.serverPassword", ""),20);
+		lblServerPassword.setLabelFor(txtServerPassword);
+
+
+		chkAskPassword = new JCheckBox(getString("chk.askpassword.caption"),(Boolean.valueOf(settings.getProperty("OrderWriter.askPassword","true"))).booleanValue());
+		chkAskPassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int answer=0;
+				if (!chkAskPassword.isSelected()){
+					answer=JOptionPane.showConfirmDialog(chkAskPassword, getString("msg.passwordwarning"),"",JOptionPane.YES_NO_OPTION);
+				}
+				if (answer==0){
+					lblServerPassword.setEnabled(!chkAskPassword.isSelected() || !chkAskPassword.isEnabled());
+					txtServerPassword.setEnabled(!chkAskPassword.isSelected() || !chkAskPassword.isEnabled());
+				}else{
+					chkAskPassword.setSelected(true);
+				}
+				if (chkAskPassword.isSelected())
+					txtServerPassword.setText("");
+			}
+		});
+
+		chkUseAuth = new JCheckBox(getString("chk.useauth.caption"),(Boolean.valueOf(settings.getProperty("OrderWriter.useAuth","false"))).booleanValue());
+		chkUseAuth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblServerUsername.setEnabled(chkUseAuth.isSelected() && chkUseAuth.isEnabled());
+				lblServerPassword.setEnabled(chkUseAuth.isSelected() && chkUseAuth.isEnabled() && !chkAskPassword.isSelected());
+				txtServerUsername.setEnabled(chkUseAuth.isSelected() && chkUseAuth.isEnabled());
+				txtServerPassword.setEnabled(chkUseAuth.isSelected() && chkUseAuth.isEnabled() && !chkAskPassword.isSelected());
+				chkAskPassword.setEnabled(chkUseAuth.isSelected() && chkUseAuth.isEnabled());
+			}
+		});
+		lblServerUsername.setEnabled(chkUseAuth.isSelected());
+		lblServerPassword.setEnabled(chkUseAuth.isSelected()  && !chkAskPassword.isSelected());
+		txtServerUsername.setEnabled(chkUseAuth.isSelected());
+		txtServerPassword.setEnabled(chkUseAuth.isSelected()  && !chkAskPassword.isSelected());
+		chkAskPassword.setEnabled(chkUseAuth.isSelected() );
+
+
+		lblMailRecipient = new JLabel(getString("lbl.recipient"));
 
 		// pavkovic 2002.01.23: enno wanted this change...
 		String email = settings.getProperty("OrderWriter.mailRecipient",
-											"eressea-server@eressea.upb.de");
+		"eressea-server@eressea.upb.de");
 
 		if(email.toLowerCase().equals("eressea@kn-bremen.de")) {
 			email = "eressea-server@eressea.upb.de";
@@ -495,88 +556,49 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		txtMailRecipient = new JTextField(email, 20);
 
-		lblMailRecipient.setLabelFor(txtMailServer);
+		lblMailRecipient.setLabelFor(txtMailRecipient);
 
 		JLabel lblMailSender = new JLabel(getString("lbl.sender"));
 		txtMailSender = new JTextField(settings.getProperty("OrderWriter.mailSender", "foo@bar.net"),
-									   20);
-		lblMailSender.setLabelFor(txtMailServer);
+				20);
+		lblMailSender.setLabelFor(txtMailSender);
 
-		JLabel lblMailSubject = new JLabel(getString("lbl.subject"));
+		lblMailSubject = new JLabel(getString("lbl.subject"));
 		txtMailSubject = new JTextField(settings.getProperty("OrderWriter.mailSubject",
-															 "Eressea Befehle"), 20);
+		"Eressea Befehle"), 20);
 		lblMailSubject.setLabelFor(txtMailSubject);
 
 		JPanel pnlMail = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		pnlMail.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(),
-										   getString("border.mailoptions")));
+				getString("border.mailoptions")));
 
 		chkUseSettingsFromCR = new JCheckBox(getString("chk.usesettingsfromcr.caption"),
-											 (Boolean.valueOf(settings.getProperty("OrderWriter.useSettingsFromCr",
-																			   "true"))).booleanValue());
+				(Boolean.valueOf(settings.getProperty("OrderWriter.useSettingsFromCr",
+				"true"))).booleanValue());
 		chkUseSettingsFromCR.setEnabled((data != null) && (data.mailTo != null) &&
-										(data.mailSubject != null));
+				(data.mailSubject != null));
 		chkUseSettingsFromCR.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					txtMailRecipient.setEnabled(!chkUseSettingsFromCR.isEnabled() ||
-												!chkUseSettingsFromCR.isSelected());
-					txtMailSubject.setEnabled(!chkUseSettingsFromCR.isEnabled() ||
-											  !chkUseSettingsFromCR.isSelected());
-				}
-			});
+			public void actionPerformed(ActionEvent e) {
+				txtMailRecipient.setEnabled(!chkUseSettingsFromCR.isEnabled() ||
+						!chkUseSettingsFromCR.isSelected());
+				txtMailSubject.setEnabled(!chkUseSettingsFromCR.isEnabled() ||
+						!chkUseSettingsFromCR.isSelected());
+			}
+		});
 		txtMailRecipient.setEnabled(!chkUseSettingsFromCR.isEnabled() ||
-									!chkUseSettingsFromCR.isSelected());
+				!chkUseSettingsFromCR.isSelected());
 		txtMailSubject.setEnabled(!chkUseSettingsFromCR.isEnabled() ||
-								  !chkUseSettingsFromCR.isSelected());
+				!chkUseSettingsFromCR.isSelected());
 
 		chkCCToSender = new JCheckBox(getString("chk.cctosender.caption"),
-									  (Boolean.valueOf(settings.getProperty("OrderWriter.CCToSender",
-																		"true"))).booleanValue());
+				(Boolean.valueOf(settings.getProperty("OrderWriter.CCToSender",
+				"true"))).booleanValue());
+
 
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		pnlMail.add(lblMailSender, c);
-
-		c.anchor = GridBagConstraints.CENTER;
-		c.gridx = 1;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.2;
-		c.weighty = 0.0;
-		pnlMail.add(txtMailSender, c);
-
-		c.anchor = GridBagConstraints.CENTER;
-		c.gridx = 2;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		pnlMail.add(chkCCToSender, c);
-
-		c.anchor = GridBagConstraints.WEST;
-		c.gridx = 0;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		pnlMail.add(lblMailServer, c);
-
-		c.anchor = GridBagConstraints.CENTER;
-		c.gridx = 1;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.2;
-		c.weighty = 0.0;
-		pnlMail.add(txtMailServer, c);
-
-		c.anchor = GridBagConstraints.WEST;
-		c.gridx = 0;
-		c.gridy = 2;
 		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
@@ -584,7 +606,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;
-		c.gridy = 2;
+//		c.gridy = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.2;
 		c.weighty = 0.0;
@@ -592,7 +614,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 2;
-		c.gridy = 2;
+//		c.gridy = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
@@ -600,7 +622,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy++;
 		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
@@ -608,11 +630,115 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1;
-		c.gridy = 3;
+//		c.gridy = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.2;
 		c.weighty = 0.0;
 		pnlMail.add(txtMailSubject, c);
+
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(lblMailSender, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+//		c.gridy = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.2;
+		c.weighty = 0.0;
+		pnlMail.add(txtMailSender, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+//		c.gridy = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(chkCCToSender, c);
+
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(lblMailServer, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+//		c.gridy = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.2;
+		c.weighty = 0.0;
+		pnlMail.add(txtMailServer, c);
+
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(lblMailServerPort, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+//		c.gridy = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.2;
+		c.weighty = 0.0;
+		pnlMail.add(txtMailServerPort, c);
+
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(lblServerUsername, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+//		c.gridy = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.2;
+		c.weighty = 0.0;
+		pnlMail.add(txtServerUsername, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+//		c.gridy = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(chkUseAuth, c);
+
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy++;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(lblServerPassword, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 2;
+//		c.gridy = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		pnlMail.add(chkAskPassword, c);
+
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1;
+//		c.gridy = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.2;
+		c.weighty = 0.0;
+		pnlMail.add(txtServerPassword, c);
 
 		return pnlMail;
 	}
@@ -669,6 +795,18 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 							 "");
 
 		settings.setProperty("OrderWriter.mailServer", txtMailServer.getText());
+    settings.setProperty("OrderWriter.mailServerPort", txtMailServerPort.getText());
+
+    settings.setProperty("OrderWriter.useAuth", String.valueOf(chkUseAuth.isSelected()));
+    settings.setProperty("OrderWriter.serverUsername", txtServerUsername.getText());
+    settings.setProperty("OrderWriter.askPassword", String.valueOf(chkAskPassword.isSelected()));
+    // for security reasons only store password if the user explicitly wants it
+    if (!chkAskPassword.isSelected() && chkUseAuth.isSelected())
+      settings.setProperty("OrderWriter.serverPassword", txtServerPassword.getText());
+    else
+      settings.setProperty("OrderWriter.serverPassword", "");
+      
+    
 		settings.setProperty("OrderWriter.mailRecipient", txtMailRecipient.getText());
 		settings.setProperty("OrderWriter.mailSender", txtMailSender.getText());
 		settings.setProperty("OrderWriter.mailSubject", txtMailSubject.getText());
@@ -817,11 +955,13 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 	private boolean checkPassword() {
 		Faction f = (Faction) cmbFaction.getSelectedItem();
 
-		if(f.password == null) {
+		if (f==null){
+			JOptionPane.showMessageDialog(getRootPane(), getString("msg.nofaction.text"));
+			return false;
+		}if(f.password == null) {
 			Object msgArgs[] = { f.toString() };
 			JOptionPane.showMessageDialog(getRootPane(),
 										  (new java.text.MessageFormat(getString("msg.nopassword.text"))).format(msgArgs));
-
 			return false;
 		} else {
 			return true;
@@ -874,7 +1014,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			feed.setGroup(g.getName());
 		}
 		
-		String pattern = settings.getProperty("FileNameGenerator.ordersSaveFileNamePattern");
+		String pattern = settings.getProperty("FileNameGenerator.ordersSaveFileNamePattern", FileNameGenerator.defaultPattern);
 		
 		String newFileName = FileNameGenerator.getFileName(pattern, feed);
 		
@@ -895,13 +1035,19 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			return;
 		}
 
-		Writer mailWriter = null;
-
 		JButton ae = sendButton;
 		ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 		// get mail parameters
 		String mailHost = txtMailServer.getText();
+    int port = 25;
+    String username = null;
+    String password = null;
+    if (chkUseAuth.isSelected()){
+      username = txtServerUsername.getText();
+      if (!chkAskPassword.isSelected())
+        password = txtServerPassword.getText();
+    }
 		String recipient = txtMailRecipient.getText();
 		String sender = txtMailSender.getText();
 		String subject = txtMailSubject.getText();
@@ -939,32 +1085,74 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			return;
 		}
 
-		MailMessage mailMessage;
-
 		try {
-			mailMessage = new MailMessage(mailHost);
-			mailMessage.from(sender);
-			mailMessage.to(recipient);
-			// added by Fiete 2006-08-28
-			// support for header field: date
-			// takes the new date(), formats it and appends the header
-			mailMessage.setDate();
-			mailMessage.setHeader("Content-Type", "text/plain; charset=" +
-								  FileType.DEFAULT_ENCODING);
+      port = Integer.parseInt(txtMailServerPort.getText());
+    } catch (NumberFormatException e){
+      port = -1;
+    }
+    if (port <= 0){
+      ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+      // TODO update resource
+      JOptionPane.showMessageDialog(ae, getString("msg.invalidsmtpserverport.text"),
+                      getString("msg.mailerror.title"),
+                      JOptionPane.WARNING_MESSAGE);
 
+      return;
+    }
+
+    if (username!=null){
+      if (password==null){
+        password = showPasswordDialog(ae);
+      }
+      if (password==null){
+        ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        return;
+      }
+    }
+    
+    log.debug("attempting to send mail: "+mailHost + ", " + port + ", " +username + ", " +password + ", " +sender + ", " +recipient + ", " +subject);
+    sendMailImpl(mailHost, port, username, password, sender, recipient, subject, ae);
+
+
+    ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+    storeSettings();
+  }
+
+  private void sendMailImpl(String mailHost, int port,  String username, String password, String sender, String recipient, String subject, JButton ae) {
+
+    MultiPartEmail mailMessage;
+    String contentType = "text/plain; charset=" + "ISO-8859-1";
+    if (PropertiesHelper.getboolean(settings, "TextEncoding.ISOsaveOrders", false)) {
+      // new: force our default = ISO
+      contentType = "text/plain; charset=" + "ISO-8859-1";
+    } else if (PropertiesHelper.getboolean(settings, "TextEncoding.UTF8saveOrders", false)) {
+      // new: force our default = UTF-8
+      contentType = "text/plain; charset=" + "UTF-8";
+    } else {
+      // old = default = system dependend
+      contentType = "text/plain; charset=" + System.getProperty("file.encoding");
+    }
+
+    mailMessage = new MultiPartEmail();
+    mailMessage.setHostName(mailHost);
 			mailMessage.setSubject(subject);
+
+    try {
+      mailMessage.setFrom(sender);
+      mailMessage.addTo(recipient);
 
 			// specify copy for sender if CC to sender is selected
 			if(chkCCToSender.isSelected()) {
-				mailMessage.cc(sender);
+        mailMessage.addCc(sender);
 			}
-		} catch(IOException e) {
+    } catch(EmailException e) {
 			ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 			Object msgArgs[] = { mailHost, e.toString() };
 			JOptionPane.showMessageDialog(ae,
-										  (new java.text.MessageFormat(getString("msg.smtpserverunreachable.text"))).format(msgArgs),
-										  getString("msg.mailerror.title"),
+          (new java.text.MessageFormat(getString("msg.smtpserverunreachable.text"))).format(msgArgs),
+          getString("msg.mailerror.title"),
 										  JOptionPane.WARNING_MESSAGE);
 
 			if(log.isDebugEnabled()) {
@@ -974,21 +1162,45 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			return;
 		}
 
+    StringWriter mailWriter = new StringWriter();
+    write(mailWriter, false, false);
+
+    mailMessage.setContent(mailWriter.toString(), contentType);
+//  mailMessage.setCharset("ISO-8859-1");
+//  mailMessage.setMsg(mailWriter.toString());
+//  mailMessage.addPart(mailWriter.toString(), "text/plain; charset=ISO-8859-1");
+
+    if (username!=null && password!=null){
+      mailMessage.setAuthentication(username, password);
+    }
+    mailMessage.setSmtpPort(port);
+
+    // TODO support for POP befor SMTP?
+//  mailMessage.setPopBeforeSmtp(true, "host", "username", "password");
+
+    // stm: this is a hack described at http://www.jguru.com/faq/view.jsp?EID=237257
+    // shouldn't be necessary!
+//  add handlers for main MIME types
+//  MailcapCommandMap mc = (MailcapCommandMap)CommandMap.getDefaultCommandMap();
+//  mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
+//  mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+//  mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+//  mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+//  mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
+//  CommandMap.setDefaultCommandMap(mc);
+
 		try {
-			mailWriter = new OutputStreamWriter(mailMessage.getPrintStream(),
-												FileType.DEFAULT_ENCODING);
-			write(mailWriter, false, false);
-			mailMessage.sendAndClose();
-			mailWriter.close();
-		} catch(IOException e) {
+      log.info("sending...");
+      mailMessage.send();
+    } catch(EmailException e) {
 			ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 			Object msgArgs[] = { e.toString() };
 			JOptionPane.showMessageDialog(ae,
-										  (new java.text.MessageFormat(getString("msg.transfererror.text"))).format(msgArgs),
-										  getString("msg.mailerror.title"),
+                      (new java.text.MessageFormat(getString("msg.transfererror.text"))).format(msgArgs),
+                      getString("msg.mailerror.title"),
 										  JOptionPane.WARNING_MESSAGE);
-
+      log.info(e+((!e.getCause().equals(e))?(" "+e.getCause()):""));
 			if(log.isDebugEnabled()) {
 				log.debug(e);
 			}
@@ -996,10 +1208,42 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			return;
 		}
 
-		ae.getTopLevelAncestor().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+  }
 
-		storeSettings();
+  
+  /**
+   * Shows a dialog asking for a password
+   * 
+   * @param ae 
+   * @return The user input or <code>null</code> if the user has canceled
+   */
+  private String showPasswordDialog(JButton ae) {
+    String title = getString("lbl.smtpserver.password");
+    JPasswordField passwd = new JPasswordField(20){ public void setVisible(boolean b){ super.setVisible(b); if (b) requestFocus();}  };
+    class MyPanel extends JPanel {
+      JPasswordField pwd; 
+      MyPanel(JPasswordField passwd) {
+        pwd = passwd;
 	}
+      public void requestFocus(){ 
+        pwd.requestFocus(); 
+      } };
+    JLabel passwdLabel = new JLabel(title);
+    JPanel panel = new MyPanel(passwd);
+    panel.add(passwdLabel);
+    panel.add(passwd);
+    int value = JOptionPane.showOptionDialog(ae, panel, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+//    JDialog dialog = pane.createDialog();
+//    passwd.requestFocus();
+//    dialog.setVisible(true);
+//    dialog.dispose();
+//
+//    Object value = pane.getInputValue();
+    if (value==0)
+      return new String(passwd.getPassword());
+    else
+      return null;
+  }
 
 	/**
 	 * TODO: DOCUMENT ME!
@@ -1077,15 +1321,20 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 									"Remove double-slash comments");
 			defaultTranslations.put("chk.skipunconfirmedorders.caption",
 									"Skip units with unconfirmed orders");
+			defaultTranslations.put("chk.askpassword.caption", "always ask");
 			defaultTranslations.put("chk.selectedregions.caption", "Selected regions");
 			defaultTranslations.put("chk.writeUnitTagsAsVorlageComment.caption", "Include unknown tags as vorlage command.");
 			defaultTranslations.put("chk.usesettingsfromcr.caption", "Use values of cr");
+			defaultTranslations.put("chk.useauth.caption", "Use authentication");
 			defaultTranslations.put("chk.cctosender.caption", "CC to sender");
 			defaultTranslations.put("border.outputoptions", "Output options");
 			defaultTranslations.put("border.faction", "Faction");
 			defaultTranslations.put("border.group", "Group");
 			defaultTranslations.put("border.outputfile", "Output file");
-			defaultTranslations.put("lbl.smtpserver", "SMTP-server: ");
+			defaultTranslations.put("lbl.smtpserver.name", "SMTP-server: ");
+			defaultTranslations.put("lbl.smtpserver.port", "Port number (usually 25):");
+			defaultTranslations.put("lbl.smtpserver.user", "Username:");
+			defaultTranslations.put("lbl.smtpserver.password", "Password:");
 			defaultTranslations.put("lbl.recipient", "Recipient's address: ");
 			defaultTranslations.put("lbl.sender", "Sender's address: ");
 			defaultTranslations.put("lbl.subject", "Subject: ");
@@ -1097,6 +1346,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			defaultTranslations.put("msg.erroronsave.text",
 									"An error occurred while saving the orders:\n\n");
 			defaultTranslations.put("msg.erroronsave.title", "Error on save");
+			defaultTranslations.put("msg.nofaction.text", "No faction selected.");
 			defaultTranslations.put("msg.nopassword.text",
 									"Faction \"{0}\" does not have a password set, therefore Magellan cannot export the orders of that faction.\nYou can set a password for your faction in the faction statistics dialog (in the Extras menu) - passwords are necessary\nfor exporting orders. For safety reasons, passwords are stored only locally on your computer.");
 			defaultTranslations.put("msg.mailerror.title", "Error on mailing");
@@ -1113,6 +1363,13 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 			defaultTranslations.put("msg.invalidfixedwidth.text",
 									"The specified maximum line width is invalid.");
 			defaultTranslations.put("msg.invalidfixedwidth.title", "Invalid line width");
+			defaultTranslations.put("orderwirterdialog.msg.passwordwarning", "Your password is " +
+					"going to be stored in a readable form on your computer!\nAnybody who gets " +
+					"access to your computer will be able to read your password.\nIf you answer " +
+					"\"yes\", your password will be stored. If you answer \"no\", you\nwill be " +
+					"asked for your password before sending the orders and it will not be\nstored." +
+					"\nDo you want to enter your password now?"); 
+
 			defaultTranslations.put("msg.writtenunits.title", "Information");
 			defaultTranslations.put("msg.writtenunits.text",
 									"Wrote {0} of {1} units from faction {2}.");
@@ -1122,3 +1379,7 @@ public class OrderWriterDialog extends InternationalizedDataDialog {
 		return defaultTranslations;
 	}
 }
+
+
+
+

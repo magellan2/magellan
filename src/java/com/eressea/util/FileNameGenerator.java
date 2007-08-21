@@ -40,6 +40,7 @@ import com.eressea.swing.preferences.PreferencesFactory;
 public class FileNameGenerator implements PreferencesFactory {
 	
 	String ordersSaveFileNamePattern = null;
+	public static final String defaultPattern = System.getProperty("user.home")+"{round}-{factionnr}.txt";
 	
 	static Properties settings;
 	static FileNameGenerator gen;
@@ -174,6 +175,7 @@ public class FileNameGenerator implements PreferencesFactory {
 			
 			c.gridy++;
 			patternField = new JTextField(settings.getProperty("FileNameGenerator.ordersSaveFileNamePattern"),20);
+			patternField.setText(settings.getProperty("FileNameGenerator.ordersSaveFileNamePattern", defaultPattern));
 			fileNameGeneratorPanel.add(patternField, c);
 			
 			c.gridy++;
@@ -251,8 +253,10 @@ public class FileNameGenerator implements PreferencesFactory {
 		int i = feed.getRound();
 		if (i > -1){
 			res = replaceAll(res,"{round}",Integer.toString(i));
+			res = replaceAll(res,"{nextround}",Integer.toString(i+1));
 		} else {
 			res = replaceAll(res,"{round}",null);
+			res = replaceAll(res,"{nextround}",null);
 		}
 		res = replaceAll(res,"{group}",feed.getGroup());
 		

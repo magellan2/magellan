@@ -9,8 +9,8 @@
   <!--  <property name="build.compiler"  value="jikes"/>-->
 
   <property name="VERSION.MAJOR"         value="1"/>
-  <property name="VERSION.MINOR"         value="2"/>
-  <property name="VERSION.SUB"           value="3"/>
+  <property name="VERSION.MINOR"         value="3"/>
+  <property name="VERSION.SUB"           value="1"/>
 
   <property name="VERSION"               value="${VERSION.MAJOR}_${VERSION.MINOR}_${VERSION.SUB}"/>
   <property name="VERSION.POINTED"       value="${VERSION.MAJOR}.${VERSION.MINOR}.${VERSION.SUB}"/>
@@ -29,6 +29,9 @@
   <property name="LIB.FORMS"             value="${SRC.RELEASE}/lib/forms-1.0.2.jar"/>
   <property name="LIB.JAXP"              value="${SRC.RELEASE}/lib/xml-apis.jar"/>
   <property name="LIB.JUNIT"             value="${basedir}/tools/junit/junit.jar"/>
+  <property name="LIB.ACTIVATION"        value="${SRC.RELEASE}/lib/activation.jar"/>
+  <property name="LIB.COMMONSEMAIL"      value="${SRC.RELEASE}/lib/commons-email-1.0.jar"/>
+  <property name="LIB.JAVAMAIL"          value="${SRC.RELEASE}/lib/mail.jar"/>
 
   <property name="BUILD"                 value="${basedir}/build"/>
   <property name="CLASSES.MAGELLAN"      value="${BUILD}/build/magellan/classes"/>
@@ -50,7 +53,8 @@
   <!-- note that - if you cross compile - you need to set bootclasspath -->
   <property name="JAVAC.TARGET"         value="1.1"/>
   <property name="JAVAC.DEBUG"          value="true"/>
-  <property name="JAVAC.DEPRECATION"    value="true"/>
+  <property name="JAVAC.DEPRECATION"    value="false"/>
+  <property name="JAVAC.ENCODING"       value="ISO-8859-1"/>
 
 
 
@@ -99,11 +103,15 @@
            destdir = "${CLASSES.MAGELLAN}"
            deprecation = "${JAVAC.DEPRECATION}"
            target = "${JAVAC.TARGET}"
-           debug  = "${JAVAC.DEBUG}">
+           debug  = "${JAVAC.DEBUG}"
+    			 encoding = "${JAVAC.ENCODING}">
 	  <classpath>
         <pathelement location="${LIB.FORMS}"/>
         <pathelement location="${LIB.JAXP}"/>
         <pathelement location="${LIB.JFREECHART}"/>
+      <pathelement location="${LIB.ACTIVATION}"/>
+      <pathelement location="${LIB.COMMONSEMAIL}"/>
+      <pathelement location="${LIB.JAVAMAIL}"/>
       </classpath>
     </javac>
 	<!-- notify VERSION information in an accessable file -->
