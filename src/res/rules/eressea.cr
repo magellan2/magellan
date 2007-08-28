@@ -1348,6 +1348,11 @@ ITEM "Orkhauer"
 "trophies";category
 0.01;weight
 
+ITEM "Magischer Kräuterbeutel"
+"Magischer Kräuterbeutel";name
+1;weight
+"misc";category
+
 SHIPTYPE "Boot"
 "Boot";name
 5;size
