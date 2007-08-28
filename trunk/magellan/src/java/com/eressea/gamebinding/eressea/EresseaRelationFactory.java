@@ -720,12 +720,13 @@ public class EresseaRelationFactory implements RelationFactory {
     }
     
 	private Unit getTargetUnit(OrderToken t, Region r) {
+		if (t.getText().startsWith(";")){return null;}
 		try {
 			UnitID id = UnitID.createUnitID(t.getText(),r.getData().base);
 
 			return r.getUnit(id);
 		} catch(NumberFormatException e) {
-			log.warn("Unit.getTargetUnit(): cannot parse unit id \"" + t.getText() + "\"!");
+			log.warn("Unit.getTargetUnit(): cannot parse unit id \"" + t.getText() + "\"! (Region: " + r.toString() + ")");
 		}
 
 		return null;
