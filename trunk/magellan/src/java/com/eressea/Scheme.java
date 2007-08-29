@@ -58,5 +58,5 @@ public class Scheme extends NamedObject {
         */
        public CoordinateID getCoordinate() {
                return (CoordinateID) this.getID();
-}
+       }
 }
