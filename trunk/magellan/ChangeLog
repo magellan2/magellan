@@ -1,6 +1,8 @@
 2007-08-27  Fiete  <Fiete@users.sourceforge.net>
     * EresseaRelationFactory.getTargetUnit now stops when finding a ";"
     * Added "Magischer Kräuterbeutel" to rules.cr with weight=1
+    * added more skins, deleted old look-1.3 skin
+    * fixed rules files for ending ".cr"
 
 2007-08-21  stm  <stm_@users.sourceforge.net>
 	* Added SMTP authentication

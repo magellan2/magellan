@@ -76,7 +76,7 @@ public class RulesReader {
 	 * @throws IOException TODO: DOCUMENT ME!
 	 */
 	private Rules loadRules(String name) throws IOException {
-		String ending = new File("XML").exists() ? ".xml" : ".cr";
+		String ending = ".cr";
 
 		if(log.isDebugEnabled()) {
 			log.debug("loading rules for \"" + name + "\" (ending: " + ending + ")");
