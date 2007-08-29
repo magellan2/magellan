@@ -2,6 +2,7 @@
 	* Added 2 new AstralTransformation procedures to Report Merger (Ralf & Fiete)
 	* set BuildNumber in build.xml to 1.2.5
 	* added in Regions getDist for distance between 2 Regions
+	* replaced in manifest char.jar with jfreechart.jar -> Chart working
 
 2007-08-27  Fiete  <Fiete@users.sourceforge.net>
     * EresseaRelationFactory.getTargetUnit now stops when finding a ";"
