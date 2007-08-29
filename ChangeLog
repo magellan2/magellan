@@ -1,3 +1,8 @@
+2007-08-29  Fiete  <Fiete@users.sourceforge.net>
+	* Added 2 new AstralTransformation procedures to Report Merger (Ralf & Fiete)
+	* set BuildNumber in build.xml to 1.2.5
+	* added in Regions getDist for distance between 2 Regions
+
 2007-08-27  Fiete  <Fiete@users.sourceforge.net>
     * EresseaRelationFactory.getTargetUnit now stops when finding a ";"
     * Added "Magischer Kräuterbeutel" to rules.cr with weight=1
