@@ -1,3 +1,10 @@
+2007-09-01  Thoralf (thoralf@m84.de)
+    * Try to match UTF8 with UTF-8 by ignoring all "-" (Problems with BOMReader 
+      that returns UTF8 instead of UTF-8 from the BOM)
+    * Merging two reports with different encodings uses now UTF-8 or the encoding
+      of the newer file (if no file uses UTF-8). If both reports use the same
+      encoding the resulting report uses this encoding too.
+
 2007-08-29  Fiete  <Fiete@users.sourceforge.net>
 	* Added 2 new AstralTransformation procedures to Report Merger (Ralf & Fiete)
 	* set BuildNumber in build.xml to 1.2.5

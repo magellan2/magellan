@@ -13,7 +13,6 @@
 
 package com.eressea.io.file;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,355 +35,367 @@ import com.eressea.util.logging.Logger;
  * compressed files in the corresponding child objects.
  */
 public class FileType {
-	private final static Logger log = Logger.getInstance(FileType.class);
+    private final static Logger log = Logger.getInstance(FileType.class);
 
-	// basically identified file types
-	public static final String CR = ".cr";
-	public static final String XML = ".xml";
+    // basically identified file types
+    public static final String CR = ".cr";
+    public static final String XML = ".xml";
 
-	// basically identified compression types with single entry
-	static final String GZIP = ".gz";
-	static final String BZIP2 = ".bz2";
+    // basically identified compression types with single entry
+    static final String GZIP = ".gz";
+    static final String BZIP2 = ".bz2";
 
-	// basically identified compression types with multiple entries
-	static final String ZIP = ".zip";
+    // basically identified compression types with multiple entries
+    static final String ZIP = ".zip";
 
-	/** The file this file type identifies. */
-	protected File filename;
+    /** The file this file type identifies. */
+    protected File filename;
 
-	/** true iff file is readonly. */
-	protected boolean readonly = false;
-	protected boolean createBackup = true;
+    /** true iff file is readonly. */
+    protected boolean readonly = false;
+    protected boolean createBackup = true;
 
-	private BOMReader reader;
+    private BOMReader reader;
 
-	public FileType(File aFile, boolean readonly) throws IOException {
-		if(aFile == null) {
-			throw new IOException();
-		}
+    public FileType(File aFile, boolean readonly) throws IOException {
+        if(aFile == null) {
+            throw new IOException();
+        }
 
-		filename = aFile;
+        filename = aFile;
 
-		this.readonly = readonly;
-	}
+        this.readonly = readonly;
+    }
 
-	/**
-	 * Sets if file is readonly
-	 *
-	 * @param readonly
-	 */
-	public void setReadonly(boolean readonly) {
-		this.readonly = readonly;
-	}
+    /**
+     * Sets if file is readonly
+     *
+     * @param readonly
+     */
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @param aCreateBackup TODO: DOCUMENT ME!
-	 */
-	public void setCreateBackup(boolean aCreateBackup) {
-		createBackup = aCreateBackup;
-	}
+    /**
+     * TODO: DOCUMENT ME!
+     *
+     * @param aCreateBackup TODO: DOCUMENT ME!
+     */
+    public void setCreateBackup(boolean aCreateBackup) {
+        createBackup = aCreateBackup;
+    }
 
-	/**
-	 * Tests if an InputStream can be opened for this FileType.
-	 *
-	 * @return <code>this</code>
-	 *
-	 * @throws IOException
-	 */
-	public FileType checkConnection() throws IOException {
-		try {
-//			if(readonly) {
-			createInputStream().close();
-//			} else {
-//			createOutputStream().close();
-//			}
-		} catch(FileNotFoundException e) {
-			// if file is readonly, this will be a problem
-			// if not, it may be ok that the file does not exist 
-			if(readonly) {
-				throw e;
-			}
-		}
+    /**
+     * Tests if an InputStream can be opened for this FileType.
+     *
+     * @return <code>this</code>
+     *
+     * @throws IOException
+     */
+    public FileType checkConnection() throws IOException {
+        try {
+//            if(readonly) {
+            createInputStream().close();
+//            } else {
+//            createOutputStream().close();
+//            }
+        } catch(FileNotFoundException e) {
+            // if file is readonly, this will be a problem
+            // if not, it may be ok that the file does not exist 
+            if(readonly) {
+                throw e;
+            }
+        }
 
-		return this;
-	}
+        return this;
+    }
 
-	/**
-	 * Returns the underlying file.
-	 *
-	 * @return a File object
-	 *
-	 * @throws IOException if file cannot be determined, e.g. for  an url pointing to an
-	 * 		   InputStream.
-	 */
-	public File getFile() throws IOException {
-		return new File(getName());
-	}
+    /**
+     * Returns the underlying file.
+     *
+     * @return a File object
+     *
+     * @throws IOException if file cannot be determined, e.g. for  an url pointing to an
+     *            InputStream.
+     */
+    public File getFile() throws IOException {
+        return new File(getName());
+    }
 
-	/**
-	 * Returns the most inner name of the FileType. Will be overwritten in ZipFileType
-	 *
-	 * @return the most inner name of a FileType.
-	 */
-	public String getInnerName() {
-		return getName();
-	}
-
-
-	/**
-	 * Returns the name of the FileType.
-	 *
-	 * @return the name of the FileType
-	 */
-	public String getName() {
-		return filename.getAbsolutePath();
-	}
-
-	/**
-	 * Returns a String representation of the FileType.
-	 *
-	 * @return a String representation of the FileType.
-	 */
-	public String toString() {
-		if(getInnerName() == null) {
-			return getName();
-		} else {
-			return getName() + " (" + getInnerName() + ")";
-		}
-	}
-
-	/**
-	 * Creates a Reader for this FileType.
-	 *
-	 * @return a Reader of the underlying File.
-	 *
-	 * @throws IOException
-	 */
-	public Reader createReader() throws IOException {
-		reader = null;
-		String encoding = getEncoding();
-		reader = FileType.createEncodingReader(createInputStream(),encoding);
-		return reader;
-	}
-
-	/**
-	 * Creates a backup of the underlying file and returns  a Writer for this.
-	 *
-	 * @return a Writer of the underlying File.
-	 *
-	 * @throws IOException If file is marked as readonly or  another IOException occured.
-	 * @throws ReadOnlyException DOCUMENT-ME
-	 */
-	public Writer createWriter(String encoding) throws IOException {
-		if(readonly) {
-			throw new ReadOnlyException();
-		}
-
-		if(createBackup) {
-			File backup = FileBackup.create(filename);
-			log.info("Created backupfile " + backup +" (FileType.java)");
-		}
-
-		return new BufferedWriter(FileType.createEncodingWriter(createOutputStream(),encoding));
-	}
-
-	/**
-	 * Creates an InputStream for the underlying file.
-	 *
-	 * @return an InputStream of the underlying file.
-	 *
-	 * @throws IOException
-	 */
-	protected InputStream createInputStream() throws IOException {
-		return new FileInputStream(filename);
-	}
-
-	/**
-	 * Creates an OutputStream for the underlying file.
-	 *
-	 * @return an OutputStream of the underlying file.
-	 *
-	 * @throws IOException
-	 */
-	protected OutputStream createOutputStream() throws IOException {
-		return new FileOutputStream(filename);
-	}
-
-	/**
-	 * Creates a Reader.
-	 * 
-	 * Tries to determine encoding by looking at the BOM. If it cannot determine the encoding, the
-	 * given <code>encoding</code> is used.
-	 * 
-	 * @param is
-	 *            the InputStream
-	 * 
-	 * @return a Reader for the given InputStream
-	 * 
-	 * @throws IOException
-	 */
-	public static BOMReader createEncodingReader(InputStream is, String encoding) throws IOException {
-		return new BOMReader(is, encoding);
-	}
-
-	/**
-	 * Creates a Writer with the default encoding iso-8859-1.
-	 *
-	 * @param os the OutputStream
-	 *
-	 * @return a Writer for the given OutputStream
-	 *
-	 * @throws IOException
-	 */
-	public static OutputStreamWriter createEncodingWriter(OutputStream os, String encoding)
-	throws IOException
-	{
-		return new OutputStreamWriter(os, encoding);
-	}
-
-	/** A String representation of the default encoding. */
-	public static final String DEFAULT_ENCODING = "iso-8859-1";
-
-	/**
-	 * Determines, whether a file is of XML filetype, moved from
-	 * com.eressea.io.GameDataReader
-	 * by Jonathan 20060917 (Fiete)
-	 *
-	 * @return true, if the file is of XML type
-	 *
-	 * @throws IOException
-	 */
-	public boolean isXMLFile() throws IOException {
-		return getInnerName().endsWith(FileType.XML);
-	}
-
-	/**
-	 * Determines, whether a file is of CR filetype, moved from
-	 * com.eressea.io.GameDataReader
-	 * by Jonathan 20060917 (Fiete)
-	 *
-	 * @return true, if the file is of CR type or of unknown type
-	 *
-	 * @throws IOException
-	 */
-	public boolean isCRFile() throws IOException {
-		/* Unknown files are treated like CR files
-		 */
-		return getInnerName().endsWith(FileType.CR) || this instanceof UnknownFileType;
-	}
-
-	/**
-	 * Determines, whether a file is a ZIP filetype
-	 * by Jonathan 20060917 (Fiete)
-	 * @return true, if the file is of ZIP type
-	 *
-	 * @throws IOException
-	 */
-	public boolean isZIPFile() throws IOException {
-		return this instanceof ZipFileType;
-	}
-
-	/**
-	 * Determines, whether a file is a GZIP filetype
-	 * by Jonathan 20060917 (Fiete)
-	 * @return true, if the file is of GZIP type
-	 *
-	 * @throws IOException
-	 */
-	public boolean isGZIPFile() throws IOException {
-		return this instanceof GZipFileType;
-	}
-
-	/**
-	 * Determines, whether a file is a BZIP2 filetype
-	 * by Jonathan 20060917 (Fiete)
-	 * @return true, if the file is of BZIP2 type
-	 *
-	 * @throws IOException
-	 */
-	public boolean isBZIP2File() throws IOException {
-		return this instanceof BZip2FileType;
-	}	
+    /**
+     * Returns the most inner name of the FileType. Will be overwritten in ZipFileType
+     *
+     * @return the most inner name of a FileType.
+     */
+    public String getInnerName() {
+        return getName();
+    }
 
 
-	/**
-	 * TODO: DOCUMENT ME!
-	 *
-	 * @author $author$
-	 * @version $Revision$
-	 */
-	public static class ReadOnlyException extends IOException {
-	}
+    /**
+     * Returns the name of the FileType.
+     *
+     * @return the name of the FileType
+     */
+    public String getName() {
+        return filename.getAbsolutePath();
+    }
 
-	/**
-	 * This method tries to find the encoding tag in
-	 * the CR file.
-	 */
-	public String getEncoding() {
-		if (reader!=null)
-			return reader.getEncoding();
-		try {
+    /**
+     * Returns a String representation of the FileType.
+     *
+     * @return a String representation of the FileType.
+     */
+    public String toString() {
+        if(getInnerName() == null) {
+            return getName();
+        } else {
+            return getName() + " (" + getInnerName() + ")";
+        }
+    }
 
-			// use UnicodeReader to determine encoding
-			InputStream stream = createInputStream();
-			BOMReader localReader = new BOMReader(stream, DEFAULT_ENCODING);
+    /**
+     * Creates a Reader for this FileType.
+     *
+     * @return a Reader of the underlying File.
+     *
+     * @throws IOException
+     */
+    public Reader createReader() throws IOException {
+        reader = null;
+        String encoding = getEncoding();
+        reader = FileType.createEncodingReader(createInputStream(),encoding);
+        return reader;
+    }
 
-			String encoding = findCharset(localReader);
+    /**
+     * Creates a backup of the underlying file and returns  a Writer for this.
+     *
+     * @return a Writer of the underlying File.
+     *
+     * @throws IOException If file is marked as readonly or  another IOException occured.
+     * @throws ReadOnlyException DOCUMENT-ME
+     */
+    public Writer createWriter(String encoding) throws IOException {
+        if(readonly) {
+            throw new ReadOnlyException();
+        }
 
-			if (encoding==null){
-				// maybe UnicodeReader was wrong, try reading in default encoding
-				stream.close();
-				stream = createInputStream();
-				InputStreamReader fallbackReader = new InputStreamReader(stream, DEFAULT_ENCODING);
-				encoding = findCharset(fallbackReader);
-			}
+        if(createBackup) {
+            File backup = FileBackup.create(filename);
+            log.info("Created backupfile " + backup +" (FileType.java)");
+        }
 
-			stream.close();
+        return new BufferedWriter(FileType.createEncodingWriter(createOutputStream(),encoding));
+    }
 
-			if (encoding == null ){
-				log.info("no charset tag found in "+getName());
-				encoding=localReader.getEncoding();
-			}else if (localReader.hasBOM()!=null && localReader.hasBOM().booleanValue() && 
-					!localReader.getEncoding().equals(encoding)){
-				// UnicodeReader found an encoding different from the encoding of the charset tag
-				log.warn("given encoding of "+getName()+" does not match encoding given by BOM. ;charset says "+encoding+" but using "+localReader.getEncoding());
-				encoding=localReader.getEncoding();
-			}
+    /**
+     * Creates an InputStream for the underlying file.
+     *
+     * @return an InputStream of the underlying file.
+     *
+     * @throws IOException
+     */
+    protected InputStream createInputStream() throws IOException {
+        return new FileInputStream(filename);
+    }
 
-			return encoding;
+    /**
+     * Creates an OutputStream for the underlying file.
+     *
+     * @return an OutputStream of the underlying file.
+     *
+     * @throws IOException
+     */
+    protected OutputStream createOutputStream() throws IOException {
+        return new FileOutputStream(filename);
+    }
 
-		} catch (Exception exception) {
-			log.error(exception);
-		}
-		return null;
-	}
+    /**
+     * Creates a Reader.
+     * 
+     * Tries to determine encoding by looking at the BOM. If it cannot determine the encoding, the
+     * given <code>encoding</code> is used.
+     * 
+     * @param is
+     *            the InputStream
+     * 
+     * @return a Reader for the given InputStream
+     * 
+     * @throws IOException
+     */
+    public static BOMReader createEncodingReader(InputStream is, String encoding) throws IOException {
+        return new BOMReader(is, encoding);
+    }
 
-	/**
-	 * Look for and evaluate the ";charset" tag. 
-	 *
-	 * @param localReader
-	 * @return The value of the tag, if found, else <code>null</code> 
-	 * @throws IOException 
-	 */
-	private String findCharset(Reader localReader) throws IOException {
-		LineNumberReader reader = new LineNumberReader(localReader);
+    /**
+     * Creates a Writer with the default encoding iso-8859-1.
+     *
+     * @param os the OutputStream
+     *
+     * @return a Writer for the given OutputStream
+     *
+     * @throws IOException
+     */
+    public static OutputStreamWriter createEncodingWriter(OutputStream os, String encoding)
+    throws IOException
+    {
+        return new OutputStreamWriter(os, encoding);
+    }
+    
+    public static final String ISO_8859_1 = "iso-8859-1";
+    public static final String UTF_8 = "UTF-8";
+    
 
-		// read at least 5 lines
-		String line;
-		String encoding = DEFAULT_ENCODING;
-		int counter = 0;
-		while ((line = reader.readLine()) != null) {
-			if (line.lastIndexOf(";charset") > 0) {
-				// found line with charset. Format is "<encoding>";charset
-				return encoding = line.substring(1, line.indexOf(";charset") - 1);
-			}
-			counter++;
-			if (counter >= 5)
-				break;
-		}
-		return encoding;
-	}
+    /** A String representation of the default encoding. */
+    public static final String DEFAULT_ENCODING = ISO_8859_1;
+
+    /**
+     * Determines, whether a file is of XML filetype, moved from
+     * com.eressea.io.GameDataReader
+     * by Jonathan 20060917 (Fiete)
+     *
+     * @return true, if the file is of XML type
+     *
+     * @throws IOException
+     */
+    public boolean isXMLFile() throws IOException {
+        return getInnerName().endsWith(FileType.XML);
+    }
+
+    /**
+     * Determines, whether a file is of CR filetype, moved from
+     * com.eressea.io.GameDataReader
+     * by Jonathan 20060917 (Fiete)
+     *
+     * @return true, if the file is of CR type or of unknown type
+     *
+     * @throws IOException
+     */
+    public boolean isCRFile() throws IOException {
+        /* Unknown files are treated like CR files
+         */
+        return getInnerName().endsWith(FileType.CR) || this instanceof UnknownFileType;
+    }
+
+    /**
+     * Determines, whether a file is a ZIP filetype
+     * by Jonathan 20060917 (Fiete)
+     * @return true, if the file is of ZIP type
+     *
+     * @throws IOException
+     */
+    public boolean isZIPFile() throws IOException {
+        return this instanceof ZipFileType;
+    }
+
+    /**
+     * Determines, whether a file is a GZIP filetype
+     * by Jonathan 20060917 (Fiete)
+     * @return true, if the file is of GZIP type
+     *
+     * @throws IOException
+     */
+    public boolean isGZIPFile() throws IOException {
+        return this instanceof GZipFileType;
+    }
+
+    /**
+     * Determines, whether a file is a BZIP2 filetype
+     * by Jonathan 20060917 (Fiete)
+     * @return true, if the file is of BZIP2 type
+     *
+     * @throws IOException
+     */
+    public boolean isBZIP2File() throws IOException {
+        return this instanceof BZip2FileType;
+    }    
+
+
+    /**
+     * TODO: DOCUMENT ME!
+     *
+     * @author $author$
+     * @version $Revision$
+     */
+    public static class ReadOnlyException extends IOException {
+    }
+
+    /**
+     * This method tries to find the encoding tag in
+     * the CR file.
+     */
+    public String getEncoding() {
+        if (reader!=null)
+            return reader.getEncoding();
+        try {
+
+            // use UnicodeReader to determine encoding
+            InputStream stream = createInputStream();
+            BOMReader localReader = new BOMReader(stream, DEFAULT_ENCODING);
+
+            String encoding = findCharset(localReader);
+
+            if (encoding==null){
+                // maybe UnicodeReader was wrong, try reading in default encoding
+                stream.close();
+                stream = createInputStream();
+                InputStreamReader fallbackReader = new InputStreamReader(stream, DEFAULT_ENCODING);
+                encoding = findCharset(fallbackReader);
+            }
+
+            stream.close();
+
+            if (encoding == null ){
+                log.info("no charset tag found in "+getName());
+                encoding=localReader.getEncoding();
+            }else if (localReader.hasBOM()!=null && localReader.hasBOM().booleanValue()){
+                String bomEncoding = localReader.getEncoding();
+                // okay, here is a problem with the given encoding from the BOM Reader
+                // It returns the Encoding without any "-" (UTF8 vs. UTF-8)
+                // so we remove all "-" and compare the encodings
+                String bomEncoding2 = bomEncoding.replaceAll("-", "");
+                String fileEncoding2 = encoding.replaceAll("-", "");
+                
+                if (!bomEncoding2.equalsIgnoreCase(fileEncoding2)) {
+                  // UnicodeReader found an encoding different from the encoding of the charset tag
+                  log.warn("given encoding of "+getName()+" does not match encoding given by BOM. ;charset says "+encoding+" but using "+localReader.getEncoding());
+                  encoding=localReader.getEncoding();
+                }
+            }
+
+            return encoding;
+
+        } catch (Exception exception) {
+            log.error(exception);
+        }
+        return null;
+    }
+
+    /**
+     * Look for and evaluate the ";charset" tag. 
+     *
+     * @param localReader
+     * @return The value of the tag, if found, else <code>null</code> 
+     * @throws IOException 
+     */
+    private String findCharset(Reader localReader) throws IOException {
+        LineNumberReader reader = new LineNumberReader(localReader);
+
+        // read at least 5 lines
+        String line;
+        String encoding = DEFAULT_ENCODING;
+        int counter = 0;
+        while ((line = reader.readLine()) != null) {
+            if (line.lastIndexOf(";charset") > 0) {
+                // found line with charset. Format is "<encoding>";charset
+                return encoding = line.substring(1, line.indexOf(";charset") - 1);
+            }
+            counter++;
+            if (counter >= 5)
+                break;
+        }
+        return encoding;
+    }
 
 }
