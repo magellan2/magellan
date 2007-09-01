@@ -772,6 +772,35 @@ public abstract class GameData implements Cloneable {
 		date.setEpoch(((EresseaDate) newerGD.getDate()).getEpoch());
 		resultGD.setDate(date);
 
+	    String oldEncoding = olderGD.encoding;
+	    String newEncoding = newerGD.encoding;
+	    
+	    log.info("Old Encoding: "+oldEncoding);
+	    log.info("New Encoding: "+newEncoding);
+	    
+	    if (oldEncoding != null && newEncoding != null) {
+	      if (oldEncoding.equalsIgnoreCase(newEncoding)) {
+	        // do nothing
+	        log.info("Do nothing");
+	        resultGD.encoding = oldEncoding;
+	      } else if (oldEncoding.equalsIgnoreCase(FileType.UTF_8) || newEncoding.equalsIgnoreCase(FileType.UTF_8)) {
+	        // if one of the reports has UTF-8 Encoding, we use it always.
+	        log.info("Set UTF-8 because one report match");
+	        resultGD.encoding = FileType.UTF_8;
+	      } else {
+	        // okay, we have differnt encodings, but none of them is UTF-8 - what now?
+	        log.info("Encoding does not match ("+oldEncoding+" vs. "+newEncoding+"), using new encoding");
+	        resultGD.encoding = newEncoding;
+	      }
+	    } else {
+	      // okay, this should never happen (no encoding in the reports)
+	      // so, we set the default encoding
+	      log.info("Set UTF-8 as default");
+	      resultGD.encoding = FileType.UTF_8;
+	    }
+	    
+	    log.info("Result: "+resultGD.encoding);
+		
 		boolean sameRound = olderGD.getDate().equals(newerGD.getDate());
 
 		// MAIL TO, MAIL SUBJECT
