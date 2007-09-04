@@ -1,3 +1,6 @@
+2007-09-04  Fiete  <Fiete@users.sourceforge.net>
+	* fixed NPE showing battle MSGs in UTF-8
+
 2007-09-01  Thoralf (thoralf@m84.de)
     * Try to match UTF8 with UTF-8 by ignoring all "-" (Problems with BOMReader 
       that returns UTF8 instead of UTF-8 from the BOM)
