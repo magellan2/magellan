@@ -74,6 +74,7 @@ import com.eressea.swing.tree.UnitNodeWrapper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.comparator.IDComparator;
 import com.eressea.util.comparator.MessageTypeComparator;
+import com.eressea.util.logging.Logger;
 
 /**
  * A class for displaying Eressea messages for regions or factions.
@@ -82,6 +83,8 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 																		PreferencesFactory,
 																		MenuProvider
 {
+	private static final Logger log = Logger.getInstance(MessagePanel.class);
+	
 	// tree elements
 	private CopyTree tree = null;
 	private DefaultTreeModel treeModel = null;
@@ -487,15 +490,21 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 		} else {
 			node = new DefaultMutableTreeNode(c.toString());
 		}
-
+		
 		parent.add(node);
 
 		Iterator msgs = b.messages().iterator();
 
 		while(msgs.hasNext()) {
 			Message msg = (Message) msgs.next();
-			subNode = new DefaultMutableTreeNode(msg.getText());
-			node.add(subNode);
+			if (msg!=null && msg.getText()!=null){
+				subNode = new DefaultMutableTreeNode(msg.getText());
+				node.add(subNode);
+			} else {
+				// log.warn("Empy Message Block (" + msg.getID().toString() + ") in CR!");
+				subNode = new DefaultMutableTreeNode(" ");
+				node.add(subNode);
+			}
 		}
 	}
 
