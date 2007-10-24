@@ -1,3 +1,7 @@
+2007-10-25  Fiete  <Fiete@users.sourceforge.net>
+	* build Number to 1.2.5a
+	* fixed using of skins.jar as the only source for further L&F
+	
 2007-09-04  Fiete  <Fiete@users.sourceforge.net>
 	* fixed NPE showing battle MSGs in UTF-8
 
