@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry including="res/" kind="src" path="src"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2re1.4.2_14"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2re1.4.2_13"/>
 	<classpathentry kind="lib" path="src/release/lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="src/release/lib/xml/jaxp-api.jar"/>
 	<classpathentry kind="lib" path="buildlib/xml-apis.jar"/>
