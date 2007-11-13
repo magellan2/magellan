@@ -1524,6 +1524,9 @@ RAWMATERIALS
 5;Holz
 2;Eisen
 200;Silber
+TALENTBONI
+1;Rüstungsbau
+1;Waffenbau
 REGIONTYPES
 "Berge"
 "Ebene"
