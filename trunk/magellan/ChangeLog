@@ -1,3 +1,6 @@
+2007-12-09  stm  <stm_@users.sourceforge.net>
+    * fixed bug with 0-length text in LineWrapCellRenderer
+
 2007-10-25  Fiete  <Fiete@users.sourceforge.net>
 	* build Number to 1.2.5b
 	* missing TALENTBONI in rules.cr for "Schmiede" fixed
@@ -24,7 +27,7 @@
 
 2007-08-27  Fiete  <Fiete@users.sourceforge.net>
     * EresseaRelationFactory.getTargetUnit now stops when finding a ";"
-    * Added "Magischer Kräuterbeutel" to rules.cr with weight=1
+    * Added "Magischer Krï¿½uterbeutel" to rules.cr with weight=1
     * added more skins, deleted old look-1.3 skin
     * fixed rules files for ending ".cr"
 
@@ -339,12 +342,12 @@
 
 	* src\java\com\eressea\swing\context\MapContextMenu.java (changeHotSpot): 
 	Fixed calculation of random Integer (was allways zero)
-	* src\java\com\eressea\util\Islands.java (getIsland): Feuerwände nicht in Inselauswahl
+	* src\java\com\eressea\util\Islands.java (getIsland): Feuerwï¿½nde nicht in Inselauswahl
 	* src\res\lang\orders_de.properties: BEWACHEN->BEWACHE
 
 2006-11-01  Fiete  <Fiete@users.sourceforge.net>
 
-	* src\java\com\eressea\demo\EMapOverviewPanel.java (createTreeBuilder): Default für den Modus auf UNITS | SHIPS | BUILDINGS |
+	* src\java\com\eressea\demo\EMapOverviewPanel.java (createTreeBuilder): Default fï¿½r den Modus auf UNITS | SHIPS | BUILDINGS |
 COMMENTS (Bug 1560157)
 	* Renamed Coordinate -> CoordinateID (Solthar)
 	* OriginTransformation schon beim Mergen (Solthar)
@@ -679,7 +682,7 @@ COMMENTS (Bug 1560157)
 2004-08-04  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
 	* src/java/com/eressea/gamebinding/eressea/EresseaOrderParser.java:
-	add support for BEFÖRDERUNG
+	add support for BEFï¿½RDERUNG
 
 2004-07-11  Ilja Pavkovic  <pavkovic@users.sourceforge.net>
 
@@ -916,7 +919,7 @@ COMMENTS (Bug 1560157)
 
 	* src/java/com/eressea/UnitContainer.java: Bugfix for bugzilla bug 801.
 
-2004-02-29 <Ulrich Küster@uni-jena.de>
+2004-02-29 <Ulrich Kï¿½ster@uni-jena.de>
 	* Some performance related issues, reduced memory consumption
 	  by avoiding unnecessary String allocations
 	* Bugfix in report merging: When determining the translation
