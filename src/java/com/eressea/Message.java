@@ -158,6 +158,10 @@ public class Message extends Identifiable {
 	 */
 	public void setText(String text) {
 		this.text = text;
+		// to detect messages with "" used as empty line
+		if (this.text.length()==0){
+			this.text=" ";
+		}
 	}
 
 	/**

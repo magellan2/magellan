@@ -1,3 +1,6 @@
+2007-12-09  Fiete  <Fiete@users.sourceforge.net>
+    * 0-length text in Message -> empty Line with " " text
+
 2007-12-09  stm  <stm_@users.sourceforge.net>
     * fixed bug with 0-length text in LineWrapCellRenderer
 
