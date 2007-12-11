@@ -1,3 +1,6 @@
+2007-12-11  Fiete  <Fiete@users.sourceforge.net>
+    * changed build.xml to target 1.4 explicit
+
 2007-12-09  Fiete  <Fiete@users.sourceforge.net>
     * 0-length text in Message -> empty Line with " " text
 
