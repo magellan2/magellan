@@ -10,7 +10,7 @@
 
   <property name="VERSION.MAJOR"         value="1"/>
   <property name="VERSION.MINOR"         value="2"/>
-  <property name="VERSION.SUB"           value="5c"/>
+  <property name="VERSION.SUB"           value="5d"/>
 
   <property name="VERSION"               value="${VERSION.MAJOR}_${VERSION.MINOR}_${VERSION.SUB}"/>
   <property name="VERSION.POINTED"       value="${VERSION.MAJOR}.${VERSION.MINOR}.${VERSION.SUB}"/>
@@ -49,9 +49,10 @@
 
   <property name="DISTRIBUTION"          value="${BUILD}/distribute"/>
 
-  <!-- be conservative while compilation to support java 1.3 -->
+  <!-- be conservative while compilation to support java 1.4 -->
   <!-- note that - if you cross compile - you need to set bootclasspath -->
-  <property name="JAVAC.TARGET"         value="1.1"/>
+  <property name="JAVAC.TARGET"         value="1.4"/>
+  <property name="JAVAC.SOURCE"         value="1.4"/>
   <property name="JAVAC.DEBUG"          value="true"/>
   <property name="JAVAC.DEPRECATION"    value="false"/>
   <property name="JAVAC.ENCODING"       value="ISO-8859-1"/>
