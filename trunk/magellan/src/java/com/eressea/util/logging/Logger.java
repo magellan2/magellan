@@ -16,10 +16,12 @@ package com.eressea.util.logging;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
+
+import com.eressea.util.Utils;
 
 
 //import org.apache.log4j.*;
@@ -50,7 +52,7 @@ public class Logger {
 
 	/** AWT messages are printed for debugging awt purposes */
 	public static final int AWT = 6;
-	private static int verboseLevel = WARN;
+	private static int verboseLevel = INFO;
 	private static Object awtLogger = null;
 	private static boolean searchAwtLogger = true;
 
@@ -409,11 +411,19 @@ public class Logger {
 	private static LogListener DEFAULTLOGLISTENER = new DefaultLogListener();
 
 	private static class DefaultLogListener implements LogListener {
+		
+		private Calendar calendar = Calendar.getInstance();
+		
 		public void log(int aLevel, Object aObj, Throwable aThrowable) {
 			log(System.err, aLevel, aObj, aThrowable);
 		} 
 		
 		private void log(PrintStream aOut, int aLevel, Object aObj, Throwable aThrowable) {
+			
+			calendar.setTimeInMillis(System.currentTimeMillis());
+			aOut.print(Utils.toDayAndTime(calendar.getTime()));
+			aOut.print(":");
+			
 			if(aObj != null) {
 				if(aObj instanceof Throwable) {
 					((Throwable) aObj).printStackTrace(aOut);
