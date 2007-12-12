@@ -1,3 +1,7 @@
+2007-12-13  Fiete  <Fiete@users.sourceforge.net>
+	* recompiled with JDK 1.4 -> 1.2.5e
+	* should run under 1.4 now
+
 2007-12-11  Fiete  <Fiete@users.sourceforge.net>
     * changed build.xml to target 1.4 explicit
 
