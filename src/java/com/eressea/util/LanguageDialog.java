@@ -14,7 +14,7 @@
 /*
  * LanguageDialog.java
  *
- * Created on 28. März 2002, 10:38
+ * Created on 28. Mï¿½rz 2002, 10:38
  */
 package com.eressea.util;
 
@@ -72,6 +72,7 @@ public class LanguageDialog {
 
 	protected void findLanguages(File baseDir) {
 		Locale sysDefault = Locale.getDefault();
+		log.debug(sysDefault);
 
 		// collect all jars in the base directory
 		Collection col = CollectionFactory.createLinkedList();
@@ -119,7 +120,7 @@ public class LanguageDialog {
 			for(int i = 0; i < langs.length; i++) {
 				// first check default resources
 				String name = "res/lang/" + LANG_FILE + "_" + langs[i];
-
+				
 				Locale locale = new Locale(langs[i], "");
 
 				URL url = ResourcePathClassLoader.getResourceStatically(name);
@@ -127,8 +128,9 @@ public class LanguageDialog {
 				if(url != null) {
 					Lang lang = new Lang(locale);
 					languageList.add(lang);
+					log.debug("found "+lang);
 
-					if(sysDefault.equals(locale)) {
+					if(sysDefault.getLanguage().equalsIgnoreCase(locale.getLanguage())) {
 						this.sysDefault = lang;
 					}
 
@@ -144,6 +146,7 @@ public class LanguageDialog {
 						if(url2 != null) { // found new language jar, mount it
 
 							Lang lang = new Lang(locale);
+							log.debug("found2 "+lang);
 							languageList.add(lang);
 
 							Collection col3 = CollectionFactory.createLinkedList(loader.getPaths());

@@ -242,7 +242,7 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 	private final ID treesID = StringID.create("Baeume");
 	private final ID mallornID = StringID.create("Mallorn");
 	private final ID sproutsID = StringID.create("Schoesslinge");
-	private final ID mallornSproutsID = StringID.create("Mallornschösslinge");
+	private final ID mallornSproutsID = StringID.create("Mallornschï¿½sslinge");
 	private final ID stonesID = StringID.create("Steine");
 
 	/**
@@ -463,7 +463,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 		tree.setEditable(true);
 		tree.setCellRenderer(new CellRenderer(getMagellanContext()));
-		tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
+		if (tree.getCellEditor()!=null){
+			tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
 				public void editingCanceled(ChangeEvent e) {
 				}
 
@@ -477,32 +478,33 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 
 						if((uc != null) && (uc.comments != null)) {
 							uc.comments.set(parent.getIndex(selectedNode),
-											tree.getCellEditor().getCellEditorValue());
+									tree.getCellEditor().getCellEditorValue());
 						}
 						show(displayedObject,false);
 					}
 				}
 			});
-		tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
-			public void editingCanceled(ChangeEvent e) {
-			}
-
-			public void editingStopped(ChangeEvent e) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-
-				if((selectedNode != null) && selectedNode.getUserObject() instanceof UnitCommentNodeWrapper) {
-					UnitCommentNodeWrapper cnW = (UnitCommentNodeWrapper) selectedNode.getUserObject();
-					DefaultMutableTreeNode parent = (DefaultMutableTreeNode) selectedNode.getParent();
-					Unit u = cnW.getUnit();
-
-					if((u != null) && (u.comments != null)) {
-						u.comments.set(parent.getIndex(selectedNode),
-										tree.getCellEditor().getCellEditorValue());
-					}
-					show(displayedObject,false);
+			tree.getCellEditor().addCellEditorListener(new CellEditorListener() {
+				public void editingCanceled(ChangeEvent e) {
 				}
-			}
-		});
+
+				public void editingStopped(ChangeEvent e) {
+					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+
+					if((selectedNode != null) && selectedNode.getUserObject() instanceof UnitCommentNodeWrapper) {
+						UnitCommentNodeWrapper cnW = (UnitCommentNodeWrapper) selectedNode.getUserObject();
+						DefaultMutableTreeNode parent = (DefaultMutableTreeNode) selectedNode.getParent();
+						Unit u = cnW.getUnit();
+
+						if((u != null) && (u.comments != null)) {
+							u.comments.set(parent.getIndex(selectedNode),
+									tree.getCellEditor().getCellEditorValue());
+						}
+						show(displayedObject,false);
+					}
+				}
+			});
+		}
 
 		contextManager = new ContextManager(tree,dispatcher);
 		stealthContext = new StealthContextFactory();
@@ -3025,8 +3027,8 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				n.add(m);
 			}
 			
-			// maxGrösse (bzw bei Burgen Min-Max)
-			// Bei Zitadelle: keine max oder min grössenangabe..(kein maxSize verfügbar)
+			// maxGrï¿½sse (bzw bei Burgen Min-Max)
+			// Bei Zitadelle: keine max oder min grï¿½ssenangabe..(kein maxSize verfï¿½gbar)
 			if (buildungType!=null && buildungType.getMaxSize()>-1){
 				if (buildungType instanceof CastleType){
 					CastleType castleType = (CastleType) buildungType;
@@ -3064,9 +3066,9 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 				String text = i.getName();
 
 				DefaultMutableTreeNode m;
-				if(text.endsWith(" pro Größenpunkt")) {
+				if(text.endsWith(" pro Grï¿½ï¿½enpunkt")) {
 					int amount = b.getSize() * i.getAmount();
-					String newText = text.substring(0, text.indexOf(" pro Größenpunkt"));
+					String newText = text.substring(0, text.indexOf(" pro Grï¿½ï¿½enpunkt"));
 					m = new DefaultMutableTreeNode(nodeWrapperFactory.createSimpleNodeWrapper(amount +
 							" " +
 							newText,

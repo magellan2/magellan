@@ -153,12 +153,17 @@ public class Logger {
 		}
 	}
 
+	
+	public static int getLevel(){
+		return verboseLevel;
+	}
+	
 	/**
-	 * TODO: DOCUMENT ME!
+	 * Get String representation of level.
 	 *
-	 * @param level TODO: DOCUMENT ME!
+	 * @param level A log level
 	 *
-	 * @return TODO: DOCUMENT ME!
+	 * @return The string representation of <code>level</code>
 	 */
 	public static String getLevel(int level) {
 		if(level <= OFF) {
