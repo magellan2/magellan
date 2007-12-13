@@ -1,3 +1,7 @@
+2007-12-09  stm  <stm_@users.sourceforge.net>
+    * improved logging output
+    * fixed very rare bug in EMapDetailsPanel
+
 2007-12-13  Fiete  <Fiete@users.sourceforge.net>
 	* recompiled with JDK 1.4 -> 1.2.5e
 	* should run under 1.4 now

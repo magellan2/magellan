@@ -51,7 +51,7 @@ public class Locales {
 	 */
 	public static Locale getGUILocale() throws IllegalStateException {
 		if(guiLocale == null) {
-			log.warn("Locales.getGUILocale: Locales is not initialized, falling back to default locale");
+			log.warn("Locales.getGUILocale: Locales is not initialized, falling back to default locale "+Locale.getDefault());
 			return Locale.getDefault();
 		}
 
