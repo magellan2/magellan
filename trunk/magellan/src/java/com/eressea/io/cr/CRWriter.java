@@ -788,12 +788,21 @@ public class CRWriter extends BufferedWriter {
 		// also factions aren't necessary; maybe this needs further
 		// specification
 		if(includeUnits) {
-			List sorted = CollectionFactory.createLinkedList(map.values());
-			Collections.sort(sorted, sortIndexComparator);
+		    // write owner first
+		    Faction ownerFaction = null;
+		    if (map.values().size() > 0)
+		      ownerFaction = (Faction) map.values().iterator().next();
+		    if (ownerFaction != null)
+		      writeFaction(ownerFaction);
+		    List sorted = CollectionFactory.createArrayList(map.values());
+		    Collections.sort(sorted, sortIndexComparator);
 
-			for(Iterator iter = sorted.iterator(); iter.hasNext();) {
-				writeFaction((Faction) iter.next());
-			}
+		    // write other factions
+		    for (Iterator it = sorted.iterator(); it.hasNext();) {
+		    	Faction f = (Faction) it.next();
+		    	if (ownerFaction == null || !f.equals(ownerFaction))
+		    		writeFaction(f);
+		    }
 		}
 	}
 
@@ -934,7 +943,7 @@ public class CRWriter extends BufferedWriter {
 			return;
 		}
 
-		List sorted = CollectionFactory.createLinkedList(ships);
+		List sorted = CollectionFactory.createArrayList(ships);
 		Collections.sort(sorted, sortIndexComparator);
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
@@ -1033,7 +1042,7 @@ public class CRWriter extends BufferedWriter {
 			return;
 		}
 
-		List sorted = CollectionFactory.createLinkedList(buildings);
+		List sorted = CollectionFactory.createArrayList(buildings);
 		Collections.sort(sorted, sortIndexComparator);
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
@@ -1283,7 +1292,7 @@ public class CRWriter extends BufferedWriter {
 			return;
 		}
 
-		List sorted = CollectionFactory.createLinkedList(units);
+		List sorted = CollectionFactory.createArrayList(units);
 		Collections.sort(sorted, sortIndexComparator);
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
@@ -2498,7 +2507,7 @@ public class CRWriter extends BufferedWriter {
 		write("TRANSLATION");
 		newLine();
 
-		List sorted = CollectionFactory.createLinkedList(m.keySet());
+		List sorted = CollectionFactory.createArrayList(m.keySet());
 		Collections.sort(sorted);
 
 		for(Iterator iter = sorted.iterator(); iter.hasNext();) {
