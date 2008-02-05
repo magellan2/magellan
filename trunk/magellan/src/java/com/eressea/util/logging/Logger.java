@@ -56,6 +56,12 @@ public class Logger {
 	private static Object awtLogger = null;
 	private static boolean searchAwtLogger = true;
 
+	/**
+	 * list of already processed warnings (objects)
+	 * used by log.warnOnce
+	 */
+	private static ArrayList onceWarnings = null;
+	
 	private Logger(String aBase) {
 		// be fail-fast
 		if(aBase == null) {
@@ -269,6 +275,24 @@ public class Logger {
 		warn(aObj, null);
 	}
 
+	/**
+	 * TODO: DOCUMENT ME!
+	 *
+	 * @param aObj TODO: DOCUMENT ME!
+	 */
+	public void warnOnce(Object aObj) {
+		if (onceWarnings==null){
+			onceWarnings = new ArrayList();
+		}
+		if (onceWarnings.contains(aObj)){
+			// already processed this object
+			return;
+		}
+		onceWarnings.add(aObj);
+		warn(aObj, null);
+	}
+	
+	
 	/**
 	 * TODO: DOCUMENT ME!
 	 *
