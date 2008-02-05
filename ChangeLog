@@ -1,3 +1,9 @@
+2008-02-05  Fiete  <Fiete@users.sourceforge.net>
+	* added Logger.warnOnce
+	* added notype.gif for all unknwon regiontypes
+	* added wand and gang to icons for regions
+	* changed to version 1.25f
+
 2007-12-09  stm  <stm_@users.sourceforge.net>
     * improved logging output
     * fixed very rare bug in EMapDetailsPanel

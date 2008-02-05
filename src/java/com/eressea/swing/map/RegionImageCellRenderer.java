@@ -107,10 +107,15 @@ public class RegionImageCellRenderer extends ImageCellRenderer implements Contex
 				Image img = getImage(type.getID().toString());
 
 				if(img != null) {
-					drawImage(r, getImage(type.getID().toString()), rect);
+					drawImage(r, img, rect);
 				} else {
-					log.warn("RegionImageCellRenderer.render(): image is null (" + type.getID() +
-							 ")");
+					img = getImage("notype");
+					if (img!=null){
+						log.warnOnce("RegionImageCellRenderer.render(): using special notype image for unknown:" + type.getID().toString());
+						drawImage(r, img, rect);
+					} else {
+						log.warnOnce("RegionImageCellRenderer.render(): image is null (notype)");
+					}
 				}
 			} else {
 				log.warn("RegionImageCellRenderer.render(): Couldn't determine region type for region: " +
