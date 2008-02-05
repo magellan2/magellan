@@ -148,6 +148,9 @@ public class Message extends Identifiable {
 	 * @return The message text
 	 */
 	public String getText() {
+		if (text==null){
+			return "unknown message";
+		}
 		return text;
 	}
 

@@ -859,14 +859,15 @@ public class FindDialog extends InternationalizedDataDialog
 				} else if(o instanceof Message) {
 					msg = ((Message) o).getText();
 				}
-
-				msg = msg.toLowerCase();
-
-				for(Iterator ptrnIter = patterns.iterator(); ptrnIter.hasNext();) {
-					if(msg.indexOf((String) ptrnIter.next()) > -1) {
-						retVal = true;
-
-						break;
+				if (msg!=null){ 
+					msg = msg.toLowerCase();
+	
+					for(Iterator ptrnIter = patterns.iterator(); ptrnIter.hasNext();) {
+						if(msg.indexOf((String) ptrnIter.next()) > -1) {
+							retVal = true;
+	
+							break;
+						}
 					}
 				}
 			}

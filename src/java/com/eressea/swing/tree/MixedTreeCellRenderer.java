@@ -94,14 +94,16 @@ public class MixedTreeCellRenderer implements TreeCellRenderer {
 		if(obj instanceof DefaultMutableTreeNode) {
 			o = ((DefaultMutableTreeNode) obj).getUserObject();
 		}
-
-		TreeCellRenderer tcr = findRenderer(o.getClass());
-
-		if(tcr != null) {
-			return tcr.getTreeCellRendererComponent(jTree, obj, param, param3, param4, param5,
-													param6);
+		
+		if (!o.toString().equalsIgnoreCase("Rootnode")){
+			TreeCellRenderer tcr = findRenderer(o.getClass());
+	
+			if(tcr != null) {
+				return tcr.getTreeCellRendererComponent(jTree, obj, param, param3, param4, param5,
+														param6);
+			}
 		}
-
-		return null;
+		return new java.awt.Label("unknown message");
+		// return null;
 	}
 }

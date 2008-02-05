@@ -260,7 +260,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 			Iterator iter = r.playerMessages.iterator();
 
 			while(iter.hasNext() == true) {
-				node.add(new DefaultMutableTreeNode(((Message) iter.next()).getText()));
+				Message m = (Message) iter.next();
+				if (m!=null && m.getText()!=null && m.getText().length()>0) {
+					node.add(new DefaultMutableTreeNode(m.getText()));
+				}
 			}
 		}
 
@@ -434,7 +437,10 @@ public class MessagePanel extends InternationalizedDataPanel implements Selectio
 			Iterator iter = u.unitMessages.iterator();
 
 			while(iter.hasNext() == true) {
-				node.add(new DefaultMutableTreeNode(((Message) iter.next()).getText()));
+				Message m = (Message) iter.next();
+				if (m!=null && m.getText()!=null && m.getText().length()>0){
+					node.add(new DefaultMutableTreeNode(m.getText()));
+				}
 			}
 		}
 
