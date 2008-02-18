@@ -229,9 +229,10 @@ public class FileType {
     }
 
     /**
-     * Creates a Writer with the default encoding iso-8859-1.
+     * Creates a Writer with the specified encoding.
      *
      * @param os the OutputStream
+     * @param encoding
      *
      * @return a Writer for the given OutputStream
      *
