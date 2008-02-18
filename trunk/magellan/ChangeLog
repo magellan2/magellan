@@ -1,3 +1,6 @@
+2008-02-05  stm  <stm_@users.sourceforge.net>
+    * write ;ECHECK VERSION into orders
+
 2008-02-05  Fiete  <Fiete@users.sourceforge.net>
 	* added Logger.warnOnce
 	* added notype.gif for all unknwon regiontypes

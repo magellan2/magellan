@@ -177,16 +177,14 @@ public class OrderWriter {
 		stream.write(Translations.getOrderTranslation(EresseaOrderConstants.O_ERESSEA));
 		stream.write(" " + faction.getID());
 		writeln(stream, " \"" + faction.password + "\"");
-		
 		if (this.writeTimeStamp) {
-			writeln(stream, "; TIMESTAMP " + getTimeStamp());
-		}
+            writeln(stream, "; TIMESTAMP " + getTimeStamp());
+        }
+        
+		writeln(stream, "; ECHECK VERSION Magellan "+VersionInfo.getVersion());
+
 		if(addECheckComments) {
 			writeln(stream, "; ECHECK " + echeckOptions);
-		}
-
-		if(!addECheckComments && VersionInfo.getVersion() != null) {
-			writeln(stream, "; VERSION Magellan " + VersionInfo.getVersion());
 		}
 
 		// pavkovic 2003.09.11: use system locale and NOT faction locale!
@@ -298,8 +296,15 @@ public class OrderWriter {
 			writeln(stream, ";" + CONFIRMED);
 		}
 
-		writeOrders(unit.getCompleteOrders(writeUnitTagsAsVorlageComment), stream);
-				
+		writeOrders(unit.getCompleteOrders(), stream);
+		
+		if(writeUnitTagsAsVorlageComment && unit.hasTags()) {
+			for(Iterator iter = unit.getTagMap().keySet().iterator(); iter.hasNext(); ) {
+				String tag = (String) iter.next();
+				writeln(stream, "// #after 1 { #tag EINHEIT "+tag.replace(' ','~')+" '"+unit.getTag(tag)+"' }");
+			}
+		}
+		
 		return true;
 	}
 
@@ -435,19 +440,5 @@ public class OrderWriter {
 	 */
 	public void setRegions(Collection aRegions) {
 		regions = aRegions;
-	}
-
-	/**
-	 * @return the writeTimeStamp
-	 */
-	public boolean isWriteTimeStamp() {
-		return writeTimeStamp;
-	}
-
-	/**
-	 * @param writeTimeStamp the writeTimeStamp to set
-	 */
-	public void setWriteTimeStamp(boolean writeTimeStamp) {
-		this.writeTimeStamp = writeTimeStamp;
 	}
 }

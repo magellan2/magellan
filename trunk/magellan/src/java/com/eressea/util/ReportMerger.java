@@ -514,6 +514,7 @@ public class ReportMerger extends Object {
                                                schemeCoord.x - 2 * (firstCoord.x + secondCoord.x),
                                                schemeCoord.y - 2 * (firstCoord.y + secondCoord.y));
                                }
+                               col.add(region);
                                // we may not find any astral to real mapping by variant 1 above
                                // therefore also do calculations for variant 2 here
                                // we "normalize" all schemes to be in the area
@@ -1078,16 +1079,16 @@ public class ReportMerger extends Object {
 	private CoordinateID getOneRegion_AR_RR_Translation(GameData data){
 		/**
 		 * Ansatz:
-		 * Sind die Schemen günstig verteilt, reicht eine AR Region und ihre Schemen
+		 * Sind die Schemen gï¿½nstig verteilt, reicht eine AR Region und ihre Schemen
 		 * zum Bestimmen des Mappings AR->RR
 		 * Dazu wird versucht, die RR-Region genau unter der AR-Region zu finden.
 		 * Diese darf maximal 2 Regionen von allen Schemen entfernt sein.
 		 * Die Entfernung dieser Region zu benachbarten Regionen der Schemen, die NICHT 
 		 * selbst Schemen sind, muss allerdings > 2 sein
-		 * (da sonst auch diese Region in den Schemen enthalten sein müsste)
-		 * Die endgültieg Region unter der AR-Region kann Ozean sein und muss daher
+		 * (da sonst auch diese Region in den Schemen enthalten sein mï¿½sste)
+		 * Die endgï¿½ltieg Region unter der AR-Region kann Ozean sein und muss daher
 		 * nicht in den Schemen sichtbar sein.
-		 * Daher wird zuerst ein Pool von möglichen Regionen gebildet, indem 
+		 * Daher wird zuerst ein Pool von mï¿½glichen Regionen gebildet, indem 
 		 * alle Schemen, ihre Nachbarn und wiederum deren Nachbarn erfasst werden.
 		 * Dann werden nicht in Frage kommende Region sukkzessive eliminiert
 		 * 
@@ -1143,32 +1144,32 @@ public class ReportMerger extends Object {
 		// die schemen erfahren eine sonderbehandlung, diese extra listen
 		ArrayList actSchemeRegions = new ArrayList(0);
 		actSchemeRegions.addAll(possibleRR_Regions);
-		// die possible Regions mit Nachbarn füllen, für den ungünstigsten
-		// Fall sind 4 Läufe notwendig
+		// die possible Regions mit Nachbarn fï¿½llen, fï¿½r den ungï¿½nstigsten
+		// Fall sind 4 Lï¿½ufe notwendig
 		for (int i = 0;i<4;i++){
 			possibleRR_Regions = this.getOneRegion_explodeRegionList(data, possibleRR_Regions);
 		}
 		
-		// Ab jetzt versuchen, unmögliche Regionen zu entfernen...
+		// Ab jetzt versuchen, unmï¿½gliche Regionen zu entfernen...
 		// erste bedingung: alle regionen, die sich auch nur von einer schemenRegionen
-		// weiter entfernt befinden als 2 Regionen können raus.
+		// weiter entfernt befinden als 2 Regionen kï¿½nnen raus.
 		possibleRR_Regions = this.getOneRegion_deleteIfDist(data,actSchemeRegions, possibleRR_Regions, 2,true);
 		
-		// zweite bedingung: Randregionen von schemen (nicht ozean-Regionen...), die nicht selbst schemen sind, dürfen nicht weniger als 3
+		// zweite bedingung: Randregionen von schemen (nicht ozean-Regionen...), die nicht selbst schemen sind, dï¿½rfen nicht weniger als 3
 		// Regionen entfernt sein.
 		// Dazu: Randregionen basteln
 		ArrayList schemenRandRegionen = new ArrayList(0);
 		schemenRandRegionen = this.getOneRegion_explodeRegionList(data, actSchemeRegions);
 		// schemen selbst abziehen
 		schemenRandRegionen.removeAll(actSchemeRegions);
-		// Ozeanfelder löschen
+		// Ozeanfelder lï¿½schen
 		schemenRandRegionen = this.getOneRegion_deleteOceans(schemenRandRegionen);
-		// alle löschen, die weniger als 3 Regionen an den randregionen dranne sind
+		// alle lï¿½schen, die weniger als 3 Regionen an den randregionen dranne sind
 		possibleRR_Regions = this.getOneRegion_deleteIfDist(data, schemenRandRegionen, possibleRR_Regions, 3,false);
 		// jetzt sollte im Idealfall nur noch eine Region vorhanden sein ;-))
 		if (possibleRR_Regions.size()==1){
-			// Treffer, wir können Translation bestimmen
-			// Verständnisfrage: ist gesichert, dass sich das einzige
+			// Treffer, wir kï¿½nnen Translation bestimmen
+			// Verstï¿½ndnisfrage: ist gesichert, dass sich das einzige
 			// Element einer ArrayList immer auf Index=0 befindet?
 			for (Iterator iter = possibleRR_Regions.iterator();iter.hasNext();){
 				Region RR_Region = (Region)iter.next();
@@ -1180,7 +1181,7 @@ public class ReportMerger extends Object {
 	}
 	
 	/**
-	 * Löscht die Regionen aus regionList, welche nicht von allen Regionen in 
+	 * Lï¿½scht die Regionen aus regionList, welche nicht von allen Regionen in 
 	 * schemen mindestens einen abstand von dist haben
 	 * @param schemen
 	 * @param regionen
@@ -1202,14 +1203,14 @@ public class ReportMerger extends Object {
 					
 					if ((dist > abstand && innerhalb) || (dist < abstand && !innerhalb)){
 						// actRegion ist weiter als abstand von actSchemenregion entfernt
-						// muss gelöscht werden
+						// muss gelï¿½scht werden
 						regionsToDel.add(actRegion);
 						break;
 					}
 				}
 			}
 		}
-		// Löschung durchführen
+		// Lï¿½schung durchfï¿½hren
 		ArrayList erg = new ArrayList(0);
 		erg.addAll(regionList);
 		erg.removeAll(regionsToDel);
@@ -1217,7 +1218,7 @@ public class ReportMerger extends Object {
 	}
 	
 	/**
-	 * Löscht die Regionen aus regionList, welche als Ozean deklariert
+	 * Lï¿½scht die Regionen aus regionList, welche als Ozean deklariert
 	 * sind
 	 * @param regionen
 	 * @return
@@ -1231,7 +1232,7 @@ public class ReportMerger extends Object {
 			}
 			
 		}
-		// Löschung durchführen
+		// Lï¿½schung durchfï¿½hren
 		ArrayList erg = new ArrayList(0);
 		erg.addAll(regionList);
 		erg.removeAll(regionsToDel);
@@ -1245,7 +1246,7 @@ public class ReportMerger extends Object {
 	 * @return
 	 */
 	private ArrayList getOneRegion_explodeRegionList(GameData data, ArrayList regionList){
-		// Liste verlängern nach durchlauf
+		// Liste verlï¿½ngern nach durchlauf
 		ArrayList regionsToAdd = new ArrayList();
 		for(Iterator iter = regionList.iterator(); iter.hasNext();) {
 			Region actRegion = (Region) iter.next();
@@ -1254,14 +1255,14 @@ public class ReportMerger extends Object {
 			for(Iterator iter2 = neighbors.iterator(); iter2.hasNext();) {
 				CoordinateID newRegionID = (CoordinateID)iter2.next();
 				Region newRegion = data.getRegion(newRegionID);
-				// hinzufügen, wenn noch nicht vorhanden
+				// hinzufï¿½gen, wenn noch nicht vorhanden
 				if (!regionList.contains(newRegion) && !regionsToAdd.contains(newRegion)){
 					regionsToAdd.add(newRegion);
 				}
 			}
 			
 		}
-		// alle hinzufügen
+		// alle hinzufï¿½gen
 		ArrayList erg = new ArrayList(0);
 		erg.addAll(regionList);
 		erg.addAll(regionsToAdd);
