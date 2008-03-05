@@ -1353,6 +1353,21 @@ ITEM "Magischer Kräuterbeutel"
 1;weight
 "misc";category
 
+ITEM "Tiegel mit Krötenschleim"
+"Tiegel mit Krötenschleim";name
+1;weight
+"misc";category
+
+ITEM "Schlangenkopf"
+"Schlangenkopf";name
+5;weight
+"trophies";category
+
+ITEM "Drachenkopf"
+"Drachenkopf";name
+5;weight
+"trophies";category
+
 SHIPTYPE "Boot"
 "Boot";name
 5;size
