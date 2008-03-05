@@ -8,6 +8,9 @@
 	* changed to version 1.25f
 	* added "unknown message"-label to TreeCellrenderer for messages without ;rendered tag
 
+2007-12-19  Fiete  <Fiete@users.sourceforge.net>
+	* rules.cr added: Tiegel, Schlangenkopf, Drachenkopf
+
 2007-12-09  stm  <stm_@users.sourceforge.net>
     * improved logging output
     * fixed very rare bug in EMapDetailsPanel
