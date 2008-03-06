@@ -441,4 +441,12 @@ public class OrderWriter {
 	public void setRegions(Collection aRegions) {
 		regions = aRegions;
 	}
+
+	/**
+	 * @param writeTimeStamp the writeTimeStamp to set
+	 * Fiete: plz do not remove this sub (again) ;-)
+	 */
+	public void setWriteTimeStamp(boolean writeTimeStamp) {
+		this.writeTimeStamp = writeTimeStamp;
+	}
 }
