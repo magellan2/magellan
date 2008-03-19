@@ -261,7 +261,7 @@ public class Translations {
 
 		// no translation found, give back key
 		if(!Locale.ENGLISH.equals(l)) {
-			log.warn("Translations.getOrderTranslation(" + key + "," + l +
+			log.warnOnce("Translations.getOrderTranslation(" + key + "," + l +
 					 "): no valid translation found, returning key");
 		}
 
