@@ -1368,6 +1368,11 @@ ITEM "Drachenkopf"
 5;weight
 "trophies";category
 
+ITEM "Ring der flinken Finger"
+"Ring der flinken Finger";name
+1;weight
+"misc";category
+
 SHIPTYPE "Boot"
 "Boot";name
 5;size
