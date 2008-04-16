@@ -388,7 +388,7 @@ public class CRWriter extends BufferedWriter {
 		// The Echecker of German Atlantis has problems with the locale line
 		// so we check the game name
 		if (!world.name.startsWith("GAV")){
-		    writeQuotedTag(encoding,"charset");
+		    writeQuotedTag(world.encoding,"charset");
 			if(world.getLocale() != null) {
 				writeQuotedTag(world.getLocale().toString(), "locale");
 			}
