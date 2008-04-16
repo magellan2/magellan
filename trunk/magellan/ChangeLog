@@ -1,3 +1,7 @@
+2008-02-05  Fiete  <Fiete@users.sourceforge.net>
+	* fixed #168: wrong charset in CR Export
+	* fixed #84: 1000er Lighthouse
+
 2008-02-05  stm  <stm_@users.sourceforge.net>
     * write ;ECHECK VERSION into orders
 

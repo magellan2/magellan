@@ -190,7 +190,8 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 
 					try {
 						write(FileTypeFactory.singleton().createFileType(outputFile, false)
-											 .createWriter(FileType.DEFAULT_ENCODING));
+											 .createWriter(data.encoding));
+						
 						quit();
 					} catch(IOException ioe) {
 						log.error(ioe);
@@ -669,7 +670,7 @@ public class CRWriterDialog extends InternationalizedDataDialog {
 			if(chkSelRegionsOnly.isSelected() && (regions != null) && (regions.size() > 0)) {
 				crw.setRegions(regions);
 			}
-
+			
 			crw.write(newData);
 			crw.close();
 		} catch(Exception exc) {
