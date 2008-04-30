@@ -139,6 +139,13 @@ public class Region extends UnitContainer {
 	
 
 	/**
+	   * the unique regionID generated and sent by the eressea server
+	   * starting with turn 570 
+	   */
+	  private long UID =0;
+	
+	
+	/**
 	 * Constructs a new Region object uniquely identifiable by the specified id.
 	 *
 	 * @param id TODO: DOCUMENT ME!
@@ -1440,6 +1447,12 @@ public class Region extends UnitContainer {
 			newRegion.herb = newGD.rules.getItemType(curRegion.herb.getID(), true);
 		}
 
+		
+		// Fiete 20080430: adding merging of regionUIDs
+		if (curRegion.getUID()!=0){
+			newRegion.setUID(curRegion.getUID());
+		}
+		
 		if(curRegion.herbAmount != null) {
 			/* FIXME There was a bug around 2002.02.16 where numbers would be
 			 stored in this field - filter them out. This should only
@@ -1979,5 +1992,25 @@ public class Region extends UnitContainer {
 			this.signs.clear();
 		}
 	}
+	
+	/**
+	   * Returns the value of uID, the unique regionID generated and sent by the
+	   * eressea server (starting in turn 570)
+	   * 
+	   * @return Returns uID.
+	   */
+	  public long getUID() {
+	    return UID;
+	  }
+
+	  /**
+	   * Sets the value of uID, the unique regionID generated and sent by the
+	   * eressea server (starting in turn 570)
+	   *
+	   * @param uid The value for uID.
+	   */
+	  public void setUID(long uid) {
+	    UID = uid;
+	  }
 	
 }

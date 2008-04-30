@@ -89,6 +89,9 @@ public class ReportMerger extends Object {
 
 		// maps region names to region coordinate
 		Map regionMap = null;
+		
+		// maps region UIDs to Regions
+		Map regionUIDMap = null;
 
 		// maps schemes (region names) to a Collection of astral regions
 		// which contain that scheme
@@ -560,7 +563,8 @@ public class ReportMerger extends Object {
 			}
 			report.regionMap = CollectionFactory.createHashMap();
 			report.schemeMap = CollectionFactory.createHashMap();
-
+			report.regionUIDMap = CollectionFactory.createHashMap();
+			
 			for(Iterator iter = report.data.regions().values().iterator(); iter.hasNext();) {
 				Region region = (Region) iter.next();
 
@@ -572,7 +576,11 @@ public class ReportMerger extends Object {
 
 					//}
 				}
-
+				
+				if (region.getUID()!=0){
+					report.regionUIDMap.put(new Long(region.getUID()), region);
+				}
+				
 				if(region.getCoordinate().z == 1) {
 					reportHasAstralRegions=true;
 					for(Iterator schemes = region.schemes().iterator(); schemes.hasNext();) {
@@ -746,6 +754,10 @@ public class ReportMerger extends Object {
 			}
 		}
 
+		// Fiete: add Translations found by using regionUIDs
+		translationMap.putAll(this.getTranslationCandidatesRegionUID(report, 0));
+		astralTranslationMap.putAll(this.getTranslationCandidatesRegionUID(report, 1));
+		
 		// end of search for translations, now check the found ones
 
 		/* check whether any of the normal space translations is impossible by
@@ -1079,16 +1091,16 @@ public class ReportMerger extends Object {
 	private CoordinateID getOneRegion_AR_RR_Translation(GameData data){
 		/**
 		 * Ansatz:
-		 * Sind die Schemen gï¿½nstig verteilt, reicht eine AR Region und ihre Schemen
+		 * Sind die Schemen günstig verteilt, reicht eine AR Region und ihre Schemen
 		 * zum Bestimmen des Mappings AR->RR
 		 * Dazu wird versucht, die RR-Region genau unter der AR-Region zu finden.
 		 * Diese darf maximal 2 Regionen von allen Schemen entfernt sein.
 		 * Die Entfernung dieser Region zu benachbarten Regionen der Schemen, die NICHT 
 		 * selbst Schemen sind, muss allerdings > 2 sein
-		 * (da sonst auch diese Region in den Schemen enthalten sein mï¿½sste)
-		 * Die endgï¿½ltieg Region unter der AR-Region kann Ozean sein und muss daher
+		 * (da sonst auch diese Region in den Schemen enthalten sein müsste)
+		 * Die endgültieg Region unter der AR-Region kann Ozean sein und muss daher
 		 * nicht in den Schemen sichtbar sein.
-		 * Daher wird zuerst ein Pool von mï¿½glichen Regionen gebildet, indem 
+		 * Daher wird zuerst ein Pool von möglichen Regionen gebildet, indem 
 		 * alle Schemen, ihre Nachbarn und wiederum deren Nachbarn erfasst werden.
 		 * Dann werden nicht in Frage kommende Region sukkzessive eliminiert
 		 * 
@@ -1144,32 +1156,32 @@ public class ReportMerger extends Object {
 		// die schemen erfahren eine sonderbehandlung, diese extra listen
 		ArrayList actSchemeRegions = new ArrayList(0);
 		actSchemeRegions.addAll(possibleRR_Regions);
-		// die possible Regions mit Nachbarn fï¿½llen, fï¿½r den ungï¿½nstigsten
-		// Fall sind 4 Lï¿½ufe notwendig
+		// die possible Regions mit Nachbarn füllen, für den ungünstigsten
+		// Fall sind 4 Läufe notwendig
 		for (int i = 0;i<4;i++){
 			possibleRR_Regions = this.getOneRegion_explodeRegionList(data, possibleRR_Regions);
 		}
 		
-		// Ab jetzt versuchen, unmï¿½gliche Regionen zu entfernen...
+		// Ab jetzt versuchen, unmögliche Regionen zu entfernen...
 		// erste bedingung: alle regionen, die sich auch nur von einer schemenRegionen
-		// weiter entfernt befinden als 2 Regionen kï¿½nnen raus.
+		// weiter entfernt befinden als 2 Regionen können raus.
 		possibleRR_Regions = this.getOneRegion_deleteIfDist(data,actSchemeRegions, possibleRR_Regions, 2,true);
 		
-		// zweite bedingung: Randregionen von schemen (nicht ozean-Regionen...), die nicht selbst schemen sind, dï¿½rfen nicht weniger als 3
+		// zweite bedingung: Randregionen von schemen (nicht ozean-Regionen...), die nicht selbst schemen sind, dürfen nicht weniger als 3
 		// Regionen entfernt sein.
 		// Dazu: Randregionen basteln
 		ArrayList schemenRandRegionen = new ArrayList(0);
 		schemenRandRegionen = this.getOneRegion_explodeRegionList(data, actSchemeRegions);
 		// schemen selbst abziehen
 		schemenRandRegionen.removeAll(actSchemeRegions);
-		// Ozeanfelder lï¿½schen
+		// Ozeanfelder löschen
 		schemenRandRegionen = this.getOneRegion_deleteOceans(schemenRandRegionen);
-		// alle lï¿½schen, die weniger als 3 Regionen an den randregionen dranne sind
+		// alle löschen, die weniger als 3 Regionen an den randregionen dranne sind
 		possibleRR_Regions = this.getOneRegion_deleteIfDist(data, schemenRandRegionen, possibleRR_Regions, 3,false);
 		// jetzt sollte im Idealfall nur noch eine Region vorhanden sein ;-))
 		if (possibleRR_Regions.size()==1){
-			// Treffer, wir kï¿½nnen Translation bestimmen
-			// Verstï¿½ndnisfrage: ist gesichert, dass sich das einzige
+			// Treffer, wir können Translation bestimmen
+			// Verständnisfrage: ist gesichert, dass sich das einzige
 			// Element einer ArrayList immer auf Index=0 befindet?
 			for (Iterator iter = possibleRR_Regions.iterator();iter.hasNext();){
 				Region RR_Region = (Region)iter.next();
@@ -1181,7 +1193,7 @@ public class ReportMerger extends Object {
 	}
 	
 	/**
-	 * Lï¿½scht die Regionen aus regionList, welche nicht von allen Regionen in 
+	 * Löscht die Regionen aus regionList, welche nicht von allen Regionen in 
 	 * schemen mindestens einen abstand von dist haben
 	 * @param schemen
 	 * @param regionen
@@ -1203,14 +1215,14 @@ public class ReportMerger extends Object {
 					
 					if ((dist > abstand && innerhalb) || (dist < abstand && !innerhalb)){
 						// actRegion ist weiter als abstand von actSchemenregion entfernt
-						// muss gelï¿½scht werden
+						// muss gelöscht werden
 						regionsToDel.add(actRegion);
 						break;
 					}
 				}
 			}
 		}
-		// Lï¿½schung durchfï¿½hren
+		// Löschung durchführen
 		ArrayList erg = new ArrayList(0);
 		erg.addAll(regionList);
 		erg.removeAll(regionsToDel);
@@ -1218,7 +1230,7 @@ public class ReportMerger extends Object {
 	}
 	
 	/**
-	 * Lï¿½scht die Regionen aus regionList, welche als Ozean deklariert
+	 * Löscht die Regionen aus regionList, welche als Ozean deklariert
 	 * sind
 	 * @param regionen
 	 * @return
@@ -1232,7 +1244,7 @@ public class ReportMerger extends Object {
 			}
 			
 		}
-		// Lï¿½schung durchfï¿½hren
+		// Löschung durchführen
 		ArrayList erg = new ArrayList(0);
 		erg.addAll(regionList);
 		erg.removeAll(regionsToDel);
@@ -1246,7 +1258,7 @@ public class ReportMerger extends Object {
 	 * @return
 	 */
 	private ArrayList getOneRegion_explodeRegionList(GameData data, ArrayList regionList){
-		// Liste verlï¿½ngern nach durchlauf
+		// Liste verlängern nach durchlauf
 		ArrayList regionsToAdd = new ArrayList();
 		for(Iterator iter = regionList.iterator(); iter.hasNext();) {
 			Region actRegion = (Region) iter.next();
@@ -1255,14 +1267,14 @@ public class ReportMerger extends Object {
 			for(Iterator iter2 = neighbors.iterator(); iter2.hasNext();) {
 				CoordinateID newRegionID = (CoordinateID)iter2.next();
 				Region newRegion = data.getRegion(newRegionID);
-				// hinzufï¿½gen, wenn noch nicht vorhanden
+				// hinzufügen, wenn noch nicht vorhanden
 				if (!regionList.contains(newRegion) && !regionsToAdd.contains(newRegion)){
 					regionsToAdd.add(newRegion);
 				}
 			}
 			
 		}
-		// alle hinzufï¿½gen
+		// alle hinzufügen
 		ArrayList erg = new ArrayList(0);
 		erg.addAll(regionList);
 		erg.addAll(regionsToAdd);
@@ -1371,4 +1383,42 @@ public class ReportMerger extends Object {
 
 		return defaultTranslations;
 	}
+	
+	/**
+	   * Tries to find matching regions and adds translations to the map accordingly.
+	   * takes care of given layer
+	   * 
+	   * @param newReport
+	   * @return
+	   */
+	  private Map getTranslationCandidatesRegionUID(Report newReport, int layer) {
+	    Map translationMap = new Hashtable();
+	   
+	    // loop regions in main report
+	    // for (Region region : globalData.regions().values()) {
+	    for (Iterator iter = data.regions().values().iterator();iter.hasNext();){
+	      Region region = (Region)iter.next();	
+	      CoordinateID coord = region.getCoordinate();
+	      if ((coord.z == layer) && (region.getUID() != 0)) {
+
+	        Region result = (Region)newReport.regionUIDMap.get(new Long(region.getUID()));
+	        if (result != null) {
+	          CoordinateID foundCoord = result.getCoordinate();
+	          CoordinateID translation = new CoordinateID(foundCoord.x - coord.x, foundCoord.y - coord.y);
+	          Integer count = (Integer) translationMap.get(translation);
+
+				if(count == null) {
+					count = new Integer(1);
+				} else {
+					count = new Integer(count.intValue() + 1);
+				}
+
+				translationMap.put(translation, count);
+	        }
+	      }
+	    }
+	    return translationMap;
+	  }
+	
+	
 }
