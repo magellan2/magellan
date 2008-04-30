@@ -2543,6 +2543,9 @@ public class CRParser implements RulesIO, GameDataIO {
 				}
 
 				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("id")) {
+		        region.setUID(Long.parseLong(sc.argv[0]));
+		        sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Beschr")) {
 				region.setDescription(sc.argv[0]);
 				sc.getNextToken();

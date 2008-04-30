@@ -1461,7 +1461,9 @@ public class CRWriter extends BufferedWriter {
 		}
 
 		if(unit.getGuiseFaction() != null) {
-			write(((IntegerID) unit.getGuiseFaction().getID()).intValue() + ";Verkleidung");
+			// write(((IntegerID) unit.getGuiseFaction().getID()).intValue() + ";Verkleidung");
+			// Anderepartei
+			write(((IntegerID) unit.getGuiseFaction().getID()).intValue() + ";Anderepartei");
 			newLine();
 		}
 
@@ -1670,6 +1672,19 @@ public class CRWriter extends BufferedWriter {
 		write("REGION " + region.getID().toString(" "));
 		newLine();
 
+		// Fiete: starting in round 570 we can have region.UID within
+		// eressea, coming from the server.
+		// if UID is known, write it now
+		// UID=0 reserved for no UID.
+		if (region.getUID()!=0){
+		   // first example was quoted
+		   // writeQuotedTag(region.getUID() + "", "id");
+		   // finally we use not quoted IDs
+		  write(region.getUID()+ ";id");
+		  newLine();
+		}
+		
+		
 		UnitContainerType type = region.getType();
 
 		if((region.getName() != null) && !region.getName().equals("")) {

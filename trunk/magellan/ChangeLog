@@ -1,3 +1,6 @@
+2008-04-30  Fiete  <Fiete@users.sourceforge.net>
+	* introduced regionUID (Parser, Writer, Merger, Region.merge)
+	
 2008-02-05  Fiete  <Fiete@users.sourceforge.net>
 	* fixed #168: wrong charset in CR Export
 	* fixed #84: 1000er Lighthouse
