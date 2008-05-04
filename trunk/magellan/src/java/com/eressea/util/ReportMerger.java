@@ -1404,7 +1404,7 @@ public class ReportMerger extends Object {
 	        Region result = (Region)newReport.regionUIDMap.get(new Long(region.getUID()));
 	        if (result != null) {
 	          CoordinateID foundCoord = result.getCoordinate();
-	          CoordinateID translation = new CoordinateID(foundCoord.x - coord.x, foundCoord.y - coord.y);
+	          CoordinateID translation = new CoordinateID(foundCoord.x - coord.x, foundCoord.y - coord.y,layer);
 	          Integer count = (Integer) translationMap.get(translation);
 
 				if(count == null) {
