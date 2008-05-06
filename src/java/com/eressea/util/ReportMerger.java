@@ -1023,11 +1023,14 @@ public class ReportMerger extends Object {
 		
 
 		CoordinateID usedTranslation = null;
-
+		/*
+		 * Fiete 20080506: Iguess this is wrong, we do not need
+		 * inverse translation 
 		if ((data.getDate() == null) || (report.data.getDate() == null)) {
 			usedTranslation = new CoordinateID(iDX, iDY);
 			// report.data.placeOrigin(new Coordinate(iDX, iDY));
 		} else {
+			
 			if (data.getDate().getDate() > report.data.getDate().getDate()) {
 				usedTranslation = new CoordinateID(-iDX, -iDY);
 				// data.placeOrigin(new Coordinate(-iDX, -iDY));
@@ -1036,6 +1039,9 @@ public class ReportMerger extends Object {
 				// report.data.placeOrigin(new Coordinate(iDX, iDY));
 			}
 		}
+		*/
+		// just using the found best translation
+		usedTranslation = new CoordinateID(iDX, iDY);
 
 		// TODO: manual translation
 //		if (newOrigin != null && forceOrigin)
