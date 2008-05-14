@@ -16,10 +16,14 @@ package com.eressea.swing;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.DefaultComboBoxModel;
@@ -28,9 +32,6 @@ import javax.swing.JSlider;
 
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.logging.Logger;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * DOCUMENT ME!
@@ -52,11 +53,22 @@ public class MapSaverUI extends InternationalizedDialog {
 		super(parent, modal);
 		initComponents();
 
-		String strList[] = {  /*"PNG",*/"JPEG" };
-
+		
+		String strList[] = ImageIO.getWriterMIMETypes(); //{  /*"PNG",*/"JPEG" };
+    
+		
 		cbFormat.setModel(new DefaultComboBoxModel(strList));
 		cbFormat.setSelectedIndex(0);
-
+		cbFormat.addActionListener(new java.awt.event.ActionListener() {
+		
+			public void actionPerformed(ActionEvent e) {
+				updateUI();
+			}
+		
+		});
+		
+		updateUI();
+		
 		btnGroup = new ButtonGroup();
 		btnGroup.add(rbtnCount);
 		btnGroup.add(rbtnSize);
@@ -66,6 +78,12 @@ public class MapSaverUI extends InternationalizedDialog {
 		pack();
 
 		outComponent = cmpSave;
+	}
+
+	protected void updateUI() {
+		ImageWriter writer = (ImageWriter) ImageIO.getImageWritersByMIMEType((String)cbFormat.getSelectedItem()).next();
+		ImageWriteParam param = writer.getDefaultWriteParam();
+			qSlider.setEnabled(param.canWriteCompressed());
 	}
 
 	private void initComponents() {
@@ -235,20 +253,7 @@ public class MapSaverUI extends InternationalizedDialog {
 
 	private void btnSaveAction(java.awt.event.ActionEvent evt) {
 		try {
-			int iType = SAVEAS_IMAGETYPE_JPEG;
 			String strBase;
-
-			switch(cbFormat.getSelectedIndex()) {
-			case 0:
-				iType = SAVEAS_IMAGETYPE_JPEG;
-
-				break;
-
-			case 1:
-				iType = SAVEAS_IMAGETYPE_PNG;
-
-				break;
-			}
 
 			javax.swing.filechooser.FileFilter ff = new javax.swing.filechooser.FileFilter() {
 				public boolean accept(File f) {
@@ -275,10 +280,10 @@ public class MapSaverUI extends InternationalizedDialog {
 
 				if(rbtnCount.isSelected()) {
 					saveAs_SC(strBase, Integer.parseInt(textX.getText()),
-							  Integer.parseInt(textY.getText()), quality, iType);
+							  Integer.parseInt(textY.getText()), quality, 0);
 				} else {
 					saveAs(strBase, Integer.parseInt(textX.getText()),
-						   Integer.parseInt(textY.getText()), quality, iType);
+						   Integer.parseInt(textY.getText()), quality, 0);
 				}
 
 				System.gc();
@@ -448,109 +453,30 @@ public class MapSaverUI extends InternationalizedDialog {
 	private void SaveAs(String strOut, BufferedImage bimg, int x, int y, int iOf, int iMax,
 						int iSaveType, float fQuality) throws Exception
 	{
-		switch(iSaveType) {
-		case SAVEAS_IMAGETYPE_JPEG: {
-			String strOutput;
+		ImageWriter writer = (ImageWriter) ImageIO.getImageWritersByMIMEType((String)cbFormat.getSelectedItem()).next();
+		ImageWriteParam param = writer.getDefaultWriteParam();
 
-			strOutput = strOut + "_" + x + "_" + y + ".jpg";
-
-			java.io.OutputStream out = new java.io.FileOutputStream(strOutput);
-
-			log.info(strOutput + " " + iOf + " of " + iMax);
-
-			com.sun.image.codec.jpeg.JPEGEncodeParam jpegEncodeParam = JPEGCodec.getDefaultJPEGEncodeParam(bimg);
-
-			jpegEncodeParam.setQuality(fQuality, true);
-
-			JPEGImageEncoder jpegImageEncoder = JPEGCodec.createJPEGEncoder(out, jpegEncodeParam);
-
-			try {
-				jpegImageEncoder.encode(bimg);
-				jpegImageEncoder = null;
-			} catch(OutOfMemoryError e) {
-				jpegImageEncoder = null;
-				throw e;
-			}
+		if (qSlider.isEnabled()){
+			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			param.setCompressionQuality(qSlider.getValue()/10f);
 		}
+		
+		int separatorPosition = strOut.lastIndexOf('.');
+		separatorPosition = separatorPosition==-1?strOut.length():separatorPosition;
+		String firstName = strOut.substring(0, separatorPosition);
+		String extension = strOut.substring(separatorPosition);
 
-		break;
+		strOut = firstName + "_" + x + "_" + y + extension;
 
-		case SAVEAS_IMAGETYPE_PNG: {
-			//check for JAI
-			try {
-				ClassLoader cl = ClassLoader.getSystemClassLoader();
+		java.io.OutputStream out = new java.io.FileOutputStream(strOut);
 
-				cl.loadClass("com.sun.media.jai.codec.PNGEncodeParam");
-			} catch(ClassNotFoundException e) {
-				throw new Exception("Für PNG Ausgabe wird das JAI (Java Advanced Imaging) " +
-									"benötigt. Das JAI kann man unter http://java.sun.com erhalten.");
-			}
+		log.info(strOut + " " + iOf + " of " + iMax);
 
-			String strOutput;
-
-			strOutput = strOut + "_" + x + "_" + y + ".png";
-
-			java.io.OutputStream out = new java.io.FileOutputStream(strOutput);
-
-			log.info(strOutput + " " + iOf + " of " + iMax);
-
-			com.eressea.util.PNG.savePNG(bimg, out);
-		}
-
-		break;
-
-			/*case SAVEAS_IMAGETYPE_PNG256: {
-			 //check for JAI
-			 try {
-			 ClassLoader cl = ClassLoader.getSystemClassLoader();
-			 cl.loadClass("com.sun.media.jai.codec.PNGEncodeParam");
-			 }catch(ClassNotFoundException e) {
-			 System.out.println("Für PNG Ausgabe wird das JAI (Java Advanced Imaging) " +
-			 "benötigt. Das JAI kann man unter http://java.sun.com erhalten.");
-			 System.exit(0);
-			 }
-			 String strOutput;
-
-			 strOutput = strOut + "_" + x + "_" + y + ".png";
-			 java.io.OutputStream out = new java.io.FileOutputStream(strOutput);
-
-			 System.out.println(strOutput + " " + iOf + " von " + iMax);
-
-			 BufferedImage bimg2;
-			 bimg2 = new BufferedImage(bimg.getWidth(), bimg.getHeight(),
-			 BufferedImage.TYPE_BYTE_INDEXED, _icmPalette16);
-
-			 imgCopyRGBToIndex(bimg, bimg2);
-
-			 priv.tsLib.images.PNG.savePNG(bimg2, out);
-			 }break;
-			 case SAVEAS_IMAGETYPE_PNG16: {
-			 //check for JAI
-			 try {
-			 ClassLoader cl = ClassLoader.getSystemClassLoader();
-			 cl.loadClass("com.sun.media.jai.codec.PNGEncodeParam");
-			 }catch(ClassNotFoundException e) {
-			 System.out.println("Für PNG Ausgabe wird das JAI (Java Advanced Imaging) " +
-			 "benötigt. Das JAI kann man unter http://java.sun.com erhalten.");
-			 e.printStackTrace();
-			 System.exit(0);
-			 }
-			 String strOutput;
-
-			 strOutput = strOut + "_" + x + "_" + y + ".png";
-			 java.io.OutputStream out = new java.io.FileOutputStream(strOutput);
-
-			 System.out.println(strOutput + " " + iOf + " von " + iMax);
-
-			 BufferedImage bimg2;
-			 bimg2 = new BufferedImage(bimg.getWidth(), bimg.getHeight(),
-			 BufferedImage.TYPE_BYTE_INDEXED, _icmPalette16);
-
-			 imgCopyRGBToIndex(bimg, bimg2);
-
-			 priv.tsLib.images.PNG.savePNG(bimg2, out);
-			 }break;*/
-		}
+		writer.setOutput(ImageIO.createImageOutputStream(out));
+		writer.write(bimg);
+		
+		out.close();
+			
 	}
 
 	// pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
