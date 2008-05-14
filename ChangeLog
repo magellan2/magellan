@@ -1,3 +1,6 @@
+2008-05-14  stm  <stm_@users.sourceforge.net>
+    * fixed hard coded "Monster" bug
+    
 2008-05-06  Fiete  <Fiete@users.sourceforge.net>
 	* fixed merge bug #235
 	* added layer to found translations

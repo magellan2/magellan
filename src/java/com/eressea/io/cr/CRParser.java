@@ -15,6 +15,7 @@ package com.eressea.io.cr;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +76,7 @@ import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
 import com.eressea.util.CollectionFactory;
+import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
 
 /**
@@ -1206,7 +1208,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			bType = rules.getCastleType(StringID.create(id), true);
 		}
 
-		sc.getNextToken(); // skip GEBÄUDETYP xx
+		sc.getNextToken(); // skip GEBï¿½UDETYP xx
 
 		while(!sc.eof) {
 			if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("name")) {
@@ -1351,7 +1353,7 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if(sc.argc == 2) {
 				unknown("REGIONTYPE", true);
 			} else {
-				unknown("GEBÄUDETYP", true);
+				unknown("GEBï¿½UDETYP", true);
 			}
 		}
 	}
@@ -2056,10 +2058,10 @@ public class CRParser implements RulesIO, GameDataIO {
 				//
 				// 57 and later:
 				// 0 AGGRESSIV: 1. Reihe, flieht nie.
-				// 1 VORNE: 1. Reihe, kämpfen bis 20% HP
-				// 2 HINTEN: 2. Reihe, kämpfen bis 20% HP
-				// 3 DEFENSIV: 2. Reihe, kämpfen bis 90% HP
-				// 4 NICHT: 3. Reihe, kämpfen bis 90% HP
+				// 1 VORNE: 1. Reihe, kï¿½mpfen bis 20% HP
+				// 2 HINTEN: 2. Reihe, kï¿½mpfen bis 20% HP
+				// 3 DEFENSIV: 2. Reihe, kï¿½mpfen bis 90% HP
+				// 4 NICHT: 3. Reihe, kï¿½mpfen bis 90% HP
 				// 5 FLIEHE: 4. Reihe, flieht immer.
 				unit.combatStatus = Integer.parseInt(sc.argv[0]);
 
@@ -2178,15 +2180,13 @@ public class CRParser implements RulesIO, GameDataIO {
 
 		Faction faction = getAddFaction(world, factionID);
 
-		if(faction.getName() == null) {
-			if(factionID.intValue() == -1) {
-				faction.setName("Parteigetarnte");
-			} else if(factionID.intValue() == 0) {
-				faction.setName("Monster");
-			} else {
-				faction.setName("Partei " + factionID);
-			}
-		}
+    if(faction.getName() == null) {
+      if(factionID.intValue() == -1) {
+        faction.setName(Translations.getTranslation(this, "crparser.nofaction"));
+      } else {
+        faction.setName(new MessageFormat(Translations.getTranslation(this, "crparser.unknownfaction")).format(new Object[] { factionID.toString() }));
+      }
+    }
 
 		if(unit.getFaction() != faction) {
 			unit.setFaction(faction);
@@ -2420,8 +2420,8 @@ public class CRParser implements RulesIO, GameDataIO {
 					b.direction = Integer.parseInt(sc.argv[0]);
 				} catch(NumberFormatException e) {
 					final String dirNames[] = {
-												  "Nordwesten", "Nordosten", "Osten", "Südosten",
-												  "Südwesten", "Westen"
+												  "Nordwesten", "Nordosten", "Osten", "Sï¿½dosten",
+												  "Sï¿½dwesten", "Westen"
 											  };
 
 					for(int i = 0; i < dirNames.length; i++) {
@@ -2977,4 +2977,27 @@ public class CRParser implements RulesIO, GameDataIO {
 			}
 		}
 	}
+	
+	 // pavkovic 2003.01.28: this is a Map of the default Translations mapped to this class
+  // it is called by reflection (we could force the implementation of an interface,
+  // this way it is more flexible.)
+  // Pls use this mechanism, so the translation files can be created automagically
+  // by inspecting all classes.
+  private static Map defaultTranslations;
+
+  /**
+   * TODO: DOCUMENT ME!
+   *
+   * @return TODO: DOCUMENT ME!
+   */
+  public static synchronized Map getDefaultTranslations() {
+    if(defaultTranslations == null) {
+      defaultTranslations = CollectionFactory.createHashtable();
+      defaultTranslations.put("crparser.nofaction", "Disguised");
+      defaultTranslations.put("crparser.unknownfaction", "Faction {0}");
+    }
+    return defaultTranslations;
+  }
+  
 }
+
