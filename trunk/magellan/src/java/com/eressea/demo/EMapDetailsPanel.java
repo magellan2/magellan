@@ -151,6 +151,7 @@ import com.eressea.util.CollectionFactory;
 import com.eressea.util.Direction;
 import com.eressea.util.PropertiesHelper;
 import com.eressea.util.ShipRoutePlanner;
+import com.eressea.util.StringFactory;
 import com.eressea.util.Taggable;
 import com.eressea.util.Translations;
 import com.eressea.util.Umlaut;
@@ -1352,6 +1353,31 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 		if (getMagellanContext().getImageFactory().existImageIcon("items/" + icon + "_region")){
 			icon = icon + "_region";
 		}
+		
+//		 Aktualitätsinfo
+		
+	    if (res.getDate()!=null && res.getDate().getDate()>-1){
+	      if (res.getDate().equals(this.data.getDate())){
+	        // same turn
+	        sb.append(" (" + getString("resinfo_current") + ") ");
+	        
+	      } else {
+	    	int anzahlRunden = data.getDate().getDate() - res.getDate().getDate();
+	    	String helperS;
+	    	if (anzahlRunden<=1){
+	    		helperS = getString("resinfo_old_one");
+	    	} else {
+	    		helperS = getString("resinfo_old_more");
+	    	}
+	    	helperS = StringFactory.replace(helperS,"$anzahl", anzahlRunden + "");
+	        sb.append(" (" + helperS + ") ");
+	        
+	      }
+	    } else {
+	      sb.append(" (" + getString("resinfo_old_unknown") + ") ");
+	      
+	    }
+		
 		
 		parent.add(createSimpleNode(sb.toString(), "items/" + icon));
 	}
@@ -5546,7 +5572,10 @@ public class EMapDetailsPanel extends InternationalizedDataPanel implements Sele
 			defaultTranslations.put("node.buildingminskilllevel", "needed skill level");
 			defaultTranslations.put("node.buildingcastlesizelimits", "size-range of this castletype");
 			defaultTranslations.put("node.resources_region", "Resources (Region)");
-			
+			defaultTranslations.put("resinfo_current", "current");
+			defaultTranslations.put("resinfo_old_one", "$anzahl turn ago");
+			defaultTranslations.put("resinfo_old_more", "$anzahl turns ago");
+			defaultTranslations.put("resinfo_old_unknown", "outdated");
 		}
 
 		return defaultTranslations;
