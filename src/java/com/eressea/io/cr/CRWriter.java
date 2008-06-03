@@ -2017,6 +2017,11 @@ public class CRWriter extends BufferedWriter {
 			write(res.getSkillLevel() + ";skill");
 			newLine();
 		}
+		
+		if (res.getDate()!=null && res.getDate().getDate()>-1 && !serverConformance){
+	      write(res.getDate().getDate() + ";Runde");
+	      newLine();
+	    }
 	}
 
 	/**

@@ -75,6 +75,7 @@ import com.eressea.rules.Resource;
 import com.eressea.rules.ShipType;
 import com.eressea.rules.SkillCategory;
 import com.eressea.rules.SkillType;
+import com.eressea.swing.tree.TreeHelper;
 import com.eressea.util.CollectionFactory;
 import com.eressea.util.Translations;
 import com.eressea.util.logging.Logger;
@@ -925,6 +926,15 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("mailto")) {
 				world.mailTo = sc.argv[0];
 				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("reportowner")) {
+		        // in Mag 1 we do not use report owner
+		        sc.getNextToken();
+	        } else if((sc.argc == 1) && sc.argv[0].startsWith("COORDTRANS")) {
+	    	  	// in Mag 1 we do not use COORDTRANS
+	        	sc.getNextToken();
+	        } else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("translation")) {
+	    	  	// in Mag 1 we do not use COORDTRANS
+	        	sc.getNextToken();
 			} else if((sc.argc == 1) && sc.argv[0].startsWith("RULES")) {
 				parseRules(world.rules);
 			} else if((sc.argc == 1) && sc.argv[0].startsWith("HOTSPOT ")) {
@@ -2170,7 +2180,22 @@ public class CRParser implements RulesIO, GameDataIO {
 					unit.putTag(sc.argv[1], sc.argv[0]);
 				}
 
-				unknown("EINHEIT", true);
+				// realy put unknown message out?
+		        // check for wellknown tags...ejcTaggable etc...
+		        boolean isUnknown = true;
+		        if(sc.argc == 2) {
+		        	// Tags
+		          if (sc.argv[1].equalsIgnoreCase(TreeHelper.TAGGABLE_STRING)){isUnknown=false;}
+		          if (sc.argv[1].equalsIgnoreCase(TreeHelper.TAGGABLE_STRING2)){isUnknown=false;}
+		          if (sc.argv[1].equalsIgnoreCase(TreeHelper.TAGGABLE_STRING3)){isUnknown=false;}
+		          if (sc.argv[1].equalsIgnoreCase(TreeHelper.TAGGABLE_STRING4)){isUnknown=false;}
+		          if (sc.argv[1].equalsIgnoreCase(TreeHelper.TAGGABLE_STRING5)){isUnknown=false;}
+		        }
+		        if (isUnknown){
+		          unknown("EINHEIT", true);
+		        } else {
+		          sc.getNextToken();
+		        }
 			}
 		}
 
@@ -2582,6 +2607,10 @@ public class CRParser implements RulesIO, GameDataIO {
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("letzterlohn")) {
 				region.oldWage = Integer.parseInt(sc.argv[0]);
 				sc.getNextToken();
+			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("aktiveRegion")) {
+				// in Mag 1 we do not work with activeRegion			}
+		        // region.setActive(true);
+		        sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Terrain")) {
 				try {
 					RegionType type = world.rules.getRegionType(StringID.create(sc.argv[0]), true);
@@ -2838,6 +2867,14 @@ public class CRParser implements RulesIO, GameDataIO {
 
 					if(type != null) {
 						r = new RegionResource(id, type);
+						// if coming from server, just set the date to world-date
+			            // if later a ;runde tag is found, date is overwritten
+			            // added for testing. we onyl do this, if the report has NO
+			            // "Konfiguartion" tag...we assume than, its coming from the server...
+			            if (this.configuration.equalsIgnoreCase("standard")){
+			              r.setDate(world.getDate().getDate());
+			            }
+						
 					}
 				}
 
@@ -2848,6 +2885,11 @@ public class CRParser implements RulesIO, GameDataIO {
 				}
 
 				sc.getNextToken();
+			} else if ((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("Runde")) {
+		          if (r!=null){
+		            r.setDate(Integer.parseInt(sc.argv[0]));
+		          }
+		          sc.getNextToken();
 			} else if((sc.argc == 2) && sc.argv[1].equalsIgnoreCase("number")) {
 				if(r != null) {
 					r.setAmount(Integer.parseInt(sc.argv[0]));
