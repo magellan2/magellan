@@ -1,3 +1,6 @@
+2008-07-07  Fiete  <Fiete@users.sourceforge.net>
+	* try to fix #285/#287
+	
 2008-05-14  Fiete  <Fiete@users.sourceforge.net>
 	* added support for ;Runde tag in Ressource, CRWriter, CRParser adn EMapDetails
 	* supressed unknown messages for reportowner, coordtrans, translation, taggables
