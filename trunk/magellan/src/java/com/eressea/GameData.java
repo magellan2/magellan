@@ -1112,7 +1112,16 @@ public abstract class GameData implements Cloneable {
 					// not know the region anymore or if it was
 					// destroyed
 					// FIXME(pavkovic): shouldn't it be Region curRegion = b.getRegion(); ?
-					Region curRegion = newerGD.getRegion((CoordinateID) b.getRegion().getID());
+					Region curRegion = null;
+					if (b.getRegion()!=null){
+						if (b.getRegion().getID()!=null){
+							curRegion = newerGD.getRegion((CoordinateID) b.getRegion().getID());
+						} else {
+							log.error("Building-Region without ID!: " + b.toString());
+						}
+					} else {
+						log.error("Building without Region!: " + b.toString());
+					}
 
 					if((curRegion == null) || curRegion.units().isEmpty()) {
 						try {
