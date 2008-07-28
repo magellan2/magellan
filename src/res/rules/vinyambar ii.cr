@@ -1311,13 +1311,23 @@ ITEM "Orkhauer"
 "trophies";category
 0.01;weight
 
-ITEM "Magischer Kräuterbeutel"
-"Magischer Kräuterbeutel";name
-1;weight
+ITEM "Zauberbeutel"
+"Zauberbeutel";name
 "misc";category
+1;weight
+
+ITEM "Sphäre der Unsichtbarkeit"
+"Sphäre der Unsichtbarkeit";name
+"misc";category
+1;weight
 
 ITEM "Tiegel mit Krötenschleim"
 "Tiegel mit Krötenschleim";name
+"misc";category
+1;weight
+
+ITEM "Magischer Kräuterbeutel"
+"Magischer Kräuterbeutel";name
 1;weight
 "misc";category
 
@@ -1330,6 +1340,11 @@ ITEM "Drachenkopf"
 "Drachenkopf";name
 5;weight
 "trophies";category
+
+ITEM "Ring der flinken Finger"
+"Ring der flinken Finger";name
+1;weight
+"misc";category
 
 SHIPTYPE "Boot"
 "Boot";name
