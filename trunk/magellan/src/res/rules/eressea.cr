@@ -750,6 +750,11 @@ ITEM "Laen"
 "Bergbau";makeskill
 "resources";category
 
+ITEM "Adamantium"
+"Adamantium";name
+2;weight
+"resources";category
+
 ITEM "Holz"
 "Holz";name
 5;weight
@@ -962,6 +967,11 @@ RESOURCES
 1;Eisen
 1;Holz
 
+ITEM "Adamantiumaxt"
+"Adamantiumaxt";name
+1;weight
+"weapons";category
+
 ITEM "Rostige Kriegsaxt"
 "Rostige Kriegsaxt";name
 2;weight
@@ -1072,6 +1082,11 @@ ITEM "Plattenpanzer"
 "armour";category
 RESOURCES
 5;Eisen
+
+ITEM "Adamantiumrüstung"
+"Adamantiumrüstung";name
+1;weight
+"armour";category
 
 ITEM "Rostiger Plattenpanzer"
 "Rostiger Plattenpanzer";name
@@ -1348,13 +1363,23 @@ ITEM "Orkhauer"
 "trophies";category
 0.01;weight
 
-ITEM "Magischer Kräuterbeutel"
-"Magischer Kräuterbeutel";name
-1;weight
+ITEM "Zauberbeutel"
+"Zauberbeutel";name
 "misc";category
+1;weight
+
+ITEM "Sphäre der Unsichtbarkeit"
+"Sphäre der Unsichtbarkeit";name
+"misc";category
+1;weight
 
 ITEM "Tiegel mit Krötenschleim"
 "Tiegel mit Krötenschleim";name
+"misc";category
+1;weight
+
+ITEM "Magischer Kräuterbeutel"
+"Magischer Kräuterbeutel";name
 1;weight
 "misc";category
 
