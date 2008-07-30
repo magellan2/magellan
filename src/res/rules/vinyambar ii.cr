@@ -1331,8 +1331,8 @@ ITEM "Magischer Kräuterbeutel"
 1;weight
 "misc";category
 
-ITEM "Schlangenkopf"
-"Schlangenkopf";name
+ITEM "Seeschlangenkopf"
+"Seeschlangenkopf";name
 5;weight
 "trophies";category
 
