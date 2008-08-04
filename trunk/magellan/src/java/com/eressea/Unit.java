@@ -1472,7 +1472,8 @@ public class Unit extends RelatedObject implements HasRegion, Sorted, Taggable {
 			if(ucr instanceof EnterRelation) {
 				// fast return: first EnterRelation wins
 				return ucr.target;
-			} else if(ucr instanceof LeaveRelation && ucr.target.equals(getShip())) {
+			// } else if(ucr instanceof LeaveRelation && ucr.target.equals(getShip())) {
+			} else if(ucr instanceof LeaveRelation && ucr.target.equals(getUnitContainer())) {
 				// fast return: first LeaveRelation wins
 				// we only left our container
 				return null;
