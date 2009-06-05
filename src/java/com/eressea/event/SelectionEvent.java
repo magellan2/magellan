@@ -79,7 +79,7 @@ public class SelectionEvent extends EventObject {
 	}
 
 	/**
-	 * Returns the possibly mulitple objects selected by the user. They do not necessarrily include
+	 * Returns the possibly multiple objects selected by the user. They do not necessarily include
 	 * the active object. A value of null indicates that previously selected objects are not
 	 * affected by this event.
 	 *
