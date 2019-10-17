@@ -51,8 +51,8 @@
 
   <!-- be conservative while compilation to support java 1.4 -->
   <!-- note that - if you cross compile - you need to set bootclasspath -->
-  <property name="JAVAC.TARGET"         value="1.4"/>
-  <property name="JAVAC.SOURCE"         value="1.4"/>
+  <property name="JAVAC.TARGET"         value="1.6"/>
+  <property name="JAVAC.SOURCE"         value="1.6"/>
   <property name="JAVAC.DEBUG"          value="true"/>
   <property name="JAVAC.DEPRECATION"    value="false"/>
   <property name="JAVAC.ENCODING"       value="ISO-8859-1"/>
